@@ -1,0 +1,313 @@
+/*
+ * CSIS China Air Quality
+ * By Nick Harbaugh
+ * http://sevenmilemedia.com/
+ */
+
+/* ==========================================================================
+   Base styles
+   ========================================================================== */
+
+/* CSIS test code */
+#container {
+    position: relative;
+    max-width: 940px;
+    margin: 60px auto;
+}
+/* End CSIS test code */
+
+#aq-content {
+    color: #232323;
+    font-size: 1em;
+    margin: 0 auto;
+    font-family: 'Roboto', sans-serif;
+}
+
+.aq-title {
+    font-family: 'Roboto Slab', serif;
+    font-weight: bold;
+    font-size: 24px;
+    color: #772233;
+}
+
+.aq-intro {
+    font-size: 17px;
+    line-height: 1.6em;
+    -webkit-font-smoothing: antialiased;
+}
+
+.aq-chart-header {
+    margin-top: 40px;
+    margin-bottom: 15px;
+}
+
+.aq-chart-title,
+.aq-chart-title-mobile {
+    display: none;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 16px 0 0 195px;
+}
+
+.aq-chart-title-mobile {
+    display: block;
+    padding: 0;
+    margin-bottom: 15px;
+}
+
+.aq-barchart-title {
+    font-size: 14px;
+    color: #777;
+    font-weight: normal;
+    margin-left: 35px;
+}
+
+
+/* ==========================================================================
+   City selector dropdown
+   ========================================================================== */
+
+.aq-dropdown {
+    margin: 0;
+    border: 1px solid #ccc;
+    background: transparent;
+    width: 100%;
+    padding: 5px 0 5px 15px;
+    font-size: 18px;
+    font-weight: bold;
+    height: 50px;
+    border-radius: 0;
+    background: url(../images/icon-arrow-down.png) 95% / 25px no-repeat #fff;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+/* Remove select border in Safari */
+.aq-dropdown:focus,
+.aq-dropdown:active {outline:0;}
+
+/* Remove select border in Firefox */
+.aq-dropdown:-moz-focusring {
+    color: transparent;
+    text-shadow: 0 0 0 #000;
+}
+
+
+/* ==========================================================================
+   Heatmap legend
+   ========================================================================== */
+
+.aq-legend {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.aq-legend-cells {
+    width: 100%;
+}
+
+.aq-legend ul {
+    margin: 12px 0 0 0;
+    padding: 0;
+    display: table;
+    width: 100%;
+    height: 8px;
+}
+
+.aq-legend li {
+    list-style: none;
+    display: table-cell;
+    height: 100%;
+}
+
+.aq-legend li span {
+    display: block;
+    margin: 0 0.5px;
+    height: 100%;
+}
+
+.aq-legend-cells li:nth-of-type(1) span { background: #85C1A1; }
+.aq-legend-cells li:nth-of-type(2) span { background: #FFD160; }
+.aq-legend-cells li:nth-of-type(3) span { background: #EF9365; }
+.aq-legend-cells li:nth-of-type(4) span { background: #DD4760; }
+.aq-legend-cells li:nth-of-type(5) span { background: #973B7A; }
+.aq-legend-cells li:nth-of-type(6) span { background: #702341; }
+
+.aq-legend-labels {
+    position: relative;
+    margin-top: 5px;
+    padding-top: 4px;
+}
+
+.aq-legend-labels p {
+    position: absolute;
+    top: 0;
+    font-size: 11px;
+    color: #777;
+    margin: 0;
+    padding: 0;
+}
+
+.aq-legend-labels p:nth-of-type(1) { left: 0; }
+.aq-legend-labels p:nth-of-type(2) { left: 50%; margin-left: -25px; }
+.aq-legend-labels p:nth-of-type(3) { right: 0; }
+
+
+/* ==========================================================================
+   Chart styles
+   ========================================================================== */
+
+#aq-heatmap-container {
+    height: 160px;
+    max-width: 100%;
+    margin-bottom: 20px;
+}
+
+#aq-barchart-container {
+    height: 180px;
+    max-width: 100%;
+}
+
+.highcharts-grid > path {
+    stroke-width: 0;
+}
+
+.highcharts-axis > path {
+    stroke-width: 0;
+}
+
+#aq-heatmap-container,
+#aq-barchart-container {
+    /* Force hardware acceleration */
+    -webkit-transform: translateZ(0);
+}
+
+#aq-heatmap-container .highcharts-series rect {
+    rx: 2px;
+    stroke-width: 1px;
+    
+    -webkit-transition: fill 0.6s ease;
+    -moz-transition: fill 0.6s ease;
+    -o-transition: fill 0.6s ease;
+    transition: fill 0.6s ease;
+
+    /* Force hardware accel. on iOS */
+    -webkit-transform: translateZ(0);
+}
+
+#aq-barchart-container .highcharts-series rect {
+    -webkit-transform: translateZ(0);
+}
+
+.aq-heatmap-tooltip {
+    cursor: default;
+    pointer-events: none;
+}
+
+.aq-heatmap-tooltip p {
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+
+/* ==========================================================================
+   Helper classes
+   ========================================================================== */
+
+.clearfix:before,
+.clearfix:after {
+    content: " ";
+    display: table;
+}
+
+.clearfix:after {
+    clear: both;
+}
+
+
+/* ==========================================================================
+   Media queries
+   ========================================================================== */
+
+/* CSIS test code */
+@media only screen and (max-width: 1024px) {
+    .row-inner {
+        padding-left: 40px !important;
+        padding-right: 40px !important;
+    }
+}
+/* End CSIS test code */
+
+@media only screen and (min-width: 700px) {
+    .aq-align-left {
+        float: left;
+    }
+
+    .aq-align-right {
+        float: right;
+    }
+
+    .aq-chart-header {
+        margin-bottom: 5px;
+        padding-left: 68px;
+        padding-right: 12px;
+    }
+
+    .aq-chart-title {
+        display: block;
+    }
+
+    .aq-chart-title-mobile {
+        display: none;
+    }
+
+    .aq-barchart-title {
+        margin-left: 68px;
+    }
+
+    .aq-legend-labels {
+        padding-top: 0;
+    }
+
+    .aq-legend {
+        width: 180px;
+        margin: 0;
+    }
+
+    .aq-legend ul {
+        margin: 20px 0 0 0;
+        height: 12px;
+    }
+
+    #aq-heatmap-container {
+        height: 300px;
+        max-width: 100%;
+        margin-bottom: 20px;
+    }
+
+    #aq-barchart-container {
+        height: 300px;
+        max-width: 100%;
+    }
+
+    .aq-dropdown {
+        width: 180px;
+        background: url(../images/icon-arrow-down.png) 93% / 12% no-repeat #fff;
+    }
+
+    #aq-heatmap-container .highcharts-series rect {
+        rx: 6px;
+        stroke-width: 4px;
+    }
+}
+
+@media only screen and (min-width: 800px) {
+    .aq-legend {
+        width: 260px;
+    }
+}
+
+

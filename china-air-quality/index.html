@@ -1,0 +1,64 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>CSIS - China Air Quality</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="css/main.css">
+        <link href='https://fonts.googleapis.com/css?family=Roboto:400,700' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,700' rel='stylesheet' type='text/css'>
+    </head>
+    <body>
+        <div id="container" class="row-inner">
+            <div id="aq-content">
+                <h2 class="aq-title">China Air Quality</h2>
+                <p class="aq-intro">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+                <div class="aq-chart-header">
+                    <h2 class="aq-chart-title-mobile">Air Quality Index (2015)</h2>
+                    <div class="aq-legend aq-align-right">
+                        <div class="aq-legend-labels">
+                            <p>Good</p>
+                            <p>Unhealthy</p>
+                            <p>Hazardous</p>
+                        </div>
+                        <div class="aq-legend-cells">
+                            <ul>
+                                <li><span></span></li>
+                                <li><span></span></li>
+                                <li><span></span></li>
+                                <li><span></span></li>
+                                <li><span></span></li>
+                                <li><span></span></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <select class="aq-dropdown aq-align-left">
+                        <option value="beijing">Beijing</option>
+                        <option value="chengdu">Chengdu</option>
+                        <option value="guangzhou">Guangzhou</option>
+                        <option value="shanghai">Shanghai</option>
+                        <option value="shenyang">Shenyang</option>
+                        <option value="shenzhen">Shenzhen</option>
+                        <option value="tianjin">Tianjin</option>
+                    </select>
+                    <h2 class="aq-chart-title">Air Quality (2015)</h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div id="aq-heatmap-container"></div>
+                <h2 class="aq-barchart-title">Average rainfall</h2>
+                <div id="aq-barchart-container"></div>
+            </div>
+        </div>
+
+        <script src="js/vendor/jquery-1.12.0.min.js"></script>
+        <script src="js/vendor/highcharts/highcharts.js"></script>
+        <script src="js/vendor/highcharts/modules/data.js"></script>
+        <script src="js/vendor/highcharts/modules/heatmap.js"></script>
+        <script src="js/main.js"></script>
+    </body>
+</html>
