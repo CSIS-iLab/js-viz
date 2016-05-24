@@ -20,8 +20,8 @@ $(function () {
     });
 
     var initialize = function(data) {
-        buildHeatMap(data['shanghaiInit']['aqi']);
-        buildBarChart(data['shanghaiInit']['rainfall']);
+        buildHeatMap(data['beijingInit']['aqi']);
+        buildBarChart(data['beijingInit']['rainfall']);
         setDropdownHandler();
     };
 
@@ -99,7 +99,7 @@ $(function () {
             chart: {
                 type: 'heatmap',
                 marginTop: 40,
-                marginBottom: 20,
+                marginBottom: 26,
                 marginLeft: marginLeft,
                 borderWidth: 0,
                 plotBorderWidth: 0,
@@ -110,7 +110,11 @@ $(function () {
             },
             credits: {
                 text: 'U.S. Embassy Beijing Air Quality Monitor',
-                href: 'http://beijing.usembassy-china.org.cn/aqirecent3.html'
+                href: 'http://beijing.usembassy-china.org.cn/aqirecent3.html',
+                position: {
+                    x: -40,
+                    y: -8
+                }
             },
             xAxis: {
                 categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
@@ -119,7 +123,6 @@ $(function () {
                 minorTickLength: 0,
                 tickLength: 0
             },
-
             yAxis: {
                 categories: yAxisCategories,
                 title: null,
@@ -127,7 +130,6 @@ $(function () {
                 minorTickLength: 0,
                 minorGridLineWidth: 0
             },
-
             colorAxis: {
                 dataClasses: [{
                     from: 0,
@@ -154,7 +156,6 @@ $(function () {
                     color: '#702341'
                 }]
             },
-
             plotOptions: {
                 heatmap: {
                     borderColor: '#fff',
@@ -172,13 +173,29 @@ $(function () {
                     }
                 }
             },
-
             legend: {
                 enabled: false
             },
-
+            exporting: {
+                chartOptions: {
+                    title: {
+                        text: 'Air Quality Index (2015)'
+                    },
+                    chart: {
+                        marginTop: 65
+                    }
+                },
+                buttons: {
+                    contextButton: {
+                        align: 'right',
+                        x: 0,
+                        y: 14,
+                        verticalAlign: 'bottom',
+                        symbolStroke: '#aaa'
+                    }
+                }
+            },
             tooltip: tooltip,
-
             series: [{
                 borderWidth: 1,
                 data: data,
@@ -206,7 +223,7 @@ $(function () {
             chart: {
                 type: 'column',
                 marginTop: marginTop,
-                marginBottom: 20,
+                marginBottom: 26,
                 marginLeft: marginLeft,
                 renderTo: 'aq-barchart-container'
             },
@@ -215,7 +232,11 @@ $(function () {
             },
             credits: {
                 text: 'China Meteorological Administration',
-                href: 'http://www.cma.gov.cn/en2014/'
+                href: 'http://www.cma.gov.cn/en2014/',
+                position: {
+                    x: -40,
+                    y: -8
+                }
             },
             xAxis: {
                 type: 'category',
@@ -268,6 +289,25 @@ $(function () {
             },
             legend: {
                 enabled: false
+            },
+            exporting: {
+                chartOptions: {
+                    title: {
+                        text: 'Average Rainfall (2015)'
+                    },
+                    chart: {
+                        marginTop: 50
+                    }
+                },
+                buttons: {
+                    contextButton: {
+                        align: 'right',
+                        x: 0,
+                        y: 14,
+                        verticalAlign: 'bottom',
+                        symbolStroke: '#aaa'
+                    }
+                }
             },
             tooltip: {
                 headerFormat: '<span style="font-size:11px;color:#999;">{point.key}. rainfall</span><br/>',
