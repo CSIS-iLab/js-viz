@@ -112,7 +112,7 @@ $(function () {
                 text: ''
             },
             credits: {
-                text: 'U.S. Embassy Beijing Air Quality Monitor',
+                text: 'CSIS China Power Project | Source: U.S. Embassy Beijing Air Quality Monitor',
                 href: 'http://beijing.usembassy-china.org.cn/aqirecent3.html',
                 position: {
                     x: -40,
@@ -234,7 +234,7 @@ $(function () {
                 text: ''
             },
             credits: {
-                text: 'China Meteorological Administration',
+                text: 'CSIS China Power Project | Source: China Meteorological Administration',
                 href: 'http://www.cma.gov.cn/en2014/',
                 position: {
                     x: -40,
