@@ -66,7 +66,8 @@ $(function () {
             marginLeft = (isMobile) ? 35 : 68,
             ttDefault = {
                 formatter: function () {
-                    return '<div class="aq-heatmap-tooltip"><p>' + this.point.value + '</p></div>';
+                    var value = (this.point.value > 500) ? '>500' : this.point.value;
+                    return '<div class="aq-heatmap-tooltip"><p>' + value + '</p></div>';
                 },
                 hideDelay: 100,
                 animation: false,
@@ -81,8 +82,10 @@ $(function () {
                 }
             },
             ttMobile = {
-                headerFormat: '<span style="font-size:11px;color:#999;">AQI</span><br/>',
-                pointFormat: '<b style="font-size:14px;color:#232323;font-weight:bold;">{point.value}</b>',
+                formatter: function () {
+                    var value = (this.point.value > 500) ? '>500' : this.point.value;
+                    return '<span style="font-size:11px;color:#999;">AQI</span><br/><b style="font-size:14px;color:#232323;font-weight:bold;">' + value + '</b>';
+                },
                 hideDelay: 100,
                 shadow: false,
                 backgroundColor: 'rgba(255, 255, 255, 0.9)',

@@ -207,7 +207,7 @@
 
 .aq-heatmap-tooltip p {
     color: #fff;
-    font-size: 18px;
+    font-size: 14px;
     font-weight: bold;
     white-space: nowrap;
 }
@@ -307,6 +307,12 @@
 @media only screen and (min-width: 800px) {
     .aq-legend {
         width: 260px;
+    }
+}
+
+@media only screen and (min-width: 900px) {
+    .aq-heatmap-tooltip p {
+        font-size: 18px;
     }
 }
 
