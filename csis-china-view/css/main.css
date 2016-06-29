@@ -1,5 +1,5 @@
 /*
- * CSIS China Air Quality
+ * CSIS China View
  * By Nick Harbaugh
  * http://sevenmilemedia.com/
  */
@@ -28,7 +28,7 @@
    Base styles
    ========================================================================== */
 
-#aq-content {
+#cv-content {
     color: #232323;
     font-size: 1em;
     margin: 0 auto;
@@ -38,90 +38,43 @@
     max-width: 900px;
 }
 
-/*.aq-title {
-    font-family: 'Roboto Slab', serif;
-    font-weight: bold;
-    font-size: 24px;
-    color: #772233;
-}*/
-
-.aq-chart-header {
+.cv-chart-header {
     margin-top: 40px;
     margin-bottom: 15px;
 }
 
-.aq-chart-title {
+.cv-chart-title {
     font-size: 18px;
     font-weight: bold;
     margin: 5px 0 15px;
-    /*float: left;*/
-    /*padding: 16px 0 0 195px;*/
 }
 
 @media only screen and (min-width: 700px) {
-    .aq-chart-header {
+    .cv-chart-header {
         margin-bottom: 5px;
         padding-right: 12px;
     }
 
-    .aq-chart-title {
+    .cv-chart-title {
         margin: 5px 0;
     }
 }
 
 
 /* ==========================================================================
-   City selector dropdown
+   Legend
    ========================================================================== */
 
-.aq-dropdown {
-    margin: 0;
-    border: 1px solid #ccc;
-    background: transparent;
-    width: 100%;
-    padding: 5px 0 5px 15px;
-    font-size: 18px;
-    font-weight: bold;
-    height: 50px;
-    border-radius: 0;
-    background: url(../images/icon-arrow-down.png) 95% / 25px no-repeat #fff;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-}
-
-/* Remove select border in Safari */
-.aq-dropdown:focus,
-.aq-dropdown:active {outline:0;}
-
-/* Remove select border in Firefox */
-.aq-dropdown:-moz-focusring {
-    color: transparent;
-    text-shadow: 0 0 0 #000;
-}
-
-@media only screen and (min-width: 700px) {
-    .aq-dropdown {
-        width: 180px;
-        background: url(../images/icon-arrow-down.png) 93% / 12% no-repeat #fff;
-    }
-}
-
-
-/* ==========================================================================
-   Heatmap legend
-   ========================================================================== */
-
-.aq-legend {
+.cv-legend {
     width: 100%;
     margin-bottom: 20px;
 }
 
-.aq-legend-cells {
+.cv-legend-cells {
     width: 100%;
 }
 
-.aq-legend ul {
+.cv-legend ul {
     margin: 12px 0 0 0;
     padding: 0;
     display: table;
@@ -129,37 +82,30 @@
     height: 8px;
 }
 
-.aq-legend li {
+.cv-legend li {
     list-style: none;
     display: table-cell;
     height: 100%;
 }
 
-.aq-legend li span {
+.cv-legend li span {
     display: block;
     margin: 0 0.5px;
     height: 100%;
 }
 
-/*.aq-legend-cells li:nth-of-type(1) span { background: #85C1A1; }
-.aq-legend-cells li:nth-of-type(2) span { background: #FFD160; }
-.aq-legend-cells li:nth-of-type(3) span { background: #EF9365; }
-.aq-legend-cells li:nth-of-type(4) span { background: #DD4760; }
-.aq-legend-cells li:nth-of-type(5) span { background: #973B7A; }
-.aq-legend-cells li:nth-of-type(6) span { background: #702341; }*/
+.cv-legend-cells li:nth-of-type(1) span { background: rgba(211,11,59,0.15); }
+.cv-legend-cells li:nth-of-type(2) span { background: rgba(211,11,59,0.35); }
+.cv-legend-cells li:nth-of-type(3) span { background: rgba(211,11,59,0.65); }
+.cv-legend-cells li:nth-of-type(4) span { background: rgba(211,11,59,1); }
 
-.aq-legend-cells li:nth-of-type(1) span { background: rgba(211,11,59,0.15); }
-.aq-legend-cells li:nth-of-type(2) span { background: rgba(211,11,59,0.35); }
-.aq-legend-cells li:nth-of-type(3) span { background: rgba(211,11,59,0.65); }
-.aq-legend-cells li:nth-of-type(4) span { background: rgba(211,11,59,1); }
-
-.aq-legend-labels {
+.cv-legend-labels {
     position: relative;
     margin-top: 5px;
     padding-top: 4px;
 }
 
-.aq-legend-labels p {
+.cv-legend-labels p {
     position: absolute;
     top: 0;
     font-size: 11px;
@@ -168,21 +114,20 @@
     padding: 0;
 }
 
-.aq-legend-labels p:nth-of-type(1) { left: 0; }
-/*.aq-legend-labels p:nth-of-type(2) { left: 50%; margin-left: -25px; }*/
-.aq-legend-labels p:nth-of-type(2) { right: 0; }
+.cv-legend-labels p:nth-of-type(1) { left: 0; }
+.cv-legend-labels p:nth-of-type(2) { right: 0; }
 
 @media only screen and (min-width: 700px) {
-    .aq-legend-labels {
+    .cv-legend-labels {
         padding-top: 0;
     }
 
-    .aq-legend {
+    .cv-legend {
         width: 200px;
         margin: 0;
     }
 
-    .aq-legend ul {
+    .cv-legend ul {
         margin: 20px 0 0 0;
         height: 8px;
     }
@@ -205,6 +150,27 @@
 #cv-barchart-container {
     height: 200px;
     margin-bottom: 20px;
+}
+
+#cv-map-container path {
+    stroke: white;
+    stroke-width: 0.5;
+    /*fill: red;*/
+}
+
+#cv-barchart-container .highcharts-grid path {
+    stroke: #eee;
+    stroke-width: 1;
+}
+
+#cv-barchart-container .highcharts-axis path {
+    stroke: #ccc;
+    stroke-width: 1;
+}
+
+#cv-map-container .highcharts-button path {
+    stroke: #aaa;
+    stroke-width: 3;
 }
 
 @media only screen and (min-width: 450px) {
@@ -332,11 +298,11 @@
 }
 
 @media only screen and (min-width: 700px) {
-    .aq-align-left {
+    .cv-align-left {
         float: left;
     }
 
-    .aq-align-right {
+    .cv-align-right {
         float: right;
     }
 }

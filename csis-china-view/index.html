@@ -3,76 +3,25 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>CSIS - China Air Quality</title>
+        <title>CSIS - China View</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/main.css">
         <link href='https://fonts.googleapis.com/css?family=Roboto:400,700' rel='stylesheet' type='text/css'>
-        <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,700' rel='stylesheet' type='text/css'>
-
-        <link rel="stylesheet" type="text/css" href="https://cloud.github.com/downloads/lafeber/world-flags-sprite/flags32.css" />
-
-        <style type="text/css">
-
-            /*.highcharts-tooltip>span {
-                padding: 10px;
-                white-space: normal !important;
-                width: 200px;
-            }
-
-            .loading {
-                margin-top: 10em;
-                text-align: center;
-                color: gray;
-            }
-
-            .f32 .flag {
-                vertical-align: middle !important;
-            }*/
-
-            #cv-map-container path {
-                stroke: white;
-                stroke-width: 0.5;
-                /*fill: red;*/
-            }
-
-            #cv-barchart-container .highcharts-grid path {
-                stroke: #eee;
-                stroke-width: 1;
-            }
-
-            #cv-barchart-container .highcharts-axis path {
-                stroke: #ccc;
-                stroke-width: 1;
-            }
-
-            #cv-map-container .highcharts-button path {
-                stroke: #aaa;
-                stroke-width: 3;
-            }
-        </style>
     </head>
     <body>
         <div id="container" class="row-inner">
-            <div id="aq-content">
-                <div class="aq-chart-header">
-                    <!-- <h2 class="aq-chart-title-mobile">International View of China (2015)</h2> -->
-                    <!-- <select class="aq-dropdown aq-align-left">
-                        <option value="beijing">Beijing</option>
-                        <option value="chengdu">Chengdu</option>
-                        <option value="guangzhou">Guangzhou</option>
-                        <option value="shanghai">Shanghai</option>
-                        <option value="shenyang">Shenyang</option>
-                    </select> -->
-                    <h2 class="aq-chart-title aq-align-left">International Views of China (2015)</h2>
-                    <div class="aq-legend aq-align-right">
-                        <div class="aq-legend-labels">
+            <div id="cv-content">
+                <div class="cv-chart-header">
+                    <h2 class="cv-chart-title cv-align-left">International Views of China (2015)</h2>
+                    <div class="cv-legend cv-align-right">
+                        <div class="cv-legend-labels">
                             <p>Less Favorable</p>
                             <p>More Favorable</p>
                         </div>
-                        <div class="aq-legend-cells">
+                        <div class="cv-legend-cells">
                             <ul>
                                 <li><span></span></li>
                                 <li><span></span></li>
@@ -90,14 +39,6 @@
                 <div class="cv-barchart-wrapper">
                     <div id="cv-barchart-container"></div>
                 </div>
-                <!-- <div class="cv-map-wrapper aq-align-right">
-                    <div id="cv-map-container"></div>
-                    <div class="cv-context-container">
-                        <h3 class="cv-context-header">Contextual infomation on China in 2015</h3>
-                        <p class="cv-context-graf">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                    </div>
-                </div>
-                <div class="clearfix"></div> -->
             </div>
         </div>
 
@@ -111,11 +52,6 @@
         <script src="http://code.highcharts.com/maps/modules/data.js"></script>
         <script src="http://code.highcharts.com/mapdata/custom/world.js"></script>
         <script src="https://code.highcharts.com/maps/modules/exporting.js"></script>
-
-        <!-- <script src="js/vendor/highcharts/highcharts.js"></script>
-        <script src="js/vendor/highcharts/modules/data.js"></script>
-        <script src="js/vendor/highcharts/modules/heatmap.js"></script>
-        <script src="js/vendor/highcharts/modules/exporting.js"></script> -->
 
         <script src="js/map.js"></script>
     </body>
