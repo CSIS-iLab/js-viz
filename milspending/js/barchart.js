@@ -1,4 +1,7 @@
 $(function() {
+  Highcharts.setOptions({
+      colors: ['#781F30', '#303D43', '#52496D', '#61884D', '#C9AC4D']
+  });
   $('#hcContainer').highcharts({
     data: {
       googleSpreadsheetKey: '142QeSARBEY7aZSebRFpYiFftx4toUizAtsl4X5G937s',
