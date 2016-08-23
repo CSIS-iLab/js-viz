@@ -9,7 +9,8 @@ $(function () {
   $('#hcContainer').highcharts({
     chart: {
       type: 'scatter',
-      zoomType: 'xy'
+      zoomType: 'xy',
+      backgroundColor: '#f2f2f2'
     },
     title: {
       text: 'Links Between Arbitration Support, Corruption, and Governance'
