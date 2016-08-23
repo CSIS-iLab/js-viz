@@ -1,94 +1,143 @@
 $(function () {
-    $('#hcContainer').highcharts({
-        chart: {
-            type: 'scatter',
-            zoomType: 'xy'
+  $('#hcContainer').highcharts({
+    chart: {
+      type: 'scatter',
+      zoomType: 'xy'
+    },
+    title: {
+      text: 'Links Between Arbitration Support, Corruption, and Governance'
+    },
+    subtitle: {
+      text: 'Source: CPI/Freedom House'
+    },
+    credits: {
+      text: 'CSIS/Asia Maritime Transparency Initiative',
+      href: 'https://amti.csis.org'
+    },
+    xAxis: {
+      title: {
+        enabled: true,
+        text: 'Corruption Perceptions Index'
+      },
+      startOnTick: true,
+      endOnTick: true,
+      showLastLabel: true
+    },
+    yAxis: {
+      ceiling: 100,
+      title: {
+        text: 'Freedom House Ranking'
+      }
+    },
+    legend: {
+      enabled: true,
+      title: {
+        text: 'Stances<br/><span style="font-size: 9px; color: #666; font-weight: normal">(Click to toggle)</span>'
+      },
+      layout: 'vertical',
+      align: 'right',
+      verticalAlign: 'middle'
+    },
+    plotOptions: {
+      scatter: {
+        dataLabels: {
+          format: "{point.name}",
+          enabled: true
         },
-        title: {
-            text: 'Countries that Supported, Opposed, or Abstained'
-        },
-        subtitle: {
-            text: 'Source: Freedom House/CPI/AMTI'
-        },
-        credits: {
-            text: 'CSIS/Asia Maritime Transparency Initiative',
-            href: 'https://amti.csis.org'
-        },
-        xAxis: {
-            title: {
-                enabled: true,
-                text: 'CPI Ranking'
-            },
-            startOnTick: true,
-            endOnTick: true,
-            showLastLabel: true
-        },
-        yAxis: {
-        ceiling: 100,
-            title: {
-                text: 'Freedom House Ranking'
+        marker: {
+          radius: 5,
+          symbol: 'circle',
+          states: {
+            hover: {
+              enabled: true,
+              lineColor: 'rgb(100,100,100)'
             }
+          }
         },
-        legend: {
-           enabled: true
-        },
-        plotOptions: {
-            scatter: {
-                dataLabels: {
-                    format: "{point.name}",
-                    enabled: true
-                },
-                marker: {
-                    radius: 5,
-                    symbol: 'circle',
-                    states: {
-                        hover: {
-                            enabled: true,
-                            lineColor: 'rgb(100,100,100)'
-                        }
-                    }
-                },
-                states: {
-                    hover: {
-                        marker: {
-                            enabled: true
-                        }
-                    }
-                },
-                tooltip: {
-                    headerFormat: '<b>{point.key}</b><br>',
-                    pointFormat: '{point.x} CPI Rating, {point.y} Freedom House Score'
-                }
+        states: {
+          hover: {
+            marker: {
+              enabled: true
             }
+          }
         },
-        series: [{
-          name: 'Opposed Arbitration Ruling',
-          color: 'rgba(223, 83, 83, 1)',
+        tooltip: {
+          headerFormat: '<b>{point.key}</b><br>',
+          pointFormat: '{point.x} CPI Rating, {point.y} Freedom House Score'
+        }
+      }
+    },
+    series: [{
+      name: 'Opposing Arbitration Ruling',
+      color: 'rgba(223, 83, 83, 1)',
+      data: [
+        {
+          "name":"China",
+          "x":37,
+          "y":16
+        }, {
+          "name": "Montenegro",
+          "x":44,
+          "y":70
+        }, {
+          "name": "Pakistan",
+          "x":30,
+          "y":41
+        }, {
+          "name": "Sudan",
+          "x":12,
+          "y":6
+        }, {
+          "name": "Taiwan",
+          "x":62,
+          "y":89
+        }]
+      }, {
+          name: 'Making Neutral Statements, without Addressing Ruling',
+          color: 'rgba(221, 199, 181, 1)',
           data: [
             {
-              "name":"China",
-              "x":37,
-              "y":16
+              "name":"Algeria",
+              "x":36,
+              "y":35
             }, {
-              "name": "Montenegro",
-              "x":44,
-              "y":70
+              "name": "Cambodia",
+              "x":21,
+              "y":32
             }, {
-              "name": "Pakistan",
-              "x":30,
-              "y":41
+              "name": "Hungary",
+              "x":51,
+              "y":79
             }, {
-              "name": "Sudan",
-              "x":12,
-              "y":6
+              "name": "Indonesia",
+              "x":36,
+              "y":65
             }, {
-              "name": "Taiwan",
-              "x":62,
-              "y":89
+              "name": "Laos",
+              "x":25,
+              "y":12
+            }, {
+              "name": "Russia",
+              "x":29,
+              "y":22
+            }, {
+              "name": "Serbia",
+              "x":40,
+              "y":78
+            },
+            {
+              "name": "Syria",
+              "x":18,
+              "y":0
+            },
+            {
+              "name": "Thailand",
+              "x":38,
+              "y":32
             }]
           }, {
-            name: 'Positively Acknowledging Ruling, but no Compliance',
-            color: 'rgba(228, 198, 34, 1)',
+            name: 'Positively Acknowledging Ruling, but Compliance',
+            color: 'rgba(180, 213, 224, 1)',
             data: [
               {
                 "name":"Belgium",
@@ -249,49 +298,6 @@ $(function () {
                 "y":95
               }]
             }, {
-              name: 'Making Neutral Statements, without Addressing Ruling',
-              color: 'rgba(112, 32, 219, 1)',
-              data: [
-                {
-                  "name":"Algeria",
-                  "x":36,
-                  "y":35
-                }, {
-                  "name": "Cambodia",
-                  "x":21,
-                  "y":32
-                }, {
-                  "name": "Hungary",
-                  "x":51,
-                  "y":79
-                }, {
-                  "name": "Indonesia",
-                  "x":36,
-                  "y":65
-                }, {
-                  "name": "Laos",
-                  "x":25,
-                  "y":12
-                }, {
-                  "name": "Russia",
-                  "x":29,
-                  "y":22
-                }, {
-                  "name": "Serbia",
-                  "x":40,
-                  "y":78
-                },
-                {
-                  "name": "Syria",
-                  "x":18,
-                  "y":0
-                },
-                {
-                  "name": "Thailand",
-                  "x":38,
-                  "y":32
-                }]
-              }, {
             name: 'Calling for Ruling to be Respected',
             color: 'rgba(25, 142, 212, 1)',
             data: [
@@ -330,6 +336,13 @@ $(function () {
                 "y":20
               }
             ]
-            }]
-    });
-});
+          }],
+          exporting: {
+              buttons: {
+                  contextButton: {
+                      text: 'Share Chart'
+                  }
+              }
+          }
+        });
+      });
