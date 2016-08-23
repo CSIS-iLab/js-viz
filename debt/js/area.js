@@ -30,7 +30,8 @@ $(function() {
                             valuePrefix: "$"
                         },
                         xAxis: {
-    tickmarkPlacement: 'on'
+                          tickInterval: 1,
+                          tickmarkPlacement: 'on'
                         },
                         yAxis: {
                             title: { text: "In trillions of dollars" }
