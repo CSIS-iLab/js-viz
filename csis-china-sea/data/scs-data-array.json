@@ -1,0 +1,168 @@
+[
+        {
+            "date": "01/06/2016",
+            "uid": "2016-06-01_TWNVNM",
+            "location": "Spratly Islands",
+            "countries": [
+                {
+                    "country_code": "TWN",
+                    "vessels": [
+                        {
+                            "vessel_class": "SPC",
+                            "hull_number": "PP 10052",
+                            "tonnage": "95"
+                        },
+                        {
+                            "vessel_class": "SPC",
+                            "hull_number": "PP 10053",
+                            "tonnage": "95"
+                        }
+                    ]
+                },
+                {
+                    "country_code": "VNM",
+                    "vessels": [
+                        {
+                            "vessel_class": "FV",
+                            "hull_number": "QNg 90649 TS"
+                        }
+                    ]
+                }
+            ],
+            "outcome": ["WC", "RAM", "CMT"],
+            "summary": "The Taiwanese coast guard rammed and fired water cannons at Vietnamese fishing vessels near the Spratly Islands.",
+            "breakdown": [
+                "Vietnamese fishing vessel QNg 90649 TS was operating near the Spratly Islands when it was approached by Taiwanese vessels.",
+                "Two Taiwanese coast guard vessels, the PP 10052 and PP 10053, began firing water cannons and ramming the Vietnamese vessels."
+            ],
+            "responses": [
+                {
+                    "country_code": "VNM",
+                    "response": "The Vietnamese Fisheries Union strongly protested the incident."
+                }
+            ],
+            "sources": [
+                "https://www.vietnambreakingnews.com/2016/01/fisheries-trade-union-opposes-attack-on-vietnamese-ship/",
+                "https://www.facebook.com/CONGHOATHOIBAO/?fref=nf",
+                "https://www.facebook.com/CONGHOATHOIBAO/videos/1685128305058991/"
+            ]
+        },
+        {
+            "date": "02/05/2016",
+            "uid": "2016-2-5/6_CHNPHL",
+            "location": "Half Moon Shoal",
+            "countries": [
+                {
+                    "country_code": "CHN",
+                    "vessels": [
+                        {
+                            "vessel_class": "CG"
+                        },
+                        {
+                            "vessel_class": "CG"
+                        },
+                        {
+                            "vessel_class": "CG"
+                        },
+                        {
+                            "vessel_class": "NV"
+                        },
+                        {
+                            "vessel_class": "NV"
+                        }
+                    ]
+                },
+                {
+                    "country_code": "PHL",
+                    "vessels": [
+                        {
+                            "vessel_class": "NV",
+                            "hull_number": "501",
+                            "vessel_type": "LT",
+                            "tonnage": "3942"
+                        }
+                    ]
+                }
+            ],
+            "outcome": ["HAR"],
+            "summary": "The Chinese coast guard and navy made hostile maneuvers against the Philippines naval supply ship near Half Moon Shoal.",
+            "breakdown": [
+                "Philippine Navy cargo vessel BRP Laguna, on troop transport and re-supply operations, was sailing from Rizal Reef to Lawak Island, in the vicinity of Half Moon Shoal.",
+                "Five Chinese vessels, including two naval and three Coast Guard ships, appear and make “hostile maneuvers” against the Laguna.",
+                "The maneuvering began near midnight on February 5th and lasted through the dawn hours."
+            ],
+            "responses": [],
+            "sources": [
+                "http://www.philstar.com/headlines/2016/03/01/1558230/dfa-chief-china-not-above-international-law",
+                "http://tankler.com/ph-troop-transport-harassed-by-chinese-warships-and-helicopters-4461"
+            ]
+        },
+        {
+            "date": "02/28/2016",
+            "uid": "2016-2-28_CHNPHL",
+            "location": "Jackson Atoll",
+            "countries": [
+                {
+                    "country_code": "CHN",
+                    "vessels": [
+                        {
+                            "vessel_class": "CG"
+                        },
+                        {
+                            "vessel_class": "CG"
+                        },
+                        {
+                            "vessel_class": "CG"
+                        },
+                        {
+                            "vessel_class": "CG"
+                        },
+                        {
+                            "vessel_class": "NV"
+                        },
+                        {
+                            "vessel_class": "NV"
+                        },
+                        {
+                            "vessel_class": "NV"
+                        },
+                        {
+                            "vessel_class": "NV"
+                        },
+                        {
+                            "vessel_class": "NV"
+                        }
+                    ]
+                },
+                {
+                    "country_code": "PHL",
+                    "vessels": [
+                        {
+                            "vessel_class": "FV"
+                        }
+                    ]
+                }
+            ],
+            "outcome": ["STO", "CMT"],
+            "summary": "The Chinese coast guard prevented Philippine fishing boats from entering Jackson Atoll.",
+            "breakdown": [
+                "Starting on February 28th, Chinese naval and coast guard vessels chased Filipino fisherman away from Jackson Atoll.",
+                "The Chinese vessels prevented Philippine fishing vessels from accessing the fishing areas near the atoll until March 2."
+            ],
+            "responses": [
+                {
+                    "country_code": "PHL",
+                    "response": "In an official statement, the Philippines Foreign Ministry said: “The Department is monitoring reports on the situation on the ground and reiterates its call for China to exercise self-restraint from the conduct of activities that could complicate or escalate disputes in the South China Sea and affect peace and stability in the region.”"
+                },
+                {
+                    "country_code": "CHN",
+                    "response": "The Chinese Foreign Ministry claims that the Chinese fleet was towing a ship that foundered on the atoll."
+                }
+            ],
+            "sources": [
+                "http://www.philstar.com/headlines/2016/03/02/1558682/china-takes-philippine-atoll",
+                "http://www.reuters.com/article/us-southchinasea-china-philippines-idUSKCN0W402A",
+                "http://tankler.com/ph-troop-transport-harassed-by-chinese-warships-and-helicopters-4461"
+            ]
+        }
+    ]
