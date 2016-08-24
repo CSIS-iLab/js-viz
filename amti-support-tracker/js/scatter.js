@@ -1,6 +1,7 @@
 $(function () {
   Highcharts.setOptions({
     chart: {
+      height: 700,
       style: {
         fontFamily: 'PT Sans'
       }
@@ -16,7 +17,7 @@ $(function () {
       text: 'Links Between Arbitration Support, Corruption, and Governance'
     },
     subtitle: {
-      text: 'Source: CPI/Freedom House'
+      text: 'Click and drag to zoom into areas | Source: CPI/Freedom House'
     },
     credits: {
       text: 'CSIS/Asia Maritime Transparency Initiative',
@@ -29,10 +30,12 @@ $(function () {
       },
       startOnTick: true,
       endOnTick: true,
+      tickInterval: 10,
       showLastLabel: true
     },
     yAxis: {
       ceiling: 100,
+      tickInterval: 10,
       title: {
         text: 'Freedom House Ranking'
       }
@@ -142,7 +145,7 @@ $(function () {
             "y":32
           }]
         }, {
-          name: 'Positively Acknowledging Ruling, but Calling for Compliance',
+          name: 'Positively Acknowledging Ruling, but Not Calling for Compliance',
           color: 'rgba(180, 213, 224, 1)',
           data: [
             {
