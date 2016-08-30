@@ -4,25 +4,6 @@
  * http://sevenmilemedia.com/
  */
 
-/* ==========================================================================
-   Development code - DO NOT INCLUDE
-   ========================================================================== */
-
-/* Start development code */
-#container {
-    position: relative;
-    /*max-width: 940px;*/
-    margin: 20px 0 400px;
-}
-
-@media only screen and (max-width: 1024px) {
-    .row-inner {
-        /*padding-left: 40px !important;*/
-        /*padding-right: 40px !important;*/
-    }
-}
-/* End development code */
-
 
 /* ==========================================================================
    Base styles
@@ -38,38 +19,26 @@
 }
 
 .cs-container * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 .cs-content {
     margin: 0 auto;
     /* Set max width for charts */
     max-width: 1080px;
-    /*max-width: 100%;*/
 }
-
-/*#cs-container {
-    position: relative;
-    z-index: 999;
-    pointer-events: none;
-}
-
-#cs-container * {
-    pointer-events: auto;
-}*/
 
 .cs-header {
     margin-top: 40px;
-    margin-bottom: 25px;
+    margin-bottom: 30px;
 }
 
 .cs-title {
-    font-family: 'Roboto Slab', serif;
-    font-size: 18px;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 30px;
     font-weight: bold;
     margin: 5px 0 15px;
     text-transform: uppercase;
-    /*color: #F1BE2C;*/
 }
 
 .cs-intro {
@@ -77,45 +46,61 @@
     line-height: 1.6em;
 }
 
-@media only screen and (min-width: 700px) {
-    .cs-header {
-        margin-bottom: 25px;
-        padding-right: 12px;
-    }
-
-    .cs-title {
-        margin: 5px 0;
-    }
-}
-
 
 /* ==========================================================================
-   Dropdown
+   Dropdown - year select
    ========================================================================== */
+
+.cs-chart-header {
+    border: 2px solid #333;
+    padding: 0;
+}
 
 .cs-chart-header h3 {
     font-family: 'Roboto Condensed', sans-serif;
     font-weight: bold;
-    font-size: 20px;
-    display: inline-block;
-    margin-right: 10px;
+    font-size: 18px;
+    margin: 0 10px;
+    text-transform: uppercase;
+    float: left;
+    margin-top: 16px;
 }
 
 .cs-dropdown {
+    position: relative;
+    float: right;
+}
+
+.cs-dropdown button {
+    outline: none;
     margin: 0;
-    border: 2px solid #333;
-    background: transparent;
-    width: 100%;
-    padding: 5px 0 5px 15px;
+    border: none;
+    background: #333;
+    color: #fff;
+    width: 100px;
+    padding: 5px 15px 5px 0;
     font-size: 18px;
     font-weight: bold;
     height: 50px;
     border-radius: 0;
-    background: url(../images/icon-arrow-down.png) 95% / 25px no-repeat #fff;
-    cursor: pointer;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
+
+    -webkit-transition: background 200ms;
+    -moz-transition: background 200ms;
+    -o-transition: background 200ms;
+    transition: background 200ms;
+}
+
+.cs-dropdown button:hover,
+.cs-dropdown.open button {
+    background: #111;
+}
+
+.cs-dropdown button span {
+    position: absolute;
+    color: #F1BE2C;
+    right: 10px;
+    top: 50%;
+    margin-top: -8px;
 }
 
 /* Remove select border in Safari */
@@ -128,11 +113,42 @@
     text-shadow: 0 0 0 #000;
 }
 
-@media only screen and (min-width: 700px) {
-    .cs-dropdown {
-        width: 100px;
-        background: url(../images/icon-arrow-down.png) 93% / 20% no-repeat #fff;
+@media only screen and (max-width: 700px) {
+    .cs-chart-header h3 {
+        font-size: 16px;
     }
+}
+
+@media only screen and (max-width: 400px) {
+    .cs-chart-header h3 {
+        margin-top: 9px;
+        max-width: 140px;
+    }
+}
+
+.dropdown-menu {
+    border: 2px solid #333;
+    padding: 0;
+    margin-top: 0px;
+    min-width: 102px;
+    font-size: 18px;
+    font-weight: bold;
+
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    -o-border-radius: 0;
+    border-radius: 0;
+}
+
+.dropdown-menu > li > a {
+    padding: 5px 20px;
+    font-weight: bold;
+}
+
+.dropdown-menu > li:hover > a,
+.dropdown-menu > li.selected > a {
+    background: #333;
+    color: #fff;
 }
 
 
@@ -142,7 +158,7 @@
 
 .cs-timeline-container {
     width: 100%;
-    margin-top: 20px;
+    margin-top: 35px;
     margin-bottom: 40px;
     position: relative;
 }
@@ -166,7 +182,7 @@ ul.cs-timeline {
     bottom: -13px;
 }
 
-.cs-timeline li:hover,
+.no-touch .cs-timeline li:hover,
 .cs-timeline li.active {
     z-index: 999;
 }
@@ -177,7 +193,7 @@ ul.cs-timeline {
     outline: none;
 }
 
-.cs-timeline a:hover,
+.no-touch .cs-timeline a:hover,
 .cs-timeline li.active a {
     color: #222;
 }
@@ -199,9 +215,14 @@ ul.cs-timeline {
     border: 2px solid #333;
     border-radius: 7px;
     background: #fff;
+
+    -webkit-transition: background 200ms;
+    -moz-transition: background 200ms;
+    -o-transition: background 200ms;
+    transition: background 200ms;
 }
 
-.cs-timeline a:hover span,
+.no-touch .cs-timeline a:hover span,
 .cs-timeline li.active span {
     border-color: #222;
     background: #F1BE2C;
@@ -213,21 +234,34 @@ ul.cs-timeline {
     margin-top: -15px;
     height: 20px;
     font-size: 12px;
-    font-weight: normal;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-style: italic;
     color: #383838;
     white-space: nowrap;
+    pointer-events: none;
+
     opacity: 0;
+
+    -webkit-transform: translate(0, 5px);
+    -moz-transform: translate(0, 5px);
+    -o-transform: translate(0, 5px);
+    transform: translate(0, 5px);
+
+    -webkit-transition: transform 200ms, opacity 200ms;
+    -moz-transition: transform 200ms, opacity 200ms;
+    -o-transition: transform 200ms, opacity 200ms;
+    transition: transform 200ms, opacity 200ms;
 }
 
-.cs-timeline li:first-of-type p,
-.cs-timeline li:last-of-type p {
-    /*opacity: 1;*/
-}
-
-.cs-timeline a:hover p,
+.no-touch .cs-timeline a:hover p,
 .cs-timeline li.active p {
     font-weight: bold;
     opacity: 1;
+    -webkit-transform: translate(0, 0);
+    -moz-transform: translate(0, 0);
+    -o-transform: translate(0, 0);
+    transform: translate(0, 0);
 }
 
 .cs-timeline a p.hidden {
@@ -249,20 +283,24 @@ ul.cs-timeline {
     }
 }
 
+.cs-hidden {
+    opacity: 0 !important;
+}
+
 
 /* ==========================================================================
-   Timeline nav
+   Timeline nav (prev / next buttons)
    ========================================================================== */
 
 .cs-timeline-nav {
     margin-bottom: 0;
     text-align: center;
-    margin-top: 7px;
 }
 
 .cs-timeline-nav a {
     width: 120px;
     display: inline-block;
+    position: relative;
     padding: 18px 20px;
     border: 2px solid #333;
     background-color: #fff;
@@ -273,20 +311,26 @@ ul.cs-timeline {
     text-decoration: none;
     font-weight: bold;
     outline: 0;
-    /*opacity: 0.8;*/
 
-    -webkit-transition: background-color 200ms linear, color 200ms linear, border-color 200ms linear;
-    -moz-transition: background-color 200ms linear, color 200ms linear, border-color 200ms linear;
-    -o-transition: background-color 200ms linear, color 200ms linear, border-color 200ms linear;
-    transition: background-color 200ms linear, color 200ms linear, border-color 200ms linear;
+    -webkit-transition: background-color 200ms, color 200ms, border-color 200ms;
+    -moz-transition: background-color 200ms, color 200ms, border-color 200ms;
+    -o-transition: background-color 200ms, color 200ms, border-color 200ms;
+    transition: background-color 200ms, color 200ms, border-color 200ms;
 }
 
-.cs-timeline-prev {
-    background: url(../images/chevron-left.svg) 5% / 20px no-repeat #fff;
+.cs-timeline-nav span {
+    position: absolute;
+    font-size: 16px;
+    top: 50%;
+    margin-top: -8px;
 }
 
-.cs-timeline-next {
-    background: url(../images/chevron-right.svg) 95% / 20px no-repeat #fff;
+.cs-timeline-prev span {
+    left: 12px;
+}
+
+.cs-timeline-next span {
+    right: 12px;
 }
 
 .cs-timeline-nav span.nh-disabled {
@@ -303,52 +347,35 @@ ul.cs-timeline {
 }
 
 .cs-timeline-next {
-    /*float: right;*/
     text-align: left;
 }
 
 .cs-timeline-prev {
-    /*float: left;*/
     text-align: right;
     margin-right: 10px;
 }
 
 @media only screen and (max-width: 700px) {
-.cs-timeline-nav {
-    text-align: center;
-    margin-top: 20px;
+    .cs-timeline-nav {
+        text-align: center;
+        margin-top: 20px;
+    }
+    .cs-timeline-nav a {
+        width: 48%;
+        display: block;
+    }
+    .cs-timeline-prev {
+        margin: 0;
+        float: left;
+    }
+    .cs-timeline-next {
+        float: right;
+    }
 }
-.cs-timeline-nav a {
-    width: 48%;
-    display: block;
-}
-.cs-timeline-prev {
-    margin: 0;
-    float: left;
-}
-.cs-timeline-next {
-    float: right;
-}
-}
-
-/*.cs-timeline-nav i {
-    position: absolute;
-    font-size: 30px;
-    top: 50%;
-    margin-top: -16px;
-}
-
-.cs-timeline-next i {
-    right: 10px;
-}
-
-.cs-timeline-prev i {
-    left: 10px;
-}*/
 
 
 /* ==========================================================================
-   CS Cards
+   Incident cards
    ========================================================================== */
 
 .cs-card-container {
@@ -370,13 +397,45 @@ ul.cs-timeline {
     -moz-box-shadow: 0 3px 12px -2px rgba(0, 0, 0, 0.4);
     -o-box-shadow: 0 3px 12px -2px rgba(0, 0, 0, 0.4);
     box-shadow: 0 3px 12px -2px rgba(0, 0, 0, 0.4);
+
+    opacity: 0;
+
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    -ms-backface-visibility: hidden;
+    backface-visibility: hidden;
+
+    -webkit-perspective: 1000;
+    -moz-perspective: 1000;
+    -ms-perspective: 1000;
+    perspective: 1000;
+
+    -webkit-transform: translate3d(0, 0, 0) scale(0.9);
+    -moz-transform: translate3d(0, 0, 0) scale(0.9);
+    -o-transform: translate3d(0, 0, 0) scale(0.9);
+    transform: translate3d(0, 0, 0) scale(0.9);
 }
 
 @media only screen and (max-width: 700px) {
     .cs-card {
         width: 100%;
         top: 0;
+        max-height: inherit;
     }
+}
+
+.cs-active-card {
+    -webkit-transition: transform 400ms, opacity 400ms;
+    -moz-transition: transform 400ms, opacity 400ms;
+    -o-transition: transform 400ms, opacity 400ms;
+    transition: transform 400ms, opacity 400ms;
+
+    opacity: 1;
+
+    -webkit-transform: translate3d(0, 0, 0) scale(1);
+    -moz-transform: translate3d(0, 0, 0) scale(1);
+    -o-transform: translate3d(0, 0, 0) scale(1);
+    transform: translate3d(0, 0, 0) scale(1);
 }
 
 .cs-card h1,
@@ -400,6 +459,16 @@ ul.cs-timeline {
     background: #111;
     padding: 30px 0 25px;
 
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    -ms-backface-visibility: hidden;
+    backface-visibility: hidden;
+
+    -webkit-perspective: 1000;
+    -moz-perspective: 1000;
+    -ms-perspective: 1000;
+    perspective: 1000;
+
 }
 
 .cs-card-content {
@@ -418,6 +487,37 @@ ul.cs-timeline {
     text-transform: uppercase;
     margin: 0;
     line-height: 1em;
+
+    opacity: 0;
+
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    -ms-backface-visibility: hidden;
+    backface-visibility: hidden;
+
+    -webkit-perspective: 1000;
+    -moz-perspective: 1000;
+    -ms-perspective: 1000;
+    perspective: 1000;
+
+    -webkit-transform: translate3d(0, 15px, 0);
+    -moz-transform: translate3d(0, 15px, 0);
+    -o-transform: translate3d(0, 15px, 0);
+    transform: translate3d(0, 15px, 0);
+}
+
+.cs-active-card .cs-card-header h1 {
+    -webkit-transition: transform 600ms, opacity 600ms;
+    -moz-transition: transform 600ms, opacity 600ms;
+    -o-transition: transform 600ms, opacity 600ms;
+    transition: transform 600ms, opacity 600ms;
+
+    opacity: 1;
+
+    -webkit-transform: translate3d(0, 0, 0);
+    -moz-transform: translate3d(0, 0, 0);
+    -o-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
 }
 
 .cs-card-header h1 span {
@@ -426,16 +526,58 @@ ul.cs-timeline {
     vertical-align: middle;
 }
 
+@media only screen and (max-width: 900px) {
+    .cs-card-header h1 {
+        font-size: 30px;
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    .cs-card-header h1 {
+        font-size: 26px;
+    }
+}
+
 /* Date */
 
 .cs-date-container {
     border-top: 1px solid #ccc;
     max-width: 50%;
     margin: 0 auto;
+
+    opacity: 0;
+
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    -ms-backface-visibility: hidden;
+    backface-visibility: hidden;
+
+    -webkit-perspective: 1000;
+    -moz-perspective: 1000;
+    -ms-perspective: 1000;
+    perspective: 1000;
+
+    -webkit-transform: translate3d(0, 0, 0) scale(0.6);
+    -moz-transform: translate3d(0, 0, 0) scale(0.6);
+    -o-transform: translate3d(0, 0, 0) scale(0.6);
+    transform: translate3d(0, 0, 0) scale(0.6);
+}
+
+.cs-active-card .cs-date-container {
+    -webkit-transition: transform 600ms, opacity 600ms;
+    -moz-transition: transform 600ms, opacity 600ms;
+    -o-transition: transform 600ms, opacity 600ms;
+    transition: transform 600ms, opacity 600ms;
+
+    opacity: 1;
+
+    -webkit-transform: translate3d(0, 0, 0) scale(1);
+    -moz-transform: translate3d(0, 0, 0) scale(1);
+    -o-transform: translate3d(0, 0, 0) scale(1);
+    transform: translate3d(0, 0, 0) scale(1);
 }
 
 .cs-date-container p {
-    /*font-family: 'Roboto Condensed', sans-serif;*/
     font-size: 14px;
     font-weight: bold;
     color: #eee;
@@ -445,6 +587,33 @@ ul.cs-timeline {
     top: -11px;
     margin: 0;
     padding: 0 8px;
+
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    -ms-backface-visibility: hidden;
+    backface-visibility: hidden;
+
+    -webkit-perspective: 1000;
+    -moz-perspective: 1000;
+    -ms-perspective: 1000;
+    perspective: 1000;
+
+    -webkit-transform: translate3d(0, 0, 0) scale(1.4);
+    -moz-transform: translate3d(0, 0, 0) scale(1.4);
+    -o-transform: translate3d(0, 0, 0) scale(1.4);
+    transform: translate3d(0, 0, 0) scale(1.4);
+}
+
+.cs-active-card .cs-date-container p {
+    -webkit-transition: transform 600ms, opacity 600ms;
+    -moz-transition: transform 600ms, opacity 600ms;
+    -o-transition: transform 600ms, opacity 600ms;
+    transition: transform 600ms, opacity 600ms;
+
+    -webkit-transform: translate3d(0, 0, 0) scale(1);
+    -moz-transform: translate3d(0, 0, 0) scale(1);
+    -o-transform: translate3d(0, 0, 0) scale(1);
+    transform: translate3d(0, 0, 0) scale(1);
 }
 
 /* Outcome */
@@ -460,17 +629,29 @@ ul.cs-timeline {
     display: inline-block;
     margin-right: 5px;
     margin-bottom: 5px;
-    max-width: 220px;
+    width: 220px;
+    min-height: 55px;
+    position: relative;
+}
+
+.cs-card-outcome-item .cs-outcome-code,
+.cs-card-outcome-item .cs-outcome-content {
+    position: absolute;
+    top: 50%;
+
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    transform: translateY(-50%);
 }
 
 .cs-card-outcome-item .cs-outcome-code {
-    float: left;
-    margin-right: 10px;
+    text-align: center;
+    width: 50px;
 }
 
 .cs-card-outcome-item .cs-outcome-content {
-    /*display: inline-block;*/
-    overflow: hidden;
+    left: 70px;
 }
 
 .cs-card-outcome-item h3,
@@ -481,11 +662,10 @@ ul.cs-timeline {
 .cs-card-outcome-item h3 {
     font-family: 'Roboto Slab', serif;
     font-size: 24px;
-    /*color: #F1BE2C;*/
     margin: 0;
     text-transform: uppercase;
     position: relative;
-    top: 50%;
+    letter-spacing: -0.07em;
 }
 
 .cs-card-outcome-item h4 {
@@ -493,13 +673,15 @@ ul.cs-timeline {
     color: #fff;
     font-size: 14px;
     overflow: hidden;
-    padding-top: 6px;
+    margin-bottom: 3px;
 }
 
 .cs-card-outcome-item p {
     color: #fff;
-    font-size: 12px;
-    overflow: hidden
+    font-size: 10px;
+    line-height: 1.2em;
+    margin: 0;
+    padding-right: 5px;
 }
 
 /* Breakdown */
@@ -509,7 +691,6 @@ ul.cs-timeline {
 }
 
 .cs-card-breakdown ul {
-    /*margin: 0;*/
     padding-left: 30px;
 }
 
@@ -520,8 +701,6 @@ ul.cs-timeline {
     margin-bottom: 10px;
     line-height: 1.3em;
     font-size: 13px;
-    /*color: #F1BE2C;
-    font-size: 30px;*/
 }
 
 .cs-card-breakdown li:before {
@@ -550,6 +729,8 @@ ul.cs-timeline {
 .cs-card-response.cs-align-left:first-of-type {
     margin-right: 4%;
 }
+
+/* Vessel icons */
 
 .cs-card-vessels {
     text-align: center;
@@ -581,11 +762,7 @@ ul.cs-timeline {
 
 .cs-vessel-container {
     height: 60px;
-    /*width: 100px;*/
     position: relative;
-    /*display: inline-block;*/
-    /*background: #f0f0f0;*/
-    /*margin: 5px;*/
     border-radius: 3px;
 }
 
@@ -595,22 +772,33 @@ ul.cs-timeline {
     background-size: 95%;
     background-repeat: no-repeat;
     background-position: center;
+
+    opacity: 1;
+
+    -webkit-transition: opacity 400ms;
+    -moz-transition: opacity 400ms;
+    -o-transition: opacity 400ms;
+    transition: opacity 400ms;
 }
 
-.cs-vessel-fv .cs-vessel-icon { background-image: url(../images/fv.svg); background-position: center 70%; }
-.cs-vessel-fv { width: 34%; }
+.cs-vessel-icon:hover {
+    opacity: 0.8;
+}
+
+.cs-vessel-fv .cs-vessel-icon { background-image: url(../images/fv.svg); background-position: center 90%; }
+.cs-vessel-fv { width: 36%; }
 
 .cs-vessel-cg .cs-vessel-icon { background-image: url(../images/cg.svg); }
-.cs-vessel-cg { width: 64%; }
+.cs-vessel-cg { width: 90%; }
 
 .cs-vessel-nv .cs-vessel-icon { background-image: url(../images/nv.svg); }
 .cs-vessel-nv { width: 90%; }
 
-.cs-vessel-msv .cs-vessel-icon { background-image: url(../images/msv.svg); }
-.cs-vessel-msv { width: 64%; }
+.cs-vessel-msv .cs-vessel-icon { background-image: url(../images/msv.svg); background-position: center 80%; }
+.cs-vessel-msv { width: 40%; }
 
-.cs-vessel-uv .cs-vessel-icon { background-image: url(../images/uv.svg); background-position: center 70%; }
-.cs-vessel-uv { width: 50%; }
+.cs-vessel-uv .cs-vessel-icon { background-image: url(../images/uv.svg); background-position: center 80%; }
+.cs-vessel-uv { width: 60%; }
 
 .cs-card .cs-vessel-count {
     color: #fff;
@@ -620,7 +808,6 @@ ul.cs-timeline {
     left: 10px;
     font-weight: bold;
     height: 22px;
-    /*width: 22px;*/
     padding: 0 8px;
     text-align: center;
     line-height: 1.7em;
@@ -628,20 +815,18 @@ ul.cs-timeline {
     letter-spacing: -0.05em;
 }
 
+/* Popover */
+
 .cs-popover-trigger {
     outline: none !important;
 }
 
 .cs-popover {
-    min-width: 300px;
+    width: 300px;
     border: 1px solid #333;
     padding: 10px;
     border-radius: 0;
     background: #fff;
-}
-
-.cs-popover .arrow {
-    /*border-bottom: 1px solid red;*/
 }
 
 .popover-title {
@@ -675,22 +860,16 @@ ul.cs-timeline {
 }
 
 .cs-popover-empty {
-    min-width: 200px;
+    width: inherit;
 }
 
 .cs-popover-empty .popover-title {
     border: none;
-}
-
-.cs-popover-empty .popover-content {
-    display: none;
+    margin: 0;
+    padding: 0;
 }
 
 /* Footer */
-
-.cs-card-footer {
-    /*float: right;*/
-}
 
 .cs-card-sources,
 .cs-card-methodology {
@@ -713,7 +892,6 @@ ul.cs-timeline {
 .cs-sources-popover,
 .cs-methodology-popover {
     min-width: 300px;
-    /*max-width: 300px;*/
 }
 
 .cs-sources-popover ul {
@@ -742,15 +920,6 @@ ul.cs-timeline {
     word-break: break-all;
 }
 
-/*.cs-popover tr:first-of-type {
-    background: blue;
-    
-}*/
-
-/*.cs-popover td {
-    border-bottom: 2px solid #111;
-}*/
-
 
 /* ==========================================================================
    Google map
@@ -760,7 +929,6 @@ ul.cs-timeline {
     position: absolute;
     left: 0;
     right: 0;
-    /*top: 200px;*/
     width: 100%;
     height: 900px;
 }
@@ -775,22 +943,10 @@ ul.cs-timeline {
     width: 100%;
     height: 100%;
     background-color: #ccc;
+    background-repeat: no-repeat;
+    background-image: url(../images/loading.svg); background-position: center 20%;
+    background-size: 100px;
 }
-
-.map-gradient-top {
-    position: absolute;
-    height: 200px;
-    width: 100%;
-    top: 0;
-    z-index: 900;
-    
-    background: -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%); /* FF3.6-15 */
-    background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%); /* Chrome10-25,Safari5.1-6 */
-    background: linear-gradient(to bottom,  rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#00ffffff',GradientType=0 ); /* IE6-9 */
-}
-
-/*#map { height: 180px; width: 100%; }*/
 
 
 /* ==========================================================================

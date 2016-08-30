@@ -1,9 +1,9 @@
 [
     {
-        "featureType": "landscape",
-        "elementType": "geometry",
+        "featureType": "landscape.natural.terrain",
+        "elementType": "geometry.fill",
         "stylers": [
-            { "color": "#ffffff" }
+            { "visibility": "simplified" }
         ]
     },
     {
@@ -15,16 +15,9 @@
     },
     {
         "featureType": "water",
-        "elementType": "geometry",
-        "stylers": [
-            { "color": "#E6EAEE" }
-        ]
-    },
-    {
-        "featureType": "water",
         "elementType": "labels",
         "stylers": [
-            { "visibility": "off" }
+            { "visibility": "on" }
         ]
     },
     {
@@ -36,7 +29,9 @@
     {
         "featureType": "poi",
         "stylers": [
-            { "visibility": "off" }
+            { "visibility": "off" },
+            { "saturation": -100 },
+            { "lightness": -50 }
         ]
     },
     {
@@ -55,7 +50,7 @@
         "featureType": "administrative.country",
         "elementType": "geometry.stroke",
         "stylers": [
-            { "visibility": "on" },
+            { "visibility": "off" },
             { "weight": 1 },
             { "color": "#E6EAEE" }
         ]
@@ -67,6 +62,43 @@
             { "visibility": "off" },
             { "color": "#E6EAEE" },
             { "weight": 1 }
+        ]
+    },
+    {
+        "featureType": "administrative",
+        "stylers": [
+            { "visibility": "off" }
+        ]
+    },
+    {
+        "featureType": "water",
+        "elementType": "labels",
+        "stylers": [
+            { "visibility": "off" }
+        ]
+    },
+    {
+        "featureType": "landscape.natural.terrain",
+        "stylers": [
+            { "visibility": "off" }
+        ]
+    },
+    {
+        "featureType": "landscape.natural",
+        "elementType": "geometry",
+        "stylers": [
+            { "saturation": -100 },
+            { "gamma": 0.30 },
+            { "lightness": -70 }
+        ]
+    },
+    {
+        "featureType": "water",
+        "elementType": "geometry.fill",
+        "stylers": [
+            { "gamma": 0.79 },
+            { "saturation": -100 },
+            { "lightness": 70 }
         ]
     }
 ]

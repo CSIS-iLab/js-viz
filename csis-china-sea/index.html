@@ -3,18 +3,15 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>CSIS - South China Sea Incident Tracker</title>
+        <title>South China Sea Incident Tracker</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/vendor/bootstrap.min.css">
-        <!-- <link rel="stylesheet" href="css/vendor/font-awesome.min.css"> -->
+        <link rel="stylesheet" href="css/vendor/perfect-scrollbar.min.css">
+        <link href='https://fonts.googleapis.com/css?family=Roboto:400,700|Roboto+Slab:400,700|Roboto+Condensed:400,700' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="css/main.css">
-        <link href='https://fonts.googleapis.com/css?family=Roboto:400,700' rel='stylesheet' type='text/css'>
-        <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,700' rel='stylesheet' type='text/css'>
-        <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet">
-        <!-- <link rel="stylesheet" href="https://npmcdn.com/leaflet@1.0.0-rc.3/dist/leaflet.css" /> -->
     </head>
     <body>
         <div id="cs-container" class="cs-container">
@@ -27,135 +24,126 @@
                 <div class="cs-card-container"></div>
             </div>
             <div class="cs-map-container">
-                <!-- <div class="map-gradient-top"></div> -->
                 <div id="map-canvas"></div>
             </div>
         </div>
 
         <script src="js/vendor/jquery-1.10.2.min.js"></script>
+        <script src="js/vendor/modernizr-2.6.2.min.js"></script>
         <script src="js/vendor/bootstrap.min.js"></script>
         <script src="js/vendor/underscore-min.js"></script>
+        <script src="js/vendor/perfect-scrollbar.jquery.min.js"></script>
         <script src="js/vendor/moment.js"></script>
 
         <script src="js/vendor/highcharts/highcharts.js"></script>
         <script src="js/vendor/highcharts/modules/highcharts-more.js"></script>
         <script src="js/vendor/highcharts/modules/data.js"></script>
 
-        <script type="text/template" id="cs-card-template">
-
-
-<div class="cs-card-header">
-    <div class="cs-date-container">
-        <p><%= date %></p>
-    </div>
-    <h1><%= country_1.name %> <span>&middot;</span> <%= country_2.name %></h1>
-</div>
-<div class="cs-card-content cs-card-content-top">
-    <div class="cs-card-vessels">
-        
-        <div class="cs-country-vessels">
-            <% for (var i in cty_1_vessels) { %>
-            <a class="cs-popover-trigger <%= cty_1_vessels[i].vesselStyle %>" tabindex="0" role="button" data-toggle="popover" data-trigger="focus" title="<%= cty_1_vessels[i].vesselName %>" data-content="" data-template='<%= cty_1_vessels[i].popoverTemplate %>'>
-                <div class="cs-vessel-container">
-                    <div class="cs-vessel-icon"></div>
-                    <p class="cs-vessel-count"><%= cty_1_vessels[i].vesselCount %></p>
-                </div>
-            </a>
-            <% } %>
-            <h5><%= country_1.adj %> Vessels</h5>
-        </div>
-        
-        <div class="cs-country-vessels">
-            <% for (var i in cty_2_vessels) { %>
-            <a class="cs-popover-trigger <%= cty_2_vessels[i].vesselStyle %>" tabindex="0" role="button" data-toggle="popover" data-trigger="focus" title="<%= cty_2_vessels[i].vesselName %>" data-content="<%= cty_2_vessels[i].vesselDescription %>" data-template='<%= cty_2_vessels[i].popoverTemplate %>'>
-                <div class="cs-vessel-container">
-                    <div class="cs-vessel-icon"></div>
-                    <p class="cs-vessel-count"><%= cty_2_vessels[i].vesselCount %></p>
-                </div>
-            </a>
-            <% } %>
-            <h5><%= country_2.adj %> Vessels</h5>
-        </div>
-    </div>
-    <div class="cs-card-outcome">
-        <h4>Outcome</h4>
-        <% for (var i in outcome) { %>
-        <a class="cs-popover-trigger" tabindex="0" role="button" data-toggle="popover" data-trigger="focus" title="<%= outcome[i].title %>" data-content="<%= outcome[i].description %>" data-template='<%= outcome[i].template %>'>
-            <div class="cs-card-outcome-item" style="border-color:<%= outcome[i].color %>;">
-                <div class="cs-outcome-code">
-                    <h3 style="color:<%= outcome[i].color %>"><%= outcome[i].code %></h3>
-                </div>
-                <div class="cs-outcome-content">
-                    <h4><%= outcome[i].title %></h4>
-                </div>
-            </div>
-        </a>
-        <% } %>
-    </div>
-    <div class="cs-card-summary">
-        <h4>Summary of the Encounter</h4>
-        <p><%= summary %></p>
-    </div>
-</div>
-
-<% if (breakdown) { %>
-<div class="cs-card-content cs-card-breakdown">
-    <ul>
-        <% for (var i in breakdown) { %>
-        <li><span><%= breakdown[i] %></span></li>
-        <% } %>
-    </ul>
-</div>
-<% } %>
-
-<div class="cs-card-content">
-<% if (response_1 || response_2) { %>
-
-    <div class="cs-card-responses">
-        <% if (response_1) { %>
-        <div class="cs-card-response<% if (response_1 && response_2) { %> cs-align-left<% } %>">
-            <h4><%= country_1.pos %> Response</h4>
-            <p><%= response_1 %></p>
-        </div>
-        <% } %>
-        <% if (response_2) { %>
-        <div class="cs-card-response<% if (response_1 && response_2) { %> cs-align-left<% } %>">
-            <h4><%= country_2.pos %> Response</h4>
-            <p><%= response_2 %></p>
-        </div>
-        <% } %>
-        <div class="clearfix"></div>
-    </div>
-
-<% } %>
-
-<% if (footer) { %>
-<div class="cs-card-footer">
-    <div class="cs-card-sources">
-        <a class="cs-popover-trigger" tabindex="0" role="button" data-toggle="popover" data-trigger="focus" title="Sources" data-content="" data-template='<%= footer.sourcesTemplate %>'>Sources</a>
-    </div>
-    <div class="cs-card-methodology">
-        <a class="cs-popover-trigger" tabindex="0" role="button" data-toggle="popover" data-trigger="focus" title="Methodology" data-content="" data-template='<%= footer.methodologyTemplate %>'>Methodology</a>
-    </div>
-    <div class="clearfix"></div>
-</div>
-<% } %>
-</div>
-
-
-
-
-
-
-
-
-
-        </script>
-        <!-- <script src="http://spreadsheets.google.com/feeds/list/10u5-lq7_eD8AGuXwJM2QpukQHODr3Xl1uP6a5VTI7I8/od6/public/basic?alt=json-in-script&callback=myFunc"></script>
-        <iframe src="https://docs.google.com/spreadsheets/d/10u5-lq7_eD8AGuXwJM2QpukQHODr3Xl1uP6a5VTI7I8/pubhtml?widget=true&amp;headers=false"></iframe> -->
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDDiAql8gaEkHRZ3Tje4ceNLb7GS2FMXQU"></script>
-        
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAeXE2ZzL4fgrIX4k7AfVRjgbBfaO3ENkI"></script>
 
         <script src="js/app.js"></script>
+
+        <!-- Template for incident cards -->
+        <script type="text/template" id="cs-card-template">
+
+            <div class="cs-card-header">
+                <div class="cs-date-container">
+                    <p><%= date %></p>
+                </div>
+                <h1><%= country_1.name %> <span>&middot;</span> <%= country_2.name %></h1>
+            </div>
+            <div class="cs-card-content cs-card-content-top">
+                <div class="cs-card-vessels">
+                    
+                    <div class="cs-country-vessels">
+                        <% for (var i in cty_1_vessels) { %>
+                        <a class="cs-popover-trigger <%= cty_1_vessels[i].vesselStyle %>" tabindex="0" role="button" data-toggle="popover" data-trigger="focus" title="<%= cty_1_vessels[i].vesselName %>" data-content="" data-template='<%= cty_1_vessels[i].popoverTemplate %>'>
+                            <div class="cs-vessel-container">
+                                <div class="cs-vessel-icon"></div>
+                                <p class="cs-vessel-count"><%= cty_1_vessels[i].vesselCount %></p>
+                            </div>
+                        </a>
+                        <% } %>
+                        <h5><%= country_1.adj %> Vessels</h5>
+                    </div>
+                    
+                    <div class="cs-country-vessels">
+                        <% for (var i in cty_2_vessels) { %>
+                        <a class="cs-popover-trigger <%= cty_2_vessels[i].vesselStyle %>" tabindex="0" role="button" data-toggle="popover" data-trigger="focus" title="<%= cty_2_vessels[i].vesselName %>" data-content="<%= cty_2_vessels[i].vesselDescription %>" data-template='<%= cty_2_vessels[i].popoverTemplate %>'>
+                            <div class="cs-vessel-container">
+                                <div class="cs-vessel-icon"></div>
+                                <p class="cs-vessel-count"><%= cty_2_vessels[i].vesselCount %></p>
+                            </div>
+                        </a>
+                        <% } %>
+                        <h5><%= country_2.adj %> Vessels</h5>
+                    </div>
+                </div>
+                <div class="cs-card-outcome">
+                    <h4>Outcome</h4>
+                    <% for (var i in outcome) { %>
+                    <div class="cs-card-outcome-item" style="border-color:<%= outcome[i].color %>;">
+                        <div class="cs-outcome-code">
+                            <h3 style="color:<%= outcome[i].color %>"><%= outcome[i].code %></h3>
+                        </div>
+                        <div class="cs-outcome-content">
+                            <h4><%= outcome[i].title %></h4>
+                            <p><%= outcome[i].description %></p>
+                        </div>
+                    </div>
+                    <% } %>
+                </div>
+                <div class="cs-card-summary">
+                    <h4>Summary of the Encounter</h4>
+                    <p><%= summary %></p>
+                </div>
+            </div>
+
+            <% if (breakdown) { %>
+            <div class="cs-card-content cs-card-breakdown">
+                <ul>
+                    <% for (var i in breakdown) { %>
+                    <li><span><%= breakdown[i] %></span></li>
+                    <% } %>
+                </ul>
+            </div>
+            <% } %>
+
+            <div class="cs-card-content">
+            <% if (response_1 || response_2) { %>
+
+                <div class="cs-card-responses">
+                    <% if (response_1) { %>
+                    <div class="cs-card-response<% if (response_1 && response_2) { %> cs-align-left<% } %>">
+                        <h4><%= country_1.pos %> Response</h4>
+                        <p><%= response_1 %></p>
+                    </div>
+                    <% } %>
+                    <% if (response_2) { %>
+                    <div class="cs-card-response<% if (response_1 && response_2) { %> cs-align-left<% } %>">
+                        <h4><%= country_2.pos %> Response</h4>
+                        <p><%= response_2 %></p>
+                    </div>
+                    <% } %>
+                    <div class="clearfix"></div>
+                </div>
+
+            <% } %>
+
+            <% if (footer) { %>
+            <div class="cs-card-footer">
+                <div class="cs-card-sources">
+                    <a class="cs-popover-trigger" tabindex="0" role="button" data-toggle="popover" data-trigger="focus" title="Sources" data-content="" data-template='<%= footer.sourcesTemplate %>'>Sources</a>
+                </div>
+                <div class="cs-card-methodology">
+                    <a class="cs-popover-trigger" tabindex="0" role="button" data-toggle="popover" data-trigger="focus" title="Methodology" data-content="" data-template='<%= footer.methodologyTemplate %>'>Methodology</a>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <% } %>
+            </div>
+
+        </script>
+
     </body>
 </html>

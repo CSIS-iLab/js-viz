@@ -1,9 +1,9 @@
 /**
- * South China Sea
- * http://nickharbaugh.com/
+ * South China Sea Incident Tracker
+ * http://sevenmilemedia.com/
  *
- * Copyright 2016 Nick Harbaugh | All Rights Reserved
- * Written by Nick Harbaugh - http://nickharbaugh.com
+ * Copyright 2016 CSIS | All Rights Reserved
+ * Written by Nick Harbaugh - http://sevenmilemedia.com/
  */
 
 (function($, _) {
@@ -12,7 +12,11 @@
        Global variables
        ========================================================================== */
 
-    var currentIndex = -1,
+    var mobileWidth = 700,
+        currentIndex = -1,
+        winWidth = $(window).width(),
+        isTouch = Modernizr.touch,
+        isMobileWidth = (winWidth < mobileWidth) ? true : false,
         markersArray = [],
         settings = {
             minHeight : 600,
@@ -22,13 +26,14 @@
 
     var options = {
         mapCenter: {
-            lat: 10.595224, 
-            long: 95.427142
+            lat: 16.2500,
+            long: 111.7000
         },
-        minZoom: 5,
-        maxZoom: 10,
-        autoZoomLevel: 5
+        minZoom: 6,
+        maxZoom: 6,
+        autoZoomLevel: 6
     };
+
     var mapOptions = {
         center: new google.maps.LatLng(options.mapCenter.lat, options.mapCenter.long),
         zoom: options.minZoom,
@@ -46,25 +51,8 @@
         streetViewControl: false,
         mapTypeId: google.maps.MapTypeId.ROADMAP
     };
-    var mapStyle = [
-        // {
-        //     "featureType": "landscape",
-        //     "elementType": "geometry",
-        //     "stylers": [
-        //         { "color": "#ffffff" }
-        //     ]
-        // },
-        // {
-        //     "featureType": "landscape.natural.landcover",
-        //     "elementType": "geometry",
-        //     "stylers": [
-        //         { "hue": "#0091ff" },
-        //         { "visibility": "simplified" },
-        //         { "saturation": -60 },
-        //         { "lightness": 50 }
-        //     ]
-        // },
 
+    var mapStyle = [
         {
             "featureType": "landscape.natural.terrain",
             "elementType": "geometry.fill",
@@ -72,16 +60,6 @@
                 { "visibility": "simplified" }
             ]
         },
-
-        // {
-        //     "featureType": "poi",
-        //     "stylers": [
-        //         { "visibility": "simplified" },
-        //         { "hue": "#0091ff" },
-        //         { "saturation": -80 },
-        //         { "lightness": 0 }
-        //     ]
-        // },
         {
             "featureType": "landscape",
             "elementType": "labels",
@@ -89,13 +67,6 @@
                 { "visibility": "off" }
             ]
         },
-        // {
-        //     "featureType": "water",
-        //     "elementType": "geometry",
-        //     "stylers": [
-        //         { "color": "#C5D7E1" }
-        //     ]
-        // },
         {
             "featureType": "water",
             "elementType": "labels",
@@ -109,12 +80,6 @@
                 { "visibility": "off" }
             ]
         },
-        // {
-        //     "featureType": "poi",
-        //     "stylers": [
-        //         { "visibility": "off" }
-        //     ]
-        // },
         {
             "featureType": "poi",
             "stylers": [
@@ -154,37 +119,41 @@
             ]
         },
         {
-        "featureType": "administrative",
-        "stylers": [
-        { "visibility": "off" }
-        ]
-        },{
-        "featureType": "water",
-        "elementType": "labels",
-        "stylers": [
-        { "visibility": "off" }
-        ]
-        },{
-        "featureType": "landscape.natural.terrain",
-        "stylers": [
-        { "visibility": "off" }
-        ]
-        },{
-        "featureType": "landscape.natural",
-        "elementType": "geometry",
-        "stylers": [
-        { "saturation": -100 },
-        { "gamma": 0.30 },
-        { "lightness": -70 }
-        ]
-        },{
-        "featureType": "water",
-        "elementType": "geometry.fill",
-        "stylers": [
-        { "gamma": 0.79 },
-        { "saturation": -100 },
-        { "lightness": 70 }
-        ]
+            "featureType": "administrative",
+            "stylers": [
+                { "visibility": "off" }
+            ]
+        },
+        {
+            "featureType": "water",
+            "elementType": "labels",
+            "stylers": [
+                { "visibility": "off" }
+            ]
+        },
+        {
+            "featureType": "landscape.natural.terrain",
+            "stylers": [
+                { "visibility": "off" }
+            ]
+        },
+        {
+            "featureType": "landscape.natural",
+            "elementType": "geometry",
+            "stylers": [
+                { "saturation": -100 },
+                { "gamma": 0.30 },
+                { "lightness": -70 }
+            ]
+        },
+        {
+            "featureType": "water",
+            "elementType": "geometry.fill",
+            "stylers": [
+                { "gamma": 0.79 },
+                { "saturation": -100 },
+                { "lightness": 70 }
+            ]
         }
     ];
 
@@ -205,7 +174,6 @@
     }
 
     function ChinaSea(data) {
-        // this.$container = $container;
         this.data = data.reverse();
         this.years = pluckYears(this.data); // Pluck years from data
         this.currentYear = this.years[0]; // Determine latest year
@@ -220,17 +188,109 @@
         this.updateEvent(this.currentData.length-1);
     }
 
+    // Fetch data function uses Highcharts "data.js" module to fetch google spreadsheet data
+    var fetchData = function(callbackInt, callbackMap) {
+        var data = [];
+        var scsData = Highcharts.data({
+
+            googleSpreadsheetKey: '1ngkNOKulaflQM_c4XhuWLc1h2u0AfOKf1k1jC3wqHRo',
+
+            // custom handler when the spreadsheet is parsed
+            parsed: function (columns) {
+                var rowCount = columns[0].length;
+
+                // Add obj for each row, excluding header row
+                for (var i = 0; i < rowCount; i++) {
+                    var obj = {};
+                    data.push(obj);
+                }
+
+                for (var i in columns) {
+                    var column = columns[i];
+                    var key = column[0];
+
+                    for (var i = 0; i < rowCount; i++) {
+                        data[i][key] = column[i];
+                    }
+                }
+
+                // Pop header row off data
+                data.shift();
+
+                callbackInt(data);
+            }
+        });
+    };
+
+
+    /* ==========================================================================
+       Event handlers
+       ========================================================================== */
+
+    var setEventHandlers = function(self) {
+        // Timeline tick event handler
+        $('.cs-timeline a').click(function(e) {
+            e.preventDefault();
+            var i = $(this).index('.cs-timeline a');
+            self.updateEvent(i);
+        });
+        if (!isTouch) { $('.cs-timeline a').hover(function(e) { $(this).checkOverlap(e); }); }
+    };
+
+    var enableKeyboardControl = function(self) {
+        $(document).keydown(function(e){
+            if (e.keyCode == 39) {
+                prevNextHandler(self, e.keyCode, $('<div></div>'));
+                return false;
+            }
+            else if (e.keyCode == 37) {
+                prevNextHandler(self, e.keyCode, $('<div></div>'));
+                return false;
+            }
+        });
+    };
+
+    var prevNextHandler = function(self, keyCode, $this) {
+        var isNext = ($this.hasClass('cs-timeline-next') || keyCode == 39) ? true : false;
+        var lastIndex = self.currentData.length - 1;
+        var activeIndex = $('.cs-timeline li.active').index('.cs-timeline li');
+        var nextIndex = (activeIndex == lastIndex) ? 0 : activeIndex + 1;
+        var prevIndex = (activeIndex == 0) ? lastIndex : activeIndex - 1;
+        if (isNext) {
+            self.updateEvent(nextIndex);
+            updateTimelineDisplay(nextIndex);
+        } else {
+            self.updateEvent(prevIndex);
+            updateTimelineDisplay(prevIndex);
+        }
+    };
+
 
     /* ==========================================================================
        Timeline setup
        ========================================================================== */
 
+    var pluckYears = function(data) {
+        var years = [];
+        var y = _.pluck(data, 'year');
+        years = _.uniq(y);
+        return years.reverse();
+    };
+
+    var pluckCurrent = function(data, currentYear) {
+        var items = [];
+        for (var i in data) {
+            if (data[i].year == currentYear) {
+                items.push(data[i]);
+            }
+        }
+        return items;
+    };
+
     var parseDates = function(data, currentYear) {
         var parsed = [];
         var firstDate = parseInt(moment('1/1/'+currentYear).format('x'));
-        // var firstDate = moment().startOf(currentYear).format('X');
         var lastDate = parseInt(moment('12/31/'+currentYear).format('x')) - firstDate;
-        // var lastDate = moment().endOf(currentYear).format('X') - firstDate;
 
         for (var i in data) {
             var dp = {};
@@ -253,7 +313,6 @@
 
             function calcDateDispLong() {
                 var dateDisp;
-                // var startDisp = moment(startDate).format('MMMM D, YYYY');
                 if (endDate && data[i].special_event) {
                     var startMonth = moment(startDate).format('MMMM');
                     var startDay = moment(startDate).format('D');
@@ -289,141 +348,12 @@
         });
     };
 
-    $.fn.checkOverlap = function(e) {
-        console.log('check overlap')
-        // var pCount = $('.nh-time-rail li').length;
-        // var p1 = $(this).find('p');
-        // var p2, o;
 
-        // // remove hidden class from all elements
-        // $('.nh-time-rail li p').removeClass('nh-hidden');
-
-        // // check for element overlap
-        // if (e && e.type !== 'mouseleave') {
-        //     for (var i = 0; i < pCount; i++) {
-        //         p2 = $('.nh-time-rail li').eq(i).find('p');
-        //         o = overlaps(p1, p2);
-        //         if (o === true && p1.index('.nh-time-rail li p') !== i && p2.css('opacity') == 1) {
-        //             p2.addClass('nh-hidden');
-        //         }
-        //     }
-        // }
-
-        // check first/last overlap
-        //checkOverlapFirstLast(e, p1);
-    };
-
-    var setEventHandlers = function(self) {
-        // Timeline tick event handler
-        $('.cs-timeline a').click(function(e) {
-            e.preventDefault();
-            // var d = $(this).attr('data-date');
-            var i = $(this).index('.cs-timeline a');
-            self.updateEvent(i);
-        });
-        // if not touch device, enable hover on time-rail
-        //if (!options.isTouch) {
-            $('.cs-timeline a').hover(function(e) { $(this).checkOverlap(e); });
-        //}
-    };
-
-    var enableKeyboardControl = function(self) {
-        $(document).keydown(function(e){
-            if (e.keyCode == 39) {
-                prevNextHandler(self, e.keyCode, $('<div></div>'));
-                return false;
-            }
-            else if (e.keyCode == 37) {
-                prevNextHandler(self, e.keyCode, $('<div></div>'));
-                return false;
-            }
-        });
-    };
-
-    // var overlaps = (function () {
-    //     function getPositions( elem ) {
-    //         var pos, width, height;
-    //         pos = $( elem ).offset(); // custom - offset instead of position
-    //         width = $( elem ).textWidth(); // custom - textWidth instead of width
-    //         height = $( elem ).height();
-    //         return [ [ pos.left, pos.left + width ], [ pos.top, pos.top + height ] ];
-    //     }
-
-    //     function comparePositions( p1, p2 ) {
-    //         var r1, r2;
-    //         r1 = p1[0] < p2[0] ? p1 : p2;
-    //         r2 = p1[0] < p2[0] ? p2 : p1;
-    //         return r1[1] > r2[0] || r1[0] === r2[0];
-    //     }
-
-    //     return function ( a, b ) {
-    //         var pos1 = getPositions( a ),
-    //             pos2 = getPositions( b );
-    //         return comparePositions( pos1[0], pos2[0] ) && comparePositions( pos1[1], pos2[1] );
-    //     };
-    // })();
-
-    function updateTimelineDisplay(index) {
-        // Update active nav item
-        $('.cs-timeline li').removeClass('active');
-        $('.cs-timeline li').eq(index).addClass('active');
-    }
 
 
     /* ==========================================================================
        Google map
        ========================================================================== */
-
-    
-
-    var fetchData = function(callbackInt, callbackMap) {
-        var data = [];
-        var scsData = Highcharts.data({
-
-            googleSpreadsheetKey: '10u5-lq7_eD8AGuXwJM2QpukQHODr3Xl1uP6a5VTI7I8',
-
-            // custom handler when the spreadsheet is parsed
-            parsed: function (columns) {
-                var rowCount = columns[0].length;
-
-                // Add obj for each row, excluding header row
-                for (var i = 0; i < rowCount; i++) {
-                    var obj = {};
-                    data.push(obj);
-                }
-
-                for (var i in columns) {
-                    var column = columns[i];
-                    var key = column[0];
-                    // var obj = {};
-
-                    for (var i = 0; i < rowCount; i++) {
-                        data[i][key] = column[i];
-                        // obj[key] = column[i];
-                    }
-                    // console.log(obj)
-
-                    // obj[key] = '';
-                    // data.push(obj);
-                }
-
-                // Pop header row off data
-                data.shift();
-
-                callbackInt(data);
-            }
-        });
-        // var d1 = $.getJSON('data/map-style.json');
-        //     // d1 = $.getJSON('data/scs-data-2.json'),
-        //     // d2 = $.getJSON('data/map-style-zoom-in.json'),
-            
-        // $.when(d1).done(function(a) {
-        //     callbackMap(a[0]);
-        // });
-        // $( "#result" ).load( "ajax/test.html", function() {
-        // alert( "Load was performed." );
-        // });
-    };
 
     var initMapStyle = function(map, mapStyle) {
         // setup map styles
@@ -432,45 +362,9 @@
         map.setMapTypeId('default');
     };
 
-    var pluckYears = function(data) {
-        var years = [];
-        var y = _.pluck(data, 'year');
-        years = _.uniq(y);
-        return years.reverse();
-    };
-
-    var pluckCurrent = function(data, currentYear) {
-        var items = [];
-        for (var i in data) {
-            if (data[i].year == currentYear) {
-                items.push(data[i]);
-            }
-        }
-        return items;
-    };
-
-    var prevNextHandler = function(self, keyCode, $this) {
-        var isNext = ($this.hasClass('cs-timeline-next') || keyCode == 39) ? true : false;
-        var lastIndex = self.currentData.length - 1;
-        var activeIndex = $('.cs-timeline li.active').index('.cs-timeline li');
-        var nextIndex = (activeIndex == lastIndex) ? 0 : activeIndex + 1;
-        var prevIndex = (activeIndex == 0) ? lastIndex : activeIndex - 1;
-        if (isNext) {
-            self.updateEvent(nextIndex);
-            updateTimelineDisplay(nextIndex);
-        } else {
-            self.updateEvent(prevIndex);
-            updateTimelineDisplay(prevIndex);
-        }
-    };
-
-    // --------------------------------------------- //
-    // Map events - custom zoom / center
-    // --------------------------------------------- //
-
     var updateMap = function(map, latLong) {
         var xOffset = 300;
-        var yOffset = 0;
+        var yOffset = 100;
         var coordLat = parseFloat(latLong[0].trim());
         var coordLong = parseFloat(latLong[1].trim());
         var coord = new google.maps.LatLng(coordLat,coordLong);
@@ -486,7 +380,7 @@
             ( (typeof(offsetx) == 'number' ? offsetx : 0) / Math.pow(2, map.getZoom()) ) || 0,
             ( (typeof(offsety) == 'number' ? offsety : 0) / Math.pow(2, map.getZoom()) ) || 0
         );
-        // map.panTo();
+
         map.panTo(map.getProjection().fromPointToLatLng(new google.maps.Point(
             point1.x - point2.x,
             point1.y + point2.y
@@ -503,10 +397,76 @@
             optimized: true, // prevents flicker on hover (false)
             position: coord,
             map: map,
-            icon: new google.maps.MarkerImage('images/map-marker.png', null, null, null, new google.maps.Size(120,120))
+            icon: new google.maps.MarkerImage('images/map-marker.png',
+                new google.maps.Size(300,300), // Image size
+                new google.maps.Point(0, 0), // Image origin
+                new google.maps.Point(60, 60), // Anchor
+                new google.maps.Size(120,120) // Scaled size
+            )
         });
         markersArray.push(marker);
     };
+
+
+    /* ==========================================================================
+       Utility functions
+       ========================================================================== */
+
+    $.fn.checkOverlap = function(e) {
+        var $ticks = $('.cs-timeline li');
+        var p1 = $(this).find('p');
+        var p2 = p2 = $('.cs-timeline li.active p');
+        var o;
+
+        // remove hidden class from all elements
+        $ticks.find('p').removeClass('cs-hidden');
+
+        // check for element overlap
+        if (e && e.type !== 'mouseleave') {
+            o = overlaps(p1, p2);
+            if (o === true) {
+                p2.addClass('cs-hidden');
+            }
+        }
+    };
+
+    var overlaps = (function () {
+        function getPositions( elem ) {
+            var pos, width, height;
+            pos = $( elem ).offset(); // custom - offset instead of position
+            width = $( elem ).textWidth(); // custom - textWidth instead of width
+            height = $( elem ).height();
+            return [ [ pos.left, pos.left + width ], [ pos.top, pos.top + height ] ];
+        }
+
+        function comparePositions( p1, p2 ) {
+            var r1, r2;
+            r1 = p1[0] < p2[0] ? p1 : p2;
+            r2 = p1[0] < p2[0] ? p2 : p1;
+            return r1[1] > r2[0] || r1[0] === r2[0];
+        }
+
+        return function ( a, b ) {
+            var pos1 = getPositions( a ),
+                pos2 = getPositions( b );
+            return comparePositions( pos1[0], pos2[0] ) && comparePositions( pos1[1], pos2[1] );
+        };
+    })();
+
+    $.fn.textWidth = function(){
+        var html_org = $(this).html();
+        var html_calc = '<span>' + html_org + '</span>';
+        $(this).html(html_calc);
+        var width = $(this).find('span:first').width()+10;
+        $(this).html(html_org);
+        return width;
+    };
+
+    function updateTimelineDisplay(index) {
+        // Update active nav item
+        $('.cs-timeline li').removeClass('active');
+        $('.cs-timeline li').eq(index).addClass('active');
+    }
 
 
     /* ==========================================================================
@@ -552,20 +512,91 @@
                     'name': 'Malaysia',
                     'pos': 'Malaysia’s',
                     'adj': 'Malaysian'
+                },
+                'NATO': {
+                    'name': 'NATO',
+                    'pos': 'NATO’s',
+                    'adj': 'NATO'
+                },
+                'UN': {
+                    'name': 'United Nations',
+                    'pos': 'United Nations’',
+                    'adj': 'UN'
+                },
+                'FRA': {
+                    'name': 'France',
+                    'pos': 'France’s',
+                    'adj': 'French'
+                },
+                'AUS': {
+                    'name': 'Australia',
+                    'pos': 'COUNTRY’s',
+                    'adj': 'COUNTRY_ADJ'
+                },
+                'LKA': {
+                    'name': 'Sri Lanka',
+                    'pos': 'Sri Lanka’s',
+                    'adj': 'Sri Lankan'
+                },
+                'SGP': {
+                    'name': 'Singapore',
+                    'pos': 'Singapore’s',
+                    'adj': 'Singaporean'
+                },
+                'MMR': {
+                    'name': 'Myanmar',
+                    'pos': 'Myanmar’s',
+                    'adj': 'Burmese'
+                },
+                'PRK': {
+                    'name': 'North Korea',
+                    'pos': 'North Korea’s',
+                    'adj': 'North Korean'
+                },
+                'KOR': {
+                    'name': 'South Korea',
+                    'pos': 'South Korea’s',
+                    'adj': 'South Korean'
+                },
+                'MDV': {
+                    'name': 'Maldives',
+                    'pos': 'Maldives’',
+                    'adj': 'Maldivian'
+                },
+                'KHM': {
+                    'name': 'Cambodia',
+                    'pos': 'Cambodia’s',
+                    'adj': 'Cambodian'
+                },
+                'BGD': {
+                    'name': 'Bangladesh',
+                    'pos': 'Bangladesh’s',
+                    'adj': 'Bangladeshi'
+                },
+                'BRN': {
+                    'name': 'Brunei',
+                    'pos': 'Brunei’s',
+                    'adj': 'Bruneian'
+                },
+                'IND': {
+                    'name': 'India',
+                    'pos': 'India’s',
+                    'adj': 'Indian'
+                },
+                'USA': {
+                    'name': 'United States',
+                    'pos': 'United States’',
+                    'adj': 'American'
+                },
+                'JPN': {
+                    'name': 'Japan',
+                    'pos': 'Japan’s',
+                    'adj': 'Japanese'
                 }
-            };
-            this.countryKeyPos = {
-                'CHN': 'Chinese',
-                'IDN': '',
-                'PHL': '',
-                'THA': '',
-                'TWN': '',
-                'VNM': '',
-                'MYS': ''
             };
             this.vesselKey = {
                 'CG': {
-                    'name': 'Coast Guard Vessels',
+                    'name': 'Maritime Law Enforcement Vessels',
                     'description': ''
                 },
                 'FV': {
@@ -595,47 +626,47 @@
             this.outcomeKey = {
                 'HAR': {
                     'title': 'Harassment',
-                    'description': 'Harassment including the use of lasers, spotlights, and smoke machines, or behavior including the breaking of equipment, purposefully causing injury, or theft.',
+                    'description': 'Aggressive behavior directed at individuals or equipment',
                     'color': '#F2784B'
                 },
                 'SF': {
                     'title': 'Shots Fired',
-                    'description': 'Shots fired from an individual’s firearm or from a vessel’s armaments.',
+                    'description': 'A firearm or a vessel’s armaments were fired',
                     'color': '#049372'
                 },
                 'RAM': {
                     'title': 'Ramming',
-                    'description': 'Incidents where a vessel is rammed by another vessel. May include cases of “shouldering.”',
+                    'description': 'A vessel was intentionally hit by another vessel',
                     'color': '#EF5A26'
                 },
                 'DTH': {
                     'title': 'Death',
-                    'description': 'A person died as a result of the incident.',
+                    'description': 'A person died as a result of the incident',
                     'color': '#EB1D25'
                 },
                 'WC': {
                     'title': 'Water Cannon',
-                    'description': 'A water cannon was used.',
+                    'description': 'A water cannon was used',
                     'color': '#22A7F0'
                 },
                 'AR': {
                     'title': 'Arrest',
-                    'description': 'An arrest occurred.',
+                    'description': 'An arrest occurred',
                     'color': '#F1BE2C'
                 },
                 'IMP': {
-                    'title': 'Vehicle Impounded',
-                    'description': 'A vehicle was impounded.',
+                    'title': 'Vessel Impounded',
+                    'description': 'A vessel was impounded',
                     'color': '#D2D7D3'
                 },
                 'STO': {
                     'title': 'Standoff',
-                    'description': 'A prolonged standoff occurred.',
+                    'description': 'A prolonged standoff occurred',
                     'color': '#3C948B'
                 },
-                'POS': {
-                    'title': 'Official Statement',
-                    'description': 'A government or official made a statement, requested an inquiry, or made an official protest regarding the incident.',
+                'PST': {
+                    'title': 'Official Protest',
+                    'description': 'An official protest or inquiry was made about the incident',
                     'color': '#1A99AA'
                 }
             };
@@ -651,21 +682,31 @@
             this.$card = $('<div id="cs-card" class="cs-card"></div>');
             this.cardTemplate = $('#cs-card-template').html();
             // Event navigation
-            this.$chartHeader = $('<div class="cs-chart-header cs-align-left"><h3>South China Sea Incidents in </h3></div>')
-            this.$yearSelect = $('<select class="cs-dropdown"></select>');
-            this.$timelineNav = $('<div class="cs-timeline-nav cs-align-right"><a class="cs-timeline-prev" href="#">Previous</a><a class="cs-timeline-next" href="#">Next</a></div><div class="clearfix"></div>');
+            this.$chartHeader = $('<div class="cs-chart-header cs-align-left"><h3>South China Sea Incidents</h3></div>');
+            this.$yearSelect = $('<div class="cs-dropdown">'+
+                                    '<button id="dropdown-label" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'+
+                                        'Dropdown trigger'+
+                                        '<span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>'+
+                                    '</button>'+
+                                    '<ul class="dropdown-menu" aria-labelledby="dropdown-label"></ul>'+
+                                '</div><div class="clearfix"></div>');
+            this.$timelineNav = $('<div class="cs-timeline-nav cs-align-right"><a class="cs-timeline-prev" href="#"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>Previous</a><a class="cs-timeline-next" href="#">Next<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a></div><div class="clearfix"></div>');
             
             // Build year dropdown
             var optionsMarkup = '';
             for (var i in this.years) {
-                var option = '<option value="'+this.years[i]+'">'+this.years[i]+'</option>';
+                var selectedClass = (i == 0) ? 'selected' : ''; // Select first year by default
+                var option = '<li class="'+selectedClass+'"><a href="#" data-year="'+this.years[i]+'">'+this.years[i]+'</a></li>';
                 optionsMarkup += option;
             }
-            this.$yearSelect.html(optionsMarkup);
-            this.$yearSelect.change(function() {
-                var year = $(this).val();
+            this.$yearSelect.find('ul').html(optionsMarkup);
+            this.$yearSelect.find('a').click(function(e) {
+                e.preventDefault();
+                $('.cs-dropdown li').removeClass('selected');
+                $(this).parent().addClass('selected');
+                var year = $(this).attr('data-year');
                 self.updateYear(year);
-                self.updateEvent(0);
+                self.updateEvent(0); // Defaults to first event in the year
             });
             this.$chartHeader.append(this.$yearSelect);
 
@@ -674,7 +715,6 @@
             var cardAppends = [this.$card];
             this.$navContainer.append(navAppends);
             this.$cardContainer.append(cardAppends);
-            // this.$mapContainer.append(mapAppends);
 
             // Init previous / Next button functionality
             this.$timelineNav.find('a').click(function(e) {
@@ -684,13 +724,13 @@
         },
         updateEvent : function(index) {
             var self = this;
-            var index = index;
-            var eventData = this.currentData[index];
+            this.eventData = this.currentData[index];
+            
             var outcome = [];
             var footer = {};
-            var outcomeArray = eventData.outcome.split(',');
-            var breakdown = eventData.breakdown.split(';;');
-            var sources = eventData.sources.split(';;');
+            var outcomeArray = (this.eventData.outcome) ? this.eventData.outcome.split(',') : '';
+            var breakdown = (this.eventData.breakdown) ? this.eventData.breakdown.split(';;') : '';
+            var sources = (this.eventData.sources) ? this.eventData.sources.split(';;') : '';
             var compileCardTemplate = _.template(this.cardTemplate);
 
             for (var i in outcomeArray) {
@@ -700,23 +740,18 @@
                 o.title = this.outcomeKey[outcomeCode].title;
                 o.description = this.outcomeKey[outcomeCode].description;
                 o.color = this.outcomeKey[outcomeCode].color;
-                // o.template = '<div class="popover cs-popover" role="tooltip">' +
-                //     '<div class="arrow"></div><h3 class="popover-title"></h3>'+
-                //     '<p>''</p>'+
-                // '</div>';
                 o.template = '<div class="popover cs-popover" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>';
                 outcome.push(o);
             }
 
             // Create vessel objects
-            var cv1 = this.calcVessels(eventData.cty_1_vessels, eventData.cty_1_hull_numbers, eventData.cty_1_tonnages, eventData.cty_1_ship_types);
-            var cv2 = this.calcVessels(eventData.cty_2_vessels, eventData.cty_2_hull_numbers, eventData.cty_2_tonnages, eventData.cty_2_ship_types);
+            var cv1 = this.calcVessels(this.eventData.cty_1_vessels, this.eventData.cty_1_hull_numbers, this.eventData.cty_1_tonnages, this.eventData.cty_1_ship_types);
+            var cv2 = this.calcVessels(this.eventData.cty_2_vessels, this.eventData.cty_2_hull_numbers, this.eventData.cty_2_tonnages, this.eventData.cty_2_ship_types);
 
             // Create content for footer
             function calcSources(sources) {
                 var sourcesMarkup = '<div class="popover cs-popover cs-sources-popover" role="tooltip">' +
                     '<div class="arrow"></div><h3 class="popover-title"></h3>'+
-                    // '<div class="popover-content"></div>'+
                     '<ul>';
                 for (var i = 0; i < sources.length; i++) {
                     var li = '<li><a href="'+sources[i]+'" target="_blank">'+sources[i]+'</a></li>';
@@ -735,42 +770,55 @@
             // Compile card template
             var cardMarkup = compileCardTemplate({
                 date: this.displayDates[index].dateDispLong,
-                title: eventData.location,
-                country_1: this.countryKey[eventData.cty_1],
-                country_2: this.countryKey[eventData.cty_2],
+                title: this.eventData.location,
+                country_1: this.countryKey[this.eventData.cty_1],
+                country_2: this.countryKey[this.eventData.cty_2],
                 cty_1_vessels: cv1,
                 cty_2_vessels: cv2,
                 outcome: outcome,
-                summary: eventData.summary,
+                summary: this.eventData.summary,
                 breakdown: breakdown,
-                response_1: eventData.cty_1_response,
-                response_2: eventData.cty_2_response,
+                response_1: this.eventData.cty_1_response,
+                response_2: this.eventData.cty_2_response,
                 footer: footer
             });
+
+            // Hide current card and remove active class
+            this.$card.hide();
+            this.$card.removeClass('cs-active-card');
             this.$card.html(cardMarkup);
+            this.$card.show();
+            // Timeout required for CSS animation
+            setTimeout(function() {
+                self.$card.addClass('cs-active-card');
+            }, 50);
+
+            // Update dropdown
+            this.$yearSelect.find('#dropdown-label').html(self.currentYear+'<span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>');
+
+            // Update timeline
             updateTimelineDisplay(index);
 
+            // Init bootstrap popover (after removing current popovers)
+            $('.cs-popover-trigger').popover('destroy');
+            $('.cs-popover').remove();
             this.initPopover($('.cs-popover-trigger'));
 
-            // Update map position
-            var latLong = eventData.coordinates.split(',');
+            // Init perfect scrollbar plugin on desktop
+            if (!isTouch) { $('.cs-card').perfectScrollbar({
+                wheelPropagation: true
+            }); }
 
-            if (this.firstLoad) {
-                // Wait for map to load if loading for first time
-                google.maps.event.addListenerOnce(this.map, 'projection_changed', function() {
-                    updateMap(self.map, latLong);
-                    self.firstLoad = false;
-                });
-            } else {
-                updateMap(this.map, latLong);
-            }
+            // Update map
+            if (!this.firstLoad) { this.updateMapTest(this.map); }
+        },
+        updateMapTest : function() {
+            this.coordinates = this.eventData.coordinates.split(',');
+            updateMap(this.map, this.coordinates);
         },
         calcVessels : function(vesselString, hullNumberString, tonnageString, shipTypeString) {
             var vessels = [];
             var cv = vesselString.split(',');
-            // var hasHulls = (hullNumberString) ? true : false;
-
-            // for (var i in hullNumberString) {
             
             for (var i in cv) {
                 var o = {};
@@ -781,47 +829,52 @@
                 o.vesselStyle = 'cs-vessel-' + o.vesselType.toLowerCase();
                 o.vesselCount = v[1].trim();
                 // Check if hull numbers exist
-                o.popoverTemplate = (hullNumberString) ? createPopoverTemplate(o) : '<div class="popover cs-popover cs-popover-empty" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>';
+                o.popoverTemplate = createPopoverTemplate(o);
                 vessels.push(o);
             }
             
             function createPopoverTemplate(co) {
-                var hullNumbersClasses = hullNumberString.split(',');
-                // console.log(tonnageString)
-                var tonnageArray = (tonnageString + '').split(',');
-                var shipTypeArray = shipTypeString.split(',');
-                var hullNumberCount = hullNumbersClasses.length;
-                var hullNumbers = [];
-                for (var i = 0; i < hullNumberCount; i++) {
-                    var o = {};
-                    var hnc = hullNumbersClasses[i].trim().split('_');
-                    o.vesselCategory = hnc[0];
-                    o.hullNumber = hnc[1];
-                    o.tonnage = tonnageArray[i].trim();
-                    o.shipType = shipTypeArray[i].trim();
-                    console.log(o.vesselType, o.vesselCategory)
-                    if (co.vesselType == o.vesselCategory) {
-                        hullNumbers.push(o);
+                // Default popover markup if we don't have hull numbers
+                var popMarkup = '<div class="popover cs-popover cs-popover-empty" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3></div>';
+                // Check if we have hull numbers
+                if (hullNumberString) {
+                    var hullNumbersClasses = hullNumberString.split(',');
+                    var tonnageArray = (tonnageString + '').split(',');
+                    var shipTypeArray = shipTypeString.split(',');
+                    var hullNumberCount = hullNumbersClasses.length;
+                    var hullNumbers = [];
+                    for (var i = 0; i < hullNumberCount; i++) {
+                        var o = {};
+                        var hnc = hullNumbersClasses[i].trim().split('_');
+                        o.vesselCategory = hnc[0];
+                        o.hullNumber = hnc[1];
+                        o.tonnage = tonnageArray[i].trim();
+                        o.shipType = shipTypeArray[i].trim();
+                        if (co.vesselType == o.vesselCategory) {
+                            hullNumbers.push(o);
+                        }
+                    }
+                    // Build popover template if we have hull numbers
+                    if (hullNumbers.length > 0) {
+                        popMarkup = '<div class="popover cs-popover" role="tooltip">' +
+                            '<div class="arrow"></div><h3 class="popover-title"></h3>'+
+                            '<table>'+
+                                '<tr>'+
+                                    '<th>Hull Number</th>'+
+                                    '<th>Tonnage</th>'+
+                                    '<th>Type</th>'+
+                                '</tr>';
+                        for (var i = 0; i < hullNumbers.length; i++) {
+                            var row = '<tr>'+
+                                '<td>'+hullNumbers[i].hullNumber+'</td>'+
+                                '<td>'+hullNumbers[i].tonnage+'</td>'+
+                                '<td>'+hullNumbers[i].shipType+'</td>'+
+                            '</tr>';
+                            popMarkup += row;
+                        }
+                        popMarkup += '</table></div>';
                     }
                 }
-                var popMarkup = '<div class="popover cs-popover" role="tooltip">' +
-                    '<div class="arrow"></div><h3 class="popover-title"></h3>'+
-                    // '<div class="popover-content"></div>'+
-                    '<table>'+
-                        '<tr>'+
-                            '<th>Hull Number</th>'+
-                            '<th>Tonnage</th>'+
-                            '<th>Type</th>'+
-                        '</tr>';
-                for (var i = 0; i < hullNumbers.length; i++) {
-                    var row = '<tr>'+
-                        '<td>'+hullNumbers[i].hullNumber+'</td>'+
-                        '<td>'+hullNumbers[i].tonnage+'</td>'+
-                        '<td>'+hullNumbers[i].shipType+'</td>'+
-                    '</tr>';
-                    popMarkup += row;
-                }
-                popMarkup += '</table></div>';
                 return popMarkup;
             }
 
@@ -833,9 +886,6 @@
             // Build timeline
             var timelineMarkup = '';
             // Parse dates for display
-            // var dates = grabDates(this.currentData);
-            // var startDates = _.pluck(, 'date_start');
-            // var endDates = _.pluck(this.currentData, 'date_end');
             this.displayDates = parseDates(this.currentData, this.currentYear);
             for (var i in this.currentData) {
                 var widthAttr = (this.displayDates[i].dateWidth) ? 'width:'+this.displayDates[i].dateWidth+'%;' : '';
@@ -857,23 +907,27 @@
             setEventHandlers(this);
         },
         initMap : function(mapStyle) {
+            var self = this;
             // init google map
             var mapCanvas = document.getElementById('map-canvas');
             this.map = new google.maps.Map(mapCanvas, mapOptions);
+
+            // Update map on first load - wait for map to load
+            google.maps.event.addListenerOnce(this.map, 'idle', function() {
+                self.updateMapTest(self.map);
+                self.firstLoad = false;
+            });
 
             // google map customization
             initMapStyle(this.map, mapStyle);
         },
         initPopover : function($element) {
+            var placement = (isMobileWidth) ? 'top' : 'auto right';
             $element.popover({
-                container: 'body'
+                container: 'body',
+                placement: placement
             });
         }
     }
-
-    // function grabDates(data) {
-    //     var startDate = _.pluck(data, 'date_start');
-    //     var startDate = _.pluck(data, 'date_start');
-    // }
 
 })(jQuery, _);

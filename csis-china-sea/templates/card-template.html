@@ -34,16 +34,15 @@
     <div class="cs-card-outcome">
         <h4>Outcome</h4>
         <% for (var i in outcome) { %>
-        <a class="cs-popover-trigger" tabindex="0" role="button" data-toggle="popover" data-trigger="focus" title="<%= outcome[i].title %>" data-content="<%= outcome[i].description %>" data-template='<%= outcome[i].template %>'>
-            <div class="cs-card-outcome-item" style="border-color:<%= outcome[i].color %>;">
-                <div class="cs-outcome-code">
-                    <h3 style="color:<%= outcome[i].color %>"><%= outcome[i].code %></h3>
-                </div>
-                <div class="cs-outcome-content">
-                    <h4><%= outcome[i].title %></h4>
-                </div>
+        <div class="cs-card-outcome-item" style="border-color:<%= outcome[i].color %>;">
+            <div class="cs-outcome-code">
+                <h3 style="color:<%= outcome[i].color %>"><%= outcome[i].code %></h3>
             </div>
-        </a>
+            <div class="cs-outcome-content">
+                <h4><%= outcome[i].title %></h4>
+                <p><%= outcome[i].description %></p>
+            </div>
+        </div>
         <% } %>
     </div>
     <div class="cs-card-summary">
