@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=7,IE=9">
+  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+  <script type="text/javascript">
+
+  google.load("visualization", "1", {packages: ["timeline"]});
+  google.setOnLoadCallback(drawChart);
+
+  function drawChart() {
+
+    var query = new google.visualization.Query('https://docs.google.com/spreadsheets/d/1_EP44NzkbjXPn24TKmk9Af21y_k8CM89fCjUpLuzNcA/edit#gid=0');
+    query.send(handleQueryResponse);
+  }
+  function handleQueryResponse(response) {
+    var data = response.getDataTable();
+    data.setColumnProperty(4, 'role', 'tooltip');
+    var chart = new google.visualization.Timeline(document.getElementById('chart'));
+    var options = {
+      backgroundColor: '#131A28',
+      timeline: {
+        showRowLabels: false,
+        showBarLabels: false,
+        singleColor: '#ffc624'
+      }
+    };
+
+    chart.draw(data, options);
+  }
+  </script>
+
+  <style>
+
+  #chart {
+    height: 180px;
+    background: white;
+    margin-left: 140px;
+    margin-right: 80px;
+    margin-top: 50px;
+    background: #131A28;
+  }
+
+  text {
+    fill: #fff;
+  }
+
+  </style>
+</head>
+<body>
+  <!-- Identify where the chart should be drawn. -->
+
+  <div id="chart"></div>
+</body>
+</html>
