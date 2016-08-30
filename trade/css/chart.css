@@ -1,0 +1,35 @@
+#container {
+    min-width: 310px;
+    max-width: 100%;
+    margin: 0 auto;
+        font-family: 'Roboto', sans-serif;
+}
+
+/* PLAY BAR CONTROLS */
+
+#play-controls {
+  text-align: center;
+}
+
+#play-controls * {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+#play-output {
+  font-size: 36px;
+  font-weight: bold;
+}
+
+#play-pause-button {
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    font-size: 15px;
+    outline: none;
+    cursor: pointer;
+}
+#play-range {
+    margin: 2.5%;
+    width: 70%;
+}
