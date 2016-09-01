@@ -59,10 +59,10 @@ $(function() {
         }
       }
       data.push({
-                    'iso-a3': 'CHN',
-                    value: null,
-                    color: '#ED392A'
-                });
+        'iso-a3': 'CHN',
+        value: null,
+        color: '#ED392A'
+      });
 
       // Initiate the chart
       $('#container').highcharts('Map', {
@@ -78,40 +78,70 @@ $(function() {
           href: 'https://chinapower.csis.org'
         },
 
-        mapNavigation: {
-          enabled: true,
-          buttonOptions: {
-            verticalAlign: 'bottom'
-          }
-        },
-
         motion: {
           enabled: true,
           axisLabel: 'year',
           labels: labels,
           series: 0, // The series which holds points to update
-          updateInterval: 1,
           magnet: {
             round: 'floor', // ceil / floor / round
             step: 0.1
           }
         },
 
+        mapNavigation: {
+          enabled: true,
+          buttonOptions: {
+            theme: {
+              fill: 'white',
+              'stroke-width': 1,
+              stroke: 'silver',
+              r: 0,
+              states: {
+                hover: {
+                  fill: '#bada55'
+                },
+                select: {
+                  stroke: '#039',
+                  fill: '#bada55'
+                }
+              }
+            },
+            verticalAlign: 'bottom'
+          }
+        },
+
+        legend: {
+          title: {
+            text: 'In 2014 $USD',
+            style: {
+              color: '#fff'
+            },
+          },
+          layout: 'horizontal',
+          align: 'center',
+          verticalAlign: 'bottom',
+          shadow: true,
+          backgroundColor: '#303030',
+          borderColor: '#ffffff',
+          borderWidth: 2,
+          borderRadius: 0
+        },
+
         colorAxis: {
           stops: [
-            [0, '#1478E6'],
-            [0.1, '#1884D5'],
-            [0.2, '#1D90C4'],
-            [0.3, '#219CB4'],
-            [0.4, '#26A8A3'],
-            [0.5, '#2AB592'],
-            [0.6, '#2FC182'],
-            [0.7, '#33CD71'],
-            [0.8, '#38D960'],
-            [0.9, '#3DE650']
+            [0, '#3847E0'],
+            [0.1, '#7433DE'],
+            [0.2, '#C42FDD'],
+            [0.3, '#DB2AA0'],
+            [0.4, '#DA2649'],
+            [0.5, '#D85622'],
+            [0.6, '#D7AA1E'],
+            [0.7, '#A9D51A'],
+            [0.8, '#4DD416'],
+            [0.9, '#11D235']
           ],
-          min: 2000,
-          max: 590000000000
+          min: 0
         },
 
         tooltip: {
@@ -119,7 +149,8 @@ $(function() {
             if (this.point.value == 0) {
               return '<p><em>Data not currently available for this year.</em></p>'
             } else {
-              return '<p><b>'+ this.point.name + ' | ' + this.series.label + '</b></p><br />$' + Highcharts.numberFormat(this.point.value,0,',',',') + '</p>';
+              var label = labels[this.series.chart.motion.currentAxisValue];
+              return '<p><b>'+ this.point.name + ' | ' + label + '</b></p><br />$' + Highcharts.numberFormat(this.point.value,0,',',',') + '</p>';
             }
           }
         },
@@ -138,6 +169,8 @@ $(function() {
           }
         }]
       });
+      chart = $('#container').highcharts();
+      chart.motion.reset();
     }
   });
 });
