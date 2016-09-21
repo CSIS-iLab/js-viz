@@ -17,7 +17,7 @@ $(function() {
       text: "CSIS China Power Project | Source: OECD"
     },
     title: {
-      text: "Country currency values"
+      text: "Exchange Rates with US Dollar"
     },
     subtitle: {
       text: "Click and drag to zoom in"
@@ -36,7 +36,7 @@ $(function() {
     colors: ['#4D6E79', '#303D43', '#E2EA44', '#781F30', '#EC382A', '#61884D'],
     yAxis: {
       title: { text: "National currency per US dollar" },
-      max: 70
+      max: 80
     },
     xAxis: {
       minRange: 5,
