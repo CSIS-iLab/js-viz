@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Foreign Direct Investment - China</title>
+
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/bubble_chart.css">
+  <script src="https://use.fontawesome.com/8016a8c9f2.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>China FDI Bilateral Outflows</h1>
+        <div id="sizeLegend"><p>Each bubble represents a country and the size of the bubble is determined FDI stock values relative to other countries. Bubbles automatically resize on a relative scale based upon user-specified filtering.</p></div>
+    <div id="toolbar">
+      <a href="#" id="all" class="button active hiddenMobile">All Data</a>
+      <a href="#" id="region" class="button hiddenMobile">Data by Region</a>
+      <a href="#" id="gni" class="button hiddenMobile">Data by Development Level</a>
+      <div id="years">
+          <select class="dropdown" id="yearsSelect" style="padding-top:13px;">
+            <option value="2010">2010</option>
+            <option value="2011">2011</option>
+            <option value="2012">2012</option>
+            <option value="2013">2013</option>
+            <option value="2014">2014</option>
+            <option value="2015" selected>2015</option>
+          </select>
+        </div>
+    </div>
+    <div id="regionFilter">
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" value="All" name="regionFilter" checked>
+          All Regions
+        </label>
+      </div>
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" value="Africa" name="regionFilter">
+          Africa
+        </label>
+      </div>
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" value="Americas" name="regionFilter">
+          Americas
+        </label>
+      </div>
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" value="Asia" name="regionFilter">
+          Asia
+        </label>
+      </div>
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" value="Europe" name="regionFilter">
+          Europe
+        </label>
+      </div>
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" value="Oceania" name="regionFilter">
+          Oceania
+        </label>
+      </div>
+    </div>
+
+    <div id="searchContainer">
+      <label for="findEntity">Search by Country</label>
+      <input type="text" autocomplete="off" style="width: 150px" id="findEntity" name="findEntity" class="typeahead"><br />
+      <span id="noData"></span>
+    </div>
+    <div id="vis">
+      <div id="loading">
+        <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><br /><br />
+        <span>Loading...</span>
+      </div>
+    </div>
+  </div>
+
+  </div>
+  <script type="text/javascript">
+    var currentViz = "China";
+  </script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+  <script src="lib/d3.js"></script>
+  <script src="src/typeahead.js"></script>
+  <script src="src/tooltip.js"></script>
+  <script src="src/tabletop.js"></script>
+  <script src="src/search.js"></script>
+  <script src="src/helpers.js"></script>
+  <script src="src/bubble_chart.js"></script>
+
+</body>
+</html>
