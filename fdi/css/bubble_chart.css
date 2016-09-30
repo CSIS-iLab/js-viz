@@ -5,8 +5,14 @@ body {
   font-size:16px;
 }
 
-a, a:visited, a:active {
+a, a:visited {
   color: #444;
+  text-decoration:none;
+}
+
+a:active, a:hover {
+  color: #772031;
+  text-decoration:none;
 }
 
 h1 {
@@ -244,6 +250,11 @@ select.dropdown {
 
 #loading span {
   margin-top:10px;
+}
+
+#source {
+  text-align:right;
+  font-size: 9px;
 }
 
 /* Legend */
