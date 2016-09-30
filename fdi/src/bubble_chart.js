@@ -681,129 +681,124 @@ var currentView = "all";
 
 // Get our google spreadsheet based on currentViz data
 if(currentViz == "China") {
-  var public_spreadsheet_url = 'https://docs.google.com/spreadsheets/d/1pJZMDODjjqg1MDD5sGJ7QwgNAkx5uFuW7a92AN-yEsI/pubhtml';
-  $(document).ready( function() {
-    Tabletop.init( { key: public_spreadsheet_url,
-                     callback: showInfoChina,
-                     wanted: [ "China Bilateral Outflows"],
-                     debug: false } )
-  });
+  showInfoChina();
 }
 else {
-  var public_spreadsheet_url = 'https://docs.google.com/spreadsheets/d/1pVWQNwnHbEex4ycocZ_GqvDHY77l4slytcGaTpWwraE/pubhtml?gid=1343412411&single=true';
-  $(document).ready( function() {
-    Tabletop.init( { key: public_spreadsheet_url,
-                     callback: showInfo,
-                     wanted: [ "FDI Data Source"],
-                     debug: false } )
-  });
+  showInfo();
 }
 
 // Populate our dataset variables
-function showInfo(data, tabletop) {
-  $.each( tabletop.sheets("FDI Data Source").all(), function(i, row) {
-    Object.keys(datasetIn).forEach(function(key){
-      Object.keys(datasetIn[key]).forEach(function(regionKey) {
+function showInfo() {
 
-        if(regionKey == "All") {
-          if(row.in_stock && row.year == key) {
-            datasetIn[key][regionKey].push({
-              region: row.region,
-              id: row.id,
-              country: row.country,
-              value: row.in_stock,
-              group: row.group,
-              year: key,
-              gni: row.gni
-            });
-          }
-        }
-        else {
-          if(row.in_stock && row.year == key && row.region == regionKey) {
-            datasetIn[key][regionKey].push({
-              region: row.region,
-              id: row.id,
-              country: row.country,
-              value: row.in_stock,
-              group: row.group,
-              year: key,
-              gni: row.gni
-            });
-          }
-        }
-      });
-    });
+  d3.csv("data/global-fdi-stocks.csv", function(data) {
+    $.each(data, function(i,row) {
+      
+      Object.keys(datasetIn).forEach(function(key){
+        Object.keys(datasetIn[key]).forEach(function(regionKey) {
 
-    Object.keys(datasetOut).forEach(function(key){
-      Object.keys(datasetOut[key]).forEach(function(regionKey) {
-        if(regionKey == "All") {
-          if(row.out_stock && row.year == key) {
-            datasetOut[key][regionKey].push({
-              region: row.region,
-              id: row.id,
-              country: row.country,
-              value: row.out_stock,
-              group: row.group,
-              year: key,
-              gni: row.gni
-            });
+          if(regionKey == "All") {
+            if(row.in_stock && row.year == key) {
+              datasetIn[key][regionKey].push({
+                region: row.region,
+                id: row.id,
+                country: row.country,
+                value: row.in_stock,
+                group: row.group,
+                year: key,
+                gni: row.gni
+              });
+            }
           }
-        }
-        else {
-          if(row.out_stock && row.year == key && row.region == regionKey) {
-            datasetOut[key][regionKey].push({
-              region: row.region,
-              id: row.id,
-              country: row.country,
-              value: row.out_stock,
-              group: row.group,
-              year: key,
-              gni: row.gni
-            });
+          else {
+            if(row.in_stock && row.year == key && row.region == regionKey) {
+              datasetIn[key][regionKey].push({
+                region: row.region,
+                id: row.id,
+                country: row.country,
+                value: row.in_stock,
+                group: row.group,
+                year: key,
+                gni: row.gni
+              });
+            }
           }
-        }
-      });
-    });
+        });
+      });
 
-  });
+      Object.keys(datasetOut).forEach(function(key){
+        Object.keys(datasetOut[key]).forEach(function(regionKey) {
+          if(regionKey == "All") {
+            if(row.out_stock && row.year == key) {
+              datasetOut[key][regionKey].push({
+                region: row.region,
+                id: row.id,
+                country: row.country,
+                value: row.out_stock,
+                group: row.group,
+                year: key,
+                gni: row.gni
+              });
+            }
+          }
+          else {
+            if(row.out_stock && row.year == key && row.region == regionKey) {
+              datasetOut[key][regionKey].push({
+                region: row.region,
+                id: row.id,
+                country: row.country,
+                value: row.out_stock,
+                group: row.group,
+                year: key,
+                gni: row.gni
+              });
+            }
+          }
+        });
+      });
 
-  redraw();
+    }); // Close $.each
+
+    redraw();
+
+  }); // Close d3.csv
+
 }
 
 // Populate our dataset variables
 function showInfoChina(data, tabletop) {
-  $.each( tabletop.sheets("China Bilateral Outflows").all(), function(i, row) {
+  d3.csv("data/china-investment-outflows.csv", function(data) {
+    $.each(data, function(i,row) {
 
-    Object.keys(datasetChina).forEach(function(key){
-      Object.keys(datasetChina[key]).forEach(function(regionKey) {
-        if(regionKey == "All") {
-          if(row.value && row.year == key) {
-            datasetChina[key][regionKey].push({
-              region: row.region,
-              id: row.id,
-              country: row.country,
-              value: row.value,
-              group: row.group,
-              year: key
-            });
+      Object.keys(datasetChina).forEach(function(key){
+        Object.keys(datasetChina[key]).forEach(function(regionKey) {
+          if(regionKey == "All") {
+            if(row.value && row.year == key) {
+              datasetChina[key][regionKey].push({
+                region: row.region,
+                id: row.id,
+                country: row.country,
+                value: row.value,
+                group: row.group,
+                year: key
+              });
+            }
           }
-        }
-        else {
-          if(row.value && row.year == key && row.region == regionKey) {
-            datasetChina[key][regionKey].push({
-              region: row.region,
-              id: row.id,
-              country: row.country,
-              value: row.value,
-              group: row.group,
-              year: key
-            });
+          else {
+            if(row.value && row.year == key && row.region == regionKey) {
+              datasetChina[key][regionKey].push({
+                region: row.region,
+                id: row.id,
+                country: row.country,
+                value: row.value,
+                group: row.group,
+                year: key
+              });
+            }
           }
-        }
-      });
-    });
+        });
+      });
 
-  });
-
-  redraw();
+    }); // Close $.each
+    redraw();
+  }); // Close d3.csv
 }

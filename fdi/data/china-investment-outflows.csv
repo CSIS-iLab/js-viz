@@ -1,0 +1,363 @@
+region,id,country,value,year,group,subregion
+Europe,GBR,United Kingdom,100,2005,5,Northern Europe
+Asia,MNG,Mongolia,200,2005,1,Eastern Asia
+Americas,CAN,Canada,250,2005,5,North America
+Asia,SYR,Syrian Arab Republic,290,2005,2,Western Asia
+Oceania,AUS,Australia,320,2005,5,Australia and New Zealand
+Americas,CUB,Cuba,500,2005,2,North America
+Americas,CHL,Chile,550,2005,3,South America
+Oceania,PNG,Papua New Guinea,670,2005,1,Melanesia
+Americas,ECU,Ecuador,1420,2005,2,South America
+Americas,USA,United States,1740,2005,5,North America
+Asia,KAZ,Kazakhstan,4200,2005,2,Central Asia
+Asia,IDN,Indonesia,100,2006,2,South-Eastern Asia
+Europe,NLD,Netherlands,100,2006,5,Western Europe
+Americas,CAN,Canada,110,2006,5,North America
+Asia,JPN,Japan,110,2006,5,Eastern Asia
+Africa,ZAF,South Africa,230,2006,3,Southern Africa
+Africa,ZMB,Zambia,310,2006,1,Eastern Africa
+Americas,COL,Colombia,430,2006,2,South America
+Europe,FRA,France,480,2006,5,Western Europe
+Africa,AGO,Angola,740,2006,2,Middle Africa
+Europe,GBR,United Kingdom,800,2006,5,Northern Europe
+Africa,EGY,"Egypt, Arab Rep.",940,2006,2,Northern Africa
+Asia,SGP,Singapore,970,2006,4,South-Eastern Asia
+Asia,KAZ,Kazakhstan,1910,2006,3,Central Asia
+Africa,COD,"Congo, Dem. Rep.",2000,2006,1,Middle Africa
+Africa,NGA,Nigeria,2270,2006,1,Western Africa
+Oceania,AUS,Australia,2920,2006,5,Australia and New Zealand
+Europe,RUS,Russian Federation,5410,2006,3,Eastern Europe
+Americas,MEX,Mexico,100,2007,3,Central America
+Africa,ZWE,Zimbabwe,100,2007,1,Eastern Africa
+Europe,DEU,Germany,130,2007,5,Western Europe
+Europe,NLD,Netherlands,140,2007,5,Western Europe
+Africa,EGY,"Egypt, Arab Rep.",150,2007,2,Northern Africa
+Africa,TCD,Chad,200,2007,1,Middle Africa
+Oceania,AUS,Australia,430,2007,5,Australia and New Zealand
+Asia,PAK,Pakistan,460,2007,1,Southern Asia
+Asia,IND,India,500,2007,2,Southern Asia
+Europe,FRA,France,700,2007,5,Western Europe
+Asia,SAU,Saudi Arabia,1200,2007,4,Western Asia
+Americas,PER,Peru,1430,2007,2,South America
+Asia,IRN,"Iran, Islamic Rep.",2010,2007,2,Southern Asia
+Europe,BEL,Belgium,2700,2007,5,Western Europe
+Asia,AFG,Afghanistan,2870,2007,1,Southern Asia
+Europe,GBR,United Kingdom,3040,2007,5,Northern Europe
+Africa,ZAF,South Africa,5600,2007,3,Southern Africa
+Americas,USA,United States,8600,2007,5,North America
+Africa,LBR,Liberia,110,2008,1,Western Africa
+Asia,IDN,Indonesia,130,2008,2,South-Eastern Asia
+Europe,DEU,Germany,140,2008,5,Western Europe
+Asia,MNG,Mongolia,150,2008,2,Eastern Asia
+Americas,MEX,Mexico,210,2008,3,Central America
+Europe,ITA,Italy,250,2008,5,Southern Europe
+Asia,YEM,"Yemen, Rep.",470,2008,1,Western Asia
+Asia,TUR,Turkey,760,2008,3,Western Asia
+Asia,MMR,Myanmar,810,2008,1,South-Eastern Asia
+Asia,IND,India,1200,2008,2,Southern Asia
+Asia,SYR,Syrian Arab Republic,1990,2008,2,Western Asia
+Europe,GBR,United Kingdom,2010,2008,5,Northern Europe
+Americas,PER,Peru,2160,2008,3,South America
+Europe,NOR,Norway,2490,2008,5,Northern Europe
+Africa,COD,"Congo, Dem. Rep.",2540,2008,1,Middle Africa
+Europe,FRA,France,2800,2008,5,Western Europe
+Asia,IRQ,Iraq,3020,2008,2,Western Asia
+Asia,SGP,Singapore,3570,2008,4,South-Eastern Asia
+Europe,GRC,Greece,4150,2008,5,Southern Europe
+Africa,NER,Niger,5180,2008,1,Western Africa
+Americas,USA,United States,5370,2008,5,North America
+Oceania,AUS,Australia,15590,2008,5,Australia and New Zealand
+Americas,BHS,"Bahamas, The",100,2009,4,North America
+Asia,QAT,Qatar,100,2009,4,Western Asia
+Europe,BGR,Bulgaria,120,2009,3,Eastern Europe
+Asia,UZB,Uzbekistan,190,2009,2,Central Asia
+Asia,LAO,Lao PDR,200,2009,1,South-Eastern Asia
+Asia,IDN,Indonesia,230,2009,2,South-Eastern Asia
+Africa,SDN,Sudan,260,2009,2,Eastern Africa
+Africa,EGY,"Egypt, Arab Rep.",280,2009,2,Northern Africa
+Americas,TTO,Trinidad and Tobago,320,2009,4,North America
+Asia,IND,India,350,2009,2,Southern Asia
+Africa,ZMB,Zambia,370,2009,1,Eastern Africa
+Africa,TCD,Chad,470,2009,1,Middle Africa
+Asia,PAK,Pakistan,500,2009,2,Southern Asia
+Asia,THA,Thailand,530,2009,2,South-Eastern Asia
+Americas,ECU,Ecuador,650,2009,2,South America
+Africa,MUS,Mauritius,740,2009,3,Eastern Africa
+Asia,MNG,Mongolia,750,2009,2,Eastern Asia
+Europe,RUS,Russian Federation,780,2009,3,Eastern Europe
+Americas,BRA,Brazil,900,2009,3,South America
+Europe,ESP,Spain,1000,2009,5,Southern Europe
+Asia,MMR,Myanmar,1020,2009,1,South-Eastern Asia
+Americas,PER,Peru,1090,2009,3,South America
+Europe,GBR,United Kingdom,1700,2009,5,Northern Europe
+Asia,IRN,"Iran, Islamic Rep.",1760,2009,3,Southern Asia
+Americas,CHL,Chile,1910,2009,3,South America
+Asia,SGP,Singapore,2180,2009,4,South-Eastern Asia
+Americas,CAN,Canada,3480,2009,5,North America
+Asia,KAZ,Kazakhstan,3790,2009,3,Central Asia
+Asia,IRQ,Iraq,5590,2009,2,Western Asia
+Europe,CHE,Switzerland,7200,2009,5,Western Europe
+Americas,USA,United States,8200,2009,5,North America
+Oceania,AUS,Australia,9130,2009,5,Australia and New Zealand
+Asia,GEO,Georgia,100,2010,2,Western Asia
+Asia,UZB,Uzbekistan,100,2010,2,Central Asia
+Asia,KAZ,Kazakhstan,120,2010,3,Central Asia
+Africa,ETH,Ethiopia,140,2010,1,Eastern Africa
+Americas,JAM,Jamaica,140,2010,3,North America
+Asia,KHM,Cambodia,180,2010,1,South-Eastern Asia
+Europe,HUN,Hungary,190,2010,5,Eastern Europe
+Europe,ITA,Italy,200,2010,5,Southern Europe
+Africa,SLE,Sierra Leone,260,2010,1,Western Africa
+Europe,NLD,Netherlands,270,2010,5,Western Europe
+Asia,MYS,Malaysia,350,2010,3,South-Eastern Asia
+Africa,ZAF,South Africa,450,2010,3,Southern Africa
+Africa,CMR,Cameroon,500,2010,2,Middle Africa
+Americas,ECU,Ecuador,610,2010,3,South America
+Asia,IDN,Indonesia,830,2010,2,South-Eastern Asia
+Europe,RUS,Russian Federation,830,2010,3,Eastern Europe
+Americas,VEN,"Venezuela, RB",900,2010,3,South America
+Asia,KOR,"Korea, Rep.",1090,2010,5,Eastern Asia
+Europe,GBR,United Kingdom,1130,2010,5,Northern Europe
+Africa,GHA,Ghana,1200,2010,2,Western Africa
+Asia,ISR,Israel,1440,2010,5,Western Asia
+Asia,MMR,Myanmar,1480,2010,1,South-Eastern Asia
+Asia,SYR,Syrian Arab Republic,1480,2010,2,Western Asia
+Asia,THA,Thailand,1500,2010,3,South-Eastern Asia
+Asia,PRK,"Korea, Dem. Rep.",2000,2010,1,Eastern Asia
+Americas,PER,Peru,2500,2010,3,South America
+Africa,NGA,Nigeria,2650,2010,2,Western Africa
+Europe,SWE,Sweden,2700,2010,5,Northern Europe
+Oceania,AUS,Australia,3540,2010,5,Australia and New Zealand
+Americas,ARG,Argentina,6580,2010,3,South America
+Americas,CAN,Canada,7080,2010,5,North America
+Americas,USA,United States,8820,2010,5,North America
+Americas,BRA,Brazil,13890,2010,3,South America
+Europe,CHE,Switzerland,100,2011,5,Western Europe
+Asia,THA,Thailand,100,2011,3,South-Eastern Asia
+Africa,COG,"Congo, Rep.",120,2011,2,Middle Africa
+Europe,GRC,Greece,120,2011,5,Southern Europe
+Europe,ITA,Italy,130,2011,5,Southern Europe
+Europe,AUT,Austria,140,2011,5,Western Europe
+Asia,NPL,Nepal,140,2011,1,Southern Asia
+Africa,MDG,Madagascar,150,2011,1,Eastern Africa
+Americas,JAM,Jamaica,170,2011,3,North America
+Americas,VEN,"Venezuela, RB",200,2011,3,South America
+Europe,NLD,Netherlands,270,2011,5,Western Europe
+Asia,LKA,Sri Lanka,280,2011,2,Southern Asia
+Africa,TCD,Chad,370,2011,1,Middle Africa
+Asia,AFG,Afghanistan,400,2011,1,Southern Asia
+Asia,VNM,Vietnam,460,2011,2,South-Eastern Asia
+Europe,ESP,Spain,500,2011,5,Southern Europe
+Asia,KHM,Cambodia,500,2011,1,South-Eastern Asia
+Africa,ZWE,Zimbabwe,500,2011,1,Eastern Africa
+Europe,GBR,United Kingdom,510,2011,5,Northern Europe
+Asia,SGP,Singapore,530,2011,4,South-Eastern Asia
+Africa,CMR,Cameroon,540,2011,2,Middle Africa
+Asia,PAK,Pakistan,750,2011,2,Southern Asia
+Americas,TTO,Trinidad and Tobago,850,2011,4,North America
+Asia,MNG,Mongolia,1010,2011,2,Eastern Asia
+Africa,AGO,Angola,1190,2011,3,Middle Africa
+Africa,COD,"Congo, Dem. Rep.",1280,2011,1,Middle Africa
+Asia,JPN,Japan,1410,2011,5,Eastern Asia
+Africa,SLE,Sierra Leone,1490,2011,1,Western Africa
+Asia,MYS,Malaysia,1830,2011,3,South-Eastern Asia
+Europe,HUN,Hungary,1920,2011,5,Eastern Europe
+Europe,NOR,Norway,2010,2011,5,Northern Europe
+Asia,IDN,Indonesia,2070,2011,2,South-Eastern Asia
+Africa,ZAF,South Africa,2080,2011,3,Southern Africa
+Americas,USA,United States,2170,2011,5,North America
+Americas,ARG,Argentina,2790,2011,3,South America
+Asia,BRN,Brunei Darussalam,2800,2011,4,South-Eastern Asia
+Europe,RUS,Russian Federation,2940,2011,3,Eastern Europe
+Europe,DEU,Germany,3500,2011,5,Western Europe
+Europe,PRT,Portugal,3510,2011,5,Southern Europe
+Asia,SAU,Saudi Arabia,3710,2011,4,Western Asia
+Europe,FRA,France,3750,2011,5,Western Europe
+Americas,CAN,Canada,7880,2011,5,North America
+Americas,BRA,Brazil,8180,2011,3,South America
+Oceania,AUS,Australia,8570,2011,5,Australia and New Zealand
+Asia,GEO,Georgia,100,2012,2,Western Asia
+Americas,GUY,Guyana,100,2012,2,South America
+Asia,VNM,Vietnam,100,2012,2,South-Eastern Asia
+Asia,TWN,"Taiwan, China",140,2012,4,Eastern Asia
+Europe,GRC,Greece,150,2012,5,Southern Europe
+Asia,LKA,Sri Lanka,150,2012,2,Southern Asia
+Asia,SGP,Singapore,150,2012,4,South-Eastern Asia
+Americas,CHL,Chile,190,2012,5,South America
+Africa,TGO,Togo,190,2012,1,Western Africa
+Asia,PAK,Pakistan,200,2012,2,Southern Asia
+Africa,EGY,"Egypt, Arab Rep.",230,2012,2,Northern Africa
+Europe,BEL,Belgium,260,2012,5,Western Europe
+Asia,THA,Thailand,270,2012,3,South-Eastern Asia
+Africa,MOZ,Mozambique,290,2012,1,Eastern Africa
+Asia,TJK,Tajikistan,300,2012,1,Central Asia
+Americas,NIC,Nicaragua,300,2012,2,Central America
+Africa,COD,"Congo, Dem. Rep.",350,2012,1,Middle Africa
+Americas,VEN,"Venezuela, RB",410,2012,3,South America
+Asia,IND,India,450,2012,2,Southern Asia
+Asia,MYS,Malaysia,460,2012,3,South-Eastern Asia
+Africa,ZAF,South Africa,480,2012,3,Southern Africa
+Asia,KAZ,Kazakhstan,500,2012,3,Central Asia
+Europe,FRA,France,610,2012,5,Western Europe
+Africa,CMR,Cameroon,660,2012,2,Middle Africa
+Europe,ITA,Italy,700,2012,5,Southern Europe
+Europe,POL,Poland,840,2012,5,Eastern Europe
+Europe,CHE,Switzerland,870,2012,5,Western Europe
+Asia,KOR,"Korea, Rep.",900,2012,5,Eastern Asia
+Africa,ZMB,Zambia,930,2012,2,Eastern Africa
+Americas,COL,Colombia,980,2012,3,South America
+Europe,PRT,Portugal,980,2012,5,Southern Europe
+Oceania,NZL,New Zealand,1170,2012,5,Australia and New Zealand
+Asia,KHM,Cambodia,1390,2012,1,South-Eastern Asia
+Europe,HUN,Hungary,1500,2012,3,Eastern Europe
+Asia,LAO,Lao PDR,1520,2012,2,South-Eastern Asia
+Africa,UGA,Uganda,1570,2012,1,Eastern Africa
+Asia,TUR,Turkey,1700,2012,3,Western Asia
+Europe,RUS,Russian Federation,1920,2012,4,Eastern Europe
+Americas,BRA,Brazil,2500,2012,3,South America
+Africa,NGA,Nigeria,2630,2012,2,Western Africa
+Europe,DEU,Germany,2700,2012,5,Western Europe
+Asia,IDN,Indonesia,3550,2012,2,South-Eastern Asia
+Europe,GBR,United Kingdom,7120,2012,5,Northern Europe
+Oceania,AUS,Australia,8400,2012,5,Australia and New Zealand
+Americas,USA,United States,9100,2012,5,North America
+Americas,CAN,Canada,21570,2012,5,North America
+Asia,MMR,Myanmar,100,2013,1,South-Eastern Asia
+Europe,PRT,Portugal,100,2013,5,Southern Europe
+Africa,ZAF,South Africa,110,2013,3,Southern Africa
+Americas,ARG,Argentina,120,2013,3,South America
+Asia,JPN,Japan,120,2013,5,Eastern Asia
+Africa,KEN,Kenya,140,2013,1,Eastern Africa
+Africa,STP,São Tomé and Principe,150,2013,2,Middle Africa
+Africa,COD,"Congo, Dem. Rep.",170,2013,1,Middle Africa
+Asia,LAO,Lao PDR,180,2013,2,South-Eastern Asia
+Oceania,NZL,New Zealand,180,2013,5,Australia and New Zealand
+Africa,DJI,Djibouti,190,2013,2,Eastern Africa
+Europe,LUX,Luxembourg,220,2013,5,Western Europe
+Asia,ISR,Israel,240,2013,5,Western Asia
+Europe,GRC,Greece,300,2013,5,Southern Europe
+Asia,ARE,United Arab Emirates,450,2013,4,Western Asia
+Americas,CAN,Canada,470,2013,5,North America
+Europe,ESP,Spain,550,2013,5,Southern Europe
+Asia,IDN,Indonesia,630,2013,2,South-Eastern Asia
+Europe,DEU,Germany,800,2013,5,Western Europe
+Europe,FRA,France,890,2013,5,Western Europe
+Asia,KOR,"Korea, Rep.",1110,2013,5,Eastern Asia
+Asia,SGP,Singapore,1130,2013,4,South-Eastern Asia
+Asia,IRQ,Iraq,1250,2013,3,Western Asia
+Africa,COG,"Congo, Rep.",1270,2013,2,Middle Africa
+Americas,VEN,"Venezuela, RB",1400,2013,3,South America
+Asia,PAK,Pakistan,1650,2013,2,Southern Asia
+Asia,LKA,Sri Lanka,1690,2013,2,Southern Asia
+Africa,SLE,Sierra Leone,1700,2013,1,Western Africa
+Asia,VNM,Vietnam,1990,2013,2,South-Eastern Asia
+Africa,UGA,Uganda,2180,2013,1,Eastern Africa
+Africa,AGO,Angola,2270,2013,3,Middle Africa
+Americas,PER,Peru,2890,2013,3,South America
+Americas,BRA,Brazil,2900,2013,3,South America
+Africa,EGY,"Egypt, Arab Rep.",3600,2013,2,Northern Africa
+Asia,MYS,Malaysia,3600,2013,3,South-Eastern Asia
+Europe,GBR,United Kingdom,4000,2013,5,Northern Europe
+Africa,MOZ,Mozambique,4710,2013,1,Eastern Africa
+Asia,KAZ,Kazakhstan,5300,2013,3,Central Asia
+Africa,GIN,Guinea,5950,2013,1,Western Africa
+Europe,RUS,Russian Federation,6250,2013,4,Eastern Europe
+Oceania,AUS,Australia,6920,2013,5,Australia and New Zealand
+Americas,USA,United States,15570,2013,5,North America
+Africa,COG,"Congo, Rep.",150,2014,2,Middle Africa
+Africa,LBR,Liberia,160,2014,1,Western Africa
+Africa,AGO,Angola,200,2014,3,Middle Africa
+Europe,GRC,Greece,200,2014,5,Southern Europe
+Europe,POL,Poland,200,2014,5,Eastern Europe
+Asia,VNM,Vietnam,210,2014,2,South-Eastern Asia
+Africa,ZAF,South Africa,230,2014,3,Southern Africa
+Africa,ETH,Ethiopia,300,2014,1,Eastern Africa
+Africa,UGA,Uganda,300,2014,1,Eastern Africa
+Asia,IND,India,310,2014,2,Southern Asia
+Asia,TUR,Turkey,320,2014,3,Western Asia
+Asia,IRN,"Iran, Islamic Rep.",350,2014,3,Southern Asia
+Asia,MYS,Malaysia,380,2014,3,South-Eastern Asia
+Asia,LKA,Sri Lanka,390,2014,2,Southern Asia
+Europe,CHE,Switzerland,400,2014,5,Western Europe
+Asia,SGP,Singapore,410,2014,4,South-Eastern Asia
+Europe,MLT,Malta,440,2014,4,Southern Europe
+Europe,ESP,Spain,540,2014,5,Southern Europe
+Americas,MEX,Mexico,600,2014,3,Central America
+Europe,NOR,Norway,640,2014,5,Northern Europe
+Asia,PAK,Pakistan,640,2014,2,Southern Asia
+Europe,BEL,Belgium,710,2014,5,Western Europe
+Asia,KGZ,Kyrgyz Republic,710,2014,2,Central Asia
+Americas,ATG,Antigua and Barbuda,740,2014,4,North America
+Asia,THA,Thailand,880,2014,3,South-Eastern Asia
+Africa,ZWE,Zimbabwe,1030,2014,1,Eastern Africa
+Oceania,NZL,New Zealand,1110,2014,5,Australia and New Zealand
+Europe,SRB,Serbia,1200,2014,3,Southern Europe
+Europe,NLD,Netherlands,1250,2014,5,Western Europe
+Africa,GIN,Guinea,1460,2014,1,Western Africa
+Asia,ISR,Israel,1560,2014,5,Western Asia
+Asia,KOR,"Korea, Rep.",1600,2014,5,Eastern Asia
+Europe,DEU,Germany,1620,2014,5,Western Europe
+Asia,KAZ,Kazakhstan,1620,2014,3,Central Asia
+Africa,NAM,Namibia,2190,2014,3,Southern Africa
+Americas,BRA,Brazil,2400,2014,3,South America
+Europe,PRT,Portugal,2420,2014,5,Southern Europe
+Asia,IDN,Indonesia,2520,2014,2,South-Eastern Asia
+Europe,FRA,France,3090,2014,5,Western Europe
+Europe,RUS,Russian Federation,3530,2014,4,Eastern Europe
+Americas,CAN,Canada,3640,2014,5,North America
+Americas,ECU,Ecuador,5040,2014,3,South America
+Americas,PER,Peru,6990,2014,3,South America
+Europe,ITA,Italy,7600,2014,5,Southern Europe
+Europe,GBR,United Kingdom,8680,2014,5,Northern Europe
+Oceania,AUS,Australia,10030,2014,5,Australia and New Zealand
+Americas,USA,United States,17990,2014,5,North America
+Asia,LAO,Lao PDR,100,2015,2,South-Eastern Asia
+Africa,ZAF,South Africa,110,2015,3,Southern Africa
+Africa,KEN,Kenya,120,2015,2,Eastern Africa
+Africa,RWA,Rwanda,120,2015,1,Eastern Africa
+Europe,LUX,Luxembourg,130,2015,5,Western Europe
+Asia,THA,Thailand,160,2015,3,South-Eastern Asia
+Europe,CZE,Czech Republic,200,2015,5,Eastern Europe
+Africa,COD,"Congo, Dem. Rep.",220,2015,1,Middle Africa
+Americas,BHS,"Bahamas, The",250,2015,4,North America
+Europe,BEL,Belgium,290,2015,5,Western Europe
+Americas,ARG,Argentina,300,2015,4,South America
+Oceania,PNG,Papua New Guinea,300,2015,2,Melanesia
+Asia,JOR,Jordan,350,2015,3,Western Asia
+Africa,COG,"Congo, Rep.",410,2015,2,Middle Africa
+Asia,KAZ,Kazakhstan,470,2015,3,Central Asia
+Africa,ZMB,Zambia,500,2015,2,Eastern Africa
+Europe,ROU,Romania,510,2015,3,Eastern Europe
+Europe,BLR,Belarus,550,2015,3,Eastern Europe
+Europe,DEU,Germany,620,2015,5,Western Europe
+Africa,UGA,Uganda,620,2015,1,Eastern Africa
+Africa,ZWE,Zimbabwe,700,2015,1,Eastern Africa
+Asia,BGD,Bangladesh,750,2015,2,Southern Asia
+Africa,SLE,Sierra Leone,770,2015,1,Western Africa
+Europe,ESP,Spain,850,2015,5,Southern Europe
+Asia,VNM,Vietnam,940,2015,2,South-Eastern Asia
+Asia,TUR,Turkey,1300,2015,3,Western Asia
+Asia,JPN,Japan,1340,2015,5,Eastern Asia
+Asia,TWN,"Taiwan, China",1350,2015,4,Eastern Asia
+Asia,NPL,Nepal,1450,2015,1,Southern Asia
+Americas,CAN,Canada,1660,2015,5,North America
+Asia,MNG,Mongolia,1940,2015,2,Eastern Asia
+Asia,ISR,Israel,2090,2015,5,Western Asia
+Europe,SWE,Sweden,2200,2015,5,Northern Europe
+Europe,IRL,Ireland,2640,2015,5,Northern Europe
+Africa,TZA,Tanzania,2700,2015,1,Eastern Africa
+Europe,FRA,France,2710,2015,5,Western Europe
+Asia,PAK,Pakistan,2810,2015,2,Southern Asia
+Asia,IND,India,3120,2015,2,Southern Asia
+Asia,IDN,Indonesia,3220,2015,2,South-Eastern Asia
+Asia,MYS,Malaysia,3340,2015,3,South-Eastern Asia
+Europe,GBR,United Kingdom,3470,2015,5,Northern Europe
+Europe,NLD,Netherlands,3470,2015,5,Western Europe
+Europe,RUS,Russian Federation,3600,2015,3,Eastern Europe
+Asia,SGP,Singapore,3990,2015,4,South-Eastern Asia
+Europe,CHE,Switzerland,4000,2015,5,Western Europe
+Asia,KOR,"Korea, Rep.",4770,2015,5,Eastern Asia
+Americas,BRA,Brazil,6880,2015,3,South America
+Europe,ITA,Italy,10280,2015,5,Southern Europe
+Oceania,AUS,Australia,11030,2015,5,Australia and New Zealand
+Americas,USA,United States,17850,2015,5,North America
