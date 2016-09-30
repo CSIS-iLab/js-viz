@@ -132,7 +132,7 @@ function bubbleChart() {
   else {
     var fillColor = d3.scale.ordinal()
     .domain(['Americas', 'Europe', 'Asia', 'Africa', 'Oceania', 'China'])
-    .range(['#772132','#58a992','#907562','#4D6E79','#afadbc','#303D43']);
+    .range(['#772132','#58a992','#907562','#5BCBF5','#afadbc','#212A2E']);
   }
 
   // Sizes bubbles based on their area instead of raw radius
