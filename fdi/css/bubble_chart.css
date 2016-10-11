@@ -31,17 +31,9 @@ p {
 
 .container {
   width:90%;
+  min-width:210px;
   margin: auto;
 }
-
-/*#toolbar .button {
-  border-color:#f2efef;
-}
-
-#toolbar .button:hover, #toolbar .button.active {
-  background-color:#f2efef;
-  color:#444;
-}*/
 
 .button {
   display:inline-block;
