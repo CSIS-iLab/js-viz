@@ -6,6 +6,15 @@
  * https://bost.ocks.org/mike/chart/
  *
  */
+
+// iPhone CSS
+var is_ios = /(iPhone|iPod)/g.test( navigator.userAgent );
+if(is_ios)    
+{
+ $('<link rel="stylesheet" type="text/css" href="css/iphone.css" />').appendTo("head");
+};
+
+
 // Constants for sizing
 var dim = Math.min(parseInt(d3.select("#vis").style("width")), parseInt(d3.select("#vis").style("height")));
 var width = $("#vis").width();
