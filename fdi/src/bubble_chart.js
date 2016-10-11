@@ -7,9 +7,9 @@
  *
  */
 // Constants for sizing
-  var dim = Math.min(parseInt(d3.select("#vis").style("width")), parseInt(d3.select("#vis").style("height")));
-  var width = $("#vis").width();
-  var height = $("#vis").height();
+var dim = Math.min(parseInt(d3.select("#vis").style("width")), parseInt(d3.select("#vis").style("height")));
+var width = $("#vis").width();
+var height = $("#vis").height();
 
 // Set position of tooltip manually
 d3.selection.prototype.position = function() {
@@ -127,7 +127,7 @@ function bubbleChart() {
   if(currentViz == "China") {
     var fillColor = d3.scale.ordinal()
       .domain(['Americas', 'Europe', 'Asia', 'Africa', 'Oceania'])
-      .range(['#3b75bb','#887395','#6b874d','#caac4c','#534a6e']);
+      .range(['#3b75bb','#887395','#6b874d','#caac4c','#BA2736']);
   }
   else {
     var fillColor = d3.scale.ordinal()
