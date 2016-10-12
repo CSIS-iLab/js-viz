@@ -278,7 +278,7 @@ function bubbleChart() {
               // Switch to vertical if on mobile
               if(width < (767 * .9)) {
                 var legendXCalc = 5;
-                var legendYCalc = i * 10 + 245;
+                var legendYCalc = i * 10 + 290;
               }
               else {
                 var legendXCalc = i * 100 + (width / legendWidth);

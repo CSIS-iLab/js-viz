@@ -48,7 +48,7 @@ p {
   font-weight: bold;
   font-family: 'Roboto', sans-serif;
   border-radius:2px;
-  margin:0px 5px;
+  margin:3px 5px;
 }
 
 .button:hover, .button.active {
@@ -249,6 +249,12 @@ select.dropdown {
   font-size: 9px;
 }
 
+#disclaimer {
+  text-align:center;
+  font-size: 12px;
+  display:none;
+}
+
 /* Legend */
 .scaleCircleLabel {
     vertical-align:middle;
@@ -261,7 +267,10 @@ select.dropdown {
 
 @media only screen and (max-width: 767px) {
   #vis {
-    height:300px;
+    height:350px;
+  }
+  .visibleMobile {
+    display:block !important;
   }
   .hiddenMobile {
     display:none;
