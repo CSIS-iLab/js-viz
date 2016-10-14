@@ -21,17 +21,17 @@ $(function () {
     credits: {
       enabled: true,
       href: "http://amti.csis.org",
-      text: "CSIS/Asia Maritime Transparency Initiative"
+      text: "CSIS/Asia Maritime Transparency Initiative (Data from Japan Coast Guard)"
     },
     title: {
-      text: "Japan Coast Guard: Number of Chinese Vessels Spotted in the Contiguous Zone/Territorial Sea"
+      text: "Number of Chinese Government Vessels in Senkakus’ Contiguous Zone/Territorial Sea (2009-2016)"
     },
     subtitle: {
       text: "Click and drag to zoom in"
     },
     legend: {
       title: {
-        text: 'Type of Incursion<br/><span style="font-size: 9px; color: #666; font-weight: normal">(Click to hide)</span>',
+        text: 'Location of Ships<br/><span style="font-size: 9px; color: #666; font-weight: normal">(Click to hide)</span>',
         style: {
           fontStyle: 'italic'
         }
@@ -42,7 +42,7 @@ $(function () {
     },
     colors: ['#00b29e', '#023850'],
     yAxis: {
-      title: { text: "Number of Incursions" },
+      title: { text: "Number of Ships" },
       tickInterval: 20
     },
     xAxis: {
