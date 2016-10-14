@@ -30,12 +30,6 @@ $(function () {
       text: "Click and drag to zoom in"
     },
     legend: {
-      title: {
-        text: 'Location of Ships<br/><span style="font-size: 9px; color: #666; font-weight: normal">(Click to hide)</span>',
-        style: {
-          fontStyle: 'italic'
-        }
-      },
       align: 'center',
       verticalAlign: 'bottom',
       layout: 'horizontal'
