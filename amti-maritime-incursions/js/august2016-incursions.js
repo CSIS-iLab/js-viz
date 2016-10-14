@@ -23,12 +23,6 @@ $(function () {
       text: "Number of Chinese Government  Vessels in Senkakus’ Contiguous Zone/Territorial Sea (August 2016)"
     },
     legend: {
-      title: {
-        text: 'Location of Ships<br/><span style="font-size: 9px; color: #666; font-weight: normal">(Click to hide)</span>',
-        style: {
-          fontStyle: 'italic'
-        }
-      },
       align: 'center',
       verticalAlign: 'bottom',
       layout: 'horizontal'
