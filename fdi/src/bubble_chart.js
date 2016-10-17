@@ -135,13 +135,13 @@ function bubbleChart() {
   // Nice looking colors - no reason to buck the trend
   if(currentViz == "China") {
     var fillColor = d3.scale.ordinal()
-      .domain(['Americas', 'Europe', 'Asia', 'Africa', 'Oceania'])
-      .range(['#3b75bb','#887395','#6b874d','#caac4c','#BA2736']);
+      .domain(['Africa', 'Americas', 'Asia', 'Europe', 'Oceania'])
+      .range(['#caac4c', '#3b75bb','#6b874d', '#887395','#BA2736']);
   }
   else {
     var fillColor = d3.scale.ordinal()
-    .domain(['Americas', 'Europe', 'Asia', 'Africa', 'Oceania', 'China'])
-    .range(['#772132','#58a992','#907562','#5BCBF5','#afadbc','#212A2E']);
+    .domain(['Africa', 'Americas', 'Asia', 'Europe', 'Oceania', 'China'])
+    .range(['#5BCBF5', '#772132', '#907562', '#58a992','#afadbc','#212A2E']);
   }
 
   // Sizes bubbles based on their area instead of raw radius
@@ -274,6 +274,12 @@ function bubbleChart() {
       .append('g')
         .attr('class', 'legend')
         .attr('transform', function(d, i) {
+            if(d == "Asia") {
+              var xPos = 108;
+            }
+            else {
+              var xPos = 100;
+            }
 
               // Switch to vertical if on mobile
               if(width < (767 * .9)) {
@@ -281,7 +287,7 @@ function bubbleChart() {
                 var legendYCalc = i * 10 + 290;
               }
               else {
-                var legendXCalc = i * 100 + (width / legendWidth);
+                var legendXCalc = i * xPos + (width / legendWidth);
                 var legendYCalc = height - 15;
               }
 
