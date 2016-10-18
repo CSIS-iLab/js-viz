@@ -1,0 +1,137 @@
+
+<!DOCTYPE html lang="en-US">
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width" />
+<title>
+	Beyond Parallel |
+	Predata - Beyond Parallel</title>
+<link rel='stylesheet' id='style.css-css'  href='http://korea.staging.wpengine.com/wp-content/themes/naked-wordpress-master/style.css?ver=4.6' type='text/css' media='all' />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://code.highcharts.com/stock/highstock.js"></script>
+<script src="http://code.highcharts.com/modules/data.js"></script>
+
+</head>
+
+		<div class="main-fluid" style="background: #131A28;">
+<center><img src="http://korea.staging.wpengine.com/wp-content/uploads/2016/10/Copy-of-predata_logo_hi-res.png" /><img src="http://korea.staging.wpengine.com/wp-content/uploads/2016/04/BP_final_logo_color_darkbackground.png" width="219" ></center>
+<div id="container" style="margin-left: 80px; margin-right: 80px;"></div>
+<div class="satellitetext"  style="margin-left:147px;">
+<span class="mission tracker">Events Tracker</strong></span>
+</div>
+<p class="mission" style="margin-bottom: 0;padding-top:0 !important;"><iframe src="http://korea.staging.wpengine.com/predata-src/timeline.html" width="100%" height="300"></iframe></p>
+</div>
+													</div><!-- the-content -->
+
+
+<script type="text/javascript">(function($) {
+var highchartsOptions = Highcharts.setOptions(Highcharts.theme = {
+   colors: ['#83d4ef','#92278f','#be1e2d','#ffc624']
+});
+
+Highcharts.setOptions({
+  chart: {
+    width: null,
+        height:null,
+    defaultSeriesType: 'spline',
+   backgroundColor: '#131A28',
+    shadow: false,
+    style: {
+               fontFamily: 'museo sans',
+           }
+  },
+  });
+
+ })(jQuery);
+
+(function($) {
+$('#container').highcharts({
+   credits: {
+          style: {
+             enabled: false
+
+         }
+        },
+  legend: {
+     itemHoverStyle: {
+                color: '#ffc726  '
+            },
+     itemStyle: {
+                color: '#fff',
+                fontWeight: 'light'
+            }
+        },
+
+
+    data: {
+        googleSpreadsheetKey: '102UZJBqMdAhmKHtYEMOvE2UNIG_Bp8Dtl3wn9rcl-74',
+        googleSpreadsheetWorksheet: 1
+    },
+       title: {
+            text: 'Signals From Korea',
+            style: {
+              display: 'none'
+
+         }
+        },
+     subtitle: {
+           text: 'Powered by PreData / Graphics by CSIS iDeas Lab / Analysis by BeyondParallel',
+       style: {
+              color: '#ffffff',
+
+         }
+    },
+
+    yAxis: {
+       gridLineWidth: 0,
+                minorGridLineWidth: 0,
+      min: 1.5,
+      title: {
+        text: 'Signal Strength',
+      style: {
+       color: '#ffc726',
+       fontSize: '15px'
+   }
+ }
+    },
+  xAxis: {
+         type: 'datetime',
+        dateTimeLabelFormats: {
+           day: '%b %d'    //ex- 01 Jan 2016
+        },
+     title: {
+        text: 'Last 30 Days',
+        style: {
+         color: '#ffc726',
+         fontSize: '15px'
+     }
+
+     }
+
+  },
+  plotOptions: {
+    spline: {
+        marker: {
+            enabled: false
+        }
+    }
+},
+   credits: {
+    text: 'CSIS Beyond Parallel | Source: Predata',
+    style: {
+     display: 'none'
+ }
+  },
+
+});
+
+ })(jQuery);
+
+
+
+</script>
+
+
+</body>
+</html>
