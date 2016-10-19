@@ -150,7 +150,6 @@ select.dropdown {
   border: 2px solid #f2efef;
   background: #fff;
 	padding: 10px;
-	width: 300px;
 	font-size: 13px;
 	z-index: 10;
   font-family: 'Roboto Slab', serif;
@@ -159,6 +158,13 @@ select.dropdown {
 
 .tooltip .name {
   font-weight:bold;
+}
+
+.bubbleInfo {
+  font-size: 13px;
+  font-family: 'Roboto Slab', serif;
+  color:#444;
+  fill:#444;
 }
 
 #searchContainer {

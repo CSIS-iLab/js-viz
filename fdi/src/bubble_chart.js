@@ -246,8 +246,7 @@ function bubbleChart() {
       .attr('stroke', d3.rgb('#f2efef'))
       .attr('stroke-width', 1.5)
       .on('mouseover', showDetail)
-      .on('mouseout', hideDetail)
-      .on('touchend', hideDetail);
+      .on('mouseout', hideDetail);
 
     // Fancy transition to make bubbles appear, ending with the correct radius
     bubbles.transition()
@@ -480,7 +479,21 @@ function bubbleChart() {
       pageY: elementCoords.top - 20
     };
 
-    tooltip.showTooltip(content, coords);
+    // Remove tooltip if not on mobile
+    if(width < (767 * .9)) {
+      var x = width / 2;
+      svg.append("text")
+        .classed('bubbleInfoContainer', true)
+        .attr('y', 10)
+        .attr('transform', 'translate('+x+')')
+        .append('tspan')
+          .attr('text-anchor', 'middle')
+          .classed('bubbleInfo', true)
+          .text(d.name+" - $"+addCommas(d.value)+" million ("+d.year+")");
+    }
+    else {
+      tooltip.showTooltip(content, coords);
+    }
   }
 
   /*
@@ -490,7 +503,13 @@ function bubbleChart() {
     // reset fill
     d3.select(this).attr('fill', d3.rgb(fillColor(d.group)));
 
-    tooltip.hideTooltip();
+    // destroy previous information bubble on mobile
+    if(width < (767 * .9)) {
+      d3.select(".bubbleInfoContainer").remove();
+    }
+    else {
+      tooltip.hideTooltip();
+    }
   }
 
   /*
