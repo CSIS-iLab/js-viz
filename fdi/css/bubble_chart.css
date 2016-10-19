@@ -300,3 +300,7 @@ select.dropdown {
     padding:11px 10px;
   }
 }
+
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+  #searchContainer {display:none !important;}
+}
