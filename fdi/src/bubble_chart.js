@@ -487,9 +487,16 @@ function bubbleChart() {
         .attr('y', 10)
         .attr('transform', 'translate('+x+')')
         .append('tspan')
+          .attr('x', 0)
           .attr('text-anchor', 'middle')
           .classed('bubbleInfo', true)
-          .text(d.name+" - $"+addCommas(d.value)+" million ("+d.year+")");
+          .text(d.name)
+        .append('tspan')
+          .attr('x', 0)
+          .attr('text-anchor', 'middle')
+          .attr('dy', 15)
+          .classed('bubbleInfo', true)
+          .text("$"+addCommas(d.value)+" million ("+d.year+")");
     }
     else {
       tooltip.showTooltip(content, coords);
