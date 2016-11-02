@@ -37,178 +37,156 @@
 
 	<script>
 
-
-	$(function () {
+$(function () {
 
 	    // Load the data from a Google Spreadsheet
 	    // https://docs.google.com/spreadsheets/d/1T86iK1rSARZ1mNaV8i0_UCyDFwpteQlJeIuqYxnCWB4/pubhtml
 	    
 	    var dataObj;
+	    var description;
 
-	    var chartData = Highcharts.data({
+        // Initiate the chart
+        var chart = Highcharts.Map('container', {
 
-	        googleSpreadsheetKey: '1wjo9UVjnL2N22ukdwI5B4CC4RKLEbW3fqWNNCx-no_0',
+        	data: {
+        		googleSpreadsheetKey: '1wjo9UVjnL2N22ukdwI5B4CC4RKLEbW3fqWNNCx-no_0',
 
-	        // custom handler when the spreadsheet is parsed
-	        parsed: function (columns) {
+		        // custom handler when the spreadsheet is parsed
+		        parsed: function (columns) {
 
-	            // Read the columns into the data array
-	            var data = {
-	            	education: [],
-	            	literacy: []
-	            };
-	            $.each(columns[0], function (i, code) {
-	                data.education.push({
-	                    code: columns[1][i].toUpperCase(),
-	                    value: parseFloat(columns[2][i]),
-	                    name: columns[0][i],
-	                    countryMatch: columns[3][i],
-	                    // devLevel: columns[4][i].toUpperCase()
-	                });
-	                data.literacy.push({
-	                    code: columns[1][i].toUpperCase(),
-	                    name: columns[0][i],
-	                    value: parseFloat(columns[5][i]),
-	                    countryMatch: columns[6][i]
-	                });
-	            });
-
-	            dataObj = data;
-
-	            // Initiate the chart
-	            var chart = $('#container').highcharts('Map', {
-
-
-					//frame style
-	                chart : {
-	                    borderWidth : 1
-	                },
-
-	                colors: ['rgba(19,64,117,0.05)', 'rgba(19,64,117,0.2)', 'rgba(19,64,117,0.4)',
-	                    'rgba(19,64,117,0.5)', 'rgba(19,64,117,0.6)', 'rgba(19,64,117,0.8)', 'rgba(19,64,117,1)'],
-					//title of map
-	                title : {
-	                    text : 'GDP Growth Targets of the 13th Five-Year Plan'
-	                },
-
-					// +/- zoom
-	                mapNavigation: {
-	                    enabled: true
-	                },
-
-					credits: {
-						enabled: true,
-						href: "http://csis.org",
-						text: 'Perfecting China Inc. | Geodata'
-					},
-
-	                legend: {
-	                    title: {
-							text: 'Targets<br/><span style="font-size: 9px; color: #666; font-weight: normal">(Click to hide)</span>',
-							style: {
-								fontStyle: 'italic'
-							}
-
-	                    },
-	                    align: 'left',
-	                    verticalAlign: 'bottom',
-	                    floating: true,
-	                    layout: 'vertical',
-	                    valueDecimals: 0,
-	                    symbolRadius: 0,
-	                    symbolHeight: 15
-	                },
-
-					colorAxis: {
-						labels: {
-							enabled: true,
-							formatter: function() {
-								return this.value
-							}
-						},
-
-                        dataClasses: [{
-                            from: 0,
-                            to: 0.6,
-                            name: 'Low | 6 - 7.75 percent'
-                        }, {
-                            from: 0.6,
-                            to: 0.65,
-                            name: 'Medium | 8 - 8.75 percent'
-                        }, {
-							from: 0.65,
-							to: 0.7,
-							name: 'High | 9 - 10 percent'
-						},
-						{
-                            from: 0.7,
-                            to: 0.85,
-                            name: 'Medium | 8 - 8.75 percent'
-                        }, {
-							from: 0.85,
-							to: 1,
-							name: 'High | 9 - 10 percent'
-						}]
-                    },
-
-                    tooltip: {
-			            formatter: function () {
-			            	return `<strong>${this.key}</strong><br />
-			            	<strong>Education Index:</strong> ${this.point.value}<br />
-			            	<strong>Country Match:</strong> ${this.point.countryMatch}`;
+		            // Read the columns into the data array
+		            var data = {
+		            	education: [],
+		            	literacy: []
+		            };
+		            $.each(columns[0], function (i, code) {
+		            	if(i != 0) {
+			                data.education.push({
+			                    code: columns[1][i].toUpperCase(),
+			                    value: parseFloat(columns[2][i]),
+			                    name: columns[0][i],
+			                    countryMatch: columns[3][i],
+			                    // devLevel: columns[4][i].toUpperCase()
+			                });
+			                data.literacy.push({
+			                    code: columns[1][i].toUpperCase(),
+			                    name: columns[0][i],
+			                    value: parseFloat(columns[6][i]),
+			                    countryMatch: columns[5][i]
+			                });
 			            }
-			        },
+		            });
+		            dataObj = data;
+		        }
+        	},
 
-	                series : [{
-	                    data : dataObj.education,
-	                    mapData: Highcharts.maps['countries/cn/cn-all'],
-	                    joinBy: ['hc-a2', 'code'],
-	                    animation: true,
-			    		nullColor: '#4E6D78',
-	                    name: 'GDP Growth Rate',
-	                    states: {
-	                        hover: {
-	                            color: '#ae141a'
-	                        }
-	                    },
-	                    tooltip: {
-	                    	valueDecimals: 2,
-	                        valueSuffix: '%'
-	                    }
-	                }]
-	            });
 
-	            console.log(chartData);
-	            console.log(chart);
+			//frame style
+            chart : {
+                borderWidth : 1
+            },
 
-	            // Switch between datasets
-				$('.education').click(function () {
-			        chart.series[0].setData(dataObj.education);
-			    });
+            colors: ['rgba(19,64,117,0.05)', 'rgba(19,64,117,0.2)', 'rgba(19,64,117,0.4)',
+                'rgba(19,64,117,0.5)', 'rgba(19,64,117,0.6)', 'rgba(19,64,117,0.8)', 'rgba(19,64,117,1)'],
+			//title of map
+            title : {
+                text : 'China Education Indicators'
+            },
 
-			    $('.literacy').click(function () {
-			        chart.series[0].setData(dataObj.literacy);
-			    });
+			// +/- zoom
+            mapNavigation: {
+                enabled: true
+            },
+
+			credits: {
+				enabled: true,
+				href: "http://csis.org",
+				text: 'Perfecting China Inc. | Geodata'
+			},
+
+            legend: {
+                title: {
+					text: 'Targets<br/><span style="font-size: 9px; color: #666; font-weight: normal">(Click to hide)</span>',
+					style: {
+						fontStyle: 'italic'
+					}
+
+                },
+                align: 'left',
+                verticalAlign: 'bottom',
+                floating: true,
+                layout: 'vertical',
+                valueDecimals: 0,
+                symbolRadius: 0,
+                symbolHeight: 45
+            },
+
+			colorAxis: {
+				labels: {
+					enabled: true,
+					formatter: function() {
+						return this.value
+					}
+				},
+        dataClassColor: 'category',
+               
+            },
+
+            tooltip: {
+	            formatter: function () {
+	            	return `<strong>${this.key}</strong><br />
+	            	<strong>Education Index:</strong> ${this.point.value}<br />
+	            	<strong>Country Match:</strong> ${this.point.countryMatch}`;
+	            }
 	        },
-	        error: function () {
-	            $('#container').html('<div class="loading">' +
-	                '<i class="icon-frown icon-large"></i> ' +
-	                'Error loading data from Google Spreadsheets' +
-	                '</div>');
-	        }
+
+            series : [{
+                // data: data,
+                mapData: Highcharts.maps['countries/cn/cn-all'],
+                joinBy: ['hc-a2', 'code'],
+                animation: true,
+	    		nullColor: '#4E6D78',
+                name: 'GDP Growth Rate',
+                states: {
+                    hover: {
+                        color: '#ae141a'
+                    }
+                },
+                tooltip: {
+                	valueDecimals: 2,
+                    valueSuffix: '%'
+                }
+            }]
+        }, function (chart) { // on complete
+	        chart.renderer.button('button', 100, 100,function(){
+	            alert('New Button Pressed');
+	        }).add();
+			var description = chart.renderer.text("Education explanation text goes here.", 150, 80).attr({'id': "test"}).add();
+    });
+
+        // Switch between datasets
+        function switchData(indicator) {
+        	chart.series[0].setData(dataObj.indicator);
+           description.attr({
+                  text: indicator
+              });
+        }
+		$('.education').click(function () {
+	        chart.series[0].setData(dataObj.education);
+            description.attr({
+                  text:'Education explanation text goes here.'
+              });
+          
 	    });
 
-	// Switch between datasets
-				// $('.education').click(function () {
-			 //        chart.series[0].setData(dataObj.education);
-			 //    });
-
-			 //    $('.literacy').click(function () {
-			 //        chart.series[0].setData(dataObj.literacy);
-			 //    });
+	    $('.literacy').click(function () {
+	        chart.series[0].setData(dataObj.literacy);
+          description.attr({
+                text:'newText'
+            });
+	    });
 
 	});
-
 
 
 	</script>
