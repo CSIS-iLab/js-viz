@@ -1,0 +1,225 @@
+<!DOCTYPE HTML>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>Highmaps Example</title>
+
+		<link href='https://fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'>
+
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+		  <script src="https://code.highcharts.com/maps/highmaps.js"></script>
+		<script src="https://code.highcharts.com/maps/modules/data.js"></script>
+		<script src="https://code.highcharts.com/maps/modules/exporting.js"></script>
+		<script src="cn-all.js"></script>
+
+
+
+		<style type="text/css">
+
+			#container {
+				height: 500px;
+				min-width: 310px;
+				max-width: 800px;
+				margin: 0 auto;
+			}
+			.loading {
+				margin-top: 10em;
+				text-align: center;
+				color: gray;
+			}
+
+		</style>
+
+	</head>
+
+<body>
+
+	<script>
+
+
+	$(function () {
+
+	    // Load the data from a Google Spreadsheet
+	    // https://docs.google.com/spreadsheets/d/1T86iK1rSARZ1mNaV8i0_UCyDFwpteQlJeIuqYxnCWB4/pubhtml
+	    
+	    var dataObj;
+
+	    var chartData = Highcharts.data({
+
+	        googleSpreadsheetKey: '1wjo9UVjnL2N22ukdwI5B4CC4RKLEbW3fqWNNCx-no_0',
+
+	        // custom handler when the spreadsheet is parsed
+	        parsed: function (columns) {
+
+	            // Read the columns into the data array
+	            var data = {
+	            	education: [],
+	            	literacy: []
+	            };
+	            $.each(columns[0], function (i, code) {
+	                data.education.push({
+	                    code: columns[1][i].toUpperCase(),
+	                    value: parseFloat(columns[2][i]),
+	                    name: columns[0][i],
+	                    countryMatch: columns[3][i],
+	                    // devLevel: columns[4][i].toUpperCase()
+	                });
+	                data.literacy.push({
+	                    code: columns[1][i].toUpperCase(),
+	                    name: columns[0][i],
+	                    value: parseFloat(columns[5][i]),
+	                    countryMatch: columns[6][i]
+	                });
+	            });
+
+	            dataObj = data;
+
+	            // Initiate the chart
+	            var chart = $('#container').highcharts('Map', {
+
+
+					//frame style
+	                chart : {
+	                    borderWidth : 1
+	                },
+
+	                colors: ['rgba(19,64,117,0.05)', 'rgba(19,64,117,0.2)', 'rgba(19,64,117,0.4)',
+	                    'rgba(19,64,117,0.5)', 'rgba(19,64,117,0.6)', 'rgba(19,64,117,0.8)', 'rgba(19,64,117,1)'],
+					//title of map
+	                title : {
+	                    text : 'GDP Growth Targets of the 13th Five-Year Plan'
+	                },
+
+					// +/- zoom
+	                mapNavigation: {
+	                    enabled: true
+	                },
+
+					credits: {
+						enabled: true,
+						href: "http://csis.org",
+						text: 'Perfecting China Inc. | Geodata'
+					},
+
+	                legend: {
+	                    title: {
+							text: 'Targets<br/><span style="font-size: 9px; color: #666; font-weight: normal">(Click to hide)</span>',
+							style: {
+								fontStyle: 'italic'
+							}
+
+	                    },
+	                    align: 'left',
+	                    verticalAlign: 'bottom',
+	                    floating: true,
+	                    layout: 'vertical',
+	                    valueDecimals: 0,
+	                    symbolRadius: 0,
+	                    symbolHeight: 15
+	                },
+
+					colorAxis: {
+						labels: {
+							enabled: true,
+							formatter: function() {
+								return this.value
+							}
+						},
+
+                        dataClasses: [{
+                            from: 0,
+                            to: 0.6,
+                            name: 'Low | 6 - 7.75 percent'
+                        }, {
+                            from: 0.6,
+                            to: 0.65,
+                            name: 'Medium | 8 - 8.75 percent'
+                        }, {
+							from: 0.65,
+							to: 0.7,
+							name: 'High | 9 - 10 percent'
+						},
+						{
+                            from: 0.7,
+                            to: 0.85,
+                            name: 'Medium | 8 - 8.75 percent'
+                        }, {
+							from: 0.85,
+							to: 1,
+							name: 'High | 9 - 10 percent'
+						}]
+                    },
+
+                    tooltip: {
+			            formatter: function () {
+			            	return `<strong>${this.key}</strong><br />
+			            	<strong>Education Index:</strong> ${this.point.value}<br />
+			            	<strong>Country Match:</strong> ${this.point.countryMatch}`;
+			            }
+			        },
+
+	                series : [{
+	                    data : dataObj.education,
+	                    mapData: Highcharts.maps['countries/cn/cn-all'],
+	                    joinBy: ['hc-a2', 'code'],
+	                    animation: true,
+			    		nullColor: '#4E6D78',
+	                    name: 'GDP Growth Rate',
+	                    states: {
+	                        hover: {
+	                            color: '#ae141a'
+	                        }
+	                    },
+	                    tooltip: {
+	                    	valueDecimals: 2,
+	                        valueSuffix: '%'
+	                    }
+	                }]
+	            });
+
+	            console.log(chartData);
+	            console.log(chart);
+
+	            // Switch between datasets
+				$('.education').click(function () {
+			        chart.series[0].setData(dataObj.education);
+			    });
+
+			    $('.literacy').click(function () {
+			        chart.series[0].setData(dataObj.literacy);
+			    });
+	        },
+	        error: function () {
+	            $('#container').html('<div class="loading">' +
+	                '<i class="icon-frown icon-large"></i> ' +
+	                'Error loading data from Google Spreadsheets' +
+	                '</div>');
+	        }
+	    });
+
+	// Switch between datasets
+				// $('.education').click(function () {
+			 //        chart.series[0].setData(dataObj.education);
+			 //    });
+
+			 //    $('.literacy').click(function () {
+			 //        chart.series[0].setData(dataObj.literacy);
+			 //    });
+
+	});
+
+
+
+	</script>
+
+
+	  <div id="container" style="max-width: 1000px"></div>
+	  <button class="education">Education Data</button>
+	  <button class="literacy">Literacy Data</button>
+
+
+
+</body>
+
+</html>
