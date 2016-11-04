@@ -74,6 +74,8 @@
 
 			    // custom handler when the spreadsheet is parsed
 			    parsed: function(columns) {
+			    	console.log(columns);
+
 					// Read the columns into the data array
 					var data = {
 						education: [],
@@ -171,6 +173,8 @@
 			  },
 
 			  colorAxis: {
+			  	minColor: "#59a992",
+                maxColor: "#000000",
 			  	labels: {
 			  		enabled: true,
 			  		formatter: function() {
@@ -195,7 +199,7 @@
 			    name: 'GDP Growth Rate',
 			    states: {
 			    	hover: {
-			    		color: '#ae141a'
+			    		color: '#ED392A'
 			    	}
 			    },
 			    tooltip: {
