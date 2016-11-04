@@ -37,154 +37,198 @@
 
 	<script>
 
-$(function () {
+	$(function () {
 
-	    // Load the data from a Google Spreadsheet
-	    // https://docs.google.com/spreadsheets/d/1T86iK1rSARZ1mNaV8i0_UCyDFwpteQlJeIuqYxnCWB4/pubhtml
-	    
-	    var dataObj;
-	    var description;
+		var description; // Initialize indicator description variable. Will be populated when chart renders
+		var currentIndicator = 'education';
 
-        // Initiate the chart
-        var chart = Highcharts.Map('container', {
+		// Object associated text with indicators
+		var indicatorsObj = {
+			education: {
+				buttonText: "Education Index",
+				buttonY: 140,
+			},
+	      	literacy: {
+				buttonText: "Literacy Rate",
+				buttonY: 180,
+			},
+	      	primary: {
+				buttonText: "Primary Ratio",
+				buttonY: 220,
+			},
+	      	secondary: {
+				buttonText: "Secondary Ratio",
+				buttonY: 260,
+			},
+	      	tertiary: {
+				buttonText: "Tertiary Ratio",
+				buttonY: 300,
+			},
+		};
 
-        	data: {
-        		googleSpreadsheetKey: '1wjo9UVjnL2N22ukdwI5B4CC4RKLEbW3fqWNNCx-no_0',
-
-		        // custom handler when the spreadsheet is parsed
-		        parsed: function (columns) {
-
-		            // Read the columns into the data array
-		            var data = {
-		            	education: [],
-		            	literacy: []
-		            };
-		            $.each(columns[0], function (i, code) {
-		            	if(i != 0) {
-			                data.education.push({
-			                    code: columns[1][i].toUpperCase(),
-			                    value: parseFloat(columns[2][i]),
-			                    name: columns[0][i],
-			                    countryMatch: columns[3][i],
-			                    // devLevel: columns[4][i].toUpperCase()
-			                });
-			                data.literacy.push({
-			                    code: columns[1][i].toUpperCase(),
-			                    name: columns[0][i],
-			                    value: parseFloat(columns[6][i]),
-			                    countryMatch: columns[5][i]
-			                });
-			            }
-		            });
-		            dataObj = data;
-		        }
-        	},
+		var options = {
+			data: {
+				googleSpreadsheetKey: '1wjo9UVjnL2N22ukdwI5B4CC4RKLEbW3fqWNNCx-no_0',
+				googleSpreadsheetWorksheet: 1,
 
 
-			//frame style
-            chart : {
-                borderWidth : 1
-            },
+			    // custom handler when the spreadsheet is parsed
+			    parsed: function(columns) {
+					// Read the columns into the data array
+					var data = {
+						education: [],
+						literacy: [],
+						primary: [],
+						secondary: [],
+						tertiary: []
+					};
+				    columns[0].forEach(function(code, i) {
+				      	if (i != 0) {
+				      		data.education.push({
+				      			code: columns[1][i].toUpperCase(),
+				      			value: parseFloat(columns[2][i]),
+				      			name: columns[0][i],
+				      			countryMatch: columns[3][i]
+				      		});
 
-            colors: ['rgba(19,64,117,0.05)', 'rgba(19,64,117,0.2)', 'rgba(19,64,117,0.4)',
-                'rgba(19,64,117,0.5)', 'rgba(19,64,117,0.6)', 'rgba(19,64,117,0.8)', 'rgba(19,64,117,1)'],
-			//title of map
-            title : {
-                text : 'China Education Indicators'
-            },
+				      		data.literacy.push({
+				      			code: columns[1][i].toUpperCase(),
+				      			name: columns[0][i],
+				      			value: parseFloat(columns[4][i]),
+				      			countryMatch: columns[5][i]
+				      		});
 
-			// +/- zoom
-            mapNavigation: {
-                enabled: true
-            },
+				      		data.primary.push({
+				      			code: columns[1][i].toUpperCase(),
+				      			name: columns[0][i],
+				      			value: parseFloat(columns[6][i]),
+				      			countryMatch: columns[7][i]
+				      		});
 
-			credits: {
-				enabled: true,
-				href: "http://csis.org",
-				text: 'Perfecting China Inc. | Geodata'
+				      		data.secondary.push({
+				      			code: columns[1][i].toUpperCase(),
+				      			name: columns[0][i],
+				      			value: parseFloat(columns[8][i]),
+				      			countryMatch: columns[9][i]
+				      		});
+
+				      		data.tertiary.push({
+				      			code: columns[1][i].toUpperCase(),
+				      			name: columns[0][i],
+				      			value: parseFloat(columns[10][i]),
+				      			countryMatch: columns[11][i]
+				      		});
+				      	}
+				    });
+			      	dataObj = data;
+				}
 			},
 
-            legend: {
-                title: {
-					text: 'Targets<br/><span style="font-size: 9px; color: #666; font-weight: normal">(Click to hide)</span>',
-					style: {
-						fontStyle: 'italic'
+			chart: {
+				borderWidth: 1,
+				events: {
+					load: function() {
+						this.series[0].setData(dataObj.education);
 					}
+				}
+			},
 
-                },
-                align: 'left',
-                verticalAlign: 'bottom',
-                floating: true,
-                layout: 'vertical',
-                valueDecimals: 0,
-                symbolRadius: 0,
-                symbolHeight: 45
-            },
+			colors: ['rgba(19,64,117,0.05)', 'rgba(19,64,117,0.2)', 'rgba(19,64,117,0.4)',
+			'rgba(19,64,117,0.5)', 'rgba(19,64,117,0.6)', 'rgba(19,64,117,0.8)', 'rgba(19,64,117,1)'
+			],
+			  //title of map
+			  title: {
+			  	text: 'China - Global Education Indicators Comparison',
+			  	margin: 50,
+			  },
 
-			colorAxis: {
-				labels: {
-					enabled: true,
-					formatter: function() {
-						return this.value
-					}
-				},
-        dataClassColor: 'category',
-               
-            },
+			  // +/- zoom
+			  mapNavigation: {
+			  	enabled: true
+			  },
 
-            tooltip: {
-	            formatter: function () {
-	            	return `<strong>${this.key}</strong><br />
-	            	<strong>Education Index:</strong> ${this.point.value}<br />
-	            	<strong>Country Match:</strong> ${this.point.countryMatch}`;
-	            }
-	        },
+			  credits: {
+			  	enabled: true,
+			  	href: "http://csis.org",
+			  	text: 'Perfecting China Inc. | Geodata'
+			  },
 
-            series : [{
-                // data: data,
-                mapData: Highcharts.maps['countries/cn/cn-all'],
-                joinBy: ['hc-a2', 'code'],
-                animation: true,
-	    		nullColor: '#4E6D78',
-                name: 'GDP Growth Rate',
-                states: {
-                    hover: {
-                        color: '#ae141a'
-                    }
-                },
-                tooltip: {
-                	valueDecimals: 2,
-                    valueSuffix: '%'
-                }
-            }]
-        }, function (chart) { // on complete
-	        chart.renderer.button('button', 100, 100,function(){
-	            alert('New Button Pressed');
-	        }).add();
-			var description = chart.renderer.text("Education explanation text goes here.", 150, 80).attr({'id': "test"}).add();
-    });
+			  legend: {
+			  	title: {
+			  		text: indicatorsObj[currentIndicator].buttonText,
+			  		style: {
+			  			fontStyle: 'italic'
+			  		}
+
+			  	},
+			  	align: 'left',
+			  	verticalAlign: 'bottom',
+			  	floating: true,
+			  	layout: 'horizontal',
+			  	valueDecimals: 0,
+			  	symbolRadius: 0,
+			  	symbolHeight: 15
+			  },
+
+			  colorAxis: {
+			  	labels: {
+			  		enabled: true,
+			  		formatter: function() {
+			  			return this.value
+			  		}
+			  	},
+			},
+
+			tooltip: {
+				formatter: function() {
+					return `<strong>${this.key}</strong><br />
+					<strong>${indicatorsObj[currentIndicator].buttonText}:</strong> ${this.point.value}<br />
+					<strong>Country Match:</strong> ${this.point.countryMatch}`;
+				}
+			},
+
+			series: [{
+			    mapData: Highcharts.maps['countries/cn/cn-all'],
+			    joinBy: ['hc-a2', 'code'],
+			    animation: true,
+			    nullColor: '#4E6D78',
+			    name: 'GDP Growth Rate',
+			    states: {
+			    	hover: {
+			    		color: '#ae141a'
+			    	}
+			    },
+			    tooltip: {
+			    	valueDecimals: 2,
+			    	valueSuffix: '%'
+			    }
+			}]
+		};
+
+		function renderButtons() {
+			// Render initial text
+			description = chart.renderer.text("Education explanation text goes here.", 400, 60).attr({'id': "description"}).add();
+
+			// Render Buttons
+			$.each(indicatorsObj, function(key, value) {
+				chart.renderer.button(value.buttonText, 9, value.buttonY, function() {
+					switchData(key);
+				},null,null,null).add();
+			});
+
+		}
+
+		// Initiate the chart
+		var chart = Highcharts.Map('container', options, renderButtons);
+
 
         // Switch between datasets
         function switchData(indicator) {
-        	chart.series[0].setData(dataObj.indicator);
-           description.attr({
-                  text: indicator
-              });
+        	currentIndicator = indicator; // Update the current Indicator
+        	chart.series[0].setData(dataObj[indicator]); // Update the series data
+           	description.attr({text: indicator}); // Update the description text
+            chart.legend.title.attr({ text: indicatorsObj[currentIndicator].buttonText }); // Update the legend text
         }
-		$('.education').click(function () {
-	        chart.series[0].setData(dataObj.education);
-            description.attr({
-                  text:'Education explanation text goes here.'
-              });
-          
-	    });
-
-	    $('.literacy').click(function () {
-	        chart.series[0].setData(dataObj.literacy);
-          description.attr({
-                text:'newText'
-            });
-	    });
 
 	});
 
@@ -192,9 +236,7 @@ $(function () {
 	</script>
 
 
-	  <div id="container" style="max-width: 1000px"></div>
-	  <button class="education">Education Data</button>
-	  <button class="literacy">Literacy Data</button>
+	<div id="container" style="max-width: 1000px"></div>
 
 
 
