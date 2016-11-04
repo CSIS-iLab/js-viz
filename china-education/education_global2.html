@@ -1,0 +1,183 @@
+<!DOCTYPE HTML>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>Highmaps Example</title>
+
+		<link href='https://fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'>
+
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+		<script src="https://code.highcharts.com/highcharts.js"></script>
+		<script src="https://code.highcharts.com/maps/modules/data.js"></script>
+		<script src="https://code.highcharts.com/maps/modules/exporting.js"></script>
+
+
+		<style type="text/css">
+
+			#container {
+				height: 500px;
+				min-width: 310px;
+				max-width: 800px;
+				margin: 0 auto;
+			}
+			.loading {
+				margin-top: 10em;
+				text-align: center;
+				color: gray;
+			}
+
+		</style>
+
+	</head>
+
+<body>
+
+	<script>
+	// Data gathered from http://populationpyramid.net/germany/2015/
+	$(function () {
+	    // Age categories
+	    var categories = ['College', 'Senior', 'Junior', 'Primary', 'None'];
+	    $(document).ready(function () {
+	        Highcharts.chart('container', {
+	   //      	data: {
+				// 	googleSpreadsheetKey: '1Oa4mu7Oo2tILKjCiSPTU9gbC5q1TCGawWOR36v45B-M',
+				// 	googleSpreadsheetWorksheet: 1,
+
+
+				//     // custom handler when the spreadsheet is parsed
+				//     parsed: function(columns) {
+
+				//     	console.log(columns);
+
+				// 		// Read the columns into the data array
+				// 		var data = {
+				// 			education: [],
+				// 			literacy: [],
+				// 			primary: [],
+				// 			secondary: [],
+				// 			tertiary: []
+				// 		};
+				// 	    columns[0].forEach(function(code, i) {
+				// 	      	if (i != 0) {
+				// 	      		data.education.push({
+				// 	      			code: columns[1][i].toUpperCase(),
+				// 	      			value: parseFloat(columns[2][i]),
+				// 	      			name: columns[0][i],
+				// 	      			countryMatch: columns[3][i]
+				// 	      		});
+
+				// 	      		data.literacy.push({
+				// 	      			code: columns[1][i].toUpperCase(),
+				// 	      			name: columns[0][i],
+				// 	      			value: parseFloat(columns[4][i]),
+				// 	      			countryMatch: columns[5][i]
+				// 	      		});
+
+				// 	      		data.primary.push({
+				// 	      			code: columns[1][i].toUpperCase(),
+				// 	      			name: columns[0][i],
+				// 	      			value: parseFloat(columns[6][i]),
+				// 	      			countryMatch: columns[7][i]
+				// 	      		});
+
+				// 	      		data.secondary.push({
+				// 	      			code: columns[1][i].toUpperCase(),
+				// 	      			name: columns[0][i],
+				// 	      			value: parseFloat(columns[8][i]),
+				// 	      			countryMatch: columns[9][i]
+				// 	      		});
+
+				// 	      		data.tertiary.push({
+				// 	      			code: columns[1][i].toUpperCase(),
+				// 	      			name: columns[0][i],
+				// 	      			value: parseFloat(columns[10][i]),
+				// 	      			countryMatch: columns[11][i]
+				// 	      		});
+				// 	      	}
+				// 	    });
+				//       	dataObj = data;
+				// 	}
+				// },
+	            chart: {
+	                type: 'bar'
+	            },
+	            title: {
+	                text: 'China Education Data'
+	            },
+	            subtitle: {
+	                text: 'Subtitle here'
+	            },
+	            xAxis: [{
+	                categories: categories,
+	                reversed: false,
+	                labels: {
+	                    step: 1
+	                }
+	            }, { // mirror axis on right side
+	                opposite: true,
+	                reversed: false,
+	                categories: categories,
+	                linkedTo: 0,
+	                labels: {
+	                    step: 1
+	                }
+	            }],
+	            yAxis: {
+	                title: {
+	                    text: null
+	                },
+	                labels: {
+	                    formatter: function () {
+	                        return Math.abs(this.value) + '%';
+	                    }
+	                }
+	            },
+
+	            plotOptions: {
+	                series: {
+	                    stacking: "normal"
+	                }
+	            },
+
+	            tooltip: {
+	                formatter: function () {
+	                    return '<b>' + this.series.name + ', age ' + this.point.category + '</b><br/>' +
+	                        'Population: ' + Highcharts.numberFormat(Math.abs(this.point.y), 0);
+	                }
+	            },
+
+	            series: [{
+	                name: 'Male',
+	                data: [-2.2, -2.2, -2.3, -2.5, - 3],
+	                stack: 'male',
+	            },
+	            {
+	                name: 'Female 2',
+	                data: [-3, -5, -6, -7, -8],
+	                stack: 'female',
+	            },
+	            {
+	                name: 'Female',
+	                data: [2.1, 2.0, 2.2, 2.4, 2.6],
+	                stack: 'female',
+	            },
+	            {
+	                name: 'Male 2',
+	                data: [3, 5, 6, 7, 8],
+	                stack: 'male',
+	            }]
+	        });
+	    });
+
+	});
+	</script>
+
+
+	  <div id="container" style="max-width: 1000px"></div>
+
+
+
+</body>
+
+</html>
