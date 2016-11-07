@@ -210,7 +210,7 @@
 
 		function renderButtons() {
 			// Render initial text
-			description = chart.renderer.text("Education explanation text goes here.", 400, 60).attr({'id': "description"}).add();
+			description = chart.renderer.text(indicatorsObj[currentIndicator].buttonText, 400, 60).attr({'id': "description"}).add();
 
 			// Render Buttons
 			$.each(indicatorsObj, function(key, value) {
