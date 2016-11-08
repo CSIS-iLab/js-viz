@@ -5,7 +5,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<title>China Global Education Comparison</title>
 
-		<link href='https://fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'>
+		<link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,700" rel="stylesheet">
 
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 		  <script src="https://code.highcharts.com/maps/highmaps.js"></script>
@@ -31,6 +31,7 @@
 			.legendTitle {
 				font-weight:bold;
 				font-style:italic;
+				text-align:right;
 			}
 
 		</style>
@@ -51,23 +52,43 @@
 		var indicatorsObj = {
 			education: {
 				buttonText: "Education Index",
-				buttonY: 140,
+				legendText: "Education Index Legend",
+				buttonX: 200,
+				buttonY: 80,
+				maxColor: null,
+				reversed: false,
 			},
 	      	literacy: {
 				buttonText: "Literacy Rate",
-				buttonY: 180,
+				legendText: "Literacy Rate",
+				buttonX: 320,
+				buttonY: 80,
+				maxColor: '#85C1A1',
+				reversed: false,
 			},
 	      	primary: {
 				buttonText: "Primary Ratio",
-				buttonY: 220,
+				legendText: "Primary Ratio",
+				buttonX: 422,
+				buttonY: 80,
+				maxColor: '#FFD160',
+				reversed: true,
 			},
 	      	secondary: {
 				buttonText: "Secondary Ratio",
-				buttonY: 260,
+				legendText: "Secondary Ratio",
+				buttonX: 528,
+				buttonY: 80,
+				maxColor: '#EF9365',
+				reversed: true,
 			},
 	      	tertiary: {
 				buttonText: "Tertiary Ratio",
-				buttonY: 300,
+				legendText: "Tertiary Ratio",
+				buttonX: 645,
+				buttonY: 80,
+				maxColor: '#DD4760',
+				reversed: false,
 			},
 		};
 
@@ -142,67 +163,91 @@
                     fontFamily: 'Roboto Slab'
                 }
 			},
+			exporting: {
+				allowHTML: true,
+				buttons: {
+					contextButton: {
+						verticalAlign: "bottom"
+					}
+				}
+			},
 
-			colors: ['rgba(19,64,117,0.05)', 'rgba(19,64,117,0.2)', 'rgba(19,64,117,0.4)',
-			'rgba(19,64,117,0.5)', 'rgba(19,64,117,0.6)', 'rgba(19,64,117,0.8)', 'rgba(19,64,117,1)'
-			],
-			  //title of map
-			  title: {
-			  	text: 'China - Global Education Indicators Comparison',
-			  	margin: 50,
-			  },
+			plotOptions: {
+				map: {
+	                events: {
+	                    legendItemClick: function (event) {
+	                        return false; // <== returning false will cancel the default action
+	                    }
+	                }
+			    }    		       
+		    },
 
-			  // +/- zoom
-			  mapNavigation: {
-			  	enabled: true
-			  },
+			colors: ['#DD4760','#EF9365','#FFD160','#85C1A1'],
+			//title of map
+			title: {
+				text: 'China - Global Education Indicators Comparison',
+				margin: 90,
+				align: 'left'
+			},
 
-			  credits: {
-			  	enabled: true,
-			  	href: "http://csis.org",
-			  	text: 'CSIS China Power Project'
-			  },
+			// +/- zoom
+			mapNavigation: {
+				enabled: true,
+				buttonOptions: {
+					verticalAlign: "bottom"
+				}
+			},
 
-			  legend: {
-			  	align: 'left',
-			  	verticalAlign: 'bottom',
-			  	floating: true,
-			  	layout: 'horizontal',
-			  	valueDecimals: 0,
-			  	symbolRadius: 0,
-			  	symbolHeight: 15
-			  },
+			credits: {
+				enabled: true,
+				text: 'CSIS China Power Project'
+			},
 
-			  colorAxis: {
-			  	minColor: "#59a992",
-                maxColor: "#000000",
+			legend: {
+				align: 'right',
+				verticalAlign: 'top',
+				floating: true,
+				layout: 'horizontal',
+				valueDecimals: 0,
+				symbolRadius: 0,
+				symbolHeight: 15
+			},
+
+		  	colorAxis: {
+		  		dataClassColor: "category",
 			  	labels: {
 			  		enabled: true,
 			  		formatter: function() {
 			  			return this.value
 			  		}
 			  	},
-			  	dataClasses: [{
+
+			 	dataClasses: [{
                     from: 0,
                     to: 1,
-                    name: 'Low'
+                    name: 'Low',
+                    color: '#DD4760'
                 }, {
                     from: 1.1,
                     to: 2,
-                    name: 'Medium'
+                    name: 'Medium',
+                    color: '#EF9365'
                 }, {
 					from: 2.1,
 					to: 3,
-					name: 'High'
+					name: 'High',
+					color: '#FFD160'
 				},
 				{
 					from: 3.1,
 					to: 4,
-					name: 'Very High'
+					name: 'Very High',
+					color: '#85C1A1'
 				}]
 			},
 
 			tooltip: {
+				useHTML: true,
 				formatter: function() {
 					if(currentIndicator == 'education') {
 						value = this.point.educationIndex;
@@ -210,7 +255,7 @@
 					else {
 						value = this.point.value;
 					}
-					return `<strong>${this.key}</strong><br />
+					return `<span style="font-weight:bold;text-decoration:underline;text-align:center;display:block;margin-bottom:-10px;">${this.key}</span><br />
 					<strong>${indicatorsObj[currentIndicator].buttonText}:</strong> ${value}<br />
 					<strong>Country Match:</strong> ${this.point.countryMatch}`;
 				}
@@ -224,7 +269,7 @@
 			    name: 'GDP Growth Rate',
 			    states: {
 			    	hover: {
-			    		color: '#ED392A'
+			    		brightness: -0.2
 			    	}
 			    },
 			    tooltip: {
@@ -236,13 +281,13 @@
 
 		function renderButtons() {
 			// Render initial text
-			description = chart.renderer.text(indicatorsObj[currentIndicator].buttonText, 400, 60).attr({'id': "description"}).add();
+			description = chart.renderer.text(indicatorsObj[currentIndicator].buttonText, 10, 50).attr({'id': "description"}).add();
 
-			legendTitle = chart.renderer.text(indicatorsObj[currentIndicator].buttonText, 18, 450).attr({'id': "legendTitle", 'class': "legendTitle"}).add();
+			legendTitle = chart.renderer.text(indicatorsObj[currentIndicator].legendText, 850, 50).attr({'id': "legendTitle", 'class': "legendTitle"}).add();
 
 			// Render Buttons
 			$.each(indicatorsObj, function(key, value) {
-				chart.renderer.button(value.buttonText, 9, value.buttonY, function() {
+				chart.renderer.button(value.buttonText, value.buttonX, value.buttonY, function() {
 					switchData(key);
 				},null,null,null).add();
 			});
@@ -262,39 +307,44 @@
 	        		dataClasses: [{
 	                    from: 0,
 	                    to: 1,
-	                    name: 'Low'
+	                    name: 'Low',
+	                    color: '#DD4760'
 	                }, {
 	                    from: 1.1,
 	                    to: 2,
-	                    name: 'Medium'
+	                    name: 'Medium',
+	                    color: '#EF9365'
 	                }, {
 						from: 2.1,
 						to: 3,
-						name: 'High'
+						name: 'High',
+						color: '#FFD160'
 					},
 					{
 						from: 3.1,
 						to: 4,
-						name: 'Very High'
-					}]
+						name: 'Very High',
+						color: '#85C1A1'
+					}],
+					reversed: indicatorsObj[currentIndicator].reversed
 	        	}, false);
 
-	        	chart.legend.update({
-	        		align: 'left',
-				}, true);
+	        	chart.legend.update();
 
-				legendTitle.attr({text: indicatorsObj[currentIndicator].buttonText, y: 450}); // Update the description text
+				legendTitle.attr({text: indicatorsObj[currentIndicator].legendText, y: 50}); // Update the description text
 	        }
 	        else {
 	        	chart.colorAxis[0].update({
-	        		dataClasses: undefined
+	        		dataClasses: undefined,
+	        		dataClassColor: "tween",
+	        		minColor: "#fdfdfd",
+	        		maxColor: indicatorsObj[currentIndicator].maxColor,
+	        		reversed: indicatorsObj[currentIndicator].reversed
 	        	}, false);
 
-	        	chart.legend.update({
-	        		align: 'left',
-				}, true);
+	        	chart.legend.update();
 
-				legendTitle.attr({text: indicatorsObj[currentIndicator].buttonText, y: 430}); // Update the description text
+				legendTitle.attr({text: indicatorsObj[currentIndicator].legendText, y: 70}); // Update the description text
 	        }
 
         	chart.series[0].setData(dataObj[indicator], true); // Update the series data
