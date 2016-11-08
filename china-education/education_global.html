@@ -255,9 +255,7 @@
 					else {
 						value = this.point.value;
 					}
-					return `<span style="font-weight:bold;text-decoration:underline;text-align:center;display:block;margin-bottom:-10px;">${this.key}</span><br />
-					<strong>${indicatorsObj[currentIndicator].buttonText}:</strong> ${value}<br />
-					<strong>Country Match:</strong> ${this.point.countryMatch}`;
+					return '<span style="font-weight:bold;text-decoration:underline;text-align:center;display:block;margin-bottom:-10px;">'+this.key+'</span><br /><strong>'+indicatorsObj[currentIndicator].buttonText+':</strong> '+value+'<br /><strong>Country Match:</strong> '+this.point.countryMatch;
 				}
 			},
 
