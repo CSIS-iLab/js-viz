@@ -28,6 +28,10 @@
 				text-align: center;
 				color: gray;
 			}
+			.legendTitle {
+				font-weight:bold;
+				font-style:italic;
+			}
 
 		</style>
 
@@ -41,6 +45,7 @@
 
 		var description; // Initialize indicator description variable. Will be populated when chart renders
 		var currentIndicator = 'education';
+		var legendTitle;
 
 		// Object associated text with indicators
 		var indicatorsObj = {
@@ -87,37 +92,38 @@
 				      	if (i != 0) {
 				      		data.education.push({
 				      			code: columns[1][i].toUpperCase(),
-				      			value: parseFloat(columns[2][i]),
+				      			value: parseFloat(columns[4][i]),
 				      			name: columns[0][i],
-				      			countryMatch: columns[3][i]
+				      			countryMatch: columns[3][i],
+				      			educationIndex: parseFloat(columns[2][i])
 				      		});
 
 				      		data.literacy.push({
 				      			code: columns[1][i].toUpperCase(),
 				      			name: columns[0][i],
-				      			value: parseFloat(columns[4][i]),
-				      			countryMatch: columns[5][i]
+				      			value: parseFloat(columns[5][i]),
+				      			countryMatch: columns[6][i]
 				      		});
 
 				      		data.primary.push({
 				      			code: columns[1][i].toUpperCase(),
 				      			name: columns[0][i],
-				      			value: parseFloat(columns[6][i]),
-				      			countryMatch: columns[7][i]
+				      			value: parseFloat(columns[7][i]),
+				      			countryMatch: columns[8][i]
 				      		});
 
 				      		data.secondary.push({
 				      			code: columns[1][i].toUpperCase(),
 				      			name: columns[0][i],
-				      			value: parseFloat(columns[8][i]),
-				      			countryMatch: columns[9][i]
+				      			value: parseFloat(columns[9][i]),
+				      			countryMatch: columns[10][i]
 				      		});
 
 				      		data.tertiary.push({
 				      			code: columns[1][i].toUpperCase(),
 				      			name: columns[0][i],
-				      			value: parseFloat(columns[10][i]),
-				      			countryMatch: columns[11][i]
+				      			value: parseFloat(columns[11][i]),
+				      			countryMatch: columns[12][i]
 				      		});
 				      	}
 				    });
@@ -131,7 +137,10 @@
 					load: function() {
 						this.series[0].setData(dataObj.education);
 					}
-				}
+				},
+				style: {
+                    fontFamily: 'Roboto Slab'
+                }
 			},
 
 			colors: ['rgba(19,64,117,0.05)', 'rgba(19,64,117,0.2)', 'rgba(19,64,117,0.4)',
@@ -155,13 +164,6 @@
 			  },
 
 			  legend: {
-			  	title: {
-			  		text: indicatorsObj[currentIndicator].buttonText,
-			  		style: {
-			  			fontStyle: 'italic'
-			  		}
-
-			  	},
 			  	align: 'left',
 			  	verticalAlign: 'bottom',
 			  	floating: true,
@@ -180,12 +182,36 @@
 			  			return this.value
 			  		}
 			  	},
+			  	dataClasses: [{
+                    from: 0,
+                    to: 1,
+                    name: 'Low'
+                }, {
+                    from: 1.1,
+                    to: 2,
+                    name: 'Medium'
+                }, {
+					from: 2.1,
+					to: 3,
+					name: 'High'
+				},
+				{
+					from: 3.1,
+					to: 4,
+					name: 'Very High'
+				}]
 			},
 
 			tooltip: {
 				formatter: function() {
+					if(currentIndicator == 'education') {
+						value = this.point.educationIndex;
+					}
+					else {
+						value = this.point.value;
+					}
 					return `<strong>${this.key}</strong><br />
-					<strong>${indicatorsObj[currentIndicator].buttonText}:</strong> ${this.point.value}<br />
+					<strong>${indicatorsObj[currentIndicator].buttonText}:</strong> ${value}<br />
 					<strong>Country Match:</strong> ${this.point.countryMatch}`;
 				}
 			},
@@ -212,6 +238,8 @@
 			// Render initial text
 			description = chart.renderer.text(indicatorsObj[currentIndicator].buttonText, 400, 60).attr({'id': "description"}).add();
 
+			legendTitle = chart.renderer.text(indicatorsObj[currentIndicator].buttonText, 18, 450).attr({'id': "legendTitle", 'class': "legendTitle"}).add();
+
 			// Render Buttons
 			$.each(indicatorsObj, function(key, value) {
 				chart.renderer.button(value.buttonText, 9, value.buttonY, function() {
@@ -228,9 +256,49 @@
         // Switch between datasets
         function switchData(indicator) {
         	currentIndicator = indicator; // Update the current Indicator
-        	chart.series[0].setData(dataObj[indicator]); // Update the series data
+        	
+        	if(indicator == "education") {
+	        	chart.colorAxis[0].update({
+	        		dataClasses: [{
+	                    from: 0,
+	                    to: 1,
+	                    name: 'Low'
+	                }, {
+	                    from: 1.1,
+	                    to: 2,
+	                    name: 'Medium'
+	                }, {
+						from: 2.1,
+						to: 3,
+						name: 'High'
+					},
+					{
+						from: 3.1,
+						to: 4,
+						name: 'Very High'
+					}]
+	        	}, false);
+
+	        	chart.legend.update({
+	        		align: 'left',
+				}, true);
+
+				legendTitle.attr({text: indicatorsObj[currentIndicator].buttonText, y: 450}); // Update the description text
+	        }
+	        else {
+	        	chart.colorAxis[0].update({
+	        		dataClasses: undefined
+	        	}, false);
+
+	        	chart.legend.update({
+	        		align: 'left',
+				}, true);
+
+				legendTitle.attr({text: indicatorsObj[currentIndicator].buttonText, y: 430}); // Update the description text
+	        }
+
+        	chart.series[0].setData(dataObj[indicator], true); // Update the series data
            	description.attr({text: indicator}); // Update the description text
-            chart.legend.title.attr({ text: indicatorsObj[currentIndicator].buttonText }); // Update the legend text
         }
 
 	});
