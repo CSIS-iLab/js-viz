@@ -54,7 +54,7 @@
 				buttonText: "Education Index",
 				legendText: "Education Index Legend",
 				buttonX: 200,
-				buttonY: 80,
+				buttonY: 450,
 				maxColor: null,
 				reversed: false,
 			},
@@ -62,7 +62,7 @@
 				buttonText: "Literacy Rate",
 				legendText: "Literacy Rate",
 				buttonX: 320,
-				buttonY: 80,
+				buttonY: 450,
 				maxColor: '#85C1A1',
 				reversed: false,
 			},
@@ -70,7 +70,7 @@
 				buttonText: "Primary Ratio",
 				legendText: "Primary Ratio",
 				buttonX: 422,
-				buttonY: 80,
+				buttonY: 450,
 				maxColor: '#FFD160',
 				reversed: true,
 			},
@@ -78,7 +78,7 @@
 				buttonText: "Secondary Ratio",
 				legendText: "Secondary Ratio",
 				buttonX: 528,
-				buttonY: 80,
+				buttonY: 450,
 				maxColor: '#EF9365',
 				reversed: true,
 			},
@@ -86,7 +86,7 @@
 				buttonText: "Tertiary Ratio",
 				legendText: "Tertiary Ratio",
 				buttonX: 645,
-				buttonY: 80,
+				buttonY: 450,
 				maxColor: '#DD4760',
 				reversed: false,
 			},
@@ -154,6 +154,7 @@
 
 			chart: {
 				borderWidth: 1,
+				marginBottom: 60,
 				events: {
 					load: function() {
 						this.series[0].setData(dataObj.education);
@@ -186,7 +187,7 @@
 			//title of map
 			title: {
 				text: 'China - Global Education Indicators Comparison',
-				margin: 90,
+				margin: 50,
 				align: 'left'
 			},
 
@@ -335,7 +336,7 @@
 	        	chart.colorAxis[0].update({
 	        		dataClasses: undefined,
 	        		dataClassColor: "tween",
-	        		minColor: "#fdfdfd",
+	        		minColor: "#f7f7f7",
 	        		maxColor: indicatorsObj[currentIndicator].maxColor,
 	        		reversed: indicatorsObj[currentIndicator].reversed
 	        	}, false);
