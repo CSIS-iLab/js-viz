@@ -1,0 +1,333 @@
+<!DOCTYPE HTML>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>China Provincial Education Comparison</title>
+
+		<link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,700" rel="stylesheet">
+
+		<link href='https://fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'>
+
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+		<script src="https://code.highcharts.com/highcharts.js"></script>
+		<script src="https://code.highcharts.com/maps/modules/data.js"></script>
+		<script src="https://code.highcharts.com/maps/modules/exporting.js"></script>
+
+
+
+		<style type="text/css">
+			.content {
+				height: 500px;
+				width:90%;
+				margin:0 auto;
+			}
+
+			#container {
+				height: 500px;
+				width:100%;
+				margin: 0 auto;
+			}
+			.loading {
+				margin-top: 10em;
+				text-align: center;
+				color: gray;
+			}
+			.legendTitle {
+				font-weight:bold;
+				font-style:italic;
+				text-align:right;
+			}
+			.dropdown {
+				position:absolute;
+				z-index: 10;
+				top:60px;
+			}
+			.selectLeft {
+				left:25%;
+			}
+			.selectRight {
+				right:25%;
+			}
+
+
+		</style>
+
+	</head>
+
+<body>
+
+	<script>
+
+	$(function () {
+		var chart;
+		var categories = ['College', 'Senior', 'Junior', 'Primary', 'None'];
+
+		var options = {
+			chart: {
+                type: 'bar',
+				style: {
+                    fontFamily: 'Roboto Slab'
+                },
+                marginTop: 100,
+                plotBorderColor: "#ECECEC",
+                plotBorderWidth: 1
+            },
+            title: {
+                text: 'China Education Data'
+            },
+            credits: {
+				enabled: true,
+				text: 'CSIS China Power Project'
+			},
+			colors: ["#303D43", "#5AA993", "#53496E", "#7F4B9D"],
+            xAxis: [{
+                categories: categories,
+                reversed: false,
+                labels: {
+                    step: 1,
+                    padding: 0
+                },
+                alternateGridColor: '#E6E7E9',
+                lineColor: "#ECECEC",
+                tickWidth: 0
+            }, { // mirror axis on right side
+                opposite: true,
+                reversed: false,
+                categories: categories,
+                linkedTo: 0,
+                labels: {
+                    step: 1,
+                    padding: 0
+                },
+                alternateGridColor: '#E6E7E9',
+                lineColor: "#ECECEC",
+                tickWidth: 0
+            }],
+            yAxis: {
+                title: {
+                    text: null
+                },
+                labels: {
+                    formatter: function () {
+                        return Math.abs(this.value) + '%';
+                    }
+                },
+                gridLineWidth: 0
+            },
+
+            plotOptions: {
+                series: {
+                    stacking: "normal"
+                }
+            },
+
+            tooltip: {
+                formatter: function () {
+                    return '<b>' + this.series.name + ': ' + this.point.category + '</b><br/>' + Math.abs(this.point.y) + '%';
+                }
+            },
+
+            series: [{
+                name: 'Left Male',
+                data: null,
+                stack: 'male',
+            },
+            {
+                name: 'Left Female',
+                data: null,
+                stack: 'female',
+            },
+            {
+                name: 'Right Male',
+                data: null,
+                stack: 'male',
+            },
+            {
+                name: 'Right Female',
+                data: null,
+                stack: 'female',
+            },
+            
+            
+            ]
+		};
+
+		var googleSpreadsheetKey = "1wjo9UVjnL2N22ukdwI5B4CC4RKLEbW3fqWNNCx-no_0";
+		var dataObj = {};
+
+		$.getJSON('https://spreadsheets.google.com/feeds/cells/' +
+			googleSpreadsheetKey + '/' + 'oxxz341' +
+			'/public/values?gid=2052447835&alt=json-in-script&callback=?', function(data) {
+				var cells = data.feed.entry,
+				cellCount = cells.length,
+				colCount = 12,
+				rowCount = 32,
+				cell;
+
+			    for (i = colCount; i < cellCount; i++) {
+			        cell = cells[i],
+			        col = +cell.gs$cell.col;
+			        value = cell.content.$t;
+			        var provinceCode;
+
+			        if (col === 1) {
+			        	var row = {
+			        		name: value,
+			        		maleLeft: { data:[] },
+			        		femaleLeft: { data:[] },
+			        		maleRight: { data:[] },
+			        		femaleRight: { data:[] },
+			        	};
+			        } else if (col === 2) {
+			          provinceCode = value;
+			        } else if (3 <= col && col <= colCount) {
+
+			        	// Male Values (even columns)
+			        	if(col % 2 == 0) {
+			        		row.maleRight.stack = "male";
+			        		row.maleRight.data.unshift(parseFloat(value));
+
+			        		row.maleLeft.stack = "male";
+			        		row.maleLeft.data.unshift(-Math.abs(parseFloat(value)));
+			        	}
+			        	else {
+			        		row.femaleRight.stack = "female";
+			        		row.femaleRight.data.unshift(parseFloat(value));
+
+			        		row.femaleLeft.stack = "female";
+			        		row.femaleLeft.data.unshift(-Math.abs(parseFloat(value)));
+			        	}
+			        	if (col === colCount) {
+			            	dataObj[provinceCode] = row;
+			          	}
+			        }
+			    }
+
+				//Populate Left Side of Chart (0 = Male, 1 = Female)
+				options.series[0].data = dataObj.AH.maleLeft.data;
+				options.series[0].name = "Anhui Male";
+
+				options.series[1].data = dataObj.AH.femaleLeft.data;
+				options.series[1].name = "Anhui Female"; 
+
+				// Populate Right Side of Chart (2 = Male, 3 = Female)
+				options.series[2].data = dataObj.BJ.maleRight.data;
+				options.series[2].name = "Beijing Male";
+
+				options.series[3].data = dataObj.BJ.femaleRight.data;
+				options.series[3].name = "Beijing Female"; 
+
+				// Create the chart
+				chart = Highcharts.chart('container', options);
+
+		});
+
+		// Switch Between Datasets on Left Side
+		$(".selectLeft").change(function (){
+			province = $(this).val();
+
+			// Switch Legend Title
+			chart.series[0].update({name: dataObj[province].name + " Male"}, false);
+			chart.series[1].update({name: dataObj[province].name + " Female"}, false);
+
+			// Switch Data Sets
+			chart.series[0].setData(dataObj[province].maleLeft.data);
+			chart.series[1].setData(dataObj[province].femaleLeft.data);
+		});
+
+		// Switch Between Datasets on Right Side
+		$(".selectRight").change(function (){
+			province = $(this).val();
+
+			// Switch Legend Title
+			chart.series[2].update({name: dataObj[province].name + " Male"}, false);
+			chart.series[3].update({name: dataObj[province].name + " Female"}, false);
+
+			// Switch Data Sets
+			chart.series[2].setData(dataObj[province].maleRight.data);
+			chart.series[3].setData(dataObj[province].femaleRight.data);
+		});
+
+
+
+
+	});
+
+
+	</script>
+
+	<div class="content">
+		<select class="dropdown selectLeft">
+	        <option value="AH" selected>Anhui</option>
+			<option value="BJ">Beijing</option>
+			<option value="CQ">Chongqing</option>
+			<option value="FJ">Fujian</option>
+			<option value="GS">Gansu</option>
+			<option value="GD">Guangdong</option>
+			<option value="GX">Guangxi</option>
+			<option value="GZ">Guizhou</option>
+			<option value="HA">Hainan</option>
+			<option value="HB">Hebei</option>
+			<option value="HL">Heilongjiang</option>
+			<option value="HE">Henan</option>
+			<option value="HU">Hubei</option>
+			<option value="HN">Hunan</option>
+			<option value="NM">Inner Mongolia</option>
+			<option value="JS">Jiangsu</option>
+			<option value="JX">Jiangxi</option>
+			<option value="JL">Jilin</option>
+			<option value="LN">Liaoning</option>
+			<option value="NX">Ningxia</option>
+			<option value="QH">Qinghai</option>
+			<option value="SA">Shaanxi</option>
+			<option value="SD">Shandong</option>
+			<option value="SH">Shanghai</option>
+			<option value="SX">Shanxi</option>
+			<option value="SC">Sichuan</option>
+			<option value="TJ">Tianjin</option>
+			<option value="XZ">Tibet (Xizang)</option>
+			<option value="XJ">Xinjiang</option>
+			<option value="YN">Yunnan</option>
+			<option value="ZJ">Zhejiang</option>
+	    </select>
+	    <select class="dropdown selectRight">
+	        <option value="AH">Anhui</option>
+			<option value="BJ" selected>Beijing</option>
+			<option value="CQ">Chongqing</option>
+			<option value="FJ">Fujian</option>
+			<option value="GS">Gansu</option>
+			<option value="GD">Guangdong</option>
+			<option value="GX">Guangxi</option>
+			<option value="GZ">Guizhou</option>
+			<option value="HA">Hainan</option>
+			<option value="HB">Hebei</option>
+			<option value="HL">Heilongjiang</option>
+			<option value="HE">Henan</option>
+			<option value="HU">Hubei</option>
+			<option value="HN">Hunan</option>
+			<option value="NM">Inner Mongolia</option>
+			<option value="JS">Jiangsu</option>
+			<option value="JX">Jiangxi</option>
+			<option value="JL">Jilin</option>
+			<option value="LN">Liaoning</option>
+			<option value="NX">Ningxia</option>
+			<option value="QH">Qinghai</option>
+			<option value="SA">Shaanxi</option>
+			<option value="SD">Shandong</option>
+			<option value="SH">Shanghai</option>
+			<option value="SX">Shanxi</option>
+			<option value="SC">Sichuan</option>
+			<option value="TJ">Tianjin</option>
+			<option value="XZ">Tibet (Xizang)</option>
+			<option value="XJ">Xinjiang</option>
+			<option value="YN">Yunnan</option>
+			<option value="ZJ">Zhejiang</option>
+	    </select>
+		<div id="container"></div>
+	</div>
+
+
+</body>
+
+</html>
