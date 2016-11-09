@@ -118,7 +118,9 @@
 
             plotOptions: {
                 series: {
-                    stacking: "normal"
+                    stacking: "normal",
+                    groupPadding: 0,
+                    pointPadding: 0
                 }
             },
 
@@ -223,9 +225,17 @@
 
 		});
 
+		var selectedLeft = "AH";
+		var selectedRight = "BJ";
+
 		// Switch Between Datasets on Left Side
 		$(".selectLeft").change(function (){
 			province = $(this).val();
+
+			// Prevent user from choosing this province on the other side; allow user to choose old option
+			selectedLeft = province;
+			$(".selectRight option:disabled").attr("disabled",false);
+			$(".selectRight option[value='"+province+"']").attr("disabled",true);
 
 			// Switch Legend Title
 			chart.series[0].update({name: dataObj[province].name + " Male"}, false);
@@ -239,6 +249,11 @@
 		// Switch Between Datasets on Right Side
 		$(".selectRight").change(function (){
 			province = $(this).val();
+
+			// Prevent user from choosing this province on the other side; allow user to choose old option
+			selectedRight = province;
+			$(".selectLeft option:disabled").attr("disabled",false);
+			$(".selectLeft option[value='"+province+"']").attr("disabled",true);
 
 			// Switch Legend Title
 			chart.series[2].update({name: dataObj[province].name + " Male"}, false);
@@ -260,7 +275,7 @@
 	<div class="content">
 		<select class="dropdown selectLeft">
 	        <option value="AH" selected>Anhui</option>
-			<option value="BJ">Beijing</option>
+			<option value="BJ" disabled>Beijing</option>
 			<option value="CQ">Chongqing</option>
 			<option value="FJ">Fujian</option>
 			<option value="GS">Gansu</option>
@@ -292,7 +307,7 @@
 			<option value="ZJ">Zhejiang</option>
 	    </select>
 	    <select class="dropdown selectRight">
-	        <option value="AH">Anhui</option>
+	        <option value="AH" disabled>Anhui</option>
 			<option value="BJ" selected>Beijing</option>
 			<option value="CQ">Chongqing</option>
 			<option value="FJ">Fujian</option>
