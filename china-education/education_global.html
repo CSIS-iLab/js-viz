@@ -34,6 +34,9 @@
 				text-align:right;
 				text-anchor: end;
 			}
+			.highcharts-legend-item text {
+				cursor: default !important;
+			}
 
 		</style>
 
@@ -70,7 +73,7 @@
 				stops: [
 					[0, "#bcdeb6"],
 					[0.5,"#85c1a1"],
-					[.9, "#608971"]
+					[.9, "#395243"]
 				]
 			},
 	      	primary: {
@@ -109,7 +112,7 @@
 				stops: [
 					[0, "#edb2be"],
 					[0.5,"#dd4760"],
-					[.9, "#943146"]
+					[.9, "#662230"]
 				]
 			},
 		};
@@ -175,7 +178,7 @@
 			},
 
 			chart: {
-				borderWidth: 1,
+				borderWidth: 0,
 				marginBottom: 60,
 				events: {
 					load: function() {
@@ -294,9 +297,15 @@
 
 			// Render Buttons
 			$.each(indicatorsObj, function(key, value) {
+				if(key == "education") {
+					normalState = {id: "button_"+key, fill: "#E6E6E6"};
+				}
+				else {
+					normalState = {id: "button_"+key};
+				}
 				chart.renderer.button(value.buttonText, value.buttonX, value.buttonY, function() {
 					switchData(key);
-				},null,null,null).add();
+				}, normalState).add();
 			});
 
 			// Disable Legend Click (Existing bug in highcharts)
@@ -312,6 +321,9 @@
 
         // Switch between datasets
         function switchData(indicator) {
+        	$("#button_"+currentIndicator+" rect").css("fill", "#f7f7f7");
+        	$("#button_"+indicator+" rect").css("fill", "#E6E6E6");
+
         	currentIndicator = indicator; // Update the current Indicator
         	
         	if(indicator == "education") {
