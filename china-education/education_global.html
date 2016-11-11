@@ -32,6 +32,7 @@
 				font-weight:bold;
 				font-style:italic;
 				text-align:right;
+				text-anchor: end;
 			}
 
 		</style>
@@ -52,43 +53,64 @@
 		var indicatorsObj = {
 			education: {
 				buttonText: "Education Index",
-				legendText: "Education Index Legend",
-				buttonX: 200,
+				legendText: "Development Level",
+				description: "Calculated from mean years of schooling and expected years of schooling. Rated from<br />0 (no educational attainment) to 1 (perfect educational attainment).<br />Source: UNDP",
+				buttonX: 100,
 				buttonY: 450,
 				maxColor: null,
 				reversed: false,
 			},
 	      	literacy: {
-				buttonText: "Literacy Rate",
+				buttonText: "Literacy",
 				legendText: "Literacy Rate",
-				buttonX: 320,
+				description: "Percentage of the population 15+ years with the ability to read and write.<br />Source: China Statistical Yearbook, World Bank",
+				buttonX: 215,
 				buttonY: 450,
-				maxColor: '#85C1A1',
 				reversed: false,
+				stops: [
+					[0, "#bcdeb6"],
+					[0.5,"#85c1a1"],
+					[.9, "#608971"]
+				]
 			},
 	      	primary: {
-				buttonText: "Primary Ratio",
-				legendText: "Primary Ratio",
-				buttonX: 422,
+				buttonText: "Primary Student-Teacher Ratio",
+				legendText: "Student-Teacher Ratio",
+				description: "Ratio of students who attend a primary educational institution divided by the number of teachers in the institution.<br />Source: China Statistical Yearbook, UNESCO",
+				buttonX: 284,
 				buttonY: 450,
-				maxColor: '#FFD160',
 				reversed: true,
+				stops: [
+					[0, "#fcf49f"],
+					[0.5,"#ffd161"],
+					[.9, "#8e7337"]
+				]
 			},
 	      	secondary: {
-				buttonText: "Secondary Ratio",
-				legendText: "Secondary Ratio",
-				buttonX: 528,
+				buttonText: "Secondary Student-Teacher Ratio",
+				legendText: "Student-Teacher Ratio",
+				description: "Ratio of students who attend a secondary educational institution divided by the number of teachers in the institution.<br />Source: China Statistical Yearbook, UNESCO",
+				buttonX: 483,
 				buttonY: 450,
-				maxColor: '#EF9365',
 				reversed: true,
+				stops: [
+					[0, "#fee499"],
+					[0.5,"#ef9365"],
+					[.9, "#88533a"]
+				]
 			},
 	      	tertiary: {
-				buttonText: "Tertiary Ratio",
-				legendText: "Tertiary Ratio",
-				buttonX: 645,
+				buttonText: "Tertiary Enrollment Share",
+				legendText: "Enrollment Share",
+				description: "Percentage of people enrolled in a tertiary institution out the entire college-age population.<br />Source: UNDP, World Bank",
+				buttonX: 695,
 				buttonY: 450,
-				maxColor: '#DD4760',
 				reversed: false,
+				stops: [
+					[0, "#edb2be"],
+					[0.5,"#dd4760"],
+					[.9, "#943146"]
+				]
 			},
 		};
 
@@ -165,28 +187,13 @@
                 }
 			},
 			exporting: {
-				allowHTML: true,
-				buttons: {
-					contextButton: {
-						verticalAlign: "bottom"
-					}
-				}
+				enabled: false
 			},
-
-			plotOptions: {
-				map: {
-	                events: {
-	                    legendItemClick: function (event) {
-	                        return false; // <== returning false will cancel the default action
-	                    }
-	                }
-			    }    		       
-		    },
 
 			colors: ['#DD4760','#EF9365','#FFD160','#85C1A1'],
 			//title of map
 			title: {
-				text: 'China - Global Education Indicators Comparison',
+				text: 'Provincial Education Breakdown in China',
 				margin: 50,
 				align: 'left'
 			},
@@ -195,7 +202,7 @@
 			mapNavigation: {
 				enabled: true,
 				buttonOptions: {
-					verticalAlign: "bottom"
+					verticalAlign: "middle"
 				}
 			},
 
@@ -226,23 +233,23 @@
 			 	dataClasses: [{
                     from: 0,
                     to: 1,
-                    name: 'Low',
+                    name: 'Low<br />0.199-0.489',
                     color: '#DD4760'
                 }, {
                     from: 1.1,
                     to: 2,
-                    name: 'Medium',
+                    name: 'Medium<br />0.489 - 0.653',
                     color: '#EF9365'
                 }, {
 					from: 2.1,
 					to: 3,
-					name: 'High',
+					name: 'High<br />0.653 - 0.767',
 					color: '#FFD160'
 				},
 				{
 					from: 3.1,
 					to: 4,
-					name: 'Very High',
+					name: 'Very High<br />0.767 - 0.932',
 					color: '#85C1A1'
 				}]
 			},
@@ -265,6 +272,7 @@
 			    joinBy: ['hc-a2', 'code'],
 			    animation: true,
 			    nullColor: '#4E6D78',
+			    borderColor: '#ECECEC',
 			    name: 'GDP Growth Rate',
 			    states: {
 			    	hover: {
@@ -280,9 +288,9 @@
 
 		function renderButtons() {
 			// Render initial text
-			description = chart.renderer.text(indicatorsObj[currentIndicator].buttonText, 10, 50).attr({'id': "description"}).add();
+			description = chart.renderer.text(indicatorsObj[currentIndicator].description, 10, 50).attr({'id': "description"}).add();
 
-			legendTitle = chart.renderer.text(indicatorsObj[currentIndicator].legendText, 850, 50).attr({'id': "legendTitle", 'class': "legendTitle"}).add();
+			legendTitle = chart.renderer.text(indicatorsObj[currentIndicator].legendText, chart.plotWidth, 60).attr({'id': "legendTitle", 'class': "legendTitle"}).add();
 
 			// Render Buttons
 			$.each(indicatorsObj, function(key, value) {
@@ -290,6 +298,11 @@
 					switchData(key);
 				},null,null,null).add();
 			});
+
+			// Disable Legend Click (Existing bug in highcharts)
+	        $(".highcharts-legend-item text").click(function() {
+	        	return false;
+	        });
 
 		}
 
@@ -306,23 +319,23 @@
 	        		dataClasses: [{
 	                    from: 0,
 	                    to: 1,
-	                    name: 'Low',
+	                    name: 'Low<br />0.199-0.489',
 	                    color: '#DD4760'
 	                }, {
 	                    from: 1.1,
 	                    to: 2,
-	                    name: 'Medium',
+	                    name: 'Medium<br />0.489 - 0.653',
 	                    color: '#EF9365'
 	                }, {
 						from: 2.1,
 						to: 3,
-						name: 'High',
+						name: 'High<br />0.653 - 0.767',
 						color: '#FFD160'
 					},
 					{
 						from: 3.1,
 						to: 4,
-						name: 'Very High',
+						name: 'Very High<br />0.767 - 0.932',
 						color: '#85C1A1'
 					}],
 					reversed: indicatorsObj[currentIndicator].reversed
@@ -330,14 +343,15 @@
 
 	        	chart.legend.update();
 
-				legendTitle.attr({text: indicatorsObj[currentIndicator].legendText, y: 50}); // Update the description text
+				legendTitle.attr({text: indicatorsObj[currentIndicator].legendText, y: 60}); // Update the description text
 	        }
 	        else {
 	        	chart.colorAxis[0].update({
 	        		dataClasses: undefined,
 	        		dataClassColor: "tween",
-	        		minColor: "#f7f7f7",
-	        		maxColor: indicatorsObj[currentIndicator].maxColor,
+	        		// minColor: "#f7f7f7",
+	        		// maxColor: indicatorsObj[currentIndicator].maxColor,
+	        		stops: indicatorsObj[currentIndicator].stops,
 	        		reversed: indicatorsObj[currentIndicator].reversed
 	        	}, false);
 
@@ -347,7 +361,7 @@
 	        }
 
         	chart.series[0].setData(dataObj[indicator], true); // Update the series data
-           	description.attr({text: indicator}); // Update the description text
+           	description.attr({text: indicatorsObj[currentIndicator].description}); // Update the description text
         }
 
 	});
