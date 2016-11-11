@@ -3,19 +3,22 @@
 
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<title>Highmaps Example</title>
+		<title>China Global Education Comparison</title>
 
-		<link href='https://fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'>
+		<link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,700" rel="stylesheet">
 
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-		<script src="https://code.highcharts.com/highcharts.js"></script>
+		<script src="https://code.highcharts.com/maps/highcharts.js"></script>
+		<script src="https://code.highcharts.com/maps/modules/map.js"></script>
 		<script src="https://code.highcharts.com/maps/modules/data.js"></script>
 		<script src="https://code.highcharts.com/maps/modules/exporting.js"></script>
+		<script src="cn-all.js"></script>
+
 
 
 		<style type="text/css">
 
-			#container {
+			#container, #containerBar {
 				height: 500px;
 				min-width: 310px;
 				max-width: 800px;
@@ -26,6 +29,15 @@
 				text-align: center;
 				color: gray;
 			}
+			.legendTitle {
+				font-weight:bold;
+				font-style:italic;
+				text-align:right;
+				text-anchor: end;
+			}
+			.highcharts-legend-item text {
+				cursor: default !important;
+			}
 
 		</style>
 
@@ -34,147 +46,423 @@
 <body>
 
 	<script>
-	// Data gathered from http://populationpyramid.net/germany/2015/
+
 	$(function () {
-	    // Age categories
-	    var categories = ['College', 'Senior', 'Junior', 'Primary', 'None'];
-	    $(document).ready(function () {
-	        Highcharts.chart('container', {
-	   //      	data: {
-				// 	googleSpreadsheetKey: '1Oa4mu7Oo2tILKjCiSPTU9gbC5q1TCGawWOR36v45B-M',
-				// 	googleSpreadsheetWorksheet: 1,
+
+		var description; // Initialize indicator description variable. Will be populated when chart renders
+		var currentIndicator = 'education';
+		var legendTitle;
+		var dataObj;
+		var provinces = [];
+
+		// Object associated text with indicators
+		var indicatorsObj = {
+			education: {
+				buttonText: "Education Index",
+				legendText: "Development Level",
+				description: "Calculated from mean years of schooling and expected years of schooling. Rated from<br />0 (no educational attainment) to 1 (perfect educational attainment).<br />Source: UNDP",
+				buttonX: 100,
+				buttonY: 450,
+				maxColor: null,
+				reversed: false,
+			},
+	      	literacy: {
+				buttonText: "Literacy",
+				legendText: "Literacy Rate",
+				description: "Percentage of the population 15+ years with the ability to read and write.<br />Source: China Statistical Yearbook, World Bank",
+				buttonX: 215,
+				buttonY: 450,
+				reversed: false,
+				stops: [
+					[0, "#bcdeb6"],
+					[0.5,"#85c1a1"],
+					[.9, "#395243"]
+				]
+			},
+	      	primary: {
+				buttonText: "Primary Student-Teacher Ratio",
+				legendText: "Student-Teacher Ratio",
+				description: "Ratio of students who attend a primary educational institution divided by the number of teachers in the institution.<br />Source: China Statistical Yearbook, UNESCO",
+				buttonX: 284,
+				buttonY: 450,
+				reversed: true,
+				stops: [
+					[0, "#fcf49f"],
+					[0.5,"#ffd161"],
+					[.9, "#8e7337"]
+				]
+			},
+	      	secondary: {
+				buttonText: "Secondary Student-Teacher Ratio",
+				legendText: "Student-Teacher Ratio",
+				description: "Ratio of students who attend a secondary educational institution divided by the number of teachers in the institution.<br />Source: China Statistical Yearbook, UNESCO",
+				buttonX: 483,
+				buttonY: 450,
+				reversed: true,
+				stops: [
+					[0, "#fee499"],
+					[0.5,"#ef9365"],
+					[.9, "#88533a"]
+				]
+			},
+	      	tertiary: {
+				buttonText: "Tertiary Enrollment Share",
+				legendText: "Enrollment Share",
+				description: "Percentage of people enrolled in a tertiary institution out the entire college-age population.<br />Source: UNDP, World Bank",
+				buttonX: 695,
+				buttonY: 450,
+				reversed: false,
+				stops: [
+					[0, "#edb2be"],
+					[0.5,"#dd4760"],
+					[.9, "#662230"]
+				]
+			},
+		};
+
+		var options = {
+			data: {
+				googleSpreadsheetKey: '1wjo9UVjnL2N22ukdwI5B4CC4RKLEbW3fqWNNCx-no_0',
+				googleSpreadsheetWorksheet: 1,
 
 
-				//     // custom handler when the spreadsheet is parsed
-				//     parsed: function(columns) {
+			    // custom handler when the spreadsheet is parsed
+			    parsed: function(columns) {
 
-				//     	console.log(columns);
+					// Read the columns into the data array
+					var data = {
+						education: [],
+						literacy: [],
+						primary: [],
+						secondary: [],
+						tertiary: [],
+						educationBar: [],
+						literacyBar: [],
+						primaryBar: [],
+						secondaryBar: [],
+						tertiaryBar: []
+					};
+				    columns[0].forEach(function(code, i) {
+				      	if (i != 0) {
+				      		data.education.push({
+				      			code: columns[1][i].toUpperCase(),
+				      			value: parseFloat(columns[4][i]),
+				      			name: columns[0][i],
+				      			countryMatch: columns[3][i],
+				      			educationIndex: parseFloat(columns[2][i])
+				      		});
 
-				// 		// Read the columns into the data array
-				// 		var data = {
-				// 			education: [],
-				// 			literacy: [],
-				// 			primary: [],
-				// 			secondary: [],
-				// 			tertiary: []
-				// 		};
-				// 	    columns[0].forEach(function(code, i) {
-				// 	      	if (i != 0) {
-				// 	      		data.education.push({
-				// 	      			code: columns[1][i].toUpperCase(),
-				// 	      			value: parseFloat(columns[2][i]),
-				// 	      			name: columns[0][i],
-				// 	      			countryMatch: columns[3][i]
-				// 	      		});
+				      		data.educationBar.push(parseFloat(columns[2][i]));
 
-				// 	      		data.literacy.push({
-				// 	      			code: columns[1][i].toUpperCase(),
-				// 	      			name: columns[0][i],
-				// 	      			value: parseFloat(columns[4][i]),
-				// 	      			countryMatch: columns[5][i]
-				// 	      		});
+				      		data.literacy.push({
+				      			code: columns[1][i].toUpperCase(),
+				      			name: columns[0][i],
+				      			value: parseFloat(columns[5][i]),
+				      			countryMatch: columns[6][i]
+				      		});
 
-				// 	      		data.primary.push({
-				// 	      			code: columns[1][i].toUpperCase(),
-				// 	      			name: columns[0][i],
-				// 	      			value: parseFloat(columns[6][i]),
-				// 	      			countryMatch: columns[7][i]
-				// 	      		});
+				      		data.literacyBar.push(parseFloat(columns[5][i]));
 
-				// 	      		data.secondary.push({
-				// 	      			code: columns[1][i].toUpperCase(),
-				// 	      			name: columns[0][i],
-				// 	      			value: parseFloat(columns[8][i]),
-				// 	      			countryMatch: columns[9][i]
-				// 	      		});
+				      		data.primary.push({
+				      			code: columns[1][i].toUpperCase(),
+				      			name: columns[0][i],
+				      			value: parseFloat(columns[7][i]),
+				      			countryMatch: columns[8][i]
+				      		});
 
-				// 	      		data.tertiary.push({
-				// 	      			code: columns[1][i].toUpperCase(),
-				// 	      			name: columns[0][i],
-				// 	      			value: parseFloat(columns[10][i]),
-				// 	      			countryMatch: columns[11][i]
-				// 	      		});
-				// 	      	}
-				// 	    });
-				//       	dataObj = data;
-				// 	}
-				// },
-	            chart: {
-	                type: 'bar'
-	            },
-	            title: {
-	                text: 'China Education Data'
-	            },
-	            subtitle: {
-	                text: 'Subtitle here'
-	            },
-	            xAxis: [{
-	                categories: categories,
-	                reversed: false,
-	                labels: {
-	                    step: 1
-	                }
-	            }, { // mirror axis on right side
-	                opposite: true,
-	                reversed: false,
-	                categories: categories,
-	                linkedTo: 0,
-	                labels: {
-	                    step: 1
-	                }
-	            }],
-	            yAxis: {
-	                title: {
-	                    text: null
-	                },
-	                labels: {
-	                    formatter: function () {
-	                        return Math.abs(this.value) + '%';
-	                    }
-	                }
-	            },
+				      		data.primaryBar.push(parseFloat(columns[7][i]));
 
-	            plotOptions: {
-	                series: {
-	                    stacking: "normal"
-	                }
-	            },
+				      		data.secondary.push({
+				      			code: columns[1][i].toUpperCase(),
+				      			name: columns[0][i],
+				      			value: parseFloat(columns[9][i]),
+				      			countryMatch: columns[10][i]
+				      		});
 
-	            tooltip: {
-	                formatter: function () {
-	                    return '<b>' + this.series.name + ', age ' + this.point.category + '</b><br/>' +
-	                        'Population: ' + Highcharts.numberFormat(Math.abs(this.point.y), 0);
-	                }
-	            },
+				      		data.secondaryBar.push(parseFloat(columns[9][i]));
 
-	            series: [{
-	                name: 'Male',
-	                data: [-2.2, -2.2, -2.3, -2.5, - 3],
-	                stack: 'male',
-	            },
-	            {
-	                name: 'Female 2',
-	                data: [-3, -5, -6, -7, -8],
-	                stack: 'female',
-	            },
-	            {
-	                name: 'Female',
-	                data: [2.1, 2.0, 2.2, 2.4, 2.6],
-	                stack: 'female',
-	            },
-	            {
-	                name: 'Male 2',
-	                data: [3, 5, 6, 7, 8],
-	                stack: 'male',
-	            }]
+				      		data.tertiary.push({
+				      			code: columns[1][i].toUpperCase(),
+				      			name: columns[0][i],
+				      			value: parseFloat(columns[11][i]),
+				      			countryMatch: columns[12][i]
+				      		});
+
+				      		data.tertiaryBar.push(parseFloat(columns[11][i]));
+				      	}
+				    });
+			      	dataObj = data;
+				}
+			},
+
+			chart: {
+				borderWidth: 0,
+				marginBottom: 60,
+				events: {
+					load: function() {
+						this.series[0].setData(dataObj.education);
+					}
+				},
+				style: {
+                    fontFamily: 'Roboto Slab'
+                }
+			},
+			exporting: {
+				enabled: false
+			},
+
+			colors: ['#DD4760','#EF9365','#FFD160','#85C1A1'],
+			//title of map
+			title: {
+				text: 'Provincial Education Breakdown in China',
+				margin: 50,
+				align: 'left'
+			},
+
+			// +/- zoom
+			mapNavigation: {
+				enabled: true,
+				buttonOptions: {
+					verticalAlign: "middle"
+				}
+			},
+
+			credits: {
+				enabled: true,
+				text: 'CSIS China Power Project'
+			},
+
+			legend: {
+				align: 'right',
+				verticalAlign: 'top',
+				floating: true,
+				layout: 'horizontal',
+				valueDecimals: 0,
+				symbolRadius: 0,
+				symbolHeight: 15
+			},
+
+		  	colorAxis: {
+		  		dataClassColor: "category",
+			  	labels: {
+			  		enabled: true,
+			  		formatter: function() {
+			  			return this.value
+			  		}
+			  	},
+
+			 	dataClasses: [{
+                    from: 0,
+                    to: 1,
+                    name: 'Low<br />0.199-0.489',
+                    color: '#DD4760'
+                }, {
+                    from: 1.1,
+                    to: 2,
+                    name: 'Medium<br />0.489 - 0.653',
+                    color: '#EF9365'
+                }, {
+					from: 2.1,
+					to: 3,
+					name: 'High<br />0.653 - 0.767',
+					color: '#FFD160'
+				},
+				{
+					from: 3.1,
+					to: 4,
+					name: 'Very High<br />0.767 - 0.932',
+					color: '#85C1A1'
+				}]
+			},
+
+			tooltip: {
+				useHTML: true,
+				formatter: function() {
+					if(currentIndicator == 'education') {
+						value = this.point.educationIndex;
+					}
+					else {
+						value = this.point.value;
+					}
+					return '<span style="font-weight:bold;text-decoration:underline;text-align:center;display:block;margin-bottom:-10px;">'+this.key+'</span><br /><strong>'+indicatorsObj[currentIndicator].buttonText+':</strong> '+value+'<br /><strong>Country Match:</strong> '+this.point.countryMatch;
+				}
+			},
+
+			series: [{
+			    mapData: Highcharts.maps['countries/cn/cn-all'],
+			    joinBy: ['hc-a2', 'code'],
+			    animation: true,
+			    nullColor: '#4E6D78',
+			    borderColor: '#ECECEC',
+			    name: 'GDP Growth Rate',
+			    states: {
+			    	hover: {
+			    		brightness: -0.2
+			    	}
+			    },
+			    tooltip: {
+			    	valueDecimals: 2,
+			    	valueSuffix: '%'
+			    }
+			}]
+		};
+
+		function renderMap() {
+
+			// Create the Bar Chart
+			var optionsBar = {
+			    chart: {
+			      type: 'bar',
+			      backgroundColor: '#FFF',
+			      border: 'none',
+			      color: '#000',
+			      events: {
+						// load: function() {
+						// 	// this.series[0].setData(dataObj.education);
+						// }
+					},
+			    },
+			    credits: {
+			      enabled: true,
+			      text: "CSIS China Power Project"
+			    },
+			    title: {
+			      text: ""
+			    },
+			    legend: {
+			      align: 'center',
+			      verticalAlign: 'bottom',
+			      layout: 'horizontal'
+			    },
+			    colors: ['#00b29e', '#023850', '#0C8D79'],
+			    yAxis: {
+			    	reversed: false,
+			    	min: 0,
+			    	title: {
+			    		text: "Test"
+			    	}
+			    },
+			    xAxis: {
+			        categories: ["Anhui", "Beijing", "Chongqing", "Fujian", "Gansu", "Guangdong", "Guangxi", "Guizhou", "Hainan", "Hebei", "Heilongjiang", "Henan", "Hubei", "Hunan", "Inner Mongolia", "Jiangsu", "Jiangxi", "Jilin", "Liaoning", "Ningxia", "Qinghai", "Shaanxi", "Shandong", "Shanghai", "Shanxi", "Sichuan", "Tianjin", "Tibet (Xizang)", "Xinjiang", "Yunnan", "Zhejiang"],
+			        labels: {
+			    		enabled: true
+			    	}
+			    },
+			    series: [{
+			    	name: "Education",
+			    	data: dataObj.educationBar
+			    }],
+			    plotOptions: {
+			    	bar: {
+		                dataLabels: {
+							
+		                    enabled: true,
+		                    crop: false,
+		                    overflow: 'none',
+		                    allowOverlap: true
+		                    
+		                }
+		            }
+			    }
+			};
+			var barChart = Highcharts.Map('containerBar', optionsBar);
+			console.log(barChart.series);
+			console.log(dataObj.educationBar);
+
+			// Render initial text
+			description = chart.renderer.text(indicatorsObj[currentIndicator].description, 10, 50).attr({'id': "description"}).add();
+
+			legendTitle = chart.renderer.text(indicatorsObj[currentIndicator].legendText, chart.plotWidth, 60).attr({'id': "legendTitle", 'class': "legendTitle"}).add();
+
+			// Render Buttons
+			$.each(indicatorsObj, function(key, value) {
+				if(key == "education") {
+					normalState = {id: "button_"+key, fill: "#E6E6E6"};
+				}
+				else {
+					normalState = {id: "button_"+key};
+				}
+				chart.renderer.button(value.buttonText, value.buttonX, value.buttonY, function() {
+					switchData(key);
+				}, normalState).add();
+			});
+
+			// Disable Legend Click (Existing bug in highcharts)
+	        $(".highcharts-legend-item text").click(function() {
+	        	return false;
 	        });
-	    });
+
+		}
+
+		// Initiate the Map chart
+		var chart = Highcharts.Map('container', options, renderMap);
+
+
+        // Switch between datasets
+        function switchData(indicator) {
+        	$("#button_"+currentIndicator+" rect").css("fill", "#f7f7f7");
+        	$("#button_"+indicator+" rect").css("fill", "#E6E6E6");
+
+        	currentIndicator = indicator; // Update the current Indicator
+        	
+        	if(indicator == "education") {
+	        	chart.colorAxis[0].update({
+	        		dataClasses: [{
+	                    from: 0,
+	                    to: 1,
+	                    name: 'Low<br />0.199-0.489',
+	                    color: '#DD4760'
+	                }, {
+	                    from: 1.1,
+	                    to: 2,
+	                    name: 'Medium<br />0.489 - 0.653',
+	                    color: '#EF9365'
+	                }, {
+						from: 2.1,
+						to: 3,
+						name: 'High<br />0.653 - 0.767',
+						color: '#FFD160'
+					},
+					{
+						from: 3.1,
+						to: 4,
+						name: 'Very High<br />0.767 - 0.932',
+						color: '#85C1A1'
+					}],
+					reversed: indicatorsObj[currentIndicator].reversed
+	        	}, false);
+
+	        	chart.legend.update();
+
+				legendTitle.attr({text: indicatorsObj[currentIndicator].legendText, y: 60}); // Update the description text
+	        }
+	        else {
+	        	chart.colorAxis[0].update({
+	        		dataClasses: undefined,
+	        		dataClassColor: "tween",
+	        		// minColor: "#f7f7f7",
+	        		// maxColor: indicatorsObj[currentIndicator].maxColor,
+	        		stops: indicatorsObj[currentIndicator].stops,
+	        		reversed: indicatorsObj[currentIndicator].reversed
+	        	}, false);
+
+	        	chart.legend.update();
+
+				legendTitle.attr({text: indicatorsObj[currentIndicator].legendText, y: 70}); // Update the description text
+	        }
+
+        	chart.series[0].setData(dataObj[indicator], true); // Update the series data
+           	description.attr({text: indicatorsObj[currentIndicator].description}); // Update the description text
+        }
 
 	});
+
+
 	</script>
 
 
-	  <div id="container" style="max-width: 1000px"></div>
+	<div id="container" style="max-width: 1000px"></div>
+	<div id="containerBar" style="max-width: 1000px"></div>
 
 
 
