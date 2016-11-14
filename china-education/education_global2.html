@@ -19,7 +19,7 @@
 		<style type="text/css">
 
 			#container, #containerBar {
-				height: 500px;
+				height: 650px;
 				min-width: 310px;
 				max-width: 800px;
 				margin: 0 auto;
@@ -49,6 +49,7 @@
 
 	$(function () {
 
+		var barChart;
 		var description; // Initialize indicator description variable. Will be populated when chart renders
 		var currentIndicator = 'education';
 		var legendTitle;
@@ -62,7 +63,7 @@
 				legendText: "Development Level",
 				description: "Calculated from mean years of schooling and expected years of schooling. Rated from<br />0 (no educational attainment) to 1 (perfect educational attainment).<br />Source: UNDP",
 				buttonX: 100,
-				buttonY: 450,
+				buttonY: 600,
 				maxColor: null,
 				reversed: false,
 			},
@@ -71,7 +72,7 @@
 				legendText: "Literacy Rate",
 				description: "Percentage of the population 15+ years with the ability to read and write.<br />Source: China Statistical Yearbook, World Bank",
 				buttonX: 215,
-				buttonY: 450,
+				buttonY: 600,
 				reversed: false,
 				stops: [
 					[0, "#bcdeb6"],
@@ -84,7 +85,7 @@
 				legendText: "Student-Teacher Ratio",
 				description: "Ratio of students who attend a primary educational institution divided by the number of teachers in the institution.<br />Source: China Statistical Yearbook, UNESCO",
 				buttonX: 284,
-				buttonY: 450,
+				buttonY: 600,
 				reversed: true,
 				stops: [
 					[0, "#fcf49f"],
@@ -97,7 +98,7 @@
 				legendText: "Student-Teacher Ratio",
 				description: "Ratio of students who attend a secondary educational institution divided by the number of teachers in the institution.<br />Source: China Statistical Yearbook, UNESCO",
 				buttonX: 483,
-				buttonY: 450,
+				buttonY: 600,
 				reversed: true,
 				stops: [
 					[0, "#fee499"],
@@ -110,7 +111,7 @@
 				legendText: "Enrollment Share",
 				description: "Percentage of people enrolled in a tertiary institution out the entire college-age population.<br />Source: UNDP, World Bank",
 				buttonX: 695,
-				buttonY: 450,
+				buttonY: 600,
 				reversed: false,
 				stops: [
 					[0, "#edb2be"],
@@ -313,60 +314,54 @@
 			var optionsBar = {
 			    chart: {
 			      type: 'bar',
-			      backgroundColor: '#FFF',
 			      border: 'none',
-			      color: '#000',
-			      events: {
-						// load: function() {
-						// 	// this.series[0].setData(dataObj.education);
-						// }
-					},
 			    },
 			    credits: {
 			      enabled: true,
 			      text: "CSIS China Power Project"
 			    },
 			    title: {
-			      text: ""
+			      text: "Provincial Education Breakdown in China"
+			    },
+			    colors: ['#DD4760','#EF9365','#FFD160','#85C1A1'],
+			    xAxis: {
+			        categories: ["Anhui", "Beijing", "Chongqing", "Fujian", "Gansu", "Guangdong", "Guangxi", "Guizhou", "Hainan", "Hebei", "Heilongjiang", "Henan", "Hubei", "Hunan", "Inner Mongolia", "Jiangsu", "Jiangxi", "Jilin", "Liaoning", "Ningxia", "Qinghai", "Shaanxi", "Shandong", "Shanghai", "Shanxi", "Sichuan", "Tianjin", "Tibet (Xizang)", "Xinjiang", "Yunnan", "Zhejiang"],
+			        labels: {
+			    		enabled: true,
+                		step: 1,
+			    	}
+			    },
+			    yAxis: {
+			    	title: {
+			    		text: "Test"
+			    	},
+			    	reversed: false,
+			    	labels: {
+			    		overflow: 'justify'
+			    	}
+			    },
+			    plotOptions: {
+			    	bar: {
+		                dataLabels: {
+		                    enabled: true,
+		                    crop: false,
+		                    overflow: 'none',
+		                    allowOverlap: true
+		                }
+		            }
 			    },
 			    legend: {
 			      align: 'center',
 			      verticalAlign: 'bottom',
 			      layout: 'horizontal'
 			    },
-			    colors: ['#00b29e', '#023850', '#0C8D79'],
-			    yAxis: {
-			    	reversed: false,
-			    	min: 0,
-			    	title: {
-			    		text: "Test"
-			    	}
-			    },
-			    xAxis: {
-			        categories: ["Anhui", "Beijing", "Chongqing", "Fujian", "Gansu", "Guangdong", "Guangxi", "Guizhou", "Hainan", "Hebei", "Heilongjiang", "Henan", "Hubei", "Hunan", "Inner Mongolia", "Jiangsu", "Jiangxi", "Jilin", "Liaoning", "Ningxia", "Qinghai", "Shaanxi", "Shandong", "Shanghai", "Shanxi", "Sichuan", "Tianjin", "Tibet (Xizang)", "Xinjiang", "Yunnan", "Zhejiang"],
-			        labels: {
-			    		enabled: true
-			    	}
-			    },
 			    series: [{
-			    	name: "Education",
+			    	name: indicatorsObj[currentIndicator].legendText,
 			    	data: dataObj.educationBar
-			    }],
-			    plotOptions: {
-			    	bar: {
-		                dataLabels: {
-							
-		                    enabled: true,
-		                    crop: false,
-		                    overflow: 'none',
-		                    allowOverlap: true
-		                    
-		                }
-		            }
-			    }
+			    }]
 			};
-			var barChart = Highcharts.Map('containerBar', optionsBar);
-			console.log(barChart.series);
+			barChart = Highcharts.chart('containerBar', optionsBar);
+
 			console.log(dataObj.educationBar);
 
 			// Render initial text
@@ -404,6 +399,8 @@
         	$("#button_"+indicator+" rect").css("fill", "#E6E6E6");
 
         	currentIndicator = indicator; // Update the current Indicator
+
+        	// Update the Map
         	
         	if(indicator == "education") {
 	        	chart.colorAxis[0].update({
@@ -440,8 +437,6 @@
 	        	chart.colorAxis[0].update({
 	        		dataClasses: undefined,
 	        		dataClassColor: "tween",
-	        		// minColor: "#f7f7f7",
-	        		// maxColor: indicatorsObj[currentIndicator].maxColor,
 	        		stops: indicatorsObj[currentIndicator].stops,
 	        		reversed: indicatorsObj[currentIndicator].reversed
 	        	}, false);
@@ -453,6 +448,16 @@
 
         	chart.series[0].setData(dataObj[indicator], true); // Update the series data
            	description.attr({text: indicatorsObj[currentIndicator].description}); // Update the description text
+
+           	// Update the Bar Chart
+           	barChart.series[0].update({name: indicatorsObj[indicator].legendText}); // Update Series Name
+           	barChart.series[0].setData(dataObj[currentIndicator+"Bar"], true); // Update the series data
+
+           	console.log(indicator+"Bar");
+           	console.log(dataObj[currentIndicator+"Bar"]);
+           	console.log(dataObj);
+
+
         }
 
 	});

@@ -74,13 +74,14 @@
                 plotBorderWidth: 1
             },
             title: {
-                text: 'China Education Data'
+                text: 'Educational Attainment by Province'
             },
             credits: {
 				enabled: true,
-				text: 'CSIS China Power Project'
+				href: null,
+				text: 'CSIS China Power Project | <a href="http://www.stats.gov.cn/tjsj/ndsj/2015/indexeh.htm" target="_new">China Statistical Yearbook 2015</a>'
 			},
-			colors: ["#303D43", "#5AA993", "#53496E", "#7F4B9D"],
+			colors: ["#cbad4d", "#dfe44c", "#53496E", "#7F4B9D"],
             xAxis: [{
                 categories: categories,
                 reversed: false,
@@ -88,6 +89,9 @@
                     step: 1,
                     padding: 0
                 },
+            	title: {
+            		text: "lorem ipsum"
+            	},
                 alternateGridColor: '#E6E7E9',
                 lineColor: "#ECECEC",
                 tickWidth: 0
@@ -106,7 +110,7 @@
             }],
             yAxis: {
                 title: {
-                    text: null
+                    text: "Percentage of Population"
                 },
                 labels: {
                     formatter: function () {
