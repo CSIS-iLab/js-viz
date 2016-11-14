@@ -19,11 +19,15 @@
 
 
 		<style type="text/css">
+			.content {
+				width:90%;
+				margin:0 auto;
+			}
 
 			#container, #containerBar {
 				height: 650px;
 				min-width: 310px;
-				max-width: 800px;
+				width:100%;
 				margin: 0 auto;
 			}
 			.loading {
@@ -34,11 +38,17 @@
 			.legendTitle {
 				font-weight:bold;
 				font-style:italic;
-				text-align:right;
-				text-anchor: end;
+				text-align:left;
+				text-anchor: start;
 			}
 			.highcharts-legend-item text {
 				cursor: default !important;
+			}
+			.dropdown {
+				position:absolute;
+				z-index: 10;
+				top:85px;
+				display:none;
 			}
 
 		</style>
@@ -90,9 +100,9 @@
 				buttonY: 600,
 				reversed: true,
 				stops: [
-					[0, "#fcf49f"],
+					[0, "#8e7337"],
 					[0.5,"#ffd161"],
-					[.9, "#8e7337"]
+					[.9, "#fcf49f"]
 				]
 			},
 	      	secondary: {
@@ -103,9 +113,9 @@
 				buttonY: 600,
 				reversed: true,
 				stops: [
-					[0, "#fee499"],
+					[0, "#88533a"],
 					[0.5,"#ef9365"],
-					[.9, "#88533a"]
+					[.9, "#fee499"]
 				]
 			},
 	      	tertiary: {
@@ -145,6 +155,7 @@
 						secondaryBar: [],
 						tertiaryBar: []
 					};
+
 				    columns[0].forEach(function(code, i) {
 				      	if (i != 0) {
 				      		data.education.push({
@@ -156,6 +167,10 @@
 				      		});
 
 				      		data.educationBar.push(parseFloat(columns[2][i]));
+				      		// data.educationBar.push({
+				      		// 	name: columns[0][i],
+				      		// 	value: parseFloat(columns[4][i]),
+				      		// });
 
 				      		data.literacy.push({
 				      			code: columns[1][i].toUpperCase(),
@@ -195,6 +210,9 @@
 				      	}
 				    });
 			      	dataObj = data;
+			      	dataObj.educationBar.sort(function(a, b) {
+					  return b - a;
+					});
 				}
 			},
 
@@ -231,13 +249,13 @@
 			},
 
 			credits: {
-				enabled: true,
+				enabled: false,
 				text: 'CSIS China Power Project'
 			},
 
 			legend: {
-				align: 'right',
-				verticalAlign: 'top',
+				align: 'left',
+				verticalAlign: 'bottom',
 				floating: true,
 				layout: 'horizontal',
 				valueDecimals: 0,
@@ -323,7 +341,7 @@
 			      text: "CSIS China Power Project"
 			    },
 			    title: {
-			      text: "Provincial Education Breakdown in China"
+			      text: null
 			    },
 			    colors: ['#DD4760','#EF9365','#FFD160','#85C1A1'],
 			    xAxis: {
@@ -331,58 +349,71 @@
 			        labels: {
 			    		enabled: true,
                 		step: 1,
-			    	}
+			    	},
+			    	lineColor: "#ECECEC",
+			    	tickColor: "#ECECEC"
 			    },
 			    yAxis: {
-			    	title: {
-			    		text: "Test"
-			    	},
 			    	reversed: false,
 			    	labels: {
 			    		overflow: 'justify'
-			    	}
+			    	},
+			    	title: {
+			    		text: null
+			    	},
+			    	tickAmount: 3,
+			    	lineWidth: 1,
+			    	lineColor: "#ECECEC"
 			    },
 			    plotOptions: {
 			    	bar: {
 		                dataLabels: {
 		                    enabled: false,
-		                    crop: false,
-		                    overflow: 'none',
-		                    allowOverlap: true
-		                }
-		            }
+		                },
+		                zones: [{
+		                    value: 0.489,
+		                    color: '#DD4760'
+		                },
+		                {
+		                    value: 0.653,
+		                    color: '#EF9365'
+		                }, {
+		                    value: 0.767,
+		                    color: '#FFD160'
+		                }, {
+		                    color: '#85C1A1'
+		                }]
+				    },
+				    series: {
+				    	states: {
+					    	hover: {
+					    		brightness: -0.2
+					    	}
+					    },
+				    }
 			    },
 			    legend: {
-			      align: 'center',
-			      verticalAlign: 'bottom',
-			      layout: 'horizontal'
+			    	enabled: false,
+			      	align: 'center',
+			      	verticalAlign: 'bottom',
+			      	layout: 'horizontal'
 			    },
 			    series: [{
 			    	name: indicatorsObj[currentIndicator].legendText,
-			    	data: dataObj.educationBar
+			    	data: dataObj.educationBar,
 			    }]
 			};
 			barChart = Highcharts.chart('containerBar', optionsBar);
 
 			console.log(dataObj.educationBar);
 
+			// Show Indicators Dropdown
+			$(".indicatorSelect").show();
+
 			// Render initial text
 			description = chart.renderer.text(indicatorsObj[currentIndicator].description, 10, 50).attr({'id': "description"}).add();
 
-			legendTitle = chart.renderer.text(indicatorsObj[currentIndicator].legendText, chart.plotWidth, 60).attr({'id': "legendTitle", 'class': "legendTitle"}).add();
-
-			// Render Buttons
-			$.each(indicatorsObj, function(key, value) {
-				if(key == "education") {
-					normalState = {id: "button_"+key, fill: "#E6E6E6"};
-				}
-				else {
-					normalState = {id: "button_"+key};
-				}
-				chart.renderer.button(value.buttonText, value.buttonX, value.buttonY, function() {
-					switchData(key);
-				}, normalState).add();
-			});
+			legendTitle = chart.renderer.text(indicatorsObj[currentIndicator].legendText, 18, chart.chartHeight - 65).attr({'id': "legendTitle", 'class': "legendTitle"}).add();
 
 			// Disable Legend Click (Existing bug in highcharts)
 	        $(".highcharts-legend-item text").click(function() {
@@ -396,9 +427,9 @@
 
 
         // Switch between datasets
-        function switchData(indicator) {
-        	$("#button_"+currentIndicator+" rect").css("fill", "#f7f7f7");
-        	$("#button_"+indicator+" rect").css("fill", "#E6E6E6");
+        
+        $(".indicatorSelect").change(function (){
+        	var indicator = $(this).val();
 
         	currentIndicator = indicator; // Update the current Indicator
 
@@ -433,7 +464,7 @@
 
 	        	chart.legend.update();
 
-				legendTitle.attr({text: indicatorsObj[currentIndicator].legendText, y: 60}); // Update the description text
+				legendTitle.attr({text: indicatorsObj[currentIndicator].legendText, y: chart.chartHeight - 65}); // Update the description text
 	        }
 	        else {
 	        	chart.colorAxis[0].update({
@@ -445,7 +476,7 @@
 
 	        	chart.legend.update();
 
-				legendTitle.attr({text: indicatorsObj[currentIndicator].legendText, y: 70}); // Update the description text
+				legendTitle.attr({text: indicatorsObj[currentIndicator].legendText, y: chart.chartHeight - 65}); // Update the description text
 	        }
 
         	chart.series[0].setData(dataObj[indicator], true); // Update the series data
@@ -460,15 +491,32 @@
            	console.log(dataObj);
 
 
-        }
+        });
 
 	});
 
 
 	</script>
 
-	<div id="container" style="max-width: 1000px"></div>
-	<div id="containerBar" style="max-width: 1000px"></div>
+
+
+		<div class="container-fluid">
+		<div class="row">
+			<div class="col-xs-12 col-sm-6">
+				<select class="dropdown indicatorSelect">
+			<option value="education">Education Index</option>
+			<option value="literacy">Literacy</option>
+			<option value="primary">Primary Student-Teacher Ratio</option>
+			<option value="secondary">Secondary Student-Teacher Ratio</option>
+			<option value="tertiary">Tertiary</option>
+		</select>
+				<div id="container"></div>
+			</div>
+			<div class="col-xs-12 col-sm-6">
+				<div id="containerBar"></div>
+			</div>
+		</div>
+	</div>
 
 
 
