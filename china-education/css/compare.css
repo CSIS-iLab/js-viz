@@ -1,0 +1,53 @@
+@import 'https://fonts.googleapis.com/css?family=Roboto+Slab|Roboto:400,700';
+
+body {
+  font-family: 'Roboto', sans-serif;
+  font-size:16px;
+}
+
+.highcharts-title {
+	font-size:30px !important;
+	letter-spacing: .025em;
+	color: #444;
+	text-align:center;
+	font-family: 'Roboto', sans-serif;
+}
+
+.highcharts-subtitle {
+	font-size:16px;
+  	line-height: 1.6;
+  	font-family: 'Roboto', sans-serif;
+}
+
+.content {
+	height: 500px;
+	width:90%;
+	margin:0 auto;
+}
+
+#container {
+	height: 500px;
+	width:100%;
+	margin: 0 auto;
+}
+.loading {
+	margin-top: 10em;
+	text-align: center;
+	color: gray;
+}
+.legendTitle {
+	font-weight:bold;
+	font-style:italic;
+	text-align:right;
+}
+.dropdown {
+	position:absolute;
+	z-index: 10;
+	top:100px;
+}
+.selectLeft {
+	left:25%;
+}
+.selectRight {
+	right:25%;
+}
