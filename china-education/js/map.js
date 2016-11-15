@@ -1,64 +1,3 @@
-<!DOCTYPE HTML>
-<html>
-
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<title>China Global Education Comparison</title>
-
-		<link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,700" rel="stylesheet">
-
-		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
-		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-		<script src="https://code.highcharts.com/maps/highcharts.js"></script>
-		<script src="https://code.highcharts.com/maps/modules/map.js"></script>
-		<script src="https://code.highcharts.com/maps/modules/data.js"></script>
-		<script src="https://code.highcharts.com/maps/modules/exporting.js"></script>
-		<script src="cn-all.js"></script>
-
-
-
-		<style type="text/css">
-			.content {
-				width:90%;
-				margin:0 auto;
-			}
-
-			#container, #containerBar {
-				height: 650px;
-				min-width: 310px;
-				width:100%;
-				margin: 0 auto;
-			}
-			.loading {
-				margin-top: 10em;
-				text-align: center;
-				color: gray;
-			}
-			.legendTitle {
-				font-weight:bold;
-				font-style:italic;
-				text-align:left;
-				text-anchor: start;
-			}
-			.highcharts-legend-item text {
-				cursor: default !important;
-			}
-			.dropdown {
-				position:absolute;
-				z-index: 10;
-				top:85px;
-				display:none;
-			}
-
-		</style>
-
-	</head>
-
-<body>
-
-	<script>
-
 	$(function () {
 
 		var barChart;
@@ -339,7 +278,7 @@
 
 			chart: {
 				borderWidth: 0,
-				marginBottom: 60,
+				marginBottom: 50,
 				events: {
 					load: function() {
 						this.series[0].setData(dataObj.education);
@@ -356,8 +295,8 @@
 			colors: ['#DD4760','#EF9365','#FFD160','#85C1A1'],
 			//title of map
 			title: {
-				text: 'Provincial Education Breakdown in China',
-				margin: 50,
+				text: null,
+				// margin: 50,
 				align: 'left'
 			},
 
@@ -442,21 +381,31 @@
 			// Create the Bar Chart
 			var optionsBar = {
 			    chart: {
-			      type: 'bar',
-			      border: 'none',
-			      events: {
-					load: function() {
-						this.series[0].setData(dataObj.educationBar);
-					}
-				},
+			      	type: 'bar',
+			      	border: 'none',
+			      	events: {
+						load: function() {
+							this.series[0].setData(dataObj.educationBar);
+						}
+					},
+					marginTop: 50,
+					plotBorderColor:"#ECECEC",
+					plotBorderWidth: 1
 			    },
 			    credits: {
 			      enabled: true,
-			      text: "CSIS China Power Project"
+			      text: "CSIS China Power Project",
 			    },
 			    title: {
-			      text: null
+			      text: null,
 			    },
+			    // exporting: {
+			    // 	buttons: {
+			    // 		contextButton: {
+			    // 			verticalAlign: "bottom"
+			    // 		}
+			    // 	}
+			    // },
 			    xAxis: {
 			        type: 'category',
 			        labels: {
@@ -619,32 +568,3 @@
 	    };
 
 	});
-
-
-	</script>
-
-
-
-	<div class="container-fluid">
-		<div class="row">
-			<div class="col-xs-12 col-md-6">
-				<div id="containerBar"></div>
-			</div>
-			<div class="col-xs-12 col-md-6">
-				<select class="dropdown indicatorSelect">
-					<option value="education">Education Index</option>
-					<option value="literacy">Literacy</option>
-					<option value="primary">Primary Student-Teacher Ratio</option>
-					<option value="secondary">Secondary Student-Teacher Ratio</option>
-					<option value="tertiary">Tertiary</option>
-				</select>
-				<div id="container"></div>
-			</div>
-		</div>
-	</div>
-
-
-
-</body>
-
-</html>
