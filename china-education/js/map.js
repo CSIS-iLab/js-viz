@@ -8,8 +8,12 @@
 		var prevTargetIndex = 0;
 
 		// Compare 2nd column of data array
-		function comparedSecondColumn (a,b) {
+		function comparedSecondColumnASC (a,b) {
 	        return b[1] - a[1];
+	    };
+
+	    function comparedSecondColumnDESC (a,b) {
+	        return a[1] - b[1];
 	    };
 
 	    function compareEI (a, b) {
@@ -268,11 +272,11 @@
 			      	dataObj.primary.sort(compareValue);
 			      	dataObj.secondary.sort(compareValue);
 			      	dataObj.tertiary.sort(compareValue);
-			      	dataObj.educationBar.sort(comparedSecondColumn);
-			      	dataObj.literacyBar.sort(comparedSecondColumn);
-			      	dataObj.primaryBar.sort(comparedSecondColumn);
-			      	dataObj.secondaryBar.sort(comparedSecondColumn);
-			      	dataObj.tertiaryBar.sort(comparedSecondColumn);
+			      	dataObj.educationBar.sort(comparedSecondColumnASC);
+			      	dataObj.literacyBar.sort(comparedSecondColumnASC);
+			      	dataObj.primaryBar.sort(comparedSecondColumnDESC);
+			      	dataObj.secondaryBar.sort(comparedSecondColumnDESC);
+			      	dataObj.tertiaryBar.sort(comparedSecondColumnASC);
 				}
 			},
 
