@@ -27,6 +27,7 @@ p {
 
 #container {
 	width:100%;
+	margin-top:60px;
 }
 .loading {
 	margin-top: 10em;
@@ -41,11 +42,55 @@ p {
 .dropdown {
 	position:absolute;
 	z-index: 10;
-	top:130px;
+	top:0px;
+	width: 200px;
+	font-size: 16px;
+	font-weight: 700;
+	line-height: 20px;
+	padding: 10px;
+	border:3px solid;
+	border-radius: 0;
+	-webkit-appearance: none;  /*Removes default chrome and safari style*/
+	-moz-appearance: none;  /*Removes default style Firefox*/
+	background-color: rgba(0,0,0,0);
 }
+
 .selectLeft {
 	left:25%;
+	border-color: #5AA993;
+
 }
 .selectRight {
 	right:25%;
+	border-color: #7F4B9D;
+
+}
+
+.wrapperLeft, .wrapperRight {
+	position: relative;
+	font-size: 16px;
+	line-height: 20px;
+	margin: 0 auto;
+}
+
+.wrapperLeft::before, .wrapperRight::before {
+	content: '\f078';
+	font-family: FontAwesome;
+	color: #fff;
+	display: inline-block;
+	position: absolute;
+	margin: 0 auto;
+	top: 0px;
+	z-index: 5;
+	padding: 12px;
+}
+
+.wrapperLeft::before {
+	left: calc(25% + 160px);
+	background-color: #5AA993;
+}
+
+.wrapperRight::before {
+	right: 25%;
+	background-color: #7F4B9D;
 }
