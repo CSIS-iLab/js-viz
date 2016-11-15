@@ -127,7 +127,8 @@
 						name: 'Very High<br />0.767 - 0.932',
 						color: '#85C1A1'
 					}
-				]
+				],
+				max: 1
 			},
 	      	literacy: {
 				buttonText: "Literacy",
@@ -155,6 +156,7 @@
 		                    color: '#395243'
 		                }
 		        ],
+		        max: 100
 			},
 	      	primary: {
 				buttonText: "Primary Student-Teacher Ratio",
@@ -182,6 +184,7 @@
 		                    color: '#fcf49f'
 		                }
 		        ],
+		        max: 20
 			},
 	      	secondary: {
 				buttonText: "Secondary Student-Teacher Ratio",
@@ -209,6 +212,7 @@
 		                    color: '#fee499'
 		                }
 		        ],
+		        max: 25
 			},
 	      	tertiary: {
 				buttonText: "Tertiary Enrollment Share",
@@ -236,6 +240,7 @@
 		                    color: '#662230'
 		                }
 		        ],
+		        max: 80
 			},
 		};
 
@@ -565,6 +570,11 @@
            	description.attr({text: indicatorsObj[currentIndicator].description}); // Update the description text
 
            	// Update the Bar Chart
+           	barChart.update({
+           		yAxis: {
+           			max: indicatorsObj[indicator].max
+           		}
+           	}, false);
            	barChart.options.plotOptions.bar.zones = indicatorsObj[indicator].zones;
            	barChart.series[0].update({name: indicatorsObj[indicator].legendText}); // Update Series Name
            	barChart.series[0].setData(dataObj[currentIndicatorBar], true); // Update the series data
@@ -615,9 +625,9 @@
 
 
 
-		<div class="container-fluid">
+	<div class="container-fluid">
 		<div class="row">
-			<div class="col-xs-12 col-sm-6">
+			<div class="col-xs-12 col-md-6">
 				<select class="dropdown indicatorSelect">
 					<option value="education">Education Index</option>
 					<option value="literacy">Literacy</option>
@@ -627,7 +637,7 @@
 				</select>
 				<div id="container"></div>
 			</div>
-			<div class="col-xs-12 col-sm-6">
+			<div class="col-xs-12 col-md-6">
 				<div id="containerBar"></div>
 			</div>
 		</div>
