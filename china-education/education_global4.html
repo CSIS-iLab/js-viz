@@ -66,11 +66,20 @@
 		var currentIndicator = 'education';
 		var legendTitle;
 		var dataObj;
+		var prevTargetIndex = 0;
 
 		// Compare 2nd column of data array
 		function comparedSecondColumn (a,b) {
 	        return b[1] - a[1];
 	    };
+
+	    function compareEI (a, b) {
+			return b.educationIndex - a.educationIndex;
+	    }
+
+	    function compareValue (a, b) {
+			return b.value - a.value;
+	    }
 
 		// Object associated text with indicators
 		var indicatorsObj = {
@@ -308,6 +317,13 @@
 				      	}
 				    });
 			      	dataObj = data;
+
+			      	// Sort the data
+			      	dataObj.education.sort(compareEI);
+			      	dataObj.literacy.sort(compareValue);
+			      	dataObj.primary.sort(compareValue);
+			      	dataObj.secondary.sort(compareValue);
+			      	dataObj.tertiary.sort(compareValue);
 			      	dataObj.educationBar.sort(comparedSecondColumn);
 			      	dataObj.literacyBar.sort(comparedSecondColumn);
 			      	dataObj.primaryBar.sort(comparedSecondColumn);
@@ -404,12 +420,15 @@
 			    	valueSuffix: '%'
 			    },
 			    point: {
-			    	events: {
-			    		mouseOver: function() {
-			    			console.log(event);
-			    		}
-			    	}
-			    }
+				    events: {
+	                    mouseOver: function() {
+	                        triggerHover("map", this);
+	                    },
+	                    mouseOut: function() {
+	                        resetHover("map");
+	                    }
+	                }
+	            }
 			}]
 		};
 
@@ -477,6 +496,16 @@
 			    },
 			    series: [{
 			    	name: indicatorsObj[currentIndicator].legendText,
+			    	point: {
+					    events: {
+		                    mouseOver: function() {
+		                        triggerHover("bar", this);
+		                    },
+		                    mouseOut: function() {
+		                        resetHover("bar");
+		                    }
+		                }
+		            }
 			    }]
 			};
 			barChart = Highcharts.chart('containerBar', optionsBar);
@@ -547,6 +576,38 @@
 
         });
 
+        // Event handlers
+	    var triggerHover = function(originType, point) {
+	    	var targetIndex = point.index;
+
+	    	// Set hover state to target
+	    	if(originType == "map") {
+	    		barChart.series[0].data[targetIndex].setState('hover');
+	        	barChart.tooltip.refresh(barChart.series[0].data[targetIndex]);
+	    	}
+	    	else {
+	    		chart.series[0].data[targetIndex].setState('hover');
+	        	chart.tooltip.refresh(chart.series[0].data[targetIndex]);
+	    	}
+	        
+	        // Set previous target helper
+	        prevTargetIndex = targetIndex;
+	    };
+
+	    var resetHover = function(originType) {
+	        // Reset hover state of previous target
+	        if(originType == "map") {
+	        	barChart.series[0].data[prevTargetIndex].setState();
+	        	barChart.tooltip.hide();
+	        }
+	        else {
+	        	chart.series[0].data[prevTargetIndex].setState();
+	        	chart.tooltip.hide();
+	        }
+	        // Reset previous target helper
+	        prevTargetIndex = 0;
+	    };
+
 	});
 
 
@@ -558,12 +619,12 @@
 		<div class="row">
 			<div class="col-xs-12 col-sm-6">
 				<select class="dropdown indicatorSelect">
-			<option value="education">Education Index</option>
-			<option value="literacy">Literacy</option>
-			<option value="primary">Primary Student-Teacher Ratio</option>
-			<option value="secondary">Secondary Student-Teacher Ratio</option>
-			<option value="tertiary">Tertiary</option>
-		</select>
+					<option value="education">Education Index</option>
+					<option value="literacy">Literacy</option>
+					<option value="primary">Primary Student-Teacher Ratio</option>
+					<option value="secondary">Secondary Student-Teacher Ratio</option>
+					<option value="tertiary">Tertiary</option>
+				</select>
 				<div id="container"></div>
 			</div>
 			<div class="col-xs-12 col-sm-6">
