@@ -66,7 +66,11 @@
 		var currentIndicator = 'education';
 		var legendTitle;
 		var dataObj;
-		var provinces = [];
+
+		// Compare 2nd column of data array
+		function comparedSecondColumn (a,b) {
+	        return b[1] - a[1];
+	    };
 
 		// Object associated text with indicators
 		var indicatorsObj = {
@@ -78,6 +82,43 @@
 				buttonY: 600,
 				maxColor: null,
 				reversed: false,
+				zones: [{
+		                    value: 0.489,
+		                    color: '#DD4760'
+		                },
+		                {
+		                    value: 0.653,
+		                    color: '#EF9365'
+		                }, {
+		                    value: 0.767,
+		                    color: '#FFD160'
+		                }, {
+		                    color: '#85C1A1'
+		                }
+		        ],
+		        dataClasses: [{
+	                    from: 0,
+	                    to: 1,
+	                    name: 'Low<br />0.199-0.489',
+	                    color: '#DD4760'
+	                }, {
+	                    from: 1.1,
+	                    to: 2,
+	                    name: 'Medium<br />0.489 - 0.653',
+	                    color: '#EF9365'
+	                }, {
+						from: 2.1,
+						to: 3,
+						name: 'High<br />0.653 - 0.767',
+						color: '#FFD160'
+					},
+					{
+						from: 3.1,
+						to: 4,
+						name: 'Very High<br />0.767 - 0.932',
+						color: '#85C1A1'
+					}
+				]
 			},
 	      	literacy: {
 				buttonText: "Literacy",
@@ -90,7 +131,21 @@
 					[0, "#bcdeb6"],
 					[0.5,"#85c1a1"],
 					[.9, "#395243"]
-				]
+				],
+				zones: [{
+		                    value: 70,
+		                    color: '#bcdeb6'
+		                },
+		                {
+		                    value: 80,
+		                    color: '#86C1A1'
+		                }, {
+		                    value: 90,
+		                    color: '#577E68'
+		                }, {
+		                    color: '#395243'
+		                }
+		        ],
 			},
 	      	primary: {
 				buttonText: "Primary Student-Teacher Ratio",
@@ -103,7 +158,21 @@
 					[0, "#8e7337"],
 					[0.5,"#ffd161"],
 					[.9, "#fcf49f"]
-				]
+				],
+				zones: [{
+		                    value: 10,
+		                    color: '#8e7337'
+		                },
+		                {
+		                    value: 13,
+		                    color: '#DCB454'
+		                }, {
+		                    value: 17,
+		                    color: '#FEDB73'
+		                }, {
+		                    color: '#fcf49f'
+		                }
+		        ],
 			},
 	      	secondary: {
 				buttonText: "Secondary Student-Teacher Ratio",
@@ -116,7 +185,21 @@
 					[0, "#88533a"],
 					[0.5,"#ef9365"],
 					[.9, "#fee499"]
-				]
+				],
+				zones: [{
+		                    value: 10,
+		                    color: '#88533a'
+		                },
+		                {
+		                    value: 15,
+		                    color: '#CF7F58'
+		                }, {
+		                    value: 20,
+		                    color: '#F5B67B'
+		                }, {
+		                    color: '#fee499'
+		                }
+		        ],
 			},
 	      	tertiary: {
 				buttonText: "Tertiary Enrollment Share",
@@ -129,7 +212,21 @@
 					[0, "#edb2be"],
 					[0.5,"#dd4760"],
 					[.9, "#662230"]
-				]
+				],
+				zones: [{
+		                    value: 20,
+		                    color: '#edb2be'
+		                },
+		                {
+		                    value: 40,
+		                    color: '#DD4A62'
+		                }, {
+		                    value: 60,
+		                    color: '#953043'
+		                }, {
+		                    color: '#662230'
+		                }
+		        ],
 			},
 		};
 
@@ -162,57 +259,60 @@
 				      			code: columns[1][i].toUpperCase(),
 				      			value: parseFloat(columns[4][i]),
 				      			name: columns[0][i],
+				      			id: columns[0][i],
 				      			countryMatch: columns[3][i],
 				      			educationIndex: parseFloat(columns[2][i])
 				      		});
-
-				      		data.educationBar.push(parseFloat(columns[2][i]));
-				      		// data.educationBar.push({
-				      		// 	name: columns[0][i],
-				      		// 	value: parseFloat(columns[4][i]),
-				      		// });
+				      		
+				      		data.educationBar.push([columns[0][i], parseFloat(columns[2][i])]);
 
 				      		data.literacy.push({
 				      			code: columns[1][i].toUpperCase(),
 				      			name: columns[0][i],
+				      			id: columns[0][i],
 				      			value: parseFloat(columns[5][i]),
 				      			countryMatch: columns[6][i]
 				      		});
 
-				      		data.literacyBar.push(parseFloat(columns[5][i]));
+				      		data.literacyBar.push([columns[0][i], parseFloat(columns[5][i])]);
 
 				      		data.primary.push({
 				      			code: columns[1][i].toUpperCase(),
 				      			name: columns[0][i],
+				      			id: columns[0][i],
 				      			value: parseFloat(columns[7][i]),
 				      			countryMatch: columns[8][i]
 				      		});
 
-				      		data.primaryBar.push(parseFloat(columns[7][i]));
+				      		data.primaryBar.push([columns[0][i], parseFloat(columns[7][i])]);
 
 				      		data.secondary.push({
 				      			code: columns[1][i].toUpperCase(),
 				      			name: columns[0][i],
+				      			id: columns[0][i],
 				      			value: parseFloat(columns[9][i]),
 				      			countryMatch: columns[10][i]
 				      		});
 
-				      		data.secondaryBar.push(parseFloat(columns[9][i]));
+				      		data.secondaryBar.push([columns[0][i], parseFloat(columns[9][i])]);
 
 				      		data.tertiary.push({
 				      			code: columns[1][i].toUpperCase(),
 				      			name: columns[0][i],
+				      			id: columns[0][i],
 				      			value: parseFloat(columns[11][i]),
 				      			countryMatch: columns[12][i]
 				      		});
 
-				      		data.tertiaryBar.push(parseFloat(columns[11][i]));
+				      		data.tertiaryBar.push([columns[0][i], parseFloat(columns[11][i])]);
 				      	}
 				    });
 			      	dataObj = data;
-			      	dataObj.educationBar.sort(function(a, b) {
-					  return b - a;
-					});
+			      	dataObj.educationBar.sort(comparedSecondColumn);
+			      	dataObj.literacyBar.sort(comparedSecondColumn);
+			      	dataObj.primaryBar.sort(comparedSecondColumn);
+			      	dataObj.secondaryBar.sort(comparedSecondColumn);
+			      	dataObj.tertiaryBar.sort(comparedSecondColumn);
 				}
 			},
 
@@ -271,29 +371,7 @@
 			  			return this.value
 			  		}
 			  	},
-
-			 	dataClasses: [{
-                    from: 0,
-                    to: 1,
-                    name: 'Low<br />0.199-0.489',
-                    color: '#DD4760'
-                }, {
-                    from: 1.1,
-                    to: 2,
-                    name: 'Medium<br />0.489 - 0.653',
-                    color: '#EF9365'
-                }, {
-					from: 2.1,
-					to: 3,
-					name: 'High<br />0.653 - 0.767',
-					color: '#FFD160'
-				},
-				{
-					from: 3.1,
-					to: 4,
-					name: 'Very High<br />0.767 - 0.932',
-					color: '#85C1A1'
-				}]
+			 	dataClasses: indicatorsObj[currentIndicator].dataClasses
 			},
 
 			tooltip: {
@@ -324,6 +402,13 @@
 			    tooltip: {
 			    	valueDecimals: 2,
 			    	valueSuffix: '%'
+			    },
+			    point: {
+			    	events: {
+			    		mouseOver: function() {
+			    			console.log(event);
+			    		}
+			    	}
 			    }
 			}]
 		};
@@ -335,6 +420,11 @@
 			    chart: {
 			      type: 'bar',
 			      border: 'none',
+			      events: {
+					load: function() {
+						this.series[0].setData(dataObj.educationBar);
+					}
+				},
 			    },
 			    credits: {
 			      enabled: true,
@@ -343,12 +433,11 @@
 			    title: {
 			      text: null
 			    },
-			    colors: ['#DD4760','#EF9365','#FFD160','#85C1A1'],
 			    xAxis: {
-			        categories: ["Anhui", "Beijing", "Chongqing", "Fujian", "Gansu", "Guangdong", "Guangxi", "Guizhou", "Hainan", "Hebei", "Heilongjiang", "Henan", "Hubei", "Hunan", "Inner Mongolia", "Jiangsu", "Jiangxi", "Jilin", "Liaoning", "Ningxia", "Qinghai", "Shaanxi", "Shandong", "Shanghai", "Shanxi", "Sichuan", "Tianjin", "Tibet (Xizang)", "Xinjiang", "Yunnan", "Zhejiang"],
+			        type: 'category',
 			        labels: {
 			    		enabled: true,
-                		step: 1,
+                		step: 1
 			    	},
 			    	lineColor: "#ECECEC",
 			    	tickColor: "#ECECEC"
@@ -370,19 +459,7 @@
 		                dataLabels: {
 		                    enabled: false,
 		                },
-		                zones: [{
-		                    value: 0.489,
-		                    color: '#DD4760'
-		                },
-		                {
-		                    value: 0.653,
-		                    color: '#EF9365'
-		                }, {
-		                    value: 0.767,
-		                    color: '#FFD160'
-		                }, {
-		                    color: '#85C1A1'
-		                }]
+		                zones: indicatorsObj[currentIndicator].zones
 				    },
 				    series: {
 				    	states: {
@@ -400,12 +477,9 @@
 			    },
 			    series: [{
 			    	name: indicatorsObj[currentIndicator].legendText,
-			    	data: dataObj.educationBar,
 			    }]
 			};
 			barChart = Highcharts.chart('containerBar', optionsBar);
-
-			console.log(dataObj.educationBar);
 
 			// Show Indicators Dropdown
 			$(".indicatorSelect").show();
@@ -432,33 +506,12 @@
         	var indicator = $(this).val();
 
         	currentIndicator = indicator; // Update the current Indicator
+        	currentIndicatorBar = indicator+"Bar";
 
         	// Update the Map
-        	
         	if(indicator == "education") {
 	        	chart.colorAxis[0].update({
-	        		dataClasses: [{
-	                    from: 0,
-	                    to: 1,
-	                    name: 'Low<br />0.199-0.489',
-	                    color: '#DD4760'
-	                }, {
-	                    from: 1.1,
-	                    to: 2,
-	                    name: 'Medium<br />0.489 - 0.653',
-	                    color: '#EF9365'
-	                }, {
-						from: 2.1,
-						to: 3,
-						name: 'High<br />0.653 - 0.767',
-						color: '#FFD160'
-					},
-					{
-						from: 3.1,
-						to: 4,
-						name: 'Very High<br />0.767 - 0.932',
-						color: '#85C1A1'
-					}],
+	        		dataClasses: indicatorsObj[currentIndicator].dataClasses,
 					reversed: indicatorsObj[currentIndicator].reversed
 	        	}, false);
 
@@ -483,11 +536,12 @@
            	description.attr({text: indicatorsObj[currentIndicator].description}); // Update the description text
 
            	// Update the Bar Chart
+           	barChart.options.plotOptions.bar.zones = indicatorsObj[indicator].zones;
            	barChart.series[0].update({name: indicatorsObj[indicator].legendText}); // Update Series Name
-           	barChart.series[0].setData(dataObj[currentIndicator+"Bar"], true); // Update the series data
+           	barChart.series[0].setData(dataObj[currentIndicatorBar], true); // Update the series data
 
-           	console.log(indicator+"Bar");
-           	console.log(dataObj[currentIndicator+"Bar"]);
+           	console.log(currentIndicatorBar);
+           	console.log(dataObj[currentIndicatorBar]);
            	console.log(dataObj);
 
 
