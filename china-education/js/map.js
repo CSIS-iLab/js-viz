@@ -305,7 +305,8 @@
 				enabled: true,
 				buttonOptions: {
 					verticalAlign: "middle"
-				}
+				},
+				enableMouseWheelZoom: false
 			},
 
 			credits: {
