@@ -25,7 +25,7 @@
 			education: {
 				buttonText: "Education Index",
 				legendText: "Development Level",
-				description: "Calculated from mean years of schooling and expected years of schooling. Rated from<br />0 (no educational attainment) to 1 (perfect educational attainment).<br />Source: UNDP",
+				description: "Calculated from mean years of schooling and expected years of schooling. Rated from 0 (no educational attainment) to 1 (perfect educational attainment).<br />Source: UNDP",
 				buttonX: 100,
 				buttonY: 600,
 				maxColor: null,
@@ -465,12 +465,11 @@
 			};
 			barChart = Highcharts.chart('containerBar', optionsBar);
 
-			// Show Indicators Dropdown
+			// Show Indicators Dropdown & Description on chart load
 			$(".indicatorSelect").show();
+			$("#description").show();
 
-			// Render initial text
-			description = chart.renderer.text(indicatorsObj[currentIndicator].description, 10, 50).attr({'id': "description"}).add();
-
+			// Render Initial Legend Text
 			legendTitle = chart.renderer.text(indicatorsObj[currentIndicator].legendText, 18, chart.chartHeight - 65).attr({'id': "legendTitle", 'class': "legendTitle"}).add();
 
 			// Disable Legend Click (Existing bug in highcharts)
@@ -517,7 +516,7 @@
 	        }
 
         	chart.series[0].setData(dataObj[indicator], true); // Update the series data
-           	description.attr({text: indicatorsObj[currentIndicator].description}); // Update the description text
+        	$("#description").html(indicatorsObj[currentIndicator].description); // Update description text
 
            	// Update the Bar Chart
            	barChart.update({
@@ -528,11 +527,6 @@
            	barChart.options.plotOptions.bar.zones = indicatorsObj[indicator].zones;
            	barChart.series[0].update({name: indicatorsObj[indicator].legendText}); // Update Series Name
            	barChart.series[0].setData(dataObj[currentIndicatorBar], true); // Update the series data
-
-           	console.log(currentIndicatorBar);
-           	console.log(dataObj[currentIndicatorBar]);
-           	console.log(dataObj);
-
 
         });
 
