@@ -54,8 +54,39 @@ p {
 	cursor: default !important;
 }
 .dropdown {
-	/*position:absolute;
-	z-index: 10;
-	top:85px;*/
 	display:none;
+	width: 330px;
+	font-size: 16px;
+	font-weight: 700;
+	line-height: 20px;
+	padding: 10px;
+	border:3px solid;
+	border-radius: 0;
+	-webkit-appearance: none;  /*Removes default chrome and safari style*/
+	-moz-appearance: none;  /*Removes default style Firefox*/
+	background-color: rgba(0,0,0,0);
+	border-color: #DD4760;
+	position:relative;
+	z-index:10;
+}
+
+.dropdownWrapper {
+	position: relative;
+	font-size: 16px;
+	line-height: 20px;
+	margin: 0 auto;
+}
+
+.dropdownWrapper::before {
+	content: '\f078';
+	font-family: FontAwesome;
+	color: #fff;
+	display: inline-block;
+	position: absolute;
+	margin: 0 auto;
+	top: 0px;
+	left: calc(50% + 125px);
+	z-index: 0;
+	padding: 12px;
+	background-color: #DD4760;
 }
