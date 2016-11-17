@@ -51,13 +51,18 @@ $(function () {
             labels: {
                 formatter: function () {
                     return Math.abs(this.value) + '%';
-                }
+                },
+                style: {
+		            textOverflow: 'none'
+		        }
             },
             gridLineWidth: 0,
-            max: 55,
-            ceiling: 55,
-            floor: -55,
-            min: -55
+            max: 60,
+            ceiling: 60,
+            floor: -60,
+            min: -60,
+            endOnTick: false,
+            tickInterval: 20
         },
 
         plotOptions: {
@@ -96,7 +101,24 @@ $(function () {
         },
         
         
-        ]
+        ],
+        responsive: {
+            rules: [{
+                callback: function() {
+                	var maxWidth = this.containerWidth;
+                	if(maxWidth <= 503) {
+                		this.axes[1].categories = ['','','','',''];
+                		this.axes[0].options.labels.rotation = 270;
+                	}
+                	else {
+                		this.axes[1].categories = categories;
+                		this.axes[0].options.labels.rotation = 0;
+                	}
+					
+					return true;
+				},
+            }]
+        }
 	};
 
 	var googleSpreadsheetKey = "1wjo9UVjnL2N22ukdwI5B4CC4RKLEbW3fqWNNCx-no_0";

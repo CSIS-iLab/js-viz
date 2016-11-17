@@ -3,6 +3,8 @@
 body {
   font-family: 'Roboto', sans-serif;
   font-size:16px;
+  margin:0;
+  padding:0;
 }
 
 h1 {
@@ -21,7 +23,7 @@ p {
 }
 
 .content {
-	width:95%;
+	width:100%;
 	margin:0 auto;
 }
 
@@ -93,4 +95,56 @@ p {
 .wrapperRight::before {
 	right: 25%;
 	background-color: #7F4B9D;
+}
+
+@media only screen and (max-width: 545px){
+
+	#container {
+		margin-top:110px;
+	}
+
+	.dropdown {
+		font-size: 0.8em;
+		width:100%;
+	}
+
+	.selectLeft {
+		left: 0;
+	}
+
+	.wrapperLeft::before {
+		left: inherit;
+		right: 0;
+	}
+
+	.selectRight {
+		right: 0;
+		top: 50px;
+	}
+
+	.wrapperRight::before {
+		top:50px;
+		right: 0%;
+	}
+
+}
+
+@media only screen and (min-width: 546px) and (max-width: 900px) {
+	.selectLeft {
+		left: 15%;
+	}
+
+	.wrapperLeft::before {
+		left: calc(15% + 160px);
+	}
+
+	.wrapperRight::before {
+		left: calc(55% + 160px);
+		right: inherit;
+	}
+
+	.selectRight {
+		left: 55%;
+		right: inherit;
+	}
 }

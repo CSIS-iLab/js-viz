@@ -3,6 +3,8 @@
 body {
   font-family: 'Roboto', sans-serif;
   font-size:16px;
+  margin: 0;
+  padding:0;
 }
 
 h1 {
@@ -18,14 +20,13 @@ p {
   font-family: 'Roboto', sans-serif;
 }
 
-.content {
-	width:95%;
-	margin:0 auto;
+.container-fluid {
+	padding:0;
+	margin:0;
 }
 
 #container, #containerBar {
-	height: 600px;
-	min-width: 310px;
+	height: 500px;
 	width:100%;
 	margin: 0 auto;
 }
@@ -54,9 +55,8 @@ p {
 	cursor: default !important;
 }
 .dropdown {
-	display:none;
 	width: 330px;
-	font-size: 16px;
+	font-size: 1em;
 	font-weight: 700;
 	line-height: 20px;
 	padding: 10px;
@@ -71,6 +71,7 @@ p {
 }
 
 .dropdownWrapper {
+	display:none;
 	position: relative;
 	font-size: 16px;
 	line-height: 20px;
@@ -89,4 +90,27 @@ p {
 	z-index: 0;
 	padding: 12px;
 	background-color: #DD4760;
+}
+
+@media only screen and (max-width: 506px){
+	.legendTitle {
+		transform: translateY(-30px);
+	}
+
+	.dropdown {
+		font-size: 0.8em;
+		width:100%;
+	}
+
+	.dropdownWrapper::before {
+		left: inherit;
+		right: 0;
+	}
+
+}
+
+@media only screen and (max-width:1199px) {
+	#container, #containerBar {
+		height:400px;
+	}
 }

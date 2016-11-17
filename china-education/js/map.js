@@ -474,7 +474,7 @@
 			barChart = Highcharts.chart('containerBar', optionsBar);
 
 			// Show Indicators Dropdown & Description on chart load
-			$(".indicatorSelect").show();
+			$(".dropdownWrapper").show();
 			$("#description").show();
 
 			// Render Initial Legend Text
@@ -508,7 +508,7 @@
 
 	        	chart.legend.update();
 
-				legendTitle.attr({text: indicatorsObj[currentIndicator].legendText, y: chart.chartHeight - 65}); // Update the description text
+				legendTitle.attr({text: indicatorsObj[currentIndicator].legendText, y: chart.chartHeight - 65}); // Update legend text
 	        }
 	        else {
 	        	chart.colorAxis[0].update({
@@ -520,7 +520,7 @@
 
 	        	chart.legend.update();
 
-				legendTitle.attr({text: indicatorsObj[currentIndicator].legendText, y: chart.chartHeight - 65}); // Update the description text
+				legendTitle.attr({text: indicatorsObj[currentIndicator].legendText, y: chart.chartHeight - 65}); // Update legend text
 	        }
 
         	chart.series[0].setData(dataObj[indicator], true); // Update the series data
