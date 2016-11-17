@@ -109,22 +109,22 @@
 				buttonY: 600,
 				reversed: true,
 				stops: [
-					[0, "#8e7337"],
-					[0.5,"#ffd161"],
-					[.9, "#fcf49f"]
+					[0, "#234670"],
+					[0.5,"#3b75bb"],
+					[.9, "#90b2dc"]
 				],
 				zones: [{
 		                    value: 10,
-		                    color: '#8e7337'
+		                    color: '#234670'
 		                },
 		                {
 		                    value: 13,
-		                    color: '#DCB454'
+		                    color: '#305F98'
 		                }, {
 		                    value: 17,
-		                    color: '#FEDB73'
+		                    color: '#6190C9'
 		                }, {
-		                    color: '#fcf49f'
+		                    color: '#90b2dc'
 		                }
 		        ],
 		        max: 20
