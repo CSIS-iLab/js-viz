@@ -24,6 +24,10 @@
 			return b.value - a.value;
 	    }
 
+	    function compareValueDESC (a, b) {
+	    	return a.value - b.value;
+	    }
+
 		// Object associated text with indicators
 		var indicatorsObj = {
 			education: {
@@ -269,8 +273,8 @@
 			      	// Sort the data
 			      	dataObj.education.sort(compareEI);
 			      	dataObj.literacy.sort(compareValue);
-			      	dataObj.primary.sort(compareValue);
-			      	dataObj.secondary.sort(compareValue);
+			      	dataObj.primary.sort(compareValueDESC);
+			      	dataObj.secondary.sort(compareValueDESC);
 			      	dataObj.tertiary.sort(compareValue);
 			      	dataObj.educationBar.sort(comparedSecondColumnASC);
 			      	dataObj.literacyBar.sort(comparedSecondColumnASC);
