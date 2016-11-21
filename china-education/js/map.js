@@ -281,6 +281,7 @@
 			      	dataObj.primaryBar.sort(comparedSecondColumnDESC);
 			      	dataObj.secondaryBar.sort(comparedSecondColumnDESC);
 			      	dataObj.tertiaryBar.sort(comparedSecondColumnASC);
+
 				}
 			},
 
@@ -392,11 +393,6 @@
 			    chart: {
 			      	type: 'bar',
 			      	border: 'none',
-			      	events: {
-						load: function() {
-							this.series[0].setData(dataObj.educationBar);
-						}
-					},
 					marginTop: 50,
 					plotBorderColor:"#ECECEC",
 					plotBorderWidth: 1
@@ -408,13 +404,6 @@
 			    title: {
 			      text: null,
 			    },
-			    // exporting: {
-			    // 	buttons: {
-			    // 		contextButton: {
-			    // 			verticalAlign: "bottom"
-			    // 		}
-			    // 	}
-			    // },
 			    xAxis: {
 			        type: 'category',
 			        labels: {
@@ -459,6 +448,8 @@
 			    },
 			    series: [{
 			    	name: indicatorsObj[currentIndicator].legendText,
+			    	// data: dataObj.educationBar,
+			    	data: dataObj.educationBar.slice(0, dataObj.educationBar.length),
 			    	point: {
 					    events: {
 		                    mouseOver: function() {
@@ -499,18 +490,28 @@
         	currentIndicator = indicator; // Update the current Indicator
         	currentIndicatorBar = indicator+"Bar";
 
-        	// Update the Map
+        	// Update the Bar Chart
+           	barChart.update({
+           		yAxis: {
+           			max: indicatorsObj[indicator].max
+           		}
+           	}, false);
+           	barChart.options.plotOptions.bar.zones = indicatorsObj[indicator].zones;
+           	barChart.series[0].update({name: indicatorsObj[indicator].legendText}); // Update Series Name
+
         	if(indicator == "education") {
+        		// Update the Map
 	        	chart.colorAxis[0].update({
 	        		dataClasses: indicatorsObj[currentIndicator].dataClasses,
 					reversed: indicatorsObj[currentIndicator].reversed
 	        	}, false);
 
 	        	chart.legend.update();
-
 				legendTitle.attr({text: indicatorsObj[currentIndicator].legendText, y: chart.chartHeight - 65}); // Update legend text
+
 	        }
 	        else {
+	        	// Update the Map
 	        	chart.colorAxis[0].update({
 	        		dataClasses: undefined,
 	        		dataClassColor: "tween",
@@ -519,22 +520,13 @@
 	        	}, false);
 
 	        	chart.legend.update();
-
 				legendTitle.attr({text: indicatorsObj[currentIndicator].legendText, y: chart.chartHeight - 65}); // Update legend text
 	        }
 
         	chart.series[0].setData(dataObj[indicator], true); // Update the series data
         	$("#description").html(indicatorsObj[currentIndicator].description); // Update description text
-
-           	// Update the Bar Chart
-           	barChart.update({
-           		yAxis: {
-           			max: indicatorsObj[indicator].max
-           		}
-           	}, false);
-           	barChart.options.plotOptions.bar.zones = indicatorsObj[indicator].zones;
-           	barChart.series[0].update({name: indicatorsObj[indicator].legendText}); // Update Series Name
-           	barChart.series[0].setData(dataObj[currentIndicatorBar], true); // Update the series data
+        	barChart.series[0].setData(dataObj[currentIndicatorBar], true); // Update the series data
+           	
 
         });
 
