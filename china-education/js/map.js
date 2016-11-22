@@ -477,7 +477,15 @@
 	        	return false;
 	        });
 
-	        chart.reflow();
+	        $("#container").css({
+			    width: $(".mapContainer").width()
+			});
+			chart.reflow();
+
+			$("#containerBar").css({
+			    width: $(".barContainer").width()
+			});
+			barChart.reflow();
 
 		}
 
