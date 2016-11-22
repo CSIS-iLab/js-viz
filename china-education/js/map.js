@@ -477,13 +477,15 @@
 	        	return false;
 	        });
 
+	        console.log($(".mapContainer").width());
+
 	        $("#container").css({
-			    width: $(".mapContainer").width() - 30
+			    width: $(".mapContainer").width() - 50
 			});
 			chart.reflow();
 
 			$("#containerBar").css({
-			    width: $(".barContainer").width() - 30
+			    width: $(".barContainer").width() - 50
 			});
 			barChart.reflow();
 
