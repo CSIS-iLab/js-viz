@@ -286,12 +286,12 @@
 			},
 
 			chart: {
+				renderTo: 'container',
 				borderWidth: 0,
 				marginBottom: 50,
 				events: {
 					load: function() {
 						this.series[0].setData(dataObj.education);
-						$(window).resize();
 					}
 				},
 				style: {
@@ -464,6 +464,8 @@
 			    }]
 			};
 			barChart = Highcharts.chart('containerBar', optionsBar);
+
+			chart.reflow();
 
 			// Show Indicators Dropdown & Description on chart load
 			$(".dropdownWrapper").show();
