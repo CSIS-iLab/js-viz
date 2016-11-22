@@ -478,12 +478,12 @@
 	        });
 
 	        $("#container").css({
-			    width: $(".mapContainer").width()
+			    width: $(".mapContainer").width() - 80
 			});
 			chart.reflow();
 
 			$("#containerBar").css({
-			    width: $(".barContainer").width()
+			    width: $(".barContainer").width() - 80
 			});
 			barChart.reflow();
 
