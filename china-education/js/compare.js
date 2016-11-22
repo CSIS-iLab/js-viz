@@ -115,27 +115,27 @@ $(function () {
 				// }
     //         }]
     //     }
-    	responsive: {
-	      rules: [{
-	          	condition: {
-	              	maxWidth: 500,
-	              	callback: function() {
-                	// var maxWidth = this.containerWidth;
-                	// if(maxWidth <= 503) {
-                		this.axes[1].categories = ['','','','',''];
-                		this.axes[0].options.labels.rotation = 270;
-                	// }
-                	// else {
-                		// this.axes[1].categories = categories;
-                		// this.axes[0].options.labels.rotation = 0;
-                	// }
+    // 	responsive: {
+	   //    rules: [{
+	   //        	condition: {
+	   //            	maxWidth: 500,
+	   //            	callback: function() {
+    //             	// var maxWidth = this.containerWidth;
+    //             	// if(maxWidth <= 503) {
+    //             		this.axes[1].categories = ['','','','',''];
+    //             		this.axes[0].options.labels.rotation = 270;
+    //             	// }
+    //             	// else {
+    //             		// this.axes[1].categories = categories;
+    //             		// this.axes[0].options.labels.rotation = 0;
+    //             	// }
 					
-					return true;
-				}
-	          	},
+				// 	return true;
+				// }
+	   //        	},
 	          	
-	      	}]
-	  	}
+	   //    	}]
+	  	// }
 	};
 
 	var googleSpreadsheetKey = "1wjo9UVjnL2N22ukdwI5B4CC4RKLEbW3fqWNNCx-no_0";
