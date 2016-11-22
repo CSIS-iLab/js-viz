@@ -18,14 +18,14 @@ $(function() {
     },
     credits: {
       enabled: true,
-      href: "http://csis.org",
-      text: "CSIS China Power Project | Source: OECD"
+      href: false,
+      text: "CSIS China Power Project | UNDP, World Bank"
     },
     title: {
-      text: "Test Line Chart for Matthew"
+      text: "Education Index by Income Level"
     },
     subtitle: {
-      text: "From 1990 to 2011"
+      text: "2005-2014"
     },
     legend: {
       title: {
@@ -45,7 +45,7 @@ $(function() {
     },
     yAxis: {
       title: {
-        text: "National currency per US dollar"
+        text: "Education Index"
       },
     },
   plotOptions:
