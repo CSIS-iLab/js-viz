@@ -465,8 +465,6 @@
 			};
 			barChart = Highcharts.chart('containerBar', optionsBar);
 
-			chart.reflow();
-
 			// Show Indicators Dropdown & Description on chart load
 			$(".dropdownWrapper").show();
 			$("#description").show();
@@ -479,10 +477,13 @@
 	        	return false;
 	        });
 
+	        chart.reflow();
+
 		}
 
 		// Initiate the Map chart
 		var chart = Highcharts.Map('container', options, renderMap);
+
 
 
         // Switch between datasets
