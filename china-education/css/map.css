@@ -108,6 +108,11 @@ p {
 		right: 0;
 	}
 
+	.col-xs-12 {
+		padding-left: 0 !important;
+		padding-right: 0 !important;
+	}
+
 }
 
 @media only screen and (max-width:1199px) {
