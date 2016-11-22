@@ -33,7 +33,7 @@
 			education: {
 				buttonText: "Education Index",
 				legendText: "Development Level",
-				description: "Calculated from mean years of schooling and expected years of schooling. Rated from 0 (no educational attainment) to 1 (perfect educational attainment).<br />Source: UNDP",
+				description: "Calculated from mean years of schooling and expected years of schooling.<br />Rated from 0 (no educational attainment) to 1 (perfect educational attainment).<br />Source: UNDP",
 				buttonX: 100,
 				buttonY: 600,
 				maxColor: null,
@@ -291,6 +291,7 @@
 				events: {
 					load: function() {
 						this.series[0].setData(dataObj.education);
+						$(window).resize();
 					}
 				},
 				style: {
@@ -320,7 +321,7 @@
 
 			credits: {
 				enabled: false,
-				text: 'CSIS China Power Project'
+				text: 'CSIS China Power Project | Various Sources'
 			},
 
 			legend: {
