@@ -1,6 +1,13 @@
 $(function () {
 	var chart;
 	var categories = ['Tertiary', 'Senior', 'Junior', 'Primary', 'None'];
+	var categoriesExplanation = {
+		'None': 'Population that has not received any formal education.',
+		'Primary': 'First stage of compulsory education. Target students are 6 to 12 years of age.',
+		'Junior': 'Second stage of compulsory education and first stage of secondary education. Target students are 12 to 15 years of age.',
+		'Senior': 'Second stage of secondary education. Target students are 15 to 18 years of age.',
+		'Tertiary': 'Target students are aged 18 and above. This stage encompasses all levels of post-secondary education.'
+	};
 
 	var options = {
 		chart: {
@@ -26,7 +33,11 @@ $(function () {
             reversed: false,
             labels: {
                 step: 1,
-                padding: 0
+                padding: 0,
+                formatter: function() {
+                    return this.value +' <i class="fa fa-info-circle" aria-hidden="true" title="'+categoriesExplanation[this.value]+'"></i>';
+                },
+                useHTML: true
             },
             alternateGridColor: '#E6E7E9',
             lineColor: "#ECECEC",
@@ -38,7 +49,11 @@ $(function () {
             linkedTo: 0,
             labels: {
                 step: 1,
-                padding: 0
+                padding: 0,
+                formatter: function() {
+                    return this.value +' <i class="fa fa-info-circle" aria-hidden="true" title="'+categoriesExplanation[this.value]+'"></i>';
+                },
+                useHTML: true
             },
             alternateGridColor: '#E6E7E9',
             lineColor: "#ECECEC",
