@@ -29,7 +29,7 @@ $(function() {
     },
     legend: {
       title: {
-        text: 'Country<br/><span style="font-size: 9px; color: #666; font-weight: normal">(Click to hide)</span>',
+        text: 'Income Level<br/><span style="font-size: 9px; color: #666; font-weight: normal">(Click to hide)</span>',
         style: {
           fontStyle: 'italic'
         }
