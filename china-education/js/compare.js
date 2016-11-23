@@ -1,6 +1,6 @@
 $(function () {
 	var chart;
-	var categories = ['College', 'Senior', 'Junior', 'Primary', 'None'];
+	var categories = ['Tertiary', 'Senior', 'Junior', 'Primary', 'None'];
 
 	var options = {
 		chart: {
