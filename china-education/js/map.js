@@ -331,7 +331,10 @@
 				layout: 'horizontal',
 				valueDecimals: 0,
 				symbolRadius: 0,
-				symbolHeight: 15
+				symbolHeight: 15,
+				itemStyle: {
+		            'cursor': 'default'
+		        }
 			},
 
 		  	colorAxis: {

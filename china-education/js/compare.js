@@ -65,12 +65,23 @@ $(function () {
             tickInterval: 20
         },
 
+        legend: {
+        	itemStyle: {
+	            'cursor': 'default'
+	        }
+        },
+
         plotOptions: {
             series: {
                 stacking: "normal",
                 groupPadding: 0,
-                pointPadding: 0
-            }
+                pointPadding: 0,
+                events: {
+			        legendItemClick: function () {
+			            return false; 
+			        }
+			    }
+            },
         },
 
         tooltip: {
@@ -101,7 +112,7 @@ $(function () {
         },
         
         
-        ],
+        ]
 
     //     responsive: {
     //         rules: [{
