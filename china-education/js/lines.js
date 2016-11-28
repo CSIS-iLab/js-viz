@@ -38,7 +38,7 @@ $(function() {
       verticalAlign: 'middle',
       layout: 'vertical'
     },
-    colors: ['#7ea5b2', '#303D43', '#907561', '#781F30', '#EC382A', '#61884D', '#d1e056'],
+  colors: ['#ffd160', '#aa142d', '#ef9365', '#303d43', '#9864b6', '#5aa993', '#ed392a'],
     xAxis: {
       tickInterval: 1,
       tickmarkPlacement: 'on'
