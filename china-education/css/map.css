@@ -101,11 +101,11 @@ p {
 
 @media only screen and (max-width: 506px){
 	.legendTitle {
-		transform: translateY(-55px);
+		transform: translateY(-79px);
 	}
 
 	.dropdown {
-		font-size: 0.8em;
+		font-size: 0.6em;
 		width:100%;
 	}
 
