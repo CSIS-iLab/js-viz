@@ -314,7 +314,7 @@
 			mapNavigation: {
 				enabled: true,
 				buttonOptions: {
-					verticalAlign: "middle"
+					verticalAlign: "top"
 				},
 				enableMouseWheelZoom: false
 			},
