@@ -164,7 +164,7 @@
 	      	tertiary: {
 				buttonText: "Tertiary Enrollment Share",
 				legendText: "Enrollment Share",
-				description: "Percentage of people enrolled in a tertiary institution out the entire college-age population.<br />Source: UNDP, World Bank",
+				description: "Percentage of people enrolled in a tertiary institution out of the entire college-age population.<br />Source: UNDP, World Bank",
 				buttonX: 695,
 				buttonY: 600,
 				reversed: false,
