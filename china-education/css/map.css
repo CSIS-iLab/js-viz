@@ -92,6 +92,13 @@ p {
 	background-color: #DD4760;
 }
 
+@media only screen and (max-width: 425px) {
+.container-fluid {
+    margin: 0px 30px;
+}
+
+}
+
 @media only screen and (max-width: 506px){
 	.legendTitle {
 		transform: translateY(-55px);
