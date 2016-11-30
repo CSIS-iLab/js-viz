@@ -450,6 +450,12 @@
 			      	verticalAlign: 'bottom',
 			      	layout: 'horizontal'
 			    },
+			    tooltip: {
+					useHTML: true,
+					formatter: function() {
+						return '<span style="font-weight:bold;text-decoration:underline;text-align:center;display:block;margin-bottom:-10px;">'+this.key+'</span><br /><strong>'+indicatorsObj[currentIndicator].buttonText+':</strong> '+this.y;
+					}
+				},
 			    series: [{
 			    	name: indicatorsObj[currentIndicator].legendText,
 			    	// data: dataObj.educationBar,
