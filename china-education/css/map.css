@@ -101,7 +101,7 @@ p {
 
 @media only screen and (max-width: 506px){
 	.legendTitle {
-		transform: translateY(-70px);
+		transform: translateY(-83px);
 	}
 
 	.dropdown {
