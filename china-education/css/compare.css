@@ -87,6 +87,10 @@ p {
 	padding: 12px;
 }
 
+.wrapperRight::before {
+	top: 0px !important;
+}
+
 .wrapperLeft::before {
 	left: calc(25% + 160px);
 	background-color: #5AA993;
