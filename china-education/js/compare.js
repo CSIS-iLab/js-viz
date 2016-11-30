@@ -101,7 +101,12 @@ $(function () {
 
         tooltip: {
             formatter: function () {
-                return '<b>' + this.series.name + ': ' + this.point.category + '</b><br/>' + Math.abs(this.point.y) + '%';
+            	if(this.series.chart.chartWidth < 503) {
+            		return false;
+            	}
+            	else {
+                	return '<b>' + this.series.name + ': ' + this.point.category + '</b><br/>' + Math.abs(this.point.y) + '%';
+                }
             }
         },
 
@@ -128,18 +133,18 @@ $(function () {
         
         
         ],
-    //     responsive: {
-    //         rules: [{
-    //         	condition: {
-    //         		maxWidth: 503
-    //         	},
-    //         	chartOptions: {
-    //         		tooltip: {
-    //         			backgroundColor: "rgba(247,247,247,1.0)"
-    //         		}
-				// }
-    //         }]
-    //     }
+        responsive: {
+            rules: [{
+            	condition: {
+            		maxWidth: 503
+            	},
+            	chartOptions: {
+            		tooltip: {
+            			enabled: false
+            		}
+				}
+            }]
+        }
 
 	};
 
