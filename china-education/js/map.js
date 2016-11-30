@@ -106,7 +106,7 @@
 		        max: 100
 			},
 	      	primary: {
-				buttonText: "Primary Student-Teacher Ratio",
+				buttonText: "Ratio",
 				legendText: "Student-Teacher Ratio",
 				description: "Ratio of students who attend a primary educational institution divided by the number of teachers in the institution.<br />Source: China Statistical Yearbook, UNESCO",
 				buttonX: 284,
@@ -134,7 +134,7 @@
 		        max: 20
 			},
 	      	secondary: {
-				buttonText: "Secondary Student-Teacher Ratio",
+				buttonText: "Ratio",
 				legendText: "Student-Teacher Ratio",
 				description: "Ratio of students who attend a secondary educational institution divided by the number of teachers in the institution.<br />Source: China Statistical Yearbook, UNESCO",
 				buttonX: 483,
@@ -162,7 +162,7 @@
 		        max: 25
 			},
 	      	tertiary: {
-				buttonText: "Tertiary Enrollment Share",
+				buttonText: "Enrollment",
 				legendText: "Enrollment Share",
 				description: "Percentage of people enrolled in a tertiary institution out of the entire college-age population.<br />Source: UNDP, World Bank",
 				buttonX: 695,
