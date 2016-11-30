@@ -82,7 +82,7 @@ p {
 	display: inline-block;
 	position: absolute;
 	margin: 0 auto;
-	top: 0px;
+	top: 2px;
 	z-index: 5;
 	padding: 12px;
 }
