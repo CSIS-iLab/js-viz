@@ -36,6 +36,7 @@
 				description: "Calculated from mean years of schooling and expected years of schooling.<br />Rated from 0 (no educational attainment) to 1 (perfect educational attainment).<br />Source: UNDP",
 				buttonX: 100,
 				buttonY: 600,
+				valueSuffix: "",
 				maxColor: null,
 				reversed: false,
 				zones: [{
@@ -83,6 +84,7 @@
 				description: "Percentage of the population 15+ years with the ability to read and write.<br />Source: China Statistical Yearbook, World Bank",
 				buttonX: 215,
 				buttonY: 600,
+				valueSuffix: "%",
 				reversed: false,
 				stops: [
 					[0, "#bcdeb6"],
@@ -111,6 +113,7 @@
 				description: "Ratio of students who attend a primary educational institution divided by the number of teachers in the institution.<br />Source: China Statistical Yearbook, UNESCO",
 				buttonX: 284,
 				buttonY: 600,
+				valueSuffix: "",
 				reversed: true,
 				stops: [
 					[0, "#234670"],
@@ -139,6 +142,7 @@
 				description: "Ratio of students who attend a secondary educational institution divided by the number of teachers in the institution.<br />Source: China Statistical Yearbook, UNESCO",
 				buttonX: 483,
 				buttonY: 600,
+				valueSuffix: "",
 				reversed: true,
 				stops: [
 					[0, "#88533a"],
@@ -167,6 +171,7 @@
 				description: "Percentage of people enrolled in a tertiary institution out of the entire college-age population.<br />Source: UNDP, World Bank",
 				buttonX: 695,
 				buttonY: 600,
+				valueSuffix: "%",
 				reversed: false,
 				stops: [
 					[0, "#edb2be"],
@@ -292,6 +297,16 @@
 				events: {
 					load: function() {
 						this.series[0].setData(dataObj.education);
+					},
+					redraw: function() {
+						// Disable Legend Click (Existing bug in highcharts)
+						$(".highcharts-legend-item text").on("click", function() {
+				        	return false;
+				        });
+				        
+				        $(".highcharts-legend-item rect").on("click", function() {
+				        	return false;
+				        });
 					}
 				},
 				style: {
@@ -357,7 +372,7 @@
 					else {
 						value = this.point.value;
 					}
-					return '<span style="font-weight:bold;text-decoration:underline;text-align:center;display:block;margin-bottom:-10px;">'+this.key+'</span><br /><strong>'+indicatorsObj[currentIndicator].buttonText+':</strong> '+value+'<br /><strong>Country Match:</strong> '+this.point.countryMatch;
+					return '<span style="font-weight:bold;text-decoration:underline;text-align:center;display:block;margin-bottom:-10px;">'+this.key+'</span><br /><strong>'+indicatorsObj[currentIndicator].buttonText+':</strong> '+value+indicatorsObj[currentIndicator].valueSuffix+'<br /><strong>Country Match:</strong> '+this.point.countryMatch;
 				}
 			},
 
@@ -374,8 +389,7 @@
 			    	}
 			    },
 			    tooltip: {
-			    	valueDecimals: 2,
-			    	valueSuffix: '%'
+			    	valueDecimals: 2
 			    },
 			    point: {
 				    events: {
@@ -453,7 +467,7 @@
 			    tooltip: {
 					useHTML: true,
 					formatter: function() {
-						return '<span style="font-weight:bold;text-decoration:underline;text-align:center;display:block;margin-bottom:-10px;">'+this.key+'</span><br /><strong>'+indicatorsObj[currentIndicator].buttonText+':</strong> '+this.y;
+						return '<span style="font-weight:bold;text-decoration:underline;text-align:center;display:block;margin-bottom:-10px;">'+this.key+'</span><br /><strong>'+indicatorsObj[currentIndicator].buttonText+':</strong> '+this.y+indicatorsObj[currentIndicator].valueSuffix;
 					}
 				},
 			    series: [{
@@ -480,11 +494,6 @@
 
 			// Render Initial Legend Text
 			legendTitle = chart.renderer.text(indicatorsObj[currentIndicator].legendText, 18, chart.chartHeight - 65).attr({'id': "legendTitle", 'class': "legendTitle"}).add();
-
-			// Disable Legend Click (Existing bug in highcharts)
-	        $(".highcharts-legend-item text").click(function() {
-	        	return false;
-	        });
 
 	        $("#container").css({
 			    width: $(".mapContainer").width() - 60
