@@ -13,7 +13,7 @@ $(function () {
     colors: ['#DD4760','#EF9365','#85C1A1','#61884D','#FFD160', '#d1e056'],
     credits: {
       enabled: true,
-      href: "http://chinapower.csis.org",
+      href: null,
       text: "CSIS China Power Project | Various Sources",
       style: {
         fontFamily: 'Roboto Slab'
