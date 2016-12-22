@@ -10,7 +10,7 @@ $(function () {
       color: '#000',
       plotShadow: true
     },
-    colors: ['#DD4760','#EF9365','#85C1A1','#61884D','#FFD160', '#d1e056'],
+    colors: ['#DD4760','#EF9365','#85C1A1','#4D6E79','#3b75bb', '#887395'],
     credits: {
       enabled: true,
       href: null,
