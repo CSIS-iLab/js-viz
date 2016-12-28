@@ -236,7 +236,8 @@
 .tl-timeline h4,
 .tl-timeline h5,
 .tl-timeline h6 {
-    color: #000
+   font-family: museo;
+    color: #772132;
 }
 .tl-timeline h1,
 .tl-timeline h2,
