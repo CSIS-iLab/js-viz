@@ -1194,7 +1194,7 @@ only screen and (max-device-width: 500px) {
     overflow: hidden;
     font-weight: 500;
     margin: 0;
-    color: darkgrey;
+    color: #303d43;
     position: relative;
 }
 .tl-timemarker .tl-timemarker-content-container .tl-timemarker-content .tl-timemarker-text h2.tl-headline.tl-headline-fadeout:after,
@@ -1330,7 +1330,7 @@ only screen and (max-device-width: 500px) {
     background-color: #333
 }
 .tl-timemarker.tl-timemarker-active .tl-timemarker-content-container {
-    background-color: #303d43;
+    background-color: darkgray;
     color: #fff;
     z-index: 9;
     border-color: rgba(51, 51, 51, .5);
@@ -2005,7 +2005,7 @@ only screen and (max-device-width: 500px) {
     filter: alpha(opacity=15);
     -khtml-opacity: .15;
     -moz-opacity: .15;
-    opacity: .15
+    opacity: 1;
 }
 .tl-slidenav-previous .tl-slidenav-title small,
 .tl-slidenav-next .tl-slidenav-title small,
@@ -2026,7 +2026,7 @@ only screen and (max-device-width: 500px) {
     filter: alpha(opacity=0);
     -khtml-opacity: 0;
     -moz-opacity: 0;
-    opacity: 0
+    opacity: 1;
 }
 .tl-slidenav-previous .tl-slidenav-description small,
 .tl-slidenav-next .tl-slidenav-description small {
