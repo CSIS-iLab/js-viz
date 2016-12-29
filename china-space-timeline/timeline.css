@@ -1182,20 +1182,20 @@ only screen and (max-device-width: 500px) {
 }
 .tl-timemarker .tl-timemarker-content-container .tl-timemarker-content .tl-timemarker-text h2.tl-headline,
 .tl-timemarker .tl-timemarker-content-container .tl-timemarker-content .tl-timemarker-text h2.tl-headline p {
-    display: -webkit-box;
+     display: -webkit-box;
     line-clamp: 2;
     -webkit-line-clamp: 2;
     box-orient: vertical;
     -webkit-box-orient: vertical;
     text-overflow: ellipsis;
-    font-size: 12px;
-    line-height: 12px;
+    font-size: 14px;
+    line-height: 14px;
     height: 100%;
     overflow: hidden;
-    font-weight: 400;
+    font-weight: 700;
     margin: 0;
     color: #bfbfbf;
-    position: relative
+    position: relative;
 }
 .tl-timemarker .tl-timemarker-content-container .tl-timemarker-content .tl-timemarker-text h2.tl-headline.tl-headline-fadeout:after,
 .tl-timemarker .tl-timemarker-content-container .tl-timemarker-content .tl-timemarker-text h2.tl-headline p.tl-headline-fadeout:after {
@@ -1337,7 +1337,7 @@ only screen and (max-device-width: 500px) {
     box-shadow: 1px 1px 3px rgba(145, 145, 145, .5)
 }
 .tl-timemarker.tl-timemarker-active .tl-timemarker-content-container .tl-timemarker-content .tl-timemarker-text h2.tl-headline {
-    color: #333
+    color: #303D42
 }
 .tl-timemarker.tl-timemarker-active .tl-timemarker-content-container .tl-timemarker-content .tl-timemarker-text h2.tl-headline.tl-headline-fadeout:after {
     background: -moz-linear-gradient(top, rgba(255, 255, 255, 0)0, #fff 80%);
