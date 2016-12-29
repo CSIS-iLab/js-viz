@@ -1189,12 +1189,12 @@ only screen and (max-device-width: 500px) {
     -webkit-box-orient: vertical;
     text-overflow: ellipsis;
     font-size: 14px;
-    line-height: 14px;
+    line-height: 18px;
     height: 100%;
     overflow: hidden;
-    font-weight: 700;
+    font-weight: 500;
     margin: 0;
-    color: #bfbfbf;
+    color: darkgrey;
     position: relative;
 }
 .tl-timemarker .tl-timemarker-content-container .tl-timemarker-content .tl-timemarker-text h2.tl-headline.tl-headline-fadeout:after,
