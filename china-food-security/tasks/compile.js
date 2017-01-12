@@ -16,10 +16,11 @@ module.exports = function(grunt) {
   function compile(filename, options, done) {
     var data = {
       years: {
-        1990: {},
-        1995: {},
-        2000: {},
-        2005: {}
+        // 1990: {},
+        // 1995: {},
+        // 2000: {},
+        // 2005: {}
+        2014: {}
       },
       migrations: {},
       regions: {}
@@ -28,7 +29,7 @@ module.exports = function(grunt) {
     var headers = [];
     
     // sort order
-    var sortedRegions = ['North America', 'Africa', 'Europe', 'Fmr Soviet Union', 'West Asia', 'South Asia', 'East Asia', 'South-East Asia', 'Oceania', 'Latin America'];
+    var sortedRegions = ['Africa', 'Americas', 'Asia', 'Europe', 'Oceania'];
 
     // create object from headers out of row
     // TODO: get years from CSV

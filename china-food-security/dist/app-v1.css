@@ -423,21 +423,10 @@ table {
 /* ---------------------------------------------------------
    Author's styles
    ---------------------------------------------------------*/
-@font-face {
-    font-family: "CartoGothic";
-    font-style: normal;
-    font-weight: normal;
-    src: url("fonts/CartoGothicStd-Book-webfont.eot") format("embedded-opentype"), url("fonts/CartoGothicStd-Book-webfont.woff") format("woff"), url("fonts/CartoGothicStd-Book-webfont.ttf") format("truetype"), url("fonts/CartoGothicStd-Book-webfont.svg") format("svg");
-}
-@font-face {
-    font-family: "CartoGothic";
-    font-style: normal;
-    font-weight: bold;
-    src: url("fonts/CartoGothicStd-Bold-webfont.eot") format("embedded-opentype"), url("fonts/CartoGothicStd-Bold-webfont.woff") format("woff"), url("fonts/CartoGothicStd-Bold-webfont.ttf") format("truetype"), url("fonts/CartoGothicStd-Bold-webfont.svg") format("svg");
-}
+@import 'https://fonts.googleapis.com/css?family=Roboto+Slab|Roboto:400,700';
 
 body {
-  font: 15px/1.8em 'CartoGothic', Arial, sans-serif;
+  font: 15px/1.8em 'Roboto', Arial, sans-serif;
   width: 100%;
   margin: 0;
   background-color: #ffffff;
@@ -509,7 +498,7 @@ footer {
 }
 
 h1 {
-  font-family: 'CartoGothic', Arial, sans-serif;
+  font-family: 'Roboto', Arial, sans-serif;
   font-weight: bold;
   font-size: 40px;
   line-height: 2.3ex;
@@ -833,7 +822,7 @@ text.fade {
   cursor: pointer;
 }
 text.region {
-  font-family: 'CartoGothic', Arial, sans-serif;
+  font-family: 'Roboto', Arial, sans-serif;
   font-size: 14px;
 }
 .chord {

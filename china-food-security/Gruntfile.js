@@ -21,7 +21,7 @@ module.exports = function(grunt) {
         options: {
           countries: 'data/countries-cpp.csv'
         },
-        src: 'data/Flow Data for Online Viz Version3.csv',
+        src: 'data/animals1.csv',
         dest: 'tmp/data.csv'
       }
     },
