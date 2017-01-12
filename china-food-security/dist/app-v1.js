@@ -595,7 +595,7 @@ return n?ua.touches(y,n)[0]:ua.mouse(y)}function f(){ua.event.keyCode==32&&(E||(
 
     span.append('label')
       .attr('for', function(d) { return 'year-' + d; })
-      .text(function(d) { return ""+ d + (config.incr === 1 ? "" : "-" + (d + config.incr)); });
+      .text(function(d) { return d; });
 
     // keyboard control
     d3.select(document.body).on('keypress', function() {
