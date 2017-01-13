@@ -21,7 +21,7 @@ module.exports = function(grunt) {
         options: {
           countries: 'data/countries-cpp.csv'
         },
-        src: 'data/animals3.csv',
+        src: 'data/animals5.csv',
         dest: 'tmp/data.csv'
       }
     },

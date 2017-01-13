@@ -29,7 +29,7 @@ module.exports = function(grunt) {
     var headers = [];
     
     // sort order
-    var sortedRegions = ['Caribbean', 'Central America', 'East Asia', 'Eastern & Middle Africa', 'Eastern Europe & Central Asia', 'Northern Africa & Western Asia', 'OECD', 'Rest of World', 'South America', 'South Asia', 'Southeast Asia', 'Southern Africa', 'Western Africa'];
+    var sortedRegions = ['East Asia', 'Southeast Asia', 'South Asia', 'Oceania', 'Eastern Europe & Central Asia', 'Western & Southern Europe', 'Northern Africa & Western Asia', 'Eastern & Middle Africa', 'Southern Africa', 'Western Africa', 'North America', 'Latin America & Caribbean'];
 
     // create object from headers out of row
     // TODO: get years from CSV
