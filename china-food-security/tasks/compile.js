@@ -20,7 +20,7 @@ module.exports = function(grunt) {
         // 1995: {},
         // 2000: {},
         // 2005: {}
-        2014: {}
+        2005: {}
       },
       migrations: {},
       regions: {}
@@ -29,7 +29,8 @@ module.exports = function(grunt) {
     var headers = [];
     
     // sort order
-    var sortedRegions = ['East Asia', 'Southeast Asia', 'South Asia', 'Oceania', 'Eastern Europe & Central Asia', 'Western & Southern Europe', 'Northern Africa & Western Asia', 'Eastern & Middle Africa', 'Southern Africa', 'Western Africa', 'North America', 'Latin America & Caribbean'];
+    // var sortedRegions = ["South Asia", "Western & Southern Europe", "Northern Africa & Western Asia", "Oceania", "Rest of Africa", "Latin America & Caribbean", "Eastern Europe & Central Asia", "North America", "Southeast Asia", "China", "Hong Kong", "Japan", "Rest of East Asia", "South Korea"];
+    var sortedRegions = ["South Asia", "Western & Southern Europe", "Northern Africa & Western Asia", "Oceania", "Rest of the World", "Latin America & Caribbean", "Eastern Europe & Central Asia", "North America", "Southeast Asia", "People's Republic of China", "Japan", "South Korea"];
 
     // create object from headers out of row
     // TODO: get years from CSV
