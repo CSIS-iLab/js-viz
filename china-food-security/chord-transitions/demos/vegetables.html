@@ -21,6 +21,13 @@
 
     <div class="row" style="position:relative;">
 
+      <div class="large-12 small-12 columns" role="content" style="max-width:900px;">
+        <article>
+          <chord-diagram></chord-diagram>
+          <h6 class="text-center">International Trade Flows <span>{{ selected_year }}</span></h6>
+        </article>
+      </div>
+
       <aside class="large-2 small-2 columns panel years">
         <h5>Years</h5>
         <ul class="side-nav">
@@ -30,13 +37,6 @@
           </li>
         </ul>
       </aside>
-
-      <div class="large-7 small-6 columns" role="content">
-        <article>
-          <chord-diagram></chord-diagram>
-          <h6 class="text-center">International Trade Flows <span>{{ selected_year }}</span></h6>
-        </article>
-      </div>
 
       <aside class="large-3 small-4 columns">
         <h5>Filters</h5>
