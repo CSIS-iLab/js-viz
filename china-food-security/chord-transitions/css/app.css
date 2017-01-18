@@ -1,0 +1,37 @@
+#tooltip {
+  background-color: white;
+  pointer-events: none;
+  font-size: 12px;
+  z-index: 1000;
+  color: grey;
+  position: fixed;
+  width: 500px;
+  border-radius: 6px;
+  opacity: 0;
+  bottom: 10%;
+  right: 5%;
+  box-shadow: 5px 5px 2.5px #666;
+}
+
+path.chord {
+  -webkit-backface-visibility: hidden;
+  fill-opacity: .67;
+  stroke: none;
+}
+
+text, .group path {
+  cursor: pointer;
+}
+
+input[type="radio"] {
+  margin: 0px;
+}
+
+.years {
+  height: 600px;
+  overflow: scroll;
+}
+
+aside {
+  margin: 0px;
+}

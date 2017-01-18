@@ -21,14 +21,14 @@ module.exports = function(grunt) {
         options: {
           countries: 'data/countries-cpp.csv'
         },
-        src: 'data/version2_animals.csv',
-        dest: 'tmp/animals2.csv'
+        src: 'data/veg_region_15.csv',
+        dest: 'tmp/vegetables3.csv'
       }
     },
     compile: {
       main: {
-        src: 'tmp/animals2.csv',
-        dest: 'json/animals2.json'
+        src: 'tmp/vegetables3.csv',
+        dest: 'json/vegetables3.json'
       }
     },
     concat: {
