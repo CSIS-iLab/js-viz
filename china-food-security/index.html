@@ -10,58 +10,41 @@
   </head>
   <body ng-app="app" ng-cloak ng-controller="mainCntrl">
 
-    <div class="row">
-      <div class="large-12 columns">
-        <h1>Vegetables</h1>
-        <hr/>
-      </div>
-    </div>
+    <div class="container">
+      <h1>International Food Trade: {{selected_category.text}}, {{ selected_year }}</h1>
 
-    <div class="row" style="position:relative;">
-
-      <div class="large-12 small-12 columns" role="content" style="max-width:900px;">
-        <article>
-          <chord-diagram></chord-diagram>
-          <h6 class="text-center">International Trade Flows <span>{{ selected_year }}, {{ selected_category }}</span></h6>
-        </article>
-      </div>
-
-      <div class="years">
-        <h5>Years</h5>
-        <ul class="side-nav">
-          <li ng-repeat="year in years">
-            <input ng-model="$parent.selected_year" type="radio" name="years" ng-value="year" id="year_{{ year }}">
-            <label for="year_{{ year }}">{{ year }}</label>
-          </li>
-        </ul>
-      </div>
-
-      <div class="categories">
-        <h5>Categories</h5>
-        <ul class="side-nav">
-          <li ng-repeat="category in categories">
-            <input ng-model="$parent.selected_category" type="radio" name="categories" ng-value="category.id" id="{{ category.id }}">
-            <label for="{{ category.id }}">{{ category.text }}</label>
-          </li>
-        </ul>
-      </div>
-
-      <div class="filter">
-        <h5>Filters</h5>
-        <button class="button tiny right" ng-click="filters = {}; hasFilters = false;">
-          clear
-        </button>
-        <div class="panel">
-          <div ng-if="hasFilters === false" style="margin: 15px; opacity: 0.5;">
-            Click a country
-          </div>
-          <ul class="side-nav">
-            <li ng-repeat="filter in filters">
-              <input ng-model="filter.hide" id="{{ filter.name }}" type="checkbox">
-              <label for="{{ filter.name }}">{{ filter.name }}</label>
-            </li>
-          </ul>
+      <div class="dataSelect">
+        <div class="years">
+          <h5>Years</h5>
+          <select name="years" id="years" ng-options="y as y for y in years" ng-model="selected_year"></select>
         </div>
+
+        <div class="categories">
+          <h5>Categories</h5>
+          <select name="categories" id="categories" ng-options="category as category.text for category in categories track by category.id" ng-model="selected_category"></select>
+        </div>
+
+        <div class="filter">
+          <h5>Filters</h5>
+          <button class="button tiny right" ng-click="filters = {}; hasFilters = false;">
+            clear
+          </button>
+          <div class="panel">
+            <div ng-if="hasFilters === false" style="margin: 15px; opacity: 0.5;">
+              Click a country
+            </div>
+            <ul class="side-nav">
+              <li ng-repeat="filter in filters">
+                <input ng-model="filter.hide" id="{{ filter.name }}" type="checkbox">
+                <label for="{{ filter.name }}">{{ filter.name }}</label>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div role="content" style="max-width:900px;">
+          <chord-diagram></chord-diagram>
       </div>
 
       <fieldset id="tooltip" class="row secondary">
@@ -80,7 +63,7 @@
     </div>
 
     <script src="lib/d3.min.js"></script>
-    <script src="js/mainControllerVeg.js"></script>
+    <script src="js/mainController.js"></script>
     <script src="js/matrixFactory.js"></script>
     <script src="js/chordDirective.js"></script>
   </body>
