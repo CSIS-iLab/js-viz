@@ -1,0 +1,1070 @@
+year,importer1,importer2,flow2,flow1,category
+2005,United States of America,Netherlands,565.432,548.89,vegetables
+2005,United States of America,Spain,356.729,692.821,vegetables
+2005,United States of America,Brazil,766.903,60.131,vegetables
+2005,United States of America,France,166.174,375.568,vegetables
+2005,United States of America,Argentina,215.1,33.033,vegetables
+2005,United States of America,China,663.36,2895.792,vegetables
+2005,United States of America,Canada,3130.844,3980.301,vegetables
+2005,United States of America,Germany,412.165,822.337,vegetables
+2005,United States of America,Italy,737.59,434.754,vegetables
+2005,United States of America,Japan,86.992,5516.675,vegetables
+2005,United States of America,United Kingdom,88.024,465.488,vegetables
+2005,United States of America,Rest of the World,14844.603,16038.106,vegetables
+2005,Netherlands,Spain,945.102,433.045,vegetables
+2005,Netherlands,Brazil,1470.164,19.181,vegetables
+2005,Netherlands,France,1176.611,1510.82,vegetables
+2005,Netherlands,Argentina,404.919,4.386,vegetables
+2005,Netherlands,China,271.904,57.857,vegetables
+2005,Netherlands,Canada,59.798,110.118,vegetables
+2005,Netherlands,Germany,1647.168,4801.106,vegetables
+2005,Netherlands,Italy,250.998,750.017,vegetables
+2005,Netherlands,Japan,16.111,168.962,vegetables
+2005,Netherlands,United Kingdom,209.003,2799.013,vegetables
+2005,Netherlands,Rest of the World,4764.138,4960.399,vegetables
+2005,Spain,Brazil,673.925,49.483,vegetables
+2005,Spain,France,1576.554,2626.54,vegetables
+2005,Spain,Argentina,269.151,4.383,vegetables
+2005,Spain,China,96.909,11.859,vegetables
+2005,Spain,Canada,170.279,48.711,vegetables
+2005,Spain,Germany,435.477,2429.146,vegetables
+2005,Spain,Italy,382.959,1593.519,vegetables
+2005,Spain,Japan,3.492,90.174,vegetables
+2005,Spain,United Kingdom,365.84,1733.173,vegetables
+2005,Spain,Rest of the World,2925.7,3340.072,vegetables
+2005,Brazil,France,37.055,241.607,vegetables
+2005,Brazil,Argentina,1031.15,85.345,vegetables
+2005,Brazil,China,50.307,1921.669,vegetables
+2005,Brazil,Canada,25.785,80.427,vegetables
+2005,Brazil,Germany,53.288,980.06,vegetables
+2005,Brazil,Italy,21.611,673.357,vegetables
+2005,Brazil,Japan,4.081,383.227,vegetables
+2005,Brazil,United Kingdom,4.821,331.108,vegetables
+2005,Brazil,Rest of the World,627.095,3414.507,vegetables
+2005,France,Argentina,110.953,11.532,vegetables
+2005,France,China,146.035,105.311,vegetables
+2005,France,Canada,38.815,25.235,vegetables
+2005,France,Germany,691.275,1474.842,vegetables
+2005,France,Italy,889.762,1177.14,vegetables
+2005,France,Japan,8.443,97.696,vegetables
+2005,France,United Kingdom,181.476,1095.04,vegetables
+2005,France,Rest of the World,3183.471,3433.81,vegetables
+2005,Argentina,China,3.051,2463.91,vegetables
+2005,Argentina,Canada,2.875,30.333,vegetables
+2005,Argentina,Germany,13.054,61.458,vegetables
+2005,Argentina,Italy,9.608,128.171,vegetables
+2005,Argentina,Japan,0.375,29.173,vegetables
+2005,Argentina,United Kingdom,1.256,52.53,vegetables
+2005,Argentina,Rest of the World,238.251,5445.483,vegetables
+2005,China,Canada,816.063,166.383,vegetables
+2005,China,Germany,31.618,335.313,vegetables
+2005,China,Italy,8.312,146.593,vegetables
+2005,China,Japan,50.333,2159.078,vegetables
+2005,China,United Kingdom,6.252,171.27,vegetables
+2005,China,Rest of the World,4479.144,5052.788,vegetables
+2005,Canada,Germany,23.148,89.699,vegetables
+2005,Canada,Italy,119.913,190.263,vegetables
+2005,Canada,Japan,12.627,1218.064,vegetables
+2005,Canada,United Kingdom,72.519,171.167,vegetables
+2005,Canada,Rest of the World,1649.801,3198.086,vegetables
+2005,Germany,Italy,2022.152,642.613,vegetables
+2005,Germany,Japan,14.042,123.159,vegetables
+2005,Germany,United Kingdom,221.056,634.505,vegetables
+2005,Germany,Rest of the World,7384.501,4177.694,vegetables
+2005,Italy,Japan,6.472,156.409,vegetables
+2005,Italy,United Kingdom,135.451,597.746,vegetables
+2005,Italy,Rest of the World,4246.484,2882.546,vegetables
+2005,Japan,United Kingdom,71.953,7.517,vegetables
+2005,Japan,Rest of the World,4729.627,260.121,vegetables
+2005,United Kingdom,Rest of the World,4567.216,1298.421,vegetables
+2005,Rest of the World,Rest of the World,54199.613,54199.613,vegetables
+2006,United States of America,Netherlands,599.051,733.482,vegetables
+2006,United States of America,Spain,422.267,575.509,vegetables
+2006,United States of America,Brazil,873.151,72.406,vegetables
+2006,United States of America,France,156.261,341.991,vegetables
+2006,United States of America,Canada,3828.683,4307.905,vegetables
+2006,United States of America,Argentina,264.837,30.073,vegetables
+2006,United States of America,China,851.886,2863.383,vegetables
+2006,United States of America,Germany,442.241,977.57,vegetables
+2006,United States of America,Italy,815.269,407.406,vegetables
+2006,United States of America,Japan,97.036,5593.477,vegetables
+2006,United States of America,United Kingdom,85.899,485.82,vegetables
+2006,United States of America,Rest of the World,16038.887,19102.76,vegetables
+2006,Netherlands,Spain,1006.341,479.358,vegetables
+2006,Netherlands,Brazil,1263.557,17.216,vegetables
+2006,Netherlands,France,1316.103,1621.588,vegetables
+2006,Netherlands,Canada,186.981,103.726,vegetables
+2006,Netherlands,Argentina,403.546,2.927,vegetables
+2006,Netherlands,China,362.803,64.154,vegetables
+2006,Netherlands,Germany,1713.063,5586.149,vegetables
+2006,Netherlands,Italy,272.835,855.138,vegetables
+2006,Netherlands,Japan,16.48,178.202,vegetables
+2006,Netherlands,United Kingdom,275.277,2946.899,vegetables
+2006,Netherlands,Rest of the World,5366.183,5767.916,vegetables
+2006,Spain,Brazil,711.063,55.363,vegetables
+2006,Spain,France,1467.916,2826.155,vegetables
+2006,Spain,Canada,132.312,54.785,vegetables
+2006,Spain,Argentina,177.887,4.241,vegetables
+2006,Spain,China,101.624,15.249,vegetables
+2006,Spain,Germany,511.099,2477.666,vegetables
+2006,Spain,Italy,311.028,1610.486,vegetables
+2006,Spain,Japan,3.355,91.197,vegetables
+2006,Spain,United Kingdom,279.795,1894.659,vegetables
+2006,Spain,Rest of the World,3083.977,3788.505,vegetables
+2006,Brazil,France,49.816,244.249,vegetables
+2006,Brazil,Canada,37.805,89.397,vegetables
+2006,Brazil,Argentina,1437.45,89.995,vegetables
+2006,Brazil,China,58.078,2573.915,vegetables
+2006,Brazil,Germany,42.69,1109.173,vegetables
+2006,Brazil,Italy,24.304,733.992,vegetables
+2006,Brazil,Japan,3.767,360.352,vegetables
+2006,Brazil,United Kingdom,3.556,320.809,vegetables
+2006,Brazil,Rest of the World,733.924,3449.759,vegetables
+2006,France,Canada,50.658,23.893,vegetables
+2006,France,Argentina,135.414,12.02,vegetables
+2006,France,China,172.735,22.926,vegetables
+2006,France,Germany,793.545,1688.732,vegetables
+2006,France,Italy,932.28,1262.686,vegetables
+2006,France,Japan,9.48,98.028,vegetables
+2006,France,United Kingdom,194.561,1122.812,vegetables
+2006,France,Rest of the World,3232.582,3782.055,vegetables
+2006,Canada,Argentina,30.084,2.436,vegetables
+2006,Canada,China,197.425,403.79,vegetables
+2006,Canada,Germany,27.497,243.319,vegetables
+2006,Canada,Italy,136.604,198.413,vegetables
+2006,Canada,Japan,12.042,1256.573,vegetables
+2006,Canada,United Kingdom,77.786,193.163,vegetables
+2006,Canada,Rest of the World,1806.441,4444.472,vegetables
+2006,Argentina,China,5.243,2091.583,vegetables
+2006,Argentina,Germany,6.416,103.964,vegetables
+2006,Argentina,Italy,5.981,154.733,vegetables
+2006,Argentina,Japan,0.519,31.348,vegetables
+2006,Argentina,United Kingdom,1.001,108.385,vegetables
+2006,Argentina,Rest of the World,258.693,5584.744,vegetables
+2006,China,Germany,48.167,416.215,vegetables
+2006,China,Italy,15.803,159.587,vegetables
+2006,China,Japan,48.942,2100.109,vegetables
+2006,China,United Kingdom,8.243,196.173,vegetables
+2006,China,Rest of the World,5715.432,5513.752,vegetables
+2006,Germany,Italy,2175.316,633.513,vegetables
+2006,Germany,Japan,11.815,121.712,vegetables
+2006,Germany,United Kingdom,312.039,588.903,vegetables
+2006,Germany,Rest of the World,8204.185,4821.439,vegetables
+2006,Italy,Japan,5.917,157.459,vegetables
+2006,Italy,United Kingdom,120.816,666.623,vegetables
+2006,Italy,Rest of the World,4889.421,3251.043,vegetables
+2006,Japan,United Kingdom,66.339,9.574,vegetables
+2006,Japan,Rest of the World,4648.006,289.49,vegetables
+2006,United Kingdom,Rest of the World,4966.951,1386.759,vegetables
+2006,Rest of the World,Rest of the World,61635.818,61635.818,vegetables
+2007,United States of America,Netherlands,559.245,876.371,vegetables
+2007,United States of America,Spain,454.654,1097.837,vegetables
+2007,United States of America,Argentina,347.307,39.52,vegetables
+2007,United States of America,Brazil,971.898,174.692,vegetables
+2007,United States of America,Canada,4849.441,5080.602,vegetables
+2007,United States of America,France,167.408,393.08,vegetables
+2007,United States of America,China,1001.935,4636.221,vegetables
+2007,United States of America,Malaysia,984.184,294.416,vegetables
+2007,United States of America,Indonesia,643.271,780.724,vegetables
+2007,United States of America,Japan,96.523,7211.62,vegetables
+2007,United States of America,United Kingdom,89.753,537.632,vegetables
+2007,United States of America,Italy,759.805,545.604,vegetables
+2007,United States of America,Mexico,5811.148,6626.473,vegetables
+2007,United States of America,Rest of the World,11863.498,19970.937,vegetables
+2007,Netherlands,Spain,1164.51,580.573,vegetables
+2007,Netherlands,Argentina,504.01,5.016,vegetables
+2007,Netherlands,Brazil,1659.531,25.695,vegetables
+2007,Netherlands,Canada,174.325,120.065,vegetables
+2007,Netherlands,France,1736.803,1857.779,vegetables
+2007,Netherlands,China,397.701,61.171,vegetables
+2007,Netherlands,Malaysia,1009.113,20.83,vegetables
+2007,Netherlands,Indonesia,750.996,9.868,vegetables
+2007,Netherlands,Japan,20.1,206.839,vegetables
+2007,Netherlands,United Kingdom,358.593,3638.039,vegetables
+2007,Netherlands,Italy,325.816,1003.162,vegetables
+2007,Netherlands,Mexico,53.977,74.247,vegetables
+2007,Netherlands,Rest of the World,7410.978,12997.634,vegetables
+2007,Spain,Argentina,429.687,5.618,vegetables
+2007,Spain,Brazil,1474.336,58.891,vegetables
+2007,Spain,Canada,65.029,53.858,vegetables
+2007,Spain,France,1665.342,3061.417,vegetables
+2007,Spain,China,137.443,24.246,vegetables
+2007,Spain,Malaysia,131.17,3.168,vegetables
+2007,Spain,Indonesia,192.663,1.902,vegetables
+2007,Spain,Japan,4.27,88.461,vegetables
+2007,Spain,United Kingdom,305.608,2027.703,vegetables
+2007,Spain,Italy,356.643,1998.523,vegetables
+2007,Spain,Mexico,55.262,50.967,vegetables
+2007,Spain,Rest of the World,3800.08,7502.45,vegetables
+2007,Argentina,Brazil,116.777,2001.284,vegetables
+2007,Argentina,Canada,5.671,35.064,vegetables
+2007,Argentina,France,13.089,125.996,vegetables
+2007,Argentina,China,6.769,4239.973,vegetables
+2007,Argentina,Malaysia,20.27,593.718,vegetables
+2007,Argentina,Indonesia,7.695,80.294,vegetables
+2007,Argentina,Japan,0.498,137.521,vegetables
+2007,Argentina,United Kingdom,1.362,135.46,vegetables
+2007,Argentina,Italy,8.073,205.733,vegetables
+2007,Argentina,Mexico,2.881,72.148,vegetables
+2007,Argentina,Rest of the World,759.243,7504.156,vegetables
+2007,Brazil,Canada,118.809,106.839,vegetables
+2007,Brazil,France,42.079,475.602,vegetables
+2007,Brazil,China,61.866,3197.606,vegetables
+2007,Brazil,Malaysia,88.146,46.286,vegetables
+2007,Brazil,Indonesia,86.724,8.574,vegetables
+2007,Brazil,Japan,3.422,430.066,vegetables
+2007,Brazil,United Kingdom,7.589,490.466,vegetables
+2007,Brazil,Italy,25.925,953.905,vegetables
+2007,Brazil,Mexico,5.412,46.315,vegetables
+2007,Brazil,Rest of the World,964.218,6282.961,vegetables
+2007,Canada,France,25.938,72.198,vegetables
+2007,Canada,China,241.109,767.555,vegetables
+2007,Canada,Malaysia,79.342,116.869,vegetables
+2007,Canada,Indonesia,37.88,377.262,vegetables
+2007,Canada,Japan,14.193,1672.421,vegetables
+2007,Canada,United Kingdom,85.977,255.923,vegetables
+2007,Canada,Italy,151.376,275.602,vegetables
+2007,Canada,Mexico,564.38,748.139,vegetables
+2007,Canada,Rest of the World,1460.916,5221.436,vegetables
+2007,France,China,209.791,28.796,vegetables
+2007,France,Malaysia,58.916,12.615,vegetables
+2007,France,Indonesia,58.155,9.049,vegetables
+2007,France,Japan,13.075,100.417,vegetables
+2007,France,United Kingdom,240.351,1310.153,vegetables
+2007,France,Italy,1060.729,1481.978,vegetables
+2007,France,Mexico,54.471,21.377,vegetables
+2007,France,Rest of the World,5039.162,6890.86,vegetables
+2007,China,Malaysia,2807.973,649.62,vegetables
+2007,China,Indonesia,1698.767,626.524,vegetables
+2007,China,Japan,53.034,2098.071,vegetables
+2007,China,United Kingdom,11.136,219.708,vegetables
+2007,China,Italy,22.575,230.876,vegetables
+2007,China,Mexico,6.195,88.275,vegetables
+2007,China,Rest of the World,3423.832,6714.714,vegetables
+2007,Malaysia,Indonesia,698.699,73.485,vegetables
+2007,Malaysia,Japan,12.741,651.93,vegetables
+2007,Malaysia,United Kingdom,6.414,113.111,vegetables
+2007,Malaysia,Italy,5.168,98.429,vegetables
+2007,Malaysia,Mexico,0.778,5.082,vegetables
+2007,Malaysia,Rest of the World,1605.462,6400.208,vegetables
+2007,Indonesia,Japan,15.839,191.001,vegetables
+2007,Indonesia,United Kingdom,1.975,160.441,vegetables
+2007,Indonesia,Italy,4.97,182.684,vegetables
+2007,Indonesia,Mexico,1.295,24.191,vegetables
+2007,Indonesia,Rest of the World,1623.491,7648.269,vegetables
+2007,Japan,United Kingdom,73.908,8.554,vegetables
+2007,Japan,Italy,156.821,6.997,vegetables
+2007,Japan,Mexico,173.93,2.482,vegetables
+2007,Japan,Rest of the World,4101.055,312.52,vegetables
+2007,United Kingdom,Italy,754.445,134.563,vegetables
+2007,United Kingdom,Mexico,44.221,2.391,vegetables
+2007,United Kingdom,Rest of the World,6111.409,1928.719,vegetables
+2007,Italy,Mexico,64.492,21.718,vegetables
+2007,Italy,Rest of the World,5867.819,6327.778,vegetables
+2007,Mexico,Rest of the World,750.374,516.753,vegetables
+2007,Rest of the World,Rest of the World,78987.387,78987.387,vegetables
+2008,United States of America,Netherlands,509.038,1101.992,vegetables
+2008,United States of America,Brazil,1080.178,393.072,vegetables
+2008,United States of America,Argentina,381.485,46.395,vegetables
+2008,United States of America,Canada,7246.757,5989.561,vegetables
+2008,United States of America,Malaysia,1534.418,253.617,vegetables
+2008,United States of America,Spain,466.4,1423.937,vegetables
+2008,United States of America,France,200.769,432.68,vegetables
+2008,United States of America,Indonesia,864.621,1163.883,vegetables
+2008,United States of America,Germany,484.646,1473.488,vegetables
+2008,United States of America,Japan,111.357,10289.383,vegetables
+2008,United States of America,United Kingdom,100.22,570.579,vegetables
+2008,United States of America,Italy,842.761,684.477,vegetables
+2008,United States of America,Mexico,6017.178,8880.56,vegetables
+2008,United States of America,Rest of the World,14312.801,33756.892,vegetables
+2008,Netherlands,Brazil,1819.724,32.743,vegetables
+2008,Netherlands,Argentina,973.469,5.619,vegetables
+2008,Netherlands,Canada,157.823,118.833,vegetables
+2008,Netherlands,Malaysia,1288.869,29.107,vegetables
+2008,Netherlands,Spain,1199.166,617.489,vegetables
+2008,Netherlands,France,2374.597,2341.68,vegetables
+2008,Netherlands,Indonesia,1148.153,12.057,vegetables
+2008,Netherlands,Germany,2668.753,7217.528,vegetables
+2008,Netherlands,Japan,26.229,179.621,vegetables
+2008,Netherlands,United Kingdom,572.344,3829.154,vegetables
+2008,Netherlands,Italy,397.457,1137.377,vegetables
+2008,Netherlands,Mexico,63.002,83.159,vegetables
+2008,Netherlands,Rest of the World,7572.819,8977.571,vegetables
+2008,Brazil,Argentina,2398.558,122.875,vegetables
+2008,Brazil,Canada,172.924,101.575,vegetables
+2008,Brazil,Malaysia,125.28,133.676,vegetables
+2008,Brazil,Spain,79.951,1701.461,vegetables
+2008,Brazil,France,50.333,546.516,vegetables
+2008,Brazil,Indonesia,193.22,19.854,vegetables
+2008,Brazil,Germany,80.016,1761.391,vegetables
+2008,Brazil,Japan,4.692,593.409,vegetables
+2008,Brazil,United Kingdom,30.205,574.922,vegetables
+2008,Brazil,Italy,35.109,1215.8,vegetables
+2008,Brazil,Mexico,7.371,50.069,vegetables
+2008,Brazil,Rest of the World,1461.319,12508.415,vegetables
+2008,Argentina,Canada,4.001,35.097,vegetables
+2008,Argentina,Malaysia,24.296,259.006,vegetables
+2008,Argentina,Spain,5.778,923.714,vegetables
+2008,Argentina,France,13.231,359.249,vegetables
+2008,Argentina,Indonesia,7.382,48.77,vegetables
+2008,Argentina,Germany,13.032,321.453,vegetables
+2008,Argentina,Japan,0.668,61.746,vegetables
+2008,Argentina,United Kingdom,6.684,154.163,vegetables
+2008,Argentina,Italy,7.684,381.902,vegetables
+2008,Argentina,Mexico,4.458,94.228,vegetables
+2008,Argentina,Rest of the World,1415.52,15745.764,vegetables
+2008,Canada,Malaysia,98.894,219.145,vegetables
+2008,Canada,Spain,49.83,84.728,vegetables
+2008,Canada,France,28.531,113.224,vegetables
+2008,Canada,Indonesia,34.976,472.773,vegetables
+2008,Canada,Germany,40.942,292.654,vegetables
+2008,Canada,Japan,17.108,2632.172,vegetables
+2008,Canada,United Kingdom,89.255,354.437,vegetables
+2008,Canada,Italy,166.022,272.767,vegetables
+2008,Canada,Mexico,613.785,1154.145,vegetables
+2008,Canada,Rest of the World,2002.074,8415.666,vegetables
+2008,Malaysia,Spain,2.281,194.769,vegetables
+2008,Malaysia,France,14.837,35.366,vegetables
+2008,Malaysia,Indonesia,1240.48,108.145,vegetables
+2008,Malaysia,Germany,19.51,236.718,vegetables
+2008,Malaysia,Japan,15.449,978.396,vegetables
+2008,Malaysia,United Kingdom,5.138,145.374,vegetables
+2008,Malaysia,Italy,6.358,148.767,vegetables
+2008,Malaysia,Mexico,0.656,14.044,vegetables
+2008,Malaysia,Rest of the World,3081.994,14312.61,vegetables
+2008,Spain,France,1982.339,3561.436,vegetables
+2008,Spain,Indonesia,310.228,2.746,vegetables
+2008,Spain,Germany,534.486,3066.722,vegetables
+2008,Spain,Japan,3.587,111.564,vegetables
+2008,Spain,United Kingdom,333.522,2145.914,vegetables
+2008,Spain,Italy,407.702,2229.701,vegetables
+2008,Spain,Mexico,63.159,56.62,vegetables
+2008,Spain,Rest of the World,4397,5720.56,vegetables
+2008,France,Indonesia,180.972,15.86,vegetables
+2008,France,Germany,1338.627,2789.523,vegetables
+2008,France,Japan,15.614,114.603,vegetables
+2008,France,United Kingdom,321.123,1398.727,vegetables
+2008,France,Italy,1305.945,2039.46,vegetables
+2008,France,Mexico,58.968,18.966,vegetables
+2008,France,Rest of the World,5353.103,7382.303,vegetables
+2008,Indonesia,Germany,17.825,1103.353,vegetables
+2008,Indonesia,Japan,15.998,255.177,vegetables
+2008,Indonesia,United Kingdom,1.92,193.838,vegetables
+2008,Indonesia,Italy,6.262,491.491,vegetables
+2008,Indonesia,Mexico,0.731,29.753,vegetables
+2008,Indonesia,Rest of the World,2171.296,11875.175,vegetables
+2008,Germany,Japan,13.383,107.634,vegetables
+2008,Germany,United Kingdom,316.153,910.319,vegetables
+2008,Germany,Italy,2678.942,939.942,vegetables
+2008,Germany,Mexico,69.403,42.81,vegetables
+2008,Germany,Rest of the World,11581.649,8850.942,vegetables
+2008,Japan,United Kingdom,97.703,10.24,vegetables
+2008,Japan,Italy,164.393,10.116,vegetables
+2008,Japan,Mexico,206.795,2.72,vegetables
+2008,Japan,Rest of the World,7112.568,422.648,vegetables
+2008,United Kingdom,Italy,806.593,165.006,vegetables
+2008,United Kingdom,Mexico,47.026,5.932,vegetables
+2008,United Kingdom,Rest of the World,6154.571,1905.382,vegetables
+2008,Italy,Mexico,126.861,17.663,vegetables
+2008,Italy,Rest of the World,6115.302,5206.357,vegetables
+2008,Mexico,Rest of the World,1060.398,991.627,vegetables
+2008,Rest of the World,Rest of the World,101975.54,101975.54,vegetables
+2009,United States of America,Netherlands,492.665,655.238,vegetables
+2009,United States of America,Brazil,1098.425,145.152,vegetables
+2009,United States of America,Canada,5459.528,5555.239,vegetables
+2009,United States of America,Spain,405.274,680.65,vegetables
+2009,United States of America,Indonesia,570.718,841.522,vegetables
+2009,United States of America,France,172.899,340.22,vegetables
+2009,United States of America,Malaysia,931.917,319.166,vegetables
+2009,United States of America,Germany,380.418,970.197,vegetables
+2009,United States of America,China,985.498,9933.298,vegetables
+2009,United States of America,Japan,102.586,7074.835,vegetables
+2009,United States of America,United Kingdom,85.994,471.518,vegetables
+2009,United States of America,Italy,679.01,477.079,vegetables
+2009,United States of America,Rest of the World,18760.152,24436.868,vegetables
+2009,Netherlands,Brazil,1320.507,32.23,vegetables
+2009,Netherlands,Canada,132.219,113.312,vegetables
+2009,Netherlands,Spain,1110.519,615.836,vegetables
+2009,Netherlands,Indonesia,959.227,13.909,vegetables
+2009,Netherlands,France,1640.2,2171.778,vegetables
+2009,Netherlands,Malaysia,681.886,28.156,vegetables
+2009,Netherlands,Germany,1957.885,5927.246,vegetables
+2009,Netherlands,China,365.162,86.851,vegetables
+2009,Netherlands,Japan,20.311,150.052,vegetables
+2009,Netherlands,United Kingdom,439.189,2951.941,vegetables
+2009,Netherlands,Italy,367.26,1008.119,vegetables
+2009,Netherlands,Rest of the World,6606.128,7410.235,vegetables
+2009,Brazil,Canada,112.575,102.425,vegetables
+2009,Brazil,Spain,88.513,1142.221,vegetables
+2009,Brazil,Indonesia,147.124,15.049,vegetables
+2009,Brazil,France,42.404,393.077,vegetables
+2009,Brazil,Malaysia,84.438,261.582,vegetables
+2009,Brazil,Germany,63.85,1629.315,vegetables
+2009,Brazil,China,122.608,6792.962,vegetables
+2009,Brazil,Japan,4.042,595.771,vegetables
+2009,Brazil,United Kingdom,18.94,507.036,vegetables
+2009,Brazil,Italy,36.274,820.538,vegetables
+2009,Brazil,Rest of the World,3030.832,5528.884,vegetables
+2009,Canada,Spain,40.103,161.132,vegetables
+2009,Canada,Indonesia,24.162,240.93,vegetables
+2009,Canada,France,24.952,45.558,vegetables
+2009,Canada,Malaysia,88.003,99.441,vegetables
+2009,Canada,Germany,33.322,146.626,vegetables
+2009,Canada,China,245.554,2023.489,vegetables
+2009,Canada,Japan,16.92,1652.047,vegetables
+2009,Canada,United Kingdom,85.829,249.504,vegetables
+2009,Canada,Italy,148.321,371.67,vegetables
+2009,Canada,Rest of the World,2379.313,6826.249,vegetables
+2009,Spain,Indonesia,381.107,2.738,vegetables
+2009,Spain,France,1684.793,3029.175,vegetables
+2009,Spain,Malaysia,74.576,2.66,vegetables
+2009,Spain,Germany,453.091,2817.729,vegetables
+2009,Spain,China,152.931,32.74,vegetables
+2009,Spain,Japan,3.246,95.581,vegetables
+2009,Spain,United Kingdom,351.91,1808.072,vegetables
+2009,Spain,Italy,391.722,1897.543,vegetables
+2009,Spain,Rest of the World,4006.948,4886.343,vegetables
+2009,Indonesia,France,10.044,132.517,vegetables
+2009,Indonesia,Malaysia,141.004,1193.285,vegetables
+2009,Indonesia,Germany,23.09,794.746,vegetables
+2009,Indonesia,China,623.191,2194.578,vegetables
+2009,Indonesia,Japan,14.275,204.351,vegetables
+2009,Indonesia,United Kingdom,1.385,156.699,vegetables
+2009,Indonesia,Italy,5.761,603.444,vegetables
+2009,Indonesia,Rest of the World,1660.023,7860.245,vegetables
+2009,France,Malaysia,22.523,13.549,vegetables
+2009,France,Germany,1079.464,2187.898,vegetables
+2009,France,China,200.9,106.511,vegetables
+2009,France,Japan,12.548,115.377,vegetables
+2009,France,United Kingdom,208.248,1091.615,vegetables
+2009,France,Italy,1161.988,1483.114,vegetables
+2009,France,Rest of the World,4705.982,5837.29,vegetables
+2009,Malaysia,Germany,17.946,220.033,vegetables
+2009,Malaysia,China,553.435,2764.467,vegetables
+2009,Malaysia,Japan,10.585,673.51,vegetables
+2009,Malaysia,United Kingdom,4.68,90.106,vegetables
+2009,Malaysia,Italy,6.202,138.122,vegetables
+2009,Malaysia,Rest of the World,2127.015,8000.867,vegetables
+2009,Germany,China,514.119,52.476,vegetables
+2009,Germany,Japan,13.773,108.283,vegetables
+2009,Germany,United Kingdom,235.531,739.031,vegetables
+2009,Germany,Italy,2186.097,817.166,vegetables
+2009,Germany,Rest of the World,9708.831,7233.05,vegetables
+2009,China,Japan,60.548,1850.409,vegetables
+2009,China,United Kingdom,17.614,211.237,vegetables
+2009,China,Italy,38.298,179.217,vegetables
+2009,China,Rest of the World,7688.418,6605.871,vegetables
+2009,Japan,United Kingdom,78.178,7.243,vegetables
+2009,Japan,Italy,153.789,8.948,vegetables
+2009,Japan,Rest of the World,5100.553,340.908,vegetables
+2009,United Kingdom,Italy,661.271,123.403,vegetables
+2009,United Kingdom,Rest of the World,5449.596,1679.443,vegetables
+2009,Italy,Rest of the World,5509.133,4164.469,vegetables
+2009,Rest of the World,Rest of the World,87366.814,87366.814,vegetables
+2010,United States of America,Netherlands,515.438,958.188,vegetables
+2010,United States of America,Brazil,1486.818,247.427,vegetables
+2010,United States of America,Indonesia,597.058,1110.116,vegetables
+2010,United States of America,Canada,5673.436,5804.689,vegetables
+2010,United States of America,Argentina,346.74,46.108,vegetables
+2010,United States of America,Malaysia,1198.439,342.735,vegetables
+2010,United States of America,Spain,481.086,1025.223,vegetables
+2010,United States of America,France,176.014,364.244,vegetables
+2010,United States of America,China,1177.695,12430.759,vegetables
+2010,United States of America,Germany,376.184,934.383,vegetables
+2010,United States of America,Japan,109.706,7399.74,vegetables
+2010,United States of America,United Kingdom,111.041,545.733,vegetables
+2010,United States of America,Italy,662.156,471.222,vegetables
+2010,United States of America,Russia,11.501,215.163,vegetables
+2010,United States of America,India,1080.124,596.024,vegetables
+2010,United States of America,Rest of the World,20222.224,27661.902,vegetables
+2010,Netherlands,Brazil,1027.224,34.545,vegetables
+2010,Netherlands,Indonesia,936.484,16.344,vegetables
+2010,Netherlands,Canada,253.722,98.902,vegetables
+2010,Netherlands,Argentina,423.189,7.558,vegetables
+2010,Netherlands,Malaysia,941.535,34.104,vegetables
+2010,Netherlands,Spain,1173.727,588.129,vegetables
+2010,Netherlands,France,1795.445,2053.504,vegetables
+2010,Netherlands,China,433.261,142.946,vegetables
+2010,Netherlands,Germany,2194.23,6613.23,vegetables
+2010,Netherlands,Japan,22.686,150.137,vegetables
+2010,Netherlands,United Kingdom,497.081,3202.102,vegetables
+2010,Netherlands,Italy,425.803,1136.299,vegetables
+2010,Netherlands,Russia,24.267,895.455,vegetables
+2010,Netherlands,India,295.87,12.936,vegetables
+2010,Netherlands,Rest of the World,6215.203,7646.34,vegetables
+2010,Brazil,Indonesia,247.034,94.938,vegetables
+2010,Brazil,Canada,126.002,129.939,vegetables
+2010,Brazil,Argentina,2039.403,125.311,vegetables
+2010,Brazil,Malaysia,112.31,282.078,vegetables
+2010,Brazil,Spain,106.927,1190.156,vegetables
+2010,Brazil,France,83.476,254.014,vegetables
+2010,Brazil,China,251.756,7982.788,vegetables
+2010,Brazil,Germany,64.594,1590.007,vegetables
+2010,Brazil,Japan,6.22,756.866,vegetables
+2010,Brazil,United Kingdom,14.367,483.832,vegetables
+2010,Brazil,Italy,42.002,755.147,vegetables
+2010,Brazil,Russia,5.566,245.82,vegetables
+2010,Brazil,India,46.502,83.858,vegetables
+2010,Brazil,Rest of the World,1485.827,5395.726,vegetables
+2010,Indonesia,Canada,215.978,32.107,vegetables
+2010,Indonesia,Argentina,179.987,7.672,vegetables
+2010,Indonesia,Malaysia,215.623,1987.192,vegetables
+2010,Indonesia,Spain,4.663,453.78,vegetables
+2010,Indonesia,France,8.055,108.056,vegetables
+2010,Indonesia,China,870.127,2819.029,vegetables
+2010,Indonesia,Germany,16.856,862.189,vegetables
+2010,Indonesia,Japan,13.95,247.599,vegetables
+2010,Indonesia,United Kingdom,2.717,184.723,vegetables
+2010,Indonesia,Italy,6.103,614.814,vegetables
+2010,Indonesia,Russia,14.318,397.617,vegetables
+2010,Indonesia,India,206.397,4213.072,vegetables
+2010,Indonesia,Rest of the World,2218.068,4951.003,vegetables
+2010,Canada,Argentina,44.041,2.902,vegetables
+2010,Canada,Malaysia,111.312,107.828,vegetables
+2010,Canada,Spain,45.719,145.269,vegetables
+2010,Canada,France,27.069,70.749,vegetables
+2010,Canada,China,292.713,2157.937,vegetables
+2010,Canada,Germany,41.796,234.052,vegetables
+2010,Canada,Japan,17.913,1809.607,vegetables
+2010,Canada,United Kingdom,90.826,262.178,vegetables
+2010,Canada,Italy,166.804,345.157,vegetables
+2010,Canada,Russia,0.964,32.051,vegetables
+2010,Canada,India,135.203,437.966,vegetables
+2010,Canada,Rest of the World,2735.589,6698.32,vegetables
+2010,Argentina,Malaysia,26.205,617.448,vegetables
+2010,Argentina,Spain,8.128,271.577,vegetables
+2010,Argentina,France,10.147,208.206,vegetables
+2010,Argentina,China,14.35,4494.074,vegetables
+2010,Argentina,Germany,12.161,125.198,vegetables
+2010,Argentina,Japan,0.834,257.954,vegetables
+2010,Argentina,United Kingdom,2.093,128.818,vegetables
+2010,Argentina,Italy,10.432,240.052,vegetables
+2010,Argentina,Russia,0.113,246.933,vegetables
+2010,Argentina,India,9.501,1190.27,vegetables
+2010,Argentina,Rest of the World,286.855,7734.226,vegetables
+2010,Malaysia,Spain,3.734,82.972,vegetables
+2010,Malaysia,France,21.074,25.924,vegetables
+2010,Malaysia,China,798.806,2997.655,vegetables
+2010,Malaysia,Germany,19.892,255.417,vegetables
+2010,Malaysia,Japan,12.546,852.979,vegetables
+2010,Malaysia,United Kingdom,8.06,129.396,vegetables
+2010,Malaysia,Italy,7.223,142.225,vegetables
+2010,Malaysia,Russia,3.344,253.002,vegetables
+2010,Malaysia,India,473.511,908.059,vegetables
+2010,Malaysia,Rest of the World,1587.41,9788.326,vegetables
+2010,Spain,France,1749.357,3201.856,vegetables
+2010,Spain,China,193.542,61.404,vegetables
+2010,Spain,Germany,467.716,3022.803,vegetables
+2010,Spain,Japan,3.016,103.106,vegetables
+2010,Spain,United Kingdom,414.129,1894.055,vegetables
+2010,Spain,Italy,368.595,2160.744,vegetables
+2010,Spain,Russia,28.387,300.28,vegetables
+2010,Spain,India,79.249,14.539,vegetables
+2010,Spain,Rest of the World,3408.581,5230.972,vegetables
+2010,France,China,227.799,113.131,vegetables
+2010,France,Germany,1133.951,1995.737,vegetables
+2010,France,Japan,17.751,114.562,vegetables
+2010,France,United Kingdom,281.736,1123.896,vegetables
+2010,France,Italy,1220.78,1543.189,vegetables
+2010,France,Russia,69.052,156.316,vegetables
+2010,France,India,247.154,20.123,vegetables
+2010,France,Rest of the World,4613.934,6529.703,vegetables
+2010,China,Germany,68.048,574.097,vegetables
+2010,China,Japan,76.112,2228.961,vegetables
+2010,China,United Kingdom,11.093,271.318,vegetables
+2010,China,Italy,54.085,196.986,vegetables
+2010,China,Russia,7.337,649.138,vegetables
+2010,China,India,460.78,197.382,vegetables
+2010,China,Rest of the World,6006.798,6923.02,vegetables
+2010,Germany,Japan,16.232,119.459,vegetables
+2010,Germany,United Kingdom,406.3,798.601,vegetables
+2010,Germany,Italy,2313.424,837.01,vegetables
+2010,Germany,Russia,30.957,289.76,vegetables
+2010,Germany,India,468.058,14.587,vegetables
+2010,Germany,Rest of the World,9940.048,8110.5,vegetables
+2010,Japan,United Kingdom,86.798,8.968,vegetables
+2010,Japan,Italy,166.591,8.927,vegetables
+2010,Japan,Russia,10.134,2.171,vegetables
+2010,Japan,India,206.379,2.696,vegetables
+2010,Japan,Rest of the World,5257.93,369.742,vegetables
+2010,United Kingdom,Italy,667.957,137.127,vegetables
+2010,United Kingdom,Russia,51.352,24.384,vegetables
+2010,United Kingdom,India,410.738,6.388,vegetables
+2010,United Kingdom,Rest of the World,5228.81,1974.778,vegetables
+2010,Italy,Russia,141.79,207.089,vegetables
+2010,Italy,India,211.072,23.285,vegetables
+2010,Italy,Rest of the World,5542.499,4264.859,vegetables
+2010,Russia,India,188.282,29.382,vegetables
+2010,Russia,Rest of the World,7414.148,4366.566,vegetables
+2010,India,Rest of the World,3373.477,5930.125,vegetables
+2010,Rest of the World,Rest of the World,72341.12,72341.12,vegetables
+2011,United States of America,Brazil,2320.607,142.168,vegetables
+2011,United States of America,Netherlands,559.29,1126.177,vegetables
+2011,United States of America,Indonesia,999.133,1454.952,vegetables
+2011,United States of America,Argentina,488.596,51.796,vegetables
+2011,United States of America,Malaysia,1877.535,510.666,vegetables
+2011,United States of America,Canada,7627.192,6518.041,vegetables
+2011,United States of America,France,189.892,480.134,vegetables
+2011,United States of America,Spain,497.541,1200.364,vegetables
+2011,United States of America,China,1358.486,12819.011,vegetables
+2011,United States of America,Germany,508.401,1150.963,vegetables
+2011,United States of America,Japan,123.566,8983.153,vegetables
+2011,United States of America,Italy,747.603,588.91,vegetables
+2011,United States of America,United Kingdom,103.57,646.162,vegetables
+2011,United States of America,India,2185.355,530.233,vegetables
+2011,United States of America,Russia,19.057,261.557,vegetables
+2011,United States of America,Rest of the World,23355.432,34928.227,vegetables
+2011,Brazil,Netherlands,33.283,1332.051,vegetables
+2011,Brazil,Indonesia,374.6,87.685,vegetables
+2011,Brazil,Argentina,2833.444,162.785,vegetables
+2011,Brazil,Malaysia,182.778,335.889,vegetables
+2011,Brazil,Canada,35.971,186.027,vegetables
+2011,Brazil,France,71.119,476.375,vegetables
+2011,Brazil,Spain,151.158,1647.566,vegetables
+2011,Brazil,China,238.139,11773.572,vegetables
+2011,Brazil,Germany,88.591,2226.959,vegetables
+2011,Brazil,Japan,6.49,1209.47,vegetables
+2011,Brazil,Italy,56.554,887.08,vegetables
+2011,Brazil,United Kingdom,13.534,578.777,vegetables
+2011,Brazil,India,63.503,190.74,vegetables
+2011,Brazil,Russia,0.011,280.356,vegetables
+2011,Brazil,Rest of the World,1655.25,8751.812,vegetables
+2011,Netherlands,Indonesia,1192.057,22.746,vegetables
+2011,Netherlands,Argentina,637.489,5.835,vegetables
+2011,Netherlands,Malaysia,1095.496,40.759,vegetables
+2011,Netherlands,Canada,435.445,100.607,vegetables
+2011,Netherlands,France,2367.319,2209.754,vegetables
+2011,Netherlands,Spain,1343.407,645.494,vegetables
+2011,Netherlands,China,466.502,121.086,vegetables
+2011,Netherlands,Germany,3308.8,8688.21,vegetables
+2011,Netherlands,Japan,23.198,164.393,vegetables
+2011,Netherlands,Italy,535.486,1282.395,vegetables
+2011,Netherlands,United Kingdom,797.753,3637.967,vegetables
+2011,Netherlands,India,333.262,25.077,vegetables
+2011,Netherlands,Russia,41.862,1050.337,vegetables
+2011,Netherlands,Rest of the World,8419.611,8951.742,vegetables
+2011,Indonesia,Argentina,451.021,12.187,vegetables
+2011,Indonesia,Malaysia,297.713,3071.345,vegetables
+2011,Indonesia,Canada,350.033,46.431,vegetables
+2011,Indonesia,France,16.046,118.867,vegetables
+2011,Indonesia,Spain,5.472,498.563,vegetables
+2011,Indonesia,China,957.012,3868.114,vegetables
+2011,Indonesia,Germany,18.58,1050.098,vegetables
+2011,Indonesia,Japan,17.073,353.976,vegetables
+2011,Indonesia,Italy,9.44,755.209,vegetables
+2011,Indonesia,United Kingdom,3.33,203.472,vegetables
+2011,Indonesia,India,637.997,5477.216,vegetables
+2011,Indonesia,Russia,2.131,606.161,vegetables
+2011,Indonesia,Rest of the World,4074.022,7574.279,vegetables
+2011,Argentina,Malaysia,35.894,820.182,vegetables
+2011,Argentina,Canada,9.95,54.724,vegetables
+2011,Argentina,France,11.384,266.472,vegetables
+2011,Argentina,Spain,7.02,319.147,vegetables
+2011,Argentina,China,16.4,5023.169,vegetables
+2011,Argentina,Germany,10.195,206.007,vegetables
+2011,Argentina,Japan,0.988,262.983,vegetables
+2011,Argentina,Italy,14.428,259.526,vegetables
+2011,Argentina,United Kingdom,4.277,178.716,vegetables
+2011,Argentina,India,15.856,1004.308,vegetables
+2011,Argentina,Russia,0.076,315.37,vegetables
+2011,Argentina,Rest of the World,303.111,12032.245,vegetables
+2011,Malaysia,Canada,119.47,148.411,vegetables
+2011,Malaysia,France,21.41,50.946,vegetables
+2011,Malaysia,Spain,5.329,183.053,vegetables
+2011,Malaysia,China,808.722,4551.664,vegetables
+2011,Malaysia,Germany,25.18,286.382,vegetables
+2011,Malaysia,Japan,14.794,1203.114,vegetables
+2011,Malaysia,Italy,11.272,215.06,vegetables
+2011,Malaysia,United Kingdom,10.492,140.483,vegetables
+2011,Malaysia,India,630.052,1751.746,vegetables
+2011,Malaysia,Russia,0.558,246.13,vegetables
+2011,Malaysia,Rest of the World,2346.121,12708.29,vegetables
+2011,Canada,France,38.723,169.19,vegetables
+2011,Canada,Spain,54.461,188.973,vegetables
+2011,Canada,China,335.099,2110.994,vegetables
+2011,Canada,Germany,68.034,272.229,vegetables
+2011,Canada,Japan,18.131,2596.786,vegetables
+2011,Canada,Italy,176.271,440.233,vegetables
+2011,Canada,United Kingdom,91.2,266.703,vegetables
+2011,Canada,India,183.209,629.389,vegetables
+2011,Canada,Russia,0.987,31.305,vegetables
+2011,Canada,Rest of the World,3181.479,8399.366,vegetables
+2011,France,Spain,3291.488,2343.764,vegetables
+2011,France,China,275.327,106.152,vegetables
+2011,France,Germany,1474.268,3049.075,vegetables
+2011,France,Japan,18.778,126.141,vegetables
+2011,France,Italy,1357.87,1848.294,vegetables
+2011,France,United Kingdom,293.3,1247.996,vegetables
+2011,France,India,358.526,60.088,vegetables
+2011,France,Russia,77.169,214.266,vegetables
+2011,France,Rest of the World,5154.183,8610.852,vegetables
+2011,Spain,China,241.141,115.849,vegetables
+2011,Spain,Germany,514.761,3242.784,vegetables
+2011,Spain,Japan,2.604,104.979,vegetables
+2011,Spain,Italy,378.495,2350.358,vegetables
+2011,Spain,United Kingdom,288.708,2082.088,vegetables
+2011,Spain,India,118.729,22.592,vegetables
+2011,Spain,Russia,116.832,459.683,vegetables
+2011,Spain,Rest of the World,4448.728,6035.978,vegetables
+2011,China,Germany,79.814,714.455,vegetables
+2011,China,Japan,72.928,2608.089,vegetables
+2011,China,Italy,71.42,251.995,vegetables
+2011,China,United Kingdom,18.081,318.08,vegetables
+2011,China,India,637.778,408.335,vegetables
+2011,China,Russia,8.572,826.344,vegetables
+2011,China,Rest of the World,7927.191,8062.444,vegetables
+2011,Germany,Japan,19.62,119.259,vegetables
+2011,Germany,Italy,2588.009,1017.719,vegetables
+2011,Germany,United Kingdom,583.739,822.574,vegetables
+2011,Germany,India,693.592,56.157,vegetables
+2011,Germany,Russia,59.738,369.092,vegetables
+2011,Germany,Rest of the World,13059.486,9267.509,vegetables
+2011,Japan,Italy,179.172,7.485,vegetables
+2011,Japan,United Kingdom,91.047,11.667,vegetables
+2011,Japan,India,269.97,35.654,vegetables
+2011,Japan,Russia,6.833,2.23,vegetables
+2011,Japan,Rest of the World,6322.181,1253.145,vegetables
+2011,Italy,United Kingdom,109.256,696.214,vegetables
+2011,Italy,India,308.916,38.26,vegetables
+2011,Italy,Russia,258.182,269.686,vegetables
+2011,Italy,Rest of the World,6955.571,4875.46,vegetables
+2011,United Kingdom,India,476.053,38.01,vegetables
+2011,United Kingdom,Russia,38.456,38.079,vegetables
+2011,United Kingdom,Rest of the World,6070.151,1990.61,vegetables
+2011,India,Russia,48.486,250.573,vegetables
+2011,India,Rest of the World,4282.357,8187.095,vegetables
+2011,Russia,Rest of the World,8552.768,7434.424,vegetables
+2011,Rest of the World,Rest of the World,88642.399,88642.399,vegetables
+2012,United States of America,Brazil,1775.285,132.223,vegetables
+2012,United States of America,Indonesia,936.44,1391.159,vegetables
+2012,United States of America,Netherlands,584.157,1016.018,vegetables
+2012,United States of America,Canada,7982.91,6698.489,vegetables
+2012,United States of America,Malaysia,1575.156,369.989,vegetables
+2012,United States of America,Argentina,526.986,63.387,vegetables
+2012,United States of America,India,4739.948,587.758,vegetables
+2012,United States of America,Spain,500.485,1096.433,vegetables
+2012,United States of America,China,1479.565,18058.787,vegetables
+2012,United States of America,Germany,480.797,1396.518,vegetables
+2012,United States of America,Japan,120.816,8098.77,vegetables
+2012,United States of America,United Kingdom,151.119,568.84,vegetables
+2012,United States of America,Italy,763.869,448.061,vegetables
+2012,United States of America,France,208.636,358.014,vegetables
+2012,United States of America,Rest of the World,23794.038,28715.999,vegetables
+2012,Brazil,Indonesia,328.112,43.868,vegetables
+2012,Brazil,Netherlands,43.09,1072.443,vegetables
+2012,Brazil,Canada,19.821,155.232,vegetables
+2012,Brazil,Malaysia,90.513,331.449,vegetables
+2012,Brazil,Argentina,2758.62,164.554,vegetables
+2012,Brazil,India,85.165,393.139,vegetables
+2012,Brazil,Spain,166.989,1540.316,vegetables
+2012,Brazil,China,286.38,12962.323,vegetables
+2012,Brazil,Germany,76.195,1686.184,vegetables
+2012,Brazil,Japan,7.792,1698.322,vegetables
+2012,Brazil,United Kingdom,17.973,639.229,vegetables
+2012,Brazil,Italy,52.758,745.731,vegetables
+2012,Brazil,France,62.01,529.4,vegetables
+2012,Brazil,Rest of the World,2087.345,9575.706,vegetables
+2012,Indonesia,Netherlands,30.507,1593.579,vegetables
+2012,Indonesia,Canada,336.584,43.264,vegetables
+2012,Indonesia,Malaysia,230.71,2687.438,vegetables
+2012,Indonesia,Argentina,85.469,11.948,vegetables
+2012,Indonesia,India,732.145,5342.706,vegetables
+2012,Indonesia,Spain,6.539,421.068,vegetables
+2012,Indonesia,China,860.863,4502.36,vegetables
+2012,Indonesia,Germany,18.931,871.84,vegetables
+2012,Indonesia,Japan,15.92,334.469,vegetables
+2012,Indonesia,United Kingdom,1.699,147.719,vegetables
+2012,Indonesia,Italy,10.099,785.388,vegetables
+2012,Indonesia,France,9.737,122.202,vegetables
+2012,Indonesia,Rest of the World,3654.127,9147.925,vegetables
+2012,Netherlands,Canada,399.573,98.806,vegetables
+2012,Netherlands,Malaysia,1594.066,41.07,vegetables
+2012,Netherlands,Argentina,523.736,3.874,vegetables
+2012,Netherlands,India,369.238,43.569,vegetables
+2012,Netherlands,Spain,1368.354,618.161,vegetables
+2012,Netherlands,China,452.771,178.193,vegetables
+2012,Netherlands,Germany,3308.892,8208.054,vegetables
+2012,Netherlands,Japan,22.164,176.69,vegetables
+2012,Netherlands,United Kingdom,677.448,3348.02,vegetables
+2012,Netherlands,Italy,474.333,1177.496,vegetables
+2012,Netherlands,France,2190.633,2149.483,vegetables
+2012,Netherlands,Rest of the World,8552.99,9212.137,vegetables
+2012,Canada,Malaysia,129.411,177.359,vegetables
+2012,Canada,Argentina,57.562,5.502,vegetables
+2012,Canada,India,252.835,541.072,vegetables
+2012,Canada,Spain,60.082,123.786,vegetables
+2012,Canada,China,354.57,4353.691,vegetables
+2012,Canada,Germany,66.222,248.047,vegetables
+2012,Canada,Japan,17.799,2787.882,vegetables
+2012,Canada,United Kingdom,87.8,218.246,vegetables
+2012,Canada,Italy,172.973,303.925,vegetables
+2012,Canada,France,28.21,166.512,vegetables
+2012,Canada,Rest of the World,3216.94,7459.901,vegetables
+2012,Malaysia,Argentina,674.469,35.018,vegetables
+2012,Malaysia,India,572.245,2568.622,vegetables
+2012,Malaysia,Spain,6.166,184.795,vegetables
+2012,Malaysia,China,721.288,3818.477,vegetables
+2012,Malaysia,Germany,34.482,269.703,vegetables
+2012,Malaysia,Japan,23.764,1047.778,vegetables
+2012,Malaysia,United Kingdom,8.275,136.725,vegetables
+2012,Malaysia,Italy,10.451,250.406,vegetables
+2012,Malaysia,France,18.157,56.301,vegetables
+2012,Malaysia,Rest of the World,2200.101,10498.394,vegetables
+2012,Argentina,India,17.955,1086.515,vegetables
+2012,Argentina,Spain,10.749,179.937,vegetables
+2012,Argentina,China,17.823,3720.102,vegetables
+2012,Argentina,Germany,9.385,163.96,vegetables
+2012,Argentina,Japan,1.066,333.67,vegetables
+2012,Argentina,United Kingdom,3.246,157.641,vegetables
+2012,Argentina,Italy,13.362,167.613,vegetables
+2012,Argentina,France,12.475,90.41,vegetables
+2012,Argentina,Rest of the World,305.331,11719.288,vegetables
+2012,India,Spain,31.664,127.802,vegetables
+2012,India,China,380.349,723.247,vegetables
+2012,India,Germany,49.206,644.752,vegetables
+2012,India,Japan,23.442,268.316,vegetables
+2012,India,United Kingdom,24.121,498.754,vegetables
+2012,India,Italy,43.365,347.316,vegetables
+2012,India,France,70.425,312.828,vegetables
+2012,India,Rest of the World,4768.015,11470.93,vegetables
+2012,Spain,China,224.175,126.101,vegetables
+2012,Spain,Germany,493.273,3258.898,vegetables
+2012,Spain,Japan,2.436,118.9,vegetables
+2012,Spain,United Kingdom,274.342,2017.525,vegetables
+2012,Spain,Italy,330.708,2050.284,vegetables
+2012,Spain,France,2068.15,3430.35,vegetables
+2012,Spain,Rest of the World,5399.11,6888.145,vegetables
+2012,China,Germany,99.253,683.845,vegetables
+2012,China,Japan,84.955,2717.569,vegetables
+2012,China,United Kingdom,14.878,288.399,vegetables
+2012,China,Italy,73.032,224.607,vegetables
+2012,China,France,54.789,249.491,vegetables
+2012,China,Rest of the World,10480.567,9116.467,vegetables
+2012,Germany,Japan,17.68,124.369,vegetables
+2012,Germany,United Kingdom,608.881,879.853,vegetables
+2012,Germany,Italy,2441.067,963.435,vegetables
+2012,Germany,France,2659.364,1363.936,vegetables
+2012,Germany,Rest of the World,12387.605,8267.802,vegetables
+2012,Japan,United Kingdom,97.11,9.261,vegetables
+2012,Japan,Italy,201.387,8.885,vegetables
+2012,Japan,France,126.126,13.897,vegetables
+2012,Japan,Rest of the World,6436.866,398.401,vegetables
+2012,United Kingdom,Italy,641.544,88.466,vegetables
+2012,United Kingdom,France,1332.35,226.276,vegetables
+2012,United Kingdom,Rest of the World,5974.431,1907.012,vegetables
+2012,Italy,France,1498.944,1240.65,vegetables
+2012,Italy,Rest of the World,6614.16,5180.574,vegetables
+2012,France,Rest of the World,5227.466,6921.701,vegetables
+2012,Rest of the World,Rest of the World,105410.715,105410.715,vegetables
+2013,United States of America,Brazil,1793.825,1261.414,vegetables
+2013,United States of America,Netherlands,559.395,1340.322,vegetables
+2013,United States of America,Canada,8554.487,6888.55,vegetables
+2013,United States of America,Indonesia,1137.126,1377.07,vegetables
+2013,United States of America,Spain,488.942,1326.401,vegetables
+2013,United States of America,India,3007.789,719.894,vegetables
+2013,United States of America,Argentina,759.512,58.307,vegetables
+2013,United States of America,France,223.854,453.517,vegetables
+2013,United States of America,Malaysia,1295.415,414.571,vegetables
+2013,United States of America,Germany,531.911,1822.571,vegetables
+2013,United States of America,Japan,126.137,6493.712,vegetables
+2013,United States of America,United Kingdom,118.1,632.82,vegetables
+2013,United States of America,Russia,15.097,496.891,vegetables
+2013,United States of America,Rest of the World,28022.183,45416.711,vegetables
+2013,Brazil,Netherlands,51.967,1573.736,vegetables
+2013,Brazil,Canada,145.445,128.29,vegetables
+2013,Brazil,Indonesia,302.202,298.239,vegetables
+2013,Brazil,Spain,184.441,1560.598,vegetables
+2013,Brazil,India,75.647,245.141,vegetables
+2013,Brazil,Argentina,1878.88,131.193,vegetables
+2013,Brazil,France,84.672,246.995,vegetables
+2013,Brazil,Malaysia,85.856,311.627,vegetables
+2013,Brazil,Germany,90.65,1333.983,vegetables
+2013,Brazil,Japan,6.183,1846.765,vegetables
+2013,Brazil,United Kingdom,16.073,541.747,vegetables
+2013,Brazil,Russia,0.424,82.883,vegetables
+2013,Brazil,Rest of the World,2491.876,28029.501,vegetables
+2013,Netherlands,Canada,285.472,97.95,vegetables
+2013,Netherlands,Indonesia,1603.361,19.877,vegetables
+2013,Netherlands,Spain,1576.603,666.292,vegetables
+2013,Netherlands,India,344.6,21.276,vegetables
+2013,Netherlands,Argentina,427.488,10.663,vegetables
+2013,Netherlands,France,2370.908,2328.092,vegetables
+2013,Netherlands,Malaysia,1275.314,52.345,vegetables
+2013,Netherlands,Germany,3511.839,8237.271,vegetables
+2013,Netherlands,Japan,20.893,160.975,vegetables
+2013,Netherlands,United Kingdom,677.594,3755.534,vegetables
+2013,Netherlands,Russia,101.605,863.833,vegetables
+2013,Netherlands,Rest of the World,10251.581,10656.216,vegetables
+2013,Canada,Indonesia,39.05,473.203,vegetables
+2013,Canada,Spain,56.781,156.602,vegetables
+2013,Canada,India,222.644,709.381,vegetables
+2013,Canada,Argentina,45.611,5.415,vegetables
+2013,Canada,France,34.875,112.34,vegetables
+2013,Canada,Malaysia,117.625,106.259,vegetables
+2013,Canada,Germany,66.493,298.949,vegetables
+2013,Canada,Japan,19.879,2737.613,vegetables
+2013,Canada,United Kingdom,80.641,254.045,vegetables
+2013,Canada,Russia,3.503,8.973,vegetables
+2013,Canada,Rest of the World,4046.388,11622.887,vegetables
+2013,Indonesia,Spain,7.084,582.117,vegetables
+2013,Indonesia,India,861.751,5097.487,vegetables
+2013,Indonesia,Argentina,165.341,7.595,vegetables
+2013,Indonesia,France,10.044,139.191,vegetables
+2013,Indonesia,Malaysia,233.288,1284.276,vegetables
+2013,Indonesia,Germany,24.635,829.033,vegetables
+2013,Indonesia,Japan,19.933,344.575,vegetables
+2013,Indonesia,United Kingdom,1.784,164.522,vegetables
+2013,Indonesia,Russia,76.71,654.755,vegetables
+2013,Indonesia,Rest of the World,3335.695,12912.167,vegetables
+2013,Spain,India,148.169,33.243,vegetables
+2013,Spain,Argentina,166.774,14.182,vegetables
+2013,Spain,France,2071.976,3801.083,vegetables
+2013,Spain,Malaysia,141.366,10.541,vegetables
+2013,Spain,Germany,481.012,4083.53,vegetables
+2013,Spain,Japan,2.637,150.497,vegetables
+2013,Spain,United Kingdom,143.469,2354.706,vegetables
+2013,Spain,Russia,151.927,507.6,vegetables
+2013,Spain,Rest of the World,5613.086,9414.827,vegetables
+2013,India,Argentina,955.686,20.372,vegetables
+2013,India,France,21.009,318.939,vegetables
+2013,India,Malaysia,1915.05,625.3,vegetables
+2013,India,Germany,16.465,621.105,vegetables
+2013,India,Japan,3.118,293.299,vegetables
+2013,India,United Kingdom,8.954,472.639,vegetables
+2013,India,Russia,52.732,273.122,vegetables
+2013,India,Rest of the World,5041.591,14994.867,vegetables
+2013,Argentina,France,13.513,100.908,vegetables
+2013,Argentina,Malaysia,29.508,428.028,vegetables
+2013,Argentina,Germany,12.302,134.429,vegetables
+2013,Argentina,Japan,1.188,763.26,vegetables
+2013,Argentina,United Kingdom,4.149,123.688,vegetables
+2013,Argentina,Russia,0.229,269.159,vegetables
+2013,Argentina,Rest of the World,503.757,14336.935,vegetables
+2013,France,Malaysia,54.6,24.867,vegetables
+2013,France,Germany,1354.276,2664.124,vegetables
+2013,France,Japan,13.258,151.825,vegetables
+2013,France,United Kingdom,252.845,1557.366,vegetables
+2013,France,Russia,94.31,183.631,vegetables
+2013,France,Rest of the World,7473.694,10305.988,vegetables
+2013,Malaysia,Germany,49.554,280.506,vegetables
+2013,Malaysia,Japan,12.913,825.44,vegetables
+2013,Malaysia,United Kingdom,9.798,109.16,vegetables
+2013,Malaysia,Russia,15.002,123.523,vegetables
+2013,Malaysia,Rest of the World,3059.1,12377.071,vegetables
+2013,Germany,Japan,25.132,120.612,vegetables
+2013,Germany,United Kingdom,511.911,1155.21,vegetables
+2013,Germany,Russia,73.638,326.736,vegetables
+2013,Germany,Rest of the World,16373.3,10286.677,vegetables
+2013,Japan,United Kingdom,95.589,7.756,vegetables
+2013,Japan,Russia,14.333,2.733,vegetables
+2013,Japan,Rest of the World,9194.95,478.722,vegetables
+2013,United Kingdom,Russia,62.377,34.121,vegetables
+2013,United Kingdom,Rest of the World,7485.578,2061.633,vegetables
+2013,Russia,Rest of the World,10482.183,7867.596,vegetables
+2013,Rest of the World,Rest of the World,122083.668,122083.668,vegetables
+2014,China,Rest of the World,9806.006,17473.484,vegetables
+2014,China,Japan,2560.838,94.91,vegetables
+2014,China,Malaysia,814.543,2682.952,vegetables
+2014,China,Germany,774.477,94.16,vegetables
+2014,China,United Kingdom,304.525,30.273,vegetables
+2014,China,France,278.358,316.688,vegetables
+2014,China,Italy,264.49,108.744,vegetables
+2014,Brazil,China,17090.627,204.891,vegetables
+2014,Brazil,Rest of the World,8836.084,3658.493,vegetables
+2014,Brazil,Germany,2024.957,81.102,vegetables
+2014,Brazil,Netherlands,1512.337,49.771,vegetables
+2014,Brazil,Spain,1377.498,186.536,vegetables
+2014,Brazil,Japan,1079.076,7.852,vegetables
+2014,Brazil,Italy,831.529,79.309,vegetables
+2014,Brazil,Malaysia,531.247,91.012,vegetables
+2014,Brazil,United Kingdom,519.172,14.562,vegetables
+2014,Brazil,India,405.703,63.403,vegetables
+2014,Brazil,France,296.56,68.687,vegetables
+2014,Brazil,Indonesia,258.094,397.163,vegetables
+2014,Brazil,Canada,175.063,103.383,vegetables
+2014,Canada,Rest of the World,8199.263,3804.757,vegetables
+2014,Canada,China,3661.667,367.62,vegetables
+2014,Canada,Japan,2300.384,23.843,vegetables
+2014,Canada,India,874.986,263.739,vegetables
+2014,Canada,Italy,698.402,202.496,vegetables
+2014,Canada,Spain,259.355,118.65,vegetables
+2014,Canada,United Kingdom,230.743,50.299,vegetables
+2014,Canada,Germany,209.098,53.862,vegetables
+2014,Canada,Malaysia,128.015,117.811,vegetables
+2014,Canada,France,124.066,32.063,vegetables
+2014,France,Rest of the World,7581.484,5986.381,vegetables
+2014,France,Germany,2460.769,1336.686,vegetables
+2014,France,Italy,1778.374,1255.471,vegetables
+2014,France,United Kingdom,1243.968,260.135,vegetables
+2014,France,Japan,131.698,12.684,vegetables
+2014,Germany,Rest of the World,9425.153,13050.553,vegetables
+2014,Germany,United Kingdom,1134.195,412.407,vegetables
+2014,Germany,Italy,920.157,2651.059,vegetables
+2014,Germany,Japan,122.668,27.123,vegetables
+2014,India,Rest of the World,14012.656,7769.188,vegetables
+2014,India,Germany,649.532,19.476,vegetables
+2014,India,China,593.484,246.172,vegetables
+2014,India,United Kingdom,515.277,7.835,vegetables
+2014,India,Malaysia,465.035,2577.698,vegetables
+2014,India,Italy,321.476,43.967,vegetables
+2014,India,France,299.499,17.923,vegetables
+2014,India,Japan,287.859,2.664,vegetables
+2014,Indonesia,Rest of the World,11474.719,2887.017,vegetables
+2014,Indonesia,India,4202.328,645.901,vegetables
+2014,Indonesia,China,3832.463,868.671,vegetables
+2014,Indonesia,Malaysia,1468.953,172.866,vegetables
+2014,Indonesia,Netherlands,1453.167,24.99,vegetables
+2014,Indonesia,Italy,1197.354,11.773,vegetables
+2014,Indonesia,Spain,926.607,8.995,vegetables
+2014,Indonesia,Germany,800.777,22.843,vegetables
+2014,Indonesia,Japan,383.161,18.402,vegetables
+2014,Indonesia,United Kingdom,142.416,2.637,vegetables
+2014,Indonesia,France,131.43,12.545,vegetables
+2014,Indonesia,Canada,58.473,440.651,vegetables
+2014,Italy,Rest of the World,5347.277,6919.948,vegetables
+2014,Japan,Rest of the World,404.439,5809.829,vegetables
+2014,Japan,United Kingdom,6.836,130.373,vegetables
+2014,Japan,Italy,5.134,230.848,vegetables
+2014,Malaysia,Rest of the World,8656.804,2849.153,vegetables
+2014,Malaysia,Japan,845.805,16.481,vegetables
+2014,Malaysia,Germany,255.539,56.163,vegetables
+2014,Malaysia,Italy,213.344,13.995,vegetables
+2014,Malaysia,United Kingdom,116.226,10.003,vegetables
+2014,Malaysia,France,53.376,26.296,vegetables
+2014,Netherlands,Rest of the World,10023.638,10135.077,vegetables
+2014,Netherlands,Germany,8009.237,3306.504,vegetables
+2014,Netherlands,United Kingdom,3762.765,614.718,vegetables
+2014,Netherlands,France,2187.848,2057.661,vegetables
+2014,Netherlands,Italy,1229.433,453.391,vegetables
+2014,Netherlands,Spain,640.172,1525.978,vegetables
+2014,Netherlands,China,214.645,466.366,vegetables
+2014,Netherlands,Japan,145.037,24.82,vegetables
+2014,Netherlands,Canada,102.791,303.725,vegetables
+2014,Netherlands,Malaysia,44.25,1387.68,vegetables
+2014,Netherlands,India,27.978,368.61,vegetables
+2014,Rest of the World,Rest of the World,120000,120000,vegetables
+2014,Spain,Rest of the World,7690.862,5116.942,vegetables
+2014,Spain,Germany,3860.538,487.327,vegetables
+2014,Spain,France,3611.269,2152.521,vegetables
+2014,Spain,Italy,2912.435,412.296,vegetables
+2014,Spain,United Kingdom,2411.561,268.599,vegetables
+2014,Spain,Japan,162.211,2.747,vegetables
+2014,Spain,China,134.968,272.9,vegetables
+2014,Spain,India,37.549,133.007,vegetables
+2014,Spain,Malaysia,12.035,205.119,vegetables
+2014,United Kingdom,Rest of the World,1996.639,6863.797,vegetables
+2014,United Kingdom,Italy,106.059,736.33,vegetables
+2014,United States of America,Rest of the World,31321.949,26977.994,vegetables
+2014,United States of America,China,17734.169,1529.726,vegetables
+2014,United States of America,Japan,7187.582,121.8,vegetables
+2014,United States of America,Canada,7040.067,8295.37,vegetables
+2014,United States of America,Germany,1755.836,524.635,vegetables
+2014,United States of America,Netherlands,1585.691,566.795,vegetables
+2014,United States of America,Indonesia,1528.092,1311.318,vegetables
+2014,United States of America,Spain,1507.56,704.102,vegetables
+2014,United States of America,Brazil,853.296,2139.961,vegetables
+2014,United States of America,India,783.705,2556.91,vegetables
+2014,United States of America,Italy,777.723,820.764,vegetables
+2014,United States of America,United Kingdom,727.696,132.748,vegetables
+2014,United States of America,France,509.034,223.884,vegetables
+2014,United States of America,Malaysia,370.415,1129.829,vegetables

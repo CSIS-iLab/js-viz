@@ -12,7 +12,7 @@ function ($scope) {
 
   // YEARS
   $scope.selected_year = 2014;
-  $scope.start_year = 1999;
+  $scope.start_year = 2004;
   $scope.end_year = 2014;
   $scope.years = d3.range($scope.end_year, $scope.start_year, -1);
 
@@ -22,7 +22,7 @@ function ($scope) {
     {id: "vegetables", text: "Vegetables"},
     {id: "general", text: "Food Products"}
   ];
-  $scope.selected_category = $scope.categories[0];
+  $scope.selected_category = $scope.categories[1];
 
   // FILTERS
   $scope.filters = {};
@@ -50,7 +50,6 @@ function ($scope) {
   };
 
   $scope.update = function () {
-    console.log($scope.selected_year);
     var data = $scope.master[$scope.selected_category.id][$scope.selected_year];
 
     if (data && $scope.hasFilters) {
@@ -69,7 +68,7 @@ function ($scope) {
   };
 
   // IMPORT THE CSV DATA
-  d3.csv('data/veg_ex_im_15-2.csv', function (err, data) {
+  d3.csv('data/veg_full.csv', function (err, data) {
     
     data.forEach(function (d) {
       d.category = d.category;
@@ -81,7 +80,8 @@ function ($scope) {
         $scope.master[d.category][d.year] = []; // STORED BY CATEGORY, YEAR
       }
       $scope.master[d.category][d.year].push(d);
-    })
+    });
+    console.log($scope.master);
     $scope.update();
   });
 

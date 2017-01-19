@@ -4,7 +4,7 @@ function ($window, matrixFactory) {
 
   var link = function ($scope, $el, $attr) {
 
-    var size = [750, 750]; // SVG SIZE WIDTH, HEIGHT
+    var size = [900, 900]; // SVG SIZE WIDTH, HEIGHT
     var marg = [50, 50, 50, 50]; // TOP, RIGHT, BOTTOM, LEFT
     var dims = []; // USABLE DIMENSIONS
     dims[0] = size[0] - marg[1] - marg[3]; // WIDTH
@@ -16,7 +16,7 @@ function ($window, matrixFactory) {
     var chord = d3.layout.chord()
       .padding(0.02)
       .sortGroups(d3.descending)
-      .sortSubgroups(d3.ascending);
+      .sortSubgroups(d3.descending);
 
     var matrix = matrixFactory.chordMatrix()
       .layout(chord)
@@ -61,7 +61,8 @@ function ($window, matrixFactory) {
 
     var messages = svg.append("text")
       .attr("class", "messages")
-      .attr("transform", "translate(10, 10)")
+      .attr("transform", "translate(450, 30)")
+      .attr("text-anchor", "middle")
       .text("Updating...");
 
     $scope.drawChords = function (data) {
