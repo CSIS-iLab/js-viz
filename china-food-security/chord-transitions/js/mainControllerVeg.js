@@ -66,7 +66,7 @@ function ($scope) {
   };
 
   // IMPORT THE CSV DATA
-  d3.csv('../../../data/veg_ex_im_15-2.csv', function (err, data) {
+  d3.csv('../data/veg_ex_im_15-2.csv', function (err, data) {
 
     // data.forEach(function (d) {
     //   d.year  = +d.year;
