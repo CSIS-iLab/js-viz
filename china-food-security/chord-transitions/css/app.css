@@ -26,12 +26,3 @@ text, .group path {
 input[type="radio"] {
   margin: 0px;
 }
-
-.years {
-  height: 600px;
-  overflow: scroll;
-}
-
-aside {
-  margin: 0px;
-}
