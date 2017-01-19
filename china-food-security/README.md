@@ -1,38 +1,13 @@
-# Global Migration Data Sheet 2013
-Unique estimates of migration flows between the top 50 sending and receiving countries.
+chord-transitions
+=================
 
-http://www.global-migration.info/
+Need bower installed.
 
-## Installation
-```javascript
-npm install
-```
+1. Clone the repo and cd into the directory
+3. bower install
+4. python -m SimpleHTTPServer 8000 (or your favorite local server)
+5. open the files in your browser at localhost:8000
 
-## Getting Started
-Start a server:
-```javascript
-npm start
-```
+BLOG ARTICLE HERE: <a href="http://www.delimited.io/blog/2014/11/18/interactive-chord-diagrams-in-d3">LINK</a>
 
-## Development
-Lint and compile the project:
-```javascript
-grunt
-```
-
-For development you can compile a small excerpt using the `--sample` switch:
-```javascript
-grunt --sample
-```
-
-## Changing Number of Regions or Countries
-- Number of regions is pulled from `data.csv` file automatically
-  - Update `countries.csv` to make sure that only countries with regions are shown, otherwise there will be a blank gap in the chart
-
-## Contributing
-In lieu of a formal styleguide, take care to maintain the existing coding style.
-Lint your code using [Grunt](http://gruntjs.com/).
-
-## License
-Copyright (c) 2013 null2 GmbH Berlin  
-This work is licensed under a [Creative Commons Attribution-NonCommercial 3.0 Unported License](http://creativecommons.org/licenses/by-nc/3.0/).
+DEMO HERE: <a href="http://projects.delimited.io/experiments/chord-transitions/demos/trade.html">LINK</a>
