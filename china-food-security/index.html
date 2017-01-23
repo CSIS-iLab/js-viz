@@ -23,14 +23,12 @@
           <select name="categories" id="categories" class="dropdown" ng-options="category as category.text for category in categories track by category.id" ng-model="selected_category"></select>
         </div>
 
-        <div class="filter">
-          <h5>Filters</h5>
-          <button class="button tiny right" ng-click="filters = {}; hasFilters = false;">
-            clear
-          </button>
+        <fieldset class="filter">
+          <legend><h5>Country Filter</h5></legend>
+          
           <div class="panel">
-            <div ng-if="hasFilters === false" style="margin: 15px; opacity: 0.5;">
-              Click a country
+            <div class="filter-message" ng-if="hasFilters === false" style="margin: 15px; opacity: 0.5;">
+              Click a country name to remove it from the chart.
             </div>
             <ul class="side-nav">
               <li ng-repeat="filter in filters">
@@ -39,7 +37,10 @@
               </li>
             </ul>
           </div>
-        </div>
+           <button class="button tiny right" ng-show="hasFilters === true" ng-click="filters = {}; hasFilters = false;">
+            CLEAR FILTER
+          </button>
+        </fieldset>
       </div>
 
       <!-- Render Chart -->

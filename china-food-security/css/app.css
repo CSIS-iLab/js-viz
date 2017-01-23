@@ -79,6 +79,47 @@ select.dropdown {
   font-weight:bold;
 }
 
+.filter {
+
+  max-width: 200px;
+  padding:0 50px  20px;
+  margin: 25px auto;
+  border: 1px solid #a3bcc3;
+}
+
+ul  {
+  text-align: left;
+  list-style-type: none;
+}
+
+ul {
+  margin-left: 0;
+  padding-left: 0;
+}
+button.tiny {
+  background-color: #ED392A;
+  color: white;
+  border: 0px;
+  padding: 10px 15px;
+  float: left;
+
+}
+
+button.tiny:hover {
+   background-color: #772132;
+
+}
+
+legend h5 {
+  padding: 0 10px;
+  font-size: 16px;
+  letter-spacing: .5px;
+}
+
+.filter-message {
+  font-size: 90%;
+}
+
 /* Tooltip */
 #tooltip {
   background-color: white;
@@ -97,7 +138,7 @@ select.dropdown {
 
 /* Source */
 .source {
-  text-align:right;
+  text-align:left;
   font-size: 9px;
   max-width: 970px;
   margin: auto;
