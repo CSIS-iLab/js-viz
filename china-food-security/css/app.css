@@ -81,7 +81,7 @@ select.dropdown {
 
 .filter {
 
-  max-width: 200px;
+  max-width: 500px;
   padding:0 50px  20px;
   margin: 25px auto;
   border: 1px solid #a3bcc3;
@@ -90,19 +90,25 @@ select.dropdown {
 ul  {
   text-align: left;
   list-style-type: none;
-}
-
-ul {
   margin-left: 0;
   padding-left: 0;
+  width: 100%;
+  display: block;
 }
+
+ul li{
+  display: inline-block;
+  float: left;
+  margin-right: 15px;
+}
+
 button.tiny {
   background-color: #ED392A;
   color: white;
   border: 0px;
   padding: 10px 15px;
   float: left;
-
+  margin-top: 15px;
 }
 
 button.tiny:hover {
@@ -118,6 +124,10 @@ legend h5 {
 
 .filter-message {
   font-size: 90%;
+}
+
+.clear {
+  clear: both;
 }
 
 /* Tooltip */
