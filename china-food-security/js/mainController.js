@@ -7,7 +7,7 @@ function ($scope) {
   $scope.master = {
     "vegetables": {},
     "animals": {},
-    "general": {}
+    "food products": {}
   };
 
   // YEARS
@@ -20,9 +20,9 @@ function ($scope) {
   $scope.categories = [
     {id: "animals", text: "Animals"},
     {id: "vegetables", text: "Vegetables"},
-    {id: "general", text: "Food Products"}
+    {id: "food products", text: "Food Products"}
   ];
-  $scope.selected_category = $scope.categories[1];
+  $scope.selected_category = $scope.categories[0];
 
   // FILTERS
   $scope.filters = {};
@@ -68,7 +68,7 @@ function ($scope) {
   };
 
   // IMPORT THE CSV DATA
-  d3.csv('data/veg_full.csv', function (err, data) {
+  d3.csv('data/full_data.csv', function (err, data) {
     
     data.forEach(function (d) {
       d.category = d.category;
@@ -81,7 +81,6 @@ function ($scope) {
       }
       $scope.master[d.category][d.year].push(d);
     });
-    console.log($scope.master);
     $scope.update();
   });
 
