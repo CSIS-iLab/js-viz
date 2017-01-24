@@ -23,6 +23,16 @@ h1 {
   font-family: 'Roboto', sans-serif;
 }
 
+h6 {
+  font-size:14px;
+  letter-spacing: .025em;
+  color: #444;
+  text-align:left;
+  font-family: 'Roboto', sans-serif;
+  margin-bottom: 7px;
+}
+
+
 p {
   line-height: 1.6;
   font-family: 'Roboto', sans-serif;
@@ -130,21 +140,33 @@ legend h5 {
   clear: both;
 }
 
+.redtext {
+  color:red;
+}
+
 /* Tooltip */
 #tooltip {
   background-color: white;
   pointer-events: none;
   font-size: 12px;
+  line-height: 150%;
   z-index: 1000;
   color: grey;
   position: fixed;
-  width: 500px;
-  border-radius: 6px;
+  width: 400px;
+  border-radius: 0px;
+  border: 1px solid #a3bcc3;
   opacity: 0;
   bottom: 10%;
   right: 5%;
-  box-shadow: 5px 5px 2.5px #666;
+  box-shadow: none;
+  padding: 30px;
 }
+
+#tooltip .first {
+  margin-top: 0px;
+}
+
 
 /* Source */
 .source {
