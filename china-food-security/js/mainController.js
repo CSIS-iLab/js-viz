@@ -5,6 +5,7 @@ function ($scope) {
 
   // MASTER DATA STORED BY CATEGORY, YEAR
   $scope.master = {
+    "all": {},
     "vegetables": {},
     "animals": {},
     "food products": {}
@@ -18,6 +19,7 @@ function ($scope) {
 
   // CATEGORIES
   $scope.categories = [
+    {id: "all", text: "All", tooltip: "Total"},
     {id: "animals", text: "Animals", tooltip: "Animal"},
     {id: "vegetables", text: "Vegetables", tooltip: "Vegetable"},
     {id: "food products", text: "Food Products", tooltip: "Food Product"}

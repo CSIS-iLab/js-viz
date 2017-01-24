@@ -192,6 +192,21 @@ angular.module('app').factory('matrixFactory', [function () {
       var g, m = {};
 
       if (d.source) {
+        // Possessive Names
+        if(d.source._id.endsWith("s")) {
+          m.snamePossessive = d.source._id+"'";
+        } 
+        else {
+          m.snamePossessive = d.source._id+"'s";
+        } 
+        
+        if(d.target._id.endsWith("s")) {
+          m.tnamePossessive = d.target._id+"'";
+        } 
+        else {
+          m.tnamePossessive = d.target._id+"'s";
+        } 
+
         m.sname  = d.source._id;
         m.sdata  = d.source.value;
         m.svalue = +d.source.value;

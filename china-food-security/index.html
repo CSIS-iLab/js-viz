@@ -57,16 +57,16 @@
       <!-- Tooltip -->
       <fieldset id="tooltip">
         <div>
-          <h6 class="first">{{ tooltip.sname }}'s Exports to {{ tooltip.tname }}</h6>
+          <h6 class="first">{{ tooltip.snamePossessive }} Exports to {{ tooltip.tname }}</h6>
  
-          {{ tooltip.sname }} exported <span class="redtext">${{ qFormat(tooltip.svalue) }}M </span> in {{selected_category.text}} to {{ tooltip.tname }} in {{ selected_year }}. This represented <span class="redtext">{{ pFormat(tooltip.svalue/tooltip.stotal) }}</span> of {{ tooltip.sname }}’s {{selected_category.tooltip}} exports that year.
+          {{ tooltip.sname }} exported <span class="redtext">${{ qFormat(tooltip.svalue) }}M </span> in {{selected_category.text}} to {{ tooltip.tname }} in {{ selected_year }}. This represented <span class="redtext">{{ pFormat(tooltip.svalue/tooltip.stotal) }}</span> of {{ tooltip.snamePossessive }} {{selected_category.tooltip}} exports that year.
 
 
         </div>
         <div>
-          <h6>{{ tooltip.tname }}'s Exports to {{ tooltip.sname }}</h6>
+          <h6>{{ tooltip.tnamePossessive }} Exports to {{ tooltip.sname }}</h6>
 
-          {{ tooltip.tname }} exported <span class="redtext">${{ qFormat(tooltip.tvalue) }}M</span> in {{selected_category.text}} to {{ tooltip.sname }} in {{ selected_year }}. This represented <span class="redtext">{{ pFormat(tooltip.tvalue/tooltip.stotal) }}</span> of {{ tooltip.tname }}’s {{selected_category.tooltip}} exports that year.
+          {{ tooltip.tname }} exported <span class="redtext">${{ qFormat(tooltip.tvalue) }}M</span> in {{selected_category.text}} to {{ tooltip.sname }} in {{ selected_year }}. This represented <span class="redtext">{{ pFormat(tooltip.tvalue/tooltip.stotal) }}</span> of {{ tooltip.tnamePossessive }} {{selected_category.tooltip}} exports that year.
         </div>
       </fieldset>
 
