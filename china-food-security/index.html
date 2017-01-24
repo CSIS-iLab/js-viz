@@ -23,14 +23,12 @@
           <select name="categories" id="categories" class="dropdown" ng-options="category as category.text for category in categories track by category.id" ng-model="selected_category"></select>
         </div>
 
-        <div class="filter">
-          <h5>Filters</h5>
-          <button class="button tiny right" ng-click="filters = {}; hasFilters = false;">
-            clear
-          </button>
+        <fieldset class="filter">
+          <legend><h5>Country Filter</h5></legend>
+          
           <div class="panel">
-            <div ng-if="hasFilters === false" style="margin: 15px; opacity: 0.5;">
-              Click a country
+            <div class="filter-message" ng-if="hasFilters === false" style="margin: 15px; opacity: 0.5;">
+              Click a country name to remove it from the chart.
             </div>
             <ul class="side-nav">
               <li ng-repeat="filter in filters">
@@ -39,7 +37,11 @@
               </li>
             </ul>
           </div>
-        </div>
+          <div class="clear"></div>
+           <button class="button tiny right" ng-show="hasFilters === true" ng-click="filters = {}; hasFilters = false;">
+            CLEAR FILTER
+          </button>
+        </fieldset>
       </div>
 
       <!-- Render Chart -->
@@ -55,14 +57,16 @@
       <!-- Tooltip -->
       <fieldset id="tooltip">
         <div>
-          <h6>{{ tooltip.sname }} imported from  {{ tooltip.tname }} : $ {{ qFormat(tooltip.svalue) }}M</h6>
-          {{ pFormat(tooltip.svalue/tooltip.stotal) }} of {{ tooltip.sname }}'s Total ($ {{ qFormat(tooltip.stotal) }}M)
-          {{ pFormat(tooltip.svalue/tooltip.mtotal) }} of Total of $ {{ qFormat(tooltip.mtotal) }}M
+          <h6 class="first">{{ tooltip.sname }}'s Exports to {{ tooltip.tname }}</h6>
+ 
+          {{ tooltip.sname }} exported <span class="redtext">${{ qFormat(tooltip.svalue) }}M </span> in {{selected_category.text}} to {{ tooltip.tname }} in {{ selected_year }}. This represented <span class="redtext">{{ pFormat(tooltip.svalue/tooltip.stotal) }}</span> of {{ tooltip.sname }}’s {{selected_category.tooltip}} exports that year.
+
+
         </div>
         <div>
-          <h6>{{ tooltip.tname }} imported from  {{ tooltip.sname }} : $ {{ qFormat(tooltip.tvalue) }}M</h6>
-          {{ pFormat(tooltip.tvalue/tooltip.ttotal) }} of {{ tooltip.tname }}'s Total ($ {{ qFormat(tooltip.ttotal) }}M)
-          {{ pFormat(tooltip.tvalue/tooltip.mtotal) }} of Total of $ {{ qFormat(tooltip.mtotal) }}M
+          <h6>{{ tooltip.tname }}'s Exports to {{ tooltip.sname }}</h6>
+
+          {{ tooltip.tname }} exported <span class="redtext">${{ qFormat(tooltip.tvalue) }}M</span> in {{selected_category.text}} to {{ tooltip.sname }} in {{ selected_year }}. This represented <span class="redtext">{{ pFormat(tooltip.tvalue/tooltip.stotal) }}</span> of {{ tooltip.tname }}’s {{selected_category.tooltip}} exports that year.
         </div>
       </fieldset>
 

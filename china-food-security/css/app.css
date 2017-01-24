@@ -23,6 +23,16 @@ h1 {
   font-family: 'Roboto', sans-serif;
 }
 
+h6 {
+  font-size:14px;
+  letter-spacing: .025em;
+  color: #444;
+  text-align:left;
+  font-family: 'Roboto', sans-serif;
+  margin-bottom: 7px;
+}
+
+
 p {
   line-height: 1.6;
   font-family: 'Roboto', sans-serif;
@@ -79,25 +89,88 @@ select.dropdown {
   font-weight:bold;
 }
 
+.filter {
+
+  max-width: 500px;
+  padding:0 50px  20px;
+  margin: 25px auto;
+  border: 1px solid #a3bcc3;
+}
+
+ul  {
+  text-align: left;
+  list-style-type: none;
+  margin-left: 0;
+  padding-left: 0;
+  width: 100%;
+  display: block;
+}
+
+ul li{
+  display: inline-block;
+  float: left;
+  margin-right: 15px;
+}
+
+button.tiny {
+  background-color: #ED392A;
+  color: white;
+  border: 0px;
+  padding: 10px 15px;
+  float: left;
+  margin-top: 15px;
+}
+
+button.tiny:hover {
+   background-color: #772132;
+
+}
+
+legend h5 {
+  padding: 0 10px;
+  font-size: 16px;
+  letter-spacing: .5px;
+}
+
+.filter-message {
+  font-size: 90%;
+}
+
+.clear {
+  clear: both;
+}
+
+.redtext {
+  color:red;
+}
+
 /* Tooltip */
 #tooltip {
   background-color: white;
   pointer-events: none;
   font-size: 12px;
+  line-height: 150%;
   z-index: 1000;
   color: grey;
   position: fixed;
-  width: 500px;
-  border-radius: 6px;
+  width: 400px;
+  border-radius: 0px;
+  border: 1px solid #a3bcc3;
   opacity: 0;
   bottom: 10%;
   right: 5%;
-  box-shadow: 5px 5px 2.5px #666;
+  box-shadow: none;
+  padding: 30px;
 }
+
+#tooltip .first {
+  margin-top: 0px;
+}
+
 
 /* Source */
 .source {
-  text-align:right;
+  text-align:left;
   font-size: 9px;
   max-width: 970px;
   margin: auto;
