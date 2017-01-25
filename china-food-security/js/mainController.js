@@ -24,7 +24,7 @@ function ($scope) {
     {id: "vegetables", text: "Vegetables", tooltip: "Vegetable"},
     {id: "food products", text: "Food Products", tooltip: "Food Product"}
   ];
-  $scope.selected_category = $scope.categories[0];
+  $scope.selected_category = $scope.categories[2];
 
   // FILTERS
   $scope.filters = {};
