@@ -11,7 +11,7 @@ function ($window, matrixFactory) {
     dims[1] = size[1] - marg[0] - marg[2]; // HEIGHT
 
     var colors = d3.scale.ordinal()
-      .domain(['Brazil', 'Rest of the World', 'USA', 'Germany', 'China', 'Netherlands', 'UK', 'Japan', 'Italy', 'India', 'France', 'Canada', 'Spain', 'Indonesia', 'Malaysia'])
+      .domain(['Japan', 'Rest of the World', 'USA', 'Brazil', 'Indonesia', 'Netherlands', 'Canada', 'Spain','India', 'China', 'Malaysia', 'France', 'Germany', 'Italy', 'UK', 'Japan'])
       .range(['#bcbcbc','#c7b299','#b6cb96','#72aa8b', '#346b6b','#5a88a8','#95cbd8','#3b75bb','#9a86a8','#6b7599', '#574372','#818182','#93325a','#755d4c', '#c92b2b','#918A59','#CC855C','#ea9492','#6E4752','#6B4A2F','#998476','#8A968D','#968D8A','#968D96', '#967860','#929488','#949278','#A0A3BD','#BD93A1','#65666B','#6B5745','#6B6664','#695C52','#56695E','#69545C','#565A69','#696043','#63635C','#636150','#333131','#332820','#302D30','#302D1F','#2D302F','#CFB6A3','#362F2A']);
 
     var chord = d3.layout.chord()
@@ -114,7 +114,7 @@ function ($window, matrixFactory) {
           return d.angle > Math.PI ? "end" : "begin";
         });
 
-      groups.exit().select("text").attr("fill", "orange");
+      groups.exit().select("text").attr("fill", "#ED392A");
       groups.exit().select("path").remove();
 
       groups.exit().transition().duration(1000)

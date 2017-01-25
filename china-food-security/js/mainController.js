@@ -35,7 +35,7 @@ function ($scope) {
 
   // FORMATS USED IN TOOLTIP TEMPLATE IN HTML
   $scope.pFormat = d3.format(".1%");  // PERCENT FORMAT
-  $scope.qFormat = d3.format(",.0f"); // COMMAS FOR LARGE NUMBERS
+  $scope.qFormat = d3.format(".2"); // COMMAS FOR LARGE NUMBERS
 
   $scope.updateTooltip = function (data) {
     $scope.tooltip = data;
@@ -70,7 +70,7 @@ function ($scope) {
   };
 
   // IMPORT THE CSV DATA
-  d3.csv('data/full_data.csv', function (err, data) {
+  d3.csv('data/final_revised.csv', function (err, data) {
     
     data.forEach(function (d) {
       d.category = d.category;
