@@ -167,12 +167,18 @@ legend h5 {
   margin-top: 0px;
 }
 
+/* Description */
+.description {
+  max-width: 600px;
+  margin: auto;
+}
+
 
 /* Source */
 .source {
-  text-align:left;
+  text-align:center;
   font-size: 9px;
-  max-width: 970px;
+  max-width: 600px;
   margin: auto;
 }
 

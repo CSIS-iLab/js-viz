@@ -77,7 +77,7 @@ year,importer1,importer2,flow2,flow1,category
 2005,Japan,Russia,465.613,19.434,all
 2005,Japan,Rest of the World,21424.313,1656.155,all
 2005,Russia,Rest of the World,10585.956,4275.344,all
-2005,Rest of the World,Rest of the World,133358.562,133358.562,all
+2005,Rest of the World,Rest of the World,133358.562,0,all
 2006,USA,Netherlands,2420.028,1369.21,all
 2006,USA,Germany,1385.119,1733.838,all
 2006,USA,France,3424.415,865.835,all
@@ -169,7 +169,7 @@ year,importer1,importer2,flow2,flow1,category
 2006,UK,Russia,79.85,258.291,all
 2006,UK,Rest of the World,19367.258,10120.7,all
 2006,Russia,Rest of the World,11819.723,5233.153,all
-2006,Rest of the World,Rest of the World,139901.887,139901.887,all
+2006,Rest of the World,Rest of the World,139901.887,0,all
 2007,USA,Netherlands,2592.298,1486.581,all
 2007,USA,Germany,1436.788,1854.287,all
 2007,USA,France,3671.12,912.807,all
@@ -261,7 +261,7 @@ year,importer1,importer2,flow2,flow1,category
 2007,Japan,Russia,503.277,27.291,all
 2007,Japan,Rest of the World,21197.579,2060.882,all
 2007,Russia,Rest of the World,14511.032,9169.659,all
-2007,Rest of the World,Rest of the World,176005.609,176005.609,all
+2007,Rest of the World,Rest of the World,176005.609,0,all
 2008,USA,Netherlands,2418.673,1853.143,all
 2008,USA,Germany,1511.975,2376.029,all
 2008,USA,France,3227.492,1012.101,all
@@ -353,7 +353,7 @@ year,importer1,importer2,flow2,flow1,category
 2008,UK,Russia,88.82,344.158,all
 2008,UK,Rest of the World,24358.605,12937.366,all
 2008,Russia,Rest of the World,18694.675,9857.932,all
-2008,Rest of the World,Rest of the World,236235.809,236235.809,all
+2008,Rest of the World,Rest of the World,236235.809,0,all
 2009,USA,Netherlands,2120.068,1376.895,all
 2009,USA,Germany,1334.419,1754.247,all
 2009,USA,Brazil,2638.27,326.997,all
@@ -445,7 +445,7 @@ year,importer1,importer2,flow2,flow1,category
 2009,UK,Russia,94.041,266.413,all
 2009,UK,Rest of the World,21635.392,11698.61,all
 2009,Russia,Rest of the World,16058.382,9455.091,all
-2009,Rest of the World,Rest of the World,209648.798,209648.798,all
+2009,Rest of the World,Rest of the World,209648.798,0,all
 2010,USA,Netherlands,2313.905,1714.942,all
 2010,USA,Germany,1504.39,1846.652,all
 2010,USA,Brazil,3095.822,515.007,all
@@ -537,7 +537,7 @@ year,importer1,importer2,flow2,flow1,category
 2010,UK,Russia,125.479,338.28,all
 2010,UK,Rest of the World,22722.906,12983.286,all
 2010,Russia,Rest of the World,20562.511,7928.424,all
-2010,Rest of the World,Rest of the World,250231.918,250231.918,all
+2010,Rest of the World,Rest of the World,250231.918,0,all
 2011,USA,Brazil,4595.186,1239.61,all
 2011,USA,Germany,1784.776,2273.447,all
 2011,USA,Netherlands,2260.878,2110.174,all
@@ -629,7 +629,7 @@ year,importer1,importer2,flow2,flow1,category
 2011,UK,Russia,128.271,415.933,all
 2011,UK,Rest of the World,25682.732,14966.915,all
 2011,Russia,Rest of the World,24049.87,12548.572,all
-2011,Rest of the World,Rest of the World,311405.888,311405.888,all
+2011,Rest of the World,Rest of the World,311405.888,0,all
 2012,USA,Brazil,4938.339,777.363,all
 2012,USA,Germany,1794.559,2501.083,all
 2012,USA,Netherlands,2368.068,1937.761,all
@@ -721,7 +721,7 @@ year,importer1,importer2,flow2,flow1,category
 2012,UK,Russia,157.996,432.109,all
 2012,UK,Rest of the World,24986.624,15089.678,all
 2012,Russia,Rest of the World,24439.429,16000.033,all
-2012,Rest of the World,Rest of the World,309098.275,309098.275,all
+2012,Rest of the World,Rest of the World,309098.275,0,all
 2013,USA,Brazil,4552.416,1747.568,all
 2013,USA,Germany,1945.873,2971.442,all
 2013,USA,Netherlands,2369.672,2263.863,all
@@ -813,7 +813,7 @@ year,importer1,importer2,flow2,flow1,category
 2013,UK,Russia,187.383,441.186,all
 2013,UK,Rest of the World,26393.319,15991.324,all
 2013,Russia,Rest of the World,27745.243,14062.66,all
-2013,Rest of the World,Rest of the World,328809.001,328809.001,all
+2013,Rest of the World,Rest of the World,328809.001,0,all
 2014,USA,Germany,1850.789,2958.818,all
 2014,USA,Brazil,4258.197,1455.446,all
 2014,USA,Netherlands,2152.701,2514.645,all
@@ -1026,7 +1026,7 @@ year,importer1,importer2,flow2,flow1,category
 2005,Spain,Russia,11.642,79.91,animals
 2005,Spain,Rest of the World,3993.245,2308.172,animals
 2005,Russia,Rest of the World,2650.622,679.569,animals
-2005,Rest of the World,Rest of the World,19938.832,19938.832,animals
+2005,Rest of the World,Rest of the World,19938.832,0,animals
 2006,Germany,Netherlands,3673.973,2553.78,animals
 2006,Germany,USA,228.296,111.299,animals
 2006,Germany,France,1407.147,1307.844,animals
@@ -1163,7 +1163,7 @@ year,importer1,importer2,flow2,flow1,category
 2006,Russia,South Korea,17.638,172.126,animals
 2006,Russia,Rest of the World,3517.534,575.375,animals
 2006,South Korea,Rest of the World,931.114,170.317,animals
-2006,Rest of the World,Rest of the World,21167.225,21167.225,animals
+2006,Rest of the World,Rest of the World,21167.225,0,animals
 2007,Germany,USA,293.431,123.826,animals
 2007,Germany,Netherlands,4099.474,3171.451,animals
 2007,Germany,France,1517.65,1553.698,animals
@@ -1284,7 +1284,7 @@ year,importer1,importer2,flow2,flow1,category
 2007,Spain,Russia,14.647,153.656,animals
 2007,Spain,Rest of the World,5065.445,3157.527,animals
 2007,Russia,Rest of the World,3886.47,862.62,animals
-2007,Rest of the World,Rest of the World,27606.158,27606.158,animals
+2007,Rest of the World,Rest of the World,27606.158,0,animals
 2008,USA,Germany,93.955,305.75,animals
 2008,USA,Netherlands,208.768,189.497,animals
 2008,USA,France,213.621,315.217,animals
@@ -1421,7 +1421,7 @@ year,importer1,importer2,flow2,flow1,category
 2008,Spain,Hong Kong,0.712,167.204,animals
 2008,Spain,Rest of the World,5451.446,3611.681,animals
 2008,Hong Kong,Rest of the World,1441.761,246.398,animals
-2008,Rest of the World,Rest of the World,33232.469,33232.469,animals
+2008,Rest of the World,Rest of the World,33232.469,0,animals
 2009,Germany,USA,249.565,63.747,animals
 2009,Germany,Netherlands,4771.942,3050.373,animals
 2009,Germany,France,1606.693,1602.075,animals
@@ -1558,7 +1558,7 @@ year,importer1,importer2,flow2,flow1,category
 2009,Spain,Hong Kong,0.425,111.747,animals
 2009,Spain,Rest of the World,4448.788,3254.944,animals
 2009,Hong Kong,Rest of the World,1598.252,405.834,animals
-2009,Rest of the World,Rest of the World,30607.659,30607.659,animals
+2009,Rest of the World,Rest of the World,30607.659,0,animals
 2010,USA,Germany,72.609,296.318,animals
 2010,USA,Netherlands,233.33,181.536,animals
 2010,USA,Brazil,188.253,54.759,animals
@@ -1679,7 +1679,7 @@ year,importer1,importer2,flow2,flow1,category
 2010,UK,Spain,203.016,364.382,animals
 2010,UK,Rest of the World,4741.429,2231.85,animals
 2010,Spain,Rest of the World,4684.266,3504.985,animals
-2010,Rest of the World,Rest of the World,38006.21,38006.21,animals
+2010,Rest of the World,Rest of the World,38006.21,0,animals
 2011,USA,Germany,100.754,406.326,animals
 2011,USA,Netherlands,283.752,243.804,animals
 2011,USA,France,237.163,343.677,animals
@@ -1800,7 +1800,7 @@ year,importer1,importer2,flow2,flow1,category
 2011,UK,Spain,226.64,371.211,animals
 2011,UK,Rest of the World,5173.861,2527.026,animals
 2011,Spain,Rest of the World,5294.083,4172.111,animals
-2011,Rest of the World,Rest of the World,45755.066,45755.066,animals
+2011,Rest of the World,Rest of the World,45755.066,0,animals
 2012,USA,Germany,134.42,436.801,animals
 2012,USA,Netherlands,248.148,225.422,animals
 2012,USA,Brazil,150.063,63.417,animals
@@ -1921,7 +1921,7 @@ year,importer1,importer2,flow2,flow1,category
 2012,UK,Hong Kong,0.673,193.631,animals
 2012,UK,Rest of the World,5625.329,2826.755,animals
 2012,Hong Kong,Rest of the World,2223.821,1204.406,animals
-2012,Rest of the World,Rest of the World,52334.041,52334.041,animals
+2012,Rest of the World,Rest of the World,52334.041,0,animals
 2013,USA,Germany,202.671,457.91,animals
 2013,USA,Netherlands,272.933,244.727,animals
 2013,USA,New Zealand,1486.768,96.278,animals
@@ -2042,7 +2042,7 @@ year,importer1,importer2,flow2,flow1,category
 2013,UK,Hong Kong,0.74,189.834,animals
 2013,UK,Rest of the World,5764.156,3102.487,animals
 2013,Hong Kong,Rest of the World,2339.543,1234.064,animals
-2013,Rest of the World,Rest of the World,56950.159,56950.159,animals
+2013,Rest of the World,Rest of the World,56950.159,0,animals
 2014,USA,Germany,142.632,457.4,animals
 2014,USA,Netherlands,302.763,242.43,animals
 2014,USA,New Zealand,1770.891,101.126,animals
@@ -2242,7 +2242,7 @@ year,importer1,importer2,flow2,flow1,category
 2005,Japan,Russia,17.341,10.559,food products
 2005,Japan,Rest of the World,5448.247,736.129,food products
 2005,Russia,Rest of the World,4149.224,1499.559,food products
-2005,Rest of the World,Rest of the World,48012.529,48012.529,food products
+2005,Rest of the World,Rest of the World,48012.529,0,food products
 2006,Germany,France,3399.691,2961.156,food products
 2006,Germany,USA,527.972,831.58,food products
 2006,Germany,Netherlands,3619.526,2968.39,food products
@@ -2321,7 +2321,7 @@ year,importer1,importer2,flow2,flow1,category
 2006,Japan,Russia,13.898,13.978,food products
 2006,Japan,Rest of the World,5761.435,776.294,food products
 2006,Russia,Rest of the World,4030.789,1821.452,food products
-2006,Rest of the World,Rest of the World,55424.164,55424.164,food products
+2006,Rest of the World,Rest of the World,55424.164,0,food products
 2007,Germany,France,3648.665,3403.479,food products
 2007,Germany,USA,556.739,933.378,food products
 2007,Germany,Netherlands,4101.099,3238.105,food products
@@ -2413,7 +2413,7 @@ year,importer1,importer2,flow2,flow1,category
 2007,Canada,Russia,45.83,20.051,food products
 2007,Canada,Rest of the World,2185.089,1007.58,food products
 2007,Russia,Rest of the World,4933.747,2551.935,food products
-2007,Rest of the World,Rest of the World,64521.304,64521.304,food products
+2007,Rest of the World,Rest of the World,64521.304,0,food products
 2008,Germany,France,4119.527,4053.423,food products
 2008,Germany,USA,596.791,933.374,food products
 2008,Germany,Netherlands,5052.667,3921.895,food products
@@ -2505,7 +2505,7 @@ year,importer1,importer2,flow2,flow1,category
 2008,Canada,Russia,27.073,17.891,food products
 2008,Canada,Rest of the World,2179.811,1039.045,food products
 2008,Russia,Rest of the World,5689.01,3039.651,food products
-2008,Rest of the World,Rest of the World,80377.609,80377.609,food products
+2008,Rest of the World,Rest of the World,80377.609,0,food products
 2009,Germany,USA,534.486,890.253,food products
 2009,Germany,France,3753.806,3724.297,food products
 2009,Germany,Netherlands,5083.963,3551.552,food products
@@ -2611,7 +2611,7 @@ year,importer1,importer2,flow2,flow1,category
 2009,Spain,Russia,38.566,239.478,food products
 2009,Spain,Rest of the World,3946.461,4291.087,food products
 2009,Russia,Rest of the World,4817.198,2552.37,food products
-2009,Rest of the World,Rest of the World,69451.439,69451.439,food products
+2009,Rest of the World,Rest of the World,69451.439,0,food products
 2010,Germany,USA,615.951,1055.597,food products
 2010,Germany,France,3679.29,3606.176,food products
 2010,Germany,Brazil,1207.759,75.807,food products
@@ -2717,7 +2717,7 @@ year,importer1,importer2,flow2,flow1,category
 2010,Spain,Russia,29.126,332.725,food products
 2010,Spain,Rest of the World,3906.118,4585.628,food products
 2010,Russia,Rest of the World,5690.116,2323.526,food products
-2010,Rest of the World,Rest of the World,81150.28,81150.28,food products
+2010,Rest of the World,Rest of the World,81150.28,0,food products
 2011,Germany,USA,716.159,1175.621,food products
 2011,Germany,France,4176.566,4143.159,food products
 2011,Germany,Brazil,1460.905,70.994,food products
@@ -2823,7 +2823,7 @@ year,importer1,importer2,flow2,flow1,category
 2011,Spain,Russia,30.152,359.049,food products
 2011,Spain,Rest of the World,4638.501,5452.565,food products
 2011,Russia,Rest of the World,6471.54,3498.713,food products
-2011,Rest of the World,Rest of the World,98064.137,98064.137,food products
+2011,Rest of the World,Rest of the World,98064.137,0,food products
 2012,USA,Germany,1179.342,667.765,food products
 2012,USA,France,3120.543,308.272,food products
 2012,USA,Brazil,3012.992,581.723,food products
@@ -2915,7 +2915,7 @@ year,importer1,importer2,flow2,flow1,category
 2012,Canada,Spain,166.701,15.635,food products
 2012,Canada,Rest of the World,2331.347,1306.476,food products
 2012,Spain,Rest of the World,4586.683,6006.751,food products
-2012,Rest of the World,Rest of the World,104561.58,104561.58,food products
+2012,Rest of the World,Rest of the World,104561.58,0,food products
 2013,USA,Germany,1211.291,690.962,food products
 2013,USA,France,3405.968,403.014,food products
 2013,USA,Brazil,2577.469,412.491,food products
@@ -3007,7 +3007,7 @@ year,importer1,importer2,flow2,flow1,category
 2013,Canada,Russia,13.786,40.155,food products
 2013,Canada,Rest of the World,2661.873,1274.47,food products
 2013,Russia,Rest of the World,7836.71,4600.871,food products
-2013,Rest of the World,Rest of the World,118805.916,118805.916,food products
+2013,Rest of the World,Rest of the World,118805.916,0,food products
 2014,USA,Germany,1183.522,745.582,food products
 2014,USA,France,3892.639,411.256,food products
 2014,USA,Netherlands,1283.144,686.524,food products
@@ -3178,7 +3178,7 @@ year,importer1,importer2,flow2,flow1,category
 2005,Japan,UK,71.953,7.517,vegetables
 2005,Japan,Rest of the World,4729.627,260.121,vegetables
 2005,UK,Rest of the World,4567.216,1298.421,vegetables
-2005,Rest of the World,Rest of the World,54199.613,54199.613,vegetables
+2005,Rest of the World,Rest of the World,54199.613,0,vegetables
 2006,USA,Netherlands,599.051,733.482,vegetables
 2006,USA,Spain,422.267,575.509,vegetables
 2006,USA,Brazil,873.151,72.406,vegetables
@@ -3257,7 +3257,7 @@ year,importer1,importer2,flow2,flow1,category
 2006,Japan,UK,66.339,9.574,vegetables
 2006,Japan,Rest of the World,4648.006,289.49,vegetables
 2006,UK,Rest of the World,4966.951,1386.759,vegetables
-2006,Rest of the World,Rest of the World,61635.818,61635.818,vegetables
+2006,Rest of the World,Rest of the World,61635.818,0,vegetables
 2007,USA,Netherlands,559.245,876.371,vegetables
 2007,USA,Spain,454.654,1097.837,vegetables
 2007,USA,Argentina,347.307,39.52,vegetables
@@ -3378,7 +3378,7 @@ year,importer1,importer2,flow2,flow1,category
 2007,Germany,Mexico,62.985,40.766,vegetables
 2007,Germany,Rest of the World,9725.831,6069.622,vegetables
 2007,Mexico,Rest of the World,709.608,453.768,vegetables
-2007,Rest of the World,Rest of the World,63191.935,63191.935,vegetables
+2007,Rest of the World,Rest of the World,63191.935,0,vegetables
 2008,USA,Netherlands,509.038,1101.992,vegetables
 2008,USA,Brazil,1080.178,393.072,vegetables
 2008,USA,Argentina,381.485,46.395,vegetables
@@ -3499,7 +3499,7 @@ year,importer1,importer2,flow2,flow1,category
 2008,Italy,Mexico,126.861,17.663,vegetables
 2008,Italy,Rest of the World,5874.31,5172.329,vegetables
 2008,Mexico,Rest of the World,936.175,984.828,vegetables
-2008,Rest of the World,Rest of the World,91224.392,91224.392,vegetables
+2008,Rest of the World,Rest of the World,91224.392,0,vegetables
 2009,USA,Netherlands,492.665,655.238,vegetables
 2009,USA,Brazil,1098.425,145.152,vegetables
 2009,USA,Canada,5459.528,5555.239,vegetables
@@ -3605,7 +3605,7 @@ year,importer1,importer2,flow2,flow1,category
 2009,Italy,India,169.974,17.213,vegetables
 2009,Italy,Rest of the World,5339.159,4147.257,vegetables
 2009,India,Rest of the World,3549.437,5779.62,vegetables
-2009,Rest of the World,Rest of the World,78037.758,78037.758,vegetables
+2009,Rest of the World,Rest of the World,78037.758,0,vegetables
 2010,USA,Netherlands,515.438,958.188,vegetables
 2010,USA,Brazil,1486.818,247.427,vegetables
 2010,USA,Indonesia,597.058,1110.116,vegetables
@@ -3742,7 +3742,7 @@ year,importer1,importer2,flow2,flow1,category
 2010,Russia,India,188.282,29.382,vegetables
 2010,Russia,Rest of the World,7414.148,4366.566,vegetables
 2010,India,Rest of the World,3373.477,5930.125,vegetables
-2010,Rest of the World,Rest of the World,72341.12,72341.12,vegetables
+2010,Rest of the World,Rest of the World,72341.12,0,vegetables
 2011,USA,Brazil,2320.607,142.168,vegetables
 2011,USA,Netherlands,559.29,1126.177,vegetables
 2011,USA,Indonesia,999.133,1454.952,vegetables
@@ -3879,7 +3879,7 @@ year,importer1,importer2,flow2,flow1,category
 2011,India,Russia,48.486,250.573,vegetables
 2011,India,Rest of the World,4282.357,8187.095,vegetables
 2011,Russia,Rest of the World,8552.768,7434.424,vegetables
-2011,Rest of the World,Rest of the World,88642.399,88642.399,vegetables
+2011,Rest of the World,Rest of the World,88642.399,0,vegetables
 2012,USA,Brazil,1775.285,132.223,vegetables
 2012,USA,Indonesia,936.44,1391.159,vegetables
 2012,USA,Netherlands,584.157,1016.018,vegetables
@@ -4000,7 +4000,7 @@ year,importer1,importer2,flow2,flow1,category
 2012,Italy,France,1498.944,1240.65,vegetables
 2012,Italy,Rest of the World,6614.16,5180.574,vegetables
 2012,France,Rest of the World,5227.466,6921.701,vegetables
-2012,Rest of the World,Rest of the World,105411,105411,vegetables
+2012,Rest of the World,Rest of the World,105411,0,vegetables
 2013,USA,Brazil,1793.825,1261.414,vegetables
 2013,USA,Netherlands,559.395,1340.322,vegetables
 2013,USA,Canada,8554.487,6888.55,vegetables
@@ -4137,7 +4137,7 @@ year,importer1,importer2,flow2,flow1,category
 2013,Italy,Russia,183.3,261.054,vegetables
 2013,Italy,Rest of the World,6696.893,5030.259,vegetables
 2013,Russia,Rest of the World,9413.13,7635.546,vegetables
-2013,Rest of the World,Rest of the World,89457.848,89457.848,vegetables
+2013,Rest of the World,Rest of the World,89457.848,0,vegetables
 2014,USA,Brazil,2139.961,853.296,vegetables
 2014,USA,Indonesia,1311.318,1528.092,vegetables
 2014,USA,Netherlands,566.795,1585.691,vegetables

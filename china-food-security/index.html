@@ -13,6 +13,11 @@
     <div class="wrapper">
       <h1>International Food Trade: {{selected_category.text}}, {{ selected_year }}</h1>
 
+      <!-- Description -->
+      <div class="description">
+        <p>Each chord represents the annual trade flow between the two countries. Hover over a chord to see more details. Hover over a country to see all related chords.</p>
+      </div>
+
       <!-- Data Select & Filtering -->      
       <div class="dataSelect">
         <div class="years selectContainer">
@@ -46,12 +51,13 @@
 
       <!-- Render Chart -->
       <div class="svgContainer">
-          <chord-diagram></chord-diagram>
+        <chord-diagram></chord-diagram>
       </div>
 
       <!-- Source -->
       <div class="source">
-        CSIS China Power Project | Source: 
+        <strong>CSIS China Power Project</strong> | Source: MIT Observatory of Economic Complexity<br />
+        <em><a href="http://atlas.media.mit.edu/en/resources/data/" target="_blank">Product Trade between Origin and Destination Country by Year</a></em> (HS6 REV. 1992)
       </div>
 
       <!-- Tooltip -->
@@ -59,14 +65,14 @@
         <div>
           <h6 class="first">{{ tooltip.snamePossessive }} Exports to {{ tooltip.tname }}</h6>
  
-          {{ tooltip.sname }} exported <span class="redtext">${{ qFormat(tooltip.svalue) }}M </span> in {{selected_category.text}} to {{ tooltip.tname }} in {{ selected_year }}. This represented <span class="redtext">{{ pFormat(tooltip.svalue/tooltip.stotal) }}</span> of {{ tooltip.snamePossessive }} {{selected_category.tooltip}} exports that year.
+          {{ tooltip.sname }} exported <span class="redtext">${{ qFormat(tooltip.svalue) }}M </span> in {{selected_category.tooltip}} to {{ tooltip.tname }}. This represented <span class="redtext">{{ pFormat(tooltip.svalue/tooltip.stotal) }}</span> of {{ tooltip.snamePossessive }} {{selected_category.tooltip}} exports in {{ selected_year }}.
 
 
         </div>
         <div>
           <h6>{{ tooltip.tnamePossessive }} Exports to {{ tooltip.sname }}</h6>
 
-          {{ tooltip.tname }} exported <span class="redtext">${{ qFormat(tooltip.tvalue) }}M</span> in {{selected_category.text}} to {{ tooltip.sname }} in {{ selected_year }}. This represented <span class="redtext">{{ pFormat(tooltip.tvalue/tooltip.stotal) }}</span> of {{ tooltip.tnamePossessive }} {{selected_category.tooltip}} exports that year.
+          {{ tooltip.tname }} exported <span class="redtext">${{ qFormat(tooltip.tvalue) }}M</span> in {{selected_category.tooltip}} to {{ tooltip.sname }}. This represented <span class="redtext">{{ pFormat(tooltip.tvalue/tooltip.ttotal) }}</span> of {{ tooltip.tnamePossessive }} {{selected_category.tooltip}} exports in {{ selected_year }}.
         </div>
       </fieldset>
 
