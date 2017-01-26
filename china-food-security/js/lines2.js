@@ -39,6 +39,9 @@ $(function() {
         fontFamily: 'Roboto Slab'
       }
     },
+    tooltip: {
+      pointFormat: '<span style="color:{point.color};font-family:\'Lucida Grande\', sans-serif;">\u25CF</span> {series.name}: <b>{point.y}</b><br/>'
+    },
     legend: {
       title: {
         text: 'Income Level<br/><span style="font-size: 9px; color: #666; font-weight: normal">(Click to hide)</span>',

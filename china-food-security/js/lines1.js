@@ -14,10 +14,7 @@ $(function() {
       backgroundColor: '#FFF',
       border: 'none',
       color: '#000',
-      plotShadow: true,
-      style: {
-        fontFamily: 'Roboto Slab'
-      }
+      plotShadow: true
     },
     credits: {
       enabled: true,
@@ -38,6 +35,9 @@ $(function() {
       style: {
         fontFamily: 'Roboto Slab'
       }
+    },
+    tooltip: {
+      pointFormat: '<span style="color:{point.color};font-family:\'Lucida Grande\', sans-serif;">\u25CF</span> {series.name}: <b>{point.y}</b><br/>'
     },
     legend: {
       title: {
