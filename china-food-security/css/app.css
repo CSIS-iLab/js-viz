@@ -3,6 +3,7 @@
 body {
   font-family: 'Roboto', sans-serif;
   font-size:16px;
+  margin:12px;
 }
 
 a, a:visited {
