@@ -154,11 +154,11 @@ legend h5 {
   z-index: 1000;
   color: grey;
   position: fixed;
-  width: 400px;
+  width: 225px;
   border-radius: 0px;
   border: 1px solid #a3bcc3;
   opacity: 0;
-  bottom: 10%;
+  bottom: 5%;
   right: 5%;
   box-shadow: none;
   padding: 30px;
