@@ -193,14 +193,14 @@ angular.module('app').factory('matrixFactory', [function () {
 
       if (d.source) {
         // Possessive Names
-        if(d.source._id.endsWith("s")) {
+        if(endsWith(d.source._id, "s")) {
           m.snamePossessive = d.source._id+"'";
         } 
         else {
           m.snamePossessive = d.source._id+"'s";
         } 
         
-        if(d.target._id.endsWith("s")) {
+        if(endsWith(d.target._id, "s")) {
           m.tnamePossessive = d.target._id+"'";
         } 
         else {
@@ -234,3 +234,7 @@ angular.module('app').factory('matrixFactory', [function () {
     chordMatrix: chordMatrix
   };
 }]);
+
+function endsWith(str, suffix) {
+    return str.indexOf(suffix, str.length - suffix.length) !== -1;
+}
