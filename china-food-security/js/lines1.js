@@ -18,7 +18,7 @@ $(function() {
     },
     credits: {
       enabled: true,
-      href: "http://data.worldbank.org/indicator/SN.ITK.DEFC.ZS",
+      href: false,
       text: "CSIS China Power Project | World Bank",
       style: {
         fontFamily: 'Roboto Slab'

@@ -21,7 +21,7 @@ $(function() {
     },
     credits: {
       enabled: true,
-      href: "https://apps.fas.usda.gov/psdonline/app/index.html#/app/advQuery",
+      href: false,
       text: "CSIS China Power Project | USDA",
       style: {
         fontFamily: 'Roboto Slab'
