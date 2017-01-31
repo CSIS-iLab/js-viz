@@ -93,6 +93,7 @@ function ($window, matrixFactory) {
         .on("click", groupClick)
         .on("mouseover", dimChords)
         .on("mouseout", resetChords)
+        .attr("class", function(d) { if(d._id == "China") {return "china";}})
         .text(function (d) {
           return d._id;
         });

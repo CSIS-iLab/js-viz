@@ -19,10 +19,10 @@ function ($scope) {
 
   // CATEGORIES
   $scope.categories = [
-    {id: "all", text: "All", tooltip: "All Food Products"},
-    {id: "animals", text: "Animals", tooltip: "Animal Products"},
-    {id: "vegetables", text: "Vegetables", tooltip: "Vegetable Products"},
-    {id: "food products", text: "Food Products", tooltip: "Other Food Products"}
+    {id: "all", text: "All", tooltip: "All Food Product"},
+    {id: "animals", text: "Animals", tooltip: "Animal Product"},
+    {id: "vegetables", text: "Vegetables", tooltip: "Vegetable Product"},
+    {id: "food products", text: "Food Products", tooltip: "Other Food Product"}
   ];
   $scope.selected_category = $scope.categories[2];
 

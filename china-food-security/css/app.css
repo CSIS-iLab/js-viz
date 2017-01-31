@@ -199,3 +199,8 @@ path.chord {
 text, .group path {
   cursor: pointer;
 }
+
+text.china {
+  fill: #6b7599;
+  font-weight: bold;
+}
