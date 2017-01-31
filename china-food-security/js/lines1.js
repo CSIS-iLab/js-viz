@@ -18,30 +18,24 @@ $(function() {
     },
     credits: {
       enabled: true,
-      href: false,
-      text: "CSIS China Power Project | UNDP, World Bank",
+      href: "http://data.worldbank.org/indicator/SN.ITK.DEFC.ZS",
+      text: "CSIS China Power Project | World Bank",
       style: {
         fontFamily: 'Roboto Slab'
       }
     },
     title: {
-      text: "Lines 1",
-      style: {
-        fontFamily: 'Roboto Slab'
-      }
-    },
-    subtitle: {
-      text: "2005-2014",
+      text: "Prevalence of Undernourishment (% of population)",
       style: {
         fontFamily: 'Roboto Slab'
       }
     },
     tooltip: {
-      pointFormat: '<span style="color:{point.color};font-family:\'Lucida Grande\', sans-serif;">\u25CF</span> {series.name}: <b>{point.y}</b><br/>'
+      pointFormat: '<span style="color:{point.color};font-family:\'Lucida Grande\', sans-serif;">\u25CF</span> {series.name}: <b>{point.y}%</b><br/>'
     },
     legend: {
       title: {
-        text: 'Income Level<br/><span style="font-size: 9px; color: #666; font-weight: normal">(Click to hide)</span>',
+        text: 'Key<br/><span style="font-size: 9px; color: #666; font-weight: normal">(Click to hide)</span>',
         style: {
           fontStyle: 'italic',
           fontFamily: 'Roboto Slab'
@@ -58,7 +52,7 @@ $(function() {
     },
     yAxis: {
       title: {
-        text: "Education Index",
+        text: "% of population",
         style: {
           fontFamily: 'Roboto Slab'
         }

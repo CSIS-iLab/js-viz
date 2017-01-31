@@ -21,20 +21,14 @@ $(function() {
     },
     credits: {
       enabled: true,
-      href: false,
-      text: "CSIS China Power Project | UNDP, World Bank",
+      href: "https://apps.fas.usda.gov/psdonline/app/index.html#/app/advQuery",
+      text: "CSIS China Power Project | USDA",
       style: {
         fontFamily: 'Roboto Slab'
       }
     },
     title: {
-      text: "Lines 1",
-      style: {
-        fontFamily: 'Roboto Slab'
-      }
-    },
-    subtitle: {
-      text: "2005-2014",
+      text: "Meat Consumption in China, USA, and EU",
       style: {
         fontFamily: 'Roboto Slab'
       }
@@ -44,7 +38,7 @@ $(function() {
     },
     legend: {
       title: {
-        text: 'Income Level<br/><span style="font-size: 9px; color: #666; font-weight: normal">(Click to hide)</span>',
+        text: 'Key<br/><span style="font-size: 9px; color: #666; font-weight: normal">(Click to hide)</span>',
         style: {
           fontStyle: 'italic',
           fontFamily: 'Roboto Slab'
@@ -61,11 +55,14 @@ $(function() {
     },
     yAxis: {
       title: {
-        text: "Education Index",
+        text: "Millions of Tons",
         style: {
           fontFamily: 'Roboto Slab'
         }
       },
+      labels: {
+        format: '{value}'
+      }
     },
   plotOptions:
   {
