@@ -6,6 +6,10 @@ body {
   margin:12px;
 }
 
+hr {
+  border-color: #772031; background-color: #772031; width: 65%; size: 10px; margin: 25px auto;
+}
+
 .tabletitle {
     font-family: 'Roboto';
     color: #404041;
@@ -46,6 +50,10 @@ body {
 	width: 50%;
 	align-items: center;
 	flex-wrap: wrap;
+}
+
+.flexitem .element-item {
+  margin-right: 10px;
 }
 
 @media only screen and (max-width: 665px){
