@@ -27,7 +27,7 @@ body {
 .flexkeycontainer{
 	display: flex;
 	justify-content: center;
-	width: 50%;
+	width: 65%;
 	margin: auto;
 	min-width: 300px;
 }
