@@ -24,8 +24,37 @@ body {
   text-align: center;
 }
 
-#filters {
-  margin: 0 0 2% 15%;
+.flexkeycontainer{
+	display: flex;
+	justify-content: center;
+	width: 50%;
+	margin: auto;
+	min-width: 300px;
+}
+
+.flexkey{
+	display: flex;
+	width: 100%;
+	justify-content: flex-start;
+	flex-wrap: wrap;
+}
+
+.flexitem{
+	display: flex;
+	font-family: 'Roboto';
+	font-size: 17px;
+	width: 50%;
+	align-items: center;
+	flex-wrap: wrap;
+}
+
+@media only screen and (max-width: 979px){
+	.flexkeycontainer{
+		width: 100%;
+	}
+  .flexitem {
+    width: 100%;
+  }
 }
 
 .color_key {
@@ -145,6 +174,11 @@ body {
 
 /* ---- button-group ---- */
 
+.button-group{
+	margin:0 auto 2% auto;
+	text-align: center;
+}
+
 .button-group:after {
   content: '';
   display: block;
@@ -152,14 +186,13 @@ body {
 }
 
 .button-group .button {
-  float: left;
   border-radius: 0;
   margin-left: 0;
   margin-right: 1px;
 }
 
-.button-group .button:first-child { border-radius: 0.5em 0 0 0.5em; }
-.button-group .button:last-child { border-radius: 0 0.5em 0.5em 0; }
+.button-group .button:first-child { border-radius: 0.5em 0 0 0.5em; border-right:0px; }
+.button-group .button:last-child { border-radius: 0 0.5em 0.5em 0; border-right:0px;}
 
 /* ---- isotope ---- */
 
