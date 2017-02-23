@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
         <title>CSIS - China Air Quality</title>
-        <meta name="description" content="">
+        <meta name="description" content="CSIS - China Air Quality">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link rel="stylesheet" href="css/normalize.css">
@@ -16,7 +16,9 @@
         <div id="container" class="row-inner">
             <div id="aq-content">
                 <div class="aq-chart-header">
-                    <h2 class="aq-chart-title-mobile">Air Quality Index (2015)</h2>
+                    <h2 class="aq-chart-title">China Air Quality Index</h2>
+                    <h2 class="aq-chart-title-mobile">China Air Quality Index</h2>
+                    <p>The chart below tracks the AQI levels in various Chinese cities. The colored squares indicate the monthly highest, lowest, and average AQI for the selected city and year. Hover over the squares to see the specific AQI value and precipitation for that month.</p>
                     <div class="aq-legend aq-align-right">
                         <div class="aq-legend-labels">
                             <p>Good</p>
@@ -34,23 +36,28 @@
                             </ul>
                         </div>
                     </div>
-                    <select class="aq-dropdown aq-align-left">
-                        <option value="beijing">Beijing</option>
-                        <option value="chengdu">Chengdu</option>
-                        <option value="guangzhou">Guangzhou</option>
-                        <option value="shanghai">Shanghai</option>
-                        <option value="shenyang">Shenyang</option>
+                    <select class="aq-dropdown aq-city-select aq-align-left">
+                        <option value="Beijing">Beijing</option>
+                        <option value="Chengdu">Chengdu</option>
+                        <option value="Guangzhou">Guangzhou</option>
+                        <option value="Shanghai">Shanghai</option>
+                        <option value="Shenyang">Shenyang</option>
                     </select>
-                    <h2 class="aq-chart-title">Air Quality (2015)</h2>
+                    <select class="aq-dropdown aq-year-select aq-align-left">
+                        <option value="2016">2016</option>
+                        <option value="2015">2015</option>
+                        <option value="2014">2014</option>
+                    </select>
                     <div class="clearfix"></div>
                 </div>
                 <div id="aq-heatmap-container"></div>
-                <h2 class="aq-barchart-title">Average Rainfall (2015)</h2>
+                <h2 class="aq-barchart-title">Monthly Precipitation</h2>
                 <div id="aq-barchart-container"></div>
             </div>
         </div>
 
         <script src="js/vendor/jquery-1.12.0.min.js"></script>
+        <script src="js/vendor/underscore-min.js"></script>
         <script src="js/vendor/highcharts/highcharts.js"></script>
         <script src="js/vendor/highcharts/modules/data.js"></script>
         <script src="js/vendor/highcharts/modules/heatmap.js"></script>

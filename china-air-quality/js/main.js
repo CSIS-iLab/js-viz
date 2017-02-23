@@ -2,33 +2,133 @@
 
 $(function () {
 
+    // ================================================= //
     // Global variables
+    // ================================================= //
 
     var aqiData,
+        currentCity,
+        currentYear,
         heatMap,
         barChart,
         prevTargetX = 0,
         mobileWidth = 700,
-        isMobile = ($(window).width() < mobileWidth) ? true : false;
+        isMobile = ($(window).width() < mobileWidth) ? true : false,
+        months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 
+    // ================================================= //
     // Initialize
+    // ================================================= //
 
-    $.getJSON("data/aqi-data.json", function(data) {
-        aqiData = data;
-        initialize(data);
+    // $.getJSON("data/aqi-data.json", function(data) {
+    //     aqiData = data;
+    //     initialize(data);
+    // });
+
+    $.ajax({
+        type: "GET",
+        url: "data/aqi-data.csv",
+        dataType: "text",
+        success: function(data) {initialize(data);}
     });
 
-    var initialize = function(data) {
-        buildHeatMap(data['beijingInit']['aqi']);
-        buildBarChart(data['beijingInit']['rainfall']);
+    function initialize(data) {
+        aqiData = processData(data);
+        currentCity = 'Beijing';
+        currentYear = '2016';
+        buildHeatMap();
+        buildBarChart();
+        // updateChart(aqiData[currentCity][currentYear]);
+        updateChart(aqiData['BeijingInit'][currentYear]);
         setDropdownHandler();
     };
 
 
+    // ================================================= //
     // Event handlers
+    // ================================================= //
 
-    var triggerHover = function(event) {
+    function processData(csvText) {
+        var csvTextLines = csvText.split(/\r\n|\n/);
+        var headers = csvTextLines[0].split(',');
+        var lines = [];
+        var cityGroup = {};
+        var cityData = {};
+        var chartData = {};
+
+        // Loop through CSV lines, skipping the header
+        // Parse each line into JSON format
+        for (var i = 1; i < csvTextLines.length; i++) {
+            var line = csvTextLines[i].split(',');
+
+            if (line.length == headers.length) {
+                var obj = {};
+                for (var j = 0; j < headers.length; j++) {
+                    obj[headers[j]] = line[j];
+                }
+                lines.push(obj);
+            }
+        }
+
+        // Group data by city
+        cityGroup = _.groupBy(lines, function(item){ return item['city']; });
+
+        // Group data by year in each city
+        for (var key in cityGroup) {
+            var years = _.groupBy(cityGroup[key], function(item){ return item['year']; });
+            cityData[key] = years;
+        }
+
+        // Loop through cities
+        for (var city in cityData) {
+
+            chartData[city] = {};
+
+            // Loop through years
+            for (var year in cityData[city]) {
+
+                chartData[city][year] = {};
+
+                var x = 0; // Month counter
+                chartData[city][year]['aqi'] = [];
+                chartData[city][year]['rainfall'] = [];
+
+                // Loop through months
+                for (var month in cityData[city][year]) {
+
+                    chartData[city][year]['rainfall'].push([]);
+
+                    var y = 2;
+                    var rainfall = parseFloat(cityData[city][year][month]['rainfall']);
+                    var aqi_high = parseFloat(cityData[city][year][month]['aqi_high']);
+                    var aqi_avg = parseFloat(cityData[city][year][month]['aqi_avg']);
+                    var aqi_low = parseFloat(cityData[city][year][month]['aqi_low']);
+
+                    // Populate AQI cityData
+                    for (var i = 0; i < 3; i++) {
+                        var o = {};
+                        o['x'] = x;
+                        o['y'] = y;
+                        if (i == 0) { o['value'] = Math.round(aqi_high); }
+                        else if (i == 1) { o['value'] = Math.round(aqi_avg); }
+                        else { o['value'] = Math.round(aqi_low); }
+                        chartData[city][year]['aqi'].push(o);
+                        y--;
+                    }
+
+                    // Populate rainfall cityData
+                    chartData[city][year]['rainfall'][x].push(months[x]);
+                    chartData[city][year]['rainfall'][x].push(rainfall);
+                    x++; // Increment month counter
+                }
+            }
+        }
+
+        return chartData;
+    }
+
+    function triggerHover(event) {
         // Grab current heatmap x coordinate
         var targetX = event.target.x;
         // Set hover state to target
@@ -36,32 +136,35 @@ $(function () {
         barChart.tooltip.refresh(barChart.series[0].data[targetX]);
         // Set previous target helper
         prevTargetX = targetX;
-    };
+    }
 
-    var resetHover = function() {
+    function resetHover() {
         // Reset hover state of previous target
         barChart.series[0].data[prevTargetX].setState();
         barChart.tooltip.hide();
         // Reset previous target helper
         prevTargetX = 0;
-    };
+    }
 
-    var setDropdownHandler = function() {
+    function setDropdownHandler() {
         $('.aq-dropdown').change(function() {
-            var city = $('.aq-dropdown').val();
-            updateChart(aqiData[city]);
+            currentCity = $('.aq-city-select').val();
+            currentYear = $('.aq-year-select').val();
+            updateChart(aqiData[currentCity][currentYear]);
         });
-    };
+    }
 
-    var updateChart = function(data) {
+    function updateChart(data) {
         heatMap.series[0].setData(data['aqi'], true, true, true);
         barChart.series[0].setData(data['rainfall'], true, true, true);
-    };
+    }
 
 
+    // ================================================= //
     // Chart constructors
+    // ================================================= //
 
-    var buildHeatMap = function(data) {
+    function buildHeatMap() {
         var yAxisCategories = (isMobile) ? ['Lo', 'Avg', 'Hi'] : ['Low AQI', 'Avg. AQI', 'High AQI'],
             marginLeft = (isMobile) ? 35 : 68,
             ttDefault = {
@@ -106,7 +209,17 @@ $(function () {
                 marginLeft: marginLeft,
                 borderWidth: 0,
                 plotBorderWidth: 0,
-                renderTo: 'aq-heatmap-container'
+                renderTo: 'aq-heatmap-container',
+                events:{
+                    load: function() {
+                        this.credits.element.onclick = function() {
+                            window.open(
+                              'http://beijing.usembassy-china.org.cn/aqirecent3.html',
+                              '_blank'
+                            );
+                        }
+                    }
+                }
             },
             title: {
                 text: ''
@@ -182,7 +295,7 @@ $(function () {
             exporting: {
                 chartOptions: {
                     title: {
-                        text: 'Air Quality Index (2015)'
+                        text: 'China Air Quality Index'
                     },
                     chart: {
                         marginTop: 65
@@ -201,7 +314,7 @@ $(function () {
             tooltip: tooltip,
             series: [{
                 borderWidth: 1,
-                data: data,
+                // data: data,
                 dataLabels: {
                     enabled: false
                 },
@@ -217,7 +330,7 @@ $(function () {
         $('#aq-heatmap-container .highcharts-series rect').attr('rx', '6px');
     };
 
-    var buildBarChart = function(data) {
+    function buildBarChart() {
         var marginTop = (isMobile) ? 5 : 20,
             marginLeft = (isMobile) ? 35 : 68;
 
@@ -228,7 +341,17 @@ $(function () {
                 marginTop: marginTop,
                 marginBottom: 26,
                 marginLeft: marginLeft,
-                renderTo: 'aq-barchart-container'
+                renderTo: 'aq-barchart-container',
+                events:{
+                    load: function() {
+                        this.credits.element.onclick = function() {
+                            window.open(
+                              'http://www.cma.gov.cn/en2014/',
+                              '_blank'
+                            );
+                        }
+                    }
+                }
             },
             title: {
                 text: ''
@@ -296,7 +419,7 @@ $(function () {
             exporting: {
                 chartOptions: {
                     title: {
-                        text: 'Average Rainfall (2015)'
+                        text: 'Monthly Precipitation'
                     },
                     chart: {
                         marginTop: 50
@@ -325,7 +448,7 @@ $(function () {
                 }
             },
             series: [{
-                data: data
+                // data: data
             }]
         });
     };
