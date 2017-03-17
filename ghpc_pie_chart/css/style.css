@@ -1,0 +1,17 @@
+#chartdiv {
+     display: inline-block;
+    float: right;
+    width: 60%;
+    height: 700px;
+    background-color: white;
+
+}
+
+tspan {
+  font-size:15px;
+
+}
+
+body {
+  display:inline-block;
+}
