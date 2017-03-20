@@ -112,7 +112,7 @@ AmCharts.makeChart("chartdiv", {
   "colorField": "color",
   "pulledField": "pulled",
   "titles": [{
-    "text": "Global Health Budget Breakdown"
+    "text": ""
   }],
 
   "export": {
