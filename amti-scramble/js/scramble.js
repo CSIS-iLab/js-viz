@@ -28,7 +28,18 @@ $(function () {
     legend: {
       align: 'center',
       verticalAlign: 'bottom',
-      layout: 'horizontal'
+      layout: 'horizontal',
+      labelFormatter: function() {
+        if(this.name == "China") {
+          return "Against Chinese aircraft";
+        }
+        else if(this.name == "Russia") {
+          return "Against Russian aircraft";
+        }
+        else {
+          return this.name;
+        }
+      }
     },
     colors: ['#00b29e', '#023850'],
     yAxis: {
