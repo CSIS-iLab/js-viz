@@ -4,28 +4,28 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<title>Diverging Paths of the Developing World</title>
-		<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-		<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
 
-			<script type="text/javascript">
-						google.load("visualization", "1", {packages:["motionchart"]});
-						google.setOnLoadCallback(drawChart);
-					function drawChart() {
-				var query = new google.visualization.Query('https://docs.google.com/spreadsheets/d/1tsbOGuDWtONNItsxzVuWeJ8IRD1t_0USF6HkMaQGJAw/edit#gid=1484911134');
-				query.send(handleQueryResponse);
-			}
-			function handleQueryResponse(response) {
-				var data = response.getDataTable();
-				var chart = new google.visualization.MotionChart(document.getElementById('chart_div'));
-							var options = {};
-							options['state'] =
-							'{"xZoomedDataMax":69.71,"dimensions":{"iconDimensions":["dim0"]},"orderedByY":false,"time":"1996","nonSelectedAlpha":0.4,"xZoomedIn":false,"iconKeySettings":[],"orderedByX":false,"xZoomedDataMin":0,"yLambda":1,"yZoomedIn":false,"xLambda":1,"showTrails":true,"xAxisOption":"2","yAxisOption":"3","yZoomedDataMax":79.33,"sizeOption":"5","yZoomedDataMin":0.49,"uniColorForNonSelected":false,"colorOption":"4","duration":{"timeUnit":"Y","multiplier":1},"playDuration":15000,"iconType":"BUBBLE"}';
-			options['width'] = 940;
-							options['height'] = 600;
-			options['showChartButtons'] = false;
-				chart.draw(data, options);
-			}
-					</script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["motionchart"]});
+      google.setOnLoadCallback(drawChart);
+    function drawChart() {
+  var query = new google.visualization.Query('https://docs.google.com/spreadsheets/d/1jZUCD7xzjNwzwbbQss8t1ZYhZqAXDbpnsx40AvxtHiQ/edit#gid=524906408');
+  query.send(handleQueryResponse);
+}
+function handleQueryResponse(response) {
+  var data = response.getDataTable();
+  var chart = new google.visualization.MotionChart(document.getElementById('chart_div'));
+        var options = {};
+        options['state'] =
+        '{"iconKeySettings":[{"trailStart":"1990","LabelX":-312,"key":{"dim0":"China"},"LabelY":-166}],"sizeOption":"5","duration":{"timeUnit":"Y","multiplier":1},"iconType":"BUBBLE","xZoomedIn":false,"yZoomedDataMax":186710,"orderedByY":false,"yZoomedIn":false,"xLambda":1,"showTrails":true,"xAxisOption":"2","uniColorForNonSelected":false,"xZoomedDataMin":26.7638,"yZoomedDataMin":80,"orderedByX":false,"time":"1990","colorOption":"4","dimensions":{"iconDimensions":["dim0"]},"playDuration":15000,"yLambda":0,"yAxisOption":"3","nonSelectedAlpha":0.4,"xZoomedDataMax":83.8317}';
+options['width'] = 940;
+        options['height'] = 600;
+options['showChartButtons'] = false;
+  chart.draw(data, options);
+}
+    </script>
 
 
 	</head>
