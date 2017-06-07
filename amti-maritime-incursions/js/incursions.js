@@ -24,7 +24,7 @@ $(function () {
       text: "CSIS/Asia Maritime Transparency Initiative (Data from Japan Coast Guard)"
     },
     title: {
-      text: "Number of Chinese Government Vessels in Senkakus’ Contiguous Zone/Territorial Sea (2009-2016)"
+      text: "Number of Chinese Government Vessels in Senkakus’ Contiguous Zone/Territorial Sea (2009-2017)"
     },
     subtitle: {
       text: "Click and drag to zoom in"
