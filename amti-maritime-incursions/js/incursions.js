@@ -12,7 +12,7 @@ $(function () {
     },
     chart: {
       zoomType: 'x',
-      type: 'line',
+      type: 'column',
       backgroundColor: '#FFF',
       border: 'none',
       color: '#000',
