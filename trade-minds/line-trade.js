@@ -1,5 +1,3 @@
-<script>
-
 Chart.defaults.LineWithLine = Chart.defaults.line;
 Chart.controllers.LineWithLine = Chart.controllers.line.extend({
    draw: function(ease) {
@@ -101,6 +99,3 @@ var myChart = new Chart(ctx, {
   }
 });
 var first_last = 0;
-
-
-        </script>
