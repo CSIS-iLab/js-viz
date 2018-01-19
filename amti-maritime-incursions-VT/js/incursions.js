@@ -24,10 +24,10 @@ $(function () {
       text: "CSIS/Asia Maritime Transparency Initiative (Dữ liệu từ Cảnh sát biển Nhật Bản)"
     },
     title: {
-      text: "Số tàu của Chính phủ Trung Quốc trong Vùng Tiếp Giáp/Lãnh Hải của Senkaku (2009-2017)"
+      text: "Số tàu của Chính phủ Trung Quốc trong Vùng tiếp giáp/lãnh hải của Senkaku (2009 - hiện tại)"
     },
     subtitle: {
-      text: "Nhấn vào và kéo để phóng to"
+      text: "Nhấn và kéo để phóng to"
     },
     legend: {
       align: 'center',
@@ -35,10 +35,10 @@ $(function () {
       layout: 'horizontal',
       labelFormatter: function () {
           if (this.name == 'Ships Entering Contiguous Zone') {
-              return 'Tàu xâm nhập vào khu vực tiếp giáp ';
+              return 'Tàu xâm nhập vùng tiếp giáp';
           }
           else if (this.name == 'Ships Entering Territorial Sea') {
-              return 'Tàu xâm nhập vào lãnh hải';
+              return 'Tàu xâm nhập lãnh hải';
           }
           else {
               return this.name;
@@ -55,10 +55,10 @@ $(function () {
     tooltip: {
         formatter: function () {
             if (this.series.name === 'Ships Entering Contiguous Zone') {
-                this.series.name = 'Tàu xâm nhập vào khu vực tiếp giáp';
+                this.series.name = 'Tàu xâm nhập vùng tiếp giáp';
             }
             else if (this.series.name === 'Ships Entering Territorial Sea') {
-                this.series.name = 'Tàu xâm nhập vào lãnh hải';
+                this.series.name = 'Tàu xâm nhập lãnh hải';
             }
             return Highcharts.dateFormat('%B %Y', new Date(this.x)) + '<br/>' + '<span style="color:' + this.series.color + '">●</span> ' + this.series.name + ': <b>' + this.y + '</b>';
         }

@@ -24,7 +24,7 @@ $(function () {
       text: "CSIS/Asia Maritime Transparency Initiative (Data daripada Pengawal Pantai Jepun)"
     },
     title: {
-      text: "Bilangan Kapal Kerajaan China di Zon Berdampingan/Lautan Wilayah (2009-2017)"
+      text: "Bilangan Kapal Kerajaan China di Zon Berdampingan/Lautan Wilayah Kepulauan Senkakus (2009-Kini)"
     },
     subtitle: {
       text: "Klik dan seret untuk mengezum masuk"
@@ -47,7 +47,7 @@ $(function () {
     },
     colors: ['#00b29e', '#023850'],
     yAxis: {
-      title: { text: "Bilangan Kapal" },
+      title: { text: "Bilangan kapal" },
       tickInterval: 20
     },
     xAxis: {
