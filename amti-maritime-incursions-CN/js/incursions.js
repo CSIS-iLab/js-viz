@@ -21,10 +21,10 @@ $(function () {
     credits: {
       enabled: true,
       href: "http://amti.csis.org",
-      text: "CSIS/Asia Maritime Transparency Initiative (日本防卫省数据)"
+      text: "CSIS/Asia Maritime Transparency Initiative (日本海岸警卫队数据)"
     },
     title: {
-      text: "钓鱼岛毗连区/领海的中国政府船只数量（2009 年至 2017 年)"
+      text: "进入钓鱼岛毗连区/领海的中国政府船只的数量（2009 年至 2017 年)"
     },
     subtitle: {
       text: "点击并拖动即可放大"
