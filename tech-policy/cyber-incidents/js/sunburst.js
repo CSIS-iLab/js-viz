@@ -24,7 +24,10 @@ $(function() {
               id: slugify([type, attacker, victim]),
               parent: slugify([type, attacker]),
               name: victim,
-              value: 0
+              value: 0,
+              level: 3,
+              attacker: attacker,
+              type: type
           }
           data[type][attacker][victim].value += 1
         })
@@ -39,16 +42,21 @@ $(function() {
           types.push({
             id: type.toLowerCase(),
             parent: '0',
-            name: type
+            name: type,
+            level: 1
           })
           let array = []
           var attackersArray = $.map(attackers, function(victims, attacker) {
+            let victimsArray = Object.values(victims)
             array.push({
               id: slugify([type, attacker]),
               parent: type.toLowerCase(),
-              name: attacker
+              name: attacker,
+              level: 2,
+              type: type,
+              targets: victimsArray.length
             })
-            return Object.values(victims).sort((a, b) => b.value - a.value)
+            return victimsArray.sort((a, b) => b.value - a.value)
           })
           return array.concat(attackersArray);
         });
@@ -74,20 +82,33 @@ $(function() {
       subtitle: {
         text: 'Click on a wedge to see a breakdown of its components.'
       },
-      // Credits
       credits: {
         enabled: true,
         href: false,
         text: "CSIS Technology Policy | Cybersecurity & Governance"
       },
       series: data,
-      // Tooltip
-      /*
       tooltip: {
-          formatter: function () {
-              return '<span style="color:' + this.series.color + '">● </span><b>' + this.point.series.name + '</b><br> x: ' + this.x + ' y: ' + this.y + '<br><i>x: ' + this.x + ' y: ' + this.y + '</i><br><b>x: ' + this.x + ' y: ' + this.y + '</b>';
+        useHTML: true,
+        formatter: function () {
+          if ( this.point.level === 1 ) {
+            return `# ${this.point.name} Incidents: <b>${this.point.value}</b>`;
+          } else if ( this.point.level === 2 ) {
+            return `
+            Attacker: <b>${this.point.name}</b><br />
+            # ${this.point.type} Incidents: <b>${this.point.value}</b><br />
+            # of Targets: <b>${this.point.targets}</b>`;
+          } else if ( this.point.level === 3 ) {
+            return `
+              Target: <b>${this.point.name}</b><br />
+              Attacker: <b>${this.point.attacker}</b><br />
+              # ${this.point.type} Incidents: <b>${this.point.value}</b>
+            `;
+          } else {
+            return `Total # Incidents: <b>${this.point.value}</b>`;
           }
-      },    */
+        }
+      },    
       // Additional Plot Options
       plotOptions: {
         series: {
