@@ -16,6 +16,7 @@ $(function() {
           var attacker = code[1]
           var victim = code[2]
           var description = code[3]
+          var dateString = code[4]
 
           data[type] = data[type] || {}
           data[type][attacker] = data[type][attacker] || {}
@@ -27,9 +28,14 @@ $(function() {
               value: 0,
               level: 3,
               attacker: attacker,
-              type: type
+              type: type,
+              dates: []
           }
           data[type][attacker][victim].value += 1
+          var dateParts = dateString.split('-')
+          var date = new Date(dateParts[0], dateParts[1] - 1, dateParts[2])
+          date = date.toLocaleString('en-us', {month: "long", year: 'numeric'})
+          data[type][attacker][victim].dates.push(date)
         })
 
         // Convert object to array - we no longer need the keys
@@ -99,10 +105,24 @@ $(function() {
             # ${this.point.type} Incidents: <b>${this.point.value}</b><br />
             # of Targets: <b>${this.point.targets}</b>`;
           } else if ( this.point.level === 3 ) {
+            const datesArray = this.point.dates
+            var dates = '';
+            $.each(datesArray, function(i, date) {
+              var suffix = ', ';
+
+              if ( i == (datesArray.length - 1)) {
+                suffix = ''
+              } else if ( i % 2 == 0 ) {
+                suffix = ',<br />'
+              }
+              dates += date + suffix
+            })
+
             return `
               Target: <b>${this.point.name}</b><br />
               Attacker: <b>${this.point.attacker}</b><br />
-              # ${this.point.type} Incidents: <b>${this.point.value}</b>
+              # ${this.point.type} Incidents: <b>${this.point.value}</b><br />
+              Incident Dates: ${dates}
             `;
           } else {
             return `Total # Incidents: <b>${this.point.value}</b>`;
