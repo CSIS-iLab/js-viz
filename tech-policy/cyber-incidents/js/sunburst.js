@@ -98,12 +98,12 @@ $(function() {
         useHTML: true,
         formatter: function () {
           if ( this.point.level === 1 ) {
-            return `# ${this.point.name} Incidents: <b>${this.point.value}</b>`;
+            return `<b># ${this.point.name} Incidents</b>: ${this.point.value}`;
           } else if ( this.point.level === 2 ) {
             return `
-            Attacker: <b>${this.point.name}</b><br />
-            # ${this.point.type} Incidents: <b>${this.point.value}</b><br />
-            # of Targets: <b>${this.point.targets}</b>`;
+            <b>Attacker</b>: ${this.point.name}<br />
+            <b># ${this.point.type} Incidents</b>: ${this.point.value}<br />
+            <b># of Targets</b>: ${this.point.targets}`;
           } else if ( this.point.level === 3 ) {
             const datesArray = this.point.dates
             var dates = '';
@@ -119,13 +119,13 @@ $(function() {
             })
 
             return `
-              Target: <b>${this.point.name}</b><br />
-              Attacker: <b>${this.point.attacker}</b><br />
-              # ${this.point.type} Incidents: <b>${this.point.value}</b><br />
-              Incident Dates: ${dates}
+              <b>Target</b>: ${this.point.name}<br />
+              <b>Attacker</b>: ${this.point.attacker}<br />
+              <b># ${this.point.type} Incidents</b>: ${this.point.value}<br />
+              <b>Incident Dates</b>: ${dates}
             `;
           } else {
-            return `Total # Incidents: <b>${this.point.value}</b>`;
+            return `<b>Total # Incidents</b>: ${this.point.value}`;
           }
         }
       },    
