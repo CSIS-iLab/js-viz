@@ -57,7 +57,7 @@ Highcharts.chart('container', {
     },
     credits: {
         enabled: true,
-        text:'<a href="http://journals.sagepub.com/doi/pdf/10.1177/2053168016658919" target="_blank">Allee & Lugg 2016</a> | CPTPP text | TPP text'
+        text:'<a href="https://journalism.csis.org/wp-content/uploads/2018/06/who_wrote_rules.pdf" target="_blank">Allee & Lugg 2016</a> | CPTPP text | TPP text'
     },
     series: [{
         name: 'Similarity',
