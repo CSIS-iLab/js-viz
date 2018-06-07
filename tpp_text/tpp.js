@@ -56,10 +56,9 @@ Highcharts.chart('container', {
         shadow: true
     },
     credits: {
-        enabled: true,
-        href: "http://journals.sagepub.com/doi/pdf/10.1177/2053168016658919",
-        text: "Allee & Lugg 2016 | CPTPP text | TPP text"
-      },
+      enabled: true,
+      href: "http://journals.sagepub.com/doi/pdf/10.1177/2053168016658919",
+      text: "Allee & Lugg 2016 | CPTPP text | TPP text"
     },
     series: [{
         name: 'Similarity',
