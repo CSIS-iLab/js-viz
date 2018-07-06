@@ -31,7 +31,7 @@ Highcharts.chart('container', {
     },
     yAxis: {
         title: {
-            text: 'Children in Nigeria'
+            text: 'Number of Children'
         },
 
     },
