@@ -1,3 +1,6 @@
+$(function () {
+
+  var categories = ['April 2017', 'July 2017', 'October 2017', 'November 2017', 'January 2018', 'March 2018'];
 
 Highcharts.chart('container', {
     chart: {
@@ -13,13 +16,18 @@ Highcharts.chart('container', {
         text: 'Hover over the chart to compare how many missed children were vaccinated. '
     },
     xAxis: {
-        categories: ['April 2017', 'July 2017', 'October 2017', 'November 2017', 'January 2018', 'March 2018'],
-				tickmarkPlacement: 'on',
-        startOnTick: false,
-
-        title: {
-            enabled: false
-        }
+        // categories: ['April 2017', 'July 2017', 'October 2017', 'November 2017', 'January 2018', 'March 2018'],
+        labels: {
+            enabled: true,
+            formatter: function () {
+                return categories[this.value];
+            }
+        },
+        tickInterval: 1,
+        minPadding: 0,
+        maxPadding: 0,
+        startOnTick: true,
+        endOnTick: true
     },
     yAxis: {
         title: {
@@ -58,5 +66,5 @@ colors: ['#788ca8', '#66c6cb'],
           href: false,
           text: "CSIS Global Health | Source: polioeradication.org"
         },
-
+});
 });
