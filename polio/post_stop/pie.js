@@ -94,8 +94,8 @@ Highcharts.chart('container', {
         // Credits
         credits: {
           enabled: true,
-          href: false,
-          text: "CSIS Global Health | Source: polioeradication.org"
+          href: "https://academic.oup.com/jid/article-pdf/216/suppl_1/S316/24265079/jix163.pdf",
+          text: "CSIS Global Health | Source: Yinka et. al."
         },
 
 });

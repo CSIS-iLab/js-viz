@@ -63,8 +63,8 @@ colors: ['#788ca8', '#66c6cb'],
         // Credits
         credits: {
           enabled: true,
-          href: false,
-          text: "CSIS Global Health | Source: polioeradication.org"
+          href: "http://polioeradication.org/wp-content/uploads/2018/01/ppg-hlm-presentation-who-unicef-20171208.pdf",
+          text: "CSIS Global Health | Source: UNICEF"
         },
 });
 });
