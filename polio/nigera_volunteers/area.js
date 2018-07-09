@@ -33,11 +33,9 @@ Highcharts.chart('container', {
         title: {
             text: 'Number of Children'
         },
-
     },
     tooltip: {
-        split: true,
-
+      split: true
     },
     plotOptions: {
         area: {
@@ -52,12 +50,12 @@ Highcharts.chart('container', {
         }
     },
    series: [{
-        name: 'Number of missed children during polio vaccination campaign',
-        data: [55806, 46454, 64376, 40704, 44939, 17761],
-        pointStart: 0
+        name: 'Missed children during polio vaccination campaign',
+        data: [55806, 46454, 64376, 40704, 44939, 17761]
     }, {
-        name: 'Number of missed children recovered by Volunteer Community Mobilizers',
-        data: [48591, 41983, 47858, 34574, 30943, 13269]}],
+        name: 'Missed children recovered by Volunteer Community Mobilizers',
+        data: [48591, 41983, 47858, 34574, 30943, 13269]
+      }],
 
 colors: ['#788ca8', '#66c6cb'],
         // Credits
