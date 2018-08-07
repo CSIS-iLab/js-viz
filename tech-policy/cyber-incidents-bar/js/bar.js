@@ -34,7 +34,7 @@ $(function() {
   });
 
   function renderChart(data) {
-    return (chart = Highcharts.chart("hcContainer", {
+    chart = Highcharts.chart("hcContainer", {
       // $('#hcContainer').highcharts({
       chart: {
         margin: [100, 50, 100, 50],
@@ -119,6 +119,6 @@ $(function() {
           data: data.victim
         }
       ]
-    }));
+    });
   }
 });
