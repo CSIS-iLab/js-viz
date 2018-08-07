@@ -35,7 +35,6 @@ $(function() {
 
   function renderChart(data) {
     chart = Highcharts.chart("hcContainer", {
-      // $('#hcContainer').highcharts({
       chart: {
         margin: [100, 50, 100, 50],
         type: "bar"
