@@ -48,6 +48,7 @@ $(function() {
 
   function renderChart(data) {
     chart = Highcharts.chart("hcContainer", {
+      exporting: { enabled: false },
       chart: {
         margin: [100, 50, 100, 50],
         type: "bar"
@@ -56,7 +57,7 @@ $(function() {
         align: "center",
         verticalAlign: "bottom",
         layout: "horizontal",
-        y: 5
+        y: 15
       },
       title: {
         text: "Significant Cyber Incidents"
@@ -122,7 +123,10 @@ $(function() {
         },
         {
           title: {
-            text: "Number of Incidents"
+            text: "Number of Incidents",
+            align: "middle",
+            y: -15,
+            style: { letterSpacing: 2 }
           }
         }
       ],
