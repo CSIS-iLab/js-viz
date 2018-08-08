@@ -57,7 +57,10 @@ $(function() {
         align: "center",
         verticalAlign: "bottom",
         layout: "horizontal",
-        y: 15
+        y: 15,
+        itemStyle: {
+          fontWeight: "normal"
+        }
       },
       title: {
         text: "Significant Cyber Incidents"
@@ -126,7 +129,7 @@ $(function() {
             text: "Number of Incidents",
             align: "middle",
             y: -15,
-            style: { letterSpacing: 2 }
+            style: { fontWeight: "bold" }
           }
         }
       ],
