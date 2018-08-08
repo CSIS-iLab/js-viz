@@ -11,6 +11,7 @@ $(function() {
       data.nations = columns[0].slice(1);
       data.offender = columns[1].slice(1);
       data.victim = columns[2].slice(1);
+      data.max = Math.max(...data.victim.concat(data.offender));
       renderChart(data);
 
       let containerWidth = document.getElementById("hcContainer").offsetWidth;
@@ -93,6 +94,7 @@ $(function() {
           title: {
             text: null
           },
+          max: data.max,
           width: "40%",
           reversed: true,
           opposite: false
@@ -102,6 +104,7 @@ $(function() {
           title: {
             text: null
           },
+          max: data.max,
           left: "60%",
           width: "40%"
         }
