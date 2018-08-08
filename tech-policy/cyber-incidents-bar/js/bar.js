@@ -83,8 +83,7 @@ $(function() {
           }
         },
         lineWidth: 0,
-        tickWidth: 0,
-        offset: -600
+        tickWidth: 0
       },
       yAxis: [
         {
