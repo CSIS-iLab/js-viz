@@ -13,18 +13,15 @@ $(function() {
       data.victim = columns[2].slice(1);
       data.max = Math.max(...data.victim.concat(data.offender));
       renderChart(data);
-
-      let containerWidth = document.getElementById("hcContainer").offsetWidth;
-      let adjustedOffset = 0 - containerWidth / 2;
-      chart.update({
-        xAxis: {
-          offset: adjustedOffset
-        }
-      });
+      offsetYAxis();
     }
   });
 
   window.addEventListener("resize", () => {
+    offsetYAxis();
+  });
+
+  function offsetYAxis() {
     let containerWidth = document.getElementById("hcContainer").offsetWidth;
     let adjustedOffset = 0 - containerWidth / 2;
     chart.update({
@@ -32,7 +29,7 @@ $(function() {
         offset: adjustedOffset
       }
     });
-  });
+  }
 
   function renderChart(data) {
     chart = Highcharts.chart("hcContainer", {
