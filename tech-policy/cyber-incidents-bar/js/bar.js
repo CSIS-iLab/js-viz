@@ -67,13 +67,13 @@ $(function() {
       },
       subtitle: {
         text:
-          "The above charts are based on publicly reported information describing acts of state-sponsored cyber espionage and cyber warfare, and do not include instances of cyber crime. Long-running campaigns were treated as single instances for the purposes of incident totals."
+          "Based on publicly available information on cyber espionage and cyber warfare, excluding cybercrime. Long-running espionage campaigns were treated as single events for the purposes of incident totals. Tallies are partial as some states conceal incidents while others fail to detect them."
       },
       // Credits
       credits: {
         enabled: true,
         href: false,
-        text: "CSIS Technology Policy | SOURCE"
+        text: "CSIS Technology Policy Program | Source: Hackmageddon"
       },
       tooltip: {
         crosshairs: true,
