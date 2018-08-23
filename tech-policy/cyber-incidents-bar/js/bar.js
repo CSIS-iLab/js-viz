@@ -131,7 +131,7 @@ $(function() {
       credits: {
         enabled: true,
         href: false,
-        text: "CSIS Technology Policy Program | Source: Hackmageddon",
+        text: "CSIS Technology Policy Program | Source: CSIS & Hackmageddon",
         position: {
           y: 15
         }
