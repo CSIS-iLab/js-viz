@@ -51,8 +51,58 @@ $(function() {
       exporting: { enabled: false },
       chart: {
         margin: [100, 50, 100, 50],
-        type: "bar"
+        type: "bar",
+        style: {
+          paddingBottom: "100px",
+          overflow: "visible"
+        }
       },
+      responsive: {
+        rules: [
+          {
+            condition: {
+              maxWidth: 400,
+              minWidth: 250
+            },
+            chartOptions: {
+              chart: {
+                marginTop: 225,
+                height: 900
+              }
+            }
+          },
+          {
+            condition: {
+              maxWidth: 768,
+              minWidth: 400
+            },
+            chartOptions: {
+              chart: {
+                marginTop: 125,
+                height: 700
+              }
+            }
+          },
+          {
+            condition: {
+              maxWidth: 768
+            },
+            chartOptions: {
+              yAxis: [
+                {
+                  width: "30%"
+                },
+                {
+                  left: "70%",
+                  width: "30%"
+                },
+                {}
+              ]
+            }
+          }
+        ]
+      },
+
       legend: {
         align: "center",
         verticalAlign: "bottom",
@@ -63,9 +113,14 @@ $(function() {
         }
       },
       title: {
-        text: "Significant Cyber Incidents"
+        text: "Significant Cyber Incidents",
+        floating: false
       },
       subtitle: {
+        align: "left",
+        style: {
+          padding: "0 50px"
+        },
         text:
           "Based on publicly available information on cyber espionage and cyber warfare, excluding cybercrime. Long-running espionage campaigns were treated as single events for the purposes of incident totals. Tallies are partial as some states conceal incidents while others fail to detect them."
       },
@@ -73,7 +128,10 @@ $(function() {
       credits: {
         enabled: true,
         href: false,
-        text: "CSIS Technology Policy Program | Source: Hackmageddon"
+        text: "CSIS Technology Policy Program | Source: Hackmageddon",
+        position: {
+          y: 15
+        }
       },
       tooltip: {
         crosshairs: true,
@@ -81,15 +139,7 @@ $(function() {
 
         valueSuffix: " incidents"
       },
-      plotOptions: {
-        series: {
-          // events: {
-          //   legendItemClick: function() {
-          //     return false;
-          //   }
-          // }
-        }
-      },
+
       xAxis: {
         title: {
           text: null
