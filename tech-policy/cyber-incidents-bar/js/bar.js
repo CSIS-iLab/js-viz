@@ -68,6 +68,14 @@ $(function() {
               chart: {
                 marginTop: 225,
                 height: 900
+              },
+
+              xAxis: {
+                labels: {
+                  style: {
+                    fontSize: "11px"
+                  }
+                }
               }
             }
           },
