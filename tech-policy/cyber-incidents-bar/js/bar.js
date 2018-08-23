@@ -53,7 +53,7 @@ $(function() {
         margin: [100, 50, 100, 50],
         type: "bar",
         style: {
-          paddingBottom: "100px",
+          paddingBottom: "50px",
           overflow: "visible"
         }
       },
@@ -110,7 +110,6 @@ $(function() {
           }
         ]
       },
-
       legend: {
         align: "center",
         verticalAlign: "bottom",
@@ -125,14 +124,10 @@ $(function() {
         floating: false
       },
       subtitle: {
-        align: "left",
-        style: {
-          padding: "0 50px"
-        },
+        useHTML: true,
         text:
-          "Based on publicly available information on cyber espionage and cyber warfare, excluding cybercrime. Long-running espionage campaigns were treated as single events for the purposes of incident totals. Tallies are partial as some states conceal incidents while others fail to detect them."
+          "<div style='margin:0 15px'>Based on publicly available information on cyber espionage and cyber warfare, excluding cybercrime. Long-running espionage campaigns were treated as single events for the purposes of incident totals. Tallies are partial as some states conceal incidents while others fail to detect them.</div>"
       },
-      // Credits
       credits: {
         enabled: true,
         href: false,
@@ -147,7 +142,6 @@ $(function() {
 
         valueSuffix: " incidents"
       },
-
       xAxis: {
         title: {
           text: null
