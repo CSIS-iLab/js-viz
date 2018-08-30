@@ -18,10 +18,20 @@ $(function() {
             return;
           }
           data.data = data.data || [];
+
           value
-            ? data.data.push([x - 1, y - 1, Math.abs(13 - value)])
+            ? data.data.push([x - 1, y - 1, x])
             : data.data.push([x - 1, y - 1, 0]);
         });
+      });
+
+      console.log(columns[0]);
+      columns[0].forEach((type, i) => {
+        if (i == 0) {
+          return;
+        }
+        data.types = data.types || [];
+        data.types.push(type);
       });
 
       // Convert object to array - we no longer need the keys
@@ -40,7 +50,8 @@ $(function() {
         type: "heatmap",
         marginTop: 40,
         marginBottom: 80,
-        plotBorderWidth: 1
+        plotBorderWidth: 1,
+        height: "110%"
       },
 
       title: {
@@ -48,7 +59,7 @@ $(function() {
       },
 
       xAxis: {
-        categories: [12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1],
+        categories: data[2],
         labels: {
           enabled: false
         }
@@ -61,8 +72,12 @@ $(function() {
 
       colorAxis: {
         min: 0,
-        minColor: "#FFFFFF",
-        maxColor: Highcharts.getOptions().colors[5]
+        stops: [
+          [0, "#ffffff"],
+          [0.25, "#ff0"],
+          [0.5, "#FF8000"],
+          [1, "#FF0040"]
+        ]
       },
 
       legend: {
