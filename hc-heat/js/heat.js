@@ -50,24 +50,34 @@ $(function() {
     Highcharts.chart("container", {
       chart: {
         type: "heatmap",
-        marginTop: 40,
+        marginTop: 80,
         marginBottom: 180,
         plotBorderWidth: 1,
         height: "110%"
       },
 
       title: {
-        text: "Russian Interference in Europe"
+        text: "Russian Interference in Europe",
+        style: {
+          fontFamily: "Georgia"
+        }
       },
 
       subtitle: {
-        text: "Rating the intensity of interventions"
+        text: "Rating the intensity of interventions",
+        style: {
+          fontFamily: "'Roboto', 'Arial', sans-serif"
+        }
       },
 
       xAxis: {
         categories: data[2],
         labels: {
-          style: { fontWeight: "bold" }
+          style: {
+            fontWeight: "bold",
+            fontSize: 12,
+            fontFamily: "'Roboto', 'Arial', sans-serif"
+          }
         }
       },
 
@@ -75,7 +85,11 @@ $(function() {
         categories: data[0],
         title: null,
         labels: {
-          style: { fontWeight: "bold" }
+          style: {
+            fontWeight: "bold",
+            letterSpacing: 0.5,
+            fontFamily: "'Roboto', 'Arial', sans-serif"
+          }
         }
       },
 
