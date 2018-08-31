@@ -53,7 +53,7 @@ $(function() {
         marginTop: 80,
         marginBottom: 180,
         plotBorderWidth: 1,
-        height: "110%"
+        height: "75%"
       },
 
       title: {
@@ -105,7 +105,7 @@ $(function() {
           step: 3,
           enabled: true,
           formatter: function() {
-            return this.value === 0 ? "Covert" : "Overt";
+            return this.value === 0 ? "More Covert" : "More Overt";
           }
         }
       },
@@ -114,7 +114,7 @@ $(function() {
         align: "center",
         verticalAlign: "bottom",
         layout: "horizontal",
-        symbolHeight: 10
+        symbolHeight: 20
       },
 
       credits: {
