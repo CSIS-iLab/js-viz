@@ -57,7 +57,11 @@ $(function() {
       },
 
       title: {
-        text: "Heat Map"
+        text: "Russian Interference in Europe"
+      },
+
+      subtitle: {
+        text: "Rating the intensity of interventions"
       },
 
       xAxis: {
