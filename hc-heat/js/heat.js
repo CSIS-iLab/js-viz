@@ -79,9 +79,19 @@ $(function() {
         min: 0,
         stops: [
           [0, "#ffffff"],
-          [0.25, "#ff0"],
-          [0.5, "#FF8000"],
-          [1, "#FF0040"]
+          [1, "#5ca8ff"],
+          [2, "#479dff"],
+          [3, "#3392ff"],
+          [4, "#1f87ff"],
+          [5, "#0a7cff"],
+          [6, "#0072f5"],
+          [7, "#0069e0"],
+          [8, "#005fcc"],
+          [9, "#0056b8"],
+          [10, "#004ca3"],
+          [11, "#00438f"],
+          [12, "#00397a"],
+          [13, "#002e63"]
         ],
         labels: {
           step: 3,
@@ -102,7 +112,7 @@ $(function() {
       credits: {
         enabled: true,
         href: false,
-        text: "CSIS | Source: "
+        text: "CSIS | Journalism Practicum in International Reporting"
       },
       tooltip: {
         enabled: false
@@ -110,7 +120,7 @@ $(function() {
 
       series: [
         {
-          name: "Heatmap",
+          name: "Russian Interference in Europe",
           borderWidth: 1,
           data: data[1],
           states: {
