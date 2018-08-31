@@ -19,13 +19,16 @@ $(function() {
           }
           data.data = data.data || [];
 
+          //for boolean data
           value
             ? data.data.push([x - 1, y - 1, x])
             : data.data.push([x - 1, y - 1, 0]);
+
+          //normal heatmap
+          // data.data.push([x - 1, y - 1, value]);
         });
       });
 
-      console.log(columns[0]);
       columns[0].forEach((type, i) => {
         if (i == 0) {
           return;
@@ -44,12 +47,11 @@ $(function() {
   });
 
   function renderChart(data) {
-    console.log(data[1]);
     Highcharts.chart("container", {
       chart: {
         type: "heatmap",
         marginTop: 40,
-        marginBottom: 80,
+        marginBottom: 180,
         plotBorderWidth: 1,
         height: "110%"
       },
@@ -61,13 +63,16 @@ $(function() {
       xAxis: {
         categories: data[2],
         labels: {
-          enabled: false
+          style: { fontWeight: "bold" }
         }
       },
 
       yAxis: {
         categories: data[0],
-        title: null
+        title: null,
+        labels: {
+          style: { fontWeight: "bold" }
+        }
       },
 
       colorAxis: {
@@ -77,18 +82,21 @@ $(function() {
           [0.25, "#ff0"],
           [0.5, "#FF8000"],
           [1, "#FF0040"]
-        ]
+        ],
+        labels: {
+          step: 3,
+          enabled: true,
+          formatter: function() {
+            return this.value === 0 ? "Covert" : "Overt";
+          }
+        }
       },
 
       legend: {
-        title: {
-          text: ""
-        },
         align: "center",
         verticalAlign: "bottom",
         layout: "horizontal",
-        symbolHeight: 10,
-        y: 20
+        symbolHeight: 10
       },
 
       credits: {
@@ -97,21 +105,19 @@ $(function() {
         text: "CSIS | Source: "
       },
       tooltip: {
-        formatter: function() {
-          return (
-            "<b>" +
-            this.series.yAxis.categories[this.point.y] +
-            "</b><br>" +
-            this.series.xAxis.categories[this.point.x]
-          );
-        }
+        enabled: false
       },
 
       series: [
         {
           name: "Heatmap",
           borderWidth: 1,
-          data: data[1]
+          data: data[1],
+          states: {
+            hover: {
+              brightness: 0
+            }
+          }
         }
       ]
     });
