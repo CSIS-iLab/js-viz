@@ -592,14 +592,10 @@ $(function() {
           {
             from: 0.2,
             to: 0.5,
-            color: "#C76C6C",
-            name: " "
+            color: "#B4838B",
+            name: "Mixed"
           },
-          {
-            from: 0.5,
-            to: 0.8,
-            color: "#A099A9"
-          },
+
           {
             from: 1,
             to: 1,
@@ -614,17 +610,17 @@ $(function() {
         ]
       },
 
-      legend: {
-        labelFormatter: function() {
-          return this.from === 0
-            ? "Republican"
-            : this.to === 1
-              ? "Democrat"
-              : this.from === 2
-                ? "Independent"
-                : "";
-        }
-      },
+      // legend: {
+      //   labelFormatter: function() {
+      //     return this.from === 0
+      //       ? "Republican"
+      //       : this.to === 1
+      //         ? "Democrat"
+      //         : this.from === 2
+      //           ? "Independent"
+      //           : "";
+      //   }
+      // },
 
       tooltip: {
         headerFormat:
@@ -674,35 +670,29 @@ $(function() {
 
   Highcharts.chart("treemap", {
     colorAxis: {
-      // minColor: "#ee402f",
-      // maxColor: "#79c5e6",
-      dataClasses: [
-        {
-          from: 0,
-          to: 2,
-          color: "#ee402f",
-          name: "Republican"
-        },
-        {
-          from: 2,
-          to: 5,
-          color: "#B4838B",
-          name: " "
-        },
-
-        {
-          from: 5,
-          to: 7,
-          color: "#79c5e6",
-          name: "Democrat"
-        }
-      ]
+      minColor: "#f0e6e8",
+      maxColor: "#B4838B"
     },
-
-    legend: {
-      labelFormatter: function() {
-        return this.from === 0 ? "Republican" : this.to === 7 ? "Democrat" : "";
+    credits: {
+      enabled: true,
+      href: false,
+      text: "CSIS International Security Program | Source: NAME"
+    },
+    plotOptions: {
+      treemap: {
+        borderColor: "#ffffff",
+        borderWidth: 3,
+        dataLabels: {
+          style: {
+            color: "#white",
+            textOutline: false,
+            fontSize: ".8rem"
+          }
+        }
       }
+    },
+    legend: {
+      enabled: false
     },
     series: [
       {
@@ -710,72 +700,61 @@ $(function() {
         layoutAlgorithm: "squarified",
         data: [
           {
-            name: "Foreign Affairs/Relations",
-            value: 16,
-            colorValue: 1
+            name: "Foreign Affairs/ Relations",
+            value: 16
           },
           {
             name: "Appropriations",
-            value: 14,
-            colorValue: 2
+            value: 14
           },
           {
             name: "Budget",
-            value: 10,
-            colorValue: 3
+            value: 10
           },
           {
-            name: "Finance/Ways and Means",
-            value: 10,
-            colorValue: 4
+            name: "Finance/ Ways and Means",
+            value: 10
           },
           {
             name: "Intelligence ",
-            value: 9,
-            colorValue: 5
+            value: 9
           },
           {
             name: "Armed Services",
-            value: 8,
-            colorValue: 6
+            value: 8
           },
           {
             name:
-              "Health, Education, Labor and Pensions/Education and the Workforce",
-            value: 8,
-            colorValue: 6
+              "Health, Education, Labor and Pensions/ Education and the Workforce",
+            value: 8
           },
           {
-            name: "Homeland Security/Oversight and Government Reform",
-            value: 8,
-            colorValue: 6
+            name: "Homeland Security/ Oversight and Government Reform",
+            value: 8
           },
           {
             name: "Rules",
-            value: 7,
-            colorValue: 6
+            value: 7
           },
           {
-            name: "Banking/Financial Services",
-            value: 7,
-            colorValue: 6
+            name: "Banking/ Financial Services",
+            value: 7
           },
           {
-            name: "Energy and Natural Resources/Energy and Commerce",
-            value: 6,
-            colorValue: 6
+            name: "Energy and Natural Resources/ Energy and Commerce",
+            value: 6
           },
           {
             name: "Judiciary",
-            value: 6,
-            colorValue: 6
+            value: 6
           },
           {
             name: "Agriculture",
-            value: 5,
-            colorValue: 7
+            value: 5
           }
-        ]
+        ].map(c => {
+          return { ...c, colorValue: c.value };
+        })
       }
     ],
     title: {
@@ -802,8 +781,10 @@ $(function() {
       // General Chart Options
       chart: {
         zoomType: "x",
-        type: "column"
+        type: "column",
+        height: "33%"
       },
+      exporting: { enabled: true },
       // Chart Title and Subtitle
       title: {
         text: title
@@ -828,8 +809,25 @@ $(function() {
       },
       // Y Axis
       yAxis: {
+        gridLineWidth: 1,
+        gridLineColor: "#000000",
         title: {
           text: "Response Count"
+        }
+      },
+      xAxis: {
+        gridLineWidth: 0,
+        labels: {
+          formatter: function() {
+            console.log(this);
+            return this.value === 1
+              ? `${this.value}<br>Oppose`
+              : this.value === 7
+                ? `${this.value}<br>Support`
+                : this.value === "."
+                  ? ``
+                  : `${this.value}`;
+          }
         }
       },
       tooltip: {
@@ -838,8 +836,11 @@ $(function() {
       // Additional Plot Options
       plotOptions: {
         column: {
-          stacking: null, // Normal bar graph
-          // stacking: "normal", // Stacked bar graph
+          stacking: null,
+          borderColor: "transparent",
+          groupPadding: 0.1,
+          pointPadding: 0.05,
+          // pointWidth: 33,
           dataLabels: {
             enabled: false
           }
@@ -847,226 +848,4 @@ $(function() {
       }
     });
   });
-
-  var chart, newOffset;
-  var data = [];
-
-  Highcharts.data({
-    googleSpreadsheetKey: "16ZwPbeZX5gM7Ejz6sbH0Lr9ukqocqhNQM4DuaRE1T24",
-    googleSpreadsheetWorksheet: 1,
-    switchRowsAndColumns: false,
-    parsed: function(columns) {
-      columns[0].slice(1).forEach((column, i) => {
-        nation = {};
-        nation[column] = {};
-        nation[column].democrat = columns[1].slice(1)[i];
-        nation[column].republican = columns[2].slice(1)[i];
-        nation[column].incidents =
-          nation[column].democrat + nation[column].republican;
-        data.push(nation);
-      });
-
-      data = data.sort((b, a) => {
-        let nationA = Object.keys(a)[0];
-        let nationB = Object.keys(b)[0];
-        return a[nationA].incidents - b[nationB].incidents;
-      });
-
-      data.nations = columns[0].slice(1);
-      data.democrat = columns[1].slice(1);
-      data.republican = columns[2].slice(1);
-      data.max = Math.max(...data.republican.concat(data.democrat));
-      renderChart(data);
-      offsetYAxis();
-    }
-  });
-
-  window.addEventListener("resize", () => {
-    offsetYAxis();
-  });
-
-  function offsetYAxis() {
-    let containerWidth = document.getElementById("butterfly").offsetWidth;
-    let adjustedOffset = 0 - containerWidth / 2;
-    chart.update({
-      xAxis: {
-        offset: adjustedOffset
-      }
-    });
-  }
-
-  function renderChart(data) {
-    chart = Highcharts.chart("butterfly", {
-      exporting: { enabled: false },
-      chart: {
-        margin: [100, 50, 100, 50],
-        type: "bar",
-        style: {
-          paddingBottom: "50px",
-          overflow: "visible"
-        }
-      },
-      responsive: {
-        rules: [
-          {
-            condition: {
-              maxWidth: 400,
-              minWidth: 250
-            },
-            chartOptions: {
-              chart: {
-                marginTop: 225,
-                height: 900
-              },
-
-              xAxis: {
-                reversed: true,
-                labels: {
-                  style: {
-                    fontSize: "11px"
-                  }
-                }
-              }
-            }
-          },
-          {
-            condition: {
-              maxWidth: 768,
-              minWidth: 400
-            },
-            chartOptions: {
-              chart: {
-                marginTop: 125,
-                height: 700
-              }
-            }
-          },
-          {
-            condition: {
-              maxWidth: 768
-            },
-            chartOptions: {
-              yAxis: [
-                {
-                  width: "45%"
-                },
-                {
-                  left: "55%",
-                  width: "45%"
-                },
-                {}
-              ]
-            }
-          }
-        ]
-      },
-      legend: {
-        align: "center",
-        verticalAlign: "bottom",
-        layout: "horizontal",
-        y: 15,
-        itemStyle: {
-          fontWeight: "normal"
-        }
-      },
-      title: {
-        text: "Alliance Ratings by Party",
-        floating: false
-      },
-      subtitle: {
-        useHTML: true,
-        text: ""
-      },
-      credits: {
-        enabled: true,
-        href: false,
-        text: "CSIS International Security Program | Source: CSIS",
-        position: {
-          y: 15
-        }
-      },
-
-      tooltip: {
-        headerFormat: "",
-
-        crosshairs: true,
-        borderColor: Highcharts.getOptions().colors[2],
-
-        valueSuffix: " "
-      },
-      xAxis: {
-        title: {
-          text: null
-        },
-        categories: data.nations,
-        labels: {
-          x: -30,
-          align: "center",
-          style: {
-            width: "100%",
-            color: "black"
-          },
-          formatter: function() {
-            return this.value === 1
-              ? "Oppose"
-              : this.value === 7
-                ? "Support"
-                : this.value === 2
-                  ? "⬆"
-                  : this.value === 6
-                    ? "⬇"
-                    : "▮";
-          }
-        },
-        lineWidth: 0,
-        tickWidth: 0
-      },
-      yAxis: [
-        {
-          title: {
-            text: null
-          },
-          labels: {
-            enabled: false
-          },
-          max: data.max,
-          width: "45%",
-          reversed: true,
-          opposite: false
-        },
-        {
-          offset: 0,
-          title: {
-            text: null
-          },
-          labels: {
-            enabled: false
-          },
-          max: data.max,
-          left: "55%",
-          width: "45%"
-        },
-        {
-          title: {
-            text: "",
-            align: "middle",
-            y: -15,
-            style: { fontWeight: "bold" }
-          }
-        }
-      ],
-      series: [
-        {
-          name: "Democrat",
-          yAxis: 0,
-          data: data.democrat
-        },
-        {
-          name: "Republican",
-          yAxis: 1,
-          data: data.republican
-        }
-      ]
-    });
-  }
 });
