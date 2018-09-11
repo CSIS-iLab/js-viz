@@ -13,7 +13,7 @@ Highcharts.theme = {
   colors: [
     "#79c5e6",
     "#ee402f",
-    "#115175",
+    "#CCCC00",
     "#0faa91",
     "#004165",
     "#e5eff6",

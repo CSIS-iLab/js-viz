@@ -1,496 +1,712 @@
 $(function() {
-  Highcharts.chart("tilemap", {
-    chart: {
-      type: "tilemap",
-      inverted: true,
-      height: "80%"
+  let states = [
+    {
+      members: [],
+      count: 0,
+      value: null,
+      abbreviation: "AL",
+      name: "Alabama",
+      region: "South",
+      x: 6,
+      y: 7
     },
-
-    title: {
-      text: "U.S. states by population in 2016"
+    {
+      members: [],
+      count: 0,
+      value: null,
+      abbreviation: "AK",
+      name: "Alaska",
+      region: "West",
+      x: 0,
+      y: 0
     },
-
-    subtitle: {
-      text:
-        'Source:<a href="https://simple.wikipedia.org/wiki/List_of_U.S._states_by_population">Wikipedia</a>'
+    {
+      members: [],
+      count: 0,
+      value: null,
+      abbreviation: "AZ",
+      name: "Arizona",
+      region: "West",
+      x: 5,
+      y: 3
     },
-
-    xAxis: {
-      visible: false
+    {
+      members: [],
+      count: 0,
+      value: null,
+      abbreviation: "AR",
+      name: "Arkansas",
+      region: "South",
+      x: 5,
+      y: 6
     },
-
-    yAxis: {
-      visible: false
+    {
+      members: [],
+      count: 0,
+      value: null,
+      abbreviation: "CA",
+      name: "California",
+      region: "West",
+      x: 5,
+      y: 2
     },
+    {
+      members: [],
+      count: 0,
+      value: null,
+      abbreviation: "CO",
+      name: "Colorado",
+      region: "West",
+      x: 4,
+      y: 3
+    },
+    {
+      members: [],
+      count: 0,
+      value: null,
+      abbreviation: "CT",
+      name: "Connecticut",
+      region: "Northeast",
+      x: 3,
+      y: 11
+    },
+    {
+      members: [],
+      count: 0,
+      value: null,
+      abbreviation: "DE",
+      name: "Delaware",
+      region: "South",
+      x: 4,
+      y: 9
+    },
+    {
+      members: [],
+      count: 0,
+      value: null,
+      abbreviation: "DC",
+      name: "District of Columbia",
+      region: "South",
+      x: 4,
+      y: 10
+    },
+    {
+      members: [],
+      count: 0,
+      value: null,
+      abbreviation: "FL",
+      name: "Florida",
+      region: "South",
+      x: 8,
+      y: 8
+    },
+    {
+      members: [],
+      count: 0,
+      value: null,
+      abbreviation: "GA",
+      name: "Georgia",
+      region: "South",
+      x: 7,
+      y: 8
+    },
+    {
+      members: [],
+      count: 0,
+      value: null,
+      abbreviation: "HI",
+      name: "Hawaii",
+      region: "West",
+      x: 8,
+      y: 0
+    },
+    {
+      members: [],
+      count: 0,
+      value: null,
+      abbreviation: "ID",
+      name: "Idaho",
+      region: "West",
+      x: 3,
+      y: 2
+    },
+    {
+      members: [],
+      count: 0,
+      value: null,
+      abbreviation: "IL",
+      name: "Illinois",
+      region: "Midwest",
+      x: 3,
+      y: 6
+    },
+    {
+      members: [],
+      count: 0,
+      value: null,
+      abbreviation: "IN",
+      name: "Indiana",
+      region: "Midwest",
+      x: 3,
+      y: 7
+    },
+    {
+      members: [],
+      count: 0,
+      value: null,
+      abbreviation: "IA",
+      name: "Iowa",
+      region: "Midwest",
+      x: 3,
+      y: 5
+    },
+    {
+      members: [],
+      count: 0,
+      value: null,
+      abbreviation: "KS",
+      name: "Kansas",
+      region: "Midwest",
+      x: 5,
+      y: 5
+    },
+    {
+      members: [],
+      count: 0,
+      value: null,
+      abbreviation: "KY",
+      name: "Kentucky",
+      region: "South",
+      x: 4,
+      y: 6
+    },
+    {
+      members: [],
+      count: 0,
+      value: null,
+      abbreviation: "LA",
+      name: "Louisiana",
+      region: "South",
+      x: 6,
+      y: 5
+    },
+    {
+      members: [],
+      count: 0,
+      value: null,
+      abbreviation: "ME",
+      name: "Maine",
+      region: "Northeast",
+      x: 0,
+      y: 11
+    },
+    {
+      members: [],
+      count: 0,
+      value: null,
+      abbreviation: "MD",
+      name: "Maryland",
+      region: "South",
+      x: 4,
+      y: 8
+    },
+    {
+      members: [],
+      count: 0,
+      value: null,
+      abbreviation: "MA",
+      name: "Massachusetts",
+      region: "Northeast",
+      x: 2,
+      y: 10
+    },
+    {
+      members: [],
+      count: 0,
+      value: null,
+      abbreviation: "MI",
+      name: "Michigan",
+      region: "Midwest",
+      x: 2,
+      y: 7
+    },
+    {
+      members: [],
+      count: 0,
+      value: null,
+      abbreviation: "MN",
+      name: "Minnesota",
+      region: "Midwest",
+      x: 2,
+      y: 4
+    },
+    {
+      members: [],
+      count: 0,
+      value: null,
+      abbreviation: "MS",
+      name: "Mississippi",
+      region: "South",
+      x: 6,
+      y: 6
+    },
+    {
+      members: [],
+      count: 0,
+      value: null,
+      abbreviation: "MO",
+      name: "Missouri",
+      region: "Midwest",
+      x: 4,
+      y: 5
+    },
+    {
+      members: [],
+      count: 0,
+      value: null,
+      abbreviation: "MT",
+      name: "Montana",
+      region: "West",
+      x: 2,
+      y: 2
+    },
+    {
+      members: [],
+      count: 0,
+      value: null,
+      abbreviation: "NE",
+      name: "Nebraska",
+      region: "Midwest",
+      x: 4,
+      y: 4
+    },
+    {
+      members: [],
+      count: 0,
+      value: null,
+      abbreviation: "NV",
+      name: "Nevada",
+      region: "West",
+      x: 4,
+      y: 2
+    },
+    {
+      members: [],
+      count: 0,
+      value: null,
+      abbreviation: "NH",
+      name: "New Hampshire",
+      region: "Northeast",
+      x: 1,
+      y: 11
+    },
+    {
+      members: [],
+      count: 0,
+      value: null,
+      abbreviation: "NJ",
+      name: "New Jersey",
+      region: "Northeast",
+      x: 3,
+      y: 10
+    },
+    {
+      members: [],
+      count: 0,
+      value: null,
+      abbreviation: "NM",
+      name: "New Mexico",
+      region: "West",
+      x: 6,
+      y: 3
+    },
+    {
+      members: [],
+      count: 0,
+      value: null,
+      abbreviation: "NY",
+      name: "New York",
+      region: "Northeast",
+      x: 2,
+      y: 9
+    },
+    {
+      members: [],
+      count: 0,
+      value: null,
+      abbreviation: "NC",
+      name: "North Carolina",
+      region: "South",
+      x: 5,
+      y: 9
+    },
+    {
+      members: [],
+      count: 0,
+      value: null,
+      abbreviation: "ND",
+      name: "North Dakota",
+      region: "Midwest",
+      x: 2,
+      y: 3
+    },
+    {
+      members: [],
+      count: 0,
+      value: null,
+      abbreviation: "OH",
+      name: "Ohio",
+      region: "Midwest",
+      x: 3,
+      y: 8
+    },
+    {
+      members: [],
+      count: 0,
+      value: null,
+      abbreviation: "OK",
+      name: "Oklahoma",
+      region: "South",
+      x: 6,
+      y: 4
+    },
+    {
+      members: [],
+      count: 0,
+      value: null,
+      abbreviation: "OR",
+      name: "Oregon",
+      region: "West",
+      x: 4,
+      y: 1
+    },
+    {
+      members: [],
+      count: 0,
+      value: null,
+      abbreviation: "PA",
+      name: "Pennsylvania",
+      region: "Northeast",
+      x: 3,
+      y: 9
+    },
+    {
+      members: [],
+      count: 0,
+      value: null,
+      abbreviation: "RI",
+      name: "Rhode Island",
+      region: "Northeast",
+      x: 2,
+      y: 11
+    },
+    {
+      members: [],
+      count: 0,
+      value: null,
+      abbreviation: "SC",
+      name: "South Carolina",
+      region: "South",
+      x: 6,
+      y: 8
+    },
+    {
+      members: [],
+      count: 0,
+      value: null,
+      abbreviation: "SD",
+      name: "South Dakota",
+      region: "Midwest",
+      x: 3,
+      y: 4
+    },
+    {
+      members: [],
+      count: 0,
+      value: null,
+      abbreviation: "TN",
+      name: "Tennessee",
+      region: "South",
+      x: 5,
+      y: 7
+    },
+    {
+      members: [],
+      count: 0,
+      value: null,
+      abbreviation: "TX",
+      name: "Texas",
+      region: "South",
+      x: 7,
+      y: 4
+    },
+    {
+      members: [],
+      count: 0,
+      value: null,
+      abbreviation: "UT",
+      name: "Utah",
+      region: "West",
+      x: 5,
+      y: 4
+    },
+    {
+      members: [],
+      count: 0,
+      value: null,
+      abbreviation: "VT",
+      name: "Vermont",
+      region: "Northeast",
+      x: 1,
+      y: 10
+    },
+    {
+      members: [],
+      count: 0,
+      value: null,
+      abbreviation: "VA",
+      name: "Virginia",
+      region: "South",
+      x: 5,
+      y: 8
+    },
+    {
+      members: [],
+      count: 0,
+      value: null,
+      abbreviation: "WA",
+      name: "Washington",
+      region: "West",
+      x: 2,
+      y: 1
+    },
+    {
+      members: [],
+      count: 0,
+      value: null,
+      abbreviation: "WV",
+      name: "West Virginia",
+      region: "South",
+      x: 4,
+      y: 7
+    },
+    {
+      members: [],
+      count: 0,
+      value: null,
+      abbreviation: "WI",
+      name: "Wisconsin",
+      region: "Midwest",
+      x: 2,
+      y: 5
+    },
+    {
+      members: [],
+      count: 0,
+      value: null,
+      abbreviation: "WY",
+      name: "Wyoming",
+      region: "West",
+      x: 3,
+      y: 3
+    }
+  ].map(s => {
+    return {
+      ...s,
+      name: s.name.toUpperCase()
+    };
+  });
 
+  let mapData = [];
+  Highcharts.data({
+    googleSpreadsheetKey: "1dq0elY4kkqXbjhpwDB5u43sAjm-wDiZixlvgmoKK4TM",
+    googleSpreadsheetWorksheet: 1,
+    switchRowsAndColumns: true,
+    parsed: function(columns) {
+      columns.forEach((column, i) => {
+        if (i === 0) return;
+        let state = states.find(s => s.abbreviation === column[2]);
+        if (state) {
+          state.members.push(column);
+          state.count = state.count + 1;
+
+          state.value = state.value || 0;
+          state.value +=
+            column[1] === "Democrat"
+              ? 1
+              : column[1] === "Independent"
+                ? "2"
+                : 0;
+
+          state.value = state.value / state.count;
+        }
+
+        mapData.push(state);
+      });
+      let noMembers = states.filter(s => !s.members.length);
+
+      renderTilemap(mapData.concat(noMembers));
+    }
+  });
+
+  function renderTilemap(mapData) {
+    Highcharts.chart("tilemap", {
+      chart: {
+        type: "tilemap",
+        inverted: true,
+        height: "80%"
+      },
+
+      title: {
+        text: "Geographic Diversity"
+      },
+
+      subtitle: {
+        text: "Geographic Diversity of Study Sample Group of Members"
+      },
+
+      credits: {
+        enabled: true,
+        href: false,
+        text: "CSIS International Security Program | Source: NAME"
+      },
+
+      xAxis: {
+        visible: false
+      },
+
+      yAxis: {
+        visible: false
+      },
+
+      colorAxis: {
+        // minColor: "#ee402f",
+        // maxColor: "#79c5e6",
+        dataClasses: [
+          {
+            from: 0,
+            to: 0.2,
+            color: "#ee402f",
+            name: "Republican"
+          },
+          {
+            from: 0.2,
+            to: 0.5,
+            color: "#C76C6C",
+            name: " "
+          },
+          {
+            from: 0.5,
+            to: 0.8,
+            color: "#A099A9"
+          },
+          {
+            from: 1,
+            to: 1,
+            color: "#79c5e6",
+            name: "Democrat"
+          },
+          {
+            from: 2,
+            color: "#CCCC00",
+            name: "Independent"
+          }
+        ]
+      },
+
+      legend: {
+        labelFormatter: function() {
+          return this.from === 0
+            ? "Republican"
+            : this.to === 1
+              ? "Democrat"
+              : this.from === 2
+                ? "Independent"
+                : "";
+        }
+      },
+
+      tooltip: {
+        headerFormat:
+          '<span style="font-size:18px;color:{point.color}">• </span><span style="font-weight:bold>{point.key}</span><br>',
+        pointFormatter: function() {
+          let members = this.members
+            .map(m => {
+              let color =
+                m[1] === "Democrat"
+                  ? "#79c5e6"
+                  : "Democrat"
+                    ? "#ee402f"
+                    : "#CCCC00";
+
+              return `<span style="font-weight:bold;color:${color}">• </span>${
+                m[3]
+              }: ${m[0]}<br>`;
+            })
+            .join("");
+          return members.replace(",", "");
+        }
+      },
+
+      plotOptions: {
+        series: {
+          dataLabels: {
+            enabled: true,
+            format: "{point.abbreviation}",
+            color: "#ffffff",
+            style: {
+              textOutline: false
+            }
+          }
+        }
+      },
+
+      series: [
+        {
+          nullColor: "#cccccc",
+          pointPadding: 0.5,
+          name: "",
+          data: mapData
+        }
+      ]
+    });
+  }
+
+  Highcharts.chart("treemap", {
     colorAxis: {
+      // minColor: "#ee402f",
+      // maxColor: "#79c5e6",
       dataClasses: [
         {
           from: 0,
-          to: 1000000,
-          color: "#F9EDB3",
-          name: "< 1M"
+          to: 2,
+          color: "#ee402f",
+          name: "Republican"
         },
         {
-          from: 1000000,
-          to: 5000000,
-          color: "#FFC428",
-          name: "1M - 5M"
+          from: 2,
+          to: 5,
+          color: "#B4838B",
+          name: " "
         },
+
         {
-          from: 5000000,
-          to: 20000000,
-          color: "#FF7987",
-          name: "5M - 20M"
-        },
-        {
-          from: 20000000,
-          color: "#FF2371",
-          name: "> 20M"
+          from: 5,
+          to: 7,
+          color: "#79c5e6",
+          name: "Democrat"
         }
       ]
     },
 
-    tooltip: {
-      headerFormat: "",
-      pointFormat:
-        "The population of <b> {point.name}</b> is <b>{point.value}</b>"
-    },
-
-    plotOptions: {
-      series: {
-        dataLabels: {
-          enabled: true,
-          format: "{point.hc-a2}",
-          color: "#000000",
-          style: {
-            textOutline: false
-          }
-        }
+    legend: {
+      labelFormatter: function() {
+        return this.from === 0
+          ? "Republican"
+          : this.to === 10
+            ? "Democrat"
+            : "";
       }
-    },
-
-    series: [
-      {
-        name: "",
-        data: [
-          {
-            "hc-a2": "AL",
-            name: "Alabama",
-            region: "South",
-            x: 6,
-            y: 7,
-            value: 4849377
-          },
-          {
-            "hc-a2": "AK",
-            name: "Alaska",
-            region: "West",
-            x: 0,
-            y: 0,
-            value: 737732
-          },
-          {
-            "hc-a2": "AZ",
-            name: "Arizona",
-            region: "West",
-            x: 5,
-            y: 3,
-            value: 6745408
-          },
-          {
-            "hc-a2": "AR",
-            name: "Arkansas",
-            region: "South",
-            x: 5,
-            y: 6,
-            value: 2994079
-          },
-          {
-            "hc-a2": "CA",
-            name: "California",
-            region: "West",
-            x: 5,
-            y: 2,
-            value: 39250017
-          },
-          {
-            "hc-a2": "CO",
-            name: "Colorado",
-            region: "West",
-            x: 4,
-            y: 3,
-            value: 5540545
-          },
-          {
-            "hc-a2": "CT",
-            name: "Connecticut",
-            region: "Northeast",
-            x: 3,
-            y: 11,
-            value: 3596677
-          },
-          {
-            "hc-a2": "DE",
-            name: "Delaware",
-            region: "South",
-            x: 4,
-            y: 9,
-            value: 935614
-          },
-          {
-            "hc-a2": "DC",
-            name: "District of Columbia",
-            region: "South",
-            x: 4,
-            y: 10,
-            value: 7288000
-          },
-          {
-            "hc-a2": "FL",
-            name: "Florida",
-            region: "South",
-            x: 8,
-            y: 8,
-            value: 20612439
-          },
-          {
-            "hc-a2": "GA",
-            name: "Georgia",
-            region: "South",
-            x: 7,
-            y: 8,
-            value: 10310371
-          },
-          {
-            "hc-a2": "HI",
-            name: "Hawaii",
-            region: "West",
-            x: 8,
-            y: 0,
-            value: 1419561
-          },
-          {
-            "hc-a2": "ID",
-            name: "Idaho",
-            region: "West",
-            x: 3,
-            y: 2,
-            value: 1634464
-          },
-          {
-            "hc-a2": "IL",
-            name: "Illinois",
-            region: "Midwest",
-            x: 3,
-            y: 6,
-            value: 12801539
-          },
-          {
-            "hc-a2": "IN",
-            name: "Indiana",
-            region: "Midwest",
-            x: 3,
-            y: 7,
-            value: 6596855
-          },
-          {
-            "hc-a2": "IA",
-            name: "Iowa",
-            region: "Midwest",
-            x: 3,
-            y: 5,
-            value: 3107126
-          },
-          {
-            "hc-a2": "KS",
-            name: "Kansas",
-            region: "Midwest",
-            x: 5,
-            y: 5,
-            value: 2904021
-          },
-          {
-            "hc-a2": "KY",
-            name: "Kentucky",
-            region: "South",
-            x: 4,
-            y: 6,
-            value: 4413457
-          },
-          {
-            "hc-a2": "LA",
-            name: "Louisiana",
-            region: "South",
-            x: 6,
-            y: 5,
-            value: 4649676
-          },
-          {
-            "hc-a2": "ME",
-            name: "Maine",
-            region: "Northeast",
-            x: 0,
-            y: 11,
-            value: 1330089
-          },
-          {
-            "hc-a2": "MD",
-            name: "Maryland",
-            region: "South",
-            x: 4,
-            y: 8,
-            value: 6016447
-          },
-          {
-            "hc-a2": "MA",
-            name: "Massachusetts",
-            region: "Northeast",
-            x: 2,
-            y: 10,
-            value: 6811779
-          },
-          {
-            "hc-a2": "MI",
-            name: "Michigan",
-            region: "Midwest",
-            x: 2,
-            y: 7,
-            value: 9928301
-          },
-          {
-            "hc-a2": "MN",
-            name: "Minnesota",
-            region: "Midwest",
-            x: 2,
-            y: 4,
-            value: 5519952
-          },
-          {
-            "hc-a2": "MS",
-            name: "Mississippi",
-            region: "South",
-            x: 6,
-            y: 6,
-            value: 2984926
-          },
-          {
-            "hc-a2": "MO",
-            name: "Missouri",
-            region: "Midwest",
-            x: 4,
-            y: 5,
-            value: 6093000
-          },
-          {
-            "hc-a2": "MT",
-            name: "Montana",
-            region: "West",
-            x: 2,
-            y: 2,
-            value: 1023579
-          },
-          {
-            "hc-a2": "NE",
-            name: "Nebraska",
-            region: "Midwest",
-            x: 4,
-            y: 4,
-            value: 1881503
-          },
-          {
-            "hc-a2": "NV",
-            name: "Nevada",
-            region: "West",
-            x: 4,
-            y: 2,
-            value: 2839099
-          },
-          {
-            "hc-a2": "NH",
-            name: "New Hampshire",
-            region: "Northeast",
-            x: 1,
-            y: 11,
-            value: 1326813
-          },
-          {
-            "hc-a2": "NJ",
-            name: "New Jersey",
-            region: "Northeast",
-            x: 3,
-            y: 10,
-            value: 8944469
-          },
-          {
-            "hc-a2": "NM",
-            name: "New Mexico",
-            region: "West",
-            x: 6,
-            y: 3,
-            value: 2085572
-          },
-          {
-            "hc-a2": "NY",
-            name: "New York",
-            region: "Northeast",
-            x: 2,
-            y: 9,
-            value: 19745289
-          },
-          {
-            "hc-a2": "NC",
-            name: "North Carolina",
-            region: "South",
-            x: 5,
-            y: 9,
-            value: 10146788
-          },
-          {
-            "hc-a2": "ND",
-            name: "North Dakota",
-            region: "Midwest",
-            x: 2,
-            y: 3,
-            value: 739482
-          },
-          {
-            "hc-a2": "OH",
-            name: "Ohio",
-            region: "Midwest",
-            x: 3,
-            y: 8,
-            value: 11614373
-          },
-          {
-            "hc-a2": "OK",
-            name: "Oklahoma",
-            region: "South",
-            x: 6,
-            y: 4,
-            value: 3878051
-          },
-          {
-            "hc-a2": "OR",
-            name: "Oregon",
-            region: "West",
-            x: 4,
-            y: 1,
-            value: 3970239
-          },
-          {
-            "hc-a2": "PA",
-            name: "Pennsylvania",
-            region: "Northeast",
-            x: 3,
-            y: 9,
-            value: 12784227
-          },
-          {
-            "hc-a2": "RI",
-            name: "Rhode Island",
-            region: "Northeast",
-            x: 2,
-            y: 11,
-            value: 1055173
-          },
-          {
-            "hc-a2": "SC",
-            name: "South Carolina",
-            region: "South",
-            x: 6,
-            y: 8,
-            value: 4832482
-          },
-          {
-            "hc-a2": "SD",
-            name: "South Dakota",
-            region: "Midwest",
-            x: 3,
-            y: 4,
-            value: 853175
-          },
-          {
-            "hc-a2": "TN",
-            name: "Tennessee",
-            region: "South",
-            x: 5,
-            y: 7,
-            value: 6651194
-          },
-          {
-            "hc-a2": "TX",
-            name: "Texas",
-            region: "South",
-            x: 7,
-            y: 4,
-            value: 27862596
-          },
-          {
-            "hc-a2": "UT",
-            name: "Utah",
-            region: "West",
-            x: 5,
-            y: 4,
-            value: 2942902
-          },
-          {
-            "hc-a2": "VT",
-            name: "Vermont",
-            region: "Northeast",
-            x: 1,
-            y: 10,
-            value: 626011
-          },
-          {
-            "hc-a2": "VA",
-            name: "Virginia",
-            region: "South",
-            x: 5,
-            y: 8,
-            value: 8411808
-          },
-          {
-            "hc-a2": "WA",
-            name: "Washington",
-            region: "West",
-            x: 2,
-            y: 1,
-            value: 7288000
-          },
-          {
-            "hc-a2": "WV",
-            name: "West Virginia",
-            region: "South",
-            x: 4,
-            y: 7,
-            value: 1850326
-          },
-          {
-            "hc-a2": "WI",
-            name: "Wisconsin",
-            region: "Midwest",
-            x: 2,
-            y: 5,
-            value: 5778708
-          },
-          {
-            "hc-a2": "WY",
-            name: "Wyoming",
-            region: "West",
-            x: 3,
-            y: 3,
-            value: 584153
-          }
-        ]
-      }
-    ]
-  });
-
-  Highcharts.chart("treemap", {
-    colorAxis: {
-      minColor: "#FFFFFF",
-      maxColor: Highcharts.getOptions().colors[0]
     },
     series: [
       {
@@ -498,45 +714,76 @@ $(function() {
         layoutAlgorithm: "squarified",
         data: [
           {
-            name: "A",
-            value: 6,
+            name: "Foreign Affairs/Relations",
+            value: 16,
             colorValue: 1
           },
           {
-            name: "B",
-            value: 6,
+            name: "Appropriations",
+            value: 14,
             colorValue: 2
           },
           {
-            name: "C",
-            value: 4,
+            name: "Budget",
+            value: 10,
             colorValue: 3
           },
           {
-            name: "D",
-            value: 3,
+            name: "Finance/Ways and Means",
+            value: 10,
             colorValue: 4
           },
           {
-            name: "E",
-            value: 2,
+            name: "Intelligence ",
+            value: 9,
             colorValue: 5
           },
           {
-            name: "F",
-            value: 2,
+            name: "Armed Services",
+            value: 8,
             colorValue: 6
           },
           {
-            name: "G",
-            value: 1,
+            name:
+              "Health, Education, Labor and Pensions/Education and the Workforce",
+            value: 8,
+            colorValue: 6
+          },
+          {
+            name: "Homeland Security/Oversight and Government Reform",
+            value: 8,
+            colorValue: 6
+          },
+          {
+            name: "Rules",
+            value: 7,
+            colorValue: 6
+          },
+          {
+            name: "Banking/Financial Services",
+            value: 7,
+            colorValue: 6
+          },
+          {
+            name: "Energy and Natural Resources/Energy and Commerce",
+            value: 6,
+            colorValue: 6
+          },
+          {
+            name: "Judiciary",
+            value: 6,
+            colorValue: 6
+          },
+          {
+            name: "Agriculture",
+            value: 5,
             colorValue: 7
           }
         ]
       }
     ],
     title: {
-      text: "Highcharts Treemap"
+      text: "Committee Affiliation"
     }
   });
 
@@ -588,6 +835,9 @@ $(function() {
         title: {
           text: "Response Count"
         }
+      },
+      tooltip: {
+        headerFormat: ""
       },
       // Additional Plot Options
       plotOptions: {
@@ -734,7 +984,7 @@ $(function() {
       credits: {
         enabled: true,
         href: false,
-        text: "CSIS International Security PRogram | Source: CSIS",
+        text: "CSIS International Security Program | Source: CSIS",
         position: {
           y: 15
         }
