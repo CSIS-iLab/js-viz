@@ -635,7 +635,7 @@ $(function() {
               let color =
                 m[1] === "Democrat"
                   ? "#79c5e6"
-                  : "Democrat"
+                  : m[1] === "Republican"
                     ? "#ee402f"
                     : "#CCCC00";
 
@@ -701,11 +701,7 @@ $(function() {
 
     legend: {
       labelFormatter: function() {
-        return this.from === 0
-          ? "Republican"
-          : this.to === 10
-            ? "Democrat"
-            : "";
+        return this.from === 0 ? "Republican" : this.to === 7 ? "Democrat" : "";
       }
     },
     series: [
@@ -952,11 +948,11 @@ $(function() {
             chartOptions: {
               yAxis: [
                 {
-                  width: "30%"
+                  width: "45%"
                 },
                 {
-                  left: "70%",
-                  width: "30%"
+                  left: "55%",
+                  width: "45%"
                 },
                 {}
               ]
@@ -989,7 +985,10 @@ $(function() {
           y: 15
         }
       },
+
       tooltip: {
+        headerFormat: "",
+
         crosshairs: true,
         borderColor: Highcharts.getOptions().colors[2],
 
@@ -1001,6 +1000,7 @@ $(function() {
         },
         categories: data.nations,
         labels: {
+          x: -30,
           align: "center",
           style: {
             width: "100%",
@@ -1030,7 +1030,7 @@ $(function() {
             enabled: false
           },
           max: data.max,
-          width: "40%",
+          width: "45%",
           reversed: true,
           opposite: false
         },
@@ -1043,8 +1043,8 @@ $(function() {
             enabled: false
           },
           max: data.max,
-          left: "60%",
-          width: "40%"
+          left: "55%",
+          width: "45%"
         },
         {
           title: {
