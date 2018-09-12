@@ -1,5 +1,5 @@
 $(document).ready(function() {
-  let url = "js/HR_staffList.json";
+  let url = "js/HR_staffList.csv";
 
   fetch(url)
     .then(resp => resp.json())
