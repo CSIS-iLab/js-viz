@@ -77,6 +77,7 @@ $(document).ready(function() {
           let searchField = document.querySelector("input[type='search']");
           searchField.addEventListener("keydown", function() {
             column.search("", true, false).draw();
+            document.querySelector("select").value = "";
           });
           $("tr").hover(function() {
             this.classList.toggle("hover");
