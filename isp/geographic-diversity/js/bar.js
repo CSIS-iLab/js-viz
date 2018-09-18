@@ -554,7 +554,7 @@ $(function() {
       chart: {
         type: "tilemap",
         inverted: true,
-        height: "80%"
+        height: "85%"
       },
 
       title: {
