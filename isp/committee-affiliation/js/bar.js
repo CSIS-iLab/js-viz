@@ -7,7 +7,7 @@ $(function() {
     credits: {
       enabled: true,
       href: false,
-      text: "CSIS International Security Program | Source: NAME"
+      text: "CSIS"
     },
     plotOptions: {
       treemap: {

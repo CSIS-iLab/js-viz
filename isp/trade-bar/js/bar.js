@@ -9,7 +9,7 @@ $(function() {
     chart: {
       zoomType: "x",
       type: "column",
-      height: "33%"
+      height: "300px"
     },
     exporting: { enabled: true },
     // Chart Title and Subtitle
@@ -23,7 +23,7 @@ $(function() {
     credits: {
       enabled: true,
       href: false,
-      text: "CSIS International Security Program | Source: NAME"
+      text: "CSIS"
     },
     // Chart Legend
     legend: {
@@ -46,7 +46,7 @@ $(function() {
       gridLineWidth: 0,
       labels: {
         formatter: function() {
-          console.log(this);
+          
           return this.value === 1
             ? `${this.value}<br>Oppose`
             : this.value === 7

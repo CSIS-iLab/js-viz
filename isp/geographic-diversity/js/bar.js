@@ -568,7 +568,7 @@ $(function() {
       credits: {
         enabled: true,
         href: false,
-        text: "CSIS International Security Program | Source: NAME"
+        text: "CSIS"
       },
 
       xAxis: {
@@ -585,20 +585,20 @@ $(function() {
         dataClasses: [
           {
             from: 0,
-            to: 0.2,
+            to: 0.001,
             color: "#ee402f",
             name: "Republican"
           },
           {
-            from: 0.2,
-            to: 0.5,
+            from: 0.001,
+            to: 0.999,
             color: "#B4838B",
             name: "Mixed"
           },
 
           {
-            from: 1,
-            to: 1,
+            from: 0.999,
+            to: 1.1,
             color: "#79c5e6",
             name: "Democrat"
           },

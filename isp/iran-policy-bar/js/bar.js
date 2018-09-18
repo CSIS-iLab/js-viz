@@ -9,12 +9,12 @@ $(function() {
     chart: {
       zoomType: "x",
       type: "column",
-      height: "33%"
+      height: "300px"
     },
     exporting: { enabled: true },
     // Chart Title and Subtitle
     title: {
-      text: "Iran Policy Ratings by Party"
+      text: "Iran Policy Response Ratings by Party"
     },
     subtitle: {
       text: ""
@@ -23,7 +23,7 @@ $(function() {
     credits: {
       enabled: true,
       href: false,
-      text: "CSIS International Security Program | Source: NAME"
+      text: "CSIS"
     },
     // Chart Legend
     legend: {
@@ -46,11 +46,10 @@ $(function() {
       gridLineWidth: 0,
       labels: {
         formatter: function() {
-          console.log(this);
           return this.value === 1
-            ? `${this.value}<br>Oppose`
+            ? `${this.value}<br>More Coercive Engagement`
             : this.value === 7
-              ? `${this.value}<br>Support`
+              ? `${this.value}<br>Less Coercive Engagemen`
               : this.value === "."
                 ? ``
                 : `${this.value}`;
