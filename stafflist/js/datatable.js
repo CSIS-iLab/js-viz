@@ -26,8 +26,9 @@ $(document).ready(function() {
               }
             }
           });
-          table.rows.push(newRow);
-          if (table.rows.length === json.feed.entry.length) {
+          if (i !== 0) table.rows.push(newRow);
+
+          if (table.rows.length === json.feed.entry.length - 1) {
             resolve(table);
           }
         });
@@ -77,6 +78,7 @@ $(document).ready(function() {
           let searchField = document.querySelector("input[type='search']");
           searchField.addEventListener("keydown", function() {
             column.search("", true, false).draw();
+            document.querySelector("select").value = "";
           });
           $("tr").hover(function() {
             this.classList.toggle("hover");
