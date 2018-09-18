@@ -550,6 +550,7 @@ $(function() {
   });
 
   function renderTilemap(mapData) {
+    console.log(mapData);
     Highcharts.chart("tilemap", {
       chart: {
         type: "tilemap",
@@ -591,13 +592,13 @@ $(function() {
           },
           {
             from: 0.001,
-            to: 0.999,
+            to: 0.66,
             color: "#B4838B",
             name: "Mixed"
           },
 
           {
-            from: 0.999,
+            from: 0.66,
             to: 1.1,
             color: "#79c5e6",
             name: "Democrat"
@@ -971,7 +972,7 @@ $(function() {
             return this.value === 1
               ? `${this.value}<br>More Coercive Engagement`
               : this.value === 7
-                ? `${this.value}<br>Less Coercive Engagemen`
+                ? `${this.value}<br>Less Coercive Engagement`
                 : this.value === "."
                   ? ``
                   : `${this.value}`;

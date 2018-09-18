@@ -49,7 +49,7 @@ $(function() {
           return this.value === 1
             ? `${this.value}<br>More Coercive Engagement`
             : this.value === 7
-              ? `${this.value}<br>Less Coercive Engagemen`
+              ? `${this.value}<br>Less Coercive Engagement`
               : this.value === "."
                 ? ``
                 : `${this.value}`;
