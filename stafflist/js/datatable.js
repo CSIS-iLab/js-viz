@@ -1,5 +1,6 @@
 $(document).ready(function() {
-  let url = "js/HR_staffList.csv";
+  let spreadsheetID = "1hTYUOZxwgorQCJumu7bV2wHiaRfgwCOOEORLbfDjMio";
+  let url = `https://spreadsheets.google.com/feeds/list/${spreadsheetID}/od6/public/values?alt=json`;
 
   fetch(url)
     .then(resp => resp.json())
@@ -9,15 +10,24 @@ $(document).ready(function() {
           rows: [],
           columns: []
         };
-        json.forEach((row, i) => {
-          if (i === 0) {
-            Object.keys(row).forEach(column => {
-              $("thead tr").append(`<th>${column}</th`);
-              table.columns.push({ data: column, defaultContent: "" });
-            });
-          }
-          table.rows.push(row);
-          if (table.rows.length === json.length) {
+
+        json.feed.entry.filter((row, i) => {
+          let newRow = {};
+          Object.keys(row).forEach(column => {
+            if (column.includes("gsx$")) {
+              newRow[column] = row[column]["$t"];
+              if (
+                !Object.values(table.columns.map(c => c.data)).includes(column)
+              ) {
+                table.columns.push({ data: column, defaultContent: "" });
+                if (i === 0) {
+                  $("thead tr").append(`<th>${row[column]["$t"]}</th`);
+                }
+              }
+            }
+          });
+          table.rows.push(newRow);
+          if (table.rows.length === json.feed.entry.length) {
             resolve(table);
           }
         });
@@ -33,7 +43,7 @@ $(document).ready(function() {
           return { targets: [i], orderable: false };
         }),
         rowGroup: {
-          dataSrc: "Work Group"
+          dataSrc: "gsx$workgroup"
         },
 
         initComplete: function() {
@@ -48,6 +58,7 @@ $(document).ready(function() {
           );
 
           let column = this.api().column(2);
+
           var select = $('<select><option value=""></option></select>')
             .appendTo($(column.header()))
             .on("change", function() {
@@ -62,6 +73,14 @@ $(document).ready(function() {
             .each(function(d, j) {
               select.append('<option value="' + d + '">' + d + "</option>");
             });
+
+          let searchField = document.querySelector("input[type='search']");
+          searchField.addEventListener("keydown", function() {
+            column.search("", true, false).draw();
+          });
+          $("tr").hover(function() {
+            this.classList.toggle("hover");
+          });
         }
       });
     });
