@@ -605,7 +605,7 @@ $(function() {
           },
           {
             from: 2,
-            color: "#CCCC00",
+            color: "##ffd507",
             name: "Independent"
           }
         ]
@@ -634,7 +634,7 @@ $(function() {
                   ? "#79c5e6"
                   : m[1] === "Republican"
                     ? "#ee402f"
-                    : "#CCCC00";
+                    : "##ffd507";
 
               return `<span style="font-weight:bold;color:${color}">• </span>${
                 m[3]
@@ -787,6 +787,7 @@ $(function() {
       },
       exporting: { enabled: true },
       // Chart Title and Subtitle
+      style: { lineHeight: "33%" },
       title: {
         text: title
       },

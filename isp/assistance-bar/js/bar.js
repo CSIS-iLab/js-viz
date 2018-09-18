@@ -14,8 +14,9 @@ $(function() {
     exporting: { enabled: true },
     // Chart Title and Subtitle
     title: {
+      style: { lineHeight: "33%" },
       text:
-        "Humanitarian, Development and Global Health Assistance Ratings by Party"
+        "Humanitarian, Development and Global Health Assistance<br> Ratings by Party"
     },
     subtitle: {
       text: ""

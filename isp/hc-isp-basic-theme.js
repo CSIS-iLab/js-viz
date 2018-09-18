@@ -23,7 +23,7 @@ Highcharts.theme = {
     "#51746d"
   ],
   chart: {
-    backgroundColor: "#fffaf6",
+    backgroundColor: "#fef9f3",
     border: "none",
     color: "#000",
     plotShadow: false,
