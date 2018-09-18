@@ -1,0 +1,126 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>DataTables Base Fiddle</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="googlebot" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+  <script type="text/javascript" src="  https://code.jquery.com/jquery-3.3.1.js"></script>
+
+  <script type="text/javascript" src="  https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+  <script type="text/javascript" src="  https://cdn.datatables.net/rowgroup/1.0.4/js/dataTables.rowGroup.min.js"></script>
+
+  <style>
+    h1 {
+      color: #004165;
+      font-size: 3.94118em;
+      font-weight: 600;
+      margin-top: 30px;
+      margin-bottom: 5px;
+      border-bottom: 5px solid #bcbcbc;
+      padding-bottom: 20px;
+      font-family: Georgia, serif;
+      font-weight: 300;
+      line-height: 1.16667;
+      margin: 0 0 1em 0;
+    }
+
+    tr>td {
+      border-bottom: 1px solid #ddd;
+      padding: 8px 10px;
+      vertical-align: top;
+      font-family: Source-sans-pro, "Liberation Serif", "Times New Roman", Times, serif;
+    }
+
+    tr.odd>td {
+      background-color: #f9f9f9;
+    }
+
+    tr.even>td {
+      background-color: #ffffff;
+    }
+
+    tr:not(.group).hover>td {
+      border-bottom: 2px solid #0a8672;
+
+      color: #0a8672;
+      transition-duration: 0.2s;
+      transition-property: background-color, border-color, box-shadow, color, opacity, text-shadow, transform;
+      transition-timing-function: linear;
+      transform: scaleY(1.1) translateY(-.1em)
+    }
+
+    thead select {
+      width: 100%;
+    }
+
+    th {
+      font-family: Arial, sans-serif;
+      background-color: #004165;
+      padding: 8px 10px;
+      color: white;
+      line-height: 1.25;
+      text-transform: uppercase;
+    }
+
+    tr:first-of-type  td{
+      padding-top: 1.5em;
+    }
+
+    tr.group td {
+      font-family: Arial, sans-serif;
+      border-bottom: 8px solid #0065a4;
+      color: #004165;
+      font-size: 2.35294em;
+      line-height: 1.25;
+      margin-bottom: 1em;
+      text-transform: uppercase;
+    }
+
+    .dataTables_filter {
+      font-family: Arial, sans-serif;
+      padding: 8px 10px;
+      color: white;
+      color: white;
+      font-size: 2.35294em;
+      line-height: 1.25;
+      text-transform: uppercase;
+      background-color: #004165;
+    }
+
+    .dataTables_filter input {
+      width: 50vw;
+      transform: scale(1.5) translate(20%, -10%);
+    }
+  </style>
+
+</head>
+
+<body>
+  <h1>Staff List</h1>
+
+  <table id="example" class="display" style="width:100%">
+    <thead>
+      <tr>
+
+
+      </tr>
+    </thead>
+
+  </table>
+
+
+
+  <script src="https://csis-ilab.github.io/cpower-viz/globaljs/iframeSizer.contentWindow.min.js"></script>
+  <script src="js/datatable.js"></script>
+
+
+</body>
+
+</html>
