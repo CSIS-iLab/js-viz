@@ -1,30 +1,5 @@
 $(function() {
   Highcharts.chart("treemap", {
-    chart: {
-      events: {
-        load: function() {
-          var label = this.renderer
-            .label(
-              "Committee Affiliation counts were tallied by adding up all committee affiliations of the 50 members studied. <br>Many members served on multiple committees and each committee affiliation was counted."
-            )
-            .css({
-              fontSize: "12px"
-            })
-            .add();
-
-          label.align(
-            Highcharts.extend(label.getBBox(), {
-              align: "center",
-              verticalAlign: "bottom",
-              y: -20 // offset
-            }),
-            null,
-            "spacingBox"
-          );
-        }
-      },
-      marginBottom: 100
-    },
     colorAxis: {
       minColor: "#f0e6e8",
       maxColor: "#B4838B"
@@ -32,8 +7,7 @@ $(function() {
     credits: {
       enabled: true,
       href: false,
-      text:
-        "Committee Affiliation counts were tallied by adding up all committee affiliations of the 50 members studied. Many members served on multiple committees and each committee affiliation was counted | CSIS"
+      text: "CSIS"
     },
     plotOptions: {
       treemap: {
