@@ -1,0 +1,161 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>DataTables Base Fiddle</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="googlebot" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+  <script type="text/javascript" src="  https://code.jquery.com/jquery-3.3.1.js"></script>
+
+  <link rel="stylesheet" type="text/css" href="  https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" type="text/css" href="  https://cdn.datatables.net/rowgroup/1.0.4/css/rowGroup.dataTables.min.css">
+
+  <script type="text/javascript" src="  https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+  <script type="text/javascript" src="  https://cdn.datatables.net/rowgroup/1.0.4/js/dataTables.rowGroup.min.js"></script>
+
+  <style>
+    h1 {
+      color: #004165;
+      font-size: 3em;
+      font-weight: 600;
+      border-top: 5px solid #bcbcbc;
+      padding-top: .5em;
+      font-family: Georgia, serif;
+      font-weight: 300;
+      line-height: 1.16667;
+      margin: .5em 0;
+    }
+
+    tr>td {
+      border-bottom: 1px solid #ddd;
+      padding: 8px 10px;
+      vertical-align: top;
+      font-family: Source-sans-pro, "Liberation Serif", "Times New Roman", Times, serif;
+    }
+
+    tr.odd>td {
+      background-color: #f9f9f9;
+    }
+
+    tr.even>td {
+      background-color: #ffffff;
+    }
+
+    tr:not(.group).hover>td {
+      transition-duration: 0.1s;
+      transition-property: background-color, box-shadow, opacity, text-shadow, transform;
+      transition-timing-function: linear;
+      transform: scaleY(1.005) translateY(-.1em)
+    }
+
+    thead select {
+      width: 100%;
+      font-size: 1em;
+    }
+
+    th {
+      font-family: Arial, sans-serif;
+      background-color: #004165;
+      padding: 8px 10px;
+      color: white;
+      line-height: 1.25;
+      text-transform: uppercase;
+      vertical-align: top;
+    }
+
+    tr:first-of-type td {
+      padding-top: 1.5em;
+    }
+
+    tr.group td {
+      font-family: Arial, sans-serif;
+      border-bottom: 8px solid #0065a4;
+      color: #004165;
+      font-size: 1.8em;
+      line-height: 1.25;
+      margin-bottom: 1em;
+      text-transform: uppercase;
+    }
+
+    .dataTables_filter {
+      font-family: Arial, sans-serif;
+      padding: 8px 10px;
+      text-transform: uppercase;
+      background-color: #004165;
+      color: white !important;
+      float: none !important;
+      text-align: left !important;
+    }
+
+    .dataTables_filter label {
+      font-size: 1.8em;
+      line-height: 1.25;
+    }
+
+    .dataTables_filter input,
+    .dataTables_filter select {
+      width: 67vw;
+      -webkit-appearance: none;
+
+    }
+
+    .dataTables_filter select {
+        color: #9e9e9e;
+        font-style: italic;
+        padding:6px 12px;
+      font-size: 1.2em;
+    }
+
+    .dataTables_filter input {
+      font-size: .8em;
+    }
+
+
+    img {
+      box-sizing: border-box;
+      padding: 8px 10px;
+      display: block;
+      max-width: 350px;
+      margin: auto
+    }
+
+
+    select {
+    }
+
+    option:not(:first-of-type) {
+      color: black;
+      font-style: normal;
+
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <table id="example" class="display" style="width:100%">
+    <thead>
+      <tr>
+
+
+      </tr>
+    </thead>
+
+  </table>
+
+
+
+  <script src="https://csis-ilab.github.io/cpower-viz/globaljs/iframeSizer.contentWindow.min.js"></script>
+  <script src="js/datatable.js"></script>
+
+
+</body>
+
+</html>
