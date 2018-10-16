@@ -1,0 +1,101 @@
+/*===================================
+=            Page Layout            =
+===================================*/
+
+.interactive__header {
+  max-width: $size-max-width;
+  margin: 0 auto;
+}
+
+.interactive__filters {
+  max-width: $size-max-width;
+  margin: 0 auto 1rem;
+
+  .search__suggestions {
+    margin-top: 3px;
+    margin-bottom: 0;
+  }
+}
+
+.interactive__graphic {
+  position: relative;
+  max-width: 1250px;
+  margin: 0 auto;
+}
+
+.interactive__source {
+  max-width: 1250px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.instructions {
+  @include fontSize(10px);
+  color: gray;
+
+  &__y {
+    display: none;
+
+    @include breakpoint('medium') {
+      display: block;
+      margin-bottom: -10px; 
+    }
+  }
+
+  &__x {
+    text-align: center;
+  }
+  
+}
+
+.overlay{
+  &__bg {
+    position: absolute;
+    top: 3px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 10;
+    background-color: $white;
+    opacity: 0.7;
+  }
+
+  &__content {
+    position: absolute;
+    top: 10%;
+    left: 0;
+    z-index: 15;
+    max-width: 90%;
+    margin: 0 auto;
+    background-color: $white;
+    opacity: 0.9;
+    padding: 1.5rem;
+    box-shadow: 0 1px 10px rgba($black,.4);
+    border: 1px solid $blue-gray;
+
+    @include breakpoint('medium') {
+      max-width: 50%;
+      top: 25%;
+      left: 25%;
+    }
+
+    p {
+      margin-bottom: 0;
+    }
+
+    .overlay__btn {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+
+  &__bg,
+  &__content {
+    display: none;
+
+    &.overlay--visible {
+      display: block;
+    }
+  }
+}

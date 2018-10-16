@@ -1,0 +1,47 @@
+/*----------  Hint.css  ----------*/
+// @import '~hint.css/hint.min.css';
+
+[class*=hint--]:after {
+  background: $white;
+  color: $gray;
+  font-weight: normal;
+  text-shadow: none;
+  border: 1px solid rgba(0,0,0,.2);
+  border-radius: 6px;
+  box-shadow: 0 5px 10px rgba(0,0,0,.2);
+  background-clip: padding-box;
+}
+
+.hint--bottom-left:before, .hint--bottom-right:before, .hint--bottom:before {
+  display: none;
+}
+
+.hint-bubble {
+  position: relative;
+  display: inline-block;
+  background-color: $off-white;
+  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+  text-align: center;
+  font-size: 7px;
+  line-height: 1.7;
+  font-weight: bold;
+  color: $red;
+  top: -10px;
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    color: $dark-red;
+  }
+}
+
+.hint-footnote {
+  text-decoration: none;
+  color: $red;
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    box-shadow: inset 0px -2px 0px 0 $dark-gray;
+  }
+}

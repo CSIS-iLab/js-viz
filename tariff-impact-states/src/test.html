@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <style>
+    body {
+      font-family:"avenir next", Arial, sans-serif;
+      font-size: 12px;
+      color: #696969;
+      margin-left: 120px;
+    }
+
+    .state {
+      fill: #c0c0c0;
+      stroke: #fff;
+      opacity: 0.2;
+      cursor: pointer;
+    }
+
+    #nav-container {
+      display: flex;
+      cursor: pointer;
+    }
+
+    #source {
+      margin-left: 20px;
+    }
+
+    #source a {
+      color: #556b2f;
+    }
+
+    .label {
+      pointer-events: none;
+    }
+  </style>
+</head>
+
+<body>
+<div id="nav-container">
+    <div id="pubDropdown"></div>
+</div>
+<div id="vis"></div>
+
+<script>
+var margin = {top:0, right:0, bottom:20, left:0},
+    width = 960 - margin.left - margin.right,
+    height = 440 - margin.top - margin.bottom;
+
+// calculate cellSize based on dimensions of svg
+var cellSize = calcCellSize(width, height, 11, 8);
+
+// generate grid data with specified number of columns and rows
+var gridData = gridData(11, 8, cellSize);
+
+var svg = d3.select("#vis")
+    .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom);
+
+// draw gridlines
+var grid = svg.append("g")
+    .attr("class", "gridlines")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+var row = grid.selectAll(".row")
+    .data(gridData)
+    .enter()
+    .append("g")
+    .attr("class", "row");
+
+var column = row.selectAll(".cell")
+    .data(function(d) { return d; })
+    .enter()
+    .append("rect")
+    .attr("class", "cell")
+    .attr("x", function(d) { return d.x; })
+    .attr("y", function(d) { return d.y; })
+    .attr("width", function(d) { return d.width; })
+    .attr("height", function(d) { return d.height; })
+    .style("fill", "white")
+    .style("stroke", "lightgrey");
+
+var gridMap = svg.append("g")
+    .attr("class", "gridmap")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+d3.queue()
+    .defer(d3.csv, "publication-grids.csv")
+    .await(ready);
+
+function ready(error, data) {
+  // group data by publication
+  var nest = d3.nest()
+      .key(function(d) { return d.publication; })
+      .entries(data);
+
+  // draw initial grid map
+  drawGridMap();
+
+  // function to create initial map
+  function drawGridMap() {
+    // filter data to return the object of publication of interest
+    var selectPub = nest.find(function(d) {
+      return d.key == "Wall Street Journal";
+    });
+
+    // use a key function to bind rects to states
+    var states = gridMap.selectAll(".state")
+        .data(selectPub.values, function(d) { return d.code; });
+
+    // draw state rects
+    states.enter()
+        .append("rect")
+          .attr("class", function(d) { return "state " + d.code; })
+          .attr("x", function(d) { return (d.col - 1) * cellSize; })
+          .attr("y", function(d) { return (d.row - 1) * cellSize; })
+          .attr("width", cellSize)
+          .attr("height", cellSize)
+          // keep track of whether square is clicked through toggling class
+          // cycle through five colours each time square is made active
+          .on("click", function(d) {
+            var square = d3.select(this);
+            square.classed("active", !square.classed("active"));
+            if (square.classed("active")) {
+              square.style("opacity", 1);
+
+            } else {
+              square.style("fill", "#c0c0c0").style("opacity", 0.2);
+            }
+          });
+
+    var labels = gridMap.selectAll(".label")
+        .data(selectPub.values, function(d) { return d.code; });
+
+    // add state labels
+    labels.enter()
+        .append("text")
+          .attr("class", function(d) { return "label " + d.code; })
+          .attr("x", function(d) {
+            return ((d.col - 1) * cellSize) + (cellSize / 2);
+          })
+          .attr("y", function(d) {
+            return ((d.row - 1) * cellSize) + (cellSize /2 + 5);
+          })
+          .style("text-anchor", "middle")
+          .text(function(d) { return d.code; });
+  }
+
+
+};
+
+
+// function that generates a nested array for square grid
+function gridData(ncol, nrow, cellsize) {
+  var gridData = [];
+  var xpos = 1;  // starting xpos and ypos at 1 so the stroke will show when we make the grid below
+  var ypos = 1;
+
+  // calculate width and height of the cell based on width and height of the canvas
+  var cellSize = cellsize;
+
+  // iterate for rows
+  for (var row = 0; row < nrow; row++) {
+    gridData.push([]);
+
+    // iterate for cells/columns inside each row
+    for (var col = 0; col < ncol; col++) {
+      gridData[row].push({
+        x: xpos,
+        y: ypos,
+        width: cellSize,
+        height: cellSize
+      });
+
+      // increment x position (moving over by 50)
+      xpos += cellSize;
+    }
+
+    // reset x position after a row is complete
+    xpos = 1;
+    // increment y position (moving down by 50)
+    ypos += cellSize;
+  }
+  return gridData;
+}
+
+// function to calculate grid cell size based on width and height of svg
+function calcCellSize(w, h, ncol, nrow) {
+  // leave tiny space in margins
+  var gridWidth  = w - 2;
+  var gridHeight = h - 2;
+  var cellSize;
+
+  // calculate size of cells in columns across
+  var colWidth = Math.floor(gridWidth / ncol);
+  // calculate size of cells in rows down
+  var rowWidth = Math.floor(gridHeight / nrow);
+
+  // take the smaller of the calculated cell sizes
+  if (colWidth <= rowWidth) {
+    cellSize = colWidth;
+  } else {
+    cellSize = rowWidth;
+  }
+  return cellSize;
+}
+</script>
+</body>

@@ -1,0 +1,52 @@
+id,publication,state,code,col,row
+455,Wall Street Journal,Alaska,AK,1,1
+456,Wall Street Journal,Washington,WA,1,3
+457,Wall Street Journal,Oregon,OR,1,4
+458,Wall Street Journal,California,CA,1,5
+459,Wall Street Journal,Hawaii,HI,1,8
+460,Wall Street Journal,Idaho,ID,2,3
+461,Wall Street Journal,Utah,UT,2,4
+462,Wall Street Journal,Nevada,NV,2,5
+463,Wall Street Journal,Arizona,AZ,2,6
+464,Wall Street Journal,Montana,MT,3,3
+465,Wall Street Journal,Wyoming,WY,3,4
+466,Wall Street Journal,Colorado,CO,3,5
+467,Wall Street Journal,New Mexico,NM,3,6
+468,Wall Street Journal,North Dakota,ND,4,3
+469,Wall Street Journal,South Dakota,SD,4,4
+470,Wall Street Journal,Nebraska,NE,4,5
+471,Wall Street Journal,Kansas,KS,4,6
+472,Wall Street Journal,Oklahoma,OK,4,7
+473,Wall Street Journal,Texas,TX,4,8
+474,Wall Street Journal,Minnesota,MN,5,3
+475,Wall Street Journal,Iowa,IA,5,4
+476,Wall Street Journal,Missouri,MO,5,5
+477,Wall Street Journal,Arkansas,AR,5,6
+478,Wall Street Journal,Louisiana,LA,5,7
+479,Wall Street Journal,Wisconsin,WI,6,4
+480,Wall Street Journal,Illinois,IL,6,5
+481,Wall Street Journal,Tennessee,TN,6,6
+482,Wall Street Journal,Mississippi,MS,6,7
+483,Wall Street Journal,Michigan,MI,7,3
+484,Wall Street Journal,Indiana,IN,7,4
+485,Wall Street Journal,Kentucky,KY,7,5
+486,Wall Street Journal,North Carolina,NC,7,6
+487,Wall Street Journal,Alabama,AL,7,7
+488,Wall Street Journal,Ohio,OH,8,4
+489,Wall Street Journal,West Virginia,WV,8,5
+490,Wall Street Journal,South Carolina,SC,8,6
+491,Wall Street Journal,Georgia,GA,8,7
+492,Wall Street Journal,New York,NY,9,3
+493,Wall Street Journal,Pennsylvania,PA,9,4
+494,Wall Street Journal,Virginia,VA,9,5
+495,Wall Street Journal,DC,DC,9,6
+496,Wall Street Journal,Florida,FL,9,8
+497,Wall Street Journal,Vermont,VT,10,2
+498,Wall Street Journal,Massachusetts,MA,10,3
+499,Wall Street Journal,New Jersey,NJ,10,4
+500,Wall Street Journal,Maryland,MD,10,5
+501,Wall Street Journal,Maine,ME,11,1
+502,Wall Street Journal,New Hampshire,NH,11,2
+503,Wall Street Journal,Rhode Island,RI,11,3
+504,Wall Street Journal,Connecticut,CT,11,4
+505,Wall Street Journal,Delaware,DE,11,5

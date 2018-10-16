@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>State By State Impact of Tariffs | Trade Guys</title>
+	<base target="_blank">
+	<link href="https://fonts.googleapis.com/css?family=Inconsolata|Source+Sans+Pro:400,600,700" rel="stylesheet">
+	<link rel="stylesheet" href="<%=htmlWebpackPlugin.files.chunks.main.css %>">
+</head>
+
+<body>
+	<header class="interactive__header">
+		<h1 class="interactive__title">State by State Impact of Tariffs</h1>
+		<p>This interactive is about trade</p>
+		<div class="key">
+			<div class="legend-label"><span>KEY:</span></div>
+
+			<div class="countries">
+				<div class="legend-label all active">All</div>
+				<div class="legend-label eu active">EU</div>
+				<div class="legend-label china active">China</div>
+				<div class="legend-label canada active">Canada</div>
+				<div class="legend-label mexico active">Mexico</div>
+				<div class="legend-label other active">Other</div>
+			</div>
+			<div class="legend-bar">
+				<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="40px">
+					<defs>
+						<linearGradient id="gradient" x1="0%" y1="0%" y2="100%" x2="0%">
+							<stop offset="0%" style="stop-color:#E5E5E5;stop-opacity:1" />
+							<stop offset="100%" style="stop-color:#5E5E5E;stop-opacity:1" />
+						</linearGradient>
+					</defs>
+					<rect  x="0" y="0" width="40" height="40" fill="url(#gradient)"/>
+					<rect  x="5" y="5" width="30" height="30" fill="#fff"/>
+
+					<span>Total</span>
+				</div>
+			<div class="direction">
+				(toggle Countries)
+			</div>
+		</div>
+
+
+	</header>
+
+	<section class="chart"></section>
+
+	<footer class="interactive__source">
+		<div class="source-details">
+			<p>Source: </p>
+		</div>
+	</footer>
+	<div class="tooltip"></div>
+	<script src="https://apis.google.com/js/api.js"></script>
+	<script src="https://csis-ilab.github.io/cpower-viz/globaljs/iframeSizer.contentWindow.min.js"></script>
+	<script src="<%= htmlWebpackPlugin.files.chunks.main.entry %>"></script>
+</body>
+
+</html>

@@ -1,0 +1,57 @@
+// General
+
+body {
+  --breakpoint: 'xsmall';
+  font-family: $font-hind;
+  font-size: 18px;
+  margin: 0;
+  padding: 0 1rem;
+  color: $gray;
+
+  @include breakpoint('small') {
+    --breakpoint: 'small';
+  }
+
+  @include breakpoint('medium') {
+    --breakpoint: 'medium';
+  }
+
+  @include breakpoint('large') {
+    --breakpoint: 'large';
+  }
+}
+
+a {
+  text-decoration: none;
+  color: $red;
+  transition: color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+
+  &:hover {
+    box-shadow: inset 0px -2px 0px 0 $dark-gray;
+  }
+}
+
+p {
+  margin: 0 0 1.5rem;
+}
+
+sup {
+  vertical-align: baseline;
+  position: relative;
+  top: -0.4em;
+}
+
+/*----------  Interactive Header  ----------*/
+.interactive__title {
+  font-family: 'Source Sans Pro', sans-serif;
+  margin: 1rem auto;
+  @include fontSize(23px);
+  font-weight: 600;
+  line-height: 1.36;
+  color: $black;
+  text-align: center;
+
+  @include breakpoint('medium') {
+    @include fontSize(25px);
+  }
+}
