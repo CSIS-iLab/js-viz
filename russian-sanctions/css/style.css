@@ -1,0 +1,243 @@
+body {
+  font-family: "Source Sans Pro", sans-serif;
+  margin: auto;
+  max-width: 1080px;
+}
+
+a:link,
+a:hover,
+a:visited {
+  font-weight: bold;
+  letter-spacing: 1.4px;
+  color: white;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+button {
+  font-family: "Source Sans Pro", sans-serif;
+  text-transform: uppercase;
+  font-weight: 800;
+  cursor: pointer;
+  letter-spacing: 2px;
+  border: 3px solid white;
+  color: white;
+  transition: all 0.2s ease-in-out;
+  text-align: center;
+  padding: 16px 18px;
+  background-color: transparent;
+  margin-left: 24px;
+  line-height: 6px;
+}
+
+button:hover {
+  border: 3px solid #004165;
+  background-color: #004165;
+}
+
+table.dataTable {
+  border-spacing: 12px;
+  /* hyphens:auto; */
+}
+
+table.dataTable.display tbody td {
+  border-top: none;
+}
+
+tr > td:nth-child(2) {
+  white-space: nowrap;
+}
+
+table.dataTable thead tr > th:nth-child(1),
+tr > td:nth-child(1) {
+  background-color: white;
+  border-bottom: none;
+}
+
+td.details-control {
+  background: url("../img/details_open.png") no-repeat center 12px;
+  cursor: pointer;
+}
+
+tr.shown td.details-control {
+  background: url("../img/details_close.png") no-repeat center 12px;
+}
+
+.shown + tr > td {
+  background-color: rgba(15, 65, 101, 0.33);
+}
+
+.shown + tr > td > div {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.shown + tr > td > div > div {
+  margin: 0 0 12px;
+  flex-basis: 100%;
+  page-break-inside: avoid;
+  break-inside: avoid-column;
+  display: table;
+}
+
+.shown + tr > td > div > div:last-of-type {
+  flex-basis: 100%;
+}
+
+h1 {
+  color: #004165;
+  font-size: 3em;
+  font-weight: 600;
+  border-top: 5px solid #bcbcbc;
+  padding-top: 0.5em;
+  font-weight: 800;
+  line-height: 1.16667;
+  margin: 0.5em 0;
+}
+
+tr > td {
+  padding: 8px 10px;
+  vertical-align: top;
+}
+
+ul {
+  margin: 0;
+  padding-inline-start: 24px;
+  list-style: none;
+}
+
+ul li::before {
+  content: "\2B24";
+  font-weight: bold;
+  display: inline-block;
+  font-size: 6px;
+  width: 2em;
+  margin-left: -2em;
+  position: relative;
+  top: -0.5em;
+}
+
+tr.odd ul li::before,
+tr.even ul li::before {
+  color: #0065a4;
+}
+
+tr:not(.odd):not(.even) ul li::before {
+  color: white;
+}
+
+tr:not(.group).hover > td {
+  transition-duration: 0.1s;
+  transition-property: background-color, box-shadow, opacity, text-shadow,
+    transform;
+  transition-timing-function: linear;
+  /* transform: scaleY(1.005) translateY(-.1em) */
+}
+
+thead select {
+  width: 100%;
+  font-size: 1em;
+}
+
+th {
+  padding: 8px 10px;
+  vertical-align: top;
+  background-color: #004165;
+  color: white;
+}
+
+.heading {
+  padding: 4px 5px;
+  color: #004165;
+  background-color: white;
+}
+
+th,
+.heading {
+  font-weight: 800;
+  font-family: "Inconsolata", monospace;
+  font-size: 16px;
+  line-height: 1.31;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+}
+
+tr:first-of-type td {
+  padding-top: 1.5em;
+}
+
+tr.group td {
+  font-family: Arial, sans-serif;
+  border-bottom: 8px solid #0065a4;
+  color: #004165;
+  font-size: 1.8em;
+  line-height: 1.25;
+  margin-bottom: 1em;
+  text-transform: uppercase;
+}
+
+.dataTables_filter {
+  font-family: "Source Sans Pro", sans-serif;
+  font-weight: 800;
+  padding: 40px;
+  text-transform: uppercase;
+  background-color: rgba(15, 65, 101, 0.33);
+  color: #004165 !important;
+  float: none !important;
+  text-align: left !important;
+}
+
+@media screen and (min-width: 992px) {
+  .shown + tr > td > div > div {
+    flex-basis: 47%;
+  }
+
+  .dataTables_filter {
+    column-count: 2;
+    column-gap: 40px;
+  }
+}
+
+.dataTables_filter > label:first-of-type {
+  column-span: all;
+  display: flex;
+  align-items: center;
+}
+
+.dataTables_filter > * {
+  margin-bottom: 16px;
+  display: flex;
+}
+
+.dataTables_filter > div label {
+  white-space: nowrap;
+}
+
+.dataTables_filter input {
+  -webkit-appearance: none;
+  padding-left: 3px;
+  font-size: 14px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.5);
+  transition: all 0.2s ease-in-out;
+  border: none;
+}
+
+.dataTables_filter input:focus {
+  background: rgba(255, 255, 255, 1);
+}
+
+img {
+  box-sizing: border-box;
+  padding: 8px 10px;
+  display: block;
+  max-width: 350px;
+  margin: auto;
+}
+
+option:not(:first-of-type) {
+  color: black;
+  font-style: normal;
+}
