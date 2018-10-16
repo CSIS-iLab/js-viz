@@ -86,6 +86,10 @@ tr.shown td.details-control {
   flex-basis: 100%;
 }
 
+tr.shown td:nth-child(n + 2) {
+  background-color: rgba(15, 65, 101, 0.33) !important;
+}
+
 h1 {
   color: #004165;
   font-size: 3em;
