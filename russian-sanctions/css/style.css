@@ -75,11 +75,11 @@ tr.shown td.details-control {
 }
 
 .shown + tr > td > div > div {
-  margin: 0 0 12px;
+  margin: 0 0 12px 18px;
   flex-basis: 100%;
   page-break-inside: avoid;
   break-inside: avoid-column;
-  display: table;
+  /* display: table; */
 }
 
 .shown + tr > td > div > div:last-of-type {
