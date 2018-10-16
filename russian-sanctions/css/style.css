@@ -133,7 +133,6 @@ tr:not(.group).hover > td {
   transition-property: background-color, box-shadow, opacity, text-shadow,
     transform;
   transition-timing-function: linear;
-  /* transform: scaleY(1.005) translateY(-.1em) */
 }
 
 thead select {
