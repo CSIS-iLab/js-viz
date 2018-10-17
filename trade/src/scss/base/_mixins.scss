@@ -1,0 +1,43 @@
+/**
+ * Mixins
+ */
+
+// Rem output with px fallback
+$browser-context: 16px;
+@function calculateRem($size) {
+  $remSize: $size / $browser-context;
+  @return #{$remSize}rem;
+}
+
+@mixin fontSize($size) {
+  font-size: $size; //Fallback in px
+  font-size: calculateRem($size);
+}
+
+$breakpoint-xlarge: 90em;
+$breakpoint-large: 64em;
+$breakpoint-medium: 48em;
+$breakpoint-small: 35em;
+$breakpoint-xsmall: 25em;
+
+@mixin breakpoint($break) {
+  @if $break == xlarge {
+    @media screen and (min-width:$breakpoint-xlarge) { @content; }
+  }
+  @else if $break == large {
+    @media screen and (min-width:$breakpoint-large) { @content; }
+  }
+  @else if $break == medium {
+    @media screen and (min-width: $breakpoint-medium) { @content; }
+  }
+  @else if $break == small {
+    @media screen and (min-width: $breakpoint-small) { @content; }
+  }
+  @else if $break == xsmall {
+    @media screen and (max-width: $breakpoint-xsmall) { @content; }
+  }@else {
+    @media screen and (min-width: $break) {
+      @content;
+    }
+  }
+}

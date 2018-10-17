@@ -1,0 +1,12 @@
+/*==================================
+=            Disclaimer            =
+==================================*/
+
+.desktop-disclaimer {
+  font-size: 14px;
+  margin-top: 2rem;
+
+  @include breakpoint("medium") {
+    display: none;
+  }
+}
