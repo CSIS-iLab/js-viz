@@ -1,0 +1,35 @@
+/*===============================
+=            Loading            =
+===============================*/
+.loading-container {
+  position: relative;
+}
+
+.loading {
+  display: block;
+  width: 50px;
+  height: 50px;
+  border-radius: 40px;
+  border: 5px solid #fff;
+  border-top-color: rgba(0, 0, 0, 0.3);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  animation: loading 1.2s linear infinite;
+  -webkit-animation: loading 1.2s linear infinite;
+  box-sizing: border-box;
+}
+
+@keyframes loading{
+  0%{transform:rotate(0deg)}
+  100%{transform:rotate(360deg)}
+}
+@-webkit-keyframes loading{
+  0%{-webkit-transform:rotate(0deg)}
+  100%{-webkit-transform:rotate(360deg)}
+}
+
+.hide-on-load {
+  opacity: 0;
+  visibility: hidden;
+}

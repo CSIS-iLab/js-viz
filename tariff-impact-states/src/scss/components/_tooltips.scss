@@ -1,0 +1,127 @@
+/*================================
+=            Tooltips            =
+================================*/
+
+li.china::before {
+  color: #fe5000;
+}
+li.eu::before {
+  color: #0aa4cf;
+}
+li.mexico::before {
+  color: #f2af19;
+}
+li.canada::before {
+  color: #9eb040;
+}
+
+.tooltip,
+.tooltip-info {
+  display: block;
+  font-size: 13px;
+  line-height: 1.4;
+  position: absolute;
+  z-index: 20;
+  width: fit-content;
+  max-width: 175px;
+  height: auto;
+  margin: 0 15px;
+  padding: 8px 8px 10px;
+  visibility: hidden;
+  opacity: 0;
+  border: 1px solid $blue-gray;
+  border-radius: 3px;
+  background-color: $white;
+  pointer-events: none;
+
+  p {
+    margin: 0;
+  }
+
+  .tooltip-heading {
+    text-transform: uppercase;
+    line-height: 1.4;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    text-align: center;
+    border-bottom: 1px solid $black;
+
+    @include breakpoint('medium') {
+      line-height: 1.4;
+    }
+
+    .location {
+      display: block;
+      @include fontSize(10px);
+      font-style: italic;
+    }
+  }
+
+  .tooltip-label {
+    color: $black;
+    text-transform: capitalize;
+
+    &.indented {
+      padding-left: 0.75rem;
+    }
+  }
+
+  .tooltip-list {
+    font-family: 'Inconsolata', monospace;
+    color: #000;
+
+    margin: 0;
+    padding-inline-start: 24px;
+    list-style: none;
+
+    li {
+      margin-bottom: 0.25rem;
+      font-size: 1rem;
+      line-height: 1;
+      &:before {
+        line-height: 1;
+        content: '\2588';
+        font-weight: bold;
+        display: inline-block;
+        font-size: 0.8rem;
+        width: 1rem;
+        margin-left: -2em;
+        position: relative;
+        top: -0.1rem;
+      }
+    }
+
+    .active-category {
+      font-weight: bold;
+    }
+  }
+
+  .tooltip-body {
+    line-height: 1.2;
+    color: $tooltip-gray;
+  }
+
+  .tooltip-close {
+    display: block;
+    position: absolute;
+    top: 0.25rem;
+    right: 0.5rem;
+    z-index: 25;
+    width: 25%;
+    text-align: right;
+    font-weight: bold;
+    pointer-events: all;
+
+    @include breakpoint('medium') {
+      display: none;
+    }
+  }
+}
+
+.tooltip-info {
+  max-width: 100px;
+
+  @include breakpoint('medium') {
+    max-width: 300px;
+  }
+}
