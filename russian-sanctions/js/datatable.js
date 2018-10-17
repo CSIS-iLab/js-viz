@@ -1,8 +1,6 @@
 $(document).ready(function() {
   let spreadsheetID = "1MNuSvAUGRJXOdaVVNjgSm0ZBlHw2cSJtP7eq9sdu1b8";
   let URL = `https://spreadsheets.google.com/feeds/list/${spreadsheetID}/1/public/values?alt=json`;
-
-  let keyID = "1mY0xpbQyMMbMm1ERP8ZFl1J_2fGzK0Q3lI0lfC-3YsY";
   let keyURL = `https://spreadsheets.google.com/feeds/list/${spreadsheetID}/2/public/values?alt=json`;
 
   function format(keys, d) {

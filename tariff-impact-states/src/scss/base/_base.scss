@@ -50,6 +50,8 @@ sup {
   line-height: 1.36;
   color: $black;
   text-align: center;
+  background-color: #eae134;
+  padding: 12px;
 
   @include breakpoint('medium') {
     @include fontSize(25px);

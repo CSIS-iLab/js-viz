@@ -1,8 +1,7 @@
 import { select, selectAll } from 'd3-selection'
 import { format } from 'd3-format'
 import { scaleLinear, scaleOrdinal } from 'd3-scale'
-import { on } from 'd3-transition'
-// import { transition, duration } from 'd3-transition'
+import { on, transition, duration } from 'd3-transition'
 // import { easeLinear } from 'd3-ease'
 import tooltip from './tooltip'
 
@@ -27,7 +26,7 @@ let chart,
 function draw(data) {
   function drawGridMap() {
     width = drawGridMap.width()
-    height = drawGridMap.width()
+    height = (drawGridMap.width() * 2) / 3
     // calculate cellSize based on dimensions of svg
     let cellSize = calcCellSize(width - 132, height - 132, 11, 8)
 
@@ -163,10 +162,10 @@ function draw(data) {
         country: 'mexico'
       })
 
-      let percent = eu
-        .concat(china)
+      let percent = mexico
         .concat(canada)
-        .concat(mexico)
+        .concat(china)
+        .concat(eu)
 
       percent = Array(100 - percent.length)
         .fill({
@@ -178,31 +177,26 @@ function draw(data) {
       let parentX = select(nodes[gi]).attr('x')
       let parentY = select(nodes[gi]).attr('y')
 
-      let percentNodes = document.querySelectorAll(`.percent.${g.code}`).length
-      let percents = percentNodes
-        ? select(nodes[gi]).selectAll('.percent')
-        : select(nodes[gi])
-            .selectAll('.percent')
-            .data(percent, function(d, i) {
-              return { ...d, i: i }
-            })
-            .enter()
-            .append('rect')
-            .attr('class', 'percent ' + g.code)
+      let percents = select(nodes[gi]).selectAll(`.percent.${g.code}`)
 
-      percents.remove()
       percents
+        .attr('height', (cellSize - 6) / 10)
+        .transition(transition().duration(1200))
+        .attr('height', 0)
+        .remove()
+
+      percents = select(nodes[gi])
+        .selectAll(`.percent.${g.code}`)
         .data(percent, function(d, i) {
           return { ...d, i: i }
         })
         .enter()
         .append('rect')
         .attr('class', 'percent ' + g.code)
+
         .attr('fill', function(d) {
           return fillScale(d.country)
         })
-        .attr('width', (cellSize - 6) / 10)
-        .attr('height', (cellSize - 6) / 10)
 
         .attr('x', function(d, di) {
           let x = ((di % 10) * (cellSize - 2)) / 10 + parseInt(parentX, 10)
@@ -216,6 +210,10 @@ function draw(data) {
             1
           return y + 2
         })
+        .attr('height', 0)
+        .attr('width', (cellSize - 6) / 10)
+        .transition(transition().duration(600))
+        .attr('height', (cellSize - 6) / 10)
 
       let label = select(nodes[gi]).selectAll(`.label.${g.code}`)
 

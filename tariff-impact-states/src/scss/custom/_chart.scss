@@ -51,28 +51,45 @@
 /*============================
 =          Header           =
 ============================*/
-.interactive__header {
-  .key {
+
+.key {
+  > .legend-label {
+    flex-basis: 100%;
+    font-family: 'Inconsolata', monospace;
+    font-weight: 400;
+    font-size: 1rem;
+    color: #777;
+  }
+
+  > .direction {
+    flex-basis: 100%;
+    color: #777;
+    font-style: italic;
+    font-size: 12px;
+    margin-top: 6px;
+  }
+
+  .container {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    background-color: #eae134;
     padding: 24px;
-    margin-bottom: 24px;
+    background-color: #eae134;
 
-    > .legend-label {
-      flex-basis: 100%;
-      font-family: Source Sans Pro, sans-serif;
-      font-weight: 800;
-      font-size: 1.5rem;
-      color: #fff;
-    }
-    > .direction {
-      flex-basis: 100%;
-      color: #777;
-      font-style: italic;
-      font-size: 12px;
-      margin-top: 6px;
+    @include breakpoint('medium') {
+      background-image: linear-gradient(
+          to right,
+          #eae134 0%,
+          #eae134 62%,
+          transparent 62%
+        ),
+        repeating-linear-gradient(
+          -55deg,
+          #eae134,
+          #eae134 10px,
+          #fff 10px,
+          #fff 20px
+        );
     }
 
     .legend-bar {
