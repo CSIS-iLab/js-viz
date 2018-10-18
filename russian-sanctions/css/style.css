@@ -211,36 +211,45 @@ tr.group td {
 .dataTables_wrapper .dataTables_filter input {
   margin-left: 0;
 }
+
 @media screen and (min-width: 769px) {
   .dataTables_wrapper .dataTables_filter input {
     margin-left: 0.5em;
   }
 
   .shown + tr > td > div > div {
-    flex-basis: 47%;
+    flex-basis: 48%;
   }
 
   .dataTables_filter > *:not(button) {
     flex-wrap: nowrap !important;
+    flex-basis: 100%;
   }
 
   .dataTables_filter {
-    column-count: 2;
-    column-gap: 40px;
+    display: flex;
+    flex-wrap: wrap;
   }
 
   button.reset {
     margin: 0 0 0 24px;
   }
+
+  .dataTables_filter > label:first-of-type {
+    flex-basis: 100%;
+  }
 }
 
 .dataTables_filter > label:first-of-type {
-  column-span: all;
   display: flex;
   align-items: center;
 }
 
+.dataTables_filter > *:not(button):nth-child(even) {
+  margin-left: 24px;
+}
 .dataTables_filter > *:not(button) {
+  flex-basis: 48%;
   margin-bottom: 16px;
   display: flex;
   flex-wrap: wrap;
@@ -250,7 +259,6 @@ button.view-all {
   border: none;
   display: block;
   margin: auto;
-  column-span: all;
   position: relative;
   width: 180px;
   background-color: #004165;
