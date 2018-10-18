@@ -2,7 +2,8 @@ $(document).ready(function() {
   let spreadsheetID = "1MNuSvAUGRJXOdaVVNjgSm0ZBlHw2cSJtP7eq9sdu1b8";
   let URL = `https://spreadsheets.google.com/feeds/list/${spreadsheetID}/1/public/values?alt=json`;
   let keyURL = `https://spreadsheets.google.com/feeds/list/${spreadsheetID}/2/public/values?alt=json`;
-
+  let namesURL = `https://spreadsheets.google.com/feeds/list/${spreadsheetID}/3/public/values?alt=json`;
+  let page, display, total;
   function format(keys, d) {
     return `
       <div class="details">
@@ -18,12 +19,17 @@ $(document).ready(function() {
 
         <div class="stated-intent">
           <div class="heading">STATED INTENT</div>
-          <div>${d["gsx$statedintent"]}</div>
+          <div style="padding-left:24px">${d["gsx$statedintent"]}</div>
+        </div>
+
+        <div class="impact">
+          <div class="heading">Activities Linked to</div>
+          <div>${d["gsx$activitieslinkedto"]}</div>
         </div>
 
         <div class="impact">
           <div class="heading">IMPACT</div>
-          <div>${d["gsx$impact"]}</div>
+          <div style="padding-left:24px">${d["gsx$impact"]}</div>
         </div>
 
         <div class="ht-lift">
@@ -56,7 +62,7 @@ $(document).ready(function() {
         ".dataTables_filter"
       );
 
-      var input = `<input class="filter ${labelSlug}" list="${labelSlug}" >`;
+      var input = `<input type="search" class="filter ${labelSlug}" list="${labelSlug}" >`;
 
       datalist
         .wrap("<div></div>")
@@ -65,12 +71,36 @@ $(document).ready(function() {
 
       $(`.${labelSlug}`).on("change", function() {
         var val = $.fn.dataTable.util.escapeRegex($(this).val());
-        c.search(val ? "^" + val + "$" : "", true, false).draw();
+        c.search(val ? "" + val + "" : "", true, false).draw();
+
+        $(".view-all")
+          .removeClass("down")
+          .addClass("up")
+          .find("span")
+          .text("Hide");
+
         $(this).blur();
+        $("table").removeClass("hide");
+        $(".dataTables_info").removeClass("hide");
+
+        $(".dataTables_info").text((i, d) => {
+          return `Showing ${table.page.info().end ? 1 : 0} to ${
+            table.page.info().end
+          } of ${total} entries`;
+        });
+        table.responsive.recalc();
+      });
+
+      $(".sorting_asc").on("click", function() {
+        $(".dataTables_info").text((i, d) => {
+          return `Showing ${table.page.info().end ? 1 : 0} to ${
+            table.page.info().end
+          } of ${total} entries`;
+        });
       });
 
       $(`.${labelSlug}`).on("focus", function() {
-        this.value = "";
+        // this.value = "";
       });
 
       let newArray = [].concat.apply(
@@ -82,11 +112,13 @@ $(document).ready(function() {
             .map(d => d.replace(/(\<li\>|<\/li\>)/g, ""))
         )
       );
+
       $([...new Set(newArray)])
         .sort()
         .each(function(j, d) {
           datalist.append('<option value="' + d + '">' + d + "</option>");
         });
+
       document.querySelector(
         `.${labelSlug}`
       ).placeholder = `filter by ${label.toLowerCase()}`;
@@ -129,7 +161,7 @@ $(document).ready(function() {
               Object.keys(row).forEach((column, y) => {
                 if (column.includes("gsx$")) {
                   if (x !== 0) {
-                    if ([0, 1, 2, 3, 4, 5, 6, 16, 19].includes(y)) {
+                    if ([7, 15, 16, 18, 19].includes(y)) {
                       newRow[column] = row[column]["$t"];
                     } else {
                       newRow[column] = `<ul><li>${row[column]["$t"]
@@ -180,42 +212,105 @@ $(document).ready(function() {
               },
               ...table.columns
             ],
-            responsive: true,
+            responsive: { details: false },
             paging: false,
-            order: [[1, "asc"]],
+            order: [[2, "asc"]],
             columnDefs: [
-              { targets: [6, 9, 10, 11, 12, 13, 14, 15], visible: false },
+              { targets: [8, 9, 10, 11, 12, 13, 14, 15], visible: false },
               {
                 targets: Array(16)
                   .fill({})
                   .map((v, i) => i)
-                  .slice(2),
+                  .filter((v, i) => i !== 2),
                 orderable: false
               }
             ],
 
             initComplete: function() {
               let table = this.api();
-              let filterColumns = [2, 3, 4, 5, 7, 8].map(c => table.column(c));
+
+              page = table.page.info().page + 1;
+              display = table.page.info().recordsDisplay + 1;
+              total = table.page.info().recordsTotal + 1;
+
+              let filterColumns = [7, 5, 3, 6, 4, 1].map(c => table.column(c));
               makeFilter(table, filterColumns);
 
-              let searchField = document.querySelector("input[type='search']");
-              $(searchField).after(`<button class="reset">reset</button>`);
+              let searchField = document.querySelector(
+                "label input[type='search']"
+              );
 
-              searchField.placeholloder = "search";
+              searchField.setAttribute("list", "names");
+              $(searchField).after(`<datalist id="names"></datalist>`);
 
-              document
-                .querySelector(".reset")
-                .addEventListener("click", function() {
-                  filterColumns.forEach(fc =>
-                    fc.search("", true, false).draw()
-                  );
-
-                  searchField.value = "";
-                  [...document.querySelectorAll(".filter")].forEach(
-                    f => (f.value = "")
-                  );
+              fetch(namesURL)
+                .then(resp => resp.json())
+                .then(json => {
+                  json.feed.entry.forEach(e => {
+                    $(searchField)
+                      .next("datalist")
+                      .append(
+                        '<option value="' +
+                          e["gsx$names"]["$t"] +
+                          '">' +
+                          e["gsx$names"]["$t"] +
+                          "</option>"
+                      );
+                  });
                 });
+
+              $(searchField)
+                .next("datalist")
+                .after(`<button class="reset">reset</button>`);
+
+              $(".dataTables_filter > label").after(
+                `<button class="view-all down"><span>View</span> all sanctions</button>`
+              );
+
+              searchField.placeholder = "search";
+              $(".view-all").on("click", function() {
+                $("table").toggleClass("hide");
+
+                $(this)
+                  .toggleClass("down")
+                  .toggleClass("up")
+                  .find("span")
+                  .text(function(i, t) {
+                    return t === "View" ? "Hide" : "View";
+                  });
+
+                $(".dataTables_info").toggleClass("hide");
+
+                filterColumns.forEach(fc => fc.search("", true, false).draw());
+
+                searchField.value = "";
+                [...document.querySelectorAll(".filter")].forEach(
+                  f => (f.value = "")
+                );
+
+                $(".dataTables_info").text((i, d) => {
+                  return `Showing ${
+                    table.page.info().end ? 1 : 0
+                  } to ${display} of ${total} entries`;
+                });
+
+                table.responsive.recalc();
+              });
+
+              $(".reset").on("click", function() {
+                filterColumns.forEach(fc => fc.search("", true, false).draw());
+
+                searchField.value = "";
+                [...document.querySelectorAll(".filter")].forEach(
+                  f => (f.value = "")
+                );
+                $(".dataTables_info").text((i, d) => {
+                  return `Showing ${
+                    table.page.info().end ? 1 : 0
+                  } to ${display} of ${total} entries`;
+                });
+                table.responsive.recalc();
+              });
 
               searchField.addEventListener("keydown", function() {
                 filterColumns.forEach(fc => fc.search("", true, false).draw());
@@ -239,6 +334,8 @@ $(document).ready(function() {
                   tr.addClass("shown");
                 }
               });
+
+              $(".dataTables_info").toggleClass("hide");
             }
           });
         });
