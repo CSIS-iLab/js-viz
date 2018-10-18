@@ -1,129 +1,10 @@
 $(document).ready(function() {
-  let spreadsheetID = "1MNuSvAUGRJXOdaVVNjgSm0ZBlHw2cSJtP7eq9sdu1b8";
-  let URL = `https://spreadsheets.google.com/feeds/list/${spreadsheetID}/1/public/values?alt=json`;
-  let keyURL = `https://spreadsheets.google.com/feeds/list/${spreadsheetID}/2/public/values?alt=json`;
-  let targetsURL = `https://spreadsheets.google.com/feeds/list/${spreadsheetID}/3/public/values?alt=json`;
-  let page, display, total;
-  function format(keys, d) {
-    return `
-      <div class="details">
-        <div class="action-taken">
-          <div class="heading">ACTION TAKEN</div>
-          <div>${d["gsx$actiontaken"]}</div>
-        </div>
-
-        <div class="specific-targets">
-          <div class="heading">SPECIFIC TARGETS</div>
-          <div>${d["gsx$specifictargets"]}</div>
-        </div>
-
-        <div class="stated-intent">
-          <div class="heading">STATED INTENT</div>
-          <div style="padding-left:24px">${d["gsx$statedintent"]}</div>
-        </div>
-
-        <div class="impact">
-          <div class="heading">Activities Linked to</div>
-          <div>${d["gsx$activitieslinkedto"]}</div>
-        </div>
-
-        <div class="impact">
-          <div class="heading">IMPACT</div>
-          <div style="padding-left:24px">${d["gsx$impact"]}</div>
-        </div>
-
-        <div class="ht-lift">
-          <div class="heading">HOW TO LIFT</div>
-          <div style="padding-left:24px">${
-            keys["gsx$howtoliftmechanically"][d["gsx$howtoliftmechanically"]]
-          }</div>
-        </div>
-
-        <div class="resources">
-          <div class="heading">RESOURCES</div>
-          <div><ul><li>${d["gsx$resources"]
-            .split(/,|;/)
-            .map(l => `<a href="${l}" target="_blank">${l}</a>`)
-            .join("</li><li>")}</li></ul></div>
-        </div>
-      </div>
-      `;
-  }
-
-  function makeFilter(table, array) {
-    array.forEach(c => {
-      let label = c.header().textContent;
-      let labelSlug = label
-        .toLowerCase()
-        .replace(/[!@#\$%\^\&*\)\(+=.,_-]/g, "")
-        .replace(/\s/g, "_");
-
-      var datalist = $(
-        `<datalist  data-list-filter="^" id="${labelSlug}"></datalist>`
-      ).prependTo(".dataTables_filter");
-
-      var input = `<input type="search" class="filter ${labelSlug}" list="${labelSlug}" >`;
-
-      datalist
-        .wrap("<div></div>")
-        .before(`<label>${label}:</label>`)
-        .before(input);
-
-      $(`.${labelSlug}`).on("change", function() {
-        var val = $.fn.dataTable.util.escapeRegex($(this).val());
-        c.search(val ? "" + val + "" : "", true, false).draw();
-
-        $(".view-all")
-          .removeClass("down")
-          .addClass("up")
-          .find("span")
-          .text("Hide");
-
-        $(this).blur();
-        $("table").removeClass("hide");
-        $(".dataTables_info").removeClass("hide");
-
-        $(".dataTables_info").text((i, d) => {
-          return `Showing ${table.page.info().end ? 1 : 0} to ${
-            table.page.info().end
-          } of ${total} entries`;
-        });
-        table.responsive.recalc();
-      });
-
-      $(".sorting_asc").on("click", function() {
-        $(".dataTables_info").text((i, d) => {
-          return `Showing ${table.page.info().end ? 1 : 0} to ${
-            table.page.info().end
-          } of ${total} entries`;
-        });
-      });
-
-      $(`.${labelSlug}`).on("focus", function() {
-        // this.value = "";
-      });
-
-      let newArray = [].concat.apply(
-        [],
-        c.data().map(d =>
-          d
-            .replace(/(\<ul\>|<\/ul\>)/g, "")
-            .split("</li><li>")
-            .map(d => d.replace(/(\<li\>|<\/li\>)/g, ""))
-        )
-      );
-
-      $([...new Set(newArray)])
-        .sort()
-        .each(function(j, d) {
-          datalist.append('<option value="' + d + '">' + d + "</option>");
-        });
-
-      document.querySelector(
-        `.${labelSlug}`
-      ).placeholder = `search ${label.toLowerCase()}`;
-    });
-  }
+  const spreadsheetID = "1MNuSvAUGRJXOdaVVNjgSm0ZBlHw2cSJtP7eq9sdu1b8";
+  const URL = `https://spreadsheets.google.com/feeds/list/${spreadsheetID}/1/public/values?alt=json`;
+  const keyURL = `https://spreadsheets.google.com/feeds/list/${spreadsheetID}/2/public/values?alt=json`;
+  const companiesURL = `https://spreadsheets.google.com/feeds/list/${spreadsheetID}/3/public/values?alt=json`;
+  const individualsURL = `https://spreadsheets.google.com/feeds/list/${spreadsheetID}/4/public/values?alt=json`;
+  let table, page, display, total;
 
   fetch(keyURL)
     .then(resp => resp.json())
@@ -140,7 +21,6 @@ $(document).ready(function() {
             }
           });
         });
-
         if (Object.keys(keys).length > 8) {
           resolve(keys);
         }
@@ -151,7 +31,7 @@ $(document).ready(function() {
         .then(resp => resp.json())
         .then(json => {
           return new Promise(resolve => {
-            let table = {
+            sheet = {
               rows: [],
               columns: []
             };
@@ -178,31 +58,31 @@ $(document).ready(function() {
                   }
 
                   if (
-                    !Object.values(table.columns.map(c => c.data)).includes(
+                    !Object.values(sheet.columns.map(c => c.data)).includes(
                       column
                     )
                   ) {
-                    table.columns.push({ data: column, defaultContent: "" });
+                    sheet.columns.push({ data: column, defaultContent: "" });
 
                     $("thead tr").append(`<th>${row[column]["$t"]}</th>`);
                   }
                 }
               });
+
               if (x !== 0) {
-                table.rows.push(newRow);
+                sheet.rows.push(newRow);
               }
 
-              if (table.rows.length === json.feed.entry.length - 2) {
+              if (sheet.rows.length === json.feed.entry.length - 2) {
                 $("thead tr").prepend(`<th></th>`);
-
-                resolve(table);
+                resolve(sheet);
               }
             });
           });
         })
-        .then(table => {
+        .then(sheet => {
           $("#example").DataTable({
-            data: table.rows,
+            data: sheet.rows,
             columns: [
               {
                 className: "details-control",
@@ -210,7 +90,7 @@ $(document).ready(function() {
                 data: null,
                 defaultContent: ""
               },
-              ...table.columns
+              ...sheet.columns
             ],
             responsive: { details: false },
             paging: false,
@@ -225,9 +105,8 @@ $(document).ready(function() {
                 orderable: false
               }
             ],
-
             initComplete: function() {
-              let table = this.api();
+              table = this.api();
 
               page = table.page.info().page + 1;
               display = table.page.info().recordsDisplay + 1;
@@ -237,7 +116,7 @@ $(document).ready(function() {
                 `<select class="companies"></select>`
               ).prependTo(".dataTables_filter");
 
-              var companyInput = `<input type="text"  data-list-filter="^" class="filter companies" list="companies" placeholder="search company">`;
+              var companyInput = `<input type="text" data-list-filter="^" data-wslist="companies" class="filter companies" list="companies" placeholder="search company">`;
 
               companyDatalist
                 .wrap("<div></div>")
@@ -248,7 +127,7 @@ $(document).ready(function() {
                 `<select class="individuals"></select>`
               ).prependTo(".dataTables_filter");
 
-              var individualInput = `<input type="text"  data-list-filter="^" class="filter companies" list="individuals" placeholder = "search individual">`;
+              var individualInput = `<input type="text" data-list-filter="^" data-wslist="individuals" class="filter individuals" list="individuals" placeholder="search individual">`;
 
               individualDatalist
                 .wrap("<div></div>")
@@ -262,21 +141,35 @@ $(document).ready(function() {
                 `<datalist id="individuals"></datalist>`
               );
 
-              fetch(targetsURL)
+              fetch(companiesURL)
                 .then(resp => resp.json())
                 .then(json => {
                   json.feed.entry.forEach(e => {
                     $(companyDatalist).append(
                       '<option value="' +
-                        e["gsx$individuals"]["$t"] +
-                        '"></option>'
-                    );
-                    $(individualDatalist).append(
-                      '<option value="' +
                         e["gsx$companies"]["$t"] +
                         '"></option>'
                     );
                   });
+                })
+                .then(then => {
+                  fetch(individualsURL)
+                    .then(resp => resp.json())
+                    .then(json => {
+                      json.feed.entry.forEach(e => {
+                        $(individualDatalist).append(
+                          '<option value="' +
+                            e["gsx$individuals"]["$t"] +
+                            '"></option>'
+                        );
+                      });
+                      if (window.webshims) {
+                        webshims.setOptions("forms", {
+                          customDatalist: true
+                        });
+                        webshims.polyfill("forms");
+                      }
+                    });
                 });
 
               let filterColumns = [7, 5, 3, 6, 4, 1].map(c => table.column(c));
@@ -313,13 +206,7 @@ $(document).ready(function() {
                   f => (f.value = "")
                 );
 
-                $(".dataTables_info").text((i, d) => {
-                  return `Showing ${
-                    table.page.info().end ? 1 : 0
-                  } to ${display} of ${total} entries`;
-                });
-
-                table.responsive.recalc();
+                rerender();
               });
 
               $(".reset").on("click", function() {
@@ -329,12 +216,7 @@ $(document).ready(function() {
                 [...document.querySelectorAll(".filter")].forEach(
                   f => (f.value = "")
                 );
-                $(".dataTables_info").text((i, d) => {
-                  return `Showing ${
-                    table.page.info().end ? 1 : 0
-                  } to ${display} of ${total} entries`;
-                });
-                table.responsive.recalc();
+                rerender();
               });
 
               searchField.addEventListener("keydown", function() {
@@ -366,12 +248,123 @@ $(document).ready(function() {
             }
           });
         });
+
+      function rerender() {
+        $(".dataTables_info").text((i, d) => {
+          return `Showing ${
+            table.page.info().end ? 1 : 0
+          } to ${display} of ${total} entries`;
+        });
+        table.responsive.recalc();
+      }
+
+      function makeFilter(table, array) {
+        array.forEach(c => {
+          let label = c.header().textContent;
+          let labelSlug = label
+            .toLowerCase()
+            .replace(/[!@#\$%\^\&*\)\(+=.,_-]/g, "")
+            .replace(/\s/g, "_");
+
+          var datalist = $(
+            `<datalist  data-list-filter="^" id="${labelSlug}"></datalist>`
+          ).prependTo(".dataTables_filter");
+
+          var input = `<input type="search" class="filter ${labelSlug}" list="${labelSlug}" >`;
+
+          datalist
+            .wrap("<div></div>")
+            .before(`<label>${label}:</label>`)
+            .before(input);
+
+          $(`.${labelSlug}`).on("change", function() {
+            var val = $.fn.dataTable.util.escapeRegex($(this).val());
+            c.search(val ? "" + val + "" : "", true, false).draw();
+
+            $(".view-all")
+              .removeClass("down")
+              .addClass("up")
+              .find("span")
+              .text("Hide");
+
+            $(this).blur();
+            $("table").removeClass("hide");
+            $(".dataTables_info").removeClass("hide");
+            rerender();
+          });
+
+          $(".sorting_asc").on("click", function() {
+            rerender();
+          });
+
+          let newArray = [].concat.apply(
+            [],
+            c.data().map(d =>
+              d
+                .replace(/(\<ul\>|<\/ul\>)/g, "")
+                .split("</li><li>")
+                .map(d => d.replace(/(\<li\>|<\/li\>)/g, ""))
+            )
+          );
+
+          $([...new Set(newArray)])
+            .sort()
+            .each(function(j, d) {
+              datalist.append('<option value="' + d + '">' + d + "</option>");
+            });
+
+          document.querySelector(
+            `.${labelSlug}`
+          ).placeholder = `search ${label.toLowerCase()}`;
+        });
+      }
+
+      function format(keys, d) {
+        return `
+          <div class="details">
+            <div class="action-taken">
+              <div class="heading">ACTION TAKEN</div>
+              <div>${d["gsx$actiontaken"]}</div>
+            </div>
+
+            <div class="specific-targets">
+              <div class="heading">SPECIFIC TARGETS</div>
+              <div>${d["gsx$specifictargets"]}</div>
+            </div>
+
+            <div class="stated-intent">
+              <div class="heading">STATED INTENT</div>
+              <div style="padding-left:24px">${d["gsx$statedintent"]}</div>
+            </div>
+
+            <div class="impact">
+              <div class="heading">Activities Linked to</div>
+              <div>${d["gsx$activitieslinkedto"]}</div>
+            </div>
+
+            <div class="impact">
+              <div class="heading">IMPACT</div>
+              <div style="padding-left:24px">${d["gsx$impact"]}</div>
+            </div>
+
+            <div class="ht-lift">
+              <div class="heading">HOW TO LIFT</div>
+              <div style="padding-left:24px">${
+                keys["gsx$howtoliftmechanically"][
+                  d["gsx$howtoliftmechanically"]
+                ]
+              }</div>
+            </div>
+
+            <div class="resources">
+              <div class="heading">RESOURCES</div>
+              <div><ul><li>${d["gsx$resources"]
+                .split(/,|;/)
+                .map(l => `<a href="${l}" target="_blank">${l}</a>`)
+                .join("</li><li>")}</li></ul></div>
+            </div>
+          </div>
+          `;
+      }
     });
 });
-
-if (window.webshims) {
-  webshims.setOptions("forms", {
-    customDatalist: true
-  });
-  webshims.polyfill("forms");
-}
