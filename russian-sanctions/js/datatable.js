@@ -241,7 +241,9 @@ $(document).ready(function() {
               });
 
               $(".reset").on("click", function() {
-                filterColumns.forEach(fc => fc.search("", true, false).draw());
+                [...filterColumns, table.column(12)].forEach(fc =>
+                  fc.search("", true, false).draw()
+                );
 
                 searchField.value = "";
                 [...document.querySelectorAll(".filter")].forEach(
