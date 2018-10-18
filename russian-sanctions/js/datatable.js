@@ -173,6 +173,22 @@ $(document).ready(function() {
                     });
                 });
 
+              $(".companies").change(function() {
+                var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                filterColumns.forEach(fc =>
+                  fc.search(val ? "" + val + "" : "", true, false).draw()
+                );
+                toggleTable();
+              });
+
+              $(".individuals").change(function() {
+                var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                filterColumns.forEach(fc =>
+                  fc.search(val ? "" + val + "" : "", true, false).draw()
+                );
+                toggleTable();
+              });
+
               let filterColumns = [7, 5, 3, 6, 4, 1].map(c => table.column(c));
               makeFilter(table, filterColumns);
 
