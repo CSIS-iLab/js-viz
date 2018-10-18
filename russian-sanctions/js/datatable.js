@@ -304,10 +304,11 @@ $(document).ready(function() {
       }
 
       function rerender() {
+        let results = table.page.info().end;
         $(".dataTables_info").text((i, d) => {
-          return `Showing ${table.page.info().end ? 1 : 0} to ${
-            table.page.info().end
-          } of ${total} entries`;
+          return `Showing ${results ? 1 : 0} to ${
+            results + 1 === total ? total : results
+          } ${results + 1 === total ? "" : `of ${results}`}`;
         });
         table.responsive.recalc();
       }
