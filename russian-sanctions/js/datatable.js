@@ -321,10 +321,10 @@ $(document).ready(function() {
             .replace(/\s/g, "_");
 
           var datalist = $(
-            `<datalist  data-list-filter="^" id="${labelSlug}"></datalist>`
+            `<datalist data-list-filter="^" id="${labelSlug}"></datalist>`
           ).prependTo(".dataTables_filter");
 
-          var input = `<input type="search" class="filter ${labelSlug}" list="${labelSlug}" >`;
+          var input = `<input data-list-focus="true" type="search" class="filter ${labelSlug}" list="${labelSlug}" >`;
 
           datalist
             .wrap("<div></div>")
