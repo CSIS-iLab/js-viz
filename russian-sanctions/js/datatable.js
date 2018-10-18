@@ -173,13 +173,16 @@ $(document).ready(function() {
                     });
                 });
 
-              $(".companies").change(function() {
-                var val = $.fn.dataTable.util.escapeRegex($(this).val());
+              let companyVal = " ";
+              let individualVal = " ";
 
-                if (val.trim()) {
+              $(".companies").change(function() {
+                companyVal = $.fn.dataTable.util.escapeRegex($(this).val());
+
+                if (companyVal.trim()) {
                   table
                     .column(12)
-                    .search(val, true, false)
+                    .search(`(${companyVal}*|${individualVal}*)`, true, false)
                     .draw();
                 }
 
@@ -190,12 +193,12 @@ $(document).ready(function() {
               });
 
               $(".individuals").change(function() {
-                var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                individualVal = $.fn.dataTable.util.escapeRegex($(this).val());
 
-                if (val.trim()) {
+                if (individualVal.trim()) {
                   table
                     .column(12)
-                    .search(val, true, false)
+                    .search(`(${companyVal}*|${individualVal}*)`, true, false)
                     .draw();
                 }
 
