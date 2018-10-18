@@ -15,6 +15,9 @@ a:visited {
 a:hover {
   text-decoration: none;
 }
+.hide {
+  display: none;
+}
 
 button {
   font-family: "Source Sans Pro", sans-serif;
@@ -22,16 +25,18 @@ button {
   font-weight: 800;
   cursor: pointer;
   letter-spacing: 2px;
-  border: 3px solid white;
-  color: white;
-  transition: all 0.2s ease-in-out;
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out,
+    border 0.2s ease-in-out;
   text-align: center;
   padding: 16px 18px;
-  background-color: transparent;
-  margin-left: 24px;
   line-height: 6px;
 }
-
+button.reset {
+  margin: 24px 0 0 0;
+  background-color: transparent;
+  border: 3px solid white;
+  color: white;
+}
 button:hover {
   border: 3px solid #004165;
   background-color: #004165;
@@ -46,7 +51,7 @@ table.dataTable.display tbody td {
   border-top: none;
 }
 
-tr > td:nth-child(2) {
+tr > td:nth-child(3) {
   white-space: nowrap;
 }
 
@@ -113,6 +118,7 @@ tr > td {
 ul {
   margin: 0;
   padding-inline-start: 24px;
+  padding-left: 24px;
   list-style: none;
 }
 
@@ -126,7 +132,10 @@ ul li::before {
   position: relative;
   top: -0.5em;
 }
-
+li {
+  line-height: 1.2;
+  margin-bottom: 6px;
+}
 tr.odd ul li::before,
 tr.even ul li::before {
   color: #0065a4;
@@ -175,8 +184,11 @@ tr:first-of-type td {
   padding-top: 1.5em;
 }
 
+td {
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 0.9rem;
+}
 tr.group td {
-  font-family: Arial, sans-serif;
   border-bottom: 8px solid #0065a4;
   color: #004165;
   font-size: 1.8em;
@@ -196,14 +208,29 @@ tr.group td {
   text-align: left !important;
 }
 
-@media screen and (min-width: 992px) {
+.dataTables_wrapper .dataTables_filter input {
+  margin-left: 0;
+}
+@media screen and (min-width: 769px) {
+  .dataTables_wrapper .dataTables_filter input {
+    margin-left: 0.5em;
+  }
+
   .shown + tr > td > div > div {
     flex-basis: 47%;
+  }
+
+  .dataTables_filter > *:not(button) {
+    flex-wrap: nowrap !important;
   }
 
   .dataTables_filter {
     column-count: 2;
     column-gap: 40px;
+  }
+
+  button.reset {
+    margin: 0 0 0 24px;
   }
 }
 
@@ -213,9 +240,68 @@ tr.group td {
   align-items: center;
 }
 
-.dataTables_filter > * {
+.dataTables_filter > *:not(button) {
   margin-bottom: 16px;
   display: flex;
+  flex-wrap: wrap;
+}
+
+button.view-all {
+  border: none;
+  display: block;
+  margin: auto;
+  column-span: all;
+  position: relative;
+  width: 180px;
+  background-color: #004165;
+  color: white;
+}
+.view-all.up {
+  top: 12px;
+}
+.view-all.down {
+  top: -12px;
+}
+
+.view-all:hover {
+  background-color: white;
+  color: #004165;
+}
+
+.view-all.down:after,
+.view-all.up:before {
+  content: "";
+  display: block;
+  position: absolute;
+  transition: border-bottom 0.2s ease-in-out, border-top 0.2s ease-in-out,
+    color 0.2s ease-in-out;
+  left: 0;
+  width: 0;
+  height: 0;
+}
+
+.view-all.down:after {
+  top: 100%;
+  border-top: 20px solid #004165;
+  border-right: 90px solid transparent;
+  border-bottom: 0 solid transparent;
+  border-left: 90px solid transparent;
+}
+
+.view-all.up:before {
+  top: -20px;
+  border-bottom: 20px solid #004165;
+  border-right: 90px solid transparent;
+  border-top: 0 solid transparent;
+  border-left: 90px solid transparent;
+}
+
+.view-all.up:hover:before {
+  border-bottom: 20px solid white;
+}
+
+.view-all.down:hover:after {
+  border-top: 20px solid white;
 }
 
 .dataTables_filter > div label {
@@ -247,4 +333,9 @@ img {
 option:not(:first-of-type) {
   color: black;
   font-style: normal;
+}
+
+table {
+  width: calc(100% - 12px);
+  margin-right: 12px;
 }
