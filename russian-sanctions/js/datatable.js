@@ -2,7 +2,7 @@ $(document).ready(function() {
   let spreadsheetID = "1MNuSvAUGRJXOdaVVNjgSm0ZBlHw2cSJtP7eq9sdu1b8";
   let URL = `https://spreadsheets.google.com/feeds/list/${spreadsheetID}/1/public/values?alt=json`;
   let keyURL = `https://spreadsheets.google.com/feeds/list/${spreadsheetID}/2/public/values?alt=json`;
-  let namesURL = `https://spreadsheets.google.com/feeds/list/${spreadsheetID}/3/public/values?alt=json`;
+  let targetsURL = `https://spreadsheets.google.com/feeds/list/${spreadsheetID}/3/public/values?alt=json`;
   let page, display, total;
   function format(keys, d) {
     return `
@@ -121,7 +121,7 @@ $(document).ready(function() {
 
       document.querySelector(
         `.${labelSlug}`
-      ).placeholder = `filter by ${label.toLowerCase()}`;
+      ).placeholder = `search ${label.toLowerCase()}`;
     });
   }
 
@@ -233,6 +233,49 @@ $(document).ready(function() {
               display = table.page.info().recordsDisplay + 1;
               total = table.page.info().recordsTotal + 1;
 
+              var companyDatalist = $(
+                `<datalist id="companies"></datalist>`
+              ).prependTo(".dataTables_filter");
+
+              var companyInput = `<input type="search" class="filter companies" list="companies" placeholder="search company">`;
+
+              companyDatalist
+                .wrap("<div></div>")
+                .before(`<label>Targeted Companies:</label>`)
+                .before(companyInput);
+
+              var individualDatalist = $(
+                `<datalist id="individuals"></datalist>`
+              ).prependTo(".dataTables_filter");
+
+              var individualInput = `<input type="search" class="filter companies" list="individuals" placeholder = "search individual">`;
+
+              individualDatalist
+                .wrap("<div></div>")
+                .before(`<label>Targeted Individuals:</label>`)
+                .before(individualInput);
+
+              fetch(targetsURL)
+                .then(resp => resp.json())
+                .then(json => {
+                  json.feed.entry.forEach(e => {
+                    $(companyDatalist).append(
+                      '<option value="' +
+                        e["gsx$individuals"]["$t"] +
+                        '">' +
+                        e["gsx$individuals"]["$t"] +
+                        "</option>"
+                    );
+                    $(individualDatalist).append(
+                      '<option value="' +
+                        e["gsx$companies"]["$t"] +
+                        '">' +
+                        e["gsx$companies"]["$t"] +
+                        "</option>"
+                    );
+                  });
+                });
+
               let filterColumns = [7, 5, 3, 6, 4, 1].map(c => table.column(c));
               makeFilter(table, filterColumns);
 
@@ -240,31 +283,10 @@ $(document).ready(function() {
                 "label input[type='search']"
               );
 
-              searchField.setAttribute("list", "names");
-              $(searchField).after(`<datalist id="names"></datalist>`);
-
-              fetch(namesURL)
-                .then(resp => resp.json())
-                .then(json => {
-                  json.feed.entry.forEach(e => {
-                    $(searchField)
-                      .next("datalist")
-                      .append(
-                        '<option value="' +
-                          e["gsx$names"]["$t"] +
-                          '">' +
-                          e["gsx$names"]["$t"] +
-                          "</option>"
-                      );
-                  });
-                });
-
-              $(searchField)
-                .next("datalist")
-                .after(`<button class="reset">reset</button>`);
+              $(searchField).after(`<button class="reset">reset</button>`);
 
               $(".dataTables_filter > label").after(
-                `<button class="view-all down"><span>View</span> all sanctions</button>`
+                `<button class="view-all down"><span>View all</span> sanctions</button>`
               );
 
               searchField.placeholder = "search";
@@ -275,8 +297,8 @@ $(document).ready(function() {
                   .toggleClass("down")
                   .toggleClass("up")
                   .find("span")
-                  .text(function(i, t) {
-                    return t === "View" ? "Hide" : "View";
+                  .html(function(i, t) {
+                    return t === "View all" ? "Hide all" : "View all";
                   });
 
                 $(".dataTables_info").toggleClass("hide");
@@ -319,9 +341,11 @@ $(document).ready(function() {
                   f => (f.value = "")
                 );
               });
+
               $("tr").hover(function() {
                 this.classList.toggle("hover");
               });
+
               $("#example tbody").on("click", "td.details-control", function() {
                 var tr = $(this).closest("tr");
                 var row = table.row(tr);

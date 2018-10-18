@@ -28,10 +28,9 @@ button {
   transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out,
     border 0.2s ease-in-out;
   text-align: center;
-  padding: 16px 18px;
-  line-height: 6px;
 }
 button.reset {
+  padding: 16px 18px;
   margin: 24px 0 0 0;
   background-color: transparent;
   border: 3px solid white;
@@ -238,6 +237,10 @@ tr.group td {
   .dataTables_filter > label:first-of-type {
     flex-basis: 100%;
   }
+
+  .dataTables_filter > *:not(button):nth-child(even) {
+    margin-left: 24px;
+  }
 }
 
 .dataTables_filter > label:first-of-type {
@@ -245,9 +248,6 @@ tr.group td {
   align-items: center;
 }
 
-.dataTables_filter > *:not(button):nth-child(even) {
-  margin-left: 24px;
-}
 .dataTables_filter > *:not(button) {
   flex-basis: 48%;
   margin-bottom: 16px;
@@ -256,17 +256,20 @@ tr.group td {
 }
 
 button.view-all {
+  padding: 8px 9px;
   border: none;
   display: block;
   margin: auto;
   position: relative;
-  width: 180px;
+  width: 200px;
   background-color: #004165;
   color: white;
 }
+
 .view-all.up {
   top: 12px;
 }
+
 .view-all.down {
   top: -12px;
 }
@@ -286,22 +289,20 @@ button.view-all {
   left: 0;
   width: 0;
   height: 0;
+  border-right: 100px solid transparent;
+  border-left: 100px solid transparent;
 }
 
 .view-all.down:after {
   top: 100%;
   border-top: 20px solid #004165;
-  border-right: 90px solid transparent;
   border-bottom: 0 solid transparent;
-  border-left: 90px solid transparent;
 }
 
 .view-all.up:before {
   top: -20px;
   border-bottom: 20px solid #004165;
-  border-right: 90px solid transparent;
   border-top: 0 solid transparent;
-  border-left: 90px solid transparent;
 }
 
 .view-all.up:hover:before {
