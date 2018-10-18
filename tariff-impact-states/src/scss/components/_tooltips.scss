@@ -87,7 +87,7 @@ li.canada::before {
         width: 1rem;
         margin-left: -2em;
         position: relative;
-        top: -0.1rem;
+        top: 0rem;
       }
     }
 
@@ -97,10 +97,13 @@ li.canada::before {
   }
 
   .tooltip-body {
+    line-height: 1.6;
+    color: #000;
+  }
+  .tooltip-footer {
     line-height: 1.2;
     color: $tooltip-gray;
   }
-
   .tooltip-close {
     display: block;
     position: absolute;

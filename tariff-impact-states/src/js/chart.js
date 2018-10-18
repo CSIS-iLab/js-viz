@@ -2,36 +2,51 @@ import { select, selectAll } from 'd3-selection'
 import { format } from 'd3-format'
 import { scaleLinear, scaleOrdinal } from 'd3-scale'
 import { on, transition, duration } from 'd3-transition'
-// import { easeLinear } from 'd3-ease'
+import { extent } from 'd3-array'
 import tooltip from './tooltip'
 
 const formatter = format('.3s')
 const countries = ['canada', 'china', 'eu', 'mexico']
 const margin = { top: 5, right: 5, bottom: 5, left: 5 }
-const borderScale = scaleLinear()
-  .domain([0, 100])
-  .range(['#E5E5E5', '#5E5E5E'])
-
-const fillScale = scaleOrdinal()
-  .domain([...countries, 'other'])
-  .range(['#9EB040', '#FE5000', '#0AA4CF', '#F2AF19', '#fff'])
 
 const container = select('.chart')
+const rows = 8
+const columns = 11
+const padding = 12
 
 let chart,
   width,
   height,
+  borderScale,
+  fillScale,
   keyFilter = countries
 
 function draw(data) {
+  borderScale = scaleLinear()
+    .domain(
+      extent(data, function(d) {
+        return +d.totaldollars
+      })
+    )
+    .range(['#E5E5E5', '#5E5E5E'])
+
+  fillScale = scaleOrdinal()
+    .domain([...countries, 'other'])
+    .range(['#9EB040', '#FE5000', '#0AA4CF', '#F2AF19', '#fff'])
+
   function drawGridMap() {
     width = drawGridMap.width()
-    height = (drawGridMap.width() * 2) / 3
+    height = drawGridMap.width() * 0.9
     // calculate cellSize based on dimensions of svg
-    let cellSize = calcCellSize(width - 132, height - 132, 11, 8)
+    let cellSize = calcCellSize(
+      width - columns * padding,
+      height - columns * padding,
+      columns,
+      rows
+    )
 
     // generate grid data with specified number of columns and rows
-    let gridData = gridGraph(11, 8, cellSize)
+    let gridData = gridGraph(columns, rows, cellSize)
 
     let svgNodes = document.querySelectorAll('.map').length
     let svg = svgNodes
@@ -50,7 +65,7 @@ function draw(data) {
           (height + margin.top + margin.bottom)
       )
 
-    selectAll('.legend-label:not(.other)').on('click', interactions.key.click)
+    selectAll('input').on('click', interactions.key.click)
 
     let gridNodes = document.querySelectorAll('.gridlines').length
     let grid = gridNodes ? container.selectAll('.gridlines') : svg.append('g')
@@ -109,11 +124,12 @@ function draw(data) {
         return d.code
       })
       .attr('x', function(d) {
-        return (d.col - 1) * cellSize + 12 * d.col
+        return (d.col - 1) * cellSize + padding * d.col
       })
       .attr('y', function(d) {
-        return (d.row - 1) * cellSize + 12 * d.row
+        return (d.row - 1) * cellSize + padding * d.row
       })
+
       .on('mouseover', interactions.states.mouseover)
       .on('mouseleave', interactions.states.mouseleave)
 
@@ -134,13 +150,13 @@ function draw(data) {
 
       state
         .attr('stroke', function(d) {
-          return borderScale(d.grandtotal)
+          return borderScale(d.totaldollars)
         })
         .attr('x', function(d) {
-          return (d.col - 1) * cellSize + 12 * d.col
+          return (d.col - 1) * cellSize + padding * d.col
         })
         .attr('y', function(d) {
-          return (d.row - 1) * cellSize + 12 * d.row
+          return (d.row - 1) * cellSize + padding * d.row
         })
         .attr('width', cellSize + 2)
         .attr('height', cellSize + 2)
@@ -162,10 +178,10 @@ function draw(data) {
         country: 'mexico'
       })
 
-      let percent = mexico
-        .concat(canada)
+      let percent = canada
         .concat(china)
         .concat(eu)
+        .concat(mexico)
 
       percent = Array(100 - percent.length)
         .fill({
@@ -180,7 +196,7 @@ function draw(data) {
       let percents = select(nodes[gi]).selectAll(`.percent.${g.code}`)
 
       percents
-        .attr('height', (cellSize - 6) / 10)
+        .attr('height', (cellSize - padding / 2) / 10)
         .transition(transition().duration(1200))
         .attr('height', 0)
         .remove()
@@ -199,7 +215,8 @@ function draw(data) {
         })
 
         .attr('x', function(d, di) {
-          let x = ((di % 10) * (cellSize - 2)) / 10 + parseInt(parentX, 10)
+          let reverse = Math.abs(99 - di)
+          let x = ((reverse % 10) * (cellSize - 2)) / 10 + parseInt(parentX, 10)
           return x + 2
         })
         .attr('y', function(d, di) {
@@ -211,9 +228,9 @@ function draw(data) {
           return y + 2
         })
         .attr('height', 0)
-        .attr('width', (cellSize - 6) / 10)
+        .attr('width', (cellSize - padding / 2) / 10)
         .transition(transition().duration(600))
-        .attr('height', (cellSize - 6) / 10)
+        .attr('height', (cellSize - padding / 2) / 10)
 
       let label = select(nodes[gi]).selectAll(`.label.${g.code}`)
 
@@ -232,10 +249,10 @@ function draw(data) {
 
       label
         .attr('x', function(d) {
-          return (d.col - 1) * cellSize + cellSize / 2 + 12 * d.col
+          return (d.col - 1) * cellSize + cellSize / 2 + padding * d.col
         })
         .attr('y', function(d) {
-          return (d.row - 1) * cellSize + (cellSize / 2 - 3) + 12 * d.row
+          return (d.row - 1) * cellSize + (cellSize / 2 - 3) + padding * d.row
         })
         .style('text-anchor', 'middle')
         .text(function(d) {
@@ -317,39 +334,37 @@ function draw(data) {
         let classList = this.classList
 
         let isAll = classList.contains('all')
-        let isActive = classList.contains('active')
-        let isAllSelected = select('.all.active').node()
+        let isActive = !this.checked
+        let isAllSelected = select('input.all').node().checked
         let country = [...classList].find(c => !excluded.includes(c))
+        let all = select('input.all').node()
 
-        if (keyFilter.includes(country)) {
+        if (country && keyFilter.includes(country)) {
           keyFilter = keyFilter.filter(c => c !== country)
-          classList.toggle('active')
-        } else {
+          all.removeAttribute('disabled')
+          all.checked = false
+        } else if (country) {
           keyFilter.push(country)
-          classList.toggle('active')
         }
 
-        keyFilter.length !== 4
-          ? select('.all')
-              .node()
-              .classList.remove('active')
-          : select('.all')
-              .node()
-              .classList.add('active')
+        if (keyFilter.length !== 4) {
+          all.checked = false
+          all.removeAttribute('disabled')
+        } else {
+          select('input.all').node().checked = true
+          all.disabled = true
+        }
 
         if (isAll && !isActive) {
           keyFilter = countries
-          selectAll('.legend-label').each((g, gi, nodes) => {
-            nodes[gi].classList.add('active')
+          selectAll('input').each((g, gi, nodes) => {
+            nodes[gi].checked = true
           })
         } else {
           keyFilter = keyFilter
         }
 
-        let wasAllSelected = select('.all.active').node()
-        if (!wasAllSelected || !isAllSelected) {
-          container.call(chart)
-        }
+        container.call(chart)
       }
     },
 
@@ -365,17 +380,19 @@ function draw(data) {
       },
       showTooltip(d) {
         let tooltipContent = `
-        <span class="tooltip-close">x</span>
         <p class="tooltip-heading">
           ${d.state}
         </p>
+        <p class="tooltip-body">
+          $${formatter(d.totaldollars).replace(/G/, 'B')} Total Trade
+        </p>
         <ul class="tooltip-list">
-          <li class="eu">EU: ${d.eu ? formatter(d.eu) : 0}%</li>
-          <li class="china">China: ${d.china ? formatter(d.china) : 0}%</li>
           <li class="canada">Canada: ${d.canada ? formatter(d.canada) : 0}%</li>
+          <li class="china">China: ${d.china ? formatter(d.china) : 0}%</li>
+          <li class="eu">EU: ${d.eu ? formatter(d.eu) : 0}%</li>
           <li class="mexico">Mexico: ${d.mexico ? formatter(d.mexico) : 0}%</li>
         </ul>
-        <p class="tooltip-body">
+        <p class="tooltip-footer">
           ${formatter(d.grandtotal)}% of Total Trade
         </p>
         `
@@ -395,7 +412,7 @@ function init(data) {
 function resize() {
   const parentWidth = container.node().offsetWidth
   chart.width(parentWidth)
-  chart.height(parentWidth)
+  chart.height(parentWidth) * 0.9
   container.call(chart)
 }
 

@@ -42,18 +42,24 @@ sup {
 }
 
 /*----------  Interactive Header  ----------*/
-.interactive__title {
-  font-family: 'Source Sans Pro', sans-serif;
-  margin: 1rem auto;
-  @include fontSize(23px);
-  font-weight: 600;
-  line-height: 1.36;
-  color: $black;
-  text-align: center;
-  background-color: #eae134;
-  padding: 12px;
+.interactive__header {
+  .interactive__title {
+    font-family: $font_source;
+    margin: 1rem auto;
+    @include fontSize(20px);
+    line-height: 1.36;
+    letter-spacing: 1.4px;
+    color: $black;
 
-  @include breakpoint('medium') {
-    @include fontSize(25px);
+    font-weight: bold;
+    padding-bottom: 1.25rem;
+    border-bottom: 0;
+    text-align: center;
+  }
+
+  p {
+    line-height: 1.78;
+    @include fontSize(16px);
+    -webkit-font-smoothing: antialiased;
   }
 }
