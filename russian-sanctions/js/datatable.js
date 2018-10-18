@@ -175,18 +175,34 @@ $(document).ready(function() {
 
               $(".companies").change(function() {
                 var val = $.fn.dataTable.util.escapeRegex($(this).val());
-                filterColumns.forEach(fc =>
-                  fc.search(val ? "" + val + "" : "", true, false).draw()
-                );
-                toggleTable();
+
+                if (val.trim()) {
+                  table
+                    .column(12)
+                    .search(val, true, false)
+                    .draw();
+                }
+
+                $("table").removeClass("hide");
+                $(".dataTables_info").removeClass("hide");
+
+                $("footer").removeClass("bottom");
               });
 
               $(".individuals").change(function() {
                 var val = $.fn.dataTable.util.escapeRegex($(this).val());
-                filterColumns.forEach(fc =>
-                  fc.search(val ? "" + val + "" : "", true, false).draw()
-                );
-                toggleTable();
+
+                if (val.trim()) {
+                  table
+                    .column(12)
+                    .search(val, true, false)
+                    .draw();
+                }
+
+                $("table").removeClass("hide");
+                $(".dataTables_info").removeClass("hide");
+
+                $("footer").removeClass("bottom");
               });
 
               let filterColumns = [7, 5, 3, 6, 4, 1].map(c => table.column(c));
@@ -326,6 +342,7 @@ $(document).ready(function() {
             $(this).blur();
             $("table").removeClass("hide");
             $(".dataTables_info").removeClass("hide");
+            $("footer").removeClass("bottom");
             rerender();
           });
 
