@@ -1,4 +1,5 @@
 $(document).ready(function() {
+  $(".copyright-year").text(new Date().getFullYear());
   const spreadsheetID = "1MNuSvAUGRJXOdaVVNjgSm0ZBlHw2cSJtP7eq9sdu1b8";
   const URL = `https://spreadsheets.google.com/feeds/list/${spreadsheetID}/1/public/values?alt=json`;
   const keyURL = `https://spreadsheets.google.com/feeds/list/${spreadsheetID}/2/public/values?alt=json`;
@@ -81,7 +82,7 @@ $(document).ready(function() {
           });
         })
         .then(sheet => {
-          $("#example").DataTable({
+          $("#sanctions").DataTable({
             data: sheet.rows,
             columns: [
               {
@@ -187,7 +188,7 @@ $(document).ready(function() {
 
               searchField.placeholder = "search";
               $(".view-all").on("click", function() {
-                $("table").toggleClass("hide");
+                toggleTable();
 
                 $(this)
                   .toggleClass("down")
@@ -196,8 +197,6 @@ $(document).ready(function() {
                   .html(function(i, t) {
                     return t === "View all" ? "Hide all" : "View all";
                   });
-
-                $(".dataTables_info").toggleClass("hide");
 
                 filterColumns.forEach(fc => fc.search("", true, false).draw());
 
@@ -231,23 +230,44 @@ $(document).ready(function() {
                 this.classList.toggle("hover");
               });
 
-              $("#example tbody").on("click", "td.details-control", function() {
-                var tr = $(this).closest("tr");
-                var row = table.row(tr);
+              $("#sanctions tbody").on(
+                "click",
+                "td.details-control",
+                function() {
+                  var tr = $(this).closest("tr");
+                  var row = table.row(tr);
 
-                if (row.child.isShown()) {
-                  row.child.hide();
-                  tr.removeClass("shown");
-                } else {
-                  row.child(format(keys, row.data())).show();
-                  tr.addClass("shown");
+                  if (row.child.isShown()) {
+                    row.child.hide();
+                    tr.removeClass("shown");
+                  } else {
+                    row.child(format(keys, row.data())).show();
+                    tr.addClass("shown");
+                  }
                 }
-              });
+              );
 
-              $(".dataTables_info").toggleClass("hide");
+              toggleTable();
             }
           });
         });
+
+      function toggleTable() {
+        $("table").toggleClass("hide");
+        $(".dataTables_info").toggleClass("hide");
+        $("footer")
+          .toggleClass("bottom")
+          .detach()
+          .appendTo(
+            ((i, e) => {
+              return $(this)
+                .parent()
+                .hasClass("dataTables_wrapper")
+                ? "body"
+                : ".dataTables_wrapper";
+            })()
+          );
+      }
 
       function rerender() {
         $(".dataTables_info").text((i, d) => {

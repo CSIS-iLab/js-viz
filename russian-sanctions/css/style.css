@@ -1,9 +1,3 @@
-.heading {
-  background-color: white;
-  color: #004165;
-  padding: 4px 5px;
-}
-
 .hide {
   display: none;
 }
@@ -12,30 +6,73 @@
 ============================*/
 body {
   font-family: "Source Sans Pro", sans-serif;
+  width: 100vw;
+  overflow-x: hidden;
+}
+
+.dataTables_wrapper .dataTables_filter,
+table,
+.dataTables_wrapper .dataTables_info {
   margin: auto;
   max-width: 1080px;
+}
+
+a:link,
+a:hover,
+a:visited {
+  color: #0065a4;
+  font-weight: bold;
 }
 
 a:hover {
   text-decoration: none;
 }
 
-a:link,
-a:hover,
-a:visited {
+table a:link,
+table a:hover,
+table a:visited {
   color: white;
-  font-weight: bold;
   letter-spacing: 1.4px;
 }
 
+table th,
+.heading {
+  font-family: Inconsolata, monospace;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+  line-height: 1.31;
+  text-transform: uppercase;
+}
+.heading {
+  background-color: white;
+  color: #004165;
+  padding: 4px 5px;
+  margin-bottom: 6px;
+}
+
 h1 {
-  border-top: 5px solid #bcbcbc;
+  border-top: 4px solid #bcbcbc;
   color: #004165;
   font-size: 3em;
   font-weight: 800;
   line-height: 1.16667;
   margin: 0.5em 0;
   padding-top: 0.5em;
+}
+
+footer {
+  border-top: 2px solid #bcbcbc;
+}
+footer.bottom {
+  position: absolute;
+  top: calc(100vh - 300px);
+  width: 100%;
+}
+
+footer,
+h1 {
+  text-align: center;
 }
 
 img {
@@ -75,7 +112,7 @@ img {
   -webkit-appearance: none;
   background: rgba(255, 255, 255, 0.5);
   border: none;
-  font-size: 14px;
+  font-size: 0.9rem;
   padding-left: 3px;
   transition: all 0.2s ease-in-out;
   width: 100%;
@@ -201,7 +238,7 @@ table ul {
 table ul li::before {
   content: "\2B24";
   display: inline-block;
-  font-size: 6px;
+  font-size: 0.4rem;
   font-weight: bold;
   margin-left: -2em;
   position: relative;
@@ -219,7 +256,7 @@ table.dataTable.display tbody td {
 
 table td {
   font-family: "Source Sans Pro", sans-serif;
-  font-size: 0.9rem;
+  font-size: 1rem;
 }
 
 table td.details-control {
@@ -232,16 +269,6 @@ table th {
   color: white;
   padding: 8px 10px;
   vertical-align: top;
-}
-
-table th,
-.heading {
-  font-family: Inconsolata, monospace;
-  font-size: 16px;
-  font-weight: 800;
-  letter-spacing: 1.4px;
-  line-height: 1.31;
-  text-transform: uppercase;
 }
 
 table thead select {
@@ -320,7 +347,7 @@ table tr:not(.odd):not(.even) ul li::before {
   color: white;
 }
 /*============================
-=          Datalist          =
+=          Vendors          =
 ============================*/
 
 .datalist-polyfill .datalist-box li {
@@ -328,6 +355,12 @@ table tr:not(.odd):not(.even) ul li::before {
 }
 .ws-popover {
   overflow: visible !important;
+}
+.dataTables_wrapper .dataTables_info {
+  clear: both;
+  float: none;
+  margin-bottom: 100px;
+  text-align: center;
 }
 /*============================
 =           Mobile           =
