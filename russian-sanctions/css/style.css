@@ -89,9 +89,12 @@ img {
   background-color: rgba(15, 65, 101, 0.33);
   color: #004165 !important;
   float: none !important;
+  padding: 40px;
+}
+
+.dataTables_wrapper .dataTables_filter label {
   font-family: "Source Sans Pro", sans-serif;
   font-weight: 800;
-  padding: 40px;
   text-align: left !important;
   text-transform: uppercase;
 }
@@ -351,7 +354,8 @@ table tr:not(.odd):not(.even) ul li::before {
 ============================*/
 
 .datalist-polyfill .datalist-box li {
-  white-space: wrap !important;
+  white-space: normal !important;
+  max-width: 400px;
 }
 .ws-popover {
   overflow: visible !important;
