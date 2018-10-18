@@ -6,6 +6,8 @@ $(document).ready(function() {
   const companiesURL = `https://spreadsheets.google.com/feeds/list/${spreadsheetID}/3/public/values?alt=json`;
   const individualsURL = `https://spreadsheets.google.com/feeds/list/${spreadsheetID}/4/public/values?alt=json`;
   let table, page, display, total;
+  let companyVal = " ";
+  let individualVal = " ";
 
   fetch(keyURL)
     .then(resp => resp.json())
@@ -173,39 +175,18 @@ $(document).ready(function() {
                     });
                 });
 
-              let companyVal = " ";
-              let individualVal = " ";
-
               $(".companies").change(function() {
                 companyVal = $.fn.dataTable.util.escapeRegex($(this).val());
-
                 if (companyVal.trim()) {
-                  table
-                    .column(12)
-                    .search(`(${companyVal}*|${individualVal}*)`, true, false)
-                    .draw();
+                  searchTargets();
                 }
-
-                $("table").removeClass("hide");
-                $(".dataTables_info").removeClass("hide");
-
-                $("footer").removeClass("bottom");
               });
 
               $(".individuals").change(function() {
                 individualVal = $.fn.dataTable.util.escapeRegex($(this).val());
-
                 if (individualVal.trim()) {
-                  table
-                    .column(12)
-                    .search(`(${companyVal}*|${individualVal}*)`, true, false)
-                    .draw();
+                  searchTargets();
                 }
-
-                $("table").removeClass("hide");
-                $(".dataTables_info").removeClass("hide");
-
-                $("footer").removeClass("bottom");
               });
 
               let filterColumns = [7, 5, 3, 6, 4, 1].map(c => table.column(c));
@@ -290,8 +271,7 @@ $(document).ready(function() {
         });
 
       function toggleTable() {
-        $("table").toggleClass("hide");
-        $(".dataTables_info").toggleClass("hide");
+        $("table,.dataTables_info").toggleClass("hide");
         $("footer")
           .toggleClass("bottom")
           .detach()
@@ -314,6 +294,19 @@ $(document).ready(function() {
           } ${results + 1 === total ? "" : `of ${results}`}`;
         });
         table.responsive.recalc();
+      }
+
+      function searchTargets() {
+        if (individualVal.trim()) {
+          table
+            .column(12)
+            .search(`(${companyVal}*|${individualVal}*)`, true, false)
+            .draw();
+          rerender();
+
+          $("table,.dataTables_info").removeClass("hide");
+          $("footer").removeClass("bottom");
+        }
       }
 
       function makeFilter(table, array) {
