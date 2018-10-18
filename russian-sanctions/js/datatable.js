@@ -305,9 +305,9 @@ $(document).ready(function() {
 
       function rerender() {
         $(".dataTables_info").text((i, d) => {
-          return `Showing ${
-            table.page.info().end ? 1 : 0
-          } to ${display} of ${total} entries`;
+          return `Showing ${table.page.info().end ? 1 : 0} to ${
+            table.page.info().end
+          } of ${total} entries`;
         });
         table.responsive.recalc();
       }
