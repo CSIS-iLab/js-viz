@@ -58,9 +58,9 @@ $(document).ready(function() {
         .replace(/[!@#\$%\^\&*\)\(+=.,_-]/g, "")
         .replace(/\s/g, "_");
 
-      var datalist = $(`<datalist id="${labelSlug}"></datalist>`).prependTo(
-        ".dataTables_filter"
-      );
+      var datalist = $(
+        `<datalist  data-list-filter="^" id="${labelSlug}"></datalist>`
+      ).prependTo(".dataTables_filter");
 
       var input = `<input type="search" class="filter ${labelSlug}" list="${labelSlug}" >`;
 
@@ -234,10 +234,10 @@ $(document).ready(function() {
               total = table.page.info().recordsTotal + 1;
 
               var companyDatalist = $(
-                `<datalist id="companies"></datalist>`
+                `<select class="companies"></select>`
               ).prependTo(".dataTables_filter");
 
-              var companyInput = `<input type="search" class="filter companies" list="companies" placeholder="search company">`;
+              var companyInput = `<input type="text"  data-list-filter="^" class="filter companies" list="companies" placeholder="search company">`;
 
               companyDatalist
                 .wrap("<div></div>")
@@ -245,15 +245,22 @@ $(document).ready(function() {
                 .before(companyInput);
 
               var individualDatalist = $(
-                `<datalist id="individuals"></datalist>`
+                `<select class="individuals"></select>`
               ).prependTo(".dataTables_filter");
 
-              var individualInput = `<input type="search" class="filter companies" list="individuals" placeholder = "search individual">`;
+              var individualInput = `<input type="text"  data-list-filter="^" class="filter companies" list="individuals" placeholder = "search individual">`;
 
               individualDatalist
                 .wrap("<div></div>")
                 .before(`<label>Targeted Individuals:</label>`)
                 .before(individualInput);
+
+              $("select.companies").wrap(
+                `<datalist id="companies"></datalist>`
+              );
+              $("select.individuals").wrap(
+                `<datalist id="individuals"></datalist>`
+              );
 
               fetch(targetsURL)
                 .then(resp => resp.json())
@@ -262,16 +269,12 @@ $(document).ready(function() {
                     $(companyDatalist).append(
                       '<option value="' +
                         e["gsx$individuals"]["$t"] +
-                        '">' +
-                        e["gsx$individuals"]["$t"] +
-                        "</option>"
+                        '"></option>'
                     );
                     $(individualDatalist).append(
                       '<option value="' +
                         e["gsx$companies"]["$t"] +
-                        '">' +
-                        e["gsx$companies"]["$t"] +
-                        "</option>"
+                        '"></option>'
                     );
                   });
                 });
@@ -365,3 +368,10 @@ $(document).ready(function() {
         });
     });
 });
+
+if (window.webshims) {
+  webshims.setOptions("forms", {
+    customDatalist: true
+  });
+  webshims.polyfill("forms");
+}

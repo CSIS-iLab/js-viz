@@ -348,3 +348,6 @@ table {
   width: calc(100% - 12px);
   margin-right: 12px;
 }
+.ws-popover {
+  overflow: visible !important;
+}
