@@ -6,8 +6,8 @@ $(document).ready(function() {
   const companiesURL = `https://spreadsheets.google.com/feeds/list/${spreadsheetID}/3/public/values?alt=json`;
   const individualsURL = `https://spreadsheets.google.com/feeds/list/${spreadsheetID}/4/public/values?alt=json`;
   let table, page, display, total;
-  let companyVal = " ";
-  let individualVal = " ";
+  let companyVal = "";
+  let individualVal = "";
 
   fetch(keyURL)
     .then(resp => resp.json())
@@ -175,17 +175,17 @@ $(document).ready(function() {
                     });
                 });
 
-              $(".companies").change(function() {
+              $("input.companies").change(function() {
                 companyVal = $.fn.dataTable.util.escapeRegex($(this).val());
                 if (companyVal.trim()) {
-                  searchTargets();
+                  searchTargets("company", companyVal);
                 }
               });
 
-              $(".individuals").change(function() {
+              $("input.individuals").change(function() {
                 individualVal = $.fn.dataTable.util.escapeRegex($(this).val());
                 if (individualVal.trim()) {
-                  searchTargets();
+                  searchTargets("individual", individualVal);
                 }
               });
 
@@ -295,15 +295,24 @@ $(document).ready(function() {
         table.responsive.recalc();
       }
 
-      function searchTargets() {
+      function searchTargets(target, value) {
+        // let terms = [individualVal, companyVal].filter(t => !!t.trim());
+        // terms = terms.map(t => `${t}*`).join("|");
+
+        if (target === "company") {
+          $("input.individuals").val("");
+        } else {
+          $("input.companies").val("");
+        }
+
         table
           .column(12)
-          .search(`(${companyVal}*|${individualVal}*)`, true, false)
+          .search(`(${value}*)`, true, false)
           .draw();
+
         rerender();
 
         $("table,.dataTables_info").removeClass("hide");
-        $("footer").removeClass("bottom");
       }
 
       function makeFilter(table, array) {
@@ -385,14 +394,9 @@ $(document).ready(function() {
               <div style="padding-left:24px">${d["gsx$statedintent"]}</div>
             </div>
 
-            <div class="impact">
+            <div class="activities">
               <div class="heading">Activities Linked to</div>
               <div>${d["gsx$activitieslinkedto"]}</div>
-            </div>
-
-            <div class="impact">
-              <div class="heading">IMPACT</div>
-              <div style="padding-left:24px">${d["gsx$impact"]}</div>
             </div>
 
             <div class="ht-lift">

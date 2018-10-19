@@ -87,11 +87,6 @@ footer {
   border-top: 2px solid #bcbcbc;
 }
 
-/* footer.bottom {
-  position: absolute;
-  top: calc(100vh - 100px);
-} */
-
 footer,
 h1 {
   text-align: center;
@@ -249,6 +244,10 @@ button.view-all.down:hover:after {
 .dataTables_wrapper {
   margin: 0 24px 0 0 !important;
   width: calc(100% - 24px);
+  -webkit-animation: fadeIn 3s ease-out;
+  -moz-animation: fadeIn 3s ease-out;
+  -o-animation: fadeIn 3s ease-out;
+  animation: fadeIn 3s ease-out;
 }
 
 table {
@@ -425,11 +424,6 @@ table tr:not(.odd):not(.even) ul li::before {
     margin-left: 24px;
   }
 
-  /* footer.bottom {
-    position: absolute;
-    top: calc(100vh - 300px);
-  } */
-
   button.reset {
     margin: 0 0 0 24px;
   }
@@ -440,5 +434,76 @@ table tr:not(.odd):not(.even) ul li::before {
 
   table tr.shown + tr > td > div > div {
     flex-basis: 48%;
+  }
+}
+
+/*============================
+=         Animation         =
+============================*/
+@-webkit-keyframes fadeIn {
+  0% {
+    display: none;
+    opacity: 0;
+  }
+
+  1% {
+    display: block;
+    opacity: 0;
+  }
+
+  100% {
+    display: block;
+    opacity: 1;
+  }
+}
+
+@-moz-keyframes fadeIn {
+  0% {
+    display: none;
+    opacity: 0;
+  }
+
+  1% {
+    display: block;
+    opacity: 0;
+  }
+
+  100% {
+    display: block;
+    opacity: 1;
+  }
+}
+
+@-o-keyframes fadeIn {
+  0% {
+    display: none;
+    opacity: 0;
+  }
+
+  1% {
+    display: block;
+    opacity: 0;
+  }
+
+  100% {
+    display: block;
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    display: none;
+    opacity: 0;
+  }
+
+  1% {
+    display: block;
+    opacity: 0;
+  }
+
+  100% {
+    display: block;
+    opacity: 1;
   }
 }
