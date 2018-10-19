@@ -4,7 +4,6 @@
 body {
   > *:not(.tooltip) {
     max-width: 700px;
-    min-width: 375px;
     margin-left: auto;
     margin-right: auto;
   }
@@ -32,7 +31,6 @@ body {
 
   .interactive__source {
     max-width: 700px;
-    min-width: 375px;
     margin-left: auto;
     margin-right: auto;
     border-top: 1px solid #000;
