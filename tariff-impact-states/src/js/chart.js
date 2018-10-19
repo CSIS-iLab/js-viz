@@ -94,16 +94,14 @@ function draw(data) {
             'translate(' + margin.left + ',' + margin.top + ')'
           )
 
-    let coordinates = keyFilter.length
-      ? data.map(d => {
-          Object.keys(d).forEach(c => {
-            if (countries.includes(c) && !keyFilter.includes(c)) {
-              d = { ...d, [c]: 0 }
-            }
-          })
-          return d
-        })
-      : data
+    let coordinates = data.map(d => {
+      Object.keys(d).forEach(c => {
+        if (countries.includes(c) && !keyFilter.includes(c)) {
+          d = { ...d, [c]: 0 }
+        }
+      })
+      return d
+    })
 
     let groupNodes = document.querySelectorAll('.group').length
     let groups = groupNodes
@@ -215,7 +213,15 @@ function draw(data) {
         })
 
         .attr('x', function(d, di) {
-          let reverse = Math.abs(99 - di)
+          let switchIndex = percent.findIndex(p => p.country !== 'other')
+
+          switchIndex = switchIndex >= 0 ? switchIndex + 10 : null
+
+          let reverse =
+            Math.ceil((di + 1) / 10) * 10 <= switchIndex
+              ? Math.abs(99 - di)
+              : di
+
           let x = ((reverse % 10) * (cellSize - 2)) / 10 + parseInt(parentX, 10)
           return x + 2
         })

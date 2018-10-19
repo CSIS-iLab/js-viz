@@ -9,14 +9,9 @@ let data
 function loadData() {
   fetch(URL)
     .then(resp => resp.json())
-    .then(
-      json => {
-        data = parseData(json.feed.entry)
-      },
-      reason => {
-        console.log('Error: ' + reason.result.error.message)
-      }
-    )
+    .then(json => {
+      data = parseData(json.feed.entry)
+    })
     .then(() => {
       chart.init(data)
     })
