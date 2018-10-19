@@ -4,17 +4,39 @@
 /*============================
 =          Base          =
 ============================*/
+html {
+  height: 100%;
+}
+
 body {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
   font-family: "Source Sans Pro", sans-serif;
   width: 100vw;
   overflow-x: hidden;
 }
 
+main {
+  flex-grow: 1;
+}
+
+header,
+main,
+footer {
+  flex-shrink: 0;
+}
+
 .dataTables_wrapper .dataTables_filter,
-table,
-.dataTables_wrapper .dataTables_info {
+table {
   margin: auto;
   max-width: 1080px;
+}
+
+.dataTables_wrapper .dataTables_info {
+  margin: auto;
+  max-width: calc(100vw - 24px);
 }
 
 a:link,
@@ -64,15 +86,16 @@ h1 {
 footer {
   border-top: 2px solid #bcbcbc;
 }
-footer.bottom {
+
+/* footer.bottom {
   position: absolute;
-  top: calc(100vh - 300px);
-  width: 100%;
-}
+  top: calc(100vh - 100px);
+} */
 
 footer,
 h1 {
   text-align: center;
+  width: calc(100vw - 24px);
 }
 
 img {
@@ -87,6 +110,7 @@ img {
 ============================*/
 .dataTables_wrapper .dataTables_filter {
   background-color: rgba(15, 65, 101, 0.33);
+  box-sizing: border-box;
   color: #004165 !important;
   float: none !important;
   padding: 40px;
@@ -221,9 +245,14 @@ button.view-all.down:hover:after {
 /*============================
 =           Table           =
 ============================*/
+
+.dataTables_wrapper {
+  margin: 0 24px 0 0 !important;
+  width: calc(100% - 24px);
+}
+
 table {
-  margin-right: 12px;
-  width: calc(100%-12px);
+  margin: 0 24px 0 0 !important;
 }
 
 table li {
@@ -241,7 +270,7 @@ table ul {
 table ul li::before {
   content: "\2B24";
   display: inline-block;
-  font-size: 0.4rem;
+  font-size: 6px;
   font-weight: bold;
   margin-left: -2em;
   position: relative;
@@ -267,11 +296,15 @@ table td.details-control {
   cursor: pointer;
 }
 
-table th {
+table th:not(:first-child) {
   background-color: #004165;
   color: white;
   padding: 8px 10px;
   vertical-align: top;
+}
+
+table.dataTable thead th:first-child {
+  border-bottom: none;
 }
 
 table thead select {
@@ -392,8 +425,17 @@ table tr:not(.odd):not(.even) ul li::before {
     margin-left: 24px;
   }
 
+  /* footer.bottom {
+    position: absolute;
+    top: calc(100vh - 300px);
+  } */
+
   button.reset {
     margin: 0 0 0 24px;
+  }
+
+  table {
+    margin: 0 auto !important;
   }
 
   table tr.shown + tr > td > div > div {

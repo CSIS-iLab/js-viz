@@ -205,14 +205,7 @@ $(document).ready(function() {
               searchField.placeholder = "search";
               $(".view-all").on("click", function() {
                 toggleTable();
-
-                $(this)
-                  .toggleClass("down")
-                  .toggleClass("up")
-                  .find("span")
-                  .html(function(i, t) {
-                    return t === "View all" ? "Hide all" : "View all";
-                  });
+                toggleButton();
 
                 filterColumns.forEach(fc => fc.search("", true, false).draw());
 
@@ -242,6 +235,14 @@ $(document).ready(function() {
                 [...document.querySelectorAll(".filter")].forEach(
                   f => (f.value = "")
                 );
+
+                $("button.view-all")
+                  .removeClass("down")
+                  .addClass("up")
+                  .find("span")
+                  .html("Hide all");
+
+                $("table,.dataTables_info").removeClass("hide");
               });
 
               $("tr").hover(function() {
@@ -272,18 +273,16 @@ $(document).ready(function() {
 
       function toggleTable() {
         $("table,.dataTables_info").toggleClass("hide");
-        $("footer")
-          .toggleClass("bottom")
-          .detach()
-          .appendTo(
-            ((i, e) => {
-              return $(this)
-                .parent()
-                .hasClass("dataTables_wrapper")
-                ? "body"
-                : ".dataTables_wrapper";
-            })()
-          );
+      }
+
+      function toggleButton() {
+        $("button.view-all")
+          .toggleClass("down")
+          .toggleClass("up")
+          .find("span")
+          .html(function(i, t) {
+            return t === "View all" ? "Hide all" : "View all";
+          });
       }
 
       function rerender() {
@@ -305,7 +304,6 @@ $(document).ready(function() {
           rerender();
 
           $("table,.dataTables_info").removeClass("hide");
-          $("footer").removeClass("bottom");
         }
       }
 
@@ -341,7 +339,6 @@ $(document).ready(function() {
             $(this).blur();
             $("table").removeClass("hide");
             $(".dataTables_info").removeClass("hide");
-            $("footer").removeClass("bottom");
             rerender();
           });
 
