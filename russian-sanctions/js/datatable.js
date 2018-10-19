@@ -296,15 +296,14 @@ $(document).ready(function() {
       }
 
       function searchTargets() {
-        if (individualVal.trim()) {
-          table
-            .column(12)
-            .search(`(${companyVal}*|${individualVal}*)`, true, false)
-            .draw();
-          rerender();
+        table
+          .column(12)
+          .search(`(${companyVal}*|${individualVal}*)`, true, false)
+          .draw();
+        rerender();
 
-          $("table,.dataTables_info").removeClass("hide");
-        }
+        $("table,.dataTables_info").removeClass("hide");
+        $("footer").removeClass("bottom");
       }
 
       function makeFilter(table, array) {
