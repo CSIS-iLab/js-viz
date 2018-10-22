@@ -5,11 +5,11 @@
 =          Base          =
 ============================*/
 html {
-  height: 100%;
+  height: 99%;
 }
 
 body {
-  min-height: 100%;
+  min-height: 99%;
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -244,10 +244,10 @@ button.view-all.down:hover:after {
 .dataTables_wrapper {
   margin: 0 24px 0 0 !important;
   width: calc(100% - 24px);
-  -webkit-animation: fadeIn 3s ease-out;
-  -moz-animation: fadeIn 3s ease-out;
-  -o-animation: fadeIn 3s ease-out;
-  animation: fadeIn 3s ease-out;
+  -webkit-animation: fadeIn 2s ease-out;
+  -moz-animation: fadeIn 2s ease-out;
+  -o-animation: fadeIn 2s ease-out;
+  animation: fadeIn 2s ease-out;
 }
 
 table {
@@ -291,8 +291,19 @@ table td {
 }
 
 table td.details-control {
-  background: url(../img/details_open.png) no-repeat center 12px;
+  background: #fff url(../img/details_open.png) no-repeat center 12px;
   cursor: pointer;
+  width: 50px;
+}
+
+table tr:hover td.details-control {
+  background: #fff url(../img/expand.png) no-repeat center 12px;
+  background-size: 93%;
+  cursor: pointer;
+}
+
+table tr.shown td.details-control {
+  background: #fff url(../img/details_close.png) no-repeat center 12px;
 }
 
 table th:not(:first-child) {
@@ -333,10 +344,6 @@ table tr.group td {
 table tr.odd ul li::before,
 table tr.even ul li::before {
   color: #0065a4;
-}
-
-table tr.shown td.details-control {
-  background: url(../img/details_close.png) no-repeat center 12px;
 }
 
 table tr.shown td:nth-child(1) {
@@ -397,6 +404,56 @@ table tr:not(.odd):not(.even) ul li::before {
   float: none;
   margin-bottom: 100px;
   text-align: center;
+}
+
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/source-sans-pro-v11-latin-regular.eot'); /* IE9 Compat Modes */
+  src: local('Source Sans Pro Regular'), local('SourceSansPro-Regular'),
+       url('../fonts/source-sans-pro-v11-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../fonts/source-sans-pro-v11-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+       url('../fonts/source-sans-pro-v11-latin-regular.woff') format('woff'), /* Modern Browsers */
+       url('../fonts/source-sans-pro-v11-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('../fonts/source-sans-pro-v11-latin-regular.svg#SourceSansPro') format('svg'); /* Legacy iOS */
+}
+
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-style: normal;
+  font-weight: 600;
+  src: url('../fonts/source-sans-pro-v11-latin-600.eot'); /* IE9 Compat Modes */
+  src: local('Source Sans Pro SemiBold'), local('SourceSansPro-SemiBold'),
+       url('../fonts/source-sans-pro-v11-latin-600.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../fonts/source-sans-pro-v11-latin-600.woff2') format('woff2'), /* Super Modern Browsers */
+       url('../fonts/source-sans-pro-v11-latin-600.woff') format('woff'), /* Modern Browsers */
+       url('../fonts/source-sans-pro-v11-latin-600.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('../fonts/source-sans-pro-v11-latin-600.svg#SourceSansPro') format('svg'); /* Legacy iOS */
+}
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-style: normal;
+  font-weight: 700;
+  src: url('../fonts/source-sans-pro-v11-latin-700.eot'); /* IE9 Compat Modes */
+  src: local('Source Sans Pro Bold'), local('SourceSansPro-Bold'),
+       url('../fonts/source-sans-pro-v11-latin-700.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../fonts/source-sans-pro-v11-latin-700.woff2') format('woff2'), /* Super Modern Browsers */
+       url('../fonts/source-sans-pro-v11-latin-700.woff') format('woff'), /* Modern Browsers */
+       url('../fonts/source-sans-pro-v11-latin-700.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('../fonts/source-sans-pro-v11-latin-700.svg#SourceSansPro') format('svg'); /* Legacy iOS */
+}
+@font-face {
+  font-family: 'Inconsolata';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/inconsolata-v16-latin-regular.eot'); /* IE9 Compat Modes */
+  src: local('Inconsolata Regular'), local('Inconsolata-Regular'),
+       url('../fonts/inconsolata-v16-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../fonts/inconsolata-v16-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+       url('../fonts/inconsolata-v16-latin-regular.woff') format('woff'), /* Modern Browsers */
+       url('../fonts/inconsolata-v16-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('../fonts/inconsolata-v16-latin-regular.svg#Inconsolata') format('svg'); /* Legacy iOS */
 }
 /*============================
 =           Mobile           =

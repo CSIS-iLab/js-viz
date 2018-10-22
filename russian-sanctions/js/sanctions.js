@@ -95,6 +95,7 @@ $(document).ready(function() {
               },
               ...sheet.columns
             ],
+            fixedHeader: true,
             responsive: { details: false },
             paging: false,
             order: [[2, "asc"]],
@@ -119,7 +120,7 @@ $(document).ready(function() {
                 `<select class="companies"></select>`
               ).prependTo(".dataTables_filter");
 
-              var companyInput = `<input type="text" data-list-filter="^" data-wslist="companies" class="filter companies" list="companies" placeholder="search company">`;
+              var companyInput = `<input type="text" data-list-filter="^" data-wslist="companies" class="filter companies" list="companies">`;
 
               companyDatalist
                 .wrap("<div></div>")
@@ -130,7 +131,7 @@ $(document).ready(function() {
                 `<select class="individuals"></select>`
               ).prependTo(".dataTables_filter");
 
-              var individualInput = `<input type="text" data-list-filter="^" data-wslist="individuals" class="filter individuals" list="individuals" placeholder="search individual">`;
+              var individualInput = `<input type="text" data-list-filter="^" data-wslist="individuals" class="filter individuals" list="individuals">`;
 
               individualDatalist
                 .wrap("<div></div>")
@@ -202,7 +203,8 @@ $(document).ready(function() {
                 `<button class="view-all down"><span>View all</span> sanctions</button>`
               );
 
-              searchField.placeholder = "search";
+              // searchField.placeholder = "search";
+
               $(".view-all").on("click", function() {
                 toggleTable();
                 toggleButton();
@@ -313,6 +315,11 @@ $(document).ready(function() {
         rerender();
 
         $("table,.dataTables_info").removeClass("hide");
+        $(".view-all")
+          .removeClass("down")
+          .addClass("up")
+          .find("span")
+          .text("Hide");
       }
 
       function makeFilter(table, array) {
@@ -370,9 +377,9 @@ $(document).ready(function() {
               datalist.append('<option value="' + d + '">' + d + "</option>");
             });
 
-          document.querySelector(
-            `.${labelSlug}`
-          ).placeholder = `search ${label.toLowerCase()}`;
+          // document.querySelector(
+          //   `.${labelSlug}`
+          // ).placeholder = `search ${label.toLowerCase()}`;
         });
       }
 
