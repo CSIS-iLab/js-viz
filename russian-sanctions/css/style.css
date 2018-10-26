@@ -5,6 +5,42 @@ td:nth-child(2),
 td:last-of-type {
   hyphens: auto;
 }
+#csis {
+  background: #fff;
+  padding: 10px 0 10px 0;
+  text-align: center;
+  width: 100%;
+  top: 0;
+}
+.overlay {
+  position: relative;
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+.header {
+  background: url(https://media.gettyimages.com/photos/russian-ruble-coin-is-pictured-in-front-of-the-kremlin-in-in-central-picture-id458510376)
+    no-repeat center center;
+  background-size: cover;
+  text-align: center;
+}
+.header h1 {
+  margin-top: 0;
+  padding: 7.5%;
+  color: #fff;
+  text-transform: uppercase;
+  position: relative;
+}
+.header button {
+  position: relative;
+  bottom: 100px;
+}
+.header button a {
+  color: #fff;
+  text-decoration: none;
+}
+.anchor {
+  display: block;
+}
 /*============================
 =          Base          =
 ============================*/
@@ -20,12 +56,13 @@ body {
   font-family: "Source Sans Pro", sans-serif;
   width: 100vw;
   overflow-x: hidden;
+  margin: 0;
 }
 
 main {
   flex-grow: 1;
 }
-
+#csis,
 header,
 main,
 footer {
@@ -41,6 +78,19 @@ table {
 .dataTables_wrapper .dataTables_info {
   margin: auto;
   max-width: calc(100vw - 24px);
+}
+
+#site-description {
+  margin: 50px auto;
+  position: relative;
+  left: -12px;
+  max-width: 1080px;
+}
+
+.indepth {
+  font-size: 1.2rem;
+  line-height: 1.8;
+  margin: 15px 0;
 }
 
 a:link,
@@ -77,24 +127,34 @@ table th,
   margin-bottom: 6px;
 }
 
-h1 {
-  border-top: 4px solid #bcbcbc;
-  color: #004165;
-  font-size: 3em;
+h1,
+h2 {
   font-weight: 800;
   line-height: 1.16667;
-  margin: 0.5em 0;
   padding-top: 0.5em;
+  text-align: center;
+}
+
+h1 {
+  margin: 0.5em 0;
+  border-top: 4px solid #bcbcbc;
+  font-size: 3em;
+}
+
+h2 {
+  margin: 3em 0 0.5em;
+  border-bottom: 2px solid #bcbcbc;
+  color: #004165;
+  font-size: 2em;
 }
 
 footer {
   border-top: 2px solid #bcbcbc;
 }
 
-footer,
-h1 {
+footer {
   text-align: center;
-  width: calc(100vw - 24px);
+  width: 100vw;
 }
 
 img {
@@ -170,7 +230,7 @@ button {
     border 0.2s ease-in-out;
 }
 
-button.reset {
+button:not(.view-all) {
   background-color: transparent;
   border: 3px solid white;
   color: white;
@@ -178,7 +238,7 @@ button.reset {
   padding: 16px 18px;
 }
 
-button.reset:hover {
+button:not(.view-all):hover {
   background-color: #004165;
   border: 3px solid #004165;
 }
@@ -509,7 +569,7 @@ table tr:not(.odd):not(.even) ul li::before {
     margin-left: 24px;
   }
 
-  button.reset {
+  button:not(.view-all) {
     margin: 0 0 0 24px;
   }
 

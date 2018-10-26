@@ -23,17 +23,33 @@
 </head>
 
 <body>
-  <header>
-    <img src="img/csis.png">
-    <h1>Russia Sanctions Tracker</h1>
-  </header>
+  <div id="csis"><a href="http://www.csis.org" target="_blank"><img src="img/csis.png" /></a></div>
+
+	<header class="header overlay">
+		<div class="title">
+	    		<h1>Russia Sanctions Tracker</h1>
+
+          <button>
+            <a href="#database">Database</a>
+          </button>
+
+    			<button>
+            <a href="#analysis">Analysis</a>
+          </button>
+	        </div>
+	</header>
   <main>
+    <div id="site-description">
+      <p class="indepth">This tool charts U.S. sanctions against Russia, allowing users to filter and search sanctions by source, date, target, and sector.</p>
+      <p class="indepth">View all sanctions since 2012 in chronological order, or filter sanctions using the criteria in the search box. Hit ‘Expand’ on each sanction for additional information and resources.</p>
+    <a name="database" class="anchor"></a></div>
     <table id="sanctions" class="display" style="width:100%">
       <thead>
         <tr>
         </tr>
       </thead>
     </table>
+    <a name="analysis" class="anchor"></a><h2>Analysis</h2>
   </main>
 
   <footer id="copyright">
