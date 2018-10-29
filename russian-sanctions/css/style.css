@@ -256,7 +256,6 @@ img {
 }
 
 .dataTables_wrapper .dataTables_filter label {
-  font-family: "Cantarell", sans-serif;
   font-weight: 800;
   text-align: left !important;
   text-transform: uppercase;
@@ -386,6 +385,8 @@ button.view-all.down:hover:after {
 ============================*/
 
 .dataTables_wrapper {
+  font-family: "Source Sans Pro", sans-serif;
+  letter-spacing: 0;
   margin: 0 24px 0 0 !important;
   width: calc(100% - 24px);
   -webkit-animation: fadeIn 1s ease-out;
