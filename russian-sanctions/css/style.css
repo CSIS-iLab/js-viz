@@ -1,6 +1,7 @@
 .hide {
   display: none;
 }
+
 td:nth-child(2),
 td:nth-child(4),
 td:last-of-type {
@@ -22,9 +23,30 @@ td:last-of-type {
   background-color: rgba(255, 255, 255, 0.7);
 }
 
+.overlay:before {
+  position: absolute;
+  content: " ";
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 0;
+  background-color: rgba(0, 65, 101, 0.5);
+}
+.overlay:after {
+  position: absolute;
+  content: " ";
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 0;
+  background-color: rgba(0, 0, 0, 0.25);
+}
 .header {
-  background: url(https://media.gettyimages.com/photos/russian-ruble-coin-is-pictured-in-front-of-the-kremlin-in-in-central-picture-id458510376)
-    no-repeat center center;
+  background: url("../img/banner.jpg") no-repeat center center;
   background-size: cover;
   text-align: center;
 }
@@ -45,6 +67,7 @@ td:last-of-type {
 .header button a {
   color: #fff;
   text-decoration: none;
+  letter-spacing: 2px;
 }
 
 .anchor {
@@ -62,10 +85,11 @@ body {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  font-family: "Source Sans Pro", sans-serif;
+  font-family: "Cantarell", sans-serif;
   width: 100vw;
   overflow-x: hidden;
   margin: 0;
+  letter-spacing: -1px;
 }
 
 main {
@@ -75,6 +99,7 @@ main {
   -o-animation: fadeIn 2s ease-out;
   animation: fadeIn 2s ease-out;
 }
+
 #csis,
 header,
 main,
@@ -83,7 +108,8 @@ footer {
 }
 
 .dataTables_wrapper .dataTables_filter,
-table {
+table,
+section {
   margin: auto;
   max-width: 1080px;
 }
@@ -97,6 +123,7 @@ table {
   margin: 50px auto;
   position: relative;
   max-width: 1080px;
+  text-align: center;
 }
 
 .indepth {
@@ -105,11 +132,46 @@ table {
   margin: 15px 0;
 }
 
+.teaser__type {
+  font-size: 0.8rem;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.teaser__title {
+  font-size: 1.2rem;
+  margin: 0.2rem 0;
+  line-height: 1.3;
+  color: #004165;
+  font-family: Expo-serif-pro, "Liberation Sans", Helvetica, Arial, sans-serif;
+  letter-spacing: 0;
+}
+
+.teaser__date,
+.teaser__expert {
+  font-size: 1rem;
+}
+.teaser__detail {
+  line-height: 1.5;
+}
+
+.teaser__text {
+  margin-top: 0.5em;
+}
+
+section {
+  margin-bottom: 2rem;
+}
+
 a:link,
 a:hover,
 a:visited {
   color: #0065a4;
   font-weight: bold;
+}
+
+.teaser__title a {
+  letter-spacing: 0;
 }
 
 a:hover {
@@ -138,11 +200,15 @@ table th,
   padding: 4px 5px;
   margin-bottom: 6px;
 }
+.title {
+  z-index: 1;
+  position: relative;
+}
 
 h1,
 h2 {
   font-family: expo-serif-pro, serif;
-
+  letter-spacing: 0;
   font-weight: 400;
   line-height: 1.16667;
   padding-top: 0.5em;
@@ -151,7 +217,7 @@ h2 {
 
 h1 {
   margin: 0.5em 0;
-  border-top: 4px solid #bcbcbc;
+  border-top: 4px solid #004165;
   font-size: 3em;
 }
 
@@ -163,7 +229,7 @@ h2 {
 }
 
 footer {
-  border-top: 2px solid #bcbcbc;
+  border-top: 1px solid #004165;
 }
 
 footer {
@@ -190,7 +256,7 @@ img {
 }
 
 .dataTables_wrapper .dataTables_filter label {
-  font-family: "Source Sans Pro", sans-serif;
+  font-family: "Cantarell", sans-serif;
   font-weight: 800;
   text-align: left !important;
   text-transform: uppercase;
@@ -235,7 +301,7 @@ img {
 ============================*/
 button {
   cursor: pointer;
-  font-family: "Source Sans Pro", sans-serif;
+  font-family: "Cantarell", sans-serif;
   font-weight: 800;
   letter-spacing: 2px;
   text-align: center;
@@ -364,7 +430,7 @@ table.dataTable.display tbody td {
 }
 
 table td {
-  font-family: "Source Sans Pro", sans-serif;
+  font-family: "Cantarell", sans-serif;
   font-size: 1rem;
 }
 
@@ -483,62 +549,78 @@ table tr:not(.odd):not(.even) ul li::before {
   margin-bottom: 100px;
   text-align: center;
 }
-
+/* cantarell-regular - latin */
 @font-face {
-  font-family: "Source Sans Pro";
+  font-family: "Cantarell";
   font-style: normal;
   font-weight: 400;
-  src: url("../fonts/source-sans-pro-v11-latin-regular.eot"); /* IE9 Compat Modes */
-  src: local("Source Sans Pro Regular"), local("SourceSansPro-Regular"),
-    url("../fonts/source-sans-pro-v11-latin-regular.eot?#iefix")
+  src: url("../fonts/cantarell-v7-latin-regular.eot"); /* IE9 Compat Modes */
+  src: local("Cantarell Regular"), local("Cantarell-Regular"),
+    url("../fonts/cantarell-v7-latin-regular.eot?#iefix")
       format("embedded-opentype"),
-    /* IE6-IE8 */ url("../fonts/source-sans-pro-v11-latin-regular.woff2")
+    /* IE6-IE8 */ url("../fonts/cantarell-v7-latin-regular.woff2")
       format("woff2"),
-    /* Super Modern Browsers */
-      url("../fonts/source-sans-pro-v11-latin-regular.woff") format("woff"),
-    /* Modern Browsers */ url("../fonts/source-sans-pro-v11-latin-regular.ttf")
+    /* Super Modern Browsers */ url("../fonts/cantarell-v7-latin-regular.woff")
+      format("woff"),
+    /* Modern Browsers */ url("../fonts/cantarell-v7-latin-regular.ttf")
       format("truetype"),
     /* Safari, Android, iOS */
-      url("../fonts/source-sans-pro-v11-latin-regular.svg#SourceSansPro")
-      format("svg"); /* Legacy iOS */
+      url("../fonts/cantarell-v7-latin-regular.svg#Cantarell") format("svg"); /* Legacy iOS */
 }
-
+/* cantarell-italic - latin */
 @font-face {
-  font-family: "Source Sans Pro";
-  font-style: normal;
-  font-weight: 600;
-  src: url("../fonts/source-sans-pro-v11-latin-600.eot"); /* IE9 Compat Modes */
-  src: local("Source Sans Pro SemiBold"), local("SourceSansPro-SemiBold"),
-    url("../fonts/source-sans-pro-v11-latin-600.eot?#iefix")
+  font-family: "Cantarell";
+  font-style: italic;
+  font-weight: 400;
+  src: url("../fonts/cantarell-v7-latin-italic.eot"); /* IE9 Compat Modes */
+  src: local("Cantarell Oblique"), local("Cantarell-Oblique"),
+    url("../fonts/cantarell-v7-latin-italic.eot?#iefix")
       format("embedded-opentype"),
-    /* IE6-IE8 */ url("../fonts/source-sans-pro-v11-latin-600.woff2")
+    /* IE6-IE8 */ url("../fonts/cantarell-v7-latin-italic.woff2")
       format("woff2"),
-    /* Super Modern Browsers */
-      url("../fonts/source-sans-pro-v11-latin-600.woff") format("woff"),
-    /* Modern Browsers */ url("../fonts/source-sans-pro-v11-latin-600.ttf")
+    /* Super Modern Browsers */ url("../fonts/cantarell-v7-latin-italic.woff")
+      format("woff"),
+    /* Modern Browsers */ url("../fonts/cantarell-v7-latin-italic.ttf")
       format("truetype"),
     /* Safari, Android, iOS */
-      url("../fonts/source-sans-pro-v11-latin-600.svg#SourceSansPro")
-      format("svg"); /* Legacy iOS */
+      url("../fonts/cantarell-v7-latin-italic.svg#Cantarell") format("svg"); /* Legacy iOS */
 }
+/* cantarell-700 - latin */
 @font-face {
-  font-family: "Source Sans Pro";
+  font-family: "Cantarell";
   font-style: normal;
   font-weight: 700;
-  src: url("../fonts/source-sans-pro-v11-latin-700.eot"); /* IE9 Compat Modes */
-  src: local("Source Sans Pro Bold"), local("SourceSansPro-Bold"),
-    url("../fonts/source-sans-pro-v11-latin-700.eot?#iefix")
+  src: url("../fonts/cantarell-v7-latin-700.eot"); /* IE9 Compat Modes */
+  src: local("Cantarell Bold"), local("Cantarell-Bold"),
+    url("../fonts/cantarell-v7-latin-700.eot?#iefix")
       format("embedded-opentype"),
-    /* IE6-IE8 */ url("../fonts/source-sans-pro-v11-latin-700.woff2")
-      format("woff2"),
-    /* Super Modern Browsers */
-      url("../fonts/source-sans-pro-v11-latin-700.woff") format("woff"),
-    /* Modern Browsers */ url("../fonts/source-sans-pro-v11-latin-700.ttf")
+    /* IE6-IE8 */ url("../fonts/cantarell-v7-latin-700.woff2") format("woff2"),
+    /* Super Modern Browsers */ url("../fonts/cantarell-v7-latin-700.woff")
+      format("woff"),
+    /* Modern Browsers */ url("../fonts/cantarell-v7-latin-700.ttf")
       format("truetype"),
     /* Safari, Android, iOS */
-      url("../fonts/source-sans-pro-v11-latin-700.svg#SourceSansPro")
-      format("svg"); /* Legacy iOS */
+      url("../fonts/cantarell-v7-latin-700.svg#Cantarell") format("svg"); /* Legacy iOS */
 }
+/* cantarell-700italic - latin */
+@font-face {
+  font-family: "Cantarell";
+  font-style: italic;
+  font-weight: 700;
+  src: url("../fonts/cantarell-v7-latin-700italic.eot"); /* IE9 Compat Modes */
+  src: local("Cantarell Bold Oblique"), local("Cantarell-BoldOblique"),
+    url("../fonts/cantarell-v7-latin-700italic.eot?#iefix")
+      format("embedded-opentype"),
+    /* IE6-IE8 */ url("../fonts/cantarell-v7-latin-700italic.woff2")
+      format("woff2"),
+    /* Super Modern Browsers */
+      url("../fonts/cantarell-v7-latin-700italic.woff") format("woff"),
+    /* Modern Browsers */ url("../fonts/cantarell-v7-latin-700italic.ttf")
+      format("truetype"),
+    /* Safari, Android, iOS */
+      url("../fonts/cantarell-v7-latin-700italic.svg#Cantarell") format("svg"); /* Legacy iOS */
+}
+
 @font-face {
   font-family: "Inconsolata";
   font-style: normal;
