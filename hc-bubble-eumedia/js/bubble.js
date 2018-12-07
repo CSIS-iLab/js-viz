@@ -1,7 +1,7 @@
-// Set circle colors
-// Highcharts.setOptions({
-//    colors: ['#058DC7', '#FFFFFF']
-// });
+Highcharts.setOptions({
+    colors: ['#B53224', '#FFFFFF']
+});
+
 
 Highcharts.chart('container', {
 
@@ -16,15 +16,15 @@ Highcharts.chart('container', {
     },
 
     title: {
-        text: 'EU, Parliament, Media'
+        text: 'How much do Europeans trust the EU Parliament and Media?'
     },
 
     subtitle: {
-        text: 'Source: <a href="http://ec.europa.eu/commfrontoffice/publicopinion/index.cfm/Survey/getSurveyDetail/instruments/STANDARD/surveyKy/2180">Eurobarometer</a> Spring 2018 and <a href="https://rsf.org/en/ranking">RSF</a>'
+        text: 'The size of the circles correspond to levels of trust in the media. Larger sizes mean higher levels of trust.'
     },
 
     credits: {
-    text: 'CSIS Practicum in International Reporting',
+    text: 'CSIS Practicum in International Reporting | Source: Eurobarometer, Spring 2018',
     href: 'https://journalism.csis.org'
     },
 
@@ -35,17 +35,7 @@ Highcharts.chart('container', {
         },
         labels: {
             format: '{value}'
-        },
-        plotLines: [{
-          color: '#FF0000',
-          width: 2,
-          value: 50,
-          label: {
-            text: 'More educated',
-            align: 'right',
-            y: 275
-          }
-        }]
+        }
     },
 
     yAxis: {
@@ -76,6 +66,7 @@ Highcharts.chart('container', {
         series: {
             dataLabels: {
                 enabled: true,
+                allowOverlap: true,
                 format: '{point.name}'
             }
         }
