@@ -1,3 +1,7 @@
+Highcharts.setOptions({
+    colors: ['#B53224', '#FFFFFF']
+});
+
 Highcharts.chart('container', {
 
     chart: {
@@ -63,6 +67,7 @@ Highcharts.chart('container', {
         series: {
             dataLabels: {
                 enabled: true,
+                allowOverlap: true,
                 format: '{point.name}'
             }
         }
