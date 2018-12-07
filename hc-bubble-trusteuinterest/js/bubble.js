@@ -15,15 +15,15 @@ Highcharts.chart('container', {
     },
 
     title: {
-        text: 'Media Freedom, Dem Index, Trust in EU'
+        text: 'Trust and Interest Levels in the EU'
     },
 
     subtitle: {
-        text: 'Source: <a href="http://ec.europa.eu/commfrontoffice/publicopinion/index.cfm/Survey/getSurveyDetail/instruments/STANDARD/surveyKy/2180">Eurobarometer</a> Spring 2018'
+        text: 'Trust in media correlated with trust in the European Union and political interest levels. Circle sizes correspond to polled interest levels in political life.'
     },
 
     credits: {
-    text: 'CSIS Practicum in International Reporting',
+    text: 'CSIS Practicum in International Reporting | Source: Eurobarometer, Spring 2018',
     href: 'https://journalism.csis.org'
     },
 
