@@ -1,3 +1,8 @@
+// Set circle colors
+// Highcharts.setOptions({
+//    colors: ['#058DC7', '#FFFFFF']
+// });
+
 Highcharts.chart('container', {
 
     chart: {
@@ -31,8 +36,16 @@ Highcharts.chart('container', {
         labels: {
             format: '{value}'
         },
-
-
+        plotLines: [{
+          color: '#FF0000',
+          width: 2,
+          value: 50,
+          label: {
+            text: 'More educated',
+            align: 'right',
+            y: 275
+          }
+        }]
     },
 
     yAxis: {
