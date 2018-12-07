@@ -1,3 +1,8 @@
+Highcharts.setOptions({
+    colors: ['#000000', '#FFFFFF']
+});
+
+
 Highcharts.chart('container', {
 
     chart: {
@@ -11,15 +16,15 @@ Highcharts.chart('container', {
     },
 
     title: {
-        text: 'Natl Govt, EU, Media'
+        text: 'How much do Europeans trust government and media?'
     },
 
     subtitle: {
-        text: 'Source: <a href="https://rsf.org/en/ranking">RSF</a> and <a href="https://infographics.economist.com/2018/DemocracyIndex/">The Economist 2017</a>'
+        text: 'Size shows levels of trust in the media. Larger sizes indicate higher levels of trust.'
     },
 
     credits: {
-    text: 'CSIS Practicum in International Reporting',
+    text: 'CSIS Practicum in International Reporting | Source: Eurobarometer, Spring 2018',
     href: 'https://journalism.csis.org'
     },
 
@@ -63,6 +68,7 @@ Highcharts.chart('container', {
         series: {
             dataLabels: {
                 enabled: true,
+                allowOverlap: true,
                 format: '{point.name}'
             }
         }
