@@ -86,223 +86,207 @@ fetch(
 function renderChart(data) {
   chart = Highcharts.chart(
     "container",
-    _defineProperty(
-      {
-        chart: {
-          type: "tilemap",
-          height: "80%",
-          marginBottom: 30
-        },
+    _defineProperty({
+      chart: {
+        type: "tilemap",
+        height: "80%",
+        marginBottom: 30
+      },
 
-        title: {
-          align: "left",
-          x: 50,
-          text: "Surveillance Scores by year and country"
-        },
+      title: {
+        align: "left",
+        x: 50,
+        text: "Surveillance Scores by year and country"
+      },
 
-        subtitle: {
-          widthAdjust: -150,
-          align: "left",
-          x: 50,
-          text:
-            "A States Parties Questionnaire (also referred to as the IHR monitoring questionnaire) is sent annually to National IHR Focal Points (NFPs) for data collection. It contains a checklist of 20 indicators specifically developed for monitoring each core capacity, including its status of implementation."
-        },
+      subtitle: {
+        widthAdjust: -150,
+        align: "left",
+        x: 50,
+        text:
+          "A States Parties Questionnaire (also referred to as the IHR monitoring questionnaire) is sent annually to National IHR Focal Points (NFPs) for data collection. It contains a checklist of 20 indicators specifically developed for monitoring each core capacity, including its status of implementation."
+      },
 
-        xAxis: {
-          visible: false
-        },
+      xAxis: {
+        visible: false
+      },
 
-        yAxis: {
-          visible: false
-        },
-        credits: {
-          enabled: true,
-          href: true,
-          position: { y: -10 },
-          text:
-            'CSIS Global Health Policy Center | Source: <a href=http://apps.who.int/gho/data/view.main.IHRCTRY03v?lang=en">World Health Organization</a>'
-        },
-        legend: {
-          enabled: true,
-          layout: "horizontal",
-          align: "bottom",
-          y: 10,
-          floating: false
-        },
+      yAxis: {
+        visible: false
+      },
+      credits: {
+        enabled: true,
+        href: true,
+        position: { y: -10 },
+        text:
+          'CSIS Global Health Policy Center | Source: <a href=http://apps.who.int/gho/data/view.main.IHRCTRY03v?lang=en">World Health Organization</a>'
+      },
+      legend: {
+        enabled: true,
+        layout: "horizontal",
+        align: "bottom",
+        y: 10,
+        floating: false
+      },
 
-        colorAxis: {
-          dataClasses: [
-            {
-              to: 25,
-              color: "#90b2dc",
-              name: "< 25"
-            },
-            {
-              from: 25,
-              to: 50,
-              color: "#6190C9",
-              name: "> 25"
-            },
-            {
-              from: 50,
-              to: 75,
-              color: "#305F98",
-              name: "> 50"
-            },
-            {
-              from: 75,
-              color: "#234670",
-              name: "> 75"
-            }
-          ]
-        },
-
-        plotOptions: {
-          series: {
-            tileShape: "circle",
-            dataLabels: {
-              enabled: true,
-              overflow: false,
-              formatter: function formatter(point) {
-                var color = void 0;
-
-                switch (this.color) {
-                  case "#234670":
-                    color = "#90b2dc";
-                    break;
-                  case "#305F98":
-                    color = "#6190C9";
-                    break;
-                  case "#6190C9":
-                    color = "#305F98";
-                    break;
-                  case "#90b2dc":
-                    color = "#234670";
-                    break;
-                  default:
-                    return;
-                }
-
-                return (
-                  '<span style="font-size:font-size: .5rem;color:' +
-                  color +
-                  '">' +
-                  this.point["alpha-2"] +
-                  "</span>"
-                );
-              },
-              color: "#000000",
-              style: {
-                textOutline: false
-              }
-            },
-            point: {
-              events: {
-                mouseOver: function mouseOver() {
-                  var _this = this;
-
-                  this.series.points
-                    .filter(function(p) {
-                      return p.region === _this.region;
-                    })
-                    .forEach(function(p) {
-                      return p.setState("hover");
-                    });
-                },
-                mouseOut: function mouseOut() {
-                  var _this2 = this;
-
-                  this.series.points
-                    .filter(function(p) {
-                      return p.region === _this2.region;
-                    })
-                    .forEach(function(p) {
-                      return p.setState("");
-                    });
-                }
-              }
-            }
-          }
-        },
-
-        series: [
+      colorAxis: {
+        dataClasses: [
           {
-            data: data.data,
-            states: {
-              hover: {
-                brightness: 0.125
+            to: 25,
+            color: "#90b2dc",
+            name: "< 25"
+          },
+          {
+            from: 25,
+            to: 50,
+            color: "#6190C9",
+            name: "> 25"
+          },
+          {
+            from: 50,
+            to: 75,
+            color: "#305F98",
+            name: "> 50"
+          },
+          {
+            from: 75,
+            color: "#234670",
+            name: "> 75"
+          }
+        ]
+      },
+
+      plotOptions: {
+        series: {
+          tileShape: "circle",
+          dataLabels: {
+            enabled: true,
+            overflow: false,
+            formatter: function formatter(point) {
+              var color = void 0;
+
+              switch (this.color) {
+                case "#234670":
+                  color = "#90b2dc";
+                  break;
+                case "#305F98":
+                  color = "#6190C9";
+                  break;
+                case "#6190C9":
+                  color = "#305F98";
+                  break;
+                case "#90b2dc":
+                  color = "#234670";
+                  break;
+                default:
+                  return;
               }
+
+              return (
+                '<span style="font-size:font-size: .5rem;color:' +
+                color +
+                '">' +
+                this.point["alpha-2"] +
+                "</span>"
+              );
+            },
+            color: "#000000",
+            style: {
+              textOutline: false
             }
-          }
-        ],
-        mapNavigation: {
-          enabled: true,
-          enableMouseWheelZoom: false,
-          buttonOptions: {
-            verticalAlign: "top"
-          }
-        },
-        exporting: {
-          enabled: true
-        },
-        tooltip: {
-          headerFormat: "",
-          pointFormatter: function pointFormatter() {
-            var year = document.querySelector("#play-output").innerText;
-            var score = this.value;
+          },
+          point: {
+            events: {
+              mouseOver: function mouseOver() {
+                var _this = this;
 
-            return (
-              '<div><span style="font-size:18px;color:' +
-              this.color +
-              '">\u25CF </span><b>' +
-              this.name +
-              "</b><br/>\n      " +
-              year +
-              " Score:\n       " +
-              score +
-              "</div>"
-            );
-          }
-        },
+                this.series.points
+                  .filter(function(p) {
+                    return p.region === _this.region;
+                  })
+                  .forEach(function(p) {
+                    return p.setState("hover");
+                  });
+              },
+              mouseOut: function mouseOut() {
+                var _this2 = this;
 
-        motion: {
-          enabled: true,
-          labels: data.labels,
-          series: 0,
-          updateInterval: 500,
-          axisLabel: "year",
-          magnet: {
-            round: "floor", // ceil / floor / round
-            step: 1
-          }
-        },
-        navigation: {
-          buttonOptions: {
-            theme: {
-              // Good old text links
-              style: {
-                color: "#039",
-                textDecoration: "underline"
+                this.series.points
+                  .filter(function(p) {
+                    return p.region === _this2.region;
+                  })
+                  .forEach(function(p) {
+                    return p.setState("");
+                  });
               }
             }
           }
         }
       },
-      "exporting",
-      {
-        buttons: {
-          contextButton: {
-            enabled: false
-          },
-          printButton: {
-            text: "Export Map",
-            onclick: function onclick() {
-              this.print();
+
+      series: [
+        {
+          data: data.data,
+          states: {
+            hover: {
+              brightness: 0.125
+            }
+          }
+        }
+      ],
+      mapNavigation: {
+        enabled: true,
+        enableMouseWheelZoom: false,
+        buttonOptions: {
+          verticalAlign: "top"
+        }
+      },
+      exporting: {
+        enabled: false
+      },
+      tooltip: {
+        headerFormat: "",
+        pointFormatter: function pointFormatter() {
+          var year = document.querySelector("#play-output").innerText;
+          var score = this.value;
+
+          return (
+            '<div><span style="font-size:18px;color:' +
+            this.color +
+            '">\u25CF </span><b>' +
+            this.name +
+            "</b><br/>\n      " +
+            year +
+            " Score:\n       " +
+            score +
+            "</div>"
+          );
+        }
+      },
+
+      motion: {
+        enabled: true,
+        labels: data.labels,
+        series: 0,
+        updateInterval: 500,
+        axisLabel: "year",
+        magnet: {
+          round: "floor", // ceil / floor / round
+          step: 1
+        }
+      },
+      navigation: {
+        buttonOptions: {
+          theme: {
+            // Good old text links
+            style: {
+              color: "#039",
+              textDecoration: "underline"
             }
           }
         }
       }
-    )
+    })
   );
   chart.motion.reset();
 }

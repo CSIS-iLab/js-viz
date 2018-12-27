@@ -1,0 +1,69 @@
+html,
+body {
+  margin: 10px auto;
+  max-width: 900px;
+  padding: 0;
+  font-family: "Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica,
+    sans-serif;
+}
+
+#controls {
+  font-size: 18px;
+  margin: 25px 0;
+}
+
+input[type="radio"] {
+  margin-top: -1px;
+  vertical-align: middle;
+}
+
+span:nth-child(2) {
+  margin-left: 20px;
+}
+
+#country-info {
+  color: #666;
+  font-size: 28px;
+  position: absolute;
+  top: 150px;
+  left: 40px;
+}
+
+svg {
+  border: 1px solid #ddd;
+}
+
+circle {
+  stroke: white;
+  stroke-width: 1.5;
+}
+
+label {
+  color: #333333;
+  font-size: 14px;
+  fill: #333333;
+}
+.title {
+  color: #333333;
+  font-size: 18px;
+  fill: #333333;
+  max-width: 600px;
+}
+.subtitle {
+  color: #333333;
+  font-size: 12px;
+  fill: #333333;
+  max-width: 600px;
+}
+.credit {
+  text-align: right;
+  color: #999999;
+  font-size: 9px;
+}
+.credit a {
+  cursor: pointer;
+  color: #999999;
+}
+.continent-key-element text {
+  fill: white;
+}
