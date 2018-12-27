@@ -35,7 +35,9 @@ function createBubbleChart(error, countries, regionNames) {
   createForces();
   createForceSimulation();
   updateForces(forces.region);
-  setTimeout(() => updateForces(forces.countryCenters), 5000);
+  setTimeout(function() {
+    return updateForces(forces.countryCenters);
+  }, 5000);
   addGroupingListeners();
 
   function createSVG() {
@@ -94,7 +96,7 @@ function createBubbleChart(error, countries, regionNames) {
         .attr("font-size", ".7rem")
         .attr("fill", "white")
         .attr("x", function(d) {
-          let val = regionKeyScale(d) + keyElementWidth / 2;
+          var val = regionKeyScale(d) + keyElementWidth / 2;
           return val + 40;
         })
         .text(function(d) {
@@ -125,7 +127,7 @@ function createBubbleChart(error, countries, regionNames) {
   function createCircles() {
     var formatBudget = d3.format(",");
 
-    let group = svg
+    var group = svg
       .selectAll("g")
       .data(countries)
       .enter()
@@ -136,9 +138,9 @@ function createBubbleChart(error, countries, regionNames) {
         return circleRadiusScale(d.Budget);
       });
 
-    let groups = svg.selectAll(".circle-container");
+    var groups = svg.selectAll(".circle-container");
 
-    groups.each((g, gi, nodes) => {
+    groups.each(function(g, gi, nodes) {
       d3.select(nodes[gi])
         .append("text")
         .attr("text-anchor", "middle")
@@ -149,7 +151,11 @@ function createBubbleChart(error, countries, regionNames) {
           return d.CountryCode;
         })
         .selectAll("circle")
-        .data(countries.filter(d => g.CountryCode === d.countryCode))
+        .data(
+          countries.filter(function(d) {
+            return g.CountryCode === d.countryCode;
+          })
+        )
         .enter()
         .append("circle")
         .attr("r", function(d) {
@@ -179,7 +185,7 @@ function createBubbleChart(error, countries, regionNames) {
     function updateCountryInfo(country) {
       var info = "";
       if (country) {
-        info = `${country.CountryName}: $${formatBudget(country.Budget)}`;
+        info = country.CountryName + ": $" + formatBudget(country.Budget);
       }
       d3.select("#country-info").html(info);
     }
