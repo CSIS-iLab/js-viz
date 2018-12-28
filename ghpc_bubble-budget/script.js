@@ -21,7 +21,10 @@ function createBubbleChart(error, countries, regionNames) {
   var svg,
     labels,
     circles,
-    circleSize = { min: 10, max: 80 };
+    circleSize = {
+      min: Math.min(10, window.innerWidth / 72),
+      max: Math.min(60, window.innerWidth / 12)
+    };
   var circleRadiusScale = d3
     .scaleSqrt()
     .domain(budgetExtent)
@@ -79,7 +82,8 @@ function createBubbleChart(error, countries, regionNames) {
         .append("g")
         .attr("class", "region-key-element");
 
-      d3.selectAll("g.region-key-element")
+      d3
+        .selectAll("g.region-key-element")
         .append("rect")
         .attr("width", keyElementWidth)
         .attr("height", keyElementHeight)
@@ -90,7 +94,8 @@ function createBubbleChart(error, countries, regionNames) {
           return regionColorScale(d);
         });
 
-      d3.selectAll("g.region-key-element")
+      d3
+        .selectAll("g.region-key-element")
         .append("text")
         .attr("text-anchor", "middle")
         .attr("font-size", ".7rem")
@@ -141,7 +146,8 @@ function createBubbleChart(error, countries, regionNames) {
     var groups = svg.selectAll(".circle-container");
 
     groups.each(function(g, gi, nodes) {
-      d3.select(nodes[gi])
+      d3
+        .select(nodes[gi])
         .append("text")
         .attr("text-anchor", "middle")
         .attr("fill", "white")
@@ -210,7 +216,7 @@ function createBubbleChart(error, countries, regionNames) {
         projection = d3
           .geoEquirectangular()
           .scale((width / 2 - projectionMargin) / Math.PI)
-          .translate([width / 2, (height * (1 - projectionStretchY)) / 2]);
+          .translate([width / 2, height * (1 - projectionStretchY) / 2]);
 
       return {
         x: d3
@@ -268,13 +274,13 @@ function createBubbleChart(error, countries, regionNames) {
         return dimension / 2;
       }
       function right(dimension) {
-        return (dimension / 4) * 3;
+        return dimension / 4 * 3;
       }
       function top(dimension) {
         return dimension / 4;
       }
       function bottom(dimension) {
-        return (dimension / 4) * 3;
+        return dimension / 4 * 3;
       }
     }
 

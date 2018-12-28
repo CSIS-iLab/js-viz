@@ -24,9 +24,10 @@ span:nth-child(2) {
 #country-info {
   color: #666;
   font-size: 28px;
-  position: absolute;
-  top: 150px;
-  left: 40px;
+  position: relative;
+  left: -50%;
+  height: 3rem;
+  transform: translateX(50%);
 }
 
 svg {
