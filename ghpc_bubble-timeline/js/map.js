@@ -269,7 +269,7 @@ function renderChart(data) {
         enabled: true,
         labels: data.labels,
         series: 0,
-        updateInterval: 500,
+        updateInterval: 750,
         axisLabel: "year",
         magnet: {
           round: "floor", // ceil / floor / round
