@@ -158,7 +158,8 @@ function renderChart(data) {
 
       plotOptions: {
         series: {
-          tileShape: "circle",
+          pointPadding: 0.2,
+          tileShape: "square",
           dataLabels: {
             enabled: true,
             overflow: false,
