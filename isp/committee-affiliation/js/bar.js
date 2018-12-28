@@ -84,7 +84,9 @@ $(function() {
             value: 5
           }
         ].map(c => {
-          return { ...c, colorValue: c.value };
+          let obj = Object.assign({}, c);
+          obj.colorValue = c.value;
+          return obj;
         })
       }
     ],

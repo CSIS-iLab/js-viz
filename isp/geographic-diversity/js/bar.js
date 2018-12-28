@@ -511,10 +511,9 @@ $(function() {
       y: 3
     }
   ].map(s => {
-    return {
-      ...s,
-      name: s.name.toUpperCase()
-    };
+    let obj = Object.assign({}, s);
+    obj.name = s.name.toUpperCase();
+    return obj;
   });
 
   let mapData = [];
@@ -591,14 +590,14 @@ $(function() {
           },
           {
             from: 0.001,
-            to: 0.999,
+            to: 0.66,
             color: "#B4838B",
             name: "Mixed"
           },
 
           {
-            from: 0.999,
-            to: 1.1,
+            from: 0.67,
+            to: 1,
             color: "#79c5e6",
             name: "Democrat"
           },
