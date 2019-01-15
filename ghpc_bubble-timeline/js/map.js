@@ -1,5 +1,3 @@
-"use strict";
-
 function _defineProperty(obj, key, value) {
   if (key in obj) {
     Object.defineProperty(obj, key, {
@@ -12,6 +10,153 @@ function _defineProperty(obj, key, value) {
     obj[key] = value;
   }
   return obj;
+}
+
+var chart2 = void 0,
+  series = [];
+
+Highcharts.data({
+  googleSpreadsheetKey: "12_yhWuslrui9_kW57-HwySPk9kv1Mp2VlAYHUo5QWO8",
+  googleSpreadsheetWorksheet: 2,
+  switchRowsAndColumns: true,
+  parsed: function parsed(columns) {
+    var endemic = columns.filter(c => c[9] === "x");
+    var notEndemic = columns.filter(c => c[9] !== "x");
+
+    endemic.forEach(c => {
+      var row = {};
+      row.type = "line";
+      row.name = c[0];
+      row.data = c.slice(1, c.length - 1).map((c, i) => {
+        return { y: c, x: i + 2010 };
+      });
+      row.showInLegend = true;
+      row.visible = true;
+      row.color = "#edcb66";
+      series.push(row);
+    });
+
+    notEndemic.forEach(c => {
+      var row = {};
+      row.type = "line";
+      row.name = c[0];
+      row.data = c.slice(1, c.length - 1).map((c, i) => {
+        return { y: c, x: i + 2010 };
+      });
+      row.showInLegend = false;
+      row.visible = false;
+      row.color = "#edcb66";
+      series.push(row);
+    });
+
+    return renderLine(series);
+  }
+});
+
+function renderLine(data) {
+  chart2 = Highcharts.chart(
+    "container2",
+    _defineProperty({
+      chart: {
+        zoomType: false,
+        type: "line",
+        marginBottom: 50
+      },
+      title: {
+        align: "left",
+        x: 50,
+        text: "Surveillance Scores by year and country"
+      },
+      subtitle: {
+        floating: false,
+        align: "left",
+        x: 50,
+        text:
+          "A States Parties Questionnaire  is sent annually to National IHR Focal Points for data collection. It contains a checklist of 20 indicators specifically developed for monitoring each core capacity, including its status of implementation."
+      },
+
+      credits: {
+        enabled: false
+      },
+      yAxis: {
+        title: { text: "Score" },
+        endOnTick: false,
+        max: 104,
+        min: 0
+      },
+      xAxis: {
+        categories: [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017]
+      },
+      legend: {
+        // title: {
+        //   text: '<span style="margin:0 10px">Polio Endemic Countries</span>'
+        // },
+        useHTML: true,
+        y: -75,
+
+        align: "right",
+        layout: "verticle"
+      },
+      plotOptions: {
+        column: {
+          groupPadding: 0.5,
+          pointWidth: 150,
+          borderWidth: 0
+        }
+      },
+      series: data,
+      tooltip: {
+        headerFormat: `<b>{point.series.name}</b><br/>`,
+        pointFormatter: function() {
+          return `Score: ${this.y}`;
+        }
+      },
+      responsive: {
+        rules: [
+          {
+            condition: {
+              maxWidth: 500
+            },
+            chartOptions: {
+              chart: {
+                height: "67%"
+              },
+              subtitle: {
+                widthAdjust: -180
+              }
+            }
+          },
+          {
+            condition: {
+              minWidth: 501,
+              maxWidth: 768
+            },
+            chartOptions: {
+              chart: {
+                height: "50%"
+              },
+              subtitle: {
+                widthAdjust: -180
+              }
+            }
+          },
+          {
+            condition: {
+              minWidth: 769
+            },
+            chartOptions: {
+              chart: {
+                height: "33%"
+              },
+              subtitle: {
+                widthAdjust: -180
+              }
+            }
+          }
+        ]
+      }
+    })
+  );
 }
 
 var dataObj = { data: [], labels: [] };
@@ -83,14 +228,14 @@ fetch(
         });
 
         dataObj.labels = dataObj.labels.slice(1);
-        renderChart(dataObj);
+        renderMap(dataObj);
         let resizeEvent = window.document.createEvent("UIEvents");
         resizeEvent.initUIEvent("resize", true, false, window, 0);
         window.dispatchEvent(resizeEvent);
       }
     });
   });
-function renderChart(data) {
+function renderMap(data) {
   chart = Highcharts.chart(
     "container",
     _defineProperty({
@@ -98,24 +243,13 @@ function renderChart(data) {
         type: "tilemap",
         height: "80%",
         marginBottom: 40,
-        marginTop:
-          25 +
-          document.querySelector(".highcharts-subtitle").getBoundingClientRect()
-            .height
+        marginTop: -20
       },
 
       title: {
         align: "left",
         x: 50,
-        text: "Surveillance Scores by year and country"
-      },
-
-      subtitle: {
-        floating: true,
-        align: "left",
-        x: 50,
-        text:
-          "A States Parties Questionnaire  is sent annually to National IHR Focal Points for data collection. It contains a checklist of 20 indicators specifically developed for monitoring each core capacity, including its status of implementation."
+        text: ""
       },
 
       xAxis: {
@@ -141,24 +275,24 @@ function renderChart(data) {
         dataClasses: [
           {
             to: 24,
-            color: "#c12429",
+            color: "#8f2a4f",
             name: "< 25"
           },
           {
             from: 25,
             to: 50,
-            color: "#FF7259",
+            color: "#db6337",
             name: "> 25"
           },
           {
             from: 51,
             to: 75,
-            color: "#67bce2",
+            color: "#99ccd8",
             name: "> 50"
           },
           {
             from: 76,
-            color: "#0065a4",
+            color: "#4b9fa3",
             name: "> 75"
           }
         ]
@@ -210,14 +344,11 @@ function renderChart(data) {
         rules: [
           {
             condition: {
-              maxWidth: 600
+              maxWidth: 550
             },
             chartOptions: {
               chart: {
-                height: "110%",
-                marginTop: document
-                  .querySelector(".highcharts-subtitle")
-                  .getBoundingClientRect().height
+                height: "100%"
               },
               credits: {
                 align: "left",
@@ -227,9 +358,6 @@ function renderChart(data) {
                 },
                 text:
                   'CSIS | <a href=http://apps.who.int/gho/data/view.main.IHRCTRY03v?lang=en">WHO</a>'
-              },
-              subtitle: {
-                widthAdjust: 0
               },
 
               plotOptions: {
@@ -253,7 +381,7 @@ function renderChart(data) {
           },
           {
             condition: {
-              minWidth: 600
+              minWidth: 550
             },
             chartOptions: {
               chart: {
@@ -265,9 +393,7 @@ function renderChart(data) {
                 text:
                   'CSIS Global Health Policy Center | Source: <a href=http://apps.who.int/gho/data/view.main.IHRCTRY03v?lang=en">World Health Organization</a>'
               },
-              subtitle: {
-                widthAdjust: -150
-              },
+
               plotOptions: {
                 series: {
                   dataLabels: {
@@ -304,22 +430,19 @@ function renderChart(data) {
         enabled: true,
         enableMouseWheelZoom: false,
         buttonOptions: {
-          verticalAlign: "top"
+          verticalAlign: "top",
+          align: "right",
+          theme: {
+            fill: "#edcb66",
+            "stroke-width": 0
+          }
         },
         buttons: {
           zoomIn: {
-            y:
-              25 -
-              document
-                .querySelector(".highcharts-subtitle")
-                .getBoundingClientRect().height
+            y: 25
           },
           zoomOut: {
-            y:
-              55 -
-              document
-                .querySelector(".highcharts-subtitle")
-                .getBoundingClientRect().height
+            y: 60
           }
         }
       },
