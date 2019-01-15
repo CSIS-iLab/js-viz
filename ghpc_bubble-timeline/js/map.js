@@ -185,24 +185,24 @@ function renderChart(data) {
               mouseOver: function mouseOver() {
                 var _this = this;
 
-                this.series.points
-                  .filter(function(p) {
-                    return p.region === _this.region;
-                  })
-                  .forEach(function(p) {
-                    return p.setState("hover");
-                  });
+                // this.series.points
+                //   .filter(function(p) {
+                //     return p.region === _this.region;
+                //   })
+                //   .forEach(function(p) {
+                //     return p.setState("hover");
+                //   });
               },
               mouseOut: function mouseOut() {
                 var _this2 = this;
 
-                this.series.points
-                  .filter(function(p) {
-                    return p.region === _this2.region;
-                  })
-                  .forEach(function(p) {
-                    return p.setState("");
-                  });
+                // this.series.points
+                //   .filter(function(p) {
+                //     return p.region === _this2.region;
+                //   })
+                //   .forEach(function(p) {
+                //     return p.setState("");
+                //   });
               }
             }
           }
