@@ -103,7 +103,7 @@ function createBubbleChart(countries) {
     .domain(regions.values());
 
   var width = Math.min(1280, window.innerWidth),
-    height = width * 0.33;
+    height = width * 0.50;
 
   var svg,
     labels,
@@ -257,7 +257,7 @@ function createBubbleChart(countries) {
           ${d.countryname}
         </p>
         <p class="tooltip-body">
-          $${formatBudget(d.budget)} 
+          $${formatBudget(d.budget)}
         </p>
 
 
