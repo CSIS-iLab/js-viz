@@ -316,26 +316,23 @@ function renderMap(data) {
           point: {
             events: {
               mouseOver: function mouseOver() {
-                var _this = this;
-
-                // this.series.points
-                //   .filter(function(p) {
-                //     return p.region === _this.region;
-                //   })
-                //   .forEach(function(p) {
-                //     return p.setState("hover");
-                //   });
+                var series = chart2.series.find(s => s.name === this.name);
+                series.setState("hover");
+                series.setVisible(true);
+                series.setOptions({ showInLegend: true });
+                chart2.legend.update();
+                chart2.update();
+                chart2.redraw();
+                console.log(chart2);
               },
               mouseOut: function mouseOut() {
-                var _this2 = this;
+                var series = chart2.series.find(s => s.name === this.name);
+                if (!["Afghanistan", "Nigeria", "Pakistan"].includes(this.name))
+                  series.setVisible(false);
 
-                // this.series.points
-                //   .filter(function(p) {
-                //     return p.region === _this2.region;
-                //   })
-                //   .forEach(function(p) {
-                //     return p.setState("");
-                //   });
+                // this.chart.redraw();
+
+                chart2.tooltip.hide("fast");
               }
             }
           }
