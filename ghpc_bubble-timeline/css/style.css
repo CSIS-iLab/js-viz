@@ -33,6 +33,7 @@ body {
   width: 100%;
   position: relative;
   z-index: 99;
+  cursor: pointer;
 }
 
 #range {
@@ -74,8 +75,11 @@ body {
   width: 80%;
   margin: auto auto auto 0.5%;
 }
-
-.label.active {
+#ticks .tick {
+  cursor: pointer;
+}
+.label.active,
+#ticks .label:hover {
   font-weight: bold;
   color: purple;
 }
