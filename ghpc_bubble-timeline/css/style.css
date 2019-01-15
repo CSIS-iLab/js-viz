@@ -29,9 +29,32 @@
   font-weight: normal;
 }
 .tabletitle {
-  color: #404041;
+  /* color: #404041; */
   font-weight: 500;
   font-size: 24px;
   text-align: center;
   letter-spacing: 0.5px;
+}
+
+.highcharts-title {
+  font-size: 24px;
+}
+
+.highcharts-point {
+  stroke-width: 0;
+}
+.highcharts-legend-item:nth-of-type(1) .highcharts-point {
+  fill: rgb(102, 198, 203);
+}
+.highcharts-legend-item:nth-of-type(2) .highcharts-point {
+  fill: rgb(74, 159, 174);
+}
+.highcharts-legend-item:nth-of-type(3) .highcharts-point {
+  fill: rgb(45, 120, 146);
+}
+.highcharts-legend-item:nth-of-type(4) .highcharts-point {
+  fill: rgb(17, 81, 117);
+}
+.highcharts-container{
+  height:unset
 }
