@@ -57,11 +57,13 @@ fetch(
               });
 
               if (countryData) {
-                countryData.sequence.push({
-                  year: year,
-                  value: code[index]
-                });
-
+                var value = parseInt(code[index], 10) ? code[index] : null;
+                if (parseInt(year, 10)) {
+                  countryData.sequence.push({
+                    year: year,
+                    value: value
+                  });
+                }
                 countryData.value =
                   countryData.sequence[countryData.sequence.length - 1].value;
 
@@ -69,9 +71,11 @@ fetch(
                 countryData.y = countryData.coordinates[1];
                 countryData.y = Math.abs(countryData.y - 20);
               } else {
+                var value = parseInt(code[index], 10) ? code[index] : null;
+
                 var country = Object.assign({}, tileData);
                 country.sequence = country.sequence || [];
-                country.sequence.push({ year: year, value: code[index] });
+                country.sequence.push({ year: year, value: value });
                 dataObj.data.push(country);
               }
             }
@@ -134,13 +138,13 @@ function renderChart(data) {
         dataClasses: [
           {
             to: 25,
-            color: "#458B00",
+            color: "#c12429",
             name: "< 25"
           },
           {
             from: 25,
             to: 50,
-            color: "#75c596",
+            color: "#d54e36",
             name: "> 25"
           },
           {
@@ -165,7 +169,7 @@ function renderChart(data) {
             enabled: true,
             overflow: false,
             formatter: function formatter(point) {
-              var color = "#ffffff"
+              var color = "#ffffff";
 
               return (
                 '<span style="font-size:font-size: .5rem;color:' +
