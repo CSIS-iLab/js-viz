@@ -115,38 +115,40 @@ function renderLine(data) {
         rules: [
           {
             condition: {
-              maxWidth: 500
+              maxWidth: 400
             },
             chartOptions: {
               chart: {
-                height: "67%"
+                height: "60%"
               },
               subtitle: {
-                widthAdjust: -180
+                widthAdjust: -180,
+                text: ""
               }
             }
           },
           {
             condition: {
-              minWidth: 501,
-              maxWidth: 768
+              minWidth: 401,
+              maxWidth: 700
             },
             chartOptions: {
               chart: {
-                height: "50%"
+                height: "40%"
               },
               subtitle: {
-                widthAdjust: -180
+                widthAdjust: -180,
+                text: ""
               }
             }
           },
           {
             condition: {
-              minWidth: 769
+              minWidth: 701
             },
             chartOptions: {
               chart: {
-                height: "33%"
+                height: "30%"
               },
               subtitle: {
                 widthAdjust: -180
@@ -287,12 +289,12 @@ function renderMap(data) {
           {
             from: 51,
             to: 75,
-            color: "#99ccd8",
+            color: "#8ba854",
             name: "> 50"
           },
           {
             from: 76,
-            color: "#4b9fa3",
+            color: "#52a6d2",
             name: "> 75"
           }
         ]
@@ -344,7 +346,7 @@ function renderMap(data) {
         rules: [
           {
             condition: {
-              maxWidth: 550
+              maxWidth: 400
             },
             chartOptions: {
               chart: {
@@ -381,7 +383,8 @@ function renderMap(data) {
           },
           {
             condition: {
-              minWidth: 550
+              minWidth: 401,
+              maxWidth: 700
             },
             chartOptions: {
               chart: {
@@ -391,7 +394,7 @@ function renderMap(data) {
                 align: "right",
                 position: { y: -10 },
                 text:
-                  'CSIS Global Health Policy Center | Source: <a href=http://apps.who.int/gho/data/view.main.IHRCTRY03v?lang=en">World Health Organization</a>'
+                  'CSIS | <a href=http://apps.who.int/gho/data/view.main.IHRCTRY03v?lang=en">WHO</a>'
               },
 
               plotOptions: {
@@ -401,7 +404,31 @@ function renderMap(data) {
                       var color = "#ffffff";
 
                       return (
-                        '<span style="font-size: .8rem;color:' +
+                        '<span style="font-size: .7rem;color:' +
+                        color +
+                        '">' +
+                        this.point["alpha-2"] +
+                        "</span>"
+                      );
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            condition: {
+              minWidth: 701
+            },
+            chartOptions: {
+              plotOptions: {
+                series: {
+                  dataLabels: {
+                    formatter: function formatter(point) {
+                      var color = "#ffffff";
+
+                      return (
+                        '<span style="font-size: .9rem;color:' +
                         color +
                         '">' +
                         this.point["alpha-2"] +
