@@ -84,6 +84,9 @@ fetch(
 
         dataObj.labels = dataObj.labels.slice(1);
         renderChart(dataObj);
+        let resizeEvent = window.document.createEvent("UIEvents");
+        resizeEvent.initUIEvent("resize", true, false, window, 0);
+        window.dispatchEvent(resizeEvent);
       }
     });
   });
@@ -94,7 +97,11 @@ function renderChart(data) {
       chart: {
         type: "tilemap",
         height: "80%",
-        marginBottom: 30
+        marginBottom: 40,
+        marginTop:
+          25 +
+          document.querySelector(".highcharts-subtitle").getBoundingClientRect()
+            .height
       },
 
       title: {
@@ -104,11 +111,11 @@ function renderChart(data) {
       },
 
       subtitle: {
-        widthAdjust: -150,
+        floating: true,
         align: "left",
         x: 50,
         text:
-          "A States Parties Questionnaire (also referred to as the IHR monitoring questionnaire) is sent annually to National IHR Focal Points (NFPs) for data collection. It contains a checklist of 20 indicators specifically developed for monitoring each core capacity, including its status of implementation."
+          "A States Parties Questionnaire  is sent annually to National IHR Focal Points for data collection. It contains a checklist of 20 indicators specifically developed for monitoring each core capacity, including its status of implementation."
       },
 
       xAxis: {
@@ -120,10 +127,7 @@ function renderChart(data) {
       },
       credits: {
         enabled: true,
-        href: true,
-        position: { y: -10 },
-        text:
-          'CSIS Global Health Policy Center | Source: <a href=http://apps.who.int/gho/data/view.main.IHRCTRY03v?lang=en">World Health Organization</a>'
+        href: true
       },
       legend: {
         enabled: true,
@@ -167,17 +171,7 @@ function renderChart(data) {
           dataLabels: {
             enabled: true,
             overflow: false,
-            formatter: function formatter(point) {
-              var color = "#ffffff";
 
-              return (
-                '<span style="font-size:font-size: .5rem;color:' +
-                color +
-                '">' +
-                this.point["alpha-2"] +
-                "</span>"
-              );
-            },
             color: "#000000",
             style: {
               textOutline: false
@@ -212,6 +206,90 @@ function renderChart(data) {
         }
       },
 
+      responsive: {
+        rules: [
+          {
+            condition: {
+              maxWidth: 600
+            },
+            chartOptions: {
+              chart: {
+                height: "110%",
+                marginTop: document
+                  .querySelector(".highcharts-subtitle")
+                  .getBoundingClientRect().height
+              },
+              credits: {
+                align: "left",
+                position: {
+                  y: -14,
+                  x: -18
+                },
+                text:
+                  'CSIS | <a href=http://apps.who.int/gho/data/view.main.IHRCTRY03v?lang=en">WHO</a>'
+              },
+              subtitle: {
+                widthAdjust: 0
+              },
+
+              plotOptions: {
+                series: {
+                  dataLabels: {
+                    formatter: function formatter(point) {
+                      var color = "#ffffff";
+
+                      return (
+                        '<span style="font-size: .5rem;color:' +
+                        color +
+                        '">' +
+                        this.point["alpha-2"] +
+                        "</span>"
+                      );
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            condition: {
+              minWidth: 600
+            },
+            chartOptions: {
+              chart: {
+                height: "80%"
+              },
+              credits: {
+                align: "right",
+                position: { y: -10 },
+                text:
+                  'CSIS Global Health Policy Center | Source: <a href=http://apps.who.int/gho/data/view.main.IHRCTRY03v?lang=en">World Health Organization</a>'
+              },
+              subtitle: {
+                widthAdjust: -150
+              },
+              plotOptions: {
+                series: {
+                  dataLabels: {
+                    formatter: function formatter(point) {
+                      var color = "#ffffff";
+
+                      return (
+                        '<span style="font-size: .8rem;color:' +
+                        color +
+                        '">' +
+                        this.point["alpha-2"] +
+                        "</span>"
+                      );
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+
       series: [
         {
           data: data.data,
@@ -227,6 +305,22 @@ function renderChart(data) {
         enableMouseWheelZoom: false,
         buttonOptions: {
           verticalAlign: "top"
+        },
+        buttons: {
+          zoomIn: {
+            y:
+              25 -
+              document
+                .querySelector(".highcharts-subtitle")
+                .getBoundingClientRect().height
+          },
+          zoomOut: {
+            y:
+              55 -
+              document
+                .querySelector(".highcharts-subtitle")
+                .getBoundingClientRect().height
+          }
         }
       },
       exporting: {
@@ -261,17 +355,6 @@ function renderChart(data) {
         magnet: {
           round: "floor", // ceil / floor / round
           step: 1
-        }
-      },
-      navigation: {
-        buttonOptions: {
-          theme: {
-            // Good old text links
-            style: {
-              color: "#039",
-              textDecoration: "underline"
-            }
-          }
         }
       }
     })
