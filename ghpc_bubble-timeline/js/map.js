@@ -137,7 +137,7 @@ function renderChart(data) {
       colorAxis: {
         dataClasses: [
           {
-            to: 25,
+            to: 24,
             color: "#c12429",
             name: "< 25"
           },
@@ -148,13 +148,13 @@ function renderChart(data) {
             name: "> 25"
           },
           {
-            from: 50,
+            from: 51,
             to: 75,
             color: "#67bce2",
             name: "> 50"
           },
           {
-            from: 75,
+            from: 76,
             color: "#0065a4",
             name: "> 75"
           }
