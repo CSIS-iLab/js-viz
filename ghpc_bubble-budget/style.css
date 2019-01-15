@@ -1,7 +1,7 @@
 html,
 body {
   margin: 10px auto;
-  max-width: 900px;
+  max-width: 1280px;
   padding: 0;
   font-family: "Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica,
     sans-serif;
@@ -46,18 +46,20 @@ label {
 }
 .title {
   color: #333333;
-  font-size: 18px;
+  font-size: 24px;
   fill: #333333;
-  max-width: 600px;
+  max-width: 1280px;
 }
 .subtitle {
   color: #333333;
   font-size: 12px;
   fill: #333333;
-  max-width: 600px;
+  max-width: 1280px;
 }
 .credit {
+  max-width: 1140px;
   text-align: right;
+  margin-right: 20px;
   color: #999999;
   font-size: 9px;
 }
@@ -67,4 +69,80 @@ label {
 }
 .continent-key-element text {
   fill: white;
+}
+
+/*================================
+=            Tooltips            =
+================================*/
+
+.tooltip,
+.tooltip-info {
+  display: block;
+  font-size: 14px;
+  line-height: 1.4;
+  position: absolute;
+  z-index: 20;
+  visibility: hidden;
+  width: fit-content;
+  max-width: 175px;
+  height: auto;
+  margin: 0 15px;
+  padding: 8px 8px 10px;
+  pointer-events: none;
+  opacity: 0;
+  border: 1px solid gray;
+  border-radius: 3px;
+  background-color: white;
+}
+.tooltip p {
+  margin: 0;
+}
+
+.tooltip .tooltip-heading {
+  text-transform: uppercase;
+  line-height: 1.4;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  text-align: center;
+  border-bottom: 1px solid black;
+}
+
+.tooltip .location {
+  display: block;
+  font-size: 10px;
+  font-style: italic;
+}
+
+.tooltip .tooltip-label {
+  text-transform: capitalize;
+}
+.tooltip-label.indented {
+  padding-left: 0.75rem;
+}
+
+.tooltip-list li {
+  font-size: 14px;
+}
+.tooltip-list li:before {
+  font-size: 9px;
+}
+
+.tooltip-list .active-category {
+  font-weight: bold;
+}
+
+.tooltip-close {
+  font-weight: bold;
+  position: absolute;
+  z-index: 25;
+  top: 0.25rem;
+  right: 0.5rem;
+  display: block;
+  width: 25%;
+  text-align: right;
+  pointer-events: all;
+}
+
+.tooltip-info {
+  max-width: 100px;
 }

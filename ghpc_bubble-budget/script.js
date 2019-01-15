@@ -38,6 +38,52 @@ function parseData(rawData) {
   return data;
 }
 
+var tooltip = {
+  show: function(content) {
+    let yPos = event.pageY;
+    let xPos = event.pageX;
+    if (xPos + 10 > document.body.clientWidth - 215) {
+      xPos = document.body.clientWidth + 5 - 215;
+    }
+
+    tooltipEl
+      .transition()
+      .duration(200)
+      .style("opacity", 0.9)
+      .on("end", function() {
+        tooltipEl.classed("isActive", true);
+        // tooltipEl.select('.tooltip-close').on('click', this.hide)
+        tooltipEl.on("click", this.hide);
+      });
+    tooltipEl
+      .html(content)
+      .style("visibility", "visible")
+      .style("left", xPos + "px")
+      .style("top", yPos + "px");
+  },
+  hide: function() {
+    tooltipEl
+      .transition()
+      .duration(500)
+      .style("opacity", 0);
+  },
+  formatContent: function(component) {
+    let content = '<ul class="tooltip-list">';
+    component.forEach(function(item, index) {
+      let cssClass = null;
+      if (item.class) {
+        cssClass = item.class;
+      }
+      let label = Object.keys(item)[0];
+      content += `<li class="${cssClass}"><span class="tooltip-label">${label}:</span> ${
+        item[label]
+      }</li>`;
+    });
+    content += "</ul>";
+    return content;
+  }
+};
+
 function createBubbleChart(countries) {
   var budgets = countries.map(function(country) {
     return +country.budget;
@@ -53,30 +99,32 @@ function createBubbleChart(countries) {
     })
   );
   var regionColorScale = d3
-    .scaleOrdinal(d3.schemeCategory10)
+    .scaleOrdinal(["#66c6cb", "#0a8672", "#004165", "#0065a4"])
     .domain(regions.values());
 
-  var width = Math.min(900, window.innerWidth),
-    height = width * 0.75;
+  var width = Math.min(1280, window.innerWidth),
+    height = width * 0.33;
+
   var svg,
     labels,
     circles,
     circleSize = {
-      min: Math.min(10, window.innerWidth / 72),
-      max: Math.min(60, window.innerWidth / 12)
+      min: window.innerWidth / 216,
+      max: window.innerWidth / 36
     };
   var circleRadiusScale = d3
     .scaleSqrt()
     .domain(budgetExtent)
     .range([circleSize.min, circleSize.max]);
-  var forceStrength = 0.04;
+
+  var forceStrength = 0.1;
   var forces, forceSimulation;
 
   createSVG();
   toggleRegionKey();
-  createCircles();
   createForces();
   createForceSimulation();
+  createCircles();
   createBudgetForces();
 
   function createSVG() {
@@ -88,8 +136,7 @@ function createBubbleChart(countries) {
   }
 
   function toggleRegionKey() {
-    // fff;
-    var keyElementWidth = width / 4 - 60,
+    var keyElementWidth = (width - 100) / 4,
       keyElementHeight = 30;
     var onScreenYOffset = keyElementHeight * 1.5,
       offScreenYOffset = 100;
@@ -99,10 +146,8 @@ function createBubbleChart(countries) {
     }
     var regionKey = d3.select(".region-key");
 
-    translateRegionKey("translate(0," + (height - onScreenYOffset) + ")");
-
     function createRegionKey() {
-      var keyWidth = keyElementWidth * regions.values().length;
+      var keyWidth = keyElementWidth * regions.values().length - 40;
       var regionKeyScale = d3
         .scaleBand()
         .domain(regions.values())
@@ -151,12 +196,10 @@ function createBubbleChart(countries) {
       });
     }
 
-    function translateRegionKey(translation) {
-      regionKey
-        .transition()
-        .duration(500)
-        .attr("transform", translation);
-    }
+    regionKey
+      .transition()
+      .duration(500)
+      .attr("transform", "translate(0," + (height - onScreenYOffset) + ")");
   }
 
   function isChecked(elementID) {
@@ -175,6 +218,9 @@ function createBubbleChart(countries) {
       .append("circle")
       .attr("r", function(d) {
         return circleRadiusScale(d.budget);
+      })
+      .attr("fill", function(d) {
+        return regionColorScale(d.regioncode);
       });
 
     var groups = svg.selectAll(".circle-container");
@@ -206,9 +252,22 @@ function createBubbleChart(countries) {
       .selectAll("circle")
       .on("mouseover", function(d) {
         updateCountryInfo(d);
+        var tooltipContent = `
+        <p class="tooltip-heading">
+          ${d.countryname}
+        </p>
+        <p class="tooltip-body">
+          $${formatBudget(d.budget)} 
+        </p>
+
+
+        `;
+        tooltip.show(tooltipContent);
       })
       .on("mouseout", function(d) {
         updateCountryInfo();
+
+        tooltip.hide();
       });
     labels = svg
       .selectAll(".label")
@@ -219,8 +278,6 @@ function createBubbleChart(countries) {
         updateCountryInfo();
       });
 
-    updateCircles();
-
     function updateCountryInfo(country) {
       var info = "";
       if (country) {
@@ -228,12 +285,6 @@ function createBubbleChart(countries) {
       }
       d3.select("#country-info").html(info);
     }
-  }
-
-  function updateCircles() {
-    circles.attr("fill", function(d) {
-      return regionColorScale(d.regioncode);
-    });
   }
 
   function createForces() {
@@ -245,11 +296,12 @@ function createBubbleChart(countries) {
     budgetScaleX = d3
       .scaleBand()
       .domain(regionNamesDomain)
-      .range([scaledBudgetMargin, width - scaledBudgetMargin * 2]);
+      .range([scaledBudgetMargin, width - 100]);
+
     budgetScaleY = d3
       .scaleLog()
       .domain(budgetExtent)
-      .range([height - scaledBudgetMargin, scaledBudgetMargin * 2]);
+      .range([height - 40 - scaledBudgetMargin, scaledBudgetMargin * 2]);
 
     var centerCirclesInScaleBandOffset = budgetScaleX.bandwidth() / 2;
 
@@ -262,12 +314,13 @@ function createBubbleChart(countries) {
             75
           );
         })
-        .strength(forceStrength * 2),
+        .strength(forceStrength),
+
       y: d3
         .forceY(function(d) {
           return budgetScaleY(d.budget);
         })
-        .strength(forceStrength)
+        .strength(forceStrength * 12)
     };
   }
 
@@ -306,8 +359,7 @@ function createBubbleChart(countries) {
       .force("y", createForces().y)
       .force("collide", d3.forceCollide(forceCollide))
 
-      .alphaTarget(0.5)
-      .restart();
+      .alphaTarget(0.5);
 
     toggleRegionKey();
     toggleBudgetAxes();
@@ -324,13 +376,6 @@ function createBubbleChart(countries) {
       var xAxis = d3.select(".x-axis"),
         yAxis = d3.select(".y-axis");
 
-      translateAxis(
-        xAxis,
-        "translate(80," + (height - onScreenYOffset - 5) + ")"
-      );
-
-      translateAxis(yAxis, "translate(" + onScreenXOffset + ",0)");
-
       function createAxes() {
         var numberOfTicks = 10,
           tickFormat = ".0s";
@@ -342,7 +387,7 @@ function createBubbleChart(countries) {
         svg
           .append("g")
           .attr("class", "x-axis")
-          .attr("transform", "translate(0," + (height + offScreenYOffset) + ")")
+          .attr("transform", "translate(0,-100)")
           .call(xAxis)
           .selectAll(".tick text")
           .attr("fill", "transparent");
@@ -356,12 +401,19 @@ function createBubbleChart(countries) {
           .call(yAxis);
       }
 
-      function translateAxis(axis, translation) {
-        axis
-          .transition()
-          .duration(500)
-          .attr("transform", translation);
-      }
+      xAxis
+        .transition()
+        .duration(500)
+        .attr(
+          "transform",
+          "translate(80," + (height - onScreenYOffset - 5) + ")"
+        );
+      yAxis
+        .transition()
+        .duration(500)
+        .attr("transform", "translate(" + onScreenXOffset + "," + -20 + ")");
     }
   }
 }
+
+var tooltipEl = d3.select(".tooltip");
