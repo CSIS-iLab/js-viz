@@ -99,7 +99,7 @@ function createBubbleChart(countries) {
     })
   );
   var regionColorScale = d3
-    .scaleOrdinal(["#66c6cb", "#0a8672", "#004165", "#0065a4"])
+    .scaleOrdinal(["#004165", "#0a8672", "#66c6cb", "#0065a4"])
     .domain(regions.values());
 
   var width = Math.min(1280, window.innerWidth),
