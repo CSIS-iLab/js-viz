@@ -39,7 +39,7 @@ fetch(
           }
 
           if (i === 3) {
-            dataObj.labels = code;
+            dataObj.labels = code.filter(c => parseInt(c, 10));
             return;
           }
 
@@ -88,7 +88,6 @@ fetch(
     });
   });
 function renderChart(data) {
-  console.log(data);
   chart = Highcharts.chart(
     "container",
     _defineProperty({
@@ -144,7 +143,7 @@ function renderChart(data) {
           {
             from: 25,
             to: 50,
-            color: "#d54e36",
+            color: "#FF7259",
             name: "> 25"
           },
           {

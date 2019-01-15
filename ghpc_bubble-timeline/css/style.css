@@ -1,4 +1,11 @@
 @import "https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css";
+
+body {
+  font-family: "Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica,
+    sans-serif;
+  font-size: 12px;
+}
+
 #container,
 #container2 {
   width: 100%;
@@ -20,14 +27,63 @@
   font-size: 15px;
   outline: none;
   cursor: pointer;
+  margin-right: 2.5%;
 }
 #play-range {
+  width: 100%;
+  position: relative;
+  z-index: 99;
+}
+
+#range {
+  position: relative;
   margin: 2.5%;
   width: 70%;
 }
-#play-output {
-  font-weight: normal;
+
+#ticks {
+  position: absolute;
+  top: 5%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  left: 50%;
+  transform: translateX(-50%);
+
+  height: 1rem;
+  width: 96.5%;
+  margin: auto auto auto 0.5%;
 }
+
+#labels {
+  position: absolute;
+  top: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  left: 50%;
+  transform: translateX(-50%);
+
+  height: 1.5rem;
+  width: 80%;
+  margin: auto auto auto 0.5%;
+}
+
+.label.active {
+  font-weight: bold;
+  color: purple;
+}
+
+.tick:not(:first-child) {
+  border-left: 1px solid #404041;
+}
+
 .tabletitle {
   /* color: #404041; */
   font-weight: 500;
@@ -43,7 +99,7 @@
 .highcharts-point {
   stroke-width: 0;
 }
-.highcharts-legend-item:nth-of-type(1) .highcharts-point {
+/* .highcharts-legend-item:nth-of-type(1) .highcharts-point {
   fill: rgb(102, 198, 203);
 }
 .highcharts-legend-item:nth-of-type(2) .highcharts-point {
@@ -54,7 +110,7 @@
 }
 .highcharts-legend-item:nth-of-type(4) .highcharts-point {
   fill: rgb(17, 81, 117);
-}
-.highcharts-container{
-  height:unset
-}
+} */
+/* .highcharts-container {
+  height: unset;
+} */

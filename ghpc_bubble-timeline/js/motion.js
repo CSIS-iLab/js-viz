@@ -61,6 +61,29 @@
     );
     this.playPauseBtn.className = "fa fa-play";
 
+    // Play-range HTML-output (START)
+    this.playOutputStart = H.createElement(
+      "span",
+      {
+        id: "play-output-start",
+        name: this.options.axisLabel,
+        className: "label"
+      },
+      null,
+      this.playControls,
+      null
+    );
+
+    this.range = H.createElement(
+      "div",
+      {
+        id: "range"
+      },
+      null,
+      this.playControls,
+      null
+    );
+
     // Play-range HTML-input
     this.playRange = H.createElement(
       "input",
@@ -73,26 +96,61 @@
         step: this.options.magnet.step
       },
       null,
-      this.playControls,
+      this.range,
+      null
+    );
+    // Play-range HTML-input
+    this.ticks = H.createElement(
+      "div",
+      {
+        id: "ticks"
+      },
+      null,
+      this.range,
+      null
+    );
+    this.labels = H.createElement(
+      "div",
+      {
+        id: "labels"
+      },
+      null,
+      this.range,
       null
     );
 
     // Play-range HTML-output
-    this.playOutput = H.createElement(
-      "label",
+    this.playOutputEnd = H.createElement(
+      "span",
       {
         id: "play-output",
-        name: this.options.axisLabel
+        name: this.options.axisLabel,
+        className: "label"
       },
       null,
       this.playControls,
       null
     );
+
     if (isArray(this.options.labels)) {
-      this.playOutput.innerHTML =
+      this.playOutputEnd.innerHTML =
         this.options.labels[this.dataLength - 1] || "";
+      this.playOutputStart.innerHTML = this.options.labels[0] || "";
     } else {
-      this.playOutput.innerHTML = this.dataLength - 1;
+      this.playOutputEnd.innerHTML = this.dataLength - 1;
+      this.playOutputStart.innerHTML = 0;
+    }
+
+    for (let i = 0; i < this.options.labels.length - 1; i++) {
+      this.ticks.innerHTML += `<div class="tick" style="flex-basis:${100 /
+        (this.options.labels.length - 1)}%"></div>`;
+    }
+
+    for (let i = 0; i < this.options.labels.length - 2; i++) {
+      this.labels.innerHTML += `<div class="label" style="flex-basis:${100 /
+        (this.options.labels.length - 2)}%">${
+        this.options.labels[i + 1]
+      }</div>`;
     }
 
     // Common key event handler function
@@ -264,12 +322,13 @@
 
   // Moves output value to data point
   Motion.prototype.attractToStep = function() {
-    if (isArray(this.options.labels)) {
-      this.playOutput.innerHTML =
-        this.options.labels[this.round(this.playRange.value)] || "";
-    } else {
-      this.playOutput.innerHTML = this.round(this.playRange.value);
-    }
+    var labels = Array.from(document.querySelectorAll(".label"));
+
+    labels.forEach(l => l.classList.remove("active"));
+
+    var label = labels[this.round(this.playRange.value)];
+
+    if (label) label.classList.add("active");
   };
 
   // Returns an integer rounded up, down or even depending on
