@@ -84,6 +84,7 @@ fetch(
     });
   });
 function renderChart(data) {
+  console.log(data);
   chart = Highcharts.chart(
     "container",
     _defineProperty({
@@ -133,24 +134,24 @@ function renderChart(data) {
         dataClasses: [
           {
             to: 25,
-            color: "#90b2dc",
+            color: "#458B00",
             name: "< 25"
           },
           {
             from: 25,
             to: 50,
-            color: "#6190C9",
+            color: "#75c596",
             name: "> 25"
           },
           {
             from: 50,
             to: 75,
-            color: "#305F98",
+            color: "#67bce2",
             name: "> 50"
           },
           {
             from: 75,
-            color: "#234670",
+            color: "#0065a4",
             name: "> 75"
           }
         ]
@@ -164,24 +165,7 @@ function renderChart(data) {
             enabled: true,
             overflow: false,
             formatter: function formatter(point) {
-              var color = void 0;
-
-              switch (this.color) {
-                case "#234670":
-                  color = "#90b2dc";
-                  break;
-                case "#305F98":
-                  color = "#6190C9";
-                  break;
-                case "#6190C9":
-                  color = "#305F98";
-                  break;
-                case "#90b2dc":
-                  color = "#234670";
-                  break;
-                default:
-                  return;
-              }
+              var color = "#ffffff"
 
               return (
                 '<span style="font-size:font-size: .5rem;color:' +
