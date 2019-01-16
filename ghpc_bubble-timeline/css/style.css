@@ -6,6 +6,28 @@ body {
   font-size: 12px;
 }
 
+.highcharts-title tspan {
+  font-size: 24px;
+}
+
+@media screen and (max-width: 400px) {
+  .highcharts-tooltip {
+    visibility: hidden;
+  }
+}
+
+.highcharts-point,
+.highcharts-data-label tspan {
+  cursor: pointer;
+}
+
+/* .highcharts-data-label tspan {
+  fill: white;
+}
+.highcharts-data-label {
+  z-index: 99;
+} */
+
 #container,
 #container2 {
   width: 100%;

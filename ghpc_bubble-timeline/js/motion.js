@@ -90,9 +90,9 @@
       {
         id: "play-range",
         type: "range",
-        value: this.dataLength - 1,
+        value: this.dataLength,
         min: 0,
-        max: this.dataLength - 1,
+        max: this.dataLength,
         step: this.options.magnet.step
       },
       null,
@@ -133,8 +133,7 @@
     );
 
     if (isArray(this.options.labels)) {
-      this.playOutputEnd.innerHTML =
-        this.options.labels[this.dataLength - 1] || "";
+      this.playOutputEnd.innerHTML = this.options.labels[this.dataLength] || "";
       this.playOutputStart.innerHTML = this.options.labels[0] || "";
     } else {
       this.playOutputEnd.innerHTML = this.dataLength - 1;
@@ -322,6 +321,15 @@
 
   // Moves output value to data point
   Motion.prototype.attractToStep = function() {
+    chart2.series.filter(s => s.visible).forEach(s => {
+      s.data.forEach((d, i) => {
+        if (i == this.playRange.value) {
+          d.setState("hover");
+        } else {
+          d.setState("");
+        }
+      });
+    });
     var labels = Array.from(document.querySelectorAll(".label"));
 
     labels.forEach(l => l.classList.remove("active"));

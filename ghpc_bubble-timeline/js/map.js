@@ -12,159 +12,18 @@ function _defineProperty(obj, key, value) {
   return obj;
 }
 
-var chart2 = void 0,
+var clicked = false,
   series = [];
-
-Highcharts.data({
-  googleSpreadsheetKey: "12_yhWuslrui9_kW57-HwySPk9kv1Mp2VlAYHUo5QWO8",
-  googleSpreadsheetWorksheet: 2,
-  switchRowsAndColumns: true,
-  parsed: function parsed(columns) {
-    var endemic = columns.filter(c => c[9] === "x");
-    var notEndemic = columns.filter(c => c[9] !== "x");
-
-    endemic.forEach(c => {
-      var row = {};
-      row.type = "line";
-      row.name = c[0];
-      row.data = c.slice(1, c.length - 1).map((c, i) => {
-        return { y: c, x: i + 2010 };
-      });
-      row.showInLegend = true;
-      row.visible = true;
-      row.color = "#edcb66";
-      series.push(row);
-    });
-
-    notEndemic.forEach(c => {
-      var row = {};
-      row.type = "line";
-      row.name = c[0];
-      row.data = c.slice(1, c.length - 1).map((c, i) => {
-        return { y: c, x: i + 2010 };
-      });
-      row.showInLegend = false;
-      row.visible = false;
-      row.color = "#edcb66";
-      series.push(row);
-    });
-
-    return renderLine(series);
-  }
-});
-
-function renderLine(data) {
-  chart2 = Highcharts.chart(
-    "container2",
-    _defineProperty({
-      chart: {
-        zoomType: false,
-        type: "line",
-        marginBottom: 50
-      },
-      title: {
-        align: "left",
-        x: 50,
-        text: "Surveillance Scores by year and country"
-      },
-      subtitle: {
-        floating: false,
-        align: "left",
-        x: 50,
-        text:
-          "A States Parties Questionnaire  is sent annually to National IHR Focal Points for data collection. It contains a checklist of 20 indicators specifically developed for monitoring each core capacity, including its status of implementation."
-      },
-
-      credits: {
-        enabled: false
-      },
-      yAxis: {
-        title: { text: "Score" },
-        endOnTick: false,
-        max: 104,
-        min: 0
-      },
-      xAxis: {
-        categories: [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017]
-      },
-      legend: {
-        // title: {
-        //   text: '<span style="margin:0 10px">Polio Endemic Countries</span>'
-        // },
-        useHTML: true,
-        y: -75,
-
-        align: "right",
-        layout: "verticle"
-      },
-      plotOptions: {
-        column: {
-          groupPadding: 0.5,
-          pointWidth: 150,
-          borderWidth: 0
-        }
-      },
-      series: data,
-      tooltip: {
-        headerFormat: `<b>{point.series.name}</b><br/>`,
-        pointFormatter: function() {
-          return `Score: ${this.y}`;
-        }
-      },
-      responsive: {
-        rules: [
-          {
-            condition: {
-              maxWidth: 400
-            },
-            chartOptions: {
-              chart: {
-                height: "60%"
-              },
-              subtitle: {
-                widthAdjust: -180,
-                text: ""
-              }
-            }
-          },
-          {
-            condition: {
-              minWidth: 401,
-              maxWidth: 700
-            },
-            chartOptions: {
-              chart: {
-                height: "40%"
-              },
-              subtitle: {
-                widthAdjust: -180,
-                text: ""
-              }
-            }
-          },
-          {
-            condition: {
-              minWidth: 701
-            },
-            chartOptions: {
-              chart: {
-                height: "30%"
-              },
-              subtitle: {
-                widthAdjust: -180
-              }
-            }
-          }
-        ]
-      }
-    })
-  );
-}
 
 var dataObj = { data: [], labels: [] };
 
-var geoData = void 0,
-  chart = void 0;
+var geoData,
+  currentSeries,
+  currentPoint,
+  currentYear,
+  currentIndex,
+  chart,
+  chart2;
 
 fetch(
   "https://raw.githubusercontent.com/mustafasaifee42/Tile-Grid-Map/master/Tile-Grid-Map-Cleaned.json"
@@ -229,7 +88,7 @@ fetch(
           });
         });
 
-        dataObj.labels = dataObj.labels.slice(1);
+        dataObj.labels = dataObj.labels;
         renderMap(dataObj);
         let resizeEvent = window.document.createEvent("UIEvents");
         resizeEvent.initUIEvent("resize", true, false, window, 0);
@@ -315,23 +174,110 @@ function renderMap(data) {
           },
           point: {
             events: {
+              click: function click() {
+                currentYear = document.querySelector(".label.active").innerText;
+
+                currentIndex = dataObj.labels.indexOf(
+                  parseInt(currentYear, 10)
+                );
+
+                currentSeries = chart2.series.find(s => s.name === this.name);
+
+                var max = chart2.series.filter(s => s.visible).length > 5;
+
+                if (
+                  currentSeries &&
+                  clicked.name !== currentSeries.name &&
+                  !max
+                ) {
+                  clicked = clicked ? false : currentSeries.name;
+
+                  currentPoint = currentSeries.data[currentIndex];
+
+                  if (currentPoint && parseInt(currentPoint.y, 10)) {
+                    currentPoint.setState("hover");
+                  }
+
+                  if (
+                    !["Afghanistan", "Nigeria", "Pakistan"].includes(this.name)
+                  ) {
+                    currentSeries.update(
+                      {
+                        name: this.name,
+                        showInLegend: true,
+                        visible: true,
+                        color: this.color
+                      },
+                      true
+                    );
+                  }
+                }
+              },
               mouseOver: function mouseOver() {
-                var series = chart2.series.find(s => s.name === this.name);
-                series.setState("hover");
-                series.setVisible(true);
-                series.setOptions({ showInLegend: true });
-                chart2.legend.update();
-                chart2.update();
-                chart2.redraw();
-                console.log(chart2);
+                currentYear = document.querySelector(".label.active").innerText;
+
+                currentIndex = dataObj.labels.indexOf(
+                  parseInt(currentYear, 10)
+                );
+
+                currentSeries = chart2.series.find(s => s.name === this.name);
+
+                if (currentSeries) {
+                  currentPoint = currentSeries.data[currentIndex];
+
+                  if (currentPoint) {
+                    currentPoint.setState("hover");
+                    if (
+                      !["Afghanistan", "Nigeria", "Pakistan"].includes(
+                        this.name
+                      )
+                    ) {
+                      currentPoint.update({ color: this.color });
+                    }
+
+                    if (currentPoint.y) {
+                      chart2.tooltip.refresh(currentPoint);
+                    }
+                  }
+
+                  if (
+                    !["Afghanistan", "Nigeria", "Pakistan"].includes(this.name)
+                  ) {
+                    currentSeries.chart.update({ legend: { y: -50 } }, true);
+                    currentSeries.update(
+                      {
+                        name: this.name,
+                        showInLegend: true,
+                        visible: true,
+                        color: this.color
+                      },
+                      true
+                    );
+                  }
+                }
               },
               mouseOut: function mouseOut() {
-                var series = chart2.series.find(s => s.name === this.name);
-                if (!["Afghanistan", "Nigeria", "Pakistan"].includes(this.name))
-                  series.setVisible(false);
+                if (currentSeries && currentSeries.name !== clicked) {
+                  if (
+                    !["Afghanistan", "Nigeria", "Pakistan"].includes(this.name)
+                  ) {
+                    currentSeries.update(
+                      {
+                        name: this.name,
+                        showInLegend: false,
+                        visible: false,
+                        color: this.color
+                      },
+                      true
+                    );
+                  }
 
-                // this.chart.redraw();
+                  if (currentPoint && currentPoint.y) {
+                    currentPoint.setState("");
 
+                    chart2.tooltip.refresh(currentPoint);
+                  }
+                }
                 chart2.tooltip.hide("fast");
               }
             }
@@ -476,18 +422,15 @@ function renderMap(data) {
       tooltip: {
         headerFormat: "",
         pointFormatter: function pointFormatter() {
-          var year = document.querySelector("#play-output").innerText;
-          var score = this.value;
-
           return (
             '<div><span style="font-size:18px;color:' +
             this.color +
             '">\u25CF </span><b>' +
             this.name +
             "</b><br/>\n      " +
-            year +
+            currentYear +
             " Score:\n       " +
-            score +
+            this.value +
             "</div>"
           );
         }
@@ -507,4 +450,185 @@ function renderMap(data) {
     })
   );
   chart.motion.reset();
+}
+
+Highcharts.data({
+  googleSpreadsheetKey: "12_yhWuslrui9_kW57-HwySPk9kv1Mp2VlAYHUo5QWO8",
+  googleSpreadsheetWorksheet: 2,
+  switchRowsAndColumns: true,
+  parsed: function parsed(columns) {
+    var endemic = columns.filter(c => c[9] === "x");
+    var notEndemic = columns.filter(c => c[9] !== "x");
+
+    endemic.forEach(c => {
+      var row = {};
+      row.type = "line";
+      row.name = c[0];
+      row.data = c.slice(1, c.length - 1).map((c, i) => {
+        return { y: c, x: i + 2010 };
+      });
+      row.showInLegend = true;
+      row.visible = true;
+      row.color = "#edcb66";
+      series.push(row);
+    });
+
+    notEndemic.forEach(c => {
+      var row = {};
+      row.type = "line";
+      row.name = c[0];
+      row.data = c.slice(1, c.length - 1).map((c, i) => {
+        return { y: c, x: i + 2010 };
+      });
+      row.showInLegend = false;
+      row.visible = false;
+      row.color = "#edcb66";
+      series.push(row);
+    });
+
+    return renderLine(series);
+  }
+});
+
+function renderLine(data) {
+  chart2 = Highcharts.chart(
+    "container2",
+    _defineProperty({
+      chart: {
+        zoomType: false,
+        type: "line",
+        marginBottom: 50
+      },
+      title: {
+        align: "left",
+        x: 50,
+        text: "Surveillance Scores by year and country"
+      },
+      subtitle: {
+        floating: false,
+        align: "left",
+        x: 50,
+        text:
+          "A States Parties Questionnaire  is sent annually to National IHR Focal Points for data collection. It contains a checklist of 20 indicators specifically developed for monitoring each core capacity, including its status of implementation."
+      },
+
+      credits: {
+        enabled: false
+      },
+      yAxis: {
+        title: { text: "Score" },
+        endOnTick: false,
+        tickInterval: 25,
+        max: 104,
+        min: 0
+      },
+      xAxis: {
+        tickmarkPlacement: "on"
+      },
+
+      legend: {
+        // title: {
+        //   text: '<span style="margin:0 10px">Polio Endemic Countries</span>'
+        // },
+        useHTML: true,
+        y: -75,
+
+        align: "right",
+        layout: "verticle"
+      },
+      plotOptions: {
+        column: {
+          groupPadding: 0.5,
+          pointWidth: 150,
+          borderWidth: 0
+        }
+      },
+      series: data,
+      tooltip: {
+        headerFormat: "",
+        pointFormatter: function pointFormatter(e) {
+          var point = currentPoint || this;
+          var name = this.series.name || currentPoint.name;
+          var color = this.color || currentPoint.color;
+          var x = this.x || currentPoint.x;
+          var y = this.y || currentPoint.y;
+
+          return (
+            '<div><span style="font-size:18px;color:' +
+            color +
+            '">\u25CF </span><b>' +
+            name +
+            "</b><br/>\n      " +
+            x +
+            " Score:\n       " +
+            y +
+            "</div>"
+          );
+        }
+      },
+      responsive: {
+        rules: [
+          {
+            condition: {
+              maxWidth: 400
+            },
+            chartOptions: {
+              chart: {
+                height: "60%"
+              },
+              xAxis: {
+                categories: [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017],
+                labels: {
+                  formatter: e => {
+                    return `'${e.value.toString().replace(20, "")}`;
+                  }
+                }
+              },
+              subtitle: {
+                widthAdjust: -180,
+                text: ""
+              }
+            }
+          },
+          {
+            condition: {
+              minWidth: 401,
+              maxWidth: 700
+            },
+            chartOptions: {
+              chart: {
+                height: "40%"
+              },
+              xAxis: {
+                categories: [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017],
+                labels: {
+                  align: "center",
+                  formatter: e => {
+                    return `'${e.value.toString().replace(20, "")}`;
+                  }
+                }
+              },
+              subtitle: {
+                widthAdjust: -180,
+                text: ""
+              }
+            }
+          },
+          {
+            condition: {
+              minWidth: 701
+            },
+            chartOptions: {
+              chart: {
+                height: "30%"
+              },
+              subtitle: {
+                widthAdjust: -20
+              }
+            }
+          }
+        ]
+      }
+    })
+  );
 }
