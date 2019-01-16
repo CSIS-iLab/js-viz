@@ -320,15 +320,18 @@
 
   // Moves output value to data point
   Motion.prototype.attractToStep = function() {
-    chart2.series.filter(s => s.visible).forEach(s => {
-      s.data.forEach((d, i) => {
-        if (i == this.playRange.value) {
-          d.setState("hover");
-        } else {
-          d.setState("");
-        }
+    if (chart2) {
+      chart2.series.filter(s => s.visible).forEach(s => {
+        s.data.forEach((d, i) => {
+          if (i == this.playRange.value) {
+            d.setState("hover");
+          } else {
+            d.setState("");
+          }
+        });
       });
-    });
+    }
+
     var labels = Array.from(document.querySelectorAll(".label"));
 
     labels.forEach(l => l.classList.remove("active"));

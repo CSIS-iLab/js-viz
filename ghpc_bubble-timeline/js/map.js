@@ -91,9 +91,57 @@ fetch(
 
         dataObj.labels = dataObj.labels;
         renderMap(dataObj);
-        let resizeEvent = window.document.createEvent("UIEvents");
-        resizeEvent.initUIEvent("resize", true, false, window, 0);
-        window.dispatchEvent(resizeEvent);
+
+        Highcharts.data({
+          googleSpreadsheetKey: "12_yhWuslrui9_kW57-HwySPk9kv1Mp2VlAYHUo5QWO8",
+          googleSpreadsheetWorksheet: 2,
+          switchRowsAndColumns: true,
+          parsed: function parsed(columns) {
+            var endemic = columns.filter(c => c[9] === "x");
+            var notEndemic = columns.filter(c => c[9] !== "x");
+
+            endemic.forEach(c => {
+              var mapSeries = chart.series[0].data.find(
+                s => s.name.toLowerCase() === c[0].toLowerCase()
+              );
+              if (mapSeries) {
+                var row = {};
+                row.type = "line";
+                row.name = c[0];
+                row.lineWidth = 1;
+                row.data = c.slice(1, c.length - 1).map((c, i) => {
+                  return { y: c, x: i + 2010 };
+                });
+                row.showInLegend = true;
+                row.visible = true;
+                row.color = mapSeries.color;
+                series.push(row);
+              }
+            });
+
+            notEndemic.forEach(c => {
+              var mapSeries = chart.series[0].data.find(
+                s => s.name.toLowerCase() === c[0].toLowerCase()
+              );
+
+              if (mapSeries) {
+                var row = {};
+                row.type = "line";
+                row.name = c[0];
+                row.lineWidth = 4;
+                row.data = c.slice(1, c.length - 1).map((c, i) => {
+                  return { y: c, x: i + 2010 };
+                });
+                row.showInLegend = false;
+                row.visible = false;
+                row.color = mapSeries.color;
+                series.push(row);
+              }
+            });
+
+            return renderLine(series);
+          }
+        });
       }
     });
   });
@@ -138,13 +186,13 @@ function renderMap(data) {
         dataClasses: [
           {
             to: 24,
-            color: "#8f2a4f",
+            color: "#db6337",
             name: "< 25"
           },
           {
             from: 25,
             to: 50,
-            color: "#db6337",
+            color: "#edcb66",
             name: "> 25"
           },
           {
@@ -207,8 +255,7 @@ function renderMap(data) {
                       {
                         name: this.name,
                         showInLegend: true,
-                        visible: true,
-                        color: this.color
+                        visible: true
                       },
                       true
                     );
@@ -229,13 +276,6 @@ function renderMap(data) {
 
                   if (currentPoint) {
                     currentPoint.setState("hover");
-                    if (
-                      !["Afghanistan", "Nigeria", "Pakistan"].includes(
-                        this.name
-                      )
-                    ) {
-                      currentPoint.update({ color: this.color });
-                    }
 
                     if (currentPoint.y) {
                       chart2.tooltip.refresh(currentPoint);
@@ -250,8 +290,7 @@ function renderMap(data) {
                       {
                         name: this.name,
                         showInLegend: true,
-                        visible: true,
-                        color: this.color
+                        visible: true
                       },
                       true
                     );
@@ -267,8 +306,7 @@ function renderMap(data) {
                       {
                         name: this.name,
                         showInLegend: false,
-                        visible: false,
-                        color: this.color
+                        visible: false
                       },
                       true
                     );
@@ -405,8 +443,9 @@ function renderMap(data) {
           verticalAlign: "top",
           align: "right",
           theme: {
-            fill: "#edcb66",
-            "stroke-width": 0
+            fill: "#0065a4",
+            "stroke-width": 0,
+            style: { color: "white" }
           }
         },
         buttons: {
@@ -453,44 +492,6 @@ function renderMap(data) {
   );
   chart.motion.reset();
 }
-
-Highcharts.data({
-  googleSpreadsheetKey: "12_yhWuslrui9_kW57-HwySPk9kv1Mp2VlAYHUo5QWO8",
-  googleSpreadsheetWorksheet: 2,
-  switchRowsAndColumns: true,
-  parsed: function parsed(columns) {
-    var endemic = columns.filter(c => c[9] === "x");
-    var notEndemic = columns.filter(c => c[9] !== "x");
-
-    endemic.forEach(c => {
-      var row = {};
-      row.type = "line";
-      row.name = c[0];
-      row.data = c.slice(1, c.length - 1).map((c, i) => {
-        return { y: c, x: i + 2010 };
-      });
-      row.showInLegend = true;
-      row.visible = true;
-      row.color = "#edcb66";
-      series.push(row);
-    });
-
-    notEndemic.forEach(c => {
-      var row = {};
-      row.type = "line";
-      row.name = c[0];
-      row.data = c.slice(1, c.length - 1).map((c, i) => {
-        return { y: c, x: i + 2010 };
-      });
-      row.showInLegend = false;
-      row.visible = false;
-      row.color = "#edcb66";
-      series.push(row);
-    });
-
-    return renderLine(series);
-  }
-});
 
 function renderLine(data) {
   chart2 = Highcharts.chart(
@@ -632,6 +633,10 @@ function renderLine(data) {
       }
     })
   );
+
+  let resizeEvent = window.document.createEvent("UIEvents");
+  resizeEvent.initUIEvent("resize", true, false, window, 0);
+  window.dispatchEvent(resizeEvent);
 }
 
 document
