@@ -37,12 +37,14 @@ svg {
 circle {
   stroke: white;
   stroke-width: 1.5;
+  cursor: pointer;
 }
 
 label {
   color: #333333;
   font-size: 14px;
   fill: #333333;
+  cursor: pointer;
 }
 .title {
   color: #333333;
@@ -72,17 +74,15 @@ label {
 }
 
 @media only screen and (max-width: 768px) {
-.tooltip{
-  display:none
-}
-
+  .tooltip {
+    display: none;
+  }
 }
 
 @media only screen and (min-width: 768px) {
-
-#country-info{
-  display:none
-}
+  #country-info {
+    display: none;
+  }
 }
 
 /*================================
