@@ -103,19 +103,24 @@ function createBubbleChart(countries) {
     .domain(regions.values());
 
   var width = Math.min(1280, window.innerWidth),
-    height = width * 0.50;
+    height = width * 0.5;
 
   var svg,
     labels,
     circles,
     circleSize = {
-      min: window.innerWidth / 216,
-      max: window.innerWidth / 36
+      min: window.innerWidth / 144,
+      max: window.innerWidth / 24
     };
   var circleRadiusScale = d3
     .scaleSqrt()
     .domain(budgetExtent)
     .range([circleSize.min, circleSize.max]);
+
+  var fontScale = d3
+    .scaleSqrt()
+    .domain(budgetExtent)
+    .range([0.3, 1.3]);
 
   var forceStrength = 0.1;
   var forces, forceSimulation;
@@ -230,7 +235,9 @@ function createBubbleChart(countries) {
         .append("text")
         .attr("text-anchor", "middle")
         .attr("fill", "white")
-        .attr("font-size", ".5rem")
+        .attr("font-size", function(d) {
+          return `${fontScale(d.budget)}rem`;
+        })
         .attr("class", "label")
         .text(function(d) {
           return d.countrycode;
@@ -344,7 +351,7 @@ function createBubbleChart(countries) {
           return d.x;
         })
         .attr("y", function(d) {
-          return d.y;
+          return d.y + 4;
         });
     });
   }
