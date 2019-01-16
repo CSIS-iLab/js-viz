@@ -1,6 +1,6 @@
 var continents = {
-  AF: "Africa",
   AS: "Asia",
+  AF: "Africa",
   EU: "Europe",
   EM: "The Middle East"
 };
@@ -94,12 +94,16 @@ function createBubbleChart(countries) {
     budgetScaleY;
 
   var regions = d3.set(
-    countries.map(function(country) {
-      return country.regioncode;
-    })
+    countries
+      .map(function(country) {
+        return country.regioncode;
+      })
+      .sort((a, b) => {
+        return continents[a].length - continents[b].length;
+      })
   );
   var regionColorScale = d3
-    .scaleOrdinal(["#004165", "#0a8672", "#66c6cb", "#0065a4"])
+    .scaleOrdinal(["#004165", "#0a8672", "#0065a4", "#66c6cb"])
     .domain(regions.values());
 
   var width = Math.min(1280, window.innerWidth),
@@ -122,7 +126,7 @@ function createBubbleChart(countries) {
     .domain(budgetExtent)
     .range([0.3, 1.3]);
 
-  var forceStrength = 0.1;
+  var forceStrength = 0.05;
   var forces, forceSimulation;
 
   createSVG();
@@ -321,13 +325,13 @@ function createBubbleChart(countries) {
             75
           );
         })
-        .strength(forceStrength),
+        .strength(forceStrength * 1.3),
 
       y: d3
         .forceY(function(d) {
           return budgetScaleY(d.budget);
         })
-        .strength(forceStrength * 12)
+        .strength(forceStrength * 21)
     };
   }
 
@@ -372,7 +376,7 @@ function createBubbleChart(countries) {
     toggleBudgetAxes();
 
     function toggleBudgetAxes() {
-      var onScreenXOffset = 100,
+      var onScreenXOffset = 50,
         offScreenXOffset = -40;
       var onScreenYOffset = 40,
         offScreenYOffset = 100;
