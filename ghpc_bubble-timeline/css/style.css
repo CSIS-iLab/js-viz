@@ -14,6 +14,9 @@ body {
   .highcharts-tooltip {
     visibility: hidden;
   }
+  #labels .label {
+    display: none;
+  }
 }
 
 .highcharts-point,
@@ -29,7 +32,8 @@ body {
 } */
 
 #container,
-#container2 {
+#container2,
+.heading {
   width: 100%;
   min-width: 190px;
   max-width: 800px;

@@ -37,7 +37,6 @@
       }
     });
 
-    // Play-controls HTML-div
     this.playControls = H.createElement(
       "div",
       {

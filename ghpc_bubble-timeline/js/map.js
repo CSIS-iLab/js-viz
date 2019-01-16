@@ -23,7 +23,8 @@ var geoData,
   currentYear,
   currentIndex,
   chart,
-  chart2;
+  chart2,
+  max;
 
 fetch(
   "https://raw.githubusercontent.com/mustafasaifee42/Tile-Grid-Map/master/Tile-Grid-Map-Cleaned.json"
@@ -96,6 +97,7 @@ fetch(
       }
     });
   });
+
 function renderMap(data) {
   chart = Highcharts.chart(
     "container",
@@ -183,7 +185,7 @@ function renderMap(data) {
 
                 currentSeries = chart2.series.find(s => s.name === this.name);
 
-                var max = chart2.series.filter(s => s.visible).length > 5;
+                max = chart2.series.filter(s => s.visible).length > 5;
 
                 if (
                   currentSeries &&
@@ -502,14 +504,13 @@ function renderLine(data) {
       title: {
         align: "left",
         x: 50,
-        text: "Surveillance Scores by year and country"
+        text: ""
       },
       subtitle: {
         floating: false,
         align: "left",
         x: 50,
-        text:
-          "A States Parties Questionnaire  is sent annually to National IHR Focal Points for data collection. It contains a checklist of 20 indicators specifically developed for monitoring each core capacity, including its status of implementation."
+        text: ""
       },
 
       credits: {
@@ -632,3 +633,39 @@ function renderLine(data) {
     })
   );
 }
+
+document
+  .querySelector("#countrySearch")
+  .addEventListener("change", function(e) {
+    var searchSeries = chart2.series.find(
+      s => s.name.toLowerCase() === e.target.value.toLowerCase()
+    );
+
+    var searchColor = chart.series[0].data.find(
+      s => s.name.toLowerCase() === e.target.value.toLowerCase()
+    ).color;
+
+    max = chart2.series.filter(s => s.visible).length > 5;
+
+    if (searchSeries && clicked.name !== searchSeries.name && !max) {
+      clicked = clicked ? false : searchSeries.name;
+
+      var searchPoint = searchSeries.data[currentIndex];
+
+      if (searchPoint && parseInt(searchPoint.y, 10)) {
+        searchPoint.setState("hover");
+      }
+
+      if (!["Afghanistan", "Nigeria", "Pakistan"].includes(searchSeries.name)) {
+        searchSeries.update(
+          {
+            name: searchSeries.name,
+            showInLegend: true,
+            visible: true,
+            color: searchColor
+          },
+          true
+        );
+      }
+    }
+  });
