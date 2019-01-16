@@ -126,6 +126,11 @@ function createBubbleChart(countries) {
     .domain(budgetExtent)
     .range([0.3, 1.3]);
 
+  var labelMarginScale = d3
+    .scaleSqrt()
+    .domain(budgetExtent)
+    .range([2, 6]);
+
   var forceStrength = 0.05;
   var forces, forceSimulation;
 
@@ -355,7 +360,7 @@ function createBubbleChart(countries) {
           return d.x;
         })
         .attr("y", function(d) {
-          return d.y + 4;
+          return d.y + labelMarginScale(d.budget);
         });
     });
   }
