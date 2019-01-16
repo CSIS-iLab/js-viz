@@ -666,6 +666,8 @@ document
           },
           true
         );
+
+        e.target.value = "";
       }
     }
   });
