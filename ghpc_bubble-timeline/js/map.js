@@ -147,7 +147,7 @@ fetch(
   });
 
 function renderMap(data) {
-  chart = Highcharts.chart(
+  chart = Highcharts.mapChart(
     "container",
     _defineProperty({
       chart: {
