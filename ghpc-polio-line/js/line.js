@@ -12,8 +12,7 @@ function _defineProperty(obj, key, value) {
   return obj;
 }
 
-var clicked = false,
-  series = [];
+var series = [];
 
 var dataObj = { data: [], labels: [] };
 
@@ -130,6 +129,12 @@ function renderLine(data) {
                 },
                 true
               );
+              max = chart2.series.filter(s => s.visible).length > 5;
+
+              if (!max) {
+                input.disabled = false;
+                submit.disabled = false;
+              }
 
               return false;
             }
@@ -265,26 +270,38 @@ function search() {
     s => s.name.toLowerCase() === input.value.toLowerCase()
   );
 
+  var visibleSeries = chart2.series.filter(s => s.visible).map(s => s.name);
+
+  if (searchSeries) {
+    var isVisible = visibleSeries.indexOf(searchSeries.name) > -1;
+  }
+
   max = chart2.series.filter(s => s.visible).length > 5;
 
-  if (searchSeries && clicked.name !== searchSeries.name && !max) {
-    clicked = clicked ? false : searchSeries.name;
+  if (!max && searchSeries && !isVisible) {
+    input.disabled = false;
+    submit.disabled = false;
 
-    if (!["Afghanistan", "Nigeria", "Pakistan"].includes(searchSeries.name)) {
-      searchSeries.update(
-        {
-          name: searchSeries.name,
-          showInLegend: true,
-          visible: true
-        },
-        true
-      );
+    searchSeries.update(
+      {
+        name: searchSeries.name,
+        showInLegend: true,
+        visible: true
+      },
+      true
+    );
 
-      input.value = "";
+    max = chart2.series.filter(s => s.visible).length > 5;
+    if (max) {
+      input.setAttribute("disabled", "disabled");
+      submit.setAttribute("disabled", "disabled");
     }
+
+    input.value = "";
+  } else if (searchSeries && isVisible) {
+    input.value = "";
   } else if (max) {
     input.setAttribute("disabled", "disabled");
-  } else {
     submit.setAttribute("disabled", "disabled");
   }
 }
