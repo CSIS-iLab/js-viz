@@ -159,7 +159,7 @@ function createBubbleChart(c) {
     .domain(budgetExtent)
     .range([2, 6]);
 
-  forceStrength = 0.05;
+  forceStrength = 0.045;
 
   createSVG();
   toggleRegionKey();
