@@ -64,7 +64,7 @@ var tooltip = {
   hide: function() {
     tooltipEl
       .transition()
-      .duration(500)
+      .duration(300)
       .style("opacity", 0);
   },
   formatContent: function(component) {
@@ -84,16 +84,54 @@ var tooltip = {
   }
 };
 
-function createBubbleChart(countries) {
-  var budgets = countries.map(function(country) {
+var width = Math.min(1280, window.innerWidth - 10),
+  height = width * 0.5;
+
+var svg,
+  labels,
+  circles,
+  circleSize = {
+    min: window.innerWidth / 144,
+    max: window.innerWidth / 30
+  };
+
+function init() {
+  width = Math.min(1280, window.innerWidth - 10);
+  height = width * 0.5;
+
+  circleSize = {
+    min: window.innerWidth / 144,
+    max: window.innerWidth / 30
+  };
+
+  width = Math.min(1280, window.innerWidth - 10);
+  height = width * 0.5;
+
+  createBubbleChart(countries);
+}
+
+window.addEventListener("resize", init);
+
+var budgets;
+var meanBudget, budgetExtent, budgetScaleX, budgetScaleY;
+var regions;
+var regionColorScale;
+var circleRadiusScale;
+var fontScale;
+var labelMarginScale;
+var forceStrength;
+var forces, forceSimulation;
+var countries;
+
+function createBubbleChart(c) {
+  countries = c;
+  budgets = countries.map(function(country) {
     return +country.budget;
   });
-  var meanBudget = d3.mean(budgets),
-    budgetExtent = d3.extent(budgets),
-    budgetScaleX,
-    budgetScaleY;
 
-  var regions = d3.set(
+  meanBudget = d3.mean(budgets);
+  budgetExtent = d3.extent(budgets);
+  regions = d3.set(
     countries
       .map(function(country) {
         return country.regioncode;
@@ -102,37 +140,26 @@ function createBubbleChart(countries) {
         return continents[a].length - continents[b].length;
       })
   );
-  var regionColorScale = d3
+  regionColorScale = d3
     .scaleOrdinal(["#004165", "#0a8672", "#0065a4", "#66c6cb"])
     .domain(regions.values());
 
-  var width = Math.min(1280, window.innerWidth),
-    height = width * 0.5;
-
-  var svg,
-    labels,
-    circles,
-    circleSize = {
-      min: window.innerWidth / 144,
-      max: window.innerWidth / 24
-    };
-  var circleRadiusScale = d3
+  circleRadiusScale = d3
     .scaleSqrt()
     .domain(budgetExtent)
     .range([circleSize.min, circleSize.max]);
 
-  var fontScale = d3
+  fontScale = d3
     .scaleSqrt()
     .domain(budgetExtent)
-    .range([0.3, 1.3]);
+    .range([0.3, 1]);
 
-  var labelMarginScale = d3
+  labelMarginScale = d3
     .scaleSqrt()
     .domain(budgetExtent)
     .range([2, 6]);
 
-  var forceStrength = 0.05;
-  var forces, forceSimulation;
+  forceStrength = 0.05;
 
   createSVG();
   toggleRegionKey();
@@ -140,96 +167,130 @@ function createBubbleChart(countries) {
   createForceSimulation();
   createCircles();
   createBudgetForces();
+}
 
-  function createSVG() {
-    svg = d3
-      .select("#bubble-chart")
-      .append("svg")
-      .attr("width", width)
-      .attr("height", height);
-  }
+function createSVG() {
+  var svgNodes = document.querySelectorAll(".chart").length;
 
-  function toggleRegionKey() {
-    var keyElementWidth = (width - 100) / 4,
-      keyElementHeight = 30;
-    var onScreenYOffset = keyElementHeight * 1.5,
-      offScreenYOffset = 100;
+  svg = svgNodes
+    ? d3.select(".chart")
+    : d3
+        .select("#bubble-chart")
+        .append("svg")
+        .attr("class", "chart");
 
-    if (d3.select(".region-key").empty()) {
-      createRegionKey();
-    }
-    var regionKey = d3.select(".region-key");
+  svg.attr("width", width).attr("height", height);
+}
 
-    function createRegionKey() {
-      var keyWidth = keyElementWidth * regions.values().length - 40;
-      var regionKeyScale = d3
-        .scaleBand()
-        .domain(regions.values())
-        .range([(width - keyWidth) / 2, (width + keyWidth) / 2]);
+function toggleRegionKey() {
+  var keyElementWidth = (width - 30) / 4,
+    keyElementHeight = 30;
+  var onScreenYOffset = keyElementHeight * 1.5,
+    offScreenYOffset = 30;
 
-      svg
-        .append("g")
-        .attr("class", "region-key")
-        .attr("transform", "translate(0," + (height + offScreenYOffset) + ")")
-        .selectAll("g")
-        .data(regions.values())
-        .enter()
-        .append("g")
-        .attr("class", "region-key-element");
+  createRegionKey();
 
-      d3.selectAll("g.region-key-element")
-        .append("rect")
+  function createRegionKey() {
+    var keyWidth = keyElementWidth * regions.values().length - 0;
+
+    var regionKeyScale = d3
+      .scaleBand()
+      .domain(regions.values())
+      .range([70, width - 30 / 2]);
+
+    var regionKeyNode = document.querySelectorAll(".region-key").length;
+
+    var regionKeys = regionKeyNode
+      ? d3.selectAll(".region-key")
+      : svg
+          .selectAll(".region-key")
+          .data(regions.values())
+          .enter()
+          .append("g")
+          .attr("class", function(d) {
+            return `region-key-${d}`;
+          })
+          .attr("y", height - onScreenYOffset);
+
+    regionKeys.each(function(g, gi, nodes) {
+      var regionKeyColorNodes = document.querySelectorAll(
+        `.region-key-color-${g}`
+      ).length;
+
+      var regionKeyColor = regionKeyColorNodes
+        ? d3.selectAll(`.region-key-color-${g}`)
+        : d3
+            .select(nodes[gi])
+            .append("rect")
+            .attr("class", `region-key-color-${g}`);
+
+      regionKeyColor
         .attr("width", keyElementWidth)
         .attr("height", keyElementHeight)
         .attr("x", function(d) {
-          return regionKeyScale(d) + 40;
+          return regionKeyScale(d);
         })
+        .attr("y", height - onScreenYOffset)
+
         .attr("fill", function(d) {
           return regionColorScale(d);
         });
 
-      d3.selectAll("g.region-key-element")
-        .append("text")
-        .attr("text-anchor", "middle")
-        .attr("font-size", ".7rem")
-        .attr("fill", "white")
+      var regionKeyLabelNodes = document.querySelectorAll(
+        `.region-key-label-${g}`
+      ).length;
+
+      var regionKeyLabels = regionKeyLabelNodes
+        ? d3.selectAll(`.region-key-label-${g}`)
+        : d3
+            .select(nodes[gi])
+            .append("text")
+            .attr("class", `region-key-label-${g}`)
+            .attr("text-anchor", "middle")
+            .attr("font-size", ".7rem")
+            .attr("fill", "white");
+
+      regionKeyLabels
         .attr("x", function(d) {
           var val = regionKeyScale(d) + keyElementWidth / 2;
-          return val + 40;
+          return val;
         })
+        .attr("y", height - onScreenYOffset + 30 * 0.67)
+
         .text(function(d) {
-          return continents[d];
+          return window.innerWidth > 768 ? continents[d] : d;
         });
-
-      // The text BBox has non-zero values only after rendering
-      d3.selectAll("g.region-key-element text").attr("y", function(d) {
-        var textHeight = this.getBBox().height;
-        // The BBox.height property includes some extra height we need to remove
-        var unneededTextHeight = 4;
-        return (keyElementHeight + textHeight) / 2 - unneededTextHeight;
-      });
-    }
-
-    regionKey
-      .transition()
-      .duration(500)
-      .attr("transform", "translate(0," + (height - onScreenYOffset) + ")");
+    });
   }
+}
 
-  function isChecked(elementID) {
-    return d3.select(elementID).property("checked");
-  }
+function createCircles() {
+  var formatBudget = d3.format(",");
 
-  function createCircles() {
-    var formatBudget = d3.format(",");
+  var circleContainerNodes = document.querySelectorAll(".circle-container")
+    .length;
 
-    var group = svg
-      .selectAll("g")
-      .data(countries)
-      .enter()
-      .append("g")
-      .attr("class", "circle-container")
-      .append("circle")
+  var circleContainers = circleContainerNodes
+    ? d3.selectAll(".circle-container")
+    : svg
+        .selectAll(".circle-container")
+        .data(countries)
+        .enter()
+        .append("g")
+        .attr("class", `circle-container`);
+
+  circleContainers.each(function(g, gi, nodes) {
+    var circleNodes = document.querySelectorAll(`.circle-${g.countrycode}`)
+      .length;
+
+    var circleSVG = circleNodes
+      ? d3.selectAll(`.circle-${g.countrycode}`)
+      : d3
+          .select(nodes[gi])
+          .append("circle")
+          .attr("class", `circle-${g.countrycode}`);
+
+    circleSVG
       .attr("r", function(d) {
         return circleRadiusScale(d.budget);
       })
@@ -237,196 +298,186 @@ function createBubbleChart(countries) {
         return regionColorScale(d.regioncode);
       });
 
-    var groups = svg.selectAll(".circle-container");
+    var labelNodes = document.querySelectorAll(`.label-${g.countrycode}`)
+      .length;
 
-    groups.each(function(g, gi, nodes) {
-      d3.select(nodes[gi])
-        .append("text")
-        .attr("text-anchor", "middle")
-        .attr("fill", "white")
-        .attr("font-size", function(d) {
-          return `${fontScale(d.budget)}rem`;
-        })
-        .attr("class", "label")
-        .text(function(d) {
-          return d.countrycode;
-        })
-        .selectAll("circle")
-        .data(
-          countries.filter(function(d) {
-            return g.countrycode === d.countrycode;
-          })
-        )
-        .enter()
-        .append("circle")
-        .attr("r", function(d) {
-          return circleRadiusScale(d.budget);
-        });
+    var labelSVG = labelNodes
+      ? d3.selectAll(`.label-${g.countrycode}`)
+      : d3
+          .select(nodes[gi])
+          .append("text")
+          .attr("text-anchor", "middle")
+          .attr("class", "label")
+          .attr("fill", "white");
+
+    labelSVG
+      .attr("font-size", function(d) {
+        return `${fontScale(d.budget)}rem`;
+      })
+      .text(function(d) {
+        return d.countrycode;
+      });
+  });
+  circles = svg
+    .selectAll("circle")
+    .on("mouseover", function(d) {
+      updateCountryInfo(d);
+      var tooltipContent = `
+      <p class="tooltip-heading">
+        ${d.countryname}
+      </p>
+      <p class="tooltip-body">
+        $${formatBudget(d.budget)}
+      </p>
+
+      `;
+      tooltip.show(tooltipContent);
+    })
+    .on("mouseout", function(d) {
+      updateCountryInfo();
+
+      tooltip.hide();
+    });
+  labels = svg
+    .selectAll(".label")
+    .on("mouseover", function(d) {
+      updateCountryInfo(d);
+    })
+    .on("mouseout", function(d) {
+      updateCountryInfo();
     });
 
-    circles = svg
-      .selectAll("circle")
-      .on("mouseover", function(d) {
-        updateCountryInfo(d);
-        var tooltipContent = `
-        <p class="tooltip-heading">
-          ${d.countryname}
-        </p>
-        <p class="tooltip-body">
-          $${formatBudget(d.budget)}
-        </p>
-
-
-        `;
-        tooltip.show(tooltipContent);
-      })
-      .on("mouseout", function(d) {
-        updateCountryInfo();
-
-        tooltip.hide();
-      });
-    labels = svg
-      .selectAll(".label")
-      .on("mouseover", function(d) {
-        updateCountryInfo(d);
-      })
-      .on("mouseout", function(d) {
-        updateCountryInfo();
-      });
-
-    function updateCountryInfo(country) {
-      var info = "";
-      if (country) {
-        info = country.countryname + ": $" + formatBudget(country.budget);
-      }
-      d3.select("#country-info").html(info);
+  function updateCountryInfo(country) {
+    var info = "";
+    if (country) {
+      info = country.countryname + ": $" + formatBudget(country.budget);
     }
+    d3.select("#country-info").html(info);
   }
+}
 
-  function createForces() {
-    var regionNamesDomain = regions.values().map(function(regionCode) {
-      return continents[regionCode];
-    });
-    var scaledBudgetMargin = circleSize.max;
+function createForces() {
+  var regionNamesDomain = regions.values().map(function(regionCode) {
+    return continents[regionCode];
+  });
+  var scaledBudgetMargin = circleSize.max;
 
-    budgetScaleX = d3
-      .scaleBand()
-      .domain(regionNamesDomain)
-      .range([scaledBudgetMargin, width - 100]);
+  budgetScaleX = d3
+    .scaleBand()
+    .domain(regionNamesDomain)
+    .range([30, width - 30]);
 
-    budgetScaleY = d3
-      .scaleLog()
-      .domain(budgetExtent)
-      .range([height - 40 - scaledBudgetMargin, scaledBudgetMargin * 2]);
+  budgetScaleY = d3
+    .scaleLog()
+    .domain(budgetExtent)
+    .range([height - 40 - scaledBudgetMargin, scaledBudgetMargin * 2]);
 
-    var centerCirclesInScaleBandOffset = budgetScaleX.bandwidth() / 2;
+  var centerCirclesInScaleBandOffset = budgetScaleX.bandwidth() / 2;
+  return {
+    x: d3
+      .forceX(function(d) {
+        return (
+          budgetScaleX(continents[d.regioncode]) +
+          centerCirclesInScaleBandOffset +
+          75
+        );
+      })
+      .strength(forceStrength * 1.3),
 
-    return {
-      x: d3
-        .forceX(function(d) {
-          return (
-            budgetScaleX(continents[d.regioncode]) +
-            centerCirclesInScaleBandOffset +
-            75
-          );
-        })
-        .strength(forceStrength * 1.3),
+    y: d3
+      .forceY(function(d) {
+        return budgetScaleY(d.budget);
+      })
+      .strength(forceStrength * 21)
+  };
+}
 
-      y: d3
-        .forceY(function(d) {
-          return budgetScaleY(d.budget);
-        })
-        .strength(forceStrength * 21)
-    };
-  }
+function createForceSimulation() {
+  forceSimulation = d3
+    .forceSimulation()
+    .force("x", d3.forceX(width / 2).strength(forceStrength))
+    .force("y", d3.forceY(width / 2).strength(forceStrength));
 
-  function createForceSimulation() {
-    forceSimulation = d3
-      .forceSimulation()
-      .force("x", d3.forceX(width / 2).strength(forceStrength))
-      .force("y", d3.forceY(width / 2).strength(forceStrength));
+  forceSimulation.stop();
+  forceSimulation.restart();
+  forceSimulation.tick();
 
-    forceSimulation.nodes(countries).on("tick", function() {
-      circles
-        .attr("cx", function(d) {
-          return d.x;
-        })
-        .attr("cy", function(d) {
-          return d.y;
-        });
+  forceSimulation.nodes(countries).on("tick", function() {
+    circles
+      .attr("cx", function(d) {
+        return d.x - 50;
+      })
+      .attr("cy", function(d) {
+        return d.y;
+      });
 
-      labels
-        .attr("x", function(d) {
-          return d.x;
-        })
-        .attr("y", function(d) {
-          return d.y + labelMarginScale(d.budget);
-        });
-    });
-  }
+    labels
+      .attr("x", function(d) {
+        return d.x - 50;
+      })
+      .attr("y", function(d) {
+        return d.y + labelMarginScale(d.budget);
+      });
+  });
+}
 
-  function forceCollide(d) {
-    return circleRadiusScale(d.budget) + 1;
-  }
+function forceCollide(d) {
+  return circleRadiusScale(d.budget) + 1;
+}
 
-  function createBudgetForces() {
-    forceSimulation
-      .force("x", createForces().x)
-      .force("y", createForces().y)
-      .force("collide", d3.forceCollide(forceCollide))
+function createBudgetForces() {
+  forceSimulation
+    .force("x", createForces().x)
+    .force("y", createForces().y)
+    .force("collide", d3.forceCollide(forceCollide))
+    .alphaTarget(0.5);
 
-      .alphaTarget(0.5);
+  toggleBudgetAxes();
 
-    toggleRegionKey();
-    toggleBudgetAxes();
+  function toggleBudgetAxes() {
+    var onScreenXOffset = 40,
+      offScreenXOffset = -40;
+    var onScreenYOffset = 40,
+      offScreenYOffset = 30;
 
-    function toggleBudgetAxes() {
-      var onScreenXOffset = 50,
-        offScreenXOffset = -40;
-      var onScreenYOffset = 40,
-        offScreenYOffset = 100;
+    createAxes();
 
-      if (d3.select(".x-axis").empty()) {
-        createAxes();
-      }
-      var xAxis = d3.select(".x-axis"),
-        yAxis = d3.select(".y-axis");
+    function createAxes() {
+      var numberOfTicks = 10,
+        tickFormat = ".0s";
 
-      function createAxes() {
-        var numberOfTicks = 10,
-          tickFormat = ".0s";
+      var xAxis = d3.axisBottom(budgetScaleX).ticks(numberOfTicks, tickFormat);
+      var xAxisNode = document.querySelectorAll(".xAxis").length;
 
-        var xAxis = d3
-          .axisBottom(budgetScaleX)
-          .ticks(numberOfTicks, tickFormat);
+      var xAxisSVG = xAxisNode
+        ? d3.select(".xAxis")
+        : svg.append("g").attr("class", "xAxis");
 
-        svg
-          .append("g")
-          .attr("class", "x-axis")
-          .attr("transform", "translate(0,-100)")
-          .call(xAxis)
-          .selectAll(".tick text")
-          .attr("fill", "transparent");
+      xAxisSVG
+        .call(xAxis)
+        .selectAll(".tick text")
+        .attr("fill", "transparent");
 
-        var yAxis = d3.axisLeft(budgetScaleY).ticks(numberOfTicks, tickFormat);
-
-        svg
-          .append("g")
-          .attr("class", "y-axis")
-          .attr("transform", "translate(" + offScreenXOffset + 40 + ",0)")
-          .call(yAxis);
-      }
-
-      xAxis
+      xAxisSVG
         .transition()
-        .duration(500)
+        .duration(300)
         .attr(
           "transform",
-          "translate(80," + (height - onScreenYOffset - 5) + ")"
+          "translate(40," + (height - onScreenYOffset - 5) + ")"
         );
-      yAxis
+
+      var yAxis = d3.axisLeft(budgetScaleY).ticks(numberOfTicks, tickFormat);
+      var yAxisNode = document.querySelectorAll(".yAxis").length;
+
+      var yAxisSVG = yAxisNode
+        ? d3.select(".yAxis")
+        : svg.append("g").attr("class", "yAxis");
+
+      yAxisSVG
+        .call(yAxis)
+        .attr("transform", "translate(" + offScreenXOffset + 40 + ",0)")
         .transition()
-        .duration(500)
+        .duration(300)
         .attr("transform", "translate(" + onScreenXOffset + "," + -20 + ")");
     }
   }
