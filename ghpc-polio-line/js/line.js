@@ -40,7 +40,11 @@ Highcharts.data({
       series.push(row);
     });
 
-    notEndemic.forEach(c => {
+    notEndemic.forEach((c, i) => {
+      if ([0, 1, 2, 3].includes(i)) {
+        return;
+      }
+
       var row = {};
       row.type = "line";
       row.name = c[0];
@@ -54,9 +58,6 @@ Highcharts.data({
     });
 
     series.forEach((c, i) => {
-      if ([0, 1, 2].includes(i)) {
-        return;
-      }
       document.querySelector(
         "datalist#countries"
       ).innerHTML += `<option value="${c.name}">`;
