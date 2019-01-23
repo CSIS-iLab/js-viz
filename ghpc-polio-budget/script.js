@@ -17,8 +17,8 @@ fetch(translationsURL)
     return response.json();
   })
   .then(function(json) {
-    var countries = parseData(json.feed.entry);
-    createBubbleChart(countries);
+    countries = parseData(json.feed.entry);
+    init();
   });
 
 function parseData(rawData) {
@@ -84,33 +84,9 @@ var tooltip = {
   }
 };
 
-var width = Math.min(1280, window.innerWidth - 10),
-  height = width * 0.5;
+var width, height;
 
-var svg,
-  labels,
-  circles,
-  circleSize = {
-    min: window.innerWidth / 144,
-    max: window.innerWidth / 30
-  };
-
-function init() {
-  width = Math.min(1280, window.innerWidth - 10);
-  height = width * 0.5;
-
-  circleSize = {
-    min: window.innerWidth / 144,
-    max: window.innerWidth / 30
-  };
-
-  width = Math.min(1280, window.innerWidth - 10);
-  height = width * 0.5;
-
-  createBubbleChart(countries);
-}
-
-window.addEventListener("resize", init);
+var svg, labels, circles, circleSize;
 
 var budgets;
 var meanBudget, budgetExtent, budgetScaleX, budgetScaleY;
@@ -123,8 +99,24 @@ var forceStrength;
 var forces, forceSimulation;
 var countries;
 
-function createBubbleChart(c) {
-  countries = c;
+function init() {
+  width = Math.min(1280, window.innerWidth - 10);
+  height = width * 0.5;
+
+  circleSize = {
+    min: window.innerWidth / 144,
+    max: Math.min(window.innerWidth / 30, 48)
+  };
+
+  width = Math.min(1280, window.innerWidth - 10);
+  height = width * 0.5;
+
+  createBubbleChart();
+}
+
+window.addEventListener("resize", init);
+
+function createBubbleChart() {
   budgets = countries.map(function(country) {
     return +country.budget;
   });
@@ -446,25 +438,25 @@ function createBudgetForces() {
       var numberOfTicks = 10,
         tickFormat = ".0s";
 
-      var xAxis = d3.axisBottom(budgetScaleX).ticks(numberOfTicks, tickFormat);
-      var xAxisNode = document.querySelectorAll(".xAxis").length;
-
-      var xAxisSVG = xAxisNode
-        ? d3.select(".xAxis")
-        : svg.append("g").attr("class", "xAxis");
-
-      xAxisSVG
-        .call(xAxis)
-        .selectAll(".tick text")
-        .attr("fill", "transparent");
-
-      xAxisSVG
-        .transition()
-        .duration(300)
-        .attr(
-          "transform",
-          "translate(40," + (height - onScreenYOffset - 5) + ")"
-        );
+      // var xAxis = d3.axisBottom(budgetScaleX).ticks(numberOfTicks, tickFormat);
+      // var xAxisNode = document.querySelectorAll(".xAxis").length;
+      //
+      // var xAxisSVG = xAxisNode
+      //   ? d3.select(".xAxis")
+      //   : svg.append("g").attr("class", "xAxis");
+      //
+      // xAxisSVG
+      //   .call(xAxis)
+      //   .selectAll(".tick text")
+      //   .attr("fill", "transparent");
+      //
+      // xAxisSVG
+      //   .transition()
+      //   .duration(300)
+      //   .attr(
+      //     "transform",
+      //     "translate(40," + (height - onScreenYOffset - 5) + ")"
+      //   );
 
       var yAxis = d3.axisLeft(budgetScaleY).ticks(numberOfTicks, tickFormat);
       var yAxisNode = document.querySelectorAll(".yAxis").length;
