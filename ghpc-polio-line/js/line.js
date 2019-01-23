@@ -129,12 +129,6 @@ function renderLine(data) {
                 },
                 true
               );
-              max = chart2.series.filter(s => s.visible).length > 5;
-
-              if (!max) {
-                input.disabled = false;
-                submit.disabled = false;
-              }
 
               return false;
             }
