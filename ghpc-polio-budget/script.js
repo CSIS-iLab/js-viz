@@ -100,16 +100,13 @@ var forces, forceSimulation;
 var countries;
 
 function init() {
-  width = Math.min(1280, window.innerWidth - 10);
-  height = width * 0.5;
-
   circleSize = {
     min: window.innerWidth / 144,
     max: Math.min(window.innerWidth / 30, 42)
   };
 
   width = Math.min(1280, window.innerWidth - 10);
-  height = width * 0.5;
+  height = width * 0.6;
 
   createBubbleChart();
 }

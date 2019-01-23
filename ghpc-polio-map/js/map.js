@@ -87,18 +87,14 @@ function renderMap(data) {
     "container",
     _defineProperty({
       chart: {
-        marginTop: 25
+        marginTop: 50,
+        marginBottom: 25
       },
       title: {
-        align: "left",
-        x: 50,
-        text: "Surveillance Scores by year and country"
+        text: ""
       },
       subtitle: {
-        align: "left",
-        x: 50,
-        text:
-          "A States Parties Questionnaire is sent annually to National IHR Focal Points for data collection. It contains a checklist of 20 indicators specifically developed for monitoring each core capacity, including its status of implementation."
+        text: ""
       },
       xAxis: {
         visible: false
@@ -114,33 +110,38 @@ function renderMap(data) {
       legend: {
         enabled: true,
         layout: "horizontal",
-        align: "bottom",
+        verticalAlign: "top",
         floating: false
       },
 
       colorAxis: {
         dataClasses: [
           {
+            to: -1,
+            color: "transparent",
+            name: "Surveillance Score:"
+          },
+          {
             to: 24,
-            color: "#db6337",
-            name: "< 25"
+            color: "#7c1522",
+            name: window.innerWidth > 768 ? "Less than 25" : "< 25"
           },
           {
             from: 25,
             to: 50,
-            color: "#edcb66",
-            name: "> 25"
+            color: "#ff5733",
+            name: window.innerWidth > 768 ? "Greater than 25" : "> 25"
           },
           {
             from: 51,
             to: 75,
-            color: "#8ba854",
-            name: "> 50"
+            color: "#ffc300",
+            name: window.innerWidth > 768 ? "Greater than 50" : "> 50"
           },
           {
             from: 76,
-            color: "#52a6d2",
-            name: "> 75"
+            color: "#48c14b",
+            name: window.innerWidth > 768 ? "Greater than 75" : "> 75"
           }
         ]
       },
@@ -208,7 +209,7 @@ function renderMap(data) {
         enabled: true,
         labels: data.labels,
         series: 0,
-        updateInterval: 750,
+        updateInterval: 1250,
         axisLabel: "year",
         magnet: {
           round: "floor", // ceil / floor / round
@@ -222,24 +223,9 @@ function renderMap(data) {
               maxWidth: 400
             },
             chartOptions: {
-              // subtitle: {
-              //   text: ""
-              // },
-              legend: {
-                y: -60
-              },
               credits: {
-                align: "left",
-                position: {
-                  y: -50,
-                  x: -18
-                },
                 text:
                   'CSIS | <a href=http://apps.who.int/gho/data/view.main.IHRCTRY03v?lang=en">WHO</a>'
-              },
-
-              plotOptions: {
-                series: {}
               }
             }
           },
@@ -249,15 +235,8 @@ function renderMap(data) {
               maxWidth: 700
             },
             chartOptions: {
-              // subtitle: {
-              //   widthAdjust: -150
-              // },
-              legend: {
-                y: -35
-              },
               credits: {
                 align: "right",
-                position: { y: -60 },
                 text:
                   'CSIS | <a href=http://apps.who.int/gho/data/view.main.IHRCTRY03v?lang=en">WHO</a>'
               }
@@ -268,12 +247,7 @@ function renderMap(data) {
               minWidth: 701
             },
             chartOptions: {
-              // subtitle: {
-              //   widthAdjust: -20
-              // },
               credits: {
-                align: "right",
-                position: { y: -35 },
                 text:
                   'CSIS Global Health Policy Center | <a href=http://apps.who.int/gho/data/view.main.IHRCTRY03v?lang=en">World Health Organization</a>'
               }

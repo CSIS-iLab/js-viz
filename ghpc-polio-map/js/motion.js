@@ -43,7 +43,7 @@
         id: "play-controls"
       },
       null,
-      this.chart.renderTo,
+      document.querySelector("#intro.heading"),
       null
     );
 
