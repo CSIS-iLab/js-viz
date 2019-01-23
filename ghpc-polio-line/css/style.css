@@ -28,7 +28,7 @@ body {
 body {
   width: 100%;
   min-width: 190px;
-  max-width: 768px;
+  max-width: 900px;
   margin: 0 auto;
   /* height: 100%; */
 }

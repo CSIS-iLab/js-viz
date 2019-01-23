@@ -1,10 +1,11 @@
-html,
 body {
   margin: 10px auto;
-  max-width: 1280px;
   padding: 0;
   font-family: "Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica,
     sans-serif;
+  width: 100%;
+  min-width: 190px;
+  max-width: 900px;
 }
 
 #controls {
@@ -40,12 +41,6 @@ circle {
   cursor: pointer;
 }
 
-label {
-  color: #333333;
-  font-size: 14px;
-  fill: #333333;
-  cursor: pointer;
-}
 .title {
   color: #333333;
   font-size: 24px;
@@ -68,6 +63,7 @@ label {
 .credit a {
   cursor: pointer;
   color: #999999;
+  text-decoration: none;
 }
 .continent-key-element text {
   fill: white;
@@ -113,14 +109,15 @@ label {
 }
 
 .tooltip .tooltip-heading {
-  text-transform: uppercase;
   line-height: 1.4;
   font-weight: bold;
   margin-bottom: 0.5rem;
   text-align: center;
   border-bottom: 1px solid black;
 }
-
+.label {
+  cursor: pointer;
+}
 .tooltip .location {
   display: block;
   font-size: 10px;

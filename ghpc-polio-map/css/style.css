@@ -24,10 +24,11 @@ body {
 
 #container,
 #container2,
-.heading {
+.heading,
+body {
   width: 100%;
   min-width: 190px;
-  max-width: 800px;
+  max-width: 900px;
   /* height: 100%; */
 }
 

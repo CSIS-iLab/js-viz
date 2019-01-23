@@ -2,7 +2,7 @@ var continents = {
   AS: "Asia",
   AF: "Africa",
   EU: "Europe",
-  EM: "The Middle East"
+  ME: "The Middle East"
 };
 
 var spreadsheetID = "12_yhWuslrui9_kW57-HwySPk9kv1Mp2VlAYHUo5QWO8";
@@ -105,13 +105,13 @@ function init() {
     max: Math.min(window.innerWidth / 30, 42)
   };
 
-  width = Math.min(1280, window.innerWidth - 10);
+  width = Math.min(900, window.innerWidth - 10);
   height = width * 0.6;
 
   createBubbleChart();
 }
 
-window.addEventListener("resize", init);
+window.addEventListener("resize", () => location.reload(false));
 
 function createBubbleChart() {
   budgets = countries.map(function(country) {
@@ -130,7 +130,7 @@ function createBubbleChart() {
       })
   );
   regionColorScale = d3
-    .scaleOrdinal(["#004165", "#0a8672", "#0065a4", "#66c6cb"])
+    .scaleOrdinal(["#004165", "#66c6cb", "#48c14b", "#ffc300"])
     .domain(regions.values());
 
   circleRadiusScale = d3
@@ -172,7 +172,7 @@ function createSVG() {
 }
 
 function toggleRegionKey() {
-  var keyElementWidth = (width - 30) / 4,
+  var keyElementWidth = (width - 80) / 4,
     keyElementHeight = 30;
   var onScreenYOffset = keyElementHeight * 1.5,
     offScreenYOffset = 30;
@@ -180,8 +180,6 @@ function toggleRegionKey() {
   createRegionKey();
 
   function createRegionKey() {
-    var keyWidth = keyElementWidth * regions.values().length - 0;
-
     var regionKeyScale = d3
       .scaleBand()
       .domain(regions.values())
@@ -311,30 +309,37 @@ function createCircles() {
     .selectAll("circle")
     .on("mouseover", function(d) {
       updateCountryInfo(d);
-      var tooltipContent = `
-      <p class="tooltip-heading">
-        ${d.countryname}
-      </p>
-      <p class="tooltip-body">
-        $${formatBudget(d.budget)}
-      </p>
-
-      `;
-      tooltip.show(tooltipContent);
+      updateTooltip(d);
     })
     .on("mouseout", function(d) {
       updateCountryInfo();
 
       tooltip.hide();
     });
+
   labels = svg
     .selectAll(".label")
     .on("mouseover", function(d) {
       updateCountryInfo(d);
+      updateTooltip(d);
     })
     .on("mouseout", function(d) {
       updateCountryInfo();
+      tooltip.hide();
     });
+
+  function updateTooltip(d) {
+    var tooltipContent = `
+    <p class="tooltip-heading">
+      ${d.countryname}
+    </p>
+    <p class="tooltip-body">
+      $${formatBudget(d.budget)}
+    </p>
+
+    `;
+    tooltip.show(tooltipContent);
+  }
 
   function updateCountryInfo(country) {
     var info = "";
@@ -424,8 +429,6 @@ function createBudgetForces() {
   toggleBudgetAxes();
 
   function toggleBudgetAxes() {
-    var onScreenXOffset = 40,
-      offScreenXOffset = -40;
     var onScreenYOffset = 40,
       offScreenYOffset = 30;
 
@@ -434,26 +437,6 @@ function createBudgetForces() {
     function createAxes() {
       var numberOfTicks = 10,
         tickFormat = ".0s";
-
-      // var xAxis = d3.axisBottom(budgetScaleX).ticks(numberOfTicks, tickFormat);
-      // var xAxisNode = document.querySelectorAll(".xAxis").length;
-      //
-      // var xAxisSVG = xAxisNode
-      //   ? d3.select(".xAxis")
-      //   : svg.append("g").attr("class", "xAxis");
-      //
-      // xAxisSVG
-      //   .call(xAxis)
-      //   .selectAll(".tick text")
-      //   .attr("fill", "transparent");
-      //
-      // xAxisSVG
-      //   .transition()
-      //   .duration(300)
-      //   .attr(
-      //     "transform",
-      //     "translate(40," + (height - onScreenYOffset - 5) + ")"
-      //   );
 
       var yAxis = d3.axisLeft(budgetScaleY).ticks(numberOfTicks, tickFormat);
       var yAxisNode = document.querySelectorAll(".yAxis").length;
@@ -464,10 +447,10 @@ function createBudgetForces() {
 
       yAxisSVG
         .call(yAxis)
-        .attr("transform", "translate(" + offScreenXOffset + 40 + ",0)")
+        .attr("transform", "translate(" + offScreenYOffset + 40 + ",0)")
         .transition()
         .duration(300)
-        .attr("transform", "translate(" + onScreenXOffset + "," + -20 + ")");
+        .attr("transform", "translate(" + onScreenYOffset + "," + "0)");
     }
   }
 }
