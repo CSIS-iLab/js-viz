@@ -140,6 +140,13 @@ function renderLine(data) {
                 );
               }
 
+              max = chart2.series.filter(s => s.visible).length > 5;
+
+              if (!max) {
+                input.disabled = false;
+                submit.disabled = false;
+              }
+
               return true;
             }
           }
