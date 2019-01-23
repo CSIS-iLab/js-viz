@@ -144,7 +144,6 @@ function renderLine(data) {
 
               if (!max) {
                 input.disabled = false;
-                submit.disabled = false;
               }
 
               return true;
