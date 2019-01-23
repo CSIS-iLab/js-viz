@@ -135,8 +135,8 @@ body {
   font-weight: bold;
   color: #0a8672;
   -webkit-text-stroke: 1px #0a8672;
-  -webkit-box-shadow: inset -1px -6px 0 1px #0a8672;
-  box-shadow: inset -1px -6px 0 1px #0a8672;
+  -webkit-box-shadow: inset -1px -6px 0 -1px #0a8672;
+  box-shadow: inset -1px -6px 0 -1px #0a8672;
 }
 
 .tick:not(:first-child) {
