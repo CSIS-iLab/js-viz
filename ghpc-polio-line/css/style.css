@@ -200,6 +200,7 @@ button,
 
 .btn:disabled {
   background-color: #444;
+  color: #ccc;
 }
 
 label[for="countrySearch"] {
