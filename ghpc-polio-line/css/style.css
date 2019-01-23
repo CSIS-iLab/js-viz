@@ -10,15 +10,6 @@ body {
   font-size: 24px;
 }
 
-@media screen and (max-width: 400px) {
-  .highcharts-tooltip {
-    visibility: hidden;
-  }
-  #labels .label {
-    display: none;
-  }
-}
-
 .highcharts-point,
 .highcharts-data-label tspan {
   cursor: pointer;
@@ -33,10 +24,11 @@ body {
 
 #container,
 #container2,
-.heading {
+.heading,
+body {
   width: 100%;
   min-width: 190px;
-  max-width: 800px;
+  max-width: 768px;
   margin: 0 auto;
   /* height: 100%; */
 }
@@ -188,7 +180,6 @@ button,
   padding: 0.5rem;
   text-align: center;
   text-decoration: none !important;
-  text-transform: uppercase;
   vertical-align: baseline;
 }
 
@@ -196,6 +187,7 @@ button,
   font-size: 0.5rem;
   padding: 0.5rem 0.2rem;
   font-family: "Arial Black", Gadget, sans-serif;
+  text-transform: uppercase;
 }
 
 .btn:disabled {
@@ -203,6 +195,7 @@ button,
 }
 
 label[for="countrySearch"] {
+  text-transform: uppercase;
   margin: 0 0.5em 0 0;
   font-weight: 600;
 }
@@ -210,4 +203,44 @@ label[for="countrySearch"] {
 button:hover,
 .btn:not(:disabled):hover {
   background-color: #0a8672;
+}
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  margin-top: 1rem;
+}
+.search {
+  display: flex;
+  flex-basis: 50%;
+}
+#countrySearch {
+  flex-basis: 70%;
+}
+
+.credit::before {
+  font-size: 9px;
+  color: #999;
+  content: "CSIS Global Health Policy Center | World Health Organization";
+}
+@media screen and (max-width: 400px) {
+  .highcharts-tooltip {
+    visibility: hidden;
+  }
+  #labels .label {
+    display: none;
+  }
+
+  .credit::before {
+    content: "CSIS | WHO";
+  }
+}
+@media screen and (max-width: 768px) {
+  #container,
+  #container2,
+  .heading,
+  body {
+    max-width: calc(100vw - 24px);
+  }
 }

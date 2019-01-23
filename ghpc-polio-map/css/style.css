@@ -202,3 +202,11 @@ body {
 /* .highcharts-container {
   height: unset;
 } */
+@media screen and (max-width: 768px) {
+  #container,
+  #container2,
+  .heading,
+  body {
+    max-width: calc(100vw - 24px);
+  }
+}

@@ -30,12 +30,25 @@ Highcharts.data({
       var row = {};
       row.type = "line";
       row.name = c[0];
-      row.lineWidth = 1;
+      switch (row.name) {
+        case "Afghanistan":
+          row.color = "#004165";
+          break;
+        case "Nigeria":
+          row.color = "#66c6cb";
+          break;
+        case "Pakistan":
+          row.color = "#48c14b";
+          break;
+      }
+
       row.data = c.slice(1, c.length - 1).map((c, i) => {
         return { y: c, x: i + 2010 };
       });
       row.showInLegend = true;
       row.visible = true;
+
+      row = { ...row, marker: { symbol: "circle" } };
       series.push(row);
     });
 
@@ -47,16 +60,17 @@ Highcharts.data({
       var row = {};
       row.type = "line";
       row.name = c[0];
-      row.lineWidth = 4;
       row.data = c.slice(1, c.length - 1).map((c, i) => {
         return { y: c, x: i + 2010 };
       });
       row.showInLegend = false;
       row.visible = false;
+      row = { ...row, marker: { symbol: "square" } };
+
       series.push(row);
     });
 
-    series.forEach((c, i) => {
+    notEndemic.forEach((c, i) => {
       document.querySelector(
         "datalist#countries"
       ).innerHTML += `<option value="${c.name}">`;
@@ -75,20 +89,10 @@ function renderLine(data) {
         type: "line",
         marginBottom: 75
       },
-      title: {
-        align: "left",
-        x: 50,
-        text: ""
-      },
-      subtitle: {
-        floating: false,
-        align: "left",
-        x: 50,
-        text: ""
-      },
+      title: { text: "" },
 
       yAxis: {
-        title: { text: "Score" },
+        title: { text: "Surveillance Score" },
         endOnTick: false,
         tickInterval: 25,
         max: 104,
@@ -97,7 +101,9 @@ function renderLine(data) {
       xAxis: {
         tickmarkPlacement: "on"
       },
-
+      credits: {
+        text: ""
+      },
       legend: {
         title: {
           text:
@@ -105,12 +111,12 @@ function renderLine(data) {
         },
         useHTML: true,
         y: 15,
-        x: 25,
+        x: -18,
 
         align: "bottom",
         layout: "horizontal",
         labelFormatter: function() {
-          return `${this.name}<button class="remove">X</button>`;
+          return `${this.name}`;
         }
       },
       plotOptions: {
@@ -122,15 +128,20 @@ function renderLine(data) {
         series: {
           events: {
             legendItemClick: function(e, f) {
-              e.target.update(
-                {
-                  showInLegend: false,
-                  visible: false
-                },
-                true
-              );
+              if (
+                ["Afghanistan", "Nigeria", "Pakistan"].indexOf(e.target.name) <
+                0
+              ) {
+                e.target.update(
+                  {
+                    showInLegend: false,
+                    visible: false
+                  },
+                  true
+                );
+              }
 
-              return false;
+              return true;
             }
           }
         }
@@ -177,20 +188,8 @@ function renderLine(data) {
                   }
                 }
               },
-              subtitle: {
-                widthAdjust: -180,
-                text: ""
-              },
               legend: {
                 y: 15
-              },
-              credits: {
-                align: "left",
-                position: {
-                  y: -65
-                },
-                text:
-                  'CSIS | <a href=http://apps.who.int/gho/data/view.main.IHRCTRY03v?lang=en">WHO</a>'
               }
             }
           },
@@ -211,16 +210,6 @@ function renderLine(data) {
                     return `'${e.value.toString().replace(20, "")}`;
                   }
                 }
-              },
-              subtitle: {
-                widthAdjust: -180,
-                text: ""
-              },
-              credits: {
-                align: "right",
-                position: { y: -35 },
-                text:
-                  'CSIS | <a href=http://apps.who.int/gho/data/view.main.IHRCTRY03v?lang=en">WHO</a>'
               }
             }
           },
@@ -231,15 +220,6 @@ function renderLine(data) {
             chartOptions: {
               chart: {
                 height: "30%"
-              },
-              subtitle: {
-                widthAdjust: -20
-              },
-              credits: {
-                align: "right",
-                position: { y: -35 },
-                text:
-                  'CSIS Global Health Policy Center | <a href=http://apps.who.int/gho/data/view.main.IHRCTRY03v?lang=en">World Health Organization</a>'
               }
             }
           }
