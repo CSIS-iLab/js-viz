@@ -89,9 +89,9 @@
       {
         id: "play-range",
         type: "range",
-        value: this.dataLength,
+        value: this.dataLength - 1,
         min: 0,
-        max: this.dataLength,
+        max: this.dataLength - 1,
         step: this.options.magnet.step
       },
       null,
@@ -132,7 +132,8 @@
     );
 
     if (isArray(this.options.labels)) {
-      this.playOutputEnd.innerHTML = this.options.labels[this.dataLength] || "";
+      this.playOutputEnd.innerHTML =
+        this.options.labels[this.dataLength - 1] || "";
       this.playOutputStart.innerHTML = this.options.labels[0] || "";
     } else {
       this.playOutputEnd.innerHTML = this.dataLength - 1;
@@ -313,9 +314,9 @@
           }
         }
       }
-      this.chart.redraw();
       this.attractToStep();
     }
+    this.chart.redraw();
   };
 
   // Moves output value to data point

@@ -42,50 +42,47 @@ fetch("https://code.highcharts.com/mapdata/custom/world-eckert3.geo.json")
           }
 
           dataObj.labels.forEach(function(year, index) {
-            if (index === 0) return;
-            if (index !== 0) {
-              var tileData = geoData.features.find(function(country) {
-                return country.properties.name === code[0];
-              });
+            var tileData = geoData.features.find(function(country) {
+              return country.properties.name === code[0];
+            });
 
-              if (!tileData) return;
+            if (!tileData) return;
 
-              var countryData = dataObj.data.find(function(d) {
-                return d.name === code[0];
-              });
+            var countryData = dataObj.data.find(function(d) {
+              return d.name === code[0];
+            });
 
-              if (countryData) {
-                var value = parseInt(code[index], 10) ? code[index] : null;
-                if (parseInt(year, 10)) {
-                  countryData.sequence.push({
-                    year: year,
-                    value: value
-                  });
-                }
-                countryData.value = countryData.sequence[0].value;
-                // debugger;
-              } else {
-                var country = Object.assign({}, tileData);
-                var value = parseInt(code[index], 10) ? code[index] : null;
+            if (countryData) {
+              var value =
+                parseInt(code[index + 1], 10) > -1 ? code[index + 1] : null;
 
-                country.sequence = country.sequence || [];
-                country.sequence.push({ year: year, value: value });
-                country.name = code[0];
-                dataObj.data.push(country);
-                country["hc-key"] = country.properties["hc-key"];
+              if (parseInt(year, 10)) {
+                countryData.sequence.push({
+                  year: year,
+                  value: value
+                });
               }
+              countryData.value = countryData.sequence[0].value;
+            } else {
+              var country = Object.assign({}, tileData);
+              var value =
+                parseInt(code[index + 1], 10) > -1 ? code[index + 1] : null;
+
+              country.sequence = country.sequence || [];
+              country.sequence.push({ year: year, value: value });
+              country.name = code[0];
+              dataObj.data.push(country);
+              country["hc-key"] = country.properties["hc-key"];
             }
           });
         });
 
-        dataObj.labels = dataObj.labels;
         renderMap(dataObj);
       }
     });
   });
 
 function renderMap(data) {
-  console.log(data);
   chart = Highcharts.mapChart(
     "container",
     _defineProperty({
@@ -193,7 +190,6 @@ function renderMap(data) {
         headerFormat: "",
         pointFormatter: function pointFormatter() {
           currentYear = document.querySelector(".label.active").innerText;
-          console.log(this);
           return (
             '<div><span style="font-size:18px;color:' +
             this.color +
