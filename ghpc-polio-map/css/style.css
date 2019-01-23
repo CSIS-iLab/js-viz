@@ -52,7 +52,7 @@ body {
   vertical-align: middle;
 }
 #play-pause-button {
-  background-color: #0a8672;
+  background-color: #0faa91;
   color: #fff;
   border: none;
   border-radius: 50%;
@@ -69,9 +69,14 @@ body {
 }
 #play-pause-button:hover {
   transition: all 0.3s ease-in-out;
-  background-color: #ddd;
-  color: #444;
+  background-color: #0a8672;
 }
+
+.highcharts-button-hover .highcharts-button-box {
+  transition: all 0.3s ease-in-out;
+  fill: #0a8672;
+}
+
 #play-range {
   width: 100%;
   position: relative;
@@ -133,10 +138,10 @@ body {
 .label.active,
 #ticks .label:hover {
   font-weight: bold;
-  color: #0a8672;
-  -webkit-text-stroke: 1px #0a8672;
-  -webkit-box-shadow: inset -1px -6px 0 -1px #0a8672;
-  box-shadow: inset -1px -6px 0 -1px #0a8672;
+  color: #0faa91;
+  -webkit-text-stroke: 1px #0faa91;
+  -webkit-box-shadow: inset -1px -6px 0 -1px #0faa91;
+  box-shadow: inset -1px -6px 0 -1px #0faa91;
 }
 
 .tick:not(:first-child) {

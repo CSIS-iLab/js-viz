@@ -169,7 +169,7 @@ function renderMap(data) {
           verticalAlign: "top",
           align: "right",
           theme: {
-            fill: "#0a8672",
+            fill: "#0faa91",
             "stroke-width": 0,
             style: { color: "white" }
           }
