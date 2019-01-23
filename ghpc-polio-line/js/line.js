@@ -261,19 +261,25 @@ function renderLine(data) {
 
 var input = document.querySelector("#countrySearch");
 var submit = document.querySelector("#countrySearch ~ input");
+submit.setAttribute("disabled", "disabled");
 
 input.addEventListener("change", search);
+input.addEventListener("keyup", enable);
 submit.addEventListener("click", search);
 
-function search() {
-  var searchSeries = chart2.series.find(
+var searchSeries, visibleSeries, isVisible;
+
+function enable() {
+  submit.setAttribute("disabled", "disabled");
+
+  searchSeries = chart2.series.find(
     s => s.name.toLowerCase() === input.value.toLowerCase()
   );
 
-  var visibleSeries = chart2.series.filter(s => s.visible).map(s => s.name);
+  visibleSeries = chart2.series.filter(s => s.visible).map(s => s.name);
 
   if (searchSeries) {
-    var isVisible = visibleSeries.indexOf(searchSeries.name) > -1;
+    isVisible = visibleSeries.indexOf(searchSeries.name) > -1;
   }
 
   max = chart2.series.filter(s => s.visible).length > 5;
@@ -281,7 +287,13 @@ function search() {
   if (!max && searchSeries && !isVisible) {
     input.disabled = false;
     submit.disabled = false;
+  }
+}
 
+function search() {
+  enable();
+
+  if (!max && searchSeries && !isVisible) {
     searchSeries.update(
       {
         name: searchSeries.name,
@@ -298,8 +310,10 @@ function search() {
     }
 
     input.value = "";
+    submit.setAttribute("disabled", "disabled");
   } else if (searchSeries && isVisible) {
     input.value = "";
+    submit.setAttribute("disabled", "disabled");
   } else if (max) {
     input.setAttribute("disabled", "disabled");
     submit.setAttribute("disabled", "disabled");
