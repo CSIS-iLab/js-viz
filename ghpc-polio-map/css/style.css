@@ -31,14 +31,18 @@ body {
   max-width: 900px;
   /* height: 100%; */
 }
+.highcharts-background {
+  fill: transparent;
+}
 
 #container,
-#container2 {
+#container2,
+body {
   margin: 0 auto;
 }
 
 #intro.heading {
-  margin: 0 auto -18px;
+  margin: 0 auto -36px;
 }
 
 @media screen and (max-width: 400px) {
@@ -130,8 +134,8 @@ body {
   transform: translateX(-50%);
 
   height: 1rem;
-  width: 96.5%;
-  margin: auto auto auto 0.5%;
+  width: 98%;
+  margin: auto auto auto 0.3%;
 }
 
 #labels {
@@ -147,7 +151,7 @@ body {
   transform: translateX(-50%);
 
   height: 1.5rem;
-  width: 80%;
+  width: 84%;
   margin: auto auto auto 0.5%;
 }
 #ticks .tick {
