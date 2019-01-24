@@ -131,13 +131,7 @@ function renderLine(data) {
                 ["Afghanistan", "Nigeria", "Pakistan"].indexOf(e.target.name) <
                 0
               ) {
-                e.target.update(
-                  {
-                    showInLegend: false,
-                    visible: false
-                  },
-                  true
-                );
+                e.target.remove();
               }
 
               max = chart2.series.filter(s => s.visible).length > 5;
@@ -146,7 +140,7 @@ function renderLine(data) {
                 input.disabled = false;
               }
 
-              return true;
+              // return true;
             }
           }
         }

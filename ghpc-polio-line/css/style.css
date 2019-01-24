@@ -213,10 +213,10 @@ button:hover,
 }
 .search {
   display: flex;
-  flex-basis: 50%;
+  flex-basis: 60%;
 }
 #countrySearch {
-  flex-basis: 70%;
+  flex-basis: 40%;
 }
 
 .credit::before {
