@@ -42,7 +42,7 @@ body {
 }
 
 #intro.heading {
-  margin: 0 auto -36px;
+  margin: 0 auto;
 }
 
 @media screen and (max-width: 400px) {
@@ -54,11 +54,6 @@ body {
   }
 }
 
-@media screen and (max-width: 768px) {
-  #intro.heading {
-    margin: 0 auto -9px;
-  }
-}
 #play-controls {
   text-align: center;
   display: -webkit-box;
@@ -207,11 +202,86 @@ body {
 /* .highcharts-container {
   height: unset;
 } */
+
+.legend {
+  display: flex;
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.legend li {
+  margin: 0 6px;
+}
+.legend li:nth-child(n + 2) {
+  position: relative;
+}
+
+.legend li:nth-child(n + 2)::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 1px;
+  left: 0;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.legend li:nth-of-type(1) {
+  font-weight: bold;
+}
+.legend li:nth-of-type(2)::before {
+  background-color: #7c1522;
+}
+.legend li:nth-of-type(3)::before {
+  background-color: #ff5733;
+}
+.legend li:nth-of-type(4)::before {
+  background-color: #ffc300;
+}
+.legend li:nth-of-type(5)::before {
+  background-color: #48c14b;
+}
+
+.legend li span {
+  margin-left: 18px;
+}
+
+.legend li:nth-of-type(2) span::before {
+  content: "Less than 25";
+}
+.legend li:nth-of-type(3) span::before {
+  content: "Greater than 25";
+}
+.legend li:nth-of-type(4) span::before {
+  content: "Greater than 50";
+}
+.legend li:nth-of-type(5) span::before {
+  content: "Greater than 75";
+}
+
 @media screen and (max-width: 768px) {
   #container,
   #container2,
   .heading,
   body {
     max-width: calc(100vw - 24px);
+  }
+
+  .legend {
+    flex-wrap: wrap;
+  }
+
+  .legend li:nth-of-type(2) span::before {
+    content: "< 25";
+  }
+  .legend li:nth-of-type(3) span::before {
+    content: "> 25";
+  }
+  .legend li:nth-of-type(4) span::before {
+    content: "> 50";
+  }
+  .legend li:nth-of-type(5) span::before {
+    content: "> 75";
   }
 }

@@ -87,7 +87,7 @@ function renderMap(data) {
     "container",
     _defineProperty({
       chart: {
-        marginTop: 50,
+        marginTop: 0,
         marginBottom: 25
       },
       title: {
@@ -108,10 +108,11 @@ function renderMap(data) {
         href: true
       },
       legend: {
-        enabled: true,
+        enabled: false,
         layout: "horizontal",
         verticalAlign: "top",
-        floating: false
+        floating: false,
+        x: -133
       },
 
       colorAxis: {
@@ -223,6 +224,10 @@ function renderMap(data) {
               maxWidth: 400
             },
             chartOptions: {
+              chart: {
+                height: "33%"
+              },
+
               credits: {
                 text:
                   'CSIS | <a href=http://apps.who.int/gho/data/view.main.IHRCTRY03v?lang=en">WHO</a>'
@@ -235,6 +240,10 @@ function renderMap(data) {
               maxWidth: 700
             },
             chartOptions: {
+              chart: {
+                height: "50%"
+              },
+
               credits: {
                 align: "right",
                 text:
