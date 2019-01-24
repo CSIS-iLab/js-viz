@@ -101,7 +101,7 @@ var countries;
 
 function init() {
   circleSize = {
-    min: window.innerWidth / 144,
+    min: Math.min(window.innerWidth / 144, 8.75),
     max: Math.min(window.innerWidth / 30, 42)
   };
 
