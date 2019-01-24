@@ -177,10 +177,10 @@ function renderMap(data) {
         },
         buttons: {
           zoomIn: {
-            y: 100
+            y: 0
           },
           zoomOut: {
-            y: 135
+            y: 33
           }
         }
       },

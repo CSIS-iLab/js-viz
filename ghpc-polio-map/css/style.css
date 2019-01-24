@@ -65,6 +65,7 @@ body {
   display: -ms-flexbox;
   display: flex;
   align-items: center;
+  /* justify-content: center; */
 }
 #play-controls * {
   display: inline-block;
@@ -116,9 +117,8 @@ body {
 #range {
   position: relative;
   top: -10px;
-
   margin: 2.5%;
-  width: 70%;
+  width: 85%;
 }
 
 #ticks {
