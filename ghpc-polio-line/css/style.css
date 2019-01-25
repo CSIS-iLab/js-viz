@@ -206,6 +206,7 @@ button:hover,
 }
 .footer {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   font-size: 12px;
@@ -213,7 +214,9 @@ button:hover,
 }
 .search {
   display: flex;
+  align-items: flex-start;
   flex-basis: 60%;
+  margin: 0 0.5em 0 0;
 }
 #countrySearch {
   flex-basis: 40%;
@@ -242,5 +245,9 @@ button:hover,
   .heading,
   body {
     max-width: calc(100vw - 24px);
+  }
+
+  .search {
+    flex-basis: 100%;
   }
 }

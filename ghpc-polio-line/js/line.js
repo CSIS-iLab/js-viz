@@ -16,7 +16,7 @@ var series = [];
 
 var dataObj = { data: [], labels: [] };
 
-var geoData, chart, max;
+var geoData, chart, max, isVisible;
 
 Highcharts.data({
   googleSpreadsheetKey: "12_yhWuslrui9_kW57-HwySPk9kv1Mp2VlAYHUo5QWO8",
@@ -131,7 +131,15 @@ function renderLine(data) {
                 ["Afghanistan", "Nigeria", "Pakistan"].indexOf(e.target.name) <
                 0
               ) {
-                e.target.remove();
+                e.target.update(
+                  {
+                    name: searchSeries.name,
+                    showInLegend: false,
+                    visible: false
+                  },
+                  true
+                );
+                return false;
               }
 
               max = chart2.series.filter(s => s.visible).length > 5;
@@ -140,7 +148,7 @@ function renderLine(data) {
                 input.disabled = false;
               }
 
-              // return true;
+              return true;
             }
           }
         }
@@ -236,7 +244,7 @@ var input = document.querySelector("#countrySearch");
 var submit = document.querySelector("#countrySearch ~ input");
 submit.setAttribute("disabled", "disabled");
 
-input.addEventListener("change", search);
+input.addEventListener("change", enable);
 input.addEventListener("keyup", enable);
 submit.addEventListener("click", search);
 
@@ -264,8 +272,6 @@ function enable() {
 }
 
 function search() {
-  enable();
-
   if (!max && searchSeries && !isVisible) {
     searchSeries.update(
       {
