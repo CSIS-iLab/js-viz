@@ -195,7 +195,7 @@ button,
 }
 
 label[for="countrySearch"] {
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
   margin: 0 0.5em 0 0;
   font-weight: 600;
 }
