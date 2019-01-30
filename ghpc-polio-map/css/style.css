@@ -231,16 +231,16 @@ body {
   font-weight: bold;
 }
 .legend li:nth-of-type(2)::before {
-  background-color: #7c1522;
+  background-color: #1a1f26;
 }
 .legend li:nth-of-type(3)::before {
-  background-color: #ff5733;
+  background-color: #44576d;
 }
 .legend li:nth-of-type(4)::before {
-  background-color: #ffc300;
+  background-color: #3e86b3;
 }
 .legend li:nth-of-type(5)::before {
-  background-color: #48c14b;
+  background-color: #73c1ec;
 }
 
 .legend li span {

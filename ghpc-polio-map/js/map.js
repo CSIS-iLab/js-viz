@@ -124,24 +124,24 @@ function renderMap(data) {
           },
           {
             to: 24,
-            color: "#7c1522",
+            color: "#1a1f26",
             name: window.innerWidth > 768 ? "Less than 25" : "< 25"
           },
           {
             from: 25,
             to: 50,
-            color: "#ff5733",
+            color: "#44576d",
             name: window.innerWidth > 768 ? "Greater than 25" : "> 25"
           },
           {
             from: 51,
             to: 75,
-            color: "#ffc300",
+            color: "#3e86b3",
             name: window.innerWidth > 768 ? "Greater than 50" : "> 50"
           },
           {
             from: 76,
-            color: "#48c14b",
+            color: "#73c1ec",
             name: window.innerWidth > 768 ? "Greater than 75" : "> 75"
           }
         ]
