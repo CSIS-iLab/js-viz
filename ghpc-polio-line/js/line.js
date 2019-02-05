@@ -35,10 +35,10 @@ Highcharts.data({
           row.color = "#004165";
           break;
         case "Nigeria":
-          row.color = "#66c6cb";
+          row.color = "#4C8984";
           break;
         case "Pakistan":
-          row.color = "#48c14b";
+          row.color = "#75baa9";
           break;
       }
 
