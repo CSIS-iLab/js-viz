@@ -130,7 +130,7 @@ function createBubbleChart() {
       })
   );
   regionColorScale = d3
-    .scaleOrdinal(["#004165", "#66c6cb", "#48c14b", "#ffc300"])
+    .scaleOrdinal(["#004165", "#4C8984", "#75baa9", "#0064a6"])
     .domain(regions.values());
 
   circleRadiusScale = d3
