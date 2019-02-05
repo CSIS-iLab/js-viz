@@ -130,7 +130,7 @@ function renderMap(data) {
           {
             from: 25,
             to: 50,
-            color: "#efc28e",
+            color: "#EDA27C",
             name: window.innerWidth > 768 ? "Greater than 25" : "> 25"
           },
           {
