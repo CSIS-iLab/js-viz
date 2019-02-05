@@ -1,0 +1,116 @@
+<html>
+  <head>
+    <style>
+    article,section{
+      padding:3rem;
+      border:1px solid grey;
+      max-width:600px;
+      margin:3rem auto;
+    }
+    </style>
+  </head>
+<body>
+  <section></section>
+  <main></main>
+  <script>
+    function xmlToJson(xml) {
+    	var obj = {};
+      if (xml.nodeType == 2||xml.nodeType == 3||xml.nodeType == 4) {
+      		obj = xml.nodeValue;
+      	}
+    	if (xml.hasChildNodes()) {
+    		for(var i = 0; i < xml.childNodes.length; i++) {
+    			var item = xml.childNodes.item(i);
+    			var nodeName = item.nodeName;
+            console.log(nodeName,25)
+    			if (typeof(obj[nodeName]) == "undefined") {
+    				obj[nodeName] = xmlToJson(item);
+            console.log(obj[nodeName],28)
+    			} else {
+            console.log(obj[nodeName],30)
+    				if (typeof(obj[nodeName].push) == "undefined") {
+    					var old = obj[nodeName];
+    					obj[nodeName] = [];
+    					obj[nodeName].push(old);
+    				}
+    				obj[nodeName].push(xmlToJson(item));
+    			}
+    		}
+    	}
+    	return obj;
+    };
+
+    fetch("https://csis-openhire.silkroad.com/api/index.cfm?fuseaction=app.getJobListings&LANGUAGE=en&FORMAT=xml&VERSION=1&KEYWORD=&JOBPLACEMENT=external")
+            .then(response => response.text())
+            .then(str => (new window.DOMParser()).parseFromString(str, "text/xml"))
+            .then(data => xmlToJson(data).jobs.job)
+            .then(json=>{
+
+              json.forEach(job=>{
+                var jobHTML = ""
+                jobHTML += "<article>"
+
+                jobHTML += "<h2>"+job.title["#cdata-section"]+"</h2>"
+
+                jobHTML += "<h3>"+job.positionType["#cdata-section"]+"</h3>"
+
+                jobHTML += "<h4>"+job.businessUnit["#cdata-section"]
+
+                jobHTML += job.businessUnit["#cdata-section"]!==job.category["#cdata-section"]?": "+job.category["#cdata-section"]+"</h4>":"</h4>"
+
+                jobHTML += "<div>"+job.jobDescription["#cdata-section"]+"</div>"
+
+                jobHTML += "<div>"+job.jobLocation.municipality["#cdata-section"]+"</div>"
+
+                jobHTML += "<div>"+job.jobLocation.region["#cdata-section"]+"</div>"
+
+                jobHTML += "<div>"+new Date(job.postingDate["#cdata-section"]).toLocaleDateString('en-US', {
+                              month: 'long',
+                              day: 'numeric',
+                              year: 'numeric'
+                            })+"</div>"
+
+                jobHTML += "<div>"+job.requiredExperience["#cdata-section"]+"</div>"
+
+                jobHTML += "<div>"+job.requiredSkills["#cdata-section"]+"</div>"
+
+                jobHTML+=`<form id="applyJob" method="post" action="https://csis-openhire.silkroad.com/epostings/index.cfm?fuseaction=app.presubmission">
+
+        				<input type="hidden" name="gotofuse" value="app.newsubmission">
+
+          			<input type="hidden" name="submissiontype" value="4">
+          			<input type="hidden" name="previewedit" value="1">
+          			<input type="hidden" name="altsource" value="0">
+          			<input type="hidden" name="jobid" value="480">
+          			<input type="hidden" name="job_title" value="Intern- Wadhwani Chair in U.S.-India Policy Studies (Spring 2019) (480-233)">
+          			<input type="hidden" name="JobOwner" value="992538">
+
+          			<input type="hidden" name="source" value="ONLINE">
+          			<input type="hidden" name="company_id" value="17233">
+          			<input type="hidden" name="companyname" value="Center For Strategic And International Studies">
+          			<input type="hidden" name="version" value="1">
+          			<input type="hidden" name="location_id" value="0">
+          			<input type="hidden" name="resumetype" value="0">
+
+
+                <input type="button" class="ui-form-field-button" id="newResumeButton" value="New Resume/CV" onclick="document.getElementById('applyJob').submit();">
+
+								<input type="button" class="ui-form-field-button" id="existingResumeButton" value="Existing Resume/CV" onclick="window.location='submit.cfm?fuseaction=app.presubmission&amp;gotofuse=app.res_login&amp;id=23&amp;jobid=${job.jobId["#text"]}&amp;company_id=17233&amp;version=1&amp;jobowner=992538&amp;aid=0&amp;fid=0&amp;bystate=0&amp;bylocation=NULL&amp;bycountry=0&amp;bycat=&amp;keywords='">
+                </form>`
+
+                jobHTML += "</article>"
+
+                document.querySelector("main").innerHTML += jobHTML
+
+
+                document.querySelector("section").innerHTML += '<div><a href="/job/' + job.jobId["#text"] + '" >' + job.title["#cdata-section"] + '</a></div>'
+              })
+              console.log(json)
+            })
+
+  </script>
+
+
+</body>
+
+</html>

@@ -35,7 +35,7 @@ Highcharts.data({
           row.color = "#004165";
           break;
         case "Nigeria":
-          row.color = "#4C8984";
+          row.color = "#EDA27C";
           break;
         case "Pakistan":
           row.color = "#75baa9";
