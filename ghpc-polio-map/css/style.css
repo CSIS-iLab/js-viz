@@ -175,9 +175,8 @@ body {
 .label.active,
 #ticks .label:hover {
   color: #0faa91;
-  -webkit-text-stroke: 1px #0faa91;
-  -webkit-box-shadow: inset -1px -6px 0 -1px #0faa91;
-  box-shadow: inset -1px -6px 0 -1px #0faa91;
+  -webkit-box-shadow: inset -1px -6px 0 -2px #0faa91;
+  box-shadow: inset -1px -6px 0 -2px #0faa91;
 }
 
 .tick:not(:first-child) {
