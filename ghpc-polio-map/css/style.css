@@ -28,7 +28,7 @@ body {
 body {
   width: 100%;
   min-width: 190px;
-  max-width: calc(100vw - 36px);
+  /* max-width: calc(100vw - 36px); */
 }
 .highcharts-background {
   fill: transparent;
@@ -264,7 +264,7 @@ body {
   #container2,
   .heading,
   body {
-    max-width: calc(100vw - 24px);
+    /* max-width: calc(100vw - 24px); */
   }
 
   .legend {
