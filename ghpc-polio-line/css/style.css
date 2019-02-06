@@ -1,13 +1,27 @@
 @import "https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css";
 
 body {
-  font-family: "Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica,
-    sans-serif;
-  font-size: 12px;
+  font-family: "Open Sans", Arial, Helvetica, sans-serif;
+  font-size: 16px;
 }
 
 .highcharts-title tspan {
   font-size: 24px;
+}
+
+.title {
+  color: #333333;
+  font-size: 24px;
+  max-width: 1280px;
+  text-align: center;
+}
+
+.subtitle {
+  color: #333333;
+  font-size: 16px;
+  max-width: 1280px;
+  margin-bottom: 1.5rem;
+  line-height: 1.4;
 }
 
 .highcharts-point,
@@ -172,15 +186,17 @@ button,
   background-color: #0faa91;
   color: #fff;
   cursor: pointer;
-  display: inline-block;
   border: 0;
+  font-size: 16px;
   font-weight: 600;
-  line-height: 0;
+  line-height: 0.6;
   margin: 0 0 0 0.5em;
   padding: 0.5rem;
   text-align: center;
-  text-decoration: none !important;
-  vertical-align: baseline;
+}
+
+#countrySearch {
+  font-size: 16px;
 }
 
 .remove {
@@ -209,14 +225,13 @@ button:hover,
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  font-size: 12px;
   margin-top: 1rem;
 }
 .search {
   display: flex;
   align-items: flex-start;
   flex-basis: 60%;
-  margin: 0 0.5em 0 0;
+  margin: 0 0.5em 1em 0;
 }
 #countrySearch {
   flex-basis: 40%;
@@ -244,7 +259,7 @@ button:hover,
   #container2,
   .heading,
   body {
-    max-width: calc(100vw - 24px);
+    max-width: calc(100vw - 40px);
   }
 
   .search {

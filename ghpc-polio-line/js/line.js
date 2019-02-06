@@ -108,6 +108,10 @@ function renderLine(data) {
           text:
             '<span style="font-size: 10px; color: #808080; font-weight: normal">Click to hide</span>'
         },
+        itemStyle: {
+          fontSize: "16px",
+          fontWeight: "normal"
+        },
         useHTML: true,
         y: 15,
         x: -18,

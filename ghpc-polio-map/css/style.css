@@ -1,9 +1,8 @@
 @import "https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css";
 
 body {
-  font-family: "Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica,
-    sans-serif;
-  font-size: 12px;
+  font-family: "Open Sans", Arial, Helvetica, sans-serif;
+  font-size: 16px;
 }
 
 .highcharts-title tspan {
@@ -19,8 +18,10 @@ body {
 
 .subtitle {
   color: #333333;
-  font-size: 12px;
+  font-size: 16px;
   max-width: 1280px;
+  margin-bottom: 1.5rem;
+  line-height: 1.4;
 }
 
 .highcharts-point,
@@ -173,7 +174,6 @@ body {
 
 .label.active,
 #ticks .label:hover {
-  font-weight: bold;
   color: #0faa91;
   -webkit-text-stroke: 1px #0faa91;
   -webkit-box-shadow: inset -1px -6px 0 -1px #0faa91;
@@ -278,7 +278,7 @@ body {
   #container2,
   .heading,
   body {
-    /* max-width: calc(100vw - 24px); */
+    max-width: calc(100vw - 40px);
   }
 
   .legend {

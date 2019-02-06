@@ -340,7 +340,7 @@ function createCircles() {
       formatBudget(d.budget) +
       "</div>";
 
-    tooltipEl.style("border", regionColorScale(d.countrycode) + " 1px solid");
+    tooltipEl.style("border", regionColorScale(d.regioncode) + " 1px solid");
 
     tooltip.show(tooltipContent);
   }
