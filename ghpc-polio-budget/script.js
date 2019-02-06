@@ -329,15 +329,19 @@ function createCircles() {
     });
 
   function updateTooltip(d) {
-    var tooltipContent = `
-    <p class="tooltip-heading">
-      ${d.countryname}
-    </p>
-    <p class="tooltip-body">
-      $${formatBudget(d.budget)}
-    </p>
+    if (window.innerWidth < 768) return;
 
-    `;
+    var tooltipContent =
+      '<div><span style="font-size:18px;color:' +
+      regionColorScale(d.regioncode) +
+      '">\u25CF </span><b>' +
+      d.countryname +
+      "</b><br/>$" +
+      formatBudget(d.budget) +
+      "</div>";
+
+    tooltipEl.style("border", regionColorScale(d.countrycode) + " 1px solid");
+
     tooltip.show(tooltipContent);
   }
 

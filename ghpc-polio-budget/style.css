@@ -57,6 +57,7 @@ circle {
   max-width: 1280px;
   text-align: center;
 }
+
 .subtitle {
   color: #333333;
   font-size: 12px;
@@ -78,12 +79,6 @@ circle {
   fill: white;
 }
 
-@media only screen and (max-width: 768px) {
-  .tooltip.isActive {
-    display: none;
-  }
-}
-
 @media only screen and (min-width: 768px) {
   #country-info {
     display: none;
@@ -97,7 +92,7 @@ circle {
 .tooltip,
 .tooltip-info {
   display: block;
-  font-size: 14px;
+  font-size: 12px;
   line-height: 1.4;
   position: absolute;
   z-index: 20;
@@ -106,7 +101,7 @@ circle {
   max-width: 175px;
   height: auto;
   margin: 0 15px;
-  padding: 8px 8px 10px;
+  padding: 4px 8px 8px;
   pointer-events: none;
   opacity: 0;
   border: 1px solid gray;
