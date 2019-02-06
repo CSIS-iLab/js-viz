@@ -8,6 +8,16 @@ body {
   max-width: 900px;
 }
 
+html {
+  font-size: 16px;
+}
+
+@media only screen and (max-width: 768px) {
+  html {
+    font-size: 12px;
+  }
+}
+
 #controls {
   font-size: 18px;
   margin: 25px 0;
@@ -24,7 +34,7 @@ span:nth-child(2) {
 
 #country-info {
   color: #666;
-  font-size: 28px;
+  font-size: 24px;
   position: relative;
   left: -50%;
   height: 3rem;
@@ -69,7 +79,7 @@ circle {
 }
 
 @media only screen and (max-width: 768px) {
-  .tooltip {
+  .tooltip.isActive {
     display: none;
   }
 }

@@ -106,7 +106,7 @@ function init() {
   };
 
   width = Math.min(900, window.innerWidth - 10);
-  height = width * 0.6;
+  height = Math.max(width * 0.6, 535);
 
   createBubbleChart();
 }
