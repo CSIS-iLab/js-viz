@@ -87,8 +87,8 @@ function renderMap(data) {
     "container",
     _defineProperty({
       chart: {
-        height: "100%",
-        marginBottom: 850
+        marginTop: 0,
+        marginBottom: 25
       },
       title: {
         text: ""
@@ -225,13 +225,10 @@ function renderMap(data) {
             },
             chartOptions: {
               chart: {
-                height: "100%",
-                marginBottom: 100
+                height: "33%"
               },
+
               credits: {
-                position: {
-                  y: -100
-                },
                 text:
                   'CSIS | <a href=http://apps.who.int/gho/data/view.main.IHRCTRY03v?lang=en">WHO</a>'
               }
@@ -240,17 +237,15 @@ function renderMap(data) {
           {
             condition: {
               minWidth: 401,
-              maxWidth: 600
+              maxWidth: 700
             },
             chartOptions: {
               chart: {
-                height: "100%",
-                marginBottom: 250
+                height: "50%"
               },
+
               credits: {
-                position: {
-                  y: -250
-                },
+                align: "right",
                 text:
                   'CSIS | <a href=http://apps.who.int/gho/data/view.main.IHRCTRY03v?lang=en">WHO</a>'
               }
@@ -258,94 +253,10 @@ function renderMap(data) {
           },
           {
             condition: {
-              minWidth: 601,
-              maxWidth: 800
+              minWidth: 701
             },
             chartOptions: {
-              chart: {
-                height: "100%",
-                marginBottom: 250
-              },
               credits: {
-                position: {
-                  y: -250
-                },
-                text:
-                  'CSIS Global Health Policy Center | <a href=http://apps.who.int/gho/data/view.main.IHRCTRY03v?lang=en">World Health Organization</a>'
-              }
-            }
-          },
-          {
-            condition: {
-              minWidth: 801,
-              maxWidth: 1000
-            },
-            chartOptions: {
-              chart: {
-                height: "100%",
-                marginBottom: 450
-              },
-              credits: {
-                position: {
-                  y: -450
-                },
-                text:
-                  'CSIS Global Health Policy Center | <a href=http://apps.who.int/gho/data/view.main.IHRCTRY03v?lang=en">World Health Organization</a>'
-              }
-            }
-          },
-          {
-            condition: {
-              minWidth: 1001,
-              maxWidth: 1200
-            },
-            chartOptions: {
-              chart: {
-                height: "100%",
-                marginBottom: 650
-              },
-              credits: {
-                position: {
-                  y: -650
-                },
-                text:
-                  'CSIS Global Health Policy Center | <a href=http://apps.who.int/gho/data/view.main.IHRCTRY03v?lang=en">World Health Organization</a>'
-              }
-            }
-          },
-          {
-            condition: {
-              minWidth: 1201,
-              maxWidth: 1600
-            },
-            chartOptions: {
-              chart: {
-                height: "100%",
-                marginBottom: 850
-              },
-              credits: {
-                position: {
-                  y: -850
-                },
-                text:
-                  'CSIS Global Health Policy Center | <a href=http://apps.who.int/gho/data/view.main.IHRCTRY03v?lang=en">World Health Organization</a>'
-              }
-            }
-          },
-          {
-            condition: {
-              minWidth: 1601,
-              maxWidth: 2000
-            },
-            chartOptions: {
-              chart: {
-                height: "100%",
-                marginBottom: 1050
-              },
-              credits: {
-                position: {
-                  y: -1050
-                },
                 text:
                   'CSIS Global Health Policy Center | <a href=http://apps.who.int/gho/data/view.main.IHRCTRY03v?lang=en">World Health Organization</a>'
               }
