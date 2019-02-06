@@ -44,13 +44,12 @@ circle {
 .title {
   color: #333333;
   font-size: 24px;
-  fill: #333333;
   max-width: 1280px;
+  text-align: center;
 }
 .subtitle {
   color: #333333;
   font-size: 12px;
-  fill: #333333;
   max-width: 1280px;
 }
 .credit {

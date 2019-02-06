@@ -10,6 +10,19 @@ body {
   font-size: 24px;
 }
 
+.title {
+  color: #333333;
+  font-size: 24px;
+  max-width: 1280px;
+  text-align: center;
+}
+
+.subtitle {
+  color: #333333;
+  font-size: 12px;
+  max-width: 1280px;
+}
+
 .highcharts-point,
 .highcharts-data-label tspan {
   cursor: pointer;
@@ -228,6 +241,7 @@ body {
 
 .legend li:nth-of-type(1) {
   font-weight: bold;
+  margin-left: 0;
 }
 .legend li:nth-of-type(2)::before {
   background-color: #e86259;
