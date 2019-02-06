@@ -316,7 +316,7 @@ function renderMap(data) {
           {
             condition: {
               minWidth: 1201,
-              maxWidth: 2000
+              maxWidth: 1600
             },
             chartOptions: {
               chart: {
@@ -326,6 +326,25 @@ function renderMap(data) {
               credits: {
                 position: {
                   y: -850
+                },
+                text:
+                  'CSIS Global Health Policy Center | <a href=http://apps.who.int/gho/data/view.main.IHRCTRY03v?lang=en">World Health Organization</a>'
+              }
+            }
+          },
+          {
+            condition: {
+              minWidth: 1601,
+              maxWidth: 2000
+            },
+            chartOptions: {
+              chart: {
+                height: "100%",
+                marginBottom: 1050
+              },
+              credits: {
+                position: {
+                  y: -1050
                 },
                 text:
                   'CSIS Global Health Policy Center | <a href=http://apps.who.int/gho/data/view.main.IHRCTRY03v?lang=en">World Health Organization</a>'
