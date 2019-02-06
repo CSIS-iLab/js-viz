@@ -49,7 +49,7 @@ var tooltip = {
     tooltipEl
       .transition()
       .duration(200)
-      .style("opacity", 0.9)
+      .style("opacity", 1)
       .on("end", function() {
         tooltipEl.classed("isActive", true);
         // tooltipEl.select('.tooltip-close').on('click', this.hide)
