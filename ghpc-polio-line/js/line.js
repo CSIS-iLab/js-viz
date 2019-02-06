@@ -172,9 +172,9 @@ function renderLine(data) {
             color +
             '">\u25CF </span><b>' +
             name +
-            "</b><br/>\n      " +
+            "</b><br/>" +
             x +
-            " Score:\n       " +
+            " Score: " +
             y +
             "</div>"
           );
@@ -188,7 +188,7 @@ function renderLine(data) {
             },
             chartOptions: {
               chart: {
-                height: "60%",
+                height: "90%",
                 marginBottom: 100
               },
               xAxis: {
@@ -211,7 +211,7 @@ function renderLine(data) {
             },
             chartOptions: {
               chart: {
-                height: "40%"
+                height: "60%"
               },
               xAxis: {
                 categories: [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017],
@@ -230,7 +230,7 @@ function renderLine(data) {
             },
             chartOptions: {
               chart: {
-                height: "30%"
+                height: "45%"
               }
             }
           }
