@@ -10,7 +10,7 @@ var spreadsheetID = "12_yhWuslrui9_kW57-HwySPk9kv1Mp2VlAYHUo5QWO8";
 var translationsURL =
   "https://spreadsheets.google.com/feeds/list/" +
   spreadsheetID +
-  "/7/public/values?alt=json";
+  "/1/public/values?alt=json";
 
 fetch(translationsURL)
   .then(function(response) {
@@ -39,9 +39,9 @@ function parseData(rawData) {
 }
 
 var tooltip = {
-  show: function(content) {
-    let yPos = event.pageY;
-    let xPos = event.pageX;
+  show: function show(content) {
+    var yPos = event.pageY;
+    var xPos = event.pageX;
     if (xPos + 10 > document.body.clientWidth - 215) {
       xPos = document.body.clientWidth + 5 - 215;
     }
@@ -61,23 +61,28 @@ var tooltip = {
       .style("left", xPos + "px")
       .style("top", yPos + "px");
   },
-  hide: function() {
+  hide: function hide() {
     tooltipEl
       .transition()
       .duration(300)
       .style("opacity", 0);
   },
-  formatContent: function(component) {
-    let content = '<ul class="tooltip-list">';
+  formatContent: function formatContent(component) {
+    var content = '<ul class="tooltip-list">';
     component.forEach(function(item, index) {
-      let cssClass = null;
+      var cssClass = null;
       if (item.class) {
         cssClass = item.class;
       }
-      let label = Object.keys(item)[0];
-      content += `<li class="${cssClass}"><span class="tooltip-label">${label}:</span> ${
-        item[label]
-      }</li>`;
+      var label = Object.keys(item)[0];
+      content +=
+        '<li class="' +
+        cssClass +
+        '"><span class="tooltip-label">' +
+        label +
+        ":</span> " +
+        item[label] +
+        "</li>";
     });
     content += "</ul>";
     return content;
@@ -111,7 +116,9 @@ function init() {
   createBubbleChart();
 }
 
-window.addEventListener("resize", () => location.reload(false));
+window.addEventListener("resize", function() {
+  return location.reload(false);
+});
 
 function createBubbleChart() {
   budgets = countries.map(function(country) {
@@ -125,7 +132,7 @@ function createBubbleChart() {
       .map(function(country) {
         return country.regioncode;
       })
-      .sort((a, b) => {
+      .sort(function(a, b) {
         return continents[a].length - continents[b].length;
       })
   );
@@ -195,21 +202,21 @@ function toggleRegionKey() {
           .enter()
           .append("g")
           .attr("class", function(d) {
-            return `region-key-${d}`;
+            return "region-key-" + d;
           })
           .attr("y", height - onScreenYOffset);
 
     regionKeys.each(function(g, gi, nodes) {
       var regionKeyColorNodes = document.querySelectorAll(
-        `.region-key-color-${g}`
+        ".region-key-color-" + g
       ).length;
 
       var regionKeyColor = regionKeyColorNodes
-        ? d3.selectAll(`.region-key-color-${g}`)
+        ? d3.selectAll(".region-key-color-" + g)
         : d3
             .select(nodes[gi])
             .append("rect")
-            .attr("class", `region-key-color-${g}`);
+            .attr("class", "region-key-color-" + g);
 
       regionKeyColor
         .attr("width", keyElementWidth)
@@ -218,21 +225,20 @@ function toggleRegionKey() {
           return regionKeyScale(d);
         })
         .attr("y", height - onScreenYOffset)
-
         .attr("fill", function(d) {
           return regionColorScale(d);
         });
 
       var regionKeyLabelNodes = document.querySelectorAll(
-        `.region-key-label-${g}`
+        ".region-key-label-" + g
       ).length;
 
       var regionKeyLabels = regionKeyLabelNodes
-        ? d3.selectAll(`.region-key-label-${g}`)
+        ? d3.selectAll(".region-key-label-" + g)
         : d3
             .select(nodes[gi])
             .append("text")
-            .attr("class", `region-key-label-${g}`)
+            .attr("class", "region-key-label-" + g)
             .attr("text-anchor", "middle")
             .attr("font-size", ".7rem")
             .attr("fill", "white");
@@ -243,7 +249,6 @@ function toggleRegionKey() {
           return val;
         })
         .attr("y", height - onScreenYOffset + 30 * 0.67)
-
         .text(function(d) {
           return window.innerWidth > 768 ? continents[d] : d;
         });
@@ -264,18 +269,18 @@ function createCircles() {
         .data(countries)
         .enter()
         .append("g")
-        .attr("class", `circle-container`);
+        .attr("class", "circle-container");
 
   circleContainers.each(function(g, gi, nodes) {
-    var circleNodes = document.querySelectorAll(`.circle-${g.countrycode}`)
+    var circleNodes = document.querySelectorAll(".circle-" + g.countrycode)
       .length;
 
     var circleSVG = circleNodes
-      ? d3.selectAll(`.circle-${g.countrycode}`)
+      ? d3.selectAll(".circle-" + g.countrycode)
       : d3
           .select(nodes[gi])
           .append("circle")
-          .attr("class", `circle-${g.countrycode}`);
+          .attr("class", "circle-" + g.countrycode);
 
     circleSVG
       .attr("r", function(d) {
@@ -285,11 +290,11 @@ function createCircles() {
         return regionColorScale(d.regioncode);
       });
 
-    var labelNodes = document.querySelectorAll(`.label-${g.countrycode}`)
+    var labelNodes = document.querySelectorAll(".label-" + g.countrycode)
       .length;
 
     var labelSVG = labelNodes
-      ? d3.selectAll(`.label-${g.countrycode}`)
+      ? d3.selectAll(".label-" + g.countrycode)
       : d3
           .select(nodes[gi])
           .append("text")
@@ -299,7 +304,7 @@ function createCircles() {
 
     labelSVG
       .attr("font-size", function(d) {
-        return `${fontScale(d.budget)}rem`;
+        return fontScale(d.budget) + "rem";
       })
       .text(function(d) {
         return d.countrycode;
