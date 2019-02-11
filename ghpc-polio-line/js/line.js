@@ -137,12 +137,18 @@ function renderLine(data) {
               ) {
                 e.target.update(
                   {
-                    name: searchSeries.name,
                     showInLegend: false,
                     visible: false
                   },
                   true
                 );
+
+                max = chart2.series.filter(s => s.visible).length > 5;
+
+                if (!max) {
+                  input.disabled = false;
+                }
+
                 return false;
               }
 
@@ -287,6 +293,8 @@ function search() {
     );
 
     max = chart2.series.filter(s => s.visible).length > 5;
+    input.disabled = false;
+
     if (max) {
       input.setAttribute("disabled", "disabled");
       submit.setAttribute("disabled", "disabled");

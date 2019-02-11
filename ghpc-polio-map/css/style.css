@@ -120,12 +120,17 @@ body {
   position: relative;
   z-index: 99;
   cursor: pointer;
+  -webkit-appearance: none;
+  background-color: #bcbcbc;
+  height: 4px;
+  margin: 7px 0;
+  border-radius: 2px;
 }
 
 #range {
   position: relative;
   top: -10px;
-  margin: 2.5%;
+  margin: 2.5% 2.8% 2.5% 2.5%;
   width: 85%;
 }
 
@@ -180,7 +185,7 @@ body {
 }
 
 .tick:not(:first-child) {
-  border-left: 1px solid #404041;
+  border-left: 1px solid #bcbcbc;
 }
 
 .tabletitle {
