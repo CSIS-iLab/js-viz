@@ -68,6 +68,7 @@ body {
 }
 
 #play-controls {
+  margin-top: 2rem;
   text-align: center;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -226,17 +227,22 @@ body {
 }
 
 .legend li {
-  margin: 0 6px;
+  margin: 0 3px;
 }
+
 .legend li:nth-child(n + 2) {
   position: relative;
+}
+
+.legend li:nth-child(n + 3) {
+  margin-left: 12px;
 }
 
 .legend li:nth-child(n + 2)::before {
   content: "";
   display: block;
   position: absolute;
-  top: 1px;
+  top: 2.25px;
   left: 0;
   width: 12px;
   height: 12px;
