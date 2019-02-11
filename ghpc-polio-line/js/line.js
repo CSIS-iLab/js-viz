@@ -86,7 +86,7 @@ function renderLine(data) {
       chart: {
         zoomType: false,
         type: "line",
-        marginBottom: 75
+        marginBottom: 95
       },
       title: { text: "" },
 
@@ -106,7 +106,7 @@ function renderLine(data) {
       legend: {
         title: {
           text:
-            '<span style="font-size: 10px; color: #808080; font-weight: normal">Click to hide</span>'
+            '<span style="font-size: 12px; color: #808080; font-weight: normal">Click to hide</span>'
         },
         itemStyle: {
           fontSize: "16px",
@@ -195,7 +195,7 @@ function renderLine(data) {
             chartOptions: {
               chart: {
                 height: "90%",
-                marginBottom: 100
+                marginBottom: 120
               },
               xAxis: {
                 categories: [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017],
