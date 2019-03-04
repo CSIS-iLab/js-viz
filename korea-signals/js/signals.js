@@ -141,7 +141,7 @@ Highcharts.chart(
       },
       // Tooltip
       tooltip: {
-        xDateFormat: "%b %e, %Y",
+        xDateFormat: "%B %e, %Y",
         headerFormat:
           '<span style="font-size: 12px;margin-bottom: 5px;font-weight: bold;">{point.key}</span><br/>'
       },
