@@ -1,3 +1,7 @@
+html {
+  font-size: 18px;
+}
+
 body {
   color: #333;
   font-family: "museo-sans", sans-serif;
@@ -54,8 +58,19 @@ h4 {
   font-size: 11px;
 }
 .google-visualization-tooltip {
+  text-align: left;
+  padding: 6px !important;
+  background-color: rgba(255, 255, 255, 0.9) !important;
   height: auto !important;
 }
+
+.highcharts-tooltip-box:last-of-type {
+  stroke: transparent !important;
+}
+.highcharts-tooltip-box:last-of-type {
+  fill: rgba(255, 255, 255, 0.9) !important;
+}
+
 p {
   margin: 0 0 1.5rem;
 }

@@ -141,6 +141,7 @@ Highcharts.chart(
       },
       // Tooltip
       tooltip: {
+        xDateFormat: "%A, %b %e, %Y",
         headerFormat:
           '<span style="font-size: 12px;margin-bottom: 5px;font-weight: bold;">{point.key}</span><br/>'
       },
@@ -197,6 +198,10 @@ function addText(textData) {
   document.querySelector(".signals .the-content").innerHTML = textContent.join(
     ""
   );
+
+  var bodyHeight = document.body.scrollHeight + 20;
+
+  window.parent.postMessage(bodyHeight, "*");
 }
 
 function addTimeline(textData) {
@@ -250,23 +255,29 @@ function addTimeline(textData) {
 function setTooltipContent(data, row) {
   if (row != null) {
     var startDate = data.getValue(row, 2);
+
     var endDate = data.getValue(row, 3);
+
     var formattedStartDate = startDate.toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric"
+      month: "long",
+      day: "numeric",
+      year: "numeric"
     });
+
     var formattedEndDate = endDate.toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric"
+      month: "long",
+      day: "numeric",
+      year: "numeric"
     });
+
     var content =
       '<div class="custom-tooltip" ><strong>' +
-      data.getValue(row, 1) +
-      "</strong><br>" +
       formattedStartDate +
       (startDate.getDay() !== endDate.getDay()
         ? " to " + formattedEndDate
         : "") +
+      "</strong><br>" +
+      data.getValue(row, 1) +
       "</div>";
     var tooltip = document.querySelector(".google-visualization-tooltip");
     tooltip.innerHTML = content;
