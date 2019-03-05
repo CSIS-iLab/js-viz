@@ -1,4 +1,5 @@
 var textData;
+
 Highcharts.chart(
   "spline",
   _defineProperty(
@@ -6,93 +7,7 @@ Highcharts.chart(
       data: {
         googleSpreadsheetKey: "1PQSu9p46YSpVFu_8WP3k8JaBzBrgpTvnJcfN3V5-QiQ",
         googleSpreadsheetWorksheet: 1,
-        complete: function complete(data) {
-          var dataObj = {
-            titleData: [],
-            descriptionData: [],
-            "display dateData": []
-          };
-
-          data.series.slice(2).forEach(function(d) {
-            Object.keys(dataObj).forEach(function(key) {
-              if (d.name.toLowerCase().indexOf(key.replace("Data", "")) > -1) {
-                dataObj[key].push(d);
-              }
-            });
-          });
-
-          Object.keys(dataObj).forEach(function(key) {
-            dataObj[key] = dataObj[key].reduce(function(a, b) {
-              a.data = a.data.concat(b.data);
-              return Object.assign(b, a);
-            });
-          });
-
-          var tempDates = [];
-
-          dataObj["titleData"] = dataObj["titleData"].data
-            .filter(function(title, x) {
-              if (title[1]) {
-                var linkedDate = dataObj["display dateData"].data.find(function(
-                  date
-                ) {
-                  return date[0] === title[0];
-                });
-
-                tempDates.push(linkedDate[1]);
-              }
-              return title[1];
-            })
-            .map(function(title) {
-              return title[1];
-            });
-
-          dataObj["display dateData"] = tempDates;
-
-          textData = dataObj["descriptionData"].data
-            .filter(function(description) {
-              return description[1];
-            })
-            .map(function(data, i) {
-              return {
-                date: data[0] + 18000000,
-                displayDate: dataObj["display dateData"][i],
-                title: dataObj["titleData"][i],
-                description: data[1]
-              };
-            })
-            .groupBy("description");
-
-          Object.keys(textData).forEach(function(key) {
-            textData[key].push(textData[key].slice(-1)[0]);
-            var arrayLength = textData[key].length;
-            textData[key].splice(1, arrayLength - 2);
-          });
-
-          textData = Object.keys(textData)
-            .sort(function(a, b) {
-              return textData[a][0].date - textData[b][0].date;
-            })
-            .map(function(d) {
-              return textData[d];
-            });
-
-          google.charts.load("current", {
-            packages: ["timeline"]
-          });
-
-          google.charts.setOnLoadCallback(loadTimeline);
-
-          window.onload = loadTimeline;
-          window.onresize = loadTimeline;
-
-          function loadTimeline() {
-            addTimeline();
-            addText();
-          }
-
-          data.series = data.series.slice(0, 2);
-        }
+        complete: parseData
       },
       chart: {
         defaultSeriesType: "spline",
@@ -179,6 +94,101 @@ Highcharts.chart(
     }
   )
 );
+function parseData(data) {
+  var dataObj = {
+    titleData: [],
+    descriptionData: [],
+    "display dateData": []
+  };
+
+  // columns beyond 1, 2, and 3 are used on the timeline and text
+  data.series.slice(2).forEach(function(d) {
+    Object.keys(dataObj).forEach(function(key) {
+      // associate columns with key in dataObj
+      if (d.name.toLowerCase().indexOf(key.replace("Data", "")) > -1) {
+        dataObj[key].push(d);
+      }
+    });
+  });
+
+  // merge Title columns and merge Description columns
+  Object.keys(dataObj).forEach(function(key) {
+    dataObj[key] = dataObj[key].reduce(function(a, b) {
+      a.data = a.data.concat(b.data);
+      return Object.assign(b, a);
+    });
+  });
+
+  var tempDates = [];
+
+  dataObj["titleData"] = dataObj["titleData"].data
+    .filter(function(title, x) {
+      // associate display dates with events
+      if (title[1]) {
+        var linkedDate = dataObj["display dateData"].data.find(function(date) {
+          return date[0] === title[0];
+        });
+
+        tempDates.push(linkedDate[1]);
+      }
+
+      // only return dates where there are events
+      return title[1];
+    })
+    .map(function(title) {
+      return title[1];
+    });
+
+  dataObj["display dateData"] = tempDates;
+
+  // use descriptions to map unique events
+  textData = dataObj["descriptionData"].data
+    .filter(function(description) {
+      return description[1];
+    })
+    .map(function(d, i) {
+      return {
+        date: d[0] + 18000000,
+        displayDate: dataObj["display dateData"][i],
+        title: dataObj["titleData"][i],
+        description: d[1]
+      };
+    })
+    .groupBy("description");
+
+  // reduce array to start date and end date
+  Object.keys(textData).forEach(function(key) {
+    textData[key].push(textData[key].slice(-1)[0]);
+    var arrayLength = textData[key].length;
+    textData[key].splice(1, arrayLength - 2);
+  });
+
+  // sort events by date
+  textData = Object.keys(textData)
+    .sort(function(a, b) {
+      return textData[a][0].date - textData[b][0].date;
+    })
+    .map(function(d) {
+      return textData[d];
+    });
+
+  google.charts.load("current", {
+    packages: ["timeline"]
+  });
+
+  google.charts.setOnLoadCallback(loadTimeline);
+
+  window.onload = loadTimeline;
+  window.onresize = loadTimeline;
+
+  function loadTimeline() {
+    addTimeline();
+    addText();
+  }
+
+  // return columns 1, 2, and 3 for higcharts spline graph
+  data.series = data.series.slice(0, 2);
+}
 
 function addText() {
   var textContent = Object.keys(textData).map(function(d) {
