@@ -1,4 +1,4 @@
-var timelineData, textData;
+var textData;
 Highcharts.chart(
   "spline",
   _defineProperty(
@@ -9,7 +9,8 @@ Highcharts.chart(
         complete: function complete(data) {
           var dataObj = {
             titleData: [],
-            descriptionData: []
+            descriptionData: [],
+            "display dateData": []
           };
 
           data.series.slice(2).forEach(function(d) {
@@ -26,22 +27,38 @@ Highcharts.chart(
               return Object.assign(b, a);
             });
           });
+
+          var tempDates = [];
+
           dataObj["titleData"] = dataObj["titleData"].data
-            .filter(function(d) {
-              return d[1];
+            .filter(function(title, x) {
+              if (title[1]) {
+                var linkedDate = dataObj["display dateData"].data.find(function(
+                  date
+                ) {
+                  return date[0] === title[0];
+                });
+
+                tempDates.push(linkedDate[1]);
+              }
+              return title[1];
             })
-            .map(function(d) {
-              return d[1];
+            .map(function(title) {
+              return title[1];
             });
-          var textData = dataObj["descriptionData"].data
-            .filter(function(d) {
-              return d[1];
+
+          dataObj["display dateData"] = tempDates;
+
+          textData = dataObj["descriptionData"].data
+            .filter(function(description) {
+              return description[1];
             })
-            .map(function(d, i) {
+            .map(function(data, i) {
               return {
-                date: d[0] + 18000000,
-                description: d[1],
-                title: dataObj["titleData"][i]
+                date: data[0] + 18000000,
+                displayDate: dataObj["display dateData"][i],
+                title: dataObj["titleData"][i],
+                description: data[1]
               };
             })
             .groupBy("description");
@@ -70,8 +87,8 @@ Highcharts.chart(
           window.onresize = loadTimeline;
 
           function loadTimeline() {
-            addTimeline(textData);
-            addText(textData);
+            addTimeline();
+            addText();
           }
 
           data.series = data.series.slice(0, 2);
@@ -163,7 +180,7 @@ Highcharts.chart(
   )
 );
 
-function addText(textData) {
+function addText() {
   var textContent = Object.keys(textData).map(function(d) {
     var title = textData[d][0].title;
     var description = textData[d][0].description;
@@ -182,14 +199,18 @@ function addText(textData) {
       year: "numeric"
     });
 
+    var date = textData[d][0].displayDate
+      ? textData[d][0].displayDate
+      : formattedStartDate +
+        (startDate.getDay() !== endDate.getDay()
+          ? " to " + formattedEndDate
+          : "");
+
     return (
       '<p> <img src="https://beyondparallel.csis.org/wp-content/uploads/2016/04/BP_bookend.png" alt="BP logo"> <strong> ' +
       title +
       " | " +
-      formattedStartDate +
-      (startDate.getDay() !== endDate.getDay()
-        ? " to " + formattedEndDate
-        : "") +
+      date +
       " </strong> <br> " +
       description +
       " </p>"
@@ -204,7 +225,7 @@ function addText(textData) {
   window.parent.postMessage(bodyHeight, "*");
 }
 
-function addTimeline(textData) {
+function addTimeline() {
   var container = document.getElementById("timeline");
   var chart = new google.visualization.Timeline(container);
   var dataTable = new google.visualization.DataTable();
@@ -270,12 +291,18 @@ function setTooltipContent(data, row) {
       year: "numeric"
     });
 
+    var index = data.getUnderlyingTableRowIndex(row, 2);
+
+    var date = textData[index][0].displayDate
+      ? textData[index][0].displayDate
+      : formattedStartDate +
+        (startDate.getDay() !== endDate.getDay()
+          ? " to " + formattedEndDate
+          : "");
+
     var content =
       '<div class="custom-tooltip" ><strong>' +
-      formattedStartDate +
-      (startDate.getDay() !== endDate.getDay()
-        ? " to " + formattedEndDate
-        : "") +
+      date +
       "</strong><br>" +
       data.getValue(row, 1) +
       "</div>";
