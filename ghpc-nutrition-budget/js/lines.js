@@ -148,6 +148,11 @@ function makeLineChart(i, title, bubbleSeries) {
           radius: 3
         },
         lineWidth: 3
+      },
+      bubble: {
+        sizeBy: "width",
+        minSize: 2,
+        maxSize: "30%"
       }
     }
   });
