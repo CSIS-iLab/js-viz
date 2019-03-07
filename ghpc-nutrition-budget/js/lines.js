@@ -70,6 +70,16 @@ function makeLineChart(i, title, bubbleSeries) {
           $${budget.toFixed(1)} million USD`;
     }
   };
+
+  var events = {
+    legendItemClick: function() {
+      let match = this.chart.series.find(
+        s => s.name === this.name && s.userOptions.type === "bubble"
+      );
+      match.visible ? match.hide() : match.show();
+    }
+  };
+
   Highcharts.chart(`hcContainer-${i}`, {
     data: {
       googleSpreadsheetKey: "1RXsxwg_tns3CICc1ZyYX3PEucq_RVMPDihn2y1Xs5jk",
@@ -86,7 +96,7 @@ function makeLineChart(i, title, bubbleSeries) {
           return series;
         });
         data.series = data.series.map(function(series) {
-          return { ...series, tooltip: tooltip };
+          return { ...series, tooltip, events };
         });
 
         data.series = data.series.concat(bubbleSeries);
