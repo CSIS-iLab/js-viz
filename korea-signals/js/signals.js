@@ -191,41 +191,45 @@ function parseData(data) {
 }
 
 function addText() {
-  var textContent = Object.keys(textData).map(function(d) {
-    var title = textData[d][0].title;
-    var description = textData[d][0].description;
-    var startDate = new Date(textData[d][0].date);
-    var endDate = new Date(textData[d][1].date);
+  var textContent = Object.keys(textData)
+    .sort(function(a, b) {
+      return textData[b][0].date - textData[a][0].date;
+    })
+    .map(function(d) {
+      var title = textData[d][0].title;
+      var description = textData[d][0].description;
+      var startDate = new Date(textData[d][0].date);
+      var endDate = new Date(textData[d][1].date);
 
-    var formattedStartDate = startDate.toLocaleDateString("en-US", {
-      month: "long",
-      day: "numeric",
-      year: "numeric"
+      var formattedStartDate = startDate.toLocaleDateString("en-US", {
+        month: "long",
+        day: "numeric",
+        year: "numeric"
+      });
+
+      var formattedEndDate = endDate.toLocaleDateString("en-US", {
+        month: "long",
+        day: "numeric",
+        year: "numeric"
+      });
+
+      var date = textData[d][0].displayDate
+        ? textData[d][0].displayDate
+        : formattedStartDate +
+          (startDate.getDay() !== endDate.getDay()
+            ? " to " + formattedEndDate
+            : "");
+
+      return (
+        '<p> <img src="https://beyondparallel.csis.org/wp-content/uploads/2016/04/BP_bookend.png" alt="BP logo"> <strong> ' +
+        title +
+        " | " +
+        date +
+        " </strong> <br> " +
+        description +
+        " </p>"
+      );
     });
-
-    var formattedEndDate = endDate.toLocaleDateString("en-US", {
-      month: "long",
-      day: "numeric",
-      year: "numeric"
-    });
-
-    var date = textData[d][0].displayDate
-      ? textData[d][0].displayDate
-      : formattedStartDate +
-        (startDate.getDay() !== endDate.getDay()
-          ? " to " + formattedEndDate
-          : "");
-
-    return (
-      '<p> <img src="https://beyondparallel.csis.org/wp-content/uploads/2016/04/BP_bookend.png" alt="BP logo"> <strong> ' +
-      title +
-      " | " +
-      date +
-      " </strong> <br> " +
-      description +
-      " </p>"
-    );
-  });
   document.querySelector(".signals .the-content").innerHTML = textContent.join(
     ""
   );
