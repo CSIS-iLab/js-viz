@@ -1,11 +1,19 @@
-var dataObj = {
-  Overweight: { data: [] },
-  Anaemia: { data: [] },
-  Stunting: { data: [] },
-  all: { data: [] }
-};
-
-var geoData, chart;
+var chart,
+  geoData,
+  dataObj = {
+    Overweight: {
+      data: []
+    },
+    Anaemia: {
+      data: []
+    },
+    Stunting: {
+      data: []
+    },
+    all: {
+      data: []
+    }
+  };
 
 fetch("https://code.highcharts.com/mapdata/custom/world-eckert3.geo.json")
   .then(function(resp) {
@@ -13,20 +21,17 @@ fetch("https://code.highcharts.com/mapdata/custom/world-eckert3.geo.json")
   })
   .then(function(json) {
     geoData = json;
-
     Highcharts.data({
       googleSpreadsheetKey: "1RXsxwg_tns3CICc1ZyYX3PEucq_RVMPDihn2y1Xs5jk",
       googleSpreadsheetWorksheet: 5,
       switchRowsAndColumns: true,
       parsed: function parsed(columns) {
         columns.forEach(function(code, i) {
-          if ([0].includes(i)) return;
-
+          if (i === 0) return;
           var tileData = geoData.features.find(function(country) {
             return country.properties["iso-a3"] === code[1];
           });
           if (!tileData) return;
-
           var countryData = null;
 
           if (countryData) {
@@ -34,8 +39,8 @@ fetch("https://code.highcharts.com/mapdata/custom/world-eckert3.geo.json")
             var country = Object.assign({}, tileData);
             country.name = code[0];
             country["hc-key"] = country.properties["hc-key"];
-
             dataObj.all.data.push(country);
+
             Object.keys(dataObj).forEach(function(key) {
               if (code[2].toLowerCase().indexOf(key.toLowerCase()) > -1) {
                 dataObj[key].data.push(country);
@@ -57,18 +62,17 @@ fetch("https://code.highcharts.com/mapdata/custom/world-eckert3.geo.json")
         ];
 
         var colorArray = ["#B7FFD2", "#eda27c", "#67bce2"];
+
         var disabledSvg =
           '<svg xmlns="http://www.w3.org/2000/svg"><circle cx="6" cy="6" r="5" stroke="#bcbcbc" fill="#bcbcbc"/></svg>';
 
-        dataObj = Object.keys(dataObj).map(function(key, index) {
+        var series = Object.keys(dataObj).map(function(key, index) {
           if (index === 3) {
             return {
               ...dataObj[key],
-
               name: key,
               mapData: Highcharts.maps["custom/world-eckert3"],
               joinBy: ["hc-key", "hc-key"],
-
               dataLabels: {
                 enabled: false
               },
@@ -76,7 +80,6 @@ fetch("https://code.highcharts.com/mapdata/custom/world-eckert3.geo.json")
               borderColor: "#8D8D8D",
               borderWidth: 1,
               nullColor: "transparent",
-
               states: {
                 hover: {
                   borderColor: "black",
@@ -85,20 +88,24 @@ fetch("https://code.highcharts.com/mapdata/custom/world-eckert3.geo.json")
               }
             };
           }
-          var legendItems = [...document.querySelectorAll(".legend li")].slice(
-            1
-          );
 
-          var enabledSvg = `<svg viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg"> <path d="${
-            patternArray[index]
-          }" stroke="${
-            colorArray[index]
-          }" fill="transparent" stroke-width="2" /></svg>`;
+          var legendItems = Array.from(
+            document.querySelectorAll(".legend li")
+          ).slice(1);
+
+          var enabledSvg =
+            '<svg viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg"> <path d="' +
+            patternArray[index] +
+            '" stroke="' +
+            colorArray[index] +
+            '" fill="transparent" stroke-width="2" /></svg>';
 
           var icon = legendItems[index].querySelector("span");
-
-          icon.style.backgroundImage = `url('${"data:image/svg+xml;base64," +
-            window.btoa(enabledSvg)}')`;
+          icon.style.backgroundImage =
+            "url('" +
+            "data:image/svg+xml;base64," +
+            window.btoa(enabledSvg) +
+            "')";
 
           legendItems[index].addEventListener("click", function(item) {
             var series = chart.series.find(function(s) {
@@ -108,13 +115,19 @@ fetch("https://code.highcharts.com/mapdata/custom/world-eckert3.geo.json")
             if (series.visible) {
               legendItems[index].style.color = "#bcbcbc";
               icon.style.backgroundSize = "cover";
-              icon.style.backgroundImage = `url('${"data:image/svg+xml;base64," +
-                window.btoa(disabledSvg)}')`;
+              icon.style.backgroundImage =
+                "url('" +
+                "data:image/svg+xml;base64," +
+                window.btoa(disabledSvg) +
+                "')";
             } else {
               legendItems[index].style.color = "black";
               icon.style.backgroundSize = "67%";
-              icon.style.backgroundImage = `url('${"data:image/svg+xml;base64," +
-                window.btoa(enabledSvg)}')`;
+              icon.style.backgroundImage =
+                "url('" +
+                "data:image/svg+xml;base64," +
+                window.btoa(enabledSvg) +
+                "')";
             }
 
             series.update(
@@ -125,13 +138,10 @@ fetch("https://code.highcharts.com/mapdata/custom/world-eckert3.geo.json")
             );
           });
 
-          return {
-            ...dataObj[key],
-
+          var plotOptions = {
             name: key,
             mapData: Highcharts.maps["custom/world-eckert3"],
             joinBy: ["hc-key", "hc-key"],
-
             dataLabels: {
               enabled: false
             },
@@ -149,7 +159,6 @@ fetch("https://code.highcharts.com/mapdata/custom/world-eckert3.geo.json")
             borderColor: "#bcbcbc",
             borderWidth: 1,
             nullColor: "transparent",
-
             states: {
               hover: {
                 borderColor: "black",
@@ -157,9 +166,12 @@ fetch("https://code.highcharts.com/mapdata/custom/world-eckert3.geo.json")
               }
             }
           };
+
+          return Object.assign(dataObj[key], plotOptions);
         });
-        console.log(dataObj.all);
-        renderMap(dataObj);
+
+        console.log(series);
+        renderMap(series);
       }
     });
   });
@@ -184,8 +196,25 @@ function renderMap(series) {
       floating: false,
       x: -133
     },
-
     series: series,
+    tooltip: {
+      headerFormat: "",
+      pointFormatter: function pointFormatter() {
+        var point = this;
+        var burdens = [];
+        Object.keys(dataObj).forEach(function(key, index) {
+          if (index === 3) return;
+          var found = dataObj[key].data.find(function(data) {
+            return data["hc-key"] === point["hc-key"];
+          });
+          if (found.geometry) burdens.push(key);
+        });
+
+        console.log(burdens);
+
+        return "<strong>" + this.name + "</strong><br>" + burdens.join("<br/>");
+      }
+    },
     mapNavigation: {
       enabled: true,
       enableMouseWheelZoom: false,
@@ -195,7 +224,9 @@ function renderMap(series) {
         theme: {
           fill: "#0faa91",
           "stroke-width": 0,
-          style: { color: "white" }
+          style: {
+            color: "white"
+          }
         }
       },
       buttons: {
@@ -210,7 +241,6 @@ function renderMap(series) {
     exporting: {
       enabled: false
     },
-
     responsive: {
       rules: [
         {
@@ -221,7 +251,6 @@ function renderMap(series) {
             chart: {
               height: "33%"
             },
-
             credits: {
               text:
                 'CSIS | <a href="http://apps.who.int/gho/data/view.main.IHRCTRY03v?lang=en">WHO</a> | '
@@ -237,7 +266,6 @@ function renderMap(series) {
             chart: {
               height: "50%"
             },
-
             credits: {
               align: "right",
               text:
@@ -259,8 +287,7 @@ function renderMap(series) {
       ]
     }
   });
-
-  let resizeEvent = window.document.createEvent("UIEvents");
+  var resizeEvent = window.document.createEvent("UIEvents");
   resizeEvent.initUIEvent("resize", true, false, window, 0);
   window.dispatchEvent(resizeEvent);
 }
