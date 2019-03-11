@@ -1,17 +1,3 @@
-function _defineProperty(obj, key, value) {
-  if (key in obj) {
-    Object.defineProperty(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-  } else {
-    obj[key] = value;
-  }
-  return obj;
-}
-
 var clicked = false,
   series = [];
 
@@ -83,189 +69,186 @@ fetch("https://code.highcharts.com/mapdata/custom/world-eckert3.geo.json")
   });
 
 function renderMap(data) {
-  chart = Highcharts.mapChart(
-    "container",
-    _defineProperty({
-      chart: {
-        marginTop: 0,
-        marginBottom: 25
-      },
-      title: {
-        text: ""
-      },
-      subtitle: {
-        text: ""
-      },
-      xAxis: {
-        visible: false
-      },
+  chart = Highcharts.mapChart("container", {
+    chart: {
+      marginTop: 0,
+      marginBottom: 25
+    },
+    title: {
+      text: ""
+    },
+    subtitle: {
+      text: ""
+    },
+    xAxis: {
+      visible: false
+    },
 
-      yAxis: {
-        visible: false
-      },
-      credits: {
-        enabled: true,
-        href: true
-      },
-      legend: {
-        enabled: false,
-        layout: "horizontal",
-        verticalAlign: "top",
-        floating: false,
-        x: -133
-      },
+    yAxis: {
+      visible: false
+    },
+    credits: {
+      enabled: true,
+      href: true
+    },
+    legend: {
+      enabled: false,
+      layout: "horizontal",
+      verticalAlign: "top",
+      floating: false,
+      x: -133
+    },
 
-      colorAxis: {
-        dataClasses: [
-          {
-            to: -1,
-            color: "transparent",
-            name: "Surveillance Score:"
-          },
-          {
-            to: 24,
-            color: "#e86259",
-            name: window.innerWidth > 768 ? "Less than 25" : "< 25"
-          },
-          {
-            from: 25,
-            to: 50,
-            color: "#EDA27C",
-            name: window.innerWidth > 768 ? "Greater than 25" : "> 25"
-          },
-          {
-            from: 51,
-            to: 75,
-            color: "#75baa9",
-            name: window.innerWidth > 768 ? "Greater than 50" : "> 50"
-          },
-          {
-            from: 76,
-            color: "#4C8984",
-            name: window.innerWidth > 768 ? "Greater than 75" : "> 75"
-          }
-        ]
-      },
-
-      series: [
+    colorAxis: {
+      dataClasses: [
         {
-          data: data.data,
-          mapData: Highcharts.maps["custom/world-eckert3"],
-          joinBy: ["hc-key", "hc-key"],
-          nullColor: "#bcbcbc",
-          states: {
-            hover: {
-              brightness: 0.125
-            }
-          },
-
-          dataLabels: {
-            enabled: false
-          }
+          to: -1,
+          color: "transparent",
+          name: "Surveillance Score:"
+        },
+        {
+          to: 24,
+          color: "#e86259",
+          name: window.innerWidth > 768 ? "Less than 25" : "< 25"
+        },
+        {
+          from: 25,
+          to: 50,
+          color: "#EDA27C",
+          name: window.innerWidth > 768 ? "Greater than 25" : "> 25"
+        },
+        {
+          from: 51,
+          to: 75,
+          color: "#75baa9",
+          name: window.innerWidth > 768 ? "Greater than 50" : "> 50"
+        },
+        {
+          from: 76,
+          color: "#4C8984",
+          name: window.innerWidth > 768 ? "Greater than 75" : "> 75"
         }
-      ],
-      mapNavigation: {
-        enabled: true,
-        enableMouseWheelZoom: false,
-        buttonOptions: {
-          verticalAlign: "top",
-          align: "right",
-          theme: {
-            fill: "#0faa91",
-            "stroke-width": 0,
-            style: { color: "white" }
+      ]
+    },
+
+    series: [
+      {
+        data: data.data,
+        mapData: Highcharts.maps["custom/world-eckert3"],
+        joinBy: ["hc-key", "hc-key"],
+        nullColor: "#bcbcbc",
+        states: {
+          hover: {
+            brightness: 0.125
           }
         },
-        buttons: {
-          zoomIn: {
-            y: 0
-          },
-          zoomOut: {
-            y: 33
-          }
-        }
-      },
-      exporting: {
-        enabled: false
-      },
-      tooltip: {
-        headerFormat: "",
-        pointFormatter: function pointFormatter() {
-          currentYear = document.querySelector(".label.active").innerText;
-          return (
-            '<div><span style="font-size:18px;color:' +
-            this.color +
-            '">\u25CF </span><b>' +
-            this.name +
-            "</b><br/>\n      " +
-            currentYear +
-            " Score:\n       " +
-            this.value +
-            "</div>"
-          );
-        }
-      },
 
-      motion: {
-        enabled: true,
-        labels: data.labels,
-        series: 0,
-        updateInterval: 1250,
-        axisLabel: "year",
-        magnet: {
-          round: "floor", // ceil / floor / round
-          step: 1
+        dataLabels: {
+          enabled: false
         }
-      },
-      responsive: {
-        rules: [
-          {
-            condition: {
-              maxWidth: 400
-            },
-            chartOptions: {
-              chart: {
-                height: "33%"
-              },
-
-              credits: {
-                text:
-                  'CSIS | <a href="http://apps.who.int/gho/data/view.main.IHRCTRY03v?lang=en">WHO</a> | '
-              }
-            }
-          },
-          {
-            condition: {
-              minWidth: 401,
-              maxWidth: 700
-            },
-            chartOptions: {
-              chart: {
-                height: "50%"
-              },
-
-              credits: {
-                align: "right",
-                text:
-                  'CSIS | <a href="http://apps.who.int/gho/data/view.main.IHRCTRY03v?lang=en">WHO</a> | '
-              }
-            }
-          },
-          {
-            condition: {
-              minWidth: 701
-            },
-            chartOptions: {
-              credits: {
-                text:
-                  'CSIS Global Health Policy Center | <a href="http://apps.who.int/gho/data/view.main.IHRCTRY03v?lang=en">World Health Organization</a> | '
-              }
-            }
-          }
-        ]
       }
-    })
-  );
+    ],
+    mapNavigation: {
+      enabled: true,
+      enableMouseWheelZoom: false,
+      buttonOptions: {
+        verticalAlign: "top",
+        align: "right",
+        theme: {
+          fill: "#0faa91",
+          "stroke-width": 0,
+          style: { color: "white" }
+        }
+      },
+      buttons: {
+        zoomIn: {
+          y: 0
+        },
+        zoomOut: {
+          y: 33
+        }
+      }
+    },
+    exporting: {
+      enabled: false
+    },
+    tooltip: {
+      headerFormat: "",
+      pointFormatter: function pointFormatter() {
+        currentYear = document.querySelector(".label.active").innerText;
+        return (
+          '<div><span style="font-size:18px;color:' +
+          this.color +
+          '">\u25CF </span><b>' +
+          this.name +
+          "</b><br/>\n      " +
+          currentYear +
+          " Score:\n       " +
+          this.value +
+          "</div>"
+        );
+      }
+    },
+
+    motion: {
+      enabled: true,
+      labels: data.labels,
+      series: 0,
+      updateInterval: 1250,
+      axisLabel: "year",
+      magnet: {
+        round: "floor", // ceil / floor / round
+        step: 1
+      }
+    },
+    responsive: {
+      rules: [
+        {
+          condition: {
+            maxWidth: 400
+          },
+          chartOptions: {
+            chart: {
+              height: "33%"
+            },
+
+            credits: {
+              text:
+                'CSIS | <a href="http://apps.who.int/gho/data/view.main.IHRCTRY03v?lang=en">WHO</a> | '
+            }
+          }
+        },
+        {
+          condition: {
+            minWidth: 401,
+            maxWidth: 700
+          },
+          chartOptions: {
+            chart: {
+              height: "50%"
+            },
+
+            credits: {
+              align: "right",
+              text:
+                'CSIS | <a href="http://apps.who.int/gho/data/view.main.IHRCTRY03v?lang=en">WHO</a> | '
+            }
+          }
+        },
+        {
+          condition: {
+            minWidth: 701
+          },
+          chartOptions: {
+            credits: {
+              text:
+                'CSIS Global Health Policy Center | <a href="http://apps.who.int/gho/data/view.main.IHRCTRY03v?lang=en">World Health Organization</a> | '
+            }
+          }
+        }
+      ]
+    }
+  });
   chart.motion.reset();
 
   let resizeEvent = window.document.createEvent("UIEvents");

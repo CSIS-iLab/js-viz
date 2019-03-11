@@ -1,21 +1,8 @@
-function _defineProperty(obj, key, value) {
-  if (key in obj) {
-    Object.defineProperty(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-  } else {
-    obj[key] = value;
-  }
-  return obj;
-}
-
 var dataObj = {
   Overweight: { data: [] },
   Anaemia: { data: [] },
-  Stunting: { data: [] }
+  Stunting: { data: [] },
+  all: { data: [] }
 };
 
 var geoData, chart;
@@ -33,9 +20,7 @@ fetch("https://code.highcharts.com/mapdata/custom/world-eckert3.geo.json")
       switchRowsAndColumns: true,
       parsed: function parsed(columns) {
         columns.forEach(function(code, i) {
-          if ([0].includes(i)) {
-            return;
-          }
+          if ([0].includes(i)) return;
 
           var tileData = geoData.features.find(function(country) {
             return country.properties["iso-a3"] === code[1];
@@ -47,10 +32,10 @@ fetch("https://code.highcharts.com/mapdata/custom/world-eckert3.geo.json")
           if (countryData) {
           } else {
             var country = Object.assign({}, tileData);
-
             country.name = code[0];
             country["hc-key"] = country.properties["hc-key"];
 
+            dataObj.all.data.push(country);
             Object.keys(dataObj).forEach(function(key) {
               if (code[2].toLowerCase().indexOf(key.toLowerCase()) > -1) {
                 dataObj[key].data.push(country);
@@ -71,11 +56,35 @@ fetch("https://code.highcharts.com/mapdata/custom/world-eckert3.geo.json")
           "M 2 5 L 5 2 L 8 5 L 5 8 Z;M 0 0 L 5 10 L 10 0"
         ];
 
-        var colorArray = ["#75baa9", "#eda27c", "#3e86b3"];
+        var colorArray = ["#B7FFD2", "#eda27c", "#67bce2"];
         var disabledSvg =
           '<svg xmlns="http://www.w3.org/2000/svg"><circle cx="6" cy="6" r="5" stroke="#bcbcbc" fill="#bcbcbc"/></svg>';
 
         dataObj = Object.keys(dataObj).map(function(key, index) {
+          if (index === 3) {
+            return {
+              ...dataObj[key],
+
+              name: key,
+              mapData: Highcharts.maps["custom/world-eckert3"],
+              joinBy: ["hc-key", "hc-key"],
+
+              dataLabels: {
+                enabled: false
+              },
+              color: "transparent",
+              borderColor: "#8D8D8D",
+              borderWidth: 1,
+              nullColor: "transparent",
+
+              states: {
+                hover: {
+                  borderColor: "black",
+                  borderWidth: 2
+                }
+              }
+            };
+          }
           var legendItems = [...document.querySelectorAll(".legend li")].slice(
             1
           );
@@ -122,11 +131,7 @@ fetch("https://code.highcharts.com/mapdata/custom/world-eckert3.geo.json")
             name: key,
             mapData: Highcharts.maps["custom/world-eckert3"],
             joinBy: ["hc-key", "hc-key"],
-            states: {
-              hover: {
-                brightness: 0.125
-              }
-            },
+
             dataLabels: {
               enabled: false
             },
@@ -147,116 +152,113 @@ fetch("https://code.highcharts.com/mapdata/custom/world-eckert3.geo.json")
 
             states: {
               hover: {
-                borderColor: "white",
+                borderColor: "black",
                 borderWidth: 2
               }
             }
           };
         });
-
+        console.log(dataObj.all);
         renderMap(dataObj);
       }
     });
   });
 
 function renderMap(series) {
-  chart = Highcharts.mapChart(
-    "container",
-    _defineProperty({
-      chart: {
-        marginTop: 0,
-        marginBottom: 25
-      },
-      title: {
-        text: ""
-      },
-      credits: {
-        enabled: true,
-        href: true
-      },
-      legend: {
-        enabled: false,
-        layout: "horizontal",
-        verticalAlign: "top",
-        floating: false,
-        x: -133
-      },
+  chart = Highcharts.mapChart("container", {
+    chart: {
+      marginTop: 0,
+      marginBottom: 25
+    },
+    title: {
+      text: ""
+    },
+    credits: {
+      enabled: true,
+      href: true
+    },
+    legend: {
+      enabled: false,
+      layout: "horizontal",
+      verticalAlign: "top",
+      floating: false,
+      x: -133
+    },
 
-      series: series,
-      mapNavigation: {
-        enabled: true,
-        enableMouseWheelZoom: false,
-        buttonOptions: {
-          verticalAlign: "top",
-          align: "right",
-          theme: {
-            fill: "#0faa91",
-            "stroke-width": 0,
-            style: { color: "white" }
-          }
-        },
-        buttons: {
-          zoomIn: {
-            y: 0
-          },
-          zoomOut: {
-            y: 33
-          }
+    series: series,
+    mapNavigation: {
+      enabled: true,
+      enableMouseWheelZoom: false,
+      buttonOptions: {
+        verticalAlign: "top",
+        align: "right",
+        theme: {
+          fill: "#0faa91",
+          "stroke-width": 0,
+          style: { color: "white" }
         }
       },
-      exporting: {
-        enabled: false
-      },
+      buttons: {
+        zoomIn: {
+          y: 0
+        },
+        zoomOut: {
+          y: 33
+        }
+      }
+    },
+    exporting: {
+      enabled: false
+    },
 
-      responsive: {
-        rules: [
-          {
-            condition: {
-              maxWidth: 400
-            },
-            chartOptions: {
-              chart: {
-                height: "33%"
-              },
-
-              credits: {
-                text:
-                  'CSIS | <a href="http://apps.who.int/gho/data/view.main.IHRCTRY03v?lang=en">WHO</a> | '
-              }
-            }
+    responsive: {
+      rules: [
+        {
+          condition: {
+            maxWidth: 400
           },
-          {
-            condition: {
-              minWidth: 401,
-              maxWidth: 700
+          chartOptions: {
+            chart: {
+              height: "33%"
             },
-            chartOptions: {
-              chart: {
-                height: "50%"
-              },
 
-              credits: {
-                align: "right",
-                text:
-                  'CSIS | <a href="http://apps.who.int/gho/data/view.main.IHRCTRY03v?lang=en">WHO</a> | '
-              }
-            }
-          },
-          {
-            condition: {
-              minWidth: 701
-            },
-            chartOptions: {
-              credits: {
-                text:
-                  'CSIS Global Health Policy Center | <a href="http://apps.who.int/gho/data/view.main.IHRCTRY03v?lang=en">World Health Organization</a> | '
-              }
+            credits: {
+              text:
+                'CSIS | <a href="http://apps.who.int/gho/data/view.main.IHRCTRY03v?lang=en">WHO</a> | '
             }
           }
-        ]
-      }
-    })
-  );
+        },
+        {
+          condition: {
+            minWidth: 401,
+            maxWidth: 700
+          },
+          chartOptions: {
+            chart: {
+              height: "50%"
+            },
+
+            credits: {
+              align: "right",
+              text:
+                'CSIS | <a href="http://apps.who.int/gho/data/view.main.IHRCTRY03v?lang=en">WHO</a> | '
+            }
+          }
+        },
+        {
+          condition: {
+            minWidth: 701
+          },
+          chartOptions: {
+            credits: {
+              text:
+                'CSIS Global Health Policy Center | <a href="http://apps.who.int/gho/data/view.main.IHRCTRY03v?lang=en">World Health Organization</a> | '
+            }
+          }
+        }
+      ]
+    }
+  });
 
   let resizeEvent = window.document.createEvent("UIEvents");
   resizeEvent.initUIEvent("resize", true, false, window, 0);

@@ -1,17 +1,3 @@
-function _defineProperty(obj, key, value) {
-  if (key in obj) {
-    Object.defineProperty(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-  } else {
-    obj[key] = value;
-  }
-  return obj;
-}
-
 var series = [];
 
 var dataObj = { data: [], labels: [] };
@@ -80,77 +66,65 @@ Highcharts.data({
 });
 
 function renderLine(data) {
-  chart2 = Highcharts.chart(
-    "container2",
-    _defineProperty({
-      chart: {
-        zoomType: false,
-        type: "line",
-        marginBottom: 95
-      },
-      title: { text: "" },
+  chart2 = Highcharts.chart("container2", {
+    chart: {
+      zoomType: false,
+      type: "line",
+      marginBottom: 95
+    },
+    title: { text: "" },
 
-      yAxis: {
-        title: { text: "Surveillance Score" },
-        endOnTick: false,
-        tickInterval: 25,
-        max: 104,
-        min: 0
+    yAxis: {
+      title: { text: "Surveillance Score" },
+      endOnTick: false,
+      tickInterval: 25,
+      max: 104,
+      min: 0
+    },
+    xAxis: {
+      tickmarkPlacement: "on"
+    },
+    credits: {
+      text: ""
+    },
+    legend: {
+      title: {
+        text:
+          '<span style="font-size: 12px; color: #808080; font-weight: normal">Click to hide</span>'
       },
-      xAxis: {
-        tickmarkPlacement: "on"
+      itemStyle: {
+        fontSize: "16px",
+        fontWeight: "normal"
       },
-      credits: {
-        text: ""
+      useHTML: true,
+      y: 15,
+      x: -18,
+
+      align: "bottom",
+      layout: "horizontal",
+      labelFormatter: function() {
+        return `${this.name}`;
+      }
+    },
+    plotOptions: {
+      column: {
+        groupPadding: 0.5,
+        pointWidth: 150,
+        borderWidth: 0
       },
-      legend: {
-        title: {
-          text:
-            '<span style="font-size: 12px; color: #808080; font-weight: normal">Click to hide</span>'
-        },
-        itemStyle: {
-          fontSize: "16px",
-          fontWeight: "normal"
-        },
-        useHTML: true,
-        y: 15,
-        x: -18,
-
-        align: "bottom",
-        layout: "horizontal",
-        labelFormatter: function() {
-          return `${this.name}`;
-        }
-      },
-      plotOptions: {
-        column: {
-          groupPadding: 0.5,
-          pointWidth: 150,
-          borderWidth: 0
-        },
-        series: {
-          events: {
-            legendItemClick: function(e, f) {
-              if (
-                ["Afghanistan", "Nigeria", "Pakistan"].indexOf(e.target.name) <
-                0
-              ) {
-                e.target.update(
-                  {
-                    showInLegend: false,
-                    visible: false
-                  },
-                  true
-                );
-
-                max = chart2.series.filter(s => s.visible).length > 5;
-
-                if (!max) {
-                  input.disabled = false;
-                }
-
-                return false;
-              }
+      series: {
+        events: {
+          legendItemClick: function(e, f) {
+            if (
+              ["Afghanistan", "Nigeria", "Pakistan"].indexOf(e.target.name) < 0
+            ) {
+              e.target.update(
+                {
+                  showInLegend: false,
+                  visible: false
+                },
+                true
+              );
 
               max = chart2.series.filter(s => s.visible).length > 5;
 
@@ -158,92 +132,100 @@ function renderLine(data) {
                 input.disabled = false;
               }
 
-              return true;
+              return false;
             }
-          }
-        }
-      },
-      series: data,
-      tooltip: {
-        headerFormat: "",
-        pointFormatter: function pointFormatter(e) {
-          var point = this;
-          var name = this.series.name;
-          var color = this.color;
-          var x = this.x;
-          var y = this.y;
 
-          return (
-            '<div><span style="font-size:18px;color:' +
-            color +
-            '">\u25CF </span><b>' +
-            name +
-            "</b><br/>" +
-            x +
-            " Score: " +
-            y +
-            "</div>"
-          );
+            max = chart2.series.filter(s => s.visible).length > 5;
+
+            if (!max) {
+              input.disabled = false;
+            }
+
+            return true;
+          }
         }
-      },
-      responsive: {
-        rules: [
-          {
-            condition: {
-              maxWidth: 400
-            },
-            chartOptions: {
-              chart: {
-                height: "90%",
-                marginBottom: 120
-              },
-              xAxis: {
-                categories: [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017],
-                labels: {
-                  formatter: e => {
-                    return `'${e.value.toString().replace(20, "")}`;
-                  }
-                }
-              },
-              legend: {
-                y: 15
-              }
-            }
+      }
+    },
+    series: data,
+    tooltip: {
+      headerFormat: "",
+      pointFormatter: function pointFormatter(e) {
+        var point = this;
+        var name = this.series.name;
+        var color = this.color;
+        var x = this.x;
+        var y = this.y;
+
+        return (
+          '<div><span style="font-size:18px;color:' +
+          color +
+          '">\u25CF </span><b>' +
+          name +
+          "</b><br/>" +
+          x +
+          " Score: " +
+          y +
+          "</div>"
+        );
+      }
+    },
+    responsive: {
+      rules: [
+        {
+          condition: {
+            maxWidth: 400
           },
-          {
-            condition: {
-              minWidth: 401,
-              maxWidth: 700
+          chartOptions: {
+            chart: {
+              height: "90%",
+              marginBottom: 120
             },
-            chartOptions: {
-              chart: {
-                height: "60%"
-              },
-              xAxis: {
-                categories: [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017],
-                labels: {
-                  align: "center",
-                  formatter: e => {
-                    return `'${e.value.toString().replace(20, "")}`;
-                  }
+            xAxis: {
+              categories: [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017],
+              labels: {
+                formatter: e => {
+                  return `'${e.value.toString().replace(20, "")}`;
                 }
               }
-            }
-          },
-          {
-            condition: {
-              minWidth: 701
             },
-            chartOptions: {
-              chart: {
-                height: "45%"
+            legend: {
+              y: 15
+            }
+          }
+        },
+        {
+          condition: {
+            minWidth: 401,
+            maxWidth: 700
+          },
+          chartOptions: {
+            chart: {
+              height: "60%"
+            },
+            xAxis: {
+              categories: [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017],
+              labels: {
+                align: "center",
+                formatter: e => {
+                  return `'${e.value.toString().replace(20, "")}`;
+                }
               }
             }
           }
-        ]
-      }
-    })
-  );
+        },
+        {
+          condition: {
+            minWidth: 701
+          },
+          chartOptions: {
+            chart: {
+              height: "45%"
+            }
+          }
+        }
+      ]
+    }
+  });
 
   let resizeEvent = window.document.createEvent("UIEvents");
   resizeEvent.initUIEvent("resize", true, false, window, 0);

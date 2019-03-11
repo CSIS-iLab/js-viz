@@ -2,98 +2,97 @@ var textData;
 
 Highcharts.chart(
   "spline",
-  _defineProperty(
-    {
-      data: {
-        googleSpreadsheetKey: "1PQSu9p46YSpVFu_8WP3k8JaBzBrgpTvnJcfN3V5-QiQ",
-        googleSpreadsheetWorksheet: 1,
-        complete: parseData
+
+  {
+    data: {
+      googleSpreadsheetKey: "1PQSu9p46YSpVFu_8WP3k8JaBzBrgpTvnJcfN3V5-QiQ",
+      googleSpreadsheetWorksheet: 1,
+      complete: parseData
+    },
+    chart: {
+      defaultSeriesType: "spline",
+      backgroundColor: "#131A28",
+      style: {
+        fontFamily: "museo-sans, sans-serif"
+      }
+    },
+    credits: {
+      style: {
+        enabled: false
+      }
+    },
+    colors: ["#83d4ef", "#92278f", "#be1e2d", "#ffc624"],
+    legend: {
+      itemHoverStyle: {
+        color: "#ffc726  "
       },
-      chart: {
-        defaultSeriesType: "spline",
-        backgroundColor: "#131A28",
-        style: {
-          fontFamily: "museo-sans, sans-serif"
-        }
-      },
-      credits: {
-        style: {
-          enabled: false
-        }
-      },
-      colors: ["#83d4ef", "#92278f", "#be1e2d", "#ffc624"],
-      legend: {
-        itemHoverStyle: {
-          color: "#ffc726  "
-        },
-        itemStyle: {
-          color: "#fff",
-          fontWeight: "light"
-        }
-      },
+      itemStyle: {
+        color: "#fff",
+        fontWeight: "light"
+      }
+    },
+    title: {
+      text: " "
+    },
+    subtitle: {
+      text:
+        "Powered by Predata / Graphics by CSIS iDeas Lab / Analysis by BeyondParallel",
+      style: {
+        color: "#ffffff"
+      }
+    },
+    yAxis: {
+      gridLineWidth: 0,
+      minorGridLineWidth: 0,
+      min: 1.5,
       title: {
-        text: " "
-      },
-      subtitle: {
-        text:
-          "Powered by Predata / Graphics by CSIS iDeas Lab / Analysis by BeyondParallel",
+        text: "Signal Strength",
         style: {
-          color: "#ffffff"
-        }
-      },
-      yAxis: {
-        gridLineWidth: 0,
-        minorGridLineWidth: 0,
-        min: 1.5,
-        title: {
-          text: "Signal Strength",
-          style: {
-            color: "#ffc726",
-            fontSize: "15px"
-          }
-        }
-      },
-      xAxis: {
-        type: "datetime",
-        gridLineWidth: 1,
-        gridLineColor: "#333333",
-        tickWidth: 0,
-        labels: {
-          formatter: function formatter() {
-            return Highcharts.dateFormat("%b %e", this.value);
-          }
-        },
-        title: {
-          text: "Last 30 Days",
-          style: {
-            color: "#ffc726",
-            fontSize: "15px"
-          }
-        }
-      },
-      // Tooltip
-      tooltip: {
-        xDateFormat: "%B %e, %Y",
-        headerFormat:
-          '<span style="font-size: 12px;margin-bottom: 5px;font-weight: bold;">{point.key}</span><br/>'
-      },
-      plotOptions: {
-        spline: {
-          marker: {
-            enabled: false
-          }
+          color: "#ffc726",
+          fontSize: "15px"
         }
       }
     },
-    "credits",
-    {
+    xAxis: {
+      type: "datetime",
+      gridLineWidth: 1,
+      gridLineColor: "#333333",
+      tickWidth: 0,
+      labels: {
+        formatter: function formatter() {
+          return Highcharts.dateFormat("%b %e", this.value);
+        }
+      },
+      title: {
+        text: "Last 30 Days",
+        style: {
+          color: "#ffc726",
+          fontSize: "15px"
+        }
+      }
+    },
+    // Tooltip
+    tooltip: {
+      xDateFormat: "%B %e, %Y",
+      headerFormat:
+        '<span style="font-size: 12px;margin-bottom: 5px;font-weight: bold;">{point.key}</span><br/>'
+    },
+    plotOptions: {
+      spline: {
+        marker: {
+          enabled: false
+        }
+      }
+    },
+    credits: {
       text: "CSIS Beyond Parallel | Source: Predata",
       style: {
         display: "none"
       }
     }
-  )
+  }
 );
+
 function parseData(data) {
   var dataObj = {
     titleData: [],
@@ -333,17 +332,3 @@ Array.prototype.groupBy = function(property) {
     return groups;
   }, {});
 };
-
-function _defineProperty(obj, key, value) {
-  if (key in obj) {
-    Object.defineProperty(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-  } else {
-    obj[key] = value;
-  }
-  return obj;
-}
