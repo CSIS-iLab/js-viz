@@ -1,0 +1,126 @@
+body {
+  font-family: "Open Sans", Arial, Helvetica, sans-serif;
+  font-size: 16px;
+}
+
+.highcharts-title tspan {
+  font-size: 24px;
+}
+
+.title {
+  color: #333333;
+  font-size: 33px;
+  max-width: 1280px;
+  text-align: center;
+}
+
+.subtitle {
+  color: #333333;
+  font-size: 16px;
+  max-width: 1280px;
+  margin-bottom: 1.5rem;
+  line-height: 1.4;
+}
+
+.highcharts-point,
+.highcharts-data-label tspan {
+  cursor: pointer;
+}
+
+#container,
+#container2,
+.heading,
+body {
+  width: 100%;
+  min-width: 190px;
+  /* max-width: calc(100vw - 36px); */
+}
+.highcharts-background {
+  fill: transparent;
+}
+
+#container,
+#container2,
+body {
+  margin: 0 auto;
+}
+
+#intro.heading {
+  margin: 0 auto;
+}
+
+@media screen and (max-width: 400px) {
+  .highcharts-tooltip {
+    visibility: hidden;
+  }
+  #labels .label {
+    display: none;
+  }
+}
+
+.highcharts-button-hover .highcharts-button-box {
+  transition: all 0.3s ease-in-out;
+  fill: #0a8672;
+}
+
+.tabletitle {
+  /* color: #404041; */
+  font-weight: 500;
+  font-size: 24px;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+.highcharts-title {
+  font-size: 24px;
+}
+
+.legend {
+  display: flex;
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.legend li {
+  margin: 0 3px;
+}
+
+.legend li:nth-child(n + 2) {
+  position: relative;
+  cursor: pointer;
+}
+
+.legend li:nth-child(n + 3) {
+  margin-left: 35px;
+}
+
+.legend li:nth-of-type(1) {
+  font-weight: bold;
+  margin-right: 0;
+}
+.legend li:nth-of-type(2) {
+  margin-right: 17px;
+}
+
+.legend li span {
+  border-radius: 50%;
+  margin-right: 18px;
+  display: inline-block;
+  margin: 0 5px 0 5px;
+  background-size: 67%;
+  width: 12px;
+  height: 12px;
+}
+
+@media screen and (max-width: 768px) {
+  #container,
+  #container2,
+  .heading,
+  body {
+    max-width: calc(100vw - 40px);
+  }
+
+  .legend {
+    flex-wrap: wrap;
+  }
+}
