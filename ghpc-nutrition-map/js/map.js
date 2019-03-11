@@ -68,8 +68,7 @@ fetch("https://code.highcharts.com/mapdata/custom/world-eckert3.geo.json")
 
         var series = Object.keys(dataObj).map(function(key, index) {
           if (index === 3) {
-            return {
-              ...dataObj[key],
+            return Object.assign(dataObj[key], {
               name: key,
               mapData: Highcharts.maps["custom/world-eckert3"],
               joinBy: ["hc-key", "hc-key"],
@@ -86,7 +85,7 @@ fetch("https://code.highcharts.com/mapdata/custom/world-eckert3.geo.json")
                   borderWidth: 2
                 }
               }
-            };
+            });
           }
 
           var legendItems = Array.from(
