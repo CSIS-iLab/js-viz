@@ -13,23 +13,19 @@ fetch("https://code.highcharts.com/mapdata/custom/world-eckert3.geo.json")
     geoData = json;
 
     Highcharts.data({
-      googleSpreadsheetKey: "12_yhWuslrui9_kW57-HwySPk9kv1Mp2VlAYHUo5QWO8",
-      googleSpreadsheetWorksheet: 2,
+      googleSpreadsheetKey: "1RXsxwg_tns3CICc1ZyYX3PEucq_RVMPDihn2y1Xs5jk",
+      googleSpreadsheetWorksheet: 1,
       switchRowsAndColumns: true,
       parsed: function parsed(columns) {
         columns.forEach(function(code, i) {
-          if ([0, 1, 2].includes(i)) {
-            return;
-          }
-
-          if (i === 3) {
+          if (i === 0) {
             dataObj.labels = code.filter(c => parseInt(c, 10));
             return;
           }
 
           dataObj.labels.forEach(function(year, index) {
             var tileData = geoData.features.find(function(country) {
-              return country.properties.name === code[0];
+              return country.properties.name.indexOf(code[0]) > -1;
             });
 
             if (!tileData) return;
@@ -39,8 +35,11 @@ fetch("https://code.highcharts.com/mapdata/custom/world-eckert3.geo.json")
             });
 
             if (countryData) {
-              var value =
-                parseInt(code[index + 1], 10) > -1 ? code[index + 1] : null;
+              var value;
+
+              if (code[1] === "funding" && parseInt(code[index + 1], 10) > -1) {
+                value = code[index + 1];
+              }
 
               if (parseInt(year, 10)) {
                 countryData.sequence.push({
@@ -48,17 +47,35 @@ fetch("https://code.highcharts.com/mapdata/custom/world-eckert3.geo.json")
                   value: value
                 });
               }
+
               countryData.value = countryData.sequence[0].value;
+              countryData[code[1]] = countryData[code[1]] || [];
+
+              var keyValue =
+                parseInt(code[index + 2], 10) > -1 ? code[index + 2] : null;
+
+              countryData[code[1]].push(keyValue);
             } else {
               var country = Object.assign({}, tileData);
-              var value =
-                parseInt(code[index + 1], 10) > -1 ? code[index + 1] : null;
+
+              var value;
+
+              if (code[1] === "funding" && parseInt(code[index + 1], 10) > -1) {
+                value = code[index + 1];
+              }
 
               country.sequence = country.sequence || [];
               country.sequence.push({ year: year, value: value });
               country.name = code[0];
               dataObj.data.push(country);
               country["hc-key"] = country.properties["hc-key"];
+
+              country[code[1]] = country[code[1]] || [];
+
+              var keyValue =
+                parseInt(code[index + 2], 10) > -1 ? code[index + 2] : null;
+
+              country[code[1]].push(keyValue);
             }
           });
         });
@@ -77,16 +94,7 @@ function renderMap(data) {
     title: {
       text: ""
     },
-    subtitle: {
-      text: ""
-    },
-    xAxis: {
-      visible: false
-    },
 
-    yAxis: {
-      visible: false
-    },
     credits: {
       enabled: true,
       href: true
@@ -98,51 +106,24 @@ function renderMap(data) {
       floating: false,
       x: -133
     },
-
     colorAxis: {
-      dataClasses: [
-        {
-          to: -1,
-          color: "transparent",
-          name: "Surveillance Score:"
-        },
-        {
-          to: 24,
-          color: "#e86259",
-          name: window.innerWidth > 768 ? "Less than 25" : "< 25"
-        },
-        {
-          from: 25,
-          to: 50,
-          color: "#EDA27C",
-          name: window.innerWidth > 768 ? "Greater than 25" : "> 25"
-        },
-        {
-          from: 51,
-          to: 75,
-          color: "#75baa9",
-          name: window.innerWidth > 768 ? "Greater than 50" : "> 50"
-        },
-        {
-          from: 76,
-          color: "#4C8984",
-          name: window.innerWidth > 768 ? "Greater than 75" : "> 75"
-        }
-      ]
+      minColor: "#EDA27C",
+      maxColor: "#4C8984"
     },
-
     series: [
       {
         data: data.data,
         mapData: Highcharts.maps["custom/world-eckert3"],
         joinBy: ["hc-key", "hc-key"],
-        nullColor: "#bcbcbc",
+        borderColor: "#8D8D8D",
+        borderWidth: 1,
+        nullColor: "transparent",
         states: {
           hover: {
-            brightness: 0.125
+            borderColor: "black",
+            borderWidth: 2
           }
         },
-
         dataLabels: {
           enabled: false
         }
@@ -174,17 +155,43 @@ function renderMap(data) {
     },
     tooltip: {
       headerFormat: "",
+      useHTML: true,
       pointFormatter: function pointFormatter() {
         currentYear = document.querySelector(".label.active").innerText;
+        currentYear = parseInt(currentYear, 10);
+        var index = currentYear - 2014;
+
+        var reached =
+          this.programs[currentYear - 2014] ||
+          this.interventions[currentYear - 2014];
+
+        reached = Math.round((reached / 1000) * 10) / 10;
+        vitamin =
+          Math.round((this.vitamin[currentYear - 2014] / 1000) * 10) / 10;
+
         return (
-          '<div><span style="font-size:18px;color:' +
+          '<div><span style="font-size:24px;color:' +
           this.color +
           '">\u25CF </span><b>' +
           this.name +
-          "</b><br/>\n      " +
+          " (" +
           currentYear +
-          " Score:\n       " +
-          this.value +
+          ")" +
+          "</b><br/><br/>" +
+          " Funding: $" +
+          this.funding[index].toFixed(1) / 1000000 +
+          " million <br/><br/>" +
+          this.women[index] +
+          "<br/><br/>" +
+          (this.vitamin[index]
+            ? "Children under 5:<br/> Provided with Vitamin A supplements: " +
+              vitamin +
+              " thousand<br/>"
+            : "") +
+          (reached
+            ? "Reached by nutrition programs: " + reached + " thousand<br/>"
+            : "") +
+          this.anemia[index] +
           "</div>"
         );
       }

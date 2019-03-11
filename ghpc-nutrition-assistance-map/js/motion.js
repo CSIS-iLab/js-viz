@@ -28,9 +28,10 @@
         motion.dataSeries[index] = series;
         for (i = 0; i < series.data.length; i++) {
           if (series.data[i].sequence) {
+            console.log(series.data[i].sequence.length / 4);
             motion.dataLength = Math.max(
               motion.dataLength,
-              series.data[i].sequence.length
+              series.data[i].sequence.length / 6
             );
           }
         }
