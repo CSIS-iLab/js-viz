@@ -226,7 +226,9 @@ function makeSparkline(figure, series, index) {
         opposite: true
       }
     ],
-    series,
+    series: series.map(function(s) {
+      return { ...s, marker: { symbol: "circle" } };
+    }),
     legend: {
       enabled: false
     },
