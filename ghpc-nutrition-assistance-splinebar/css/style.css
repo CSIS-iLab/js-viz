@@ -1,0 +1,150 @@
+@import "https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css";
+
+body {
+  font-family: "Open Sans", Arial, Helvetica, sans-serif;
+  font-size: 16px;
+}
+
+h2 {
+  text-align: center;
+}
+
+h4 span {
+  display: inline-block;
+  margin-right: 6px;
+  background-color: #666;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.chart {
+  margin-top: 6px;
+}
+h5 {
+  text-align: center;
+  color: #666;
+}
+
+h5:first-child {
+  margin: -6px 0 0;
+}
+
+h5:last-child {
+  margin: 12px 0 0;
+}
+
+.figures {
+  display: grid;
+}
+@media screen and (min-width: 768px) {
+  .statistic {
+    display: grid;
+    grid-row: 1;
+    grid-template-columns: auto auto;
+    justify-content: center;
+  }
+
+  h5 {
+    display: grid;
+    grid-template-columns: auto auto;
+    align-items: center;
+  }
+  h5 span.stat {
+    margin-right: 6px;
+    font-size: 24px;
+  }
+}
+
+figure {
+  margin: 0 6px;
+}
+
+.highcharts-title tspan {
+  font-size: 24px;
+}
+
+.title {
+  color: #333333;
+  font-size: 33px;
+  text-align: center;
+}
+
+.subtitle {
+  text-align: center;
+  color: #333333;
+  font-size: 16px;
+  margin-bottom: 1.5rem;
+  line-height: 1.4;
+}
+
+.highcharts-point,
+.highcharts-data-label tspan {
+  cursor: pointer;
+}
+
+/* .highcharts-data-label tspan {
+  fill: white;
+}
+.highcharts-data-label {
+  z-index: 99;
+} */
+
+#container,
+#container2,
+.heading,
+body {
+  width: 100%;
+  min-width: 190px;
+  /* max-width: calc(100vw - 36px); */
+}
+.highcharts-background {
+  fill: transparent;
+}
+
+#container,
+#container2,
+body {
+  margin: 0 auto;
+}
+
+@media screen and (max-width: 400px) {
+  .highcharts-tooltip {
+    visibility: hidden;
+  }
+  #labels .label {
+    display: none;
+  }
+}
+
+.highcharts-button-hover .highcharts-button-box {
+  transition: all 0.3s ease-in-out;
+  fill: #0a8672;
+}
+
+.tabletitle {
+  /* color: #404041; */
+  font-weight: 500;
+  font-size: 24px;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+.highcharts-title {
+  font-size: 24px;
+}
+
+@media screen and (max-width: 768px) {
+  h5 span {
+    display: block;
+  }
+  h5 span.stat {
+    font-size: 24px;
+  }
+  #container,
+  #container2,
+  .heading,
+  body {
+    max-width: calc(100vw - 40px);
+  }
+}
