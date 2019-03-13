@@ -3,6 +3,7 @@
 body {
   font-family: "Open Sans", Arial, Helvetica, sans-serif;
   font-size: 16px;
+  max-width: 1200px;
 }
 
 h2 {
