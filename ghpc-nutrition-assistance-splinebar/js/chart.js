@@ -3,7 +3,7 @@ var allSeries = {},
     funding: "Funding",
     vitamin: "Children provided with vitamin A supplements",
     combined:
-      "Children reached by nutrition programs or nutrition-specific-interventions",
+      "Children reached by nutrition programs or nutrition-specific interventions",
     anemia: " of children have anemia",
     women: " of women with anemia"
   },
