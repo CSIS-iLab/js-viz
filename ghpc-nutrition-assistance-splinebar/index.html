@@ -10,8 +10,8 @@
   <link href='css/style.css' rel='stylesheet' type='text/css'>
 
 
-  <script src="js/jquery.js"></script>
-  <script src="js/polyfiller.js"></script>
+  <!-- <script src="js/jquery.js"></script>
+  <script src="js/polyfiller.js"></script> -->
 
 
 </head>
@@ -23,7 +23,7 @@
       Return on Investment
     </div>
     <p class="subtitle">
-      Outcomes in the Top 10 Countries Funded by U.S. Nutrition Assistance.
+      Outcomes in the Top 10 Countries Funded by U.S. Nutrition Assistance
     </p>
   </div>
 
@@ -31,22 +31,19 @@
   <div id="countryFilter">
     <label for="countries">Countries:</label>
 
-    <input for="countries" type="search" data-list-filter="^" data-list-focus="true" list="countries" placeholder="Select Country" value="Bangladesh">
-
-    <datalist id="countries">
+    <!-- <input for="countries" type="search" data-list-filter="^" data-list-focus="true" list="countries" placeholder="Select Country" value="Bangladesh"> -->
       <select class="countries">
-        <option value="Bangladesh" selected>
-        <option value="Ethiopia">
-        <option value="Ghana">
-        <option value="Mali">
-        <option value="Malawi">
-        <option value="Mozambique">
-        <option value="Nepal">
-        <option value="Senegal">
-        <option value="Tanzania">
-        <option value="Uganda">
-        </select>
-    </datalist>
+        <option class="option" value="Bangladesh" selected>Bangladesh</option>
+        <option class="option" value="Ethiopia">Ethiopia</option>
+        <option class="option" value="Ghana">Ghana</option>
+        <option class="option" value="Mali">Mali</option>
+        <option class="option" value="Malawi">Malawi</option>
+        <option class="option" value="Mozambique">Mozambique</option>
+        <option class="option" value="Nepal">Nepal</option>
+        <option class="option" value="Senegal">Senegal</option>
+        <option class="option" value="Tanzania">Tanzania</option>
+        <option class="option" value="Uganda">Uganda</option>
+      </select>
   </div>
 
   <div id="container" data-country="Bangladesh">

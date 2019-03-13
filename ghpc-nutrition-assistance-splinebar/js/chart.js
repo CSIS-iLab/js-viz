@@ -20,10 +20,10 @@ var allSeries = {},
     Uganda: " (2016)"
   };
 
-webshims.setOptions("forms", {
-  customDatalist: true
-});
-webshims.polyfill("forms");
+// webshims.setOptions("forms", {
+//   customDatalist: true
+// });
+// webshims.polyfill("forms");
 
 Highcharts.data({
   googleSpreadsheetKey: "1RXsxwg_tns3CICc1ZyYX3PEucq_RVMPDihn2y1Xs5jk",
@@ -153,12 +153,13 @@ Highcharts.data({
   }
 });
 
-$("input").on("input", function() {
+// $("input").on("input", function() {
+document.querySelector("select").addEventListener("input", function() {
   var container = document.querySelector("#container");
-  container.dataset.country = this.value;
+  container.dataset.country = event.target.value;
 
-  if (Object.keys(report).indexOf(this.value) > -1) {
-    init(this.value);
+  if (Object.keys(report).indexOf(event.target.value) > -1) {
+    init(event.target.value);
   }
 });
 

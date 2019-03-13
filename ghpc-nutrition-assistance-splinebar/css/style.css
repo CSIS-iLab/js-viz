@@ -74,8 +74,8 @@ figure {
 .subtitle {
   text-align: center;
   color: #333333;
-  font-size: 16px;
-  margin-bottom: 1.5rem;
+  font-size: 24px;
+  margin: 0 0 1.5rem;
   line-height: 1.4;
 }
 
@@ -161,7 +161,7 @@ label {
 }
 
 #countryFilter {
-  max-width: 50%;
+  max-width: 167px;
   margin: 0 auto 1em;
 }
 
@@ -172,17 +172,34 @@ input {
   background: #e5eff6;
   border: 0;
   border-bottom: 1px solid #004165;
-  padding: 0.27778em 0.55556em;
   font-size: 18px;
+  height: 36px;
 }
 
-input::placeholder {
+select {
+  width: 150px;
+  font-weight: bold;
+  text-align: center;
+  text-align-last: center;
+}
+
+option.option {
+  text-indent: 50px;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-bottom: 2px solid red;
+}
+
+/* input::placeholder {
   text-transform: none;
   font-weight: normal;
   font-style: italic;
-}
+} */
 
-input,
+/* input,
 option,
 select,
 .datalist-polyfill .datalist-box ul {
@@ -190,12 +207,7 @@ select,
   line-height: 2em;
   font-weight: bold;
   text-align: center;
-}
 
-input:focus,
-select:focus {
-  outline: none;
-  border-bottom: 2px solid red;
 }
 .ws-po-outerbox {
   max-width: 200px;
@@ -210,4 +222,4 @@ select:focus {
 
 .ws-po-box {
   border: 0.07692em solid #4e4154;
-}
+} */
