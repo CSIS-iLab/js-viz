@@ -148,3 +148,65 @@ body {
     max-width: calc(100vw - 40px);
   }
 }
+
+label {
+  position: absolute;
+  visibility: hidden;
+  display: inline-block;
+  margin-right: 0.25em;
+  font-size: 0.8em;
+  text-transform: uppercase;
+  line-height: 2em;
+}
+
+#countryFilter {
+  max-width: 50%;
+  margin: 0 auto 1em;
+}
+
+select,
+input {
+  width: 100%;
+  border-radius: 5px;
+  background: #e5eff6;
+  border: 0;
+  border-bottom: 1px solid #004165;
+  padding: 0.27778em 0.55556em;
+  font-size: 18px;
+}
+
+input::placeholder {
+  text-transform: none;
+  font-weight: normal;
+  font-style: italic;
+}
+
+input,
+option,
+select,
+.datalist-polyfill .datalist-box ul {
+  text-transform: uppercase;
+  line-height: 2em;
+  font-weight: bold;
+  text-align: center;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-bottom: 2px solid red;
+}
+.ws-po-outerbox {
+  max-width: 200px;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%) !important;
+}
+
+.ws-po-arrow {
+  border-bottom: 0.61538em solid #4e4154;
+}
+
+.ws-po-box {
+  border: 0.07692em solid #4e4154;
+}

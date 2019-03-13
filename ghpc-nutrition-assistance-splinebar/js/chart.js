@@ -19,6 +19,12 @@ var allSeries = {},
     Tanzania: " (2015–2016)",
     Uganda: " (2016)"
   };
+
+webshims.setOptions("forms", {
+  customDatalist: true
+});
+webshims.polyfill("forms");
+
 Highcharts.data({
   googleSpreadsheetKey: "1RXsxwg_tns3CICc1ZyYX3PEucq_RVMPDihn2y1Xs5jk",
   googleSpreadsheetWorksheet: 1,
@@ -69,7 +75,7 @@ Highcharts.data({
         allSeries[country[1]]["splinebar"].series[2] || {};
 
       allSeries[country[1]]["splinebar"].series[2].name = "Funding";
-      allSeries[country[1]]["splinebar"].series[2].color = "#4E4154";
+      allSeries[country[1]]["splinebar"].series[2].color = "#4a3254";
       allSeries[country[1]]["splinebar"].series[2].dataLabels = {
         enabled: true,
         format: "${y}M",
@@ -77,12 +83,12 @@ Highcharts.data({
         verticalAlign: "middle",
         y: -25,
         shape: "callout",
-        borderColor: "#4E4154",
+        borderColor: "#4a3254",
         borderWidth: 2,
         // backgroundColor: "rgba(78, 65, 84, 0.5)",
         backgroundColor: "rgba(255, 255, 255, 1)",
         style: {
-          color: "#4E4154",
+          color: "#4a3254",
           textOutline: "none",
           // color: "#FFFFFF",
           fontSize: "14px"
@@ -143,40 +149,45 @@ Highcharts.data({
       });
     });
 
-    var container = document.querySelector("#container");
-    container.dataset.country = "Tanzania"; ////////////////////////
-
-    makeSparkline(
-      container.querySelector(".chart"),
-      allSeries["Tanzania"]["splinebar"].series,
-      3
-    );
-
-    var country = container.dataset.country;
-
-    container.querySelector("h2").innerText = country;
-
-    var statistics = Array.from(
-      container.querySelectorAll(".statistic figure")
-    );
-
-    statistics.forEach(function(figure, figureIndex) {
-      var metric = figure.dataset.metric;
-
-      var stat = allSeries[country][metric].series[0].data[1][1];
-
-      if (stat) {
-        figure.innerHTML +=
-          '<h5><span class="stat">' +
-          stat +
-          "%</span><span>" +
-          legend[metric] +
-          report[country] +
-          "</span><h5>";
-      }
-    });
+    init("Bangladesh");
   }
 });
+
+$("input").on("input", function() {
+  var container = document.querySelector("#container");
+  container.dataset.country = this.value;
+
+  if (Object.keys(report).indexOf(this.value) > -1) {
+    init(this.value);
+  }
+});
+
+function init(country) {
+  var container = document.querySelector("#container");
+
+  makeSparkline(
+    container.querySelector(".chart"),
+    allSeries[country]["splinebar"].series,
+    3
+  );
+
+  var statistics = Array.from(container.querySelectorAll(".statistic figure"));
+
+  statistics.forEach(function(figure, figureIndex) {
+    var metric = figure.dataset.metric;
+
+    var stat = allSeries[country][metric].series[0].data[1][1];
+
+    figure.innerHTML = stat
+      ? '<h5><span class="stat">' +
+        stat +
+        "%</span><span>" +
+        legend[metric] +
+        report[country] +
+        "</span><h5>"
+      : "";
+  });
+}
 
 function makeSparkline(figure, series, index) {
   Highcharts.chart(figure, {
@@ -203,16 +214,16 @@ function makeSparkline(figure, series, index) {
         title: {
           text: "Funding (USD)",
           style: {
-            color: "#4E4154"
+            color: "#4a3254"
           }
         },
         labels: {
           format: "${value}",
           style: {
-            color: "#4E4154"
+            color: "#4a3254"
           }
         },
-        gridLineColor: "#4E4154",
+        gridLineColor: "#4a3254",
         endOnTick: false,
         reversedStacks: true,
         opposite: true
@@ -272,8 +283,7 @@ function makeSparkline(figure, series, index) {
                 ? `$${point.y}M`
                 : !point.y
                   ? `Data Unavailable for ${year}`
-                  : `${Math.round((point.y / 1000000) * 10) /
-                      10} ${name.toLowerCase()}`;
+                  : `${Math.round((point.y / 1000000) * 10) / 10}M children`;
             }
           };
         });
