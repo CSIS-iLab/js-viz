@@ -334,7 +334,8 @@ function makeSparkline(figure, series, index) {
             },
             plotOptions: {
               column: {
-                pointWidth: 25
+                pointWidth: 25,
+                groupPadding: 0.75
               }
             },
             xAxis: {
@@ -360,14 +361,16 @@ function makeSparkline(figure, series, index) {
             },
             plotOptions: {
               column: {
-                pointWidth: 50
+                pointWidth: 50,
+                groupPadding: 0.75
               }
             }
           }
         },
         {
           condition: {
-            minWidth: 701
+            minWidth: 701,
+            maxWidth: 100
           },
           chartOptions: {
             chart: {
@@ -375,7 +378,24 @@ function makeSparkline(figure, series, index) {
             },
             plotOptions: {
               column: {
-                pointWidth: 100
+                pointWidth: 100,
+                groupPadding: 0.375
+              }
+            }
+          }
+        },
+        {
+          condition: {
+            minWidth: 1081
+          },
+          chartOptions: {
+            chart: {
+              height: "40%"
+            },
+            plotOptions: {
+              column: {
+                pointWidth: 100,
+                groupPadding: 0.25
               }
             }
           }
