@@ -109,15 +109,6 @@ body {
   margin: 0 auto;
 }
 
-@media screen and (max-width: 400px) {
-  .highcharts-tooltip {
-    visibility: hidden;
-  }
-  #labels .label {
-    display: none;
-  }
-}
-
 .highcharts-button-hover .highcharts-button-box {
   transition: all 0.3s ease-in-out;
   fill: #0a8672;
@@ -146,22 +137,24 @@ body {
   #container2,
   .heading,
   body {
-    max-width: calc(100vw - 40px);
+    /* max-width: calc(100vw - 40px); */
   }
 }
 
 label {
-  position: absolute;
-  visibility: hidden;
+  /* position: absolute;
+  visibility: hidden; */
   display: inline-block;
-  margin-right: 0.25em;
+  margin-right: 0.5em;
   font-size: 0.8em;
   text-transform: uppercase;
   line-height: 2em;
 }
 
 #countryFilter {
-  max-width: 167px;
+  display: flex;
+  align-items: center;
+  max-width: 300px;
   margin: 0 auto 1em;
 }
 
@@ -223,3 +216,7 @@ select,
 .ws-po-box {
   border: 0.07692em solid #4e4154;
 } */
+
+.highcharts-legend {
+  z-index: -1;
+}

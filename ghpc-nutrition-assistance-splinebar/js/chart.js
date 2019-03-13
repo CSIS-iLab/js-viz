@@ -5,7 +5,7 @@ var allSeries = {},
     combined:
       "Children reached by nutrition programs or nutrition-specific interventions",
     anemia: " of children have anemia",
-    women: " of women with anemia"
+    women: " of women have anemia"
   },
   report = {
     Bangladesh: " ",
@@ -191,14 +191,15 @@ function init(country) {
 }
 
 function makeSparkline(figure, series, index) {
-  Highcharts.chart(figure, {
+  var chart = Highcharts.chart(figure, {
     title: {
       text: ""
     },
     chart: {
       type: "spline",
       marginBottom: 150,
-      height: "60%"
+      spacing: [0, 0, 0, 0],
+      height: "50%"
     },
     xAxis: {
       tickInterval: 1,
@@ -239,7 +240,7 @@ function makeSparkline(figure, series, index) {
         },
         labels: {
           formatter: function() {
-            var value = Math.round((this.value / 1000000) * 10) / 10;
+            var value = Math.round(this.value / 1000000 * 10) / 10;
             return `${value}M`;
           },
           style: {
@@ -262,6 +263,11 @@ function makeSparkline(figure, series, index) {
     series: series,
 
     tooltip: {
+      borderColor: "#4a3254",
+      style: {
+        whiteSpace: "normal",
+        zIndex: 999
+      },
       useHTML: true,
       headerFormat:
         "<span style=\"font-size: 18px;text-align:center;margin-bottom: 5px;font-weight: bold;font-family: 'Roboto', arial, sans-serif;\">{point.key}</span><br/>",
@@ -277,6 +283,7 @@ function makeSparkline(figure, series, index) {
             return s.name === name;
           });
           return {
+            name,
             color: s.color.pattern ? s.color.pattern.color : s.color,
             y: s.data[index].y,
             formatter: function(point) {
@@ -284,20 +291,20 @@ function makeSparkline(figure, series, index) {
                 ? `$${point.y}M`
                 : !point.y
                   ? `Data Unavailable for ${year}`
-                  : `${Math.round((point.y / 1000000) * 10) / 10}M children`;
+                  : `${Math.round(point.y / 1000000 * 10) / 10}M children`;
             }
           };
         });
 
         var textContent = infos
           .map(function(info) {
-            return `<span style="color:${
+            return `<p><strong><span style="color:${
               info.color
-            }">\u25CF </span> <span style="line-height:1.5;font-size: 16px">${info.formatter(info)}</span>`;
+            }">\u25CF </span> ${info.name}</strong><br> <span style="font-size: 14px;">${info.formatter(info)}</span></p>`;
           })
-          .join("<br>");
+          .join("");
 
-        return `${textContent}`;
+        return `<div style="width:200px;white-space:normal !important;">${textContent}</div>`;
       }
     },
     legend: {
@@ -308,10 +315,13 @@ function makeSparkline(figure, series, index) {
           '<span style="font-size: 12px; color: #808080; font-weight: normal">Click to hide</span>'
       },
       labelFormatter: function() {
-        return `<div style="margin-top:-3px">${this.name}</div>`;
+        return `<div style="width:calc(100vw - 100px) !important;white-space:normal !important;margin-top:-3px;">${
+          this.name
+        }</div>`;
       },
-      itemMarginTop: 12,
+      itemMarginBottom: 12,
       itemStyle: {
+        // whiteSpace: "normal",
         fontSize: "16px",
         fontWeight: "normal"
       },
@@ -331,7 +341,8 @@ function makeSparkline(figure, series, index) {
           },
           chartOptions: {
             chart: {
-              height: "100%"
+              height: "100%",
+              marginBottom: 175
             },
             plotOptions: {
               column: {
@@ -371,11 +382,11 @@ function makeSparkline(figure, series, index) {
         {
           condition: {
             minWidth: 701,
-            maxWidth: 100
+            maxWidth: 1080
           },
           chartOptions: {
             chart: {
-              height: "40%"
+              height: "50%"
             },
             plotOptions: {
               column: {
@@ -404,7 +415,6 @@ function makeSparkline(figure, series, index) {
       ]
     }
   });
-
   let resizeEvent = window.document.createEvent("UIEvents");
   resizeEvent.initUIEvent("resize", true, false, window, 0);
   window.dispatchEvent(resizeEvent);

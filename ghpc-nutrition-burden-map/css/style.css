@@ -77,9 +77,10 @@ body {
 }
 
 .legend {
-  max-width: 50%;
   margin: 0 auto 1em;
-  display: flex;
+  display: grid;
+  justify-content: space-around;
+  grid-template-columns: repeat(4, auto);
   list-style-type: none;
   padding-left: 0;
 }
@@ -93,16 +94,11 @@ body {
   cursor: pointer;
 }
 
-.legend li:nth-child(n + 3) {
-  margin-left: 35px;
-}
-
 .legend li:nth-of-type(1) {
   font-weight: bold;
   margin-right: 0;
 }
 .legend li:nth-of-type(2) {
-  margin-right: 17px;
 }
 
 .legend li span {
@@ -111,19 +107,27 @@ body {
   display: inline-block;
   margin: 0 5px 0 5px;
   background-size: 67%;
+  background-position-y: 150%;
+  background-position-x: 40%;
   width: 12px;
   height: 12px;
 }
 
+.legend {
+  max-width: 400px;
+}
+
+@media screen and (max-width: 500px) {
+  .legend {
+    grid-template-columns: 1fr;
+    max-width: 133px;
+  }
+}
 @media screen and (max-width: 768px) {
   #container,
   #container2,
   .heading,
   body {
-    max-width: calc(100vw - 40px);
-  }
-
-  .legend {
-    flex-wrap: wrap;
+    /* max-width: calc(100vw - 40px); */
   }
 }

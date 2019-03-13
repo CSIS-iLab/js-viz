@@ -176,6 +176,7 @@ fetch("https://code.highcharts.com/mapdata/custom/world-eckert3.geo.json")
 function renderMap(series) {
   chart = Highcharts.mapChart("container", {
     chart: {
+      padding: [0, 0, 0, 0],
       marginTop: 0,
       marginBottom: 25
     },
