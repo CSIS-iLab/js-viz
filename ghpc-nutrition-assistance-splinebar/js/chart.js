@@ -9,15 +9,15 @@ var allSeries = {},
   },
   report = {
     Bangladesh: " ",
-    Uganda: " (2016)",
-    Tanzania: " (2015–2016)",
-    Senegal: " (2017)",
-    Nepal: " (2016)",
-    Mozambique: " (2011)",
-    Malawi: " (2015–2016)",
-    Mali: " (2012–2013)",
+    Ethiopia: " (2016)",
     Ghana: " (2014)",
-    Ethiopia: " (2016)"
+    Mali: " (2012–2013)",
+    Malawi: " (2015–2016)",
+    Mozambique: " (2011)",
+    Nepal: " (2016)",
+    Senegal: " (2017)",
+    Tanzania: " (2015–2016)",
+    Uganda: " (2016)"
   };
 Highcharts.data({
   googleSpreadsheetKey: "1RXsxwg_tns3CICc1ZyYX3PEucq_RVMPDihn2y1Xs5jk",
@@ -185,8 +185,8 @@ function makeSparkline(figure, series, index) {
     },
     chart: {
       type: "spline",
-      marginBottom: 100,
-      height: "40%"
+      marginBottom: 150,
+      height: "60%"
     },
     xAxis: {
       tickInterval: 1,
@@ -198,6 +198,8 @@ function makeSparkline(figure, series, index) {
     },
     yAxis: [
       {
+        min: 0,
+        max: 12,
         title: {
           text: "Funding (USD)",
           style: {
@@ -216,6 +218,7 @@ function makeSparkline(figure, series, index) {
         opposite: true
       },
       {
+        tickInterval: 250000,
         title: {
           text: "Children < 5",
           style: {
@@ -287,17 +290,24 @@ function makeSparkline(figure, series, index) {
       }
     },
     legend: {
+      symbolWidth: 20,
+      symbolHeight: 20,
       title: {
         text:
           '<span style="font-size: 12px; color: #808080; font-weight: normal">Click to hide</span>'
       },
+      labelFormatter: function() {
+        return `<div style="margin-top:-3px">${this.name}</div>`;
+      },
+      itemMarginTop: 12,
       itemStyle: {
         fontSize: "16px",
         fontWeight: "normal"
       },
       useHTML: true,
-      y: 15,
-      align: "center"
+      y: 12,
+      x: 24
+      // align: "left"
     },
     credits: {
       text: ""
@@ -310,12 +320,11 @@ function makeSparkline(figure, series, index) {
           },
           chartOptions: {
             chart: {
-              height: "90%",
-              marginBottom: 120
+              height: "100%"
             },
             plotOptions: {
               column: {
-                pointWidth: 33
+                pointWidth: 25
               }
             },
             xAxis: {
@@ -337,11 +346,11 @@ function makeSparkline(figure, series, index) {
           },
           chartOptions: {
             chart: {
-              height: "60%"
+              height: "70%"
             },
             plotOptions: {
               column: {
-                pointWidth: 67
+                pointWidth: 50
               }
             }
           }
@@ -364,4 +373,8 @@ function makeSparkline(figure, series, index) {
       ]
     }
   });
+
+  let resizeEvent = window.document.createEvent("UIEvents");
+  resizeEvent.initUIEvent("resize", true, false, window, 0);
+  window.dispatchEvent(resizeEvent);
 }
