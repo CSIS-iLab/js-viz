@@ -245,9 +245,7 @@ function makeSparkline(figure, series, index) {
       }
     },
     series: series,
-    legend: {
-      enabled: true
-    },
+
     tooltip: {
       useHTML: true,
       headerFormat:
@@ -299,10 +297,71 @@ function makeSparkline(figure, series, index) {
       },
       useHTML: true,
       y: 15,
-      align: "bottom"
+      align: "center"
     },
     credits: {
       text: ""
+    },
+    responsive: {
+      rules: [
+        {
+          condition: {
+            maxWidth: 400
+          },
+          chartOptions: {
+            chart: {
+              height: "90%",
+              marginBottom: 120
+            },
+            plotOptions: {
+              column: {
+                pointWidth: 33
+              }
+            },
+            xAxis: {
+              labels: {
+                formatter: e => {
+                  return `'${e.value.toString().replace(20, "")}`;
+                }
+              }
+            },
+            legend: {
+              y: 15
+            }
+          }
+        },
+        {
+          condition: {
+            minWidth: 401,
+            maxWidth: 700
+          },
+          chartOptions: {
+            chart: {
+              height: "60%"
+            },
+            plotOptions: {
+              column: {
+                pointWidth: 67
+              }
+            }
+          }
+        },
+        {
+          condition: {
+            minWidth: 701
+          },
+          chartOptions: {
+            chart: {
+              height: "40%"
+            },
+            plotOptions: {
+              column: {
+                pointWidth: 100
+              }
+            }
+          }
+        }
+      ]
     }
   });
 }
