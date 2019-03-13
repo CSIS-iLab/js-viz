@@ -77,6 +77,8 @@ body {
 }
 
 .legend {
+  max-width: 50%;
+  margin: 0 auto 1em;
   display: flex;
   list-style-type: none;
   padding-left: 0;
