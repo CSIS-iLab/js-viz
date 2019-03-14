@@ -114,14 +114,11 @@ fetch("https://code.highcharts.com/mapdata/custom/world-eckert3.geo.json")
             if (series.visible) {
               legendItems[index].style.color = "#bcbcbc";
               icon.style.backgroundSize = "cover";
-              icon.style.backgroundImage =
-                "url('" +
-                "data:image/svg+xml;base64," +
-                window.btoa(disabledSvg) +
-                "')";
+              icon.style.backgroundColor = "#bcbcbc";
+              icon.style.backgroundImage = "none";
             } else {
               legendItems[index].style.color = "black";
-              icon.style.backgroundSize = "67%";
+              icon.style.backgroundColor = "transparent";
               icon.style.backgroundImage =
                 "url('" +
                 "data:image/svg+xml;base64," +
