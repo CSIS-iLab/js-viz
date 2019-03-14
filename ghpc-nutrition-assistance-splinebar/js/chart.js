@@ -155,11 +155,12 @@ Highcharts.data({
 });
 
 // $("input").on("input", function() {
-document.querySelector("select").addEventListener("input", function() {
+document.querySelector("select").addEventListener("input", function(event) {
   var container = document.querySelector("#container");
   container.dataset.country = event.target.value;
 
   if (Object.keys(report).indexOf(event.target.value) > -1) {
+    event.target.blur();
     init(event.target.value);
   }
 });
