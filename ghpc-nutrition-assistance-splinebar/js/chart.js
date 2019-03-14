@@ -226,13 +226,13 @@ function makeSparkline(figure, series, index) {
             color: colors[0]
           }
         },
-        gridLineColor: colors[0],
+        gridLineColor: "transparent",
         endOnTick: false,
         reversedStacks: true,
         opposite: true
       },
       {
-        tickInterval: 250000,
+        tickInterval: 500000,
         title: {
           text: "Children under 5",
           style: {
