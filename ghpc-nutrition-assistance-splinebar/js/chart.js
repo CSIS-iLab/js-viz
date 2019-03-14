@@ -18,7 +18,8 @@ var allSeries = {},
     Senegal: " (2017)",
     Tanzania: " (2015–2016)",
     Uganda: " (2016)"
-  };
+  },
+  colors = ["#4a3254", "#7DA8D1"];
 
 // webshims.setOptions("forms", {
 //   customDatalist: true
@@ -75,7 +76,7 @@ Highcharts.data({
         allSeries[country[1]]["splinebar"].series[2] || {};
 
       allSeries[country[1]]["splinebar"].series[2].name = "Funding";
-      allSeries[country[1]]["splinebar"].series[2].color = "#4a3254";
+      allSeries[country[1]]["splinebar"].series[2].color = colors[0];
       allSeries[country[1]]["splinebar"].series[2].dataLabels = {
         enabled: true,
         format: "${y}M",
@@ -83,12 +84,12 @@ Highcharts.data({
         verticalAlign: "middle",
         y: -25,
         shape: "callout",
-        borderColor: "#4a3254",
+        borderColor: colors[0],
         borderWidth: 2,
         // backgroundColor: "rgba(78, 65, 84, 0.5)",
         backgroundColor: "rgba(255, 255, 255, 1)",
         style: {
-          color: "#4a3254",
+          color: colors[0],
           textOutline: "none",
           // color: "#FFFFFF",
           fontSize: "14px"
@@ -112,7 +113,7 @@ Highcharts.data({
       var selectedSeries = ["vitamin", "combined"].map(function(metric, y) {
         var color = {
           pattern: {
-            color: "#7DA8D1",
+            color: colors[1],
             path: {
               d: patternArray[y],
               strokeWidth: 2
@@ -216,16 +217,16 @@ function makeSparkline(figure, series, index) {
         title: {
           text: "Funding (USD)",
           style: {
-            color: "#4a3254"
+            color: colors[0]
           }
         },
         labels: {
           format: "${value}",
           style: {
-            color: "#4a3254"
+            color: colors[0]
           }
         },
-        gridLineColor: "#4a3254",
+        gridLineColor: colors[0],
         endOnTick: false,
         reversedStacks: true,
         opposite: true
@@ -233,21 +234,21 @@ function makeSparkline(figure, series, index) {
       {
         tickInterval: 250000,
         title: {
-          text: "Children < 5",
+          text: "Children under 5",
           style: {
-            color: "#7DA8D1"
+            color: colors[1]
           }
         },
         labels: {
           formatter: function() {
-            var value = Math.round(this.value / 1000000 * 10) / 10;
+            var value = Math.round((this.value / 1000000) * 10) / 10;
             return `${value}M`;
           },
           style: {
-            color: "#7DA8D1"
+            color: colors[1]
           }
         },
-        gridLineColor: "#7DA8D1",
+        gridLineColor: colors[1],
         endOnTick: false,
         reversedStacks: true
       }
@@ -257,13 +258,13 @@ function makeSparkline(figure, series, index) {
         groupPadding: 0.25,
         pointWidth: 100,
         borderWidth: 2,
-        borderColor: "#7DA8D1"
+        borderColor: colors[1]
       }
     },
     series: series,
 
     tooltip: {
-      borderColor: "#4a3254",
+      borderColor: colors[0],
       style: {
         whiteSpace: "normal",
         zIndex: 999
@@ -291,7 +292,8 @@ function makeSparkline(figure, series, index) {
                 ? `$${point.y}M`
                 : !point.y
                   ? `Data Unavailable for ${year}`
-                  : `${Math.round(point.y / 1000000 * 10) / 10}M children`;
+                  : `${Math.round((point.y / 1000000) * 10) /
+                      10}M children under 5`;
             }
           };
         });
