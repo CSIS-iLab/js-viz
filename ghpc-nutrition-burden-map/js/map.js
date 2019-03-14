@@ -1,10 +1,10 @@
 var chart,
   geoData,
   dataObj = {
-    Stunting: {
+    Overweight: {
       data: []
     },
-    Overweight: {
+    Stunting: {
       data: []
     },
     Anaemia: {
@@ -48,9 +48,10 @@ fetch("https://code.highcharts.com/mapdata/custom/world-eckert3.geo.json")
 
         var patternArray = [
           "M 0 0 L 10 0 M 0 1 L 10 1 M 0 2 L 10 2 M 0 3 L 10 3 M 0 4 L 10 4 M 0 5 L 10 5 M 0 6 L 10 6 M 0 7 L 10 7 M 0 8 L 10 8 M 0 9 L 10 9 M 0 10 L 10 10",
-          "M 3 0 L 3 10 M 8 0 L 8 10",
+          "M 0 6.5 L 7.5 6.5 M 0 4.5 L 7.5 4.5",
+          "M 4.5 0 L 4.5 7.5 M 6 0 L 6 7.5",
           // "M 0 3 L 10 3 M 0 8 L 10 8",
-          "M 0 5 L 10 5 M 0 6 L 10 6",
+          // "M 0 2.5 L 5 2.5 M 0 3 L 5 3",
           "M 0 10 L 10 0 M -1 1 L 1 -1 M 9 11 L 11 9",
           "M 0 0 L 10 10 M 9 -1 L 11 1 M -1 9 L 1 11",
           "M 0 3 L 5 3 L 5 0 M 5 10 L 5 7 L 10 7",
@@ -60,10 +61,10 @@ fetch("https://code.highcharts.com/mapdata/custom/world-eckert3.geo.json")
           "M 2 5 L 5 2 L 8 5 L 5 8 Z;M 0 0 L 5 10 L 10 0"
         ];
 
-        var colorArray = ["#4E4154", "#7DA8D1", "#ED7A65"];
+        var colorArray = ["#A3DEF9", "#2A3692", "#F46E78"];
 
         var disabledSvg =
-          '<svg xmlns="http://www.w3.org/2000/svg"><circle cx="6" cy="6" r="5" stroke="#bcbcbc" fill="#bcbcbc"/></svg>';
+          '<svg xmlns="http://www.w3.org/2000/svg"><circle cx="7.5" cy="7.5" r="7.5" stroke="#bcbcbc" fill="#bcbcbc"/></svg>';
 
         var series = Object.keys(dataObj).map(function(key, index) {
           if (index === 3) {
@@ -92,7 +93,7 @@ fetch("https://code.highcharts.com/mapdata/custom/world-eckert3.geo.json")
           ).slice(1);
 
           var enabledSvg =
-            '<svg viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg"> <path d="' +
+            '<svg viewBox="0 0 7.5 7.5" xmlns="http://www.w3.org/2000/svg"> <path d="' +
             patternArray[index] +
             '" stroke="' +
             colorArray[index] +
@@ -149,8 +150,8 @@ fetch("https://code.highcharts.com/mapdata/custom/world-eckert3.geo.json")
                 path: {
                   d: patternArray[index]
                 },
-                width: 10,
-                height: 10,
+                width: 5,
+                height: 5,
                 opacity: 1
               }
             },
