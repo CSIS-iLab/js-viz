@@ -357,7 +357,7 @@ function makeSparkline(figure, series, index) {
             plotOptions: {
               column: {
                 pointWidth: 25,
-                groupPadding: 0.75
+                groupPadding: 1
               }
             },
             xAxis: {
@@ -401,7 +401,7 @@ function makeSparkline(figure, series, index) {
             plotOptions: {
               column: {
                 pointWidth: 50,
-                groupPadding: 0.25
+                groupPadding: 0.1875
               }
             }
           }
