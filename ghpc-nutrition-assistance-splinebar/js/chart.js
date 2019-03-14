@@ -268,15 +268,16 @@ function makeSparkline(figure, series, index) {
     series: series,
 
     tooltip: {
-      borderColor: colors[0],
+      borderColor: "black",
       style: {
         whiteSpace: "normal",
         zIndex: 999
       },
       useHTML: true,
       headerFormat:
-        "<span style=\"font-size: 18px;text-align:center;margin-bottom: 5px;font-weight: bold;font-family: 'Roboto', arial, sans-serif;\">{point.key}</span><br/>",
+        "<span style=\"font-size: 18px;text-align:center;margin-bottom: 5px;font-weight: bold;font-family: 'Roboto', arial, sans-serif;\">{point.key}</span>",
       pointFormatter: function() {
+        var activeSeries = this.series.name;
         var index = this.index;
         var year = this.x;
         var series = this.series.chart.series;
@@ -296,17 +297,20 @@ function makeSparkline(figure, series, index) {
                 ? `$${point.y}M`
                 : !point.y
                   ? `Data Unavailable for ${year}`
-                  : `${Math.round((point.y / 1000000) * 10) /
+                  : `<br>${Math.round((point.y / 1000000) * 10) /
                       10}M children under 5`;
             }
           };
         });
 
         var textContent = infos
+          .filter(function(info) {
+            return info.name === activeSeries;
+          })
           .map(function(info) {
-            return `<p><strong><span style="color:${
+            return `<strong><span style="color:${
               info.color
-            }">\u25CF </span> ${info.name}</strong><br> <span style="font-size: 14px;">${info.formatter(info)}</span></p>`;
+            }">\u25CF </span> ${info.name}</strong>: <span style="font-size: 14px;">${info.formatter(info)}</span>`;
           })
           .join("");
 
@@ -338,88 +342,88 @@ function makeSparkline(figure, series, index) {
     },
     credits: {
       text: ""
+    },
+    responsive: {
+      rules: [
+        {
+          condition: {
+            maxWidth: 400
+          },
+          chartOptions: {
+            chart: {
+              height: "100%",
+              marginBottom: 175
+            },
+            plotOptions: {
+              column: {
+                pointWidth: 25,
+                groupPadding: 0.75
+              }
+            },
+            xAxis: {
+              labels: {
+                formatter: e => {
+                  return `'${e.value.toString().replace(20, "")}`;
+                }
+              }
+            },
+            legend: {
+              y: 15
+            }
+          }
+        },
+        {
+          condition: {
+            minWidth: 401,
+            maxWidth: 700
+          },
+          chartOptions: {
+            chart: {
+              height: "70%"
+            },
+            plotOptions: {
+              column: {
+                pointWidth: 33,
+                groupPadding: 0.75
+              }
+            }
+          }
+        },
+        {
+          condition: {
+            minWidth: 701,
+            maxWidth: 1080
+          },
+          chartOptions: {
+            chart: {
+              height: "50%"
+            },
+            plotOptions: {
+              column: {
+                pointWidth: 50,
+                groupPadding: 0.25
+              }
+            }
+          }
+        },
+        {
+          condition: {
+            minWidth: 1081
+          },
+          chartOptions: {
+            chart: {
+              height: "40%"
+            },
+            plotOptions: {
+              column: {
+                pointWidth: 75,
+                groupPadding: 0.25
+              }
+            }
+          }
+        }
+      ]
     }
-    // responsive: {
-    //   rules: [
-    //     {
-    //       condition: {
-    //         maxWidth: 400
-    //       },
-    //       chartOptions: {
-    //         chart: {
-    //           height: "100%",
-    //           marginBottom: 175
-    //         },
-    //         plotOptions: {
-    //           column: {
-    //             pointWidth: 25,
-    //             groupPadding: 0.75
-    //           }
-    //         },
-    //         xAxis: {
-    //           labels: {
-    //             formatter: e => {
-    //               return `'${e.value.toString().replace(20, "")}`;
-    //             }
-    //           }
-    //         },
-    //         legend: {
-    //           y: 15
-    //         }
-    //       }
-    //     },
-    //     {
-    //       condition: {
-    //         minWidth: 401,
-    //         maxWidth: 700
-    //       },
-    //       chartOptions: {
-    //         chart: {
-    //           height: "70%"
-    //         },
-    //         plotOptions: {
-    //           column: {
-    //             pointWidth: 50,
-    //             groupPadding: 0.75
-    //           }
-    //         }
-    //       }
-    //     },
-    //     {
-    //       condition: {
-    //         minWidth: 701,
-    //         maxWidth: 1080
-    //       },
-    //       chartOptions: {
-    //         chart: {
-    //           height: "50%"
-    //         },
-    //         plotOptions: {
-    //           column: {
-    //             pointWidth: 100,
-    //             groupPadding: 0.375
-    //           }
-    //         }
-    //       }
-    //     },
-    //     {
-    //       condition: {
-    //         minWidth: 1081
-    //       },
-    //       chartOptions: {
-    //         chart: {
-    //           height: "40%"
-    //         },
-    //         plotOptions: {
-    //           column: {
-    //             pointWidth: 100,
-    //             groupPadding: 0.25
-    //           }
-    //         }
-    //       }
-    //     }
-    //   ]
-    // }
   });
   let resizeEvent = window.document.createEvent("UIEvents");
   resizeEvent.initUIEvent("resize", true, false, window, 0);
