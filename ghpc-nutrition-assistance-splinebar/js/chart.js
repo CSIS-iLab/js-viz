@@ -19,7 +19,7 @@ var allSeries = {},
     Tanzania: " (2015–2016)",
     Uganda: " (2016)"
   },
-  colors = ["#4a3254", "#7DA8D1"];
+  colors = ["#df4652", "#70bbdd", "#2A3692", "#4D79B8"];
 
 // webshims.setOptions("forms", {
 //   customDatalist: true
@@ -84,12 +84,12 @@ Highcharts.data({
         verticalAlign: "middle",
         y: -25,
         shape: "callout",
-        borderColor: colors[0],
+        borderColor: "black",
         borderWidth: 2,
         // backgroundColor: "rgba(78, 65, 84, 0.5)",
         backgroundColor: "rgba(255, 255, 255, 1)",
         style: {
-          color: colors[0],
+          // color: colors[0],
           textOutline: "none",
           // color: "#FFFFFF",
           fontSize: "14px"
@@ -111,17 +111,19 @@ Highcharts.data({
       ];
 
       var selectedSeries = ["vitamin", "combined"].map(function(metric, y) {
-        var color = {
-          pattern: {
-            color: colors[1],
-            path: {
-              d: patternArray[y],
-              strokeWidth: 2
-            },
-            width: 7.5,
-            height: 7.5
-          }
-        };
+        var color = colors[y + 1];
+
+        //  {
+        //   pattern: {
+        //     color: colors[y + 1],
+        //     path: {
+        //       d: patternArray[y],
+        //       strokeWidth: 2
+        //     },
+        //     width: 7.5,
+        //     height: 7.5
+        //   }
+        // };
 
         allSeries[country[1]]["splinebar"].series[y] =
           allSeries[country[1]]["splinebar"].series[y] || {};
@@ -200,6 +202,7 @@ function makeSparkline(figure, series, index) {
     chart: {
       type: "spline",
       marginBottom: 150,
+      marginTop: 25,
       spacing: [0, 0, 0, 0],
       height: "50%"
     },
@@ -222,9 +225,9 @@ function makeSparkline(figure, series, index) {
           }
         },
         labels: {
-          format: "${value}",
+          format: "${value}M",
           style: {
-            color: colors[0]
+            // color: colors[0]
           }
         },
         gridLineColor: "transparent",
@@ -237,7 +240,7 @@ function makeSparkline(figure, series, index) {
         title: {
           text: "Children under 5",
           style: {
-            color: colors[1]
+            color: colors[3]
           }
         },
         labels: {
@@ -246,10 +249,10 @@ function makeSparkline(figure, series, index) {
             return `${value}M`;
           },
           style: {
-            color: colors[1]
+            // color: colors[3]
           }
         },
-        gridLineColor: colors[1],
+        // gridLineColor: colors[3],
         endOnTick: false,
         reversedStacks: true
       }
@@ -257,9 +260,9 @@ function makeSparkline(figure, series, index) {
     plotOptions: {
       column: {
         groupPadding: 0.25,
-        pointWidth: 100,
-        borderWidth: 2,
-        borderColor: colors[1]
+        pointWidth: 50,
+        borderWidth: 2
+        // borderColor: colors[1]
       }
     },
     series: series,
@@ -335,88 +338,88 @@ function makeSparkline(figure, series, index) {
     },
     credits: {
       text: ""
-    },
-    responsive: {
-      rules: [
-        {
-          condition: {
-            maxWidth: 400
-          },
-          chartOptions: {
-            chart: {
-              height: "100%",
-              marginBottom: 175
-            },
-            plotOptions: {
-              column: {
-                pointWidth: 25,
-                groupPadding: 0.75
-              }
-            },
-            xAxis: {
-              labels: {
-                formatter: e => {
-                  return `'${e.value.toString().replace(20, "")}`;
-                }
-              }
-            },
-            legend: {
-              y: 15
-            }
-          }
-        },
-        {
-          condition: {
-            minWidth: 401,
-            maxWidth: 700
-          },
-          chartOptions: {
-            chart: {
-              height: "70%"
-            },
-            plotOptions: {
-              column: {
-                pointWidth: 50,
-                groupPadding: 0.75
-              }
-            }
-          }
-        },
-        {
-          condition: {
-            minWidth: 701,
-            maxWidth: 1080
-          },
-          chartOptions: {
-            chart: {
-              height: "50%"
-            },
-            plotOptions: {
-              column: {
-                pointWidth: 100,
-                groupPadding: 0.375
-              }
-            }
-          }
-        },
-        {
-          condition: {
-            minWidth: 1081
-          },
-          chartOptions: {
-            chart: {
-              height: "40%"
-            },
-            plotOptions: {
-              column: {
-                pointWidth: 100,
-                groupPadding: 0.25
-              }
-            }
-          }
-        }
-      ]
     }
+    // responsive: {
+    //   rules: [
+    //     {
+    //       condition: {
+    //         maxWidth: 400
+    //       },
+    //       chartOptions: {
+    //         chart: {
+    //           height: "100%",
+    //           marginBottom: 175
+    //         },
+    //         plotOptions: {
+    //           column: {
+    //             pointWidth: 25,
+    //             groupPadding: 0.75
+    //           }
+    //         },
+    //         xAxis: {
+    //           labels: {
+    //             formatter: e => {
+    //               return `'${e.value.toString().replace(20, "")}`;
+    //             }
+    //           }
+    //         },
+    //         legend: {
+    //           y: 15
+    //         }
+    //       }
+    //     },
+    //     {
+    //       condition: {
+    //         minWidth: 401,
+    //         maxWidth: 700
+    //       },
+    //       chartOptions: {
+    //         chart: {
+    //           height: "70%"
+    //         },
+    //         plotOptions: {
+    //           column: {
+    //             pointWidth: 50,
+    //             groupPadding: 0.75
+    //           }
+    //         }
+    //       }
+    //     },
+    //     {
+    //       condition: {
+    //         minWidth: 701,
+    //         maxWidth: 1080
+    //       },
+    //       chartOptions: {
+    //         chart: {
+    //           height: "50%"
+    //         },
+    //         plotOptions: {
+    //           column: {
+    //             pointWidth: 100,
+    //             groupPadding: 0.375
+    //           }
+    //         }
+    //       }
+    //     },
+    //     {
+    //       condition: {
+    //         minWidth: 1081
+    //       },
+    //       chartOptions: {
+    //         chart: {
+    //           height: "40%"
+    //         },
+    //         plotOptions: {
+    //           column: {
+    //             pointWidth: 100,
+    //             groupPadding: 0.25
+    //           }
+    //         }
+    //       }
+    //     }
+    //   ]
+    // }
   });
   let resizeEvent = window.document.createEvent("UIEvents");
   resizeEvent.initUIEvent("resize", true, false, window, 0);
