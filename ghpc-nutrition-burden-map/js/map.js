@@ -198,6 +198,7 @@ function renderMap(series) {
     series: series,
     tooltip: {
       headerFormat: "",
+      useHTML: true,
       pointFormatter: function pointFormatter() {
         var point = this;
         var burdens = [];
@@ -206,10 +207,16 @@ function renderMap(series) {
           var found = dataObj[key].data.find(function(data) {
             return data["hc-key"] === point["hc-key"];
           });
-          if (found.geometry) burdens.push(key);
+          if (found.geometry) burdens.push(`&nbsp;\u25CF ${key}`);
         });
 
-        return "<strong>" + this.name + "</strong><br>" + burdens.join("<br/>");
+        return (
+          '<strong style="font-size: 14px;">' +
+          this.name +
+          '</strong><br><span style="font-size: 14px;">' +
+          burdens.join("<br/> ") +
+          "</span>"
+        );
       }
     },
     mapNavigation: {
@@ -219,7 +226,7 @@ function renderMap(series) {
         verticalAlign: "top",
         align: "right",
         theme: {
-          fill: "#0faa91",
+          fill: "#115175",
           "stroke-width": 0,
           style: {
             color: "white"
