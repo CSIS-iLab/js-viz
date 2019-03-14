@@ -19,7 +19,7 @@ var allSeries = {},
     Tanzania: " (2015–2016)",
     Uganda: " (2016)"
   },
-  colors = ["#df4652", "#70bbdd", "#2A3692", "#4D79B8"];
+  colors = ["#df4652", "#0095AB", "#115175", "#007DA8"];
 
 // webshims.setOptions("forms", {
 //   customDatalist: true
@@ -261,7 +261,7 @@ function makeSparkline(figure, series, index) {
       column: {
         groupPadding: 0.25,
         pointWidth: 50,
-        borderWidth: 2
+        borderWidth: 0
         // borderColor: colors[1]
       }
     },

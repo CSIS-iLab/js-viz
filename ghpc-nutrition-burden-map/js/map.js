@@ -61,7 +61,7 @@ fetch("https://code.highcharts.com/mapdata/custom/world-eckert3.geo.json")
           "M 2 5 L 5 2 L 8 5 L 5 8 Z;M 0 0 L 5 10 L 10 0"
         ];
 
-        var colorArray = ["#A3DEF9", "#2A3692", "#F46E78"];
+        var colorArray = ["#A3DEF9", "#115175", "#df4652"];
 
         var disabledSvg =
           '<svg xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="10" r="10" stroke="#bcbcbc" fill="#bcbcbc"/></svg>';
