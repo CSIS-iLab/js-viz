@@ -22,6 +22,16 @@ body {
   margin-bottom: 1.5rem;
   line-height: 1.4;
 }
+.citation,
+.citation a {
+  color: #999999;
+  text-align: right;
+  font-size: 10px;
+}
+.citation a {
+  margin-right: 10px;
+  text-decoration: none;
+}
 
 .highcharts-point,
 .highcharts-data-label tspan {

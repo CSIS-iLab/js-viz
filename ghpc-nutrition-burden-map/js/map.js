@@ -183,7 +183,7 @@ function renderMap(series) {
     },
     credits: {
       enabled: true,
-      href: true
+      href: false
     },
     legend: {
       enabled: false,
