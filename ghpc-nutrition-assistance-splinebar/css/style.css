@@ -90,7 +90,9 @@ figure {
   margin-right: 10px;
   text-decoration: none;
 }
-
+.highcharts-credits tspan {
+  cursor: default !important;
+}
 .highcharts-point,
 .highcharts-data-label tspan {
   cursor: pointer;
