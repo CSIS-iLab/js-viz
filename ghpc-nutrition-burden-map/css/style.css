@@ -30,7 +30,7 @@ body {
 }
 .citation a {
   margin-right: 10px;
-  text-decoration: none;
+  /* text-decoration: none; */
 }
 
 .highcharts-point,
