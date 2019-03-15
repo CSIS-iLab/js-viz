@@ -341,7 +341,8 @@ function makeSparkline(figure, series, index) {
       // align: "left"
     },
     credits: {
-      text: ""
+      enabled: true,
+      href: false
     },
     responsive: {
       rules: [
@@ -369,6 +370,9 @@ function makeSparkline(figure, series, index) {
             },
             legend: {
               y: 15
+            },
+            credits: {
+              text: "CSIS"
             }
           }
         },
@@ -386,6 +390,9 @@ function makeSparkline(figure, series, index) {
                 pointWidth: 33,
                 groupPadding: 0.75
               }
+            },
+            credits: {
+              text: "CSIS"
             }
           }
         },
@@ -403,6 +410,9 @@ function makeSparkline(figure, series, index) {
                 pointWidth: 50,
                 groupPadding: 0.1875
               }
+            },
+            credits: {
+              text: "CSIS Global Health Policy Center"
             }
           }
         },
@@ -419,6 +429,9 @@ function makeSparkline(figure, series, index) {
                 pointWidth: 100,
                 groupPadding: 0.0625
               }
+            },
+            credits: {
+              text: "CSIS Global Health Policy Center"
             }
           }
         }
