@@ -2,13 +2,19 @@ var chart,
   geoData,
   dataObj = {
     Overweight: {
-      data: []
+      data: [],
+      percent: "35%",
+      label: "Overweight"
     },
     Stunting: {
-      data: []
+      data: [],
+      percent: "20%",
+      label: "Stunted"
     },
     Anaemia: {
-      data: []
+      data: [],
+      percent: "20%",
+      label: "Anaemic"
     },
     all: {
       data: []
@@ -204,7 +210,12 @@ function renderMap(series) {
           var found = dataObj[key].data.find(function(data) {
             return data["hc-key"] === point["hc-key"];
           });
-          if (found.geometry) burdens.push(`&nbsp;\u25CF ${key}`);
+          if (found.geometry)
+            burdens.push(
+              `&nbsp;\u25CF Over ${dataObj[key].percent} are ${
+                dataObj[key].label
+              }`
+            );
         });
 
         return (
