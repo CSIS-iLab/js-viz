@@ -319,21 +319,17 @@ function makeSparkline(figure, series, index) {
         text:
           '<span style="font-size: 12px; color: #808080; font-weight: normal">Click to hide</span>'
       },
-      labelFormatter: function() {
-        return `<div style="width:calc(100vw - 100px) !important;white-space:normal !important;margin-top:-3px;">${
-          this.name
-        }</div>`;
-      },
+
       itemMarginBottom: 12,
       itemStyle: {
-        // whiteSpace: "normal",
         fontSize: "16px",
         fontWeight: "normal"
       },
-      useHTML: true,
+      layout: "vertical",
       y: 12,
-      x: 24
-      // align: "left"
+      x: 0,
+      align: "left",
+      floating: true
     },
     credits: {
       enabled: true,
@@ -347,8 +343,8 @@ function makeSparkline(figure, series, index) {
           },
           chartOptions: {
             chart: {
-              height: "100%",
-              marginBottom: 175
+              height: "75%",
+              marginBottom: 200
             },
             plotOptions: {
               column: {
@@ -364,7 +360,19 @@ function makeSparkline(figure, series, index) {
               }
             },
             legend: {
-              y: 15
+              labelFormatter: function() {
+                return `<div style="width:calc(100vw - 100px) !important;white-space:normal !important;margin-top:-18px;">${
+                  this.name
+                }</div>`;
+              },
+              itemMarginBottom: 12,
+              itemStyle: {
+                padding: "18px 0 6px",
+                fontSize: "16px",
+                fontWeight: "normal"
+              },
+              useHTML: true,
+              y: 25
             },
             credits: {
               text: "CSIS"
@@ -378,13 +386,29 @@ function makeSparkline(figure, series, index) {
           },
           chartOptions: {
             chart: {
-              height: "70%"
+              height: "70%",
+              marginBottom: 200
             },
             plotOptions: {
               column: {
                 pointWidth: 33,
                 groupPadding: 0.75
               }
+            },
+            legend: {
+              labelFormatter: function() {
+                return `<div style="width:calc(100vw - 100px) !important;white-space:normal !important;margin-top:-12px;">${
+                  this.name
+                }</div>`;
+              },
+              itemMarginBottom: 12,
+              itemStyle: {
+                padding: "12px 0 6px",
+                fontSize: "16px",
+                fontWeight: "normal"
+              },
+              useHTML: true,
+              y: 0
             },
             credits: {
               text: "CSIS"
