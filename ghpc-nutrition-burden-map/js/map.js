@@ -124,6 +124,7 @@ fetch("https://code.highcharts.com/mapdata/custom/world-eckert3.geo.json")
               icon.style.backgroundImage = "none";
             } else {
               legendItems[index].style.color = "black";
+              icon.style.backgroundSize = "25%";
               icon.style.backgroundColor = "transparent";
               icon.style.backgroundImage =
                 "url('" +
