@@ -5,10 +5,15 @@ var allSeries = {},
     combined:
       "Children reached by nutrition programs or nutrition-specific interventions",
     anemia: " of children have anemia",
-    women: " of women have anemia"
+    women: " of women have anemia",
+    stunting: function(country) {
+      return window.innerWidth < 768
+        ? " of children are stunted"
+        : ` of children in ${country} are stunted`;
+    }
   },
   report = {
-    Bangladesh: " ",
+    Bangladesh: " (2014)",
     Ethiopia: " (2016)",
     Ghana: " (2014)",
     Mali: " (2012–2013)",
@@ -43,7 +48,7 @@ Highcharts.data({
         return series.name === "funding";
       });
 
-      ["anemia", "women"].forEach(function(metric) {
+      ["stunting"].forEach(function(metric) {
         var programsSeries = data.series.find(function(series) {
           return series.name === metric;
         });
@@ -184,9 +189,9 @@ function init(country) {
       ? '<h5><span class="stat">' +
         stat +
         "%</span><span>" +
-        legend[metric] +
+        legend[metric](country) +
         report[country] +
-        "</span><h5>"
+        "</span></h5>"
       : "";
   });
 }

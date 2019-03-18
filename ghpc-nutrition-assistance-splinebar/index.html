@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <title>Return on Investment: Outcomes in the Top 10 Countries Funded by U.S. Nutrition Assistance | CSIS Global Health Policy</title>
+  <title>Outcomes in the Top 10 Countries Funded by U.S. Nutrition Assistance | CSIS Global Health Policy</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href='css/style.css' rel='stylesheet' type='text/css'>
@@ -18,21 +18,23 @@
 
 <body>
 
-  <div id="intro" dir="ltr" class="heading highcharts-container " style="position: relative; overflow: hidden; text-align: left; line-height: normal; z-index: 0; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+  <header id="intro" dir="ltr" class="heading highcharts-container " style="position: relative; overflow: hidden; text-align: left; line-height: normal; z-index: 0; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
     <div class="heading title">
       Outcomes in Top 10 USAID Nutrition Recipient Countries
     </div>
     <p class="subtitle">
-      Select a country from the drop-down menu to track its USAID funding in relation to latest stunting statistics; the number of children under 5 who received vitamin A supplements; and the number of children under 5 who were reached by nutrition programs or interventions. Hover over the outcome bars to see exact figures.
+      Select a country from the drop-down menu to track its USAID funding in relation to latest stunting statistics; the number of children under 5 who received vitamin A supplements; and the number of children under 5 who were reached by nutrition programs
+      or interventions. Hover over the outcome bars to see exact figures.
     </p>
     <div class="citation">
       Source: USAID Dollars to Results and USAID Demographic and Health Surveys 2011-17
     </div>
-  </div>
+  </header>
 
 
-  <div id="countryFilter">
-    <label for="countries">Select Country:</label>
+  <section id="container" data-country="Bangladesh">
+    <header>
+      <label for="countries">Select Country:
 
     <!-- <input for="countries" type="search" data-list-filter="^" data-list-focus="true" list="countries" placeholder="Select Country" value="Bangladesh"> -->
       <select class="countries">
@@ -47,17 +49,19 @@
         <option class="option" value="Tanzania">Tanzania</option>
         <option class="option" value="Uganda">Uganda</option>
       </select>
-  </div>
-
-  <div id="container" data-country="Bangladesh">
-    <div class="figures">
+    </label>
       <div class="statistic">
-        <figure data-metric="anemia"></figure>
-        <figure data-metric="women"></figure>
+        <figure data-metric="stunting">
+          <h5>
+          <span class="stat"></span>
+          <span></span>
+        </h5>
+        </figure>
       </div>
-      <figure class="chart" data-metric="splinebar"></figure>
-    </div>
-  </div>
+    </header>
+
+    <figure class="chart" data-metric="splinebar"></figure>
+  </section>
 
 
 

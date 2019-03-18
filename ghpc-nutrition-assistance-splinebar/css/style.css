@@ -1,68 +1,85 @@
 @import "https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css";
-
+#container,
+#container2,
+body {
+  min-width: 190px;
+  width: 100%;
+  margin: 0 auto;
+}
 body {
   font-family: "Open Sans", Arial, Helvetica, sans-serif;
   font-size: 16px;
   max-width: 1200px;
 }
-
-h2 {
-  text-align: center;
-}
-
-h4 span {
-  display: inline-block;
-  margin-right: 6px;
-  background-color: #666;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-}
-
-.chart {
-  margin-top: 6px;
-}
-h5 {
-  text-align: center;
-  color: #666;
-}
-
-h5:first-child {
-  margin: -6px 0 0;
-}
-
-h5:last-child {
-  margin: 12px 0 0;
-}
-
-.figures {
-  display: grid;
-}
-@media screen and (min-width: 768px) {
-  .statistic {
-    display: grid;
-    grid-row: 1;
-    grid-template-columns: auto auto;
-    justify-content: center;
-  }
-
-  h5 {
-    display: grid;
-    grid-template-columns: auto auto;
-    align-items: center;
-  }
-  h5 span.stat {
-    margin-right: 6px;
-    font-size: 24px;
-  }
-}
-
 figure {
   margin: 0 6px;
 }
+h2 {
+  text-align: center;
+}
+h4 span {
+  background-color: #333;
+  border-radius: 50%;
+  display: inline-block;
+  height: 12px;
+  margin-right: 6px;
+  width: 12px;
+}
+h5 {
+  align-items: center;
+  color: #333;
+  display: flex;
+  font-weight: normal;
+  text-transform: uppercase;
+}
+h5 span.stat {
+  margin-right: 6px;
+  font-size: 24px;
+}
+.chart {
+  margin-top: 6px;
+}
+.citation a {
+  margin-right: 10px;
+  text-decoration: none;
+}
+.citation,
+.citation a {
+  color: #999999;
+  font-size: 14px;
+  margin: 0 auto 1.5rem;
+  max-width: calc(100% - 50px);
+}
 
+.highcharts-background {
+  fill: transparent;
+}
+.highcharts-button-hover .highcharts-button-box {
+  fill: #0a8672;
+  transition: all 0.3s ease-in-out;
+}
+.highcharts-credits tspan {
+  cursor: default !important;
+}
+.highcharts-legend {
+  z-index: -1;
+}
+.highcharts-point,
+.highcharts-data-label tspan {
+  cursor: pointer;
+}
+.highcharts-title {
+  font-size: 24px;
+}
 .highcharts-title tspan {
   font-size: 24px;
+}
+.subtitle {
+  color: #333333;
+  font-size: 16px;
+  line-height: 1.4;
+  margin: 0 auto 0.5rem;
+  max-width: calc(100% - 50px);
 }
 .title {
   color: #333333;
@@ -71,166 +88,43 @@ figure {
   text-align: center;
 }
 
-.subtitle {
-  color: #333333;
-  font-size: 16px;
-  max-width: 1280px;
-  line-height: 1.4;
-  margin-bottom: 0.5rem;
+select:focus {
+  border-bottom: 2px solid red;
+  outline: none;
 }
-
-.citation,
-.citation a {
-  margin-bottom: 1.5rem;
-  color: #999999;
-  /* text-align: right; */
-  font-size: 14px;
-}
-.citation a {
-  margin-right: 10px;
-  text-decoration: none;
-}
-.highcharts-credits tspan {
-  cursor: default !important;
-}
-.highcharts-point,
-.highcharts-data-label tspan {
-  cursor: pointer;
-}
-
-/* .highcharts-data-label tspan {
-  fill: white;
-}
-.highcharts-data-label {
-  z-index: 99;
-} */
-
-#container,
-#container2,
-.heading,
-body {
-  width: 100%;
-  min-width: 190px;
-  /* max-width: calc(100vw - 36px); */
-}
-.highcharts-background {
-  fill: transparent;
-}
-
-#container,
-#container2,
-body {
-  margin: 0 auto;
-}
-
-.highcharts-button-hover .highcharts-button-box {
-  transition: all 0.3s ease-in-out;
-  fill: #0a8672;
-}
-
-.tabletitle {
-  /* color: #404041; */
-  font-weight: 500;
-  font-size: 24px;
-  text-align: center;
-  letter-spacing: 0.5px;
-}
-
-.highcharts-title {
-  font-size: 24px;
-}
-
-@media screen and (max-width: 768px) {
-  h5 span {
-    display: block;
-  }
-  h5 span.stat {
-    font-size: 24px;
-  }
-  #container,
-  #container2,
-  .heading,
-  body {
-    /* max-width: calc(100vw - 40px); */
-  }
-}
-
 label {
-  /* position: absolute;
-  visibility: hidden; */
-  display: inline-block;
-  margin-right: 0.5em;
-  font-size: 0.8em;
-  text-transform: uppercase;
-  line-height: 2em;
-}
-
-#countryFilter {
-  display: flex;
   align-items: center;
-  max-width: 300px;
+  display: flex;
+  font-size: 0.8em;
+  line-height: 2em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+section header {
+  display: grid;
+  grid-template-columns: auto;
+  justify-content: center;
   margin: 0 auto 1em;
+  max-width: calc(100% - 50px);
 }
-
-select,
-input {
-  width: 100%;
-  border-radius: 5px;
-  background: #e5eff6;
-  border: 0;
-  border-bottom: 1px solid #004165;
-  font-size: 18px;
-  height: 36px;
-}
-
 select {
-  width: 150px;
   font-weight: bold;
   text-align: center;
   text-align-last: center;
+  width: 150px;
+  background: #e5eff6;
+  border: 0;
+  border-bottom: 1px solid #004165;
+  border-radius: 5px;
+  font-size: 18px;
+  height: 36px;
+  margin-left: 6px;
+  width: 100%;
 }
 
-option.option {
-  text-indent: 50px;
-}
-
-input:focus,
-select:focus {
-  outline: none;
-  border-bottom: 2px solid red;
-}
-
-/* input::placeholder {
-  text-transform: none;
-  font-weight: normal;
-  font-style: italic;
-} */
-
-/* input,
-option,
-select,
-.datalist-polyfill .datalist-box ul {
-  text-transform: uppercase;
-  line-height: 2em;
-  font-weight: bold;
-  text-align: center;
-
-}
-.ws-po-outerbox {
-  max-width: 200px;
-  position: relative;
-  left: 50%;
-  transform: translateX(-50%) !important;
-}
-
-.ws-po-arrow {
-  border-bottom: 0.61538em solid #4e4154;
-}
-
-.ws-po-box {
-  border: 0.07692em solid #4e4154;
-} */
-
-.highcharts-legend {
-  z-index: -1;
+@media screen and (min-width: 768px) {
+  section header {
+    grid-template-columns: auto auto;
+    justify-content: space-between;
+  }
 }
