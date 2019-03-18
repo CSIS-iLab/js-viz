@@ -86,12 +86,9 @@ Highcharts.data({
         shape: "callout",
         borderColor: "black",
         borderWidth: 2,
-        // backgroundColor: "rgba(78, 65, 84, 0.5)",
         backgroundColor: "rgba(255, 255, 255, 1)",
         style: {
-          // color: colors[0],
           textOutline: "none",
-          // color: "#FFFFFF",
           fontSize: "14px"
         }
       };
@@ -248,13 +245,10 @@ function makeSparkline(figure, series, index) {
             var value = Math.round((this.value / 1000000) * 10) / 10;
             return `${value}M`;
           },
-          style: {
-            // color: colors[3]
-          }
-        },
-        // gridLineColor: colors[3],
-        endOnTick: false,
-        reversedStacks: true
+
+          endOnTick: false,
+          reversedStacks: true
+        }
       }
     ],
     plotOptions: {
@@ -318,6 +312,7 @@ function makeSparkline(figure, series, index) {
       }
     },
     legend: {
+      reversed: true,
       symbolWidth: 20,
       symbolHeight: 20,
       title: {
