@@ -11,10 +11,10 @@ var chart,
       percent: "20%",
       label: "Stunted"
     },
-    Anaemia: {
+    Anemia: {
       data: [],
       percent: "20%",
-      label: "Anaemic"
+      label: "Anemic"
     },
     all: {
       data: []
