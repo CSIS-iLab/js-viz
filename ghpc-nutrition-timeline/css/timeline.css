@@ -1,0 +1,16 @@
+.tl-timemarker:nth-child(n + 1):nth-child(-n + 5)
+  .tl-timemarker-content-container {
+  background-color: yellow;
+}
+
+.tl-storyslider h2.tl-headline {
+  font-family: Georgia, serif !important;
+}
+
+.tl-storyslider {
+  height: 400px !important;
+}
+
+.tl-timenav {
+  height: 200px !important;
+}
