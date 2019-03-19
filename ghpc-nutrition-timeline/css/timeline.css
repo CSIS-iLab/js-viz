@@ -1,16 +1,31 @@
-.tl-timemarker:nth-child(n + 1):nth-child(-n + 5)
-  .tl-timemarker-content-container {
+[id^="Event"].tl-timemarker .tl-timemarker-content-container {
+  background-color: red;
+}
+[id^="Conference"].tl-timemarker .tl-timemarker-content-container {
+  background-color: orange;
+}
+[id^="Organization"].tl-timemarker .tl-timemarker-content-container {
   background-color: yellow;
 }
+[id^="Initiative"].tl-timemarker .tl-timemarker-content-container {
+  background-color: green;
+}
+[id^="Findings"].tl-timemarker .tl-timemarker-content-container {
+  background-color: blue;
+}
 
+.tl-timegroup-message {
+  color: #bcbcbc !important;
+  text-shadow: 0 !important;
+}
 .tl-storyslider h2.tl-headline {
   font-family: Georgia, serif !important;
 }
 
 .tl-storyslider {
-  height: 400px !important;
+  /* height: 400px !important; */
 }
 
 .tl-timenav {
-  height: 200px !important;
+  /* height: 200px !important; */
 }
