@@ -25,6 +25,10 @@
 .tl-storyslider {
   max-height: 800px !important;
 }
+.tl-slidenav-next,
+.tl-slidenav-previous {
+  top: 33% !important;
+}
 
 .tl-timenav {
   /* height: 200px !important; */
