@@ -23,7 +23,7 @@
 }
 
 .tl-storyslider {
-  /* height: 400px !important; */
+  max-height: 800px !important;
 }
 
 .tl-timenav {
