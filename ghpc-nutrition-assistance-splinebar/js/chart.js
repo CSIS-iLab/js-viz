@@ -327,8 +327,9 @@ function makeSparkline(figure, series, index) {
 
       itemMarginBottom: 12,
       itemStyle: {
-        fontSize: "16px",
-        fontWeight: "normal"
+        fontSize: "1.1em",
+        fontWeight: "normal",
+        textTransform: "uppercase"
       },
       layout: "vertical",
       y: 12,
