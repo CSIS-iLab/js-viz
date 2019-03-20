@@ -1,13 +1,11 @@
-[id^="Event"].tl-timemarker .tl-timemarker-content-container {
+[id^="Multilateral"].tl-timemarker .tl-timemarker-content-container {
   background-color: red;
 }
 [id^="Conference"].tl-timemarker .tl-timemarker-content-container {
   background-color: orange;
 }
-[id^="Organization"].tl-timemarker .tl-timemarker-content-container {
-  background-color: yellow;
-}
-[id^="Initiative"].tl-timemarker .tl-timemarker-content-container {
+
+[id^="U.S."].tl-timemarker .tl-timemarker-content-container {
   background-color: green;
 }
 [id^="Findings"].tl-timemarker .tl-timemarker-content-container {
@@ -30,6 +28,31 @@
   top: 33% !important;
 }
 
+.tl-slider-background {
+  background-color: #788ca8 !important;
+}
+.tl-text,
+.tl-text p {
+  color: #f2f2f2 !important;
+  text-shadow: 1px 1px 2px #000;
+}
+
+.tl-slide p,
+.tl-slide h1,
+.tl-slide h2,
+.tl-slide h3,
+.tl-slide h4,
+.tl-slide h5,
+.tl-slide h6,
+.tl-slidenav-previous .tl-slidenav-content-container .tl-slidenav-icon,
+.tl-slidenav-next .tl-slidenav-content-container .tl-slidenav-icon,
+.tl-slidenav-previous .tl-slidenav-content-container .tl-slidenav-title,
+.tl-slidenav-next .tl-slidenav-content-container .tl-slidenav-title,
+.tl-slidenav-previous .tl-slidenav-content-container .tl-slidenav-description,
+.tl-slidenav-next .tl-slidenav-content-container .tl-slidenav-description {
+  color: #fff !important;
+  text-shadow: 1px 1px 1px #000 !important;
+}
 .tl-timenav {
   /* height: 200px !important; */
 }

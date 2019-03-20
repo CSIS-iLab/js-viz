@@ -2,10 +2,10 @@ var additionalOptions = {
   timenav_position: "top",
   timenav_height_min: 200,
   height: 800,
-  initial_zoom: "4"
+  initial_zoom: "1"
 };
 
-var spreadsheetID = "12cEbeUDoN1k7ejXJodaX_jGLEvFmVNakyEZVDj7TEo0";
+var spreadsheetID = "1YS_p_L1F-fZwP-5GvePGb_enzO4hs9QTHyvLzx288uo";
 
 var timelineURL =
   "https://spreadsheets.google.com/feeds/list/" +
@@ -40,6 +40,7 @@ function parseJson(json) {
 
     var eventData = {
       start_date: {
+        display_date: rowData.day,
         day: rowData.day,
         format: "full",
         format_short: "full_short",
@@ -47,11 +48,12 @@ function parseJson(json) {
         year: rowData.year
       },
       end_date: {
+        display_date: rowData.endday,
         day: rowData.endday,
         format: "full",
         format_short: "full_short",
         month: rowData.endmonth,
-        year: rowData.endyear
+        year: rowData.year
       },
       text: {
         headline: rowData.headline,
@@ -68,5 +70,5 @@ function parseJson(json) {
 
     return eventData;
   });
-  return { title: data[0], events: data.slice(1) };
+  return { events: data };
 }
