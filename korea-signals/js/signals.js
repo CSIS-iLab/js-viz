@@ -216,7 +216,7 @@ function addText() {
         ? textData[d][0].displayDate
         : formattedStartDate +
           (startDate.getDay() !== endDate.getDay()
-            ? " to " + formattedEndDate
+            ? " – " + formattedEndDate
             : "");
 
       return (
@@ -310,7 +310,7 @@ function setTooltipContent(data, row) {
       ? textData[index][0].displayDate
       : formattedStartDate +
         (startDate.getDay() !== endDate.getDay()
-          ? " to " + formattedEndDate
+          ? " – " + formattedEndDate
           : "");
 
     var content =
