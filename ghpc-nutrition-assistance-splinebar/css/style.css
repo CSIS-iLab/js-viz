@@ -26,11 +26,12 @@ h4 span {
   width: 12px;
 }
 h5 {
+  -ms-flex-align: center;
   align-items: center;
   color: #333;
+  display: -ms-flexbox;
   display: flex;
   font-weight: normal;
-  text-transform: uppercase;
 }
 h5 span.stat {
   margin-right: 6px;
@@ -92,17 +93,27 @@ select:focus {
   border-bottom: 2px solid red;
   outline: none;
 }
-label {
+section header label {
+  -ms-grid-column: 1;
+  -ms-flex-align: center;
   align-items: center;
+  display: -ms-flexbox;
   display: flex;
   font-size: 0.8em;
   line-height: 2em;
   text-transform: uppercase;
   white-space: nowrap;
 }
+
+.statistic {
+  -ms-grid-column: 3;
+}
 section header {
+  display: -ms-grid;
   display: grid;
+  -ms-grid-columns: auto;
   grid-template-columns: auto;
+  -ms-flex-pack: center;
   justify-content: center;
   margin: 0 auto 1em;
   max-width: calc(100% - 50px);
@@ -124,6 +135,7 @@ select {
 
 @media screen and (min-width: 768px) {
   section header {
+    -ms-grid-columns: auto auto auto;
     grid-template-columns: auto auto;
     justify-content: space-between;
   }

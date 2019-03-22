@@ -4,14 +4,11 @@ var continents = {
   EU: "Europe",
   ME: "The Middle East"
 };
-
 var spreadsheetID = "12_yhWuslrui9_kW57-HwySPk9kv1Mp2VlAYHUo5QWO8";
-
 var translationsURL =
   "https://spreadsheets.google.com/feeds/list/" +
   spreadsheetID +
   "/1/public/values?alt=json";
-
 fetch(translationsURL)
   .then(function(response) {
     return response.json();
@@ -27,6 +24,7 @@ function parseData(rawData) {
     var countryData = {};
     Object.keys(row).forEach(function(c) {
       var column = c;
+
       if (column.indexOf("gsx$") > -1) {
         var columnName = column.replace("gsx$", "");
         countryData[columnName] = row[column]["$t"];
@@ -34,7 +32,6 @@ function parseData(rawData) {
     });
     return countryData;
   });
-
   return data;
 }
 
@@ -42,6 +39,7 @@ var tooltip = {
   show: function show(content) {
     var yPos = event.pageY;
     var xPos = event.pageX;
+
     if (xPos + 10 > document.body.clientWidth - 215) {
       xPos = document.body.clientWidth + 5 - 215;
     }
@@ -51,8 +49,8 @@ var tooltip = {
       .duration(200)
       .style("opacity", 1)
       .on("end", function() {
-        tooltipEl.classed("isActive", true);
-        // tooltipEl.select('.tooltip-close').on('click', this.hide)
+        tooltipEl.classed("isActive", true); // tooltipEl.select('.tooltip-close').on('click', this.hide)
+
         tooltipEl.on("click", this.hide);
       });
     tooltipEl
@@ -71,9 +69,11 @@ var tooltip = {
     var content = '<ul class="tooltip-list">';
     component.forEach(function(item, index) {
       var cssClass = null;
+
       if (item.class) {
         cssClass = item.class;
       }
+
       var label = Object.keys(item)[0];
       content +=
         '<li class="' +
@@ -88,11 +88,8 @@ var tooltip = {
     return content;
   }
 };
-
 var width, height;
-
 var svg, labels, circles, circleSize;
-
 var budgets;
 var meanBudget, budgetExtent, budgetScaleX, budgetScaleY;
 var regions;
@@ -109,10 +106,8 @@ function init() {
     min: Math.min(window.innerWidth / 144, 8.75),
     max: Math.min(window.innerWidth / 30, 42)
   };
-
   width = Math.min(900, window.innerWidth - 10);
   height = Math.max(width * 0.6, 535);
-
   createBubbleChart();
 }
 
@@ -124,7 +119,6 @@ function createBubbleChart() {
   budgets = countries.map(function(country) {
     return +country.budget;
   });
-
   meanBudget = d3.mean(budgets);
   budgetExtent = d3.extent(budgets);
   regions = d3.set(
@@ -139,24 +133,19 @@ function createBubbleChart() {
   regionColorScale = d3
     .scaleOrdinal(["#004165", "#4C8984", "#75baa9", "#0064a6"])
     .domain(regions.values());
-
   circleRadiusScale = d3
     .scaleSqrt()
     .domain(budgetExtent)
     .range([circleSize.min, circleSize.max]);
-
   fontScale = d3
     .scaleSqrt()
     .domain(budgetExtent)
     .range([0.3, 1]);
-
   labelMarginScale = d3
     .scaleSqrt()
     .domain(budgetExtent)
     .range([2, 6]);
-
   forceStrength = 0.045;
-
   createSVG();
   toggleRegionKey();
   createForces();
@@ -167,14 +156,12 @@ function createBubbleChart() {
 
 function createSVG() {
   var svgNodes = document.querySelectorAll(".chart").length;
-
   svg = svgNodes
     ? d3.select(".chart")
     : d3
         .select("#bubble-chart")
         .append("svg")
         .attr("class", "chart");
-
   svg.attr("width", width).attr("height", height);
 }
 
@@ -183,7 +170,6 @@ function toggleRegionKey() {
     keyElementHeight = 30;
   var onScreenYOffset = keyElementHeight * 1.5,
     offScreenYOffset = 30;
-
   createRegionKey();
 
   function createRegionKey() {
@@ -191,9 +177,7 @@ function toggleRegionKey() {
       .scaleBand()
       .domain(regions.values())
       .range([70, width - 30 / 2]);
-
     var regionKeyNode = document.querySelectorAll(".region-key").length;
-
     var regionKeys = regionKeyNode
       ? d3.selectAll(".region-key")
       : svg
@@ -205,19 +189,16 @@ function toggleRegionKey() {
             return "region-key-" + d;
           })
           .attr("y", height - onScreenYOffset);
-
     regionKeys.each(function(g, gi, nodes) {
       var regionKeyColorNodes = document.querySelectorAll(
         ".region-key-color-" + g
       ).length;
-
       var regionKeyColor = regionKeyColorNodes
         ? d3.selectAll(".region-key-color-" + g)
         : d3
             .select(nodes[gi])
             .append("rect")
             .attr("class", "region-key-color-" + g);
-
       regionKeyColor
         .attr("width", keyElementWidth)
         .attr("height", keyElementHeight)
@@ -228,11 +209,9 @@ function toggleRegionKey() {
         .attr("fill", function(d) {
           return regionColorScale(d);
         });
-
       var regionKeyLabelNodes = document.querySelectorAll(
         ".region-key-label-" + g
       ).length;
-
       var regionKeyLabels = regionKeyLabelNodes
         ? d3.selectAll(".region-key-label-" + g)
         : d3
@@ -242,7 +221,6 @@ function toggleRegionKey() {
             .attr("text-anchor", "middle")
             .attr("font-size", ".7rem")
             .attr("fill", "white");
-
       regionKeyLabels
         .attr("x", function(d) {
           var val = regionKeyScale(d) + keyElementWidth / 2;
@@ -258,10 +236,8 @@ function toggleRegionKey() {
 
 function createCircles() {
   var formatBudget = d3.format(",");
-
   var circleContainerNodes = document.querySelectorAll(".circle-container")
     .length;
-
   var circleContainers = circleContainerNodes
     ? d3.selectAll(".circle-container")
     : svg
@@ -270,18 +246,15 @@ function createCircles() {
         .enter()
         .append("g")
         .attr("class", "circle-container");
-
   circleContainers.each(function(g, gi, nodes) {
     var circleNodes = document.querySelectorAll(".circle-" + g.countrycode)
       .length;
-
     var circleSVG = circleNodes
       ? d3.selectAll(".circle-" + g.countrycode)
       : d3
           .select(nodes[gi])
           .append("circle")
           .attr("class", "circle-" + g.countrycode);
-
     circleSVG
       .attr("r", function(d) {
         return circleRadiusScale(d.budget);
@@ -289,10 +262,8 @@ function createCircles() {
       .attr("fill", function(d) {
         return regionColorScale(d.regioncode);
       });
-
     var labelNodes = document.querySelectorAll(".label-" + g.countrycode)
       .length;
-
     var labelSVG = labelNodes
       ? d3.selectAll(".label-" + g.countrycode)
       : d3
@@ -301,7 +272,6 @@ function createCircles() {
           .attr("text-anchor", "middle")
           .attr("class", "label")
           .attr("fill", "white");
-
     labelSVG
       .attr("font-size", function(d) {
         return fontScale(d.budget) + "rem";
@@ -318,10 +288,8 @@ function createCircles() {
     })
     .on("mouseout", function(d) {
       updateCountryInfo();
-
       tooltip.hide();
     });
-
   labels = svg
     .selectAll(".label")
     .on("mouseover", function(d) {
@@ -335,7 +303,6 @@ function createCircles() {
 
   function updateTooltip(d) {
     if (window.innerWidth < 768) return;
-
     var tooltipContent =
       '<div><span style="font-size:18px;color:' +
       regionColorScale(d.regioncode) +
@@ -344,17 +311,17 @@ function createCircles() {
       "</b><br/>$" +
       formatBudget(d.budget) +
       "</div>";
-
     tooltipEl.style("border", regionColorScale(d.regioncode) + " 1px solid");
-
     tooltip.show(tooltipContent);
   }
 
   function updateCountryInfo(country) {
     var info = "";
+
     if (country) {
       info = country.countryname + ": $" + formatBudget(country.budget);
     }
+
     d3.select("#country-info").html(info);
   }
 }
@@ -364,17 +331,14 @@ function createForces() {
     return continents[regionCode];
   });
   var scaledBudgetMargin = circleSize.max;
-
   budgetScaleX = d3
     .scaleBand()
     .domain(regionNamesDomain)
     .range([30, width - 30]);
-
   budgetScaleY = d3
     .scaleLog()
     .domain(budgetExtent)
     .range([height - 40 - scaledBudgetMargin, scaledBudgetMargin * 2]);
-
   var centerCirclesInScaleBandOffset = budgetScaleX.bandwidth() / 2;
   return {
     x: d3
@@ -386,7 +350,6 @@ function createForces() {
         );
       })
       .strength(forceStrength * 1.3),
-
     y: d3
       .forceY(function(d) {
         return budgetScaleY(d.budget);
@@ -400,11 +363,9 @@ function createForceSimulation() {
     .forceSimulation()
     .force("x", d3.forceX(width / 2).strength(forceStrength))
     .force("y", d3.forceY(width / 2).strength(forceStrength));
-
   forceSimulation.stop();
   forceSimulation.restart();
   forceSimulation.tick();
-
   forceSimulation.nodes(countries).on("tick", function() {
     circles
       .attr("cx", function(d) {
@@ -413,7 +374,6 @@ function createForceSimulation() {
       .attr("cy", function(d) {
         return d.y;
       });
-
     labels
       .attr("x", function(d) {
         return d.x - 50;
@@ -434,26 +394,21 @@ function createBudgetForces() {
     .force("y", createForces().y)
     .force("collide", d3.forceCollide(forceCollide))
     .alphaTarget(0.5);
-
   toggleBudgetAxes();
 
   function toggleBudgetAxes() {
     var onScreenYOffset = 40,
       offScreenYOffset = 30;
-
     createAxes();
 
     function createAxes() {
       var numberOfTicks = 10,
         tickFormat = ".0s";
-
       var yAxis = d3.axisLeft(budgetScaleY).ticks(numberOfTicks, tickFormat);
       var yAxisNode = document.querySelectorAll(".yAxis").length;
-
       var yAxisSVG = yAxisNode
         ? d3.select(".yAxis")
         : svg.append("g").attr("class", "yAxis");
-
       yAxisSVG
         .call(yAxis)
         .attr("transform", "translate(" + offScreenYOffset + 40 + ",0)")

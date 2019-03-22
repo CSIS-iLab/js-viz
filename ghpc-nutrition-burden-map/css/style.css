@@ -91,8 +91,11 @@ body {
 
 .legend {
   margin: 0 auto 1em;
+  display: -ms-grid;
   display: grid;
+  -ms-flex-pack: distribute;
   justify-content: space-around;
+  -ms-grid-columns: auto auto auto auto;
   grid-template-columns: repeat(4, auto);
   list-style-type: none;
   padding-left: 0;
@@ -108,10 +111,18 @@ body {
 }
 
 .legend li:nth-of-type(1) {
+  -ms-grid-column: 1;
   font-weight: bold;
   margin-right: 0;
 }
 .legend li:nth-of-type(2) {
+  -ms-grid-column: 2;
+}
+.legend li:nth-of-type(3) {
+  -ms-grid-column: 3;
+}
+.legend li:nth-of-type(4) {
+  -ms-grid-column: 4;
 }
 
 .legend li span {
@@ -132,6 +143,7 @@ body {
 
 @media screen and (max-width: 500px) {
   .legend {
+    -ms-grid-columns: 1fr;
     grid-template-columns: 1fr;
     max-width: 133px;
   }

@@ -6,10 +6,10 @@ var allSeries = {},
       "Children reached by nutrition programs or nutrition-specific interventions",
     anemia: " of children have anemia",
     women: " of women have anemia",
-    stunting: function(country) {
+    stunting: function stunting(country) {
       return window.innerWidth < 768
         ? " of children are stunted"
-        : ` of children in ${country} are stunted`;
+        : " of children in ".concat(country, " are stunted");
     }
   },
   report = {
@@ -24,9 +24,7 @@ var allSeries = {},
     Tanzania: " (2015–2016)",
     Uganda: " (2016)"
   },
-  colors = ["#df4652", "#67bce2", "#115175", "#3491C3"];
-
-// webshims.setOptions("forms", {
+  colors = ["#df4652", "#67bce2", "#115175", "#3491C3"]; // webshims.setOptions("forms", {
 //   customDatalist: true
 // });
 // webshims.polyfill("forms");
@@ -34,52 +32,38 @@ var allSeries = {},
 Highcharts.data({
   googleSpreadsheetKey: "1RXsxwg_tns3CICc1ZyYX3PEucq_RVMPDihn2y1Xs5jk",
   googleSpreadsheetWorksheet: 1,
-  complete: function(data) {
+  complete: function complete(data) {
     var fundingSeries;
-
     var countrySeries = data.series.find(function(series) {
       return series.name === "country";
     });
-
     countrySeries.data.forEach(function(country, x) {
       allSeries[country[1]] = allSeries[country[1]] || {};
-
       fundingSeries = data.series.find(function(series) {
         return series.name === "funding";
       });
-
       ["stunting"].forEach(function(metric) {
         var programsSeries = data.series.find(function(series) {
           return series.name === metric;
         });
-
         allSeries[country[1]][metric] = allSeries[country[1]][metric] || {};
-
         allSeries[country[1]][metric].series =
           allSeries[country[1]][metric].series || [];
-
         allSeries[country[1]][metric] = allSeries[country[1]][metric] || {};
-
         allSeries[country[1]][metric].series[0] =
           allSeries[country[1]][metric].series[0] || {};
-
         allSeries[country[1]][metric].series[0].data =
           allSeries[country[1]][metric].series[0].data || [];
-
         allSeries[country[1]][metric].series[0].data.push(
           programsSeries.data[x]
         );
       });
-
       allSeries[country[1]]["splinebar"] =
         allSeries[country[1]]["splinebar"] || {};
-
       allSeries[country[1]]["splinebar"].series =
         allSeries[country[1]]["splinebar"].series || [];
-
       allSeries[country[1]]["splinebar"].series[2] =
         allSeries[country[1]]["splinebar"].series[2] || {};
-
       allSeries[country[1]]["splinebar"].series[2].name = "Funding";
       allSeries[country[1]]["splinebar"].series[2].color = colors[0];
       allSeries[country[1]]["splinebar"].series[2].dataLabels = {
@@ -97,25 +81,18 @@ Highcharts.data({
           fontSize: "14px"
         }
       };
-
       allSeries[country[1]]["splinebar"].series[2].yAxis = 0;
-
       allSeries[country[1]]["splinebar"].series[2].data =
         allSeries[country[1]]["splinebar"].series[2].data || [];
-
       allSeries[country[1]]["splinebar"].series[2].data.push(
         fundingSeries.data[x]
       );
-
       var patternArray = [
         "M 0 0 L 7.5 7.5 M 6.5 -1 L 8.5 1 M -1 6.5 L 1 8.5",
         "M 0 7.5 L 7.5 0 M -1 1 L 1 -1 M 6.5 8.5 L 8.5 6.5"
       ];
-
       var selectedSeries = ["vitamin", "combined"].map(function(metric, y) {
-        var color = colors[y + 1];
-
-        //  {
+        var color = colors[y + 1]; //  {
         //   pattern: {
         //     color: colors[y + 1],
         //     path: {
@@ -129,7 +106,6 @@ Highcharts.data({
 
         allSeries[country[1]]["splinebar"].series[y] =
           allSeries[country[1]]["splinebar"].series[y] || {};
-
         allSeries[country[1]]["splinebar"].series[y].name = legend[metric];
         allSeries[country[1]]["splinebar"].series[y].type = "column";
         allSeries[country[1]]["splinebar"].series[y].color = color;
@@ -138,27 +114,21 @@ Highcharts.data({
             stacking: "normal"
           }
         };
-
         allSeries[country[1]]["splinebar"].series[y].yAxis = 1;
-
         allSeries[country[1]]["splinebar"].series[y].data =
           allSeries[country[1]]["splinebar"].series[y].data || [];
-
         var metricData = data.series.find(function(series) {
           return series.name === metric;
         });
-
         allSeries[country[1]]["splinebar"].series[y].data.push(
           metricData.data[x]
         );
       });
     });
-
     init("Bangladesh");
   }
-});
+}); // $("input").on("input", function() {
 
-// $("input").on("input", function() {
 document.querySelector("select").addEventListener("input", function(event) {
   var container = document.querySelector("#container");
   container.dataset.country = event.target.value;
@@ -171,20 +141,15 @@ document.querySelector("select").addEventListener("input", function(event) {
 
 function init(country) {
   var container = document.querySelector("#container");
-
   makeSparkline(
     container.querySelector(".chart"),
     allSeries[country]["splinebar"].series,
     3
   );
-
   var statistics = Array.from(container.querySelectorAll(".statistic figure"));
-
   statistics.forEach(function(figure, figureIndex) {
     var metric = figure.dataset.metric;
-
     var stat = allSeries[country][metric].series[0].data[1][1];
-
     figure.innerHTML = stat
       ? '<h5><span class="stat">' +
         stat +
@@ -246,11 +211,10 @@ function makeSparkline(figure, series, index) {
           }
         },
         labels: {
-          formatter: function() {
+          formatter: function formatter() {
             var value = Math.round((this.value / 1000000) * 10) / 10;
-            return `${value}M`;
+            return "".concat(value, "M");
           },
-
           endOnTick: false,
           reversedStacks: true
         }
@@ -260,12 +224,10 @@ function makeSparkline(figure, series, index) {
       column: {
         groupPadding: 0.25,
         pointWidth: 50,
-        borderWidth: 0
-        // borderColor: colors[1]
+        borderWidth: 0 // borderColor: colors[1]
       }
     },
     series: series,
-
     tooltip: {
       borderColor: "black",
       style: {
@@ -275,45 +237,47 @@ function makeSparkline(figure, series, index) {
       useHTML: true,
       headerFormat:
         "<span style=\"font-size: 18px;text-align:center;margin-bottom: 5px;font-weight: bold;font-family: 'Roboto', arial, sans-serif;\">{point.key}</span>",
-      pointFormatter: function() {
+      pointFormatter: function pointFormatter() {
         var activeSeries = this.series.name;
         var index = this.index;
         var year = this.x;
         var series = this.series.chart.series;
-
         var names = [legend["funding"], legend["vitamin"], legend["combined"]];
-
         var infos = names.map(function(name) {
           var s = series.find(function(s) {
             return s.name === name;
           });
           return {
-            name,
+            name: name,
             color: s.color.pattern ? s.color.pattern.color : s.color,
             y: s.data[index].y,
-            formatter: function(point) {
+            formatter: function formatter(point) {
               return s.name === "Funding"
-                ? `$${point.y}M`
+                ? "$".concat(point.y, "M")
                 : !point.y
-                  ? `Data Unavailable for ${year}`
-                  : `<br>${Math.round((point.y / 1000000) * 10) /
-                      10}M children under 5`;
+                  ? "Data Unavailable for ".concat(year)
+                  : "<br>".concat(
+                      Math.round((point.y / 1000000) * 10) / 10,
+                      "M children under 5"
+                    );
             }
           };
         });
-
         var textContent = infos
           .filter(function(info) {
             return info.name === activeSeries;
           })
           .map(function(info) {
-            return `<strong><span style="color:${
-              info.color
-            }">\u25CF </span> ${info.name}</strong>: <span style="font-size: 14px;">${info.formatter(info)}</span>`;
+            return '<strong><span style="color:'
+              .concat(info.color, '">\u25CF </span> ')
+              .concat(info.name, '</strong>: <span style="font-size: 14px;">')
+              .concat(info.formatter(info), "</span>");
           })
           .join("");
-
-        return `<div style="width:200px;white-space:normal !important;">${textContent}</div>`;
+        return '<div style="width:200px;white-space:normal !important;">'.concat(
+          textContent,
+          "</div>"
+        );
       }
     },
     legend: {
@@ -324,12 +288,11 @@ function makeSparkline(figure, series, index) {
         text:
           '<span style="font-size: 12px; color: #808080; font-weight: normal">Click to hide</span>'
       },
-
       itemMarginBottom: 12,
       itemStyle: {
         fontSize: "1.1em",
-        fontWeight: "normal",
-        textTransform: "uppercase"
+        fontWeight: "normal"
+        // textTransform: "uppercase"
       },
       layout: "vertical",
       y: 12,
@@ -360,16 +323,17 @@ function makeSparkline(figure, series, index) {
             },
             xAxis: {
               labels: {
-                formatter: e => {
-                  return `'${e.value.toString().replace(20, "")}`;
+                formatter: function formatter(e) {
+                  return "'".concat(e.value.toString().replace(20, ""));
                 }
               }
             },
             legend: {
-              labelFormatter: function() {
-                return `<div style="width:calc(100vw - 100px) !important;white-space:normal !important;margin-top:-18px;">${
-                  this.name
-                }</div>`;
+              labelFormatter: function labelFormatter() {
+                return '<div style="width:calc(100vw - 100px) !important;white-space:normal !important;margin-top:-18px;">'.concat(
+                  this.name,
+                  "</div>"
+                );
               },
               itemMarginBottom: 12,
               itemStyle: {
@@ -402,10 +366,11 @@ function makeSparkline(figure, series, index) {
               }
             },
             legend: {
-              labelFormatter: function() {
-                return `<div style="width:calc(100vw - 100px) !important;white-space:normal !important;margin-top:-12px;">${
-                  this.name
-                }</div>`;
+              labelFormatter: function labelFormatter() {
+                return '<div style="width:calc(100vw - 100px) !important;white-space:normal !important;margin-top:-12px;">'.concat(
+                  this.name,
+                  "</div>"
+                );
               },
               itemMarginBottom: 12,
               itemStyle: {
@@ -463,7 +428,7 @@ function makeSparkline(figure, series, index) {
       ]
     }
   });
-  let resizeEvent = window.document.createEvent("UIEvents");
+  var resizeEvent = window.document.createEvent("UIEvents");
   resizeEvent.initUIEvent("resize", true, false, window, 0);
   window.dispatchEvent(resizeEvent);
 }

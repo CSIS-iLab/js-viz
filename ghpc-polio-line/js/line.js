@@ -1,66 +1,84 @@
 var series = [];
-
-var dataObj = { data: [], labels: [] };
-
+var dataObj = {
+  data: [],
+  labels: []
+};
 var geoData, chart, max, isVisible;
-
 Highcharts.data({
   googleSpreadsheetKey: "12_yhWuslrui9_kW57-HwySPk9kv1Mp2VlAYHUo5QWO8",
   googleSpreadsheetWorksheet: 2,
   switchRowsAndColumns: true,
-  parsed: function(col) {
-    var endemic = col.filter(c => c[9] === "x");
-    var notEndemic = col.filter(c => c[9] !== "x");
-
-    endemic.forEach(c => {
+  parsed: function parsed(col) {
+    var endemic = col.filter(function(c) {
+      return c[9] === "x";
+    });
+    var notEndemic = col.filter(function(c) {
+      return c[9] !== "x";
+    });
+    endemic.forEach(function(c) {
       var row = {};
       row.type = "line";
       row.name = c[0];
+
       switch (row.name) {
         case "Afghanistan":
           row.color = "#004165";
           break;
+
         case "Nigeria":
           row.color = "#EDA27C";
           break;
+
         case "Pakistan":
           row.color = "#75baa9";
           break;
       }
 
-      row.data = c.slice(1, c.length - 1).map((c, i) => {
-        return { y: c, x: i + 2010 };
+      row.data = c.slice(1, c.length - 1).map(function(c, i) {
+        return {
+          y: c,
+          x: i + 2010
+        };
       });
       row.showInLegend = true;
       row.visible = true;
-
-      row = { ...row, marker: { symbol: "circle" } };
+      row = {
+        ...row,
+        marker: {
+          symbol: "circle"
+        }
+      };
       series.push(row);
     });
-
-    notEndemic.forEach((c, i) => {
+    notEndemic.forEach(function(c, i) {
       var row = {};
       row.type = "line";
       row.name = c[0];
-      row.data = c.slice(1, c.length - 1).map((c, i) => {
-        return { y: c, x: i + 2010 };
+      row.data = c.slice(1, c.length - 1).map(function(c, i) {
+        return {
+          y: c,
+          x: i + 2010
+        };
       });
       row.showInLegend = false;
       row.visible = false;
-      row = { ...row, marker: { symbol: "square" } };
-
+      row = {
+        ...row,
+        marker: {
+          symbol: "square"
+        }
+      };
       series.push(row);
     });
-
-    notEndemic.forEach((c, i) => {
+    notEndemic.forEach(function(c, i) {
       if ([0, 1, 2, 3].includes(i)) {
         return;
       }
+
       document.querySelector(
         "datalist#countries"
-      ).innerHTML += `<option value="${c[0]}">`;
+      ).innerHTML += '<option value="'.concat(c[0], '">');
     });
-
     return renderLine(series);
   }
 });
@@ -72,10 +90,13 @@ function renderLine(data) {
       type: "line",
       marginBottom: 95
     },
-    title: { text: "" },
-
+    title: {
+      text: ""
+    },
     yAxis: {
-      title: { text: "Surveillance Score" },
+      title: {
+        text: "Surveillance Score"
+      },
       endOnTick: false,
       tickInterval: 25,
       max: 104,
@@ -99,11 +120,10 @@ function renderLine(data) {
       useHTML: true,
       y: 15,
       x: -18,
-
       align: "bottom",
       layout: "horizontal",
-      labelFormatter: function() {
-        return `${this.name}`;
+      labelFormatter: function labelFormatter() {
+        return "".concat(this.name);
       }
     },
     plotOptions: {
@@ -114,7 +134,7 @@ function renderLine(data) {
       },
       series: {
         events: {
-          legendItemClick: function(e, f) {
+          legendItemClick: function legendItemClick(e, f) {
             if (
               ["Afghanistan", "Nigeria", "Pakistan"].indexOf(e.target.name) < 0
             ) {
@@ -125,8 +145,10 @@ function renderLine(data) {
                 },
                 true
               );
-
-              max = chart2.series.filter(s => s.visible).length > 5;
+              max =
+                chart2.series.filter(function(s) {
+                  return s.visible;
+                }).length > 5;
 
               if (!max) {
                 input.disabled = false;
@@ -135,7 +157,10 @@ function renderLine(data) {
               return false;
             }
 
-            max = chart2.series.filter(s => s.visible).length > 5;
+            max =
+              chart2.series.filter(function(s) {
+                return s.visible;
+              }).length > 5;
 
             if (!max) {
               input.disabled = false;
@@ -155,7 +180,6 @@ function renderLine(data) {
         var color = this.color;
         var x = this.x;
         var y = this.y;
-
         return (
           '<div><span style="font-size:18px;color:' +
           color +
@@ -183,8 +207,8 @@ function renderLine(data) {
             xAxis: {
               categories: [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017],
               labels: {
-                formatter: e => {
-                  return `'${e.value.toString().replace(20, "")}`;
+                formatter: function formatter(e) {
+                  return "'".concat(e.value.toString().replace(20, ""));
                 }
               }
             },
@@ -206,8 +230,8 @@ function renderLine(data) {
               categories: [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017],
               labels: {
                 align: "center",
-                formatter: e => {
-                  return `'${e.value.toString().replace(20, "")}`;
+                formatter: function formatter(e) {
+                  return "'".concat(e.value.toString().replace(20, ""));
                 }
               }
             }
@@ -226,8 +250,7 @@ function renderLine(data) {
       ]
     }
   });
-
-  let resizeEvent = window.document.createEvent("UIEvents");
+  var resizeEvent = window.document.createEvent("UIEvents");
   resizeEvent.initUIEvent("resize", true, false, window, 0);
   window.dispatchEvent(resizeEvent);
 }
@@ -235,27 +258,32 @@ function renderLine(data) {
 var input = document.querySelector("#countrySearch");
 var submit = document.querySelector("#countrySearch ~ input");
 submit.setAttribute("disabled", "disabled");
-
 input.addEventListener("change", enable);
 input.addEventListener("keyup", enable);
 submit.addEventListener("click", search);
-
 var searchSeries, visibleSeries, isVisible;
 
 function enable() {
   submit.setAttribute("disabled", "disabled");
-
-  searchSeries = chart2.series.find(
-    s => s.name.toLowerCase() === input.value.toLowerCase()
-  );
-
-  visibleSeries = chart2.series.filter(s => s.visible).map(s => s.name);
+  searchSeries = chart2.series.find(function(s) {
+    return s.name.toLowerCase() === input.value.toLowerCase();
+  });
+  visibleSeries = chart2.series
+    .filter(function(s) {
+      return s.visible;
+    })
+    .map(function(s) {
+      return s.name;
+    });
 
   if (searchSeries) {
     isVisible = visibleSeries.indexOf(searchSeries.name) > -1;
   }
 
-  max = chart2.series.filter(s => s.visible).length > 5;
+  max =
+    chart2.series.filter(function(s) {
+      return s.visible;
+    }).length > 5;
 
   if (!max && searchSeries && !isVisible) {
     input.disabled = false;
@@ -273,8 +301,10 @@ function search() {
       },
       true
     );
-
-    max = chart2.series.filter(s => s.visible).length > 5;
+    max =
+      chart2.series.filter(function(s) {
+        return s.visible;
+      }).length > 5;
     input.disabled = false;
 
     if (max) {

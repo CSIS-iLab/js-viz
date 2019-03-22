@@ -20,7 +20,6 @@ var chart,
       data: []
     }
   };
-
 fetch("https://code.highcharts.com/mapdata/custom/world-eckert3.geo.json")
   .then(function(resp) {
     return resp.json();
@@ -37,26 +36,21 @@ fetch("https://code.highcharts.com/mapdata/custom/world-eckert3.geo.json")
           var tileData = geoData.features.find(function(country) {
             return country.properties["iso-a3"] === code[1];
           });
-
           if (!tileData) return;
-
           var country = Object.assign({}, tileData);
           country.name = code[0];
           country["hc-key"] = country.properties["hc-key"];
           dataObj.all.data.push(country);
-
           Object.keys(dataObj).forEach(function(key) {
             if (code[2].toLowerCase().indexOf(key.toLowerCase()) > -1) {
               dataObj[key].data.push(country);
             }
           });
         });
-
         var patternArray = [
           "M 0 0 L 10 0 M 0 1 L 10 1 M 0 2 L 10 2 M 0 3 L 10 3 M 0 4 L 10 4 M 0 5 L 10 5 M 0 6 L 10 6 M 0 7 L 10 7 M 0 8 L 10 8 M 0 9 L 10 9 M 0 10 L 10 10",
           "M 0 3.75 L 5 3.75 M 0 3 L 5 3",
-          "M 3 0 L 3 5 M 4.5 0 L 4.5 5",
-          // "M 0 3 L 10 3 M 0 8 L 10 8",
+          "M 3 0 L 3 5 M 4.5 0 L 4.5 5", // "M 0 3 L 10 3 M 0 8 L 10 8",
           // "M 0 2.5 L 5 2.5 M 0 3 L 5 3",
           "M 0 10 L 10 0 M -1 1 L 1 -1 M 9 11 L 11 9",
           "M 0 0 L 10 10 M 9 -1 L 11 1 M -1 9 L 1 11",
@@ -66,12 +60,9 @@ fetch("https://code.highcharts.com/mapdata/custom/world-eckert3.geo.json")
           "M 10 3 L 5 3 L 5 0 M 5 10 L 5 7 L 0 7",
           "M 2 5 L 5 2 L 8 5 L 5 8 Z;M 0 0 L 5 10 L 10 0"
         ];
-
         var colorArray = ["#A3DEF9", "#115175", "#df4652"];
-
         var disabledSvg =
           '<svg xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="10" r="10" stroke="#bcbcbc" fill="#bcbcbc"/></svg>';
-
         var series = Object.keys(dataObj).map(function(key, index) {
           if (index === 3) {
             return Object.assign(dataObj[key], {
@@ -97,21 +88,18 @@ fetch("https://code.highcharts.com/mapdata/custom/world-eckert3.geo.json")
           var legendItems = Array.from(
             document.querySelectorAll(".legend li")
           ).slice(1);
-
           var enabledSvg =
             '<svg viewBox="0 0 5 5" xmlns="http://www.w3.org/2000/svg"> <path d="' +
             patternArray[index] +
             '" stroke="' +
             colorArray[index] +
             '" fill="transparent" stroke-width="2" /></svg>';
-
           var icon = legendItems[index].querySelector("span");
           icon.style.backgroundImage =
             "url('" +
             "data:image/svg+xml;base64," +
             window.btoa(enabledSvg) +
             "')";
-
           legendItems[index].addEventListener("click", function(item) {
             var series = chart.series.find(function(s) {
               return s.name === item.target.innerText;
@@ -140,7 +128,6 @@ fetch("https://code.highcharts.com/mapdata/custom/world-eckert3.geo.json")
               true
             );
           });
-
           var plotOptions = {
             name: key,
             mapData: Highcharts.maps["custom/world-eckert3"],
@@ -169,10 +156,8 @@ fetch("https://code.highcharts.com/mapdata/custom/world-eckert3.geo.json")
               }
             }
           };
-
           return Object.assign(dataObj[key], plotOptions);
         });
-
         renderMap(series);
       }
     });
@@ -213,12 +198,11 @@ function renderMap(series) {
           });
           if (found.geometry)
             burdens.push(
-              `&nbsp;\u25CF Over ${dataObj[key].percent} are ${
-                dataObj[key].label
-              }`
+              "&nbsp;\u25CF Over "
+                .concat(dataObj[key].percent, " are ")
+                .concat(dataObj[key].label)
             );
         });
-
         return (
           '<strong style="font-size: 14px;">' +
           this.name +
@@ -264,7 +248,6 @@ function renderMap(series) {
             chart: {
               height: "33%"
             },
-
             credits: {
               text: "CSIS | "
             }
@@ -279,7 +262,6 @@ function renderMap(series) {
             chart: {
               height: "50%"
             },
-
             credits: {
               align: "right",
               text: "CSIS | "
@@ -298,8 +280,7 @@ function renderMap(series) {
         }
       ]
     }
-  });
-  // var resizeEvent = window.document.createEvent("UIEvents");
+  }); // var resizeEvent = window.document.createEvent("UIEvents");
   // resizeEvent.initUIEvent("resize", true, false, window, 0);
   // window.dispatchEvent(resizeEvent);
 }
