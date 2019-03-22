@@ -273,6 +273,7 @@ function addTimeline() {
 
   var options = {
     backgroundColor: "#131A28",
+    height: 125,
     timeline: {
       groupByRowLabel: true,
       showRowLabels: false,
