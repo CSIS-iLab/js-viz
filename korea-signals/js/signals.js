@@ -225,7 +225,7 @@ function addText() {
         " | " +
         date +
         " </strong> <br> " +
-        description +
+        description.replace(/<a href=/gi, '<a target="_blank" href=') +
         " </p>"
       );
     });
