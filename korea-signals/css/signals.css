@@ -18,10 +18,16 @@ main {
   margin-bottom: 80px;
 }
 
-#spline,
+#spline {
+  margin-left: 50px;
+  margin-right: 40px;
+}
+
 #timeline {
-  margin-left: 80px;
-  margin-right: 80px;
+  background: white;
+  background: #131a28;
+  margin-left: 160px;
+  margin-right: 60px;
 }
 
 h2 {
@@ -34,13 +40,6 @@ h4 {
   margin-top: 50px;
   color: white;
 }
-
-#timeline {
-  background: white;
-  background: #131a28;
-  margin-left: 150px;
-}
-
 #timeline text {
   fill: #fff;
   font-family: "museo-sans", sans-serif;
