@@ -1,6 +1,6 @@
 var textData;
 
-Highcharts.chart(
+var chart = Highcharts.chart(
   "spline",
 
   {
@@ -240,7 +240,7 @@ function addText() {
 
 function addTimeline() {
   var container = document.getElementById("timeline");
-  var chart = new google.visualization.Timeline(container);
+  var timeline = new google.visualization.Timeline(container);
   var dataTable = new google.visualization.DataTable();
 
   dataTable.addColumn({
@@ -279,10 +279,14 @@ function addTimeline() {
       showRowLabels: false,
       showBarLabels: false,
       singleColor: "#ffc624"
+    },
+    hAxis: {
+      minValue: new Date(chart.xAxis[0].min),
+      maxValue: new Date(chart.xAxis[0].max)
     }
   };
-  chart.draw(dataTable, options);
-  google.visualization.events.addListener(chart, "onmouseover", function(e) {
+  timeline.draw(dataTable, options);
+  google.visualization.events.addListener(timeline, "onmouseover", function(e) {
     setTooltipContent(dataTable, e.row);
   });
 }
