@@ -56,7 +56,9 @@ h4 {
   fill: #666666;
   font-size: 11px;
 }
+
 .google-visualization-tooltip {
+  box-shadow: none !important;
   text-align: left;
   padding: 6px !important;
   background-color: rgba(255, 255, 255, 0.9) !important;

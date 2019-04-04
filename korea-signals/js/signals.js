@@ -147,7 +147,7 @@ function parseData(data) {
     })
     .map(function(d, i) {
       return {
-        date: d[0] + 18000000,
+        date: d[0],
         displayDate: dataObj["display dateData"][i],
         title: dataObj["titleData"][i],
         description: d[1]
