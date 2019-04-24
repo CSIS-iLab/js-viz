@@ -31,7 +31,7 @@ Highcharts.chart("container", {
   credits: {
     href: true,
     text:
-      '<a href="https://www.csis.org/programs/international-security-program/defending-democratic-institutions" target="_blank">CSIS Defending Democratic Institutions</a> | Source: <a href="http://statcounter.com" target="_blank">statcounter.com</a>'
+      "CSIS Defending Democratic Institutions | Source: Twitter Election Integrity Hub 2018 Dataset"
   },
   plotOptions: {
     pie: {
@@ -115,15 +115,15 @@ Highcharts.chart("container", {
           y: 6146,
           drilldown: null
         },
-        { name: "Lesser Targets", y: 32826, drilldown: "Lesser Targets" }
+        { name: "Other Languages", y: 32826, drilldown: "Other Languages" }
       ]
     }
   ],
   drilldown: {
     series: [
       {
-        name: "Lesser Targets",
-        id: "Lesser Targets",
+        name: "Other Languages",
+        id: "Other Languages",
         data: [
           ["Turkish", 3927],
           ["Dutch", 3541],
