@@ -845,9 +845,16 @@ input.highcharts-range-selector {
 text.highcharts-drilldown-data-label,
 .highcharts-drilldown-axis-label {
   cursor: pointer;
-  fill: #0095ab;
+  fill: #0a8672;
   font-weight: bold;
   /* text-decoration: underline; */
+  transition: all 0.3s ease-in-out;
+}
+
+.highcharts-drilldown-data-label text:hover,
+text.highcharts-drilldown-data-label:hover,
+.highcharts-drilldown-axis-label:hover {
+  fill: #67bce2;
 }
 
 /* No-data module */
