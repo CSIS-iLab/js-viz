@@ -139,7 +139,7 @@ a:focus {
 
 /* Credits */
 .highcharts-credits {
-  cursor: pointer;
+  /* cursor: pointer; */
   fill: #999999;
   font-size: 0.7em;
   transition: fill 250ms, font-size 250ms;
