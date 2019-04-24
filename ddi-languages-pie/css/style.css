@@ -27,7 +27,7 @@ body {
 
 .highcharts-point,
 .highcharts-data-label tspan {
-  cursor: pointer;
+  /* cursor: pointer; */
 }
 
 /* .highcharts-data-label tspan {
