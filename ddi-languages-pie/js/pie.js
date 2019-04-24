@@ -58,11 +58,15 @@ Highcharts.chart("container", {
       '<span style="color:{point.color}"> \u25CF</span> <span style="font-size: 13px;text-align:center;margin-bottom: 5px;font-weight: bold;font-family: \'Roboto\', arial, sans-serif;"> {point.key}</span><br/>',
 
     pointFormatter: function() {
-      var suffix = "%</b> of total<br/>";
+      var suffix = "% of total<br/>";
 
-      return this.series.options._levelNumber
-        ? (this.percentage / 10).toFixed(1) + suffix
-        : this.percentage.toFixed(1) + suffix;
+      var percentage = this.series.options._levelNumber
+        ? (this.percentage / 10).toFixed(1)
+        : this.percentage.toFixed(1);
+
+      return parseFloat(percentage, 10) < 0.5
+        ? percentage + suffix + "<br/>(" + this.y.toLocaleString() + " tweets)"
+        : percentage + suffix;
     }
   },
 
