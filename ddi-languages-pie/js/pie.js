@@ -31,7 +31,7 @@ Highcharts.chart("container", {
   credits: {
     href: true,
     text:
-      'CSIS| Source: <a href="http://statcounter.com" target="_blank">statcounter.com</a>'
+      '<a href="https://www.csis.org/programs/international-security-program/defending-democratic-institutions" target="_blank">CSIS Defending Democratic Institutions</a> | Source: <a href="http://statcounter.com" target="_blank">statcounter.com</a>'
   },
   plotOptions: {
     pie: {
