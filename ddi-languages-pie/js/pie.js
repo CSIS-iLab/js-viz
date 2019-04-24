@@ -20,7 +20,8 @@ Highcharts.chart("container", {
   chart: {
     type: "pie",
     margin: [10, 0, 50, 0],
-    styledMode: true
+    styledMode: true,
+    colorCount: 18
   },
   title: {
     text: ""

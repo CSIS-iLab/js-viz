@@ -264,13 +264,53 @@ g.highcharts-series,
 }
 
 .highcharts-color-8 {
-  fill: #0095ab;
-  stroke: #0095ab;
+  fill: #71c0e4;
+  stroke: #71c0e4;
+}
+.highcharts-color-9 {
+  fill: #7bc5e6;
+  stroke: #7bc5e6;
+}
+.highcharts-color-10 {
+  fill: #85c9e8;
+  stroke: #85c9e8;
+}
+.highcharts-color-11 {
+  fill: #8fceea;
+  stroke: #8fceea;
+}
+.highcharts-color-12 {
+  fill: #99d2ec;
+  stroke: #99d2ec;
+}
+.highcharts-color-13 {
+  fill: #a4d7ed;
+  stroke: #a4d7ed;
+}
+.highcharts-color-14 {
+  fill: #aedbef;
+  stroke: #aedbef;
+}
+.highcharts-color-15 {
+  fill: #b8e0f1;
+  stroke: #b8e0f1;
 }
 
-.highcharts-color-9 {
-  fill: #0095ab;
-  stroke: #0095ab;
+.highcharts-color-16 {
+  fill: #c2e4f3;
+  stroke: #c2e4f3;
+}
+.highcharts-color-17 {
+  fill: #cce9f5;
+  stroke: #cce9f5;
+}
+.highcharts-color-18 {
+  fill: #d6edf7;
+  stroke: #d6edf7;
+}
+.highcharts-drilldown-point {
+  fill: #a4d7ed;
+  stroke: #a4d7ed;
 }
 
 .highcharts-area {
