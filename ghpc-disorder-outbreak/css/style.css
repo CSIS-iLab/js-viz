@@ -1,0 +1,248 @@
+@import "https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css";
+
+body {
+  font-family: "Open Sans", Arial, Helvetica, sans-serif;
+  font-size: 16px;
+}
+
+.highcharts-title tspan {
+  font-size: 24px;
+}
+
+.title {
+  color: #333333;
+  font-size: 33px;
+  max-width: 1280px;
+  text-align: center;
+}
+
+.subtitle {
+  text-align: center;
+  color: #333333;
+  font-size: 16px;
+  max-width: 1280px;
+  margin-bottom: 1.5rem;
+  line-height: 1.4;
+}
+
+.highcharts-point,
+.highcharts-data-label tspan {
+  cursor: pointer;
+}
+
+/* .highcharts-data-label tspan {
+  fill: white;
+}
+.highcharts-data-label {
+  z-index: 99;
+} */
+
+#container,
+#container2,
+.heading,
+body {
+  width: 100%;
+  min-width: 190px;
+  /* max-width: calc(100vw - 36px); */
+}
+.highcharts-background {
+  fill: transparent;
+}
+
+#container,
+#container2,
+body {
+  margin: 0 auto;
+}
+
+#intro.heading {
+  margin: 0 auto;
+}
+
+@media screen and (max-width: 400px) {
+  .highcharts-tooltip {
+    visibility: hidden;
+  }
+  #labels .label {
+    display: none;
+  }
+}
+
+#play-controls {
+  margin-top: 1rem;
+  text-align: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  align-items: center;
+  /* justify-content: center; */
+}
+#play-controls * {
+  display: inline-block;
+  vertical-align: middle;
+}
+#play-controls > .label {
+  position: relative;
+  top: -0.5rem;
+}
+#play-pause-button {
+  position: relative;
+  top: -0.5rem;
+  background-color: #0faa91;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  font-size: 15px;
+  outline: none;
+  cursor: pointer;
+  margin-right: 2.5%;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+}
+
+#play-pause-button:before {
+  margin-left: 2px;
+}
+#play-pause-button:hover {
+  transition: all 0.3s ease-in-out;
+  background-color: #0a8672;
+}
+
+.highcharts-button-hover .highcharts-button-box {
+  transition: all 0.3s ease-in-out;
+  fill: #0a8672;
+}
+
+#play-range {
+  width: 100%;
+  position: relative;
+  z-index: 99;
+  cursor: pointer;
+  -webkit-appearance: none;
+  background-color: #bcbcbc;
+  height: 4px;
+  margin: 7px 0;
+  border-radius: 2px;
+}
+
+#range {
+  position: relative;
+  top: -10px;
+  margin: 2.5% 2.8% 2.5% 2.5%;
+  width: 85%;
+}
+
+#ticks {
+  position: absolute;
+  top: 5%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  left: 50%;
+  transform: translateX(-50%);
+
+  height: 1rem;
+  width: 98%;
+  margin: auto auto auto 0.3%;
+}
+
+#labels {
+  position: absolute;
+  top: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  left: 50%;
+  transform: translateX(-50%);
+
+  height: 1.5rem;
+  width: 90%;
+  margin: auto auto auto 0.5%;
+}
+#ticks .tick {
+  cursor: pointer;
+}
+
+.label {
+  transition: all 0.3s ease-in-out;
+  display: block;
+  height: 1.5rem;
+}
+
+.label.active,
+#ticks .label:hover {
+  color: #0faa91;
+  -webkit-box-shadow: inset -1px -6px 0 -2px #0faa91;
+  box-shadow: inset -1px -6px 0 -2px #0faa91;
+}
+
+.tick:not(:first-child) {
+  border-left: 1px solid #bcbcbc;
+}
+
+.tabletitle {
+  /* color: #404041; */
+  font-weight: 500;
+  font-size: 24px;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+.highcharts-title {
+  font-size: 24px;
+}
+
+.legend {
+  display: flex;
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.legend li {
+  white-space: nowrap;
+  margin: 0 3px;
+}
+
+.legend li:nth-of-type(2) {
+  width: 100%;
+  background: rgb(237, 162, 124); /* Old browsers */
+  background: -moz-linear-gradient(
+    left,
+    rgba(237, 162, 124, 1) 0%,
+    rgba(76, 137, 132, 1) 100%
+  ); /* FF3.6-15 */
+  background: -webkit-linear-gradient(
+    left,
+    rgba(237, 162, 124, 1) 0%,
+    rgba(76, 137, 132, 1) 100%
+  ); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(
+    to right,
+    rgba(237, 162, 124, 1) 0%,
+    rgba(76, 137, 132, 1) 100%
+  ); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eda27c', endColorstr='#4c8984',GradientType=1 ); /* IE6-9 */
+}
+
+@media screen and (max-width: 768px) {
+  #container,
+  #container2,
+  .heading,
+  body {
+    max-width: calc(100vw - 40px);
+  }
+
+  .legend {
+    /* flex-wrap: wrap; */
+  }
+}
