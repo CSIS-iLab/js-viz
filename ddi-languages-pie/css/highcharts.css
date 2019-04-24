@@ -146,8 +146,8 @@ a:focus {
 }
 
 .highcharts-credits:hover {
-  fill: black;
-  font-size: 1em;
+  /* fill: black;
+  font-size: 1em; */
 }
 
 /* Tooltip */

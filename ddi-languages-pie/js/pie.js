@@ -29,7 +29,7 @@ Highcharts.chart("container", {
     text: ""
   },
   credits: {
-    href: true,
+    href: false,
     text:
       "CSIS Defending Democratic Institutions | Source: Twitter Election Integrity Hub 2018 Dataset"
   },
