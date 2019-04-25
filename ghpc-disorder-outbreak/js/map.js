@@ -141,8 +141,34 @@ fetch("https://code.highcharts.com/mapdata/custom/world-palestine.geo.json")
 
                 var yearColumn = b[4].toString().split("-");
 
-                yearColumn.forEach(function(y) {
-                  var pointIndex = dataObj.labels.indexOf(parseInt(y, 10));
+                if (yearColumn.length == 2) {
+                  var length =
+                    parseInt(yearColumn[1], 10) - parseInt(yearColumn[0], 10);
+
+                  for (var i = 0; i <= length; i++) {
+                    var pointIndex = dataObj.labels.indexOf(
+                      parseInt(yearColumn[0], 10) + i
+                    );
+
+                    if (b[0] === "Angola") console.log(pointIndex);
+
+                    countryPoint.sequence[pointIndex] =
+                      countryPoint.sequence[pointIndex] || {};
+
+                    countryPoint.sequence[pointIndex].value = pointValue;
+                    countryPoint.sequence[pointIndex].diseases = [
+                      { disease: b[5], cases: pointValue }
+                    ];
+
+                    countryPoint.sequence[pointIndex].year = parseInt(
+                      yearColumn[0],
+                      10
+                    );
+                  }
+                } else {
+                  var pointIndex = dataObj.labels.indexOf(
+                    parseInt(yearColumn[0], 10)
+                  );
 
                   countryPoint.sequence[pointIndex] =
                     countryPoint.sequence[pointIndex] || {};
@@ -151,8 +177,12 @@ fetch("https://code.highcharts.com/mapdata/custom/world-palestine.geo.json")
                   countryPoint.sequence[pointIndex].diseases = [
                     { disease: b[5], cases: pointValue }
                   ];
-                  countryPoint.sequence[pointIndex].year = parseInt(y, 10);
-                });
+                  countryPoint.sequence[pointIndex].year = parseInt(
+                    yearColumn[0],
+                    10
+                  );
+                }
+
                 dataObj.points.push(countryPoint);
               }
             });
