@@ -92,8 +92,8 @@ fetch("http://code.highcharts.com/mapdata/custom/world-palestine.geo.json")
                 return;
               }
 
-              var countryPointData = dataObj.base.find(function(d) {
-                return d[name] === b[0];
+              var countryPointData = dataObj.points.find(function(d) {
+                return d["name"] === b[0];
               });
 
               if (countryPointData) {
@@ -107,18 +107,31 @@ fetch("http://code.highcharts.com/mapdata/custom/world-palestine.geo.json")
                   countryPointData.sequence[pointIndex] =
                     countryPointData.sequence[pointIndex] || {};
 
-                  countryPointData.sequence[pointIndex].value += pointValue;
+                  if (countryPointData.sequence[pointIndex].value) {
+                    countryPointData.sequence[pointIndex].value += pointValue
+                      ? pointValue
+                      : 0;
+                  } else {
+                    countryPointData.sequence[pointIndex].value = pointValue
+                      ? pointValue
+                      : null;
+                  }
+                  countryPointData.sequence[pointIndex].diseases =
+                    countryPointData.sequence[pointIndex].diseases || [];
                   countryPointData.sequence[pointIndex].diseases.push(
                     b[5] + "(" + pointValue + ")"
                   );
                   countryPointData.sequence[pointIndex].year = parseInt(y, 10);
                 });
-
-                dataObj.points.push(countryPointData);
-                countryPointData.value = pointValue;
               } else {
                 var countryPoint = {};
-                countryPoint.sequence = Array(dataObj.labels.length);
+                countryPoint.sequence = dataObj.labels.map(function(year) {
+                  return {
+                    value: null,
+                    year
+                  };
+                });
+
                 countryPoint["name"] = b[0];
                 countryPoint["lat"] = b[1];
                 countryPoint["lon"] = b[2];
@@ -139,11 +152,10 @@ fetch("http://code.highcharts.com/mapdata/custom/world-palestine.geo.json")
                   ];
                   countryPoint.sequence[pointIndex].year = parseInt(y, 10);
                 });
-                countryPoint.value = pointValue;
                 dataObj.points.push(countryPoint);
               }
             });
-
+            console.log(dataObj.points);
             renderMap(dataObj);
           }
         });
@@ -232,23 +244,7 @@ function renderMap(data) {
         borderColor: "#bcbcbc",
         borderWidth: 1,
         nullColor: "transparent",
-        states: {
-          hover: {
-            borderColor: "black",
-            borderWidth: 2
-          }
-        },
-        dataLabels: {
-          enabled: false
-        }
-      },
-      {
-        // data: data.base,
-        mapData: Highcharts.maps["custom/world-palestine"],
-        joinBy: ["hc-key", "hc-key"],
-        borderColor: "#bcbcbc",
-        borderWidth: 1,
-        nullColor: "transparent",
+        showInLegend: false,
         states: {
           hover: {
             borderColor: "black",
@@ -295,15 +291,15 @@ function renderMap(data) {
     tooltip: {
       headerFormat: "",
       useHTML: true,
-      pointFormatter: function pointFormatter() {
-        return "";
-      }
+      // pointFormat: "Lat: {point.lat}<br>" + "Lon: {point.lon}<br>"
+      pointFormatter: pointFormatter,
+      nullFormatter: pointFormatter
     },
 
     motion: {
       enabled: true,
       labels: data.labels,
-      series: [0, 2],
+      series: [0, 1],
       updateInterval: 1250,
       axisLabel: "year",
       magnet: {
@@ -362,4 +358,61 @@ function renderMap(data) {
   let resizeEvent = window.document.createEvent("UIEvents");
   resizeEvent.initUIEvent("resize", true, false, window, 0);
   window.dispatchEvent(resizeEvent);
+}
+function pointFormatter() {
+  var point = this;
+  currentYear = document.querySelector(".label.active").innerText;
+  currentYear = parseInt(currentYear, 10);
+  var index = currentYear - 2006;
+
+  var fragilityData = this.series.chart.series.find(function(s) {
+    return s.name === "choropleth";
+  }).data;
+
+  var fragilityCountry = fragilityData.find(function(d) {
+    return d.id === point.id;
+  });
+
+  var fragilityValue = fragilityCountry
+    ? fragilityCountry.sequence[index].value
+    : null;
+
+  var outbreakData = this.series.chart.series.find(function(s) {
+    return s.name === "bubbles";
+  }).data;
+
+  var outbreakCountry = outbreakData.find(function(d) {
+    return d.name === point.name;
+  });
+
+  var outbreakValue = outbreakCountry
+    ? outbreakCountry.sequence[index].value
+    : null;
+  var outbreakDiseases = outbreakCountry
+    ? "<div>" +
+      outbreakCountry.sequence[index].diseases
+        .map(function(d) {
+          return "\u25CF " + d;
+        })
+        .join("") +
+      "</div>"
+    : null;
+
+  return (
+    '<div><span style="font-size:24px;color:' +
+    this.color +
+    '">\u25CF </span><b>' +
+    this.name +
+    " (" +
+    currentYear +
+    ")" +
+    "</b>" +
+    (fragilityValue ? " <br/><br/>Fragility Index: " + fragilityValue : "") +
+    " " +
+    (outbreakValue
+      ? " <br/><br/>Outbreaks: " + outbreakValue + "<br/>" + outbreakDiseases
+      : "") +
+    "<br/><br/>" +
+    "</div>"
+  );
 }

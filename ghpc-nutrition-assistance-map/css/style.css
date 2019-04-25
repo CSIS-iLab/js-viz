@@ -4,6 +4,11 @@ body {
   font-family: "Open Sans", Arial, Helvetica, sans-serif;
   font-size: 16px;
 }
+ul,
+li {
+  margin: 0 !important;
+  padding: 0 !important;
+}
 
 .highcharts-title tspan {
   font-size: 24px;
