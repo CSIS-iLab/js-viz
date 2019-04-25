@@ -52,18 +52,22 @@ thead {
   font-size: 16px;
   text-transform: uppercase;
 }
-tr.section td {
-  background-color: #bcbcbc;
+tr.section-fragility td {
+  background-color: #618bab;
+  color: white;
+}
+tr.section-outbreak td {
+  background-color: #b89e69;
   color: white;
 }
 td {
   padding: 6px;
   font-size: 12px;
 }
-tr:not(:last-of-type) td {
+tr:not(:last-of-type):not(.section) td {
   border-bottom: 2px solid #bcbcbc;
 }
-tr td:not(:last-of-type) {
+tr:not(.section) td:not(:last-of-type) {
   border-right: 2px solid #bcbcbc;
 }
 

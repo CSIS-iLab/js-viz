@@ -438,19 +438,19 @@ function pointFormatter() {
   table += "</tr>";
   table += "</thead>";
 
-  table += "<tr>";
+  table += '<tr class="section section-fragility">';
   table += "<td>Fragility Score</td>";
   table += "<td>" + fragilityValue + "</td>";
   table += "</tr>";
 
   if (outbreakValue) {
-    table += '<tr class="section">';
+    table += '<tr class="section section-outbreak">';
     table += "<td>Outbreaks</td>";
     table += "<td>Suspected Cases</td>";
     table += "</tr>";
     table += "<tr>";
-    table += "<td><strong>" + outbreakDiseases.length + "</strong></td>";
-    table += "<td><strong>" + outbreakValue + "</strong></td>";
+    table += "<td><strong>" + outbreakDiseases.length + " total</strong></td>";
+    table += "<td><strong>" + outbreakValue + " total</strong></td>";
     table += "</tr>";
 
     var outbreakRows = outbreakDiseases
@@ -459,7 +459,7 @@ function pointFormatter() {
           "<tr>" +
           "<td>" +
           o.disease +
-          " total</td>" +
+          "</td>" +
           "<td>" +
           o.cases +
           "</td>" +
