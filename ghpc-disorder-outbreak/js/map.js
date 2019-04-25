@@ -296,7 +296,7 @@ function renderMap(data) {
             },
 
             credits: {
-              text: "CSIS | "
+              text: "CSIS | WHO | Fund for Peace |  "
             }
           }
         },
@@ -312,7 +312,7 @@ function renderMap(data) {
 
             credits: {
               align: "right",
-              text: "CSIS | "
+              text: "CSIS | WHO | Fund for Peace |  "
             }
           }
         },
@@ -322,7 +322,8 @@ function renderMap(data) {
           },
           chartOptions: {
             credits: {
-              text: "CSIS Global Health Policy Center | "
+              text:
+                "CSIS Global Health Policy Center | World Health Organization | Fund for Peace | "
             }
           }
         }
@@ -400,7 +401,8 @@ function pointFormatter() {
     table += "</tr>";
     table += "<tr>";
     table += "<td><strong>" + outbreakDiseases.length + " total</strong></td>";
-    table += "<td><strong>" + outbreakValue + " total</strong></td>";
+    table +=
+      "<td><strong>" + outbreakValue.toLocaleString() + " total</strong></td>";
     table += "</tr>";
 
     var outbreakRows = outbreakDiseases
@@ -411,7 +413,7 @@ function pointFormatter() {
           o.disease +
           "</td>" +
           "<td>" +
-          o.cases +
+          o.cases.toLocaleString() +
           "</td>" +
           "</tr>"
         );
