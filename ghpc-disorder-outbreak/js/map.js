@@ -189,30 +189,30 @@ function renderMap(data) {
       dataClasses: [
         {
           to: 72,
-          color: "#efefef",
+          color: "#22415e",
           name: "Surveillance Score:"
         },
         {
           from: 72,
           to: 84,
-          color: "#EDA27C",
+          color: "#2B6178",
           name: window.innerWidth > 768 ? "Less than 25" : "< 25"
         },
         {
           from: 84,
           to: 96,
-          color: "#D79E7D",
+          color: "#326D83",
           name: window.innerWidth > 768 ? "Greater than 25" : "> 25"
         },
         {
           from: 96,
           to: 108,
-          color: "#C19B7F",
+          color: "#3A7A8D",
           name: window.innerWidth > 768 ? "Greater than 50" : "> 50"
         },
         {
           from: 108,
-          color: "#AB9780",
+          color: "#418698",
           name: window.innerWidth > 768 ? "Greater than 75" : "> 75"
         }
       ]
@@ -241,9 +241,7 @@ function renderMap(data) {
         name: "choropleth",
         mapData: Highcharts.maps["custom/world-palestine"],
         joinBy: ["hc-key", "hc-key"],
-        borderColor: "#bcbcbc",
         borderWidth: 1,
-        nullColor: "transparent",
         showInLegend: false,
         states: {
           hover: {
@@ -260,7 +258,7 @@ function renderMap(data) {
         name: "bubbles",
         type: "mapbubble",
         maxSize: "12%",
-        color: "#4C8984",
+        color: "#c89a49",
         borderColor: "white"
       }
     ],
@@ -271,9 +269,9 @@ function renderMap(data) {
         verticalAlign: "top",
         align: "right",
         theme: {
-          fill: "#0faa91",
+          fill: "#b89e69",
           "stroke-width": 0,
-          style: { color: "white" }
+          style: { color: "white", stroke: "#b89e69" }
         }
       },
       buttons: {

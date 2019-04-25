@@ -1,24 +1,56 @@
 @import "https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css";
-
+/* $color-white: #ffffff;
+$color-black: #000000;
+$color-dust: #b89e69;
+$color-warm-gray: #7d7d7d;
+$color-cool-gray: #bdc8d0;
+$color-light-brown: #d7c7a4;
+$color-dark-sand: #a58d5d;
+$color-dark-blue: #143459;
+$color-gray-brown: #4a4a4a;
+$color-slate: #5a6c7a;
+$color-light-silver: #bdc8d0;
+$color-silver: #d8d9dc;
+$color-dark-silver: #c4ccd2;
+$color-off-white: #f2f2f2;
+$color-gray: #999999;
+$color-dusty-lavender: #c3c2c3;
+$color-light-gray: #eaeaea;
+$color-beige: #efe6d0;
+$color-purple: #8e6c89;
+$color-dark-purple: #643b5e;
+$color-brown: #968f80;
+$color-dark-brown: #58544a;
+$color-orange: #f26522;
+$color-dark-orange: #be4911;
+$color-turquoise: #47acb1;
+$color-dark-turquoise: #2f7679;
+$color-yellow: #f5a623;
+$color-dark-yellow: #c18015;
+$color-dark-blue-gray: #0b1f37;
+$color-darkest-blue: #1c334f;
+$color-gray-blue: #314d6e; */
 body {
+  padding-top: 24px;
   font-family: "Open Sans", Arial, Helvetica, sans-serif;
   font-size: 16px;
+  background-color: #618bab;
+  color: #fff;
 }
 
-.highcharts-title tspan {
-  font-size: 24px;
+.header {
+  padding-left: 12px;
+  border-left: 6px solid #fff;
 }
 
 .title {
-  color: #333333;
+  text-transform: uppercase;
+
   font-size: 33px;
   max-width: 1280px;
-  text-align: center;
 }
 
 .subtitle {
-  text-align: center;
-  color: #333333;
   font-size: 16px;
   max-width: 1280px;
   margin-bottom: 1.5rem;
@@ -88,7 +120,7 @@ body {
 #play-pause-button {
   position: relative;
   top: -0.5rem;
-  background-color: #0faa91;
+  background-color: #b89e69;
   color: #fff;
   border: none;
   border-radius: 3px;
@@ -109,12 +141,12 @@ body {
 }
 #play-pause-button:hover {
   transition: all 0.3s ease-in-out;
-  background-color: #0a8672;
+  background-color: #a58d5d;
 }
 
 .highcharts-button-hover .highcharts-button-box {
   transition: all 0.3s ease-in-out;
-  fill: #0a8672;
+  fill: #a58d5d;
 }
 
 #play-range {
@@ -123,7 +155,7 @@ body {
   z-index: 99;
   cursor: pointer;
   -webkit-appearance: none;
-  background-color: #bcbcbc;
+  background-color: #fff;
   height: 4px;
   margin: 7px 0;
   border-radius: 2px;
@@ -164,7 +196,6 @@ body {
   justify-content: space-between;
   left: 50%;
   transform: translateX(-50%);
-
   height: 1.5rem;
   width: 90%;
   margin: auto auto auto 0.5%;
@@ -181,13 +212,13 @@ body {
 
 .label.active,
 #ticks .label:hover {
-  color: #0faa91;
-  -webkit-box-shadow: inset -1px -6px 0 -2px #0faa91;
-  box-shadow: inset -1px -6px 0 -2px #0faa91;
+  color: #fff;
+  -webkit-box-shadow: inset -1px -6px 0 -2px #fff;
+  box-shadow: inset -1px -6px 0 -2px #fff;
 }
 
 .tick:not(:first-child) {
-  border-left: 1px solid #bcbcbc;
+  border-left: 1px solid #fff;
 }
 
 .tabletitle {
@@ -215,21 +246,21 @@ body {
 
 .legend li:nth-of-type(2) {
   width: 100%;
-  background: rgb(237, 162, 124); /* Old browsers */
+  background: #2b6178; /* Old browsers */
   background: -moz-linear-gradient(
     left,
-    rgba(237, 162, 124, 1) 0%,
-    rgba(76, 137, 132, 1) 100%
+    #2b6178 0%,
+    #418698 100%
   ); /* FF3.6-15 */
   background: -webkit-linear-gradient(
     left,
-    rgba(237, 162, 124, 1) 0%,
-    rgba(76, 137, 132, 1) 100%
+    #2b6178 0%,
+    #418698 100%
   ); /* Chrome10-25,Safari5.1-6 */
   background: linear-gradient(
     to right,
-    rgba(237, 162, 124, 1) 0%,
-    rgba(76, 137, 132, 1) 100%
+    #2b6178 0%,
+    #418698 100%
   ); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eda27c', endColorstr='#4c8984',GradientType=1 ); /* IE6-9 */
 }
