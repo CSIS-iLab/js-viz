@@ -39,8 +39,8 @@ fetch("https://code.highcharts.com/mapdata/custom/world-palestine.geo.json")
             if (countryData) {
               var value;
 
-              if (parseInt(a[index + 1], 10) > -1) {
-                value = a[index + 1];
+              if (parseInt(a[index + 2], 10) > -1) {
+                value = a[index + 2];
               }
 
               if (parseInt(year, 10)) {
@@ -62,8 +62,8 @@ fetch("https://code.highcharts.com/mapdata/custom/world-palestine.geo.json")
 
               var value;
 
-              if (parseInt(a[index + 1], 10) > -1) {
-                value = a[index + 1];
+              if (parseInt(a[index + 2], 10) > -1) {
+                value = a[index + 2];
               }
 
               country.sequence = country.sequence || [];
@@ -367,12 +367,11 @@ function pointFormatter() {
   }).data;
 
   var fragilityCountry = fragilityData.find(function(d) {
-    return d.id === point.id;
+    return d.id === point.id || d.name === point.name;
   });
-
   var fragilityValue = fragilityCountry
     ? fragilityCountry.sequence[index].value
-    : null;
+    : "N/A";
 
   var color = fragilityCountry ? fragilityCountry.color : null;
 
