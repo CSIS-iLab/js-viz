@@ -75,7 +75,7 @@ body {
 body {
   width: 100%;
   min-width: 190px;
-  /* max-width: calc(100vw - 36px); */
+  max-width: calc(100vw - 48px);
 }
 .highcharts-background {
   fill: transparent;
