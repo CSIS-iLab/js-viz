@@ -37,47 +37,14 @@ fetch("https://code.highcharts.com/mapdata/custom/world-palestine.geo.json")
             });
 
             if (countryData) {
-              var value;
-
-              if (parseInt(a[index + 2], 10) > -1) {
-                value = a[index + 2];
-              }
-
-              if (parseInt(year, 10)) {
-                countryData.sequence.push({
-                  year: year,
-                  value: value
-                });
-              }
-
-              countryData.value = countryData.sequence[0].value;
-              countryData[a[1]] = countryData[a[1]] || [];
-
-              var keyValue =
-                parseInt(a[index + 2], 10) > -1 ? a[index + 2] : null;
-
-              countryData[a[1]].push(keyValue);
+              mapFragilityYearsToSequence(countryData, a, index, year);
             } else {
               var country = Object.assign({}, tileData);
-
-              var value;
-
-              if (parseInt(a[index + 2], 10) > -1) {
-                value = a[index + 2];
-              }
-
-              country.sequence = country.sequence || [];
-              country.sequence.push({ year: year, value: value });
-              country["iso-a3"] = a[0];
-              dataObj.base.push(country);
               country["hc-key"] = country.properties["hc-key"];
+              country["iso-a3"] = a[0];
 
-              country[a[1]] = country[a[1]] || [];
-
-              var keyValue =
-                parseInt(a[index + 2], 10) > -1 ? a[index + 2] : null;
-
-              country[a[1]].push(keyValue);
+              mapFragilityYearsToSequence(country, a, index, year);
+              dataObj.base.push(country);
             }
           });
         });
@@ -98,34 +65,10 @@ fetch("https://code.highcharts.com/mapdata/custom/world-palestine.geo.json")
 
               if (countryPointData) {
                 var pointValue = parseInt(b[6], 10) > -1 ? b[6] : null;
-
-                var yearColumn = b[4].toString().split("-");
-
-                yearColumn.forEach(function(y) {
-                  var pointIndex = dataObj.labels.indexOf(parseInt(y, 10));
-
-                  countryPointData.sequence[pointIndex] =
-                    countryPointData.sequence[pointIndex] || {};
-
-                  if (countryPointData.sequence[pointIndex].value) {
-                    countryPointData.sequence[pointIndex].value += pointValue
-                      ? pointValue
-                      : 0;
-                  } else {
-                    countryPointData.sequence[pointIndex].value = pointValue
-                      ? pointValue
-                      : null;
-                  }
-                  countryPointData.sequence[pointIndex].diseases =
-                    countryPointData.sequence[pointIndex].diseases || [];
-                  countryPointData.sequence[pointIndex].diseases.push({
-                    disease: b[5],
-                    cases: pointValue
-                  });
-                  countryPointData.sequence[pointIndex].year = parseInt(y, 10);
-                });
+                mapOutbreakYearsToSequence(countryPointData, b);
               } else {
                 var countryPoint = {};
+
                 countryPoint.sequence = dataObj.labels.map(function(year) {
                   return {
                     value: null,
@@ -137,61 +80,68 @@ fetch("https://code.highcharts.com/mapdata/custom/world-palestine.geo.json")
                 countryPoint["lat"] = b[1];
                 countryPoint["lon"] = b[2];
 
-                var pointValue = parseInt(b[6], 10) > -1 ? b[6] : null;
-
-                var yearColumn = b[4].toString().split("-");
-
-                if (yearColumn.length == 2) {
-                  var length =
-                    parseInt(yearColumn[1], 10) - parseInt(yearColumn[0], 10);
-
-                  for (var i = 0; i <= length; i++) {
-                    var pointIndex = dataObj.labels.indexOf(
-                      parseInt(yearColumn[0], 10) + i
-                    );
-
-                    if (b[0] === "Angola") console.log(pointIndex);
-
-                    countryPoint.sequence[pointIndex] =
-                      countryPoint.sequence[pointIndex] || {};
-
-                    countryPoint.sequence[pointIndex].value = pointValue;
-                    countryPoint.sequence[pointIndex].diseases = [
-                      { disease: b[5], cases: pointValue }
-                    ];
-
-                    countryPoint.sequence[pointIndex].year = parseInt(
-                      yearColumn[0],
-                      10
-                    );
-                  }
-                } else {
-                  var pointIndex = dataObj.labels.indexOf(
-                    parseInt(yearColumn[0], 10)
-                  );
-
-                  countryPoint.sequence[pointIndex] =
-                    countryPoint.sequence[pointIndex] || {};
-
-                  countryPoint.sequence[pointIndex].value = pointValue;
-                  countryPoint.sequence[pointIndex].diseases = [
-                    { disease: b[5], cases: pointValue }
-                  ];
-                  countryPoint.sequence[pointIndex].year = parseInt(
-                    yearColumn[0],
-                    10
-                  );
-                }
+                mapOutbreakYearsToSequence(countryPoint, b);
 
                 dataObj.points.push(countryPoint);
               }
             });
+
             renderMap(dataObj);
           }
         });
       }
     });
   });
+
+function mapFragilityYearsToSequence(country, a, index, year) {
+  var value = parseInt(a[index + 2], 10) > -1 ? a[index + 2] : null;
+
+  country.sequence = country.sequence || [];
+  if (parseInt(year, 10)) {
+    country.sequence.push({ year: year, value: value });
+  }
+  country[a[1]] = country[a[1]] || [];
+
+  country[a[1]].push(value);
+}
+
+function mapOutbreakYearsToSequence(country, b) {
+  var pointValue = parseInt(b[6], 10) > -1 ? b[6] : null;
+
+  var yearColumn = b[4].toString().split("-");
+  var yearOne = yearColumn[0];
+
+  if (yearColumn.length == 2) {
+    var length = parseInt(yearColumn[1], 10) - parseInt(yearColumn[0], 10);
+
+    for (var i = 0; i <= length; i++) {
+      var pointIndex = dataObj.labels.indexOf(parseInt(yearOne, 10) + i);
+
+      updateSequence(country, pointIndex, b);
+    }
+  } else {
+    var pointIndex = dataObj.labels.indexOf(parseInt(yearOne, 10));
+
+    updateSequence(country, pointIndex, b);
+  }
+  return country;
+}
+
+function updateSequence(country, index, b) {
+  var value = parseInt(b[6], 10) > -1 ? b[6] : null;
+
+  country.sequence[index] = country.sequence[index] || {};
+
+  if (country.sequence[index].value) {
+    country.sequence[index].value += value ? value : 0;
+  } else {
+    country.sequence[index].value = value ? value : null;
+  }
+
+  country.sequence[index].diseases = country.sequence[index].diseases || [];
+  country.sequence[index].diseases.push({ disease: b[5], cases: value });
+  country.sequence[index].year = parseInt(dataObj.labels[index], 10);
+}
 
 function renderMap(data) {
   chart = Highcharts.mapChart("container", {
@@ -472,22 +422,4 @@ function pointFormatter() {
   }
 
   return table;
-  // return "<table>
-  //
-  // <tr>"+ + "<td>d</td></tr><tr><td>d</td></tr></table>";
-  // '<div><span style="font-size:24px;color:' +
-  // this.color +
-  // '">\u25CF </span><b>' +
-  // this.name +
-  // " (" +
-  // currentYear +
-  // ")" +
-  // "</b>" +
-  // (fragilityValue ? " <br/><br/>Fragility Index: " + fragilityValue : "") +
-  // " " +
-  // (outbreakValue
-  //   ? " <br/><br/>Outbreaks: " + outbreakValue + "<br/>" + outbreakDiseases
-  //   : "") +
-  // "<br/><br/>" +
-  // "</div>"
 }
