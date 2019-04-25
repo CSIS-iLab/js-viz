@@ -238,7 +238,12 @@ function renderMap(data) {
         type: "mapbubble",
         maxSize: "12%",
         color: "#c89a49",
-        borderColor: "white"
+        borderColor: "white",
+        states: {
+          inactive: {
+            opacity: 1
+          }
+        }
       }
     ],
     mapNavigation: {
@@ -399,11 +404,6 @@ function pointFormatter() {
     table += "<td>Outbreaks</td>";
     table += "<td>Suspected Cases</td>";
     table += "</tr>";
-    table += "<tr>";
-    table += "<td><strong>" + outbreakDiseases.length + " total</strong></td>";
-    table +=
-      "<td><strong>" + outbreakValue.toLocaleString() + " total</strong></td>";
-    table += "</tr>";
 
     var outbreakRows = outbreakDiseases
       .map(function(o) {
@@ -421,6 +421,12 @@ function pointFormatter() {
       .join("");
 
     table += outbreakRows;
+
+    table += "<tr>";
+    table += "<td><strong>" + outbreakDiseases.length + " total</strong></td>";
+    table +=
+      "<td><strong>" + outbreakValue.toLocaleString() + " total</strong></td>";
+    table += "</tr>";
   }
 
   return table;
