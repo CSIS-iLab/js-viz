@@ -119,7 +119,7 @@ fetch("https://code.highcharts.com/mapdata/custom/world-palestine.geo.json")
                   countryPointData.sequence[pointIndex].diseases =
                     countryPointData.sequence[pointIndex].diseases || [];
                   countryPointData.sequence[pointIndex].diseases.push(
-                    b[5] + "(" + pointValue + ")"
+                    b[5] + " (" + pointValue + ")"
                   );
                   countryPointData.sequence[pointIndex].year = parseInt(y, 10);
                 });
@@ -155,7 +155,6 @@ fetch("https://code.highcharts.com/mapdata/custom/world-palestine.geo.json")
                 dataObj.points.push(countryPoint);
               }
             });
-            console.log(dataObj.points);
             renderMap(dataObj);
           }
         });
