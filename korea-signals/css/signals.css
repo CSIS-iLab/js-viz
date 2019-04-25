@@ -12,6 +12,7 @@ body {
 }
 
 main {
+  padding-top: 24px;
   background: #131a28;
   font-family: "museo-sans", sans-serif;
   text-align: center;
