@@ -7,7 +7,7 @@ var geoData, currentSeries, currentPoint, currentYear, currentIndex, chart, max;
 
 var map = Highcharts.maps["countries/us/us-all"];
 
-fetch("http://code.highcharts.com/mapdata/custom/world-palestine.geo.json")
+fetch("https://code.highcharts.com/mapdata/custom/world-palestine.geo.json")
   .then(function(resp) {
     return resp.json();
   })
