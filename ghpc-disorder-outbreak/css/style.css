@@ -133,10 +133,6 @@ body {
     display: none;
   }
 }
-button:focus,
-input:focus {
-  outline: white auto 5px;
-}
 
 #play-controls {
   margin-top: 1rem;
@@ -353,4 +349,9 @@ input:focus {
   .fragility-legend {
     /* flex-wrap: wrap; */
   }
+}
+
+button:focus,
+input:focus {
+  outline: white auto 5px;
 }
