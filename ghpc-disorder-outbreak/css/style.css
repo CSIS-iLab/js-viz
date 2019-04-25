@@ -31,7 +31,7 @@ $color-dark-blue-gray: #0b1f37;
 $color-darkest-blue: #1c334f;
 $color-gray-blue: #314d6e; */
 body {
-  padding-top: 24px;
+  padding: 24px;
   font-family: "Open Sans", Arial, Helvetica, sans-serif;
   font-size: 16px;
   background-color: #618bab;
