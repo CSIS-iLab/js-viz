@@ -21,7 +21,7 @@ Highcharts.chart("container", {
     type: "pie",
     margin: [10, 0, 50, 0],
     styledMode: true,
-    colorCount: 18
+    colorCount: 9
   },
   title: {
     text: ""
