@@ -245,6 +245,7 @@ function renderMap(data) {
         states: {
           hover: {
             borderColor: "black",
+            brightness: 0.05,
             borderWidth: 2
           }
         },
