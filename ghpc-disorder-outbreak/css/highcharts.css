@@ -41,7 +41,7 @@
 }
 
 .highcharts-background {
-  fill: #618bab;
+  fill: transparent;
 }
 
 .highcharts-plot-border,
@@ -653,6 +653,11 @@ text.highcharts-data-label {
   fill: #333333;
 }
 
+.highcharts-button-hover .highcharts-button-box {
+  transition: all 0.3s ease-in-out;
+  fill: #a58d5d;
+}
+
 .highcharts-button-pressed {
   font-weight: bold;
   fill: #e6ebf5;
@@ -752,8 +757,8 @@ input.highcharts-range-selector {
 
 .highcharts-map-series .highcharts-point-hover {
   transition: fill 0ms, fill-opacity 0ms;
-  fill-opacity: 0.5;
-  stroke-width: 2px;
+  fill-opacity: 1;
+  stroke-width: 1px;
 }
 
 .highcharts-mapline-series .highcharts-point {

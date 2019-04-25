@@ -118,9 +118,10 @@ fetch("https://code.highcharts.com/mapdata/custom/world-palestine.geo.json")
                   }
                   countryPointData.sequence[pointIndex].diseases =
                     countryPointData.sequence[pointIndex].diseases || [];
-                  countryPointData.sequence[pointIndex].diseases.push(
-                    b[5] + " (" + pointValue + ")"
-                  );
+                  countryPointData.sequence[pointIndex].diseases.push({
+                    disease: b[5],
+                    cases: pointValue
+                  });
                   countryPointData.sequence[pointIndex].year = parseInt(y, 10);
                 });
               } else {
@@ -148,7 +149,7 @@ fetch("https://code.highcharts.com/mapdata/custom/world-palestine.geo.json")
 
                   countryPoint.sequence[pointIndex].value = pointValue;
                   countryPoint.sequence[pointIndex].diseases = [
-                    b[5] + " (" + pointValue + ")"
+                    { disease: b[5], cases: pointValue }
                   ];
                   countryPoint.sequence[pointIndex].year = parseInt(y, 10);
                 });
@@ -244,9 +245,7 @@ function renderMap(data) {
         showInLegend: false,
         states: {
           hover: {
-            borderColor: "black",
-            brightness: 0.05,
-            borderWidth: 2
+            brightness: 0
           }
         },
         dataLabels: {
@@ -375,6 +374,8 @@ function pointFormatter() {
     ? fragilityCountry.sequence[index].value
     : null;
 
+  var color = fragilityCountry ? fragilityCountry.color : null;
+
   var outbreakData = this.series.chart.series.find(function(s) {
     return s.name === "bubbles";
   }).data;
@@ -386,31 +387,78 @@ function pointFormatter() {
   var outbreakValue = outbreakCountry
     ? outbreakCountry.sequence[index].value
     : null;
+
   var outbreakDiseases = outbreakCountry
-    ? "<div>" +
-      outbreakCountry.sequence[index].diseases
-        .map(function(d) {
-          return "\u25CF " + d + "<br/>";
-        })
-        .join("") +
-      "</div>"
+    ? outbreakCountry.sequence[index].diseases
     : null;
 
-  return (
-    '<div><span style="font-size:24px;color:' +
-    this.color +
-    '">\u25CF </span><b>' +
+  var table = "";
+
+  table += "<table>";
+  table += "<thead>";
+  table += "<tr>";
+  table +=
+    '<td colspan="2"><span style="font-size:24px;color:' +
+    color +
+    '">\u25CF </span>' +
     this.name +
     " (" +
     currentYear +
     ")" +
-    "</b>" +
-    (fragilityValue ? " <br/><br/>Fragility Index: " + fragilityValue : "") +
-    " " +
-    (outbreakValue
-      ? " <br/><br/>Outbreaks: " + outbreakValue + "<br/>" + outbreakDiseases
-      : "") +
-    "<br/><br/>" +
-    "</div>"
-  );
+    "</td>";
+  table += "</tr>";
+  table += "</thead>";
+
+  table += "<tr>";
+  table += "<td>Fragility Score</td>";
+  table += "<td>" + fragilityValue + "</td>";
+  table += "</tr>";
+
+  if (outbreakValue) {
+    table += '<tr class="section">';
+    table += "<td>Outbreaks</td>";
+    table += "<td>Suspected Cases</td>";
+    table += "</tr>";
+    table += "<tr>";
+    table += "<td><strong>" + outbreakDiseases.length + "</strong></td>";
+    table += "<td><strong>" + outbreakValue + "</strong></td>";
+    table += "</tr>";
+
+    var outbreakRows = outbreakDiseases
+      .map(function(o) {
+        return (
+          "<tr>" +
+          "<td>" +
+          o.disease +
+          " total</td>" +
+          "<td>" +
+          o.cases +
+          "</td>" +
+          "</tr>"
+        );
+      })
+      .join("");
+
+    table += outbreakRows;
+  }
+
+  return table;
+  // return "<table>
+  //
+  // <tr>"+ + "<td>d</td></tr><tr><td>d</td></tr></table>";
+  // '<div><span style="font-size:24px;color:' +
+  // this.color +
+  // '">\u25CF </span><b>' +
+  // this.name +
+  // " (" +
+  // currentYear +
+  // ")" +
+  // "</b>" +
+  // (fragilityValue ? " <br/><br/>Fragility Index: " + fragilityValue : "") +
+  // " " +
+  // (outbreakValue
+  //   ? " <br/><br/>Outbreaks: " + outbreakValue + "<br/>" + outbreakDiseases
+  //   : "") +
+  // "<br/><br/>" +
+  // "</div>"
 }

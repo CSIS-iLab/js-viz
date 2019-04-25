@@ -14,24 +14,36 @@
 
 <body>
 
-  <div id="intro" dir="ltr" class="heading highcharts-container " style="position: relative; overflow: hidden; text-align: left; line-height: normal; z-index: 0; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
-<div class="header">
+  <div id="intro" class="heading highcharts-container ">
+    <div class="header">
 
       <div class="heading title">
-        Tile  Ipsum Lorem
+        Tile Ipsum Lorem
       </div>
       <p class="subtitle">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.<br /><em>Instructions are to do this thing.</em>
       </p>
     </div>
 
-    <ul class="legend">
-      <li><strong>Fragility Index:</strong> 60</li>
-      <li></li>
-      <li>120</li>
+    <ul class="legends">
+      <ul class="outbreak-legend">
+        <li><strong>Outbreak Cases:&nbsp;</strong></li>
+        <li></li>
+      </ul>
+
+      <ul class="fragility-legend">
+        <li><strong>Fragility Index:&nbsp;</strong>60</li>
+        <li>
+          <ul class="fragility-legend__colors">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+          </ul>
+        </li>
+        <li>120</li>
+      </ul>
     </ul>
-
-
   </div>
 
 
@@ -49,7 +61,6 @@
 
   <!-- Include iFrame Resizer -->
   <script src="https://csis-ilab.github.io/cpower-viz/globaljs/iframeSizer.contentWindow.min.js"></script>
-
 
   <script src="js/map.js"></script>
 </body>
