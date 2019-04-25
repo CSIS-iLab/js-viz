@@ -390,7 +390,7 @@ function pointFormatter() {
     ? "<div>" +
       outbreakCountry.sequence[index].diseases
         .map(function(d) {
-          return "\u25CF " + d;
+          return "\u25CF " + d + "<br/>";
         })
         .join("") +
       "</div>"
