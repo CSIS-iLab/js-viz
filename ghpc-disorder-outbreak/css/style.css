@@ -52,14 +52,25 @@ thead {
   font-size: 16px;
   text-transform: uppercase;
 }
-tr.section-fragility td {
-  background-color: #618bab;
+
+tr.section-fragility td:first-of-type {
+  background-color: rgba(97, 139, 171, 1);
   color: white;
 }
 tr.section-outbreak td {
-  background-color: #b89e69;
+  background-color: rgba(184, 158, 105, 1);
   color: white;
 }
+tr.section-fragility td:last-of-type {
+  background-color: rgba(97, 139, 171, 0.5);
+  color: black;
+}
+
+tr.section-outbreak ~ tr td {
+  background-color: rgba(184, 158, 105, 0.5);
+  color: black;
+}
+
 td {
   padding: 6px;
   font-size: 12px;
