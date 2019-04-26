@@ -295,10 +295,9 @@ body {
   /* border-radius: 50%; */
   /* background-color: rgba(184, 158, 105, 0.67);
   border: 2px solid #b89e69; */
-  background-image: url(../img/scale.svg);
-  width: 50px;
-  background-repeat: no-repeat;
-  height: 50px;
+  background: url(../img/scale.svg) no-repeat center center;
+  width: 75px;
+  height: 75px;
 }
 
 .fragility-legend {

@@ -9,7 +9,7 @@
 	.st3{stroke-width:3;stroke:#b89e69;stroke-width:3;stroke-miterlimit:10;fill: rgba(184, 158, 105, 0.67);}
 	.st4{fill:none;stroke:#ffffff;stroke-width:3;stroke-miterlimit:10;stroke-dasharray:2.9091,2.9091;fill: rgba(184, 158, 105, 0.67);}
 	.st5{fill:#fff}
-	.st6{font-size:24px;}
+	.st6{font-size:18px;font-family: "Open Sans", Arial, Helvetica, sans-serif;}
 </style>
 <g transform="translate(31, 40)">
 	<circle class="st0" cx="0" cy="42.2" r="2"/>
@@ -26,7 +26,7 @@
 		</g>
 	</g>
 	<text transform="matrix(1 0 0 1 35 43.25)" class="st5 st6">2</text>
-	<text transform="matrix(1 0 0 1 35 15.25)" class="st5 st6">0.7M</text>
-	<text transform="matrix(1 0 0 1 35 -12.75)" class="st5 st6">1.4M</text>
+	<text transform="matrix(1 0 0 1 35 15.25)" class="st5 st6">0.63 M</text>
+	<text transform="matrix(1 0 0 1 35 -12.75)" class="st5 st6">1.25 M</text>
 </g>
 </svg>
