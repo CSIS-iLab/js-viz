@@ -364,5 +364,5 @@ body {
 
 button:focus,
 input:focus {
-  outline: white auto 5px;
+  outline: #418698 auto 5px;
 }
