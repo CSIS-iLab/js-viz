@@ -344,7 +344,8 @@ function renderMap(data) {
 }
 function pointFormatter() {
   var point = this;
-  currentYear = document.querySelector(".label.active").innerText;
+  currentYear = document.querySelector(".label.active").dataset.id;
+
   currentYear = parseInt(currentYear, 10);
   var index = currentYear - 2006;
 
@@ -355,6 +356,7 @@ function pointFormatter() {
   var fragilityCountry = fragilityData.find(function(d) {
     return d.id === point.id || d.name === point.name;
   });
+
   var fragilityValue = fragilityCountry
     ? fragilityCountry.sequence[index].value
     : "N/A";

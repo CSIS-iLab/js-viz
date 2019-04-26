@@ -119,7 +119,7 @@
     this.playOutputEnd = H.createElement(
       "span",
       {
-        id: "play-output",
+        id: "play-output-end",
         name: this.options.axisLabel,
         className: "label"
       },
@@ -127,6 +127,13 @@
       this.playControls,
       null
     );
+
+    document
+      .querySelector("#play-output-start")
+      .setAttribute("data-id", this.options.labels[0]);
+    document
+      .querySelector("#play-output-end")
+      .setAttribute("data-id", this.options.labels[this.dataLength - 1]);
 
     if (isArray(this.options.labels)) {
       this.playOutputEnd.innerHTML =
@@ -142,9 +149,13 @@
     }
 
     for (let i = 0; i < this.options.labels.length - 2; i++) {
-      this.labels.innerHTML += `<div class="label" style="flex-basis:${100 /
-        (this.options.labels.length - 2)}%">${
+      this.labels.innerHTML += `<div data-id="${
         this.options.labels[i + 1]
+      }" class="label" style="flex-basis:${100 /
+        (this.options.labels.length - 2)}%">${
+        window.innerWidth > 768
+          ? this.options.labels[i + 1]
+          : "'" + this.options.labels[i + 1].toString().replace("20", "")
       }</div>`;
     }
 
