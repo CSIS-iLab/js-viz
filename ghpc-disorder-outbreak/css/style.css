@@ -292,7 +292,7 @@ body {
   display: flex;
 }
 .outbreak-legend > li:nth-of-type(2) {
-  border-radius: 50%;
+  /* border-radius: 50%; */
   /* background-color: rgba(184, 158, 105, 0.67);
   border: 2px solid #b89e69; */
   background-image: url(../img/scale.svg);

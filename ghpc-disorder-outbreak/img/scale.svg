@@ -4,12 +4,12 @@
 	 viewBox="0 0 94.2 94.2" style="enable-background:new 0 0 94.2 94.2;" xml:space="preserve">
 <style type="text/css">
 	.st0{stroke:#b89e69;stroke-miterlimit:10;fill: rgba(184, 158, 105, 0.67);}
-	.st1{fill:rgba(184, 158, 105, 0.67);stroke:#ffffff;stroke-width:0.5;stroke-miterlimit:10;stroke-dasharray:3;}
+	.st1{fill:rgba(184, 158, 105, 0.67);stroke:#ffffff;stroke-width:3;stroke-miterlimit:10;stroke-dasharray:3;}
 	.st2{fill:rgba(184, 158, 105, 0.67);}
-	.st3{stroke:#b89e69;stroke-width:0.5;stroke-miterlimit:10;fill: rgba(184, 158, 105, 0.67);}
-	.st4{fill:none;stroke:#ffffff;stroke-width:0.5;stroke-miterlimit:10;stroke-dasharray:2.9091,2.9091;fill: rgba(184, 158, 105, 0.67);}
-	.st5{font-family:'ArialMT';fill:#fff}
-	.st6{font-size:12px;}
+	.st3{stroke:#b89e69;stroke-width:3;stroke-miterlimit:10;fill: rgba(184, 158, 105, 0.67);}
+	.st4{fill:none;stroke:#ffffff;stroke-width:3;stroke-miterlimit:10;stroke-dasharray:2.9091,2.9091;fill: rgba(184, 158, 105, 0.67);}
+	.st5{fill:#fff}
+	.st6{font-size:24px;}
 </style>
 <g transform="translate(31, 40)">
 	<circle class="st0" cx="0" cy="42.2" r="2"/>
