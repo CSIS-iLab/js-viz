@@ -30,14 +30,7 @@ $color-dark-yellow: #c18015;
 $color-dark-blue-gray: #0b1f37;
 $color-darkest-blue: #1c334f;
 $color-gray-blue: #314d6e; */
-body {
-  padding: 24px;
-  font-family: "Open Sans", Arial, Helvetica, sans-serif;
-  font-size: 16px;
-  /* background-color: #618bab; */
-  background-color: #1e3953;
-  color: #fff;
-}
+
 table,
 th,
 td {
@@ -91,7 +84,7 @@ tr:not(.section) td:not(:last-of-type) {
 
 .header {
   padding-left: 12px;
-  border-left: 6px solid #fff;
+  border-left: 6px solid #1e3953;
   max-width: 700px;
 }
 
@@ -114,13 +107,31 @@ tr:not(.section) td:not(:last-of-type) {
   cursor: pointer;
 }
 
+body {
+  padding-top: 24px;
+  font-family: "Open Sans", Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  /* background-color: #618bab; */
+}
+
+#container,
+#play-controls {
+  background-color: #1e3953;
+  color: #fff;
+  padding: 24px;
+  max-width: calc(100vw - 48px);
+}
+
+.header,
+.legends {
+  margin: auto;
+}
 #container,
 #container2,
 .heading,
 body {
   width: 100%;
   min-width: 190px;
-  max-width: calc(100vw - 48px);
 }
 
 #container,
