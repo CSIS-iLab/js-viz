@@ -392,7 +392,7 @@ function pointFormatter() {
   table +=
     '<td style="background-color:rgba(' +
     rgb +
-    ',.5)">' +
+    ',.67)">' +
     fragilityValue +
     "</td>";
   table += "</tr>";
