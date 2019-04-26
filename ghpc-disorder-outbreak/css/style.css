@@ -297,6 +297,7 @@ body {
   border: 2px solid #b89e69; */
   background-image: url(../img/scale.svg);
   width: 50px;
+  background-repeat: no-repeat;
   height: 50px;
 }
 
