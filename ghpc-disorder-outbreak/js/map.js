@@ -360,6 +360,7 @@ function pointFormatter() {
     : "N/A";
 
   var color = fragilityCountry ? fragilityCountry.color : null;
+  var rgb = hexToRgb(color);
 
   var outbreakData = this.series.chart.series.find(function(s) {
     return s.name === "bubbles";
@@ -382,21 +383,18 @@ function pointFormatter() {
   table += "<table>";
   table += "<thead>";
   table += "<tr>";
-  table +=
-    '<td colspan="2"><span style="font-size:24px;color:' +
-    color +
-    '">\u25CF </span>' +
-    this.name +
-    " (" +
-    currentYear +
-    ")" +
-    "</td>";
+  table += '<td colspan="2">' + this.name + " (" + currentYear + ")" + "</td>";
   table += "</tr>";
   table += "</thead>";
 
   table += '<tr class="section section-fragility">';
-  table += "<td>Fragility Score</td>";
-  table += "<td>" + fragilityValue + "</td>";
+  table += '<td style="background-color:' + color + '">Fragility Score</td>';
+  table +=
+    '<td style="background-color:rgba(' +
+    rgb +
+    ',.5)">' +
+    fragilityValue +
+    "</td>";
   table += "</tr>";
 
   if (outbreakValue) {
@@ -430,4 +428,16 @@ function pointFormatter() {
   }
 
   return table;
+}
+
+function hexToRgb(hex) {
+  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  result = result
+    ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+      }
+    : null;
+  return result.r + "," + result.g + "," + result.b;
 }

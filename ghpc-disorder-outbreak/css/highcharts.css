@@ -278,7 +278,7 @@ g.highcharts-series,
   stroke: #ffffff;
 }
 .highcharts-map-series .highcharts-point {
-  stroke-width: 0.5px;
+  stroke-width: 1px;
 }
 .highcharts-mapbubble-series .highcharts-point {
   stroke-width: 1px;
@@ -758,13 +758,13 @@ input.highcharts-range-selector {
 /* Highmaps */
 .highcharts-map-series .highcharts-point {
   transition: fill 500ms, fill-opacity 500ms, stroke-width 250ms;
-  stroke: #618bab;
+  stroke: #1e3953;
 }
 
 .highcharts-map-series .highcharts-point-hover {
   transition: fill 0ms, fill-opacity 0ms;
   fill-opacity: 1;
-  stroke-width: 1px;
+  stroke-width: 2px;
 }
 
 .highcharts-mapline-series .highcharts-point {
