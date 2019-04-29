@@ -224,93 +224,86 @@ g.highcharts-series,
 /* Series options */
 /* Default colors */
 .highcharts-color-0 {
-  fill: #344a45;
-  stroke: #344a45;
+  fill: #440109;
+  stroke: #440109;
 }
 
 .highcharts-color-1 {
-  fill: #3a5a56;
-  stroke: #3a5a56;
+  fill: #571c22;
+  stroke: #571c22;
 }
 
 .highcharts-color-2 {
-  fill: #3e6a69;
-  stroke: #3e6a69;
+  fill: #6a373b;
+  stroke: #6a373b;
 }
 
 .highcharts-color-3 {
-  fill: #437a7f;
-  stroke: #437a7f;
+  fill: #7d5154;
+  stroke: #7d5154;
 }
 
 .highcharts-color-4 {
-  fill: #488b96;
-  stroke: #488b96;
+  fill: #906c6e;
+  stroke: #906c6e;
 }
 
 .highcharts-color-5 {
-  fill: #4f9cae;
-  stroke: #4f9cae;
+  fill: #a28787;
+  stroke: #a28787;
 }
 
 .highcharts-color-6 {
-  fill: #59acc8;
-  stroke: #59acc8;
+  fill: #b5a2a0;
+  stroke: #b5a2a0;
 }
 
 .highcharts-color-7 {
-  fill: #67bce2;
-  stroke: #67bce2;
+  fill: #c8bcb9;
+  stroke: #c8bcb9;
 }
 
 .highcharts-color-8 {
-  fill: #71c0e4;
-  stroke: #71c0e4;
+  fill: #dbd7d2;
+  stroke: #dbd7d2;
 }
 .highcharts-color-9 {
-  fill: #7bc5e6;
-  stroke: #7bc5e6;
+  fill: #d6bebc;
+  stroke: #d6bebc;
 }
 .highcharts-color-10 {
-  fill: #85c9e8;
-  stroke: #85c9e8;
+  fill: #d1a5a6;
+  stroke: #d1a5a6;
 }
 .highcharts-color-11 {
-  fill: #8fceea;
-  stroke: #8fceea;
+  fill: #cc8c90;
+  stroke: #cc8c90;
 }
 .highcharts-color-12 {
-  fill: #99d2ec;
-  stroke: #99d2ec;
+  fill: #c7737a;
+  stroke: #c7737a;
 }
 .highcharts-color-13 {
-  fill: #a4d7ed;
-  stroke: #a4d7ed;
+  fill: #c15963;
+  stroke: #c15963;
 }
 .highcharts-color-14 {
-  fill: #aedbef;
-  stroke: #aedbef;
+  fill: #bc404d;
+  stroke: #bc404d;
 }
 .highcharts-color-15 {
-  fill: #b8e0f1;
-  stroke: #b8e0f1;
+  fill: #b72737;
+  stroke: #b72737;
 }
 
 .highcharts-color-16 {
-  fill: #c2e4f3;
-  stroke: #c2e4f3;
+  fill: #b20e21;
+  stroke: #b20e21;
 }
-.highcharts-color-17 {
-  fill: #cce9f5;
-  stroke: #cce9f5;
-}
-.highcharts-color-18 {
-  fill: #d6edf7;
-  stroke: #d6edf7;
-}
+
 .highcharts-drilldown-point {
-  fill: #a4d7ed;
-  stroke: #a4d7ed;
+  fill: #dbd7d2;
+  stroke: #dbd7d2;
 }
 
 .highcharts-area {
