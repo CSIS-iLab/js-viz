@@ -359,7 +359,7 @@ function pointFormatter() {
 
   var fragilityValue = fragilityCountry
     ? fragilityCountry.sequence[index].value
-    : "N/A";
+    : null;
 
   var color = fragilityCountry ? fragilityCountry.color : null;
   var rgb = hexToRgb(color);
@@ -389,15 +389,17 @@ function pointFormatter() {
   table += "</tr>";
   table += "</thead>";
 
-  table += '<tr class="section section-fragility">';
-  table += '<td style="background-color:' + color + '">Fragility Score</td>';
-  table +=
-    '<td style="background-color:rgba(' +
-    rgb +
-    ',.67)">' +
-    fragilityValue +
-    "</td>";
-  table += "</tr>";
+  if (fragilityValue) {
+    table += '<tr class="section section-fragility">';
+    table += '<td style="background-color:' + color + '">Fragility Score</td>';
+    table +=
+      '<td style="background-color:rgba(' +
+      rgb +
+      ',.67)">' +
+      fragilityValue +
+      "</td>";
+    table += "</tr>";
+  }
 
   if (outbreakValue) {
     table += '<tr class="section section-outbreak">';
