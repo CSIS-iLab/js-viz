@@ -282,10 +282,11 @@ g.highcharts-series,
 }
 .highcharts-mapbubble-series .highcharts-point {
   stroke-width: 1px;
+  fill-opacity: 0;
 }
 .highcharts-mapbubble-series .highcharts-point-hover {
   stroke-width: 2px;
-  fill: rgba(184, 158, 105, 0.75);
+  fill-opacity: 0.25;
 }
 
 .highcharts-dense-data .highcharts-point {
@@ -505,7 +506,7 @@ text.highcharts-data-label {
 }
 
 .highcharts-bubble-series .highcharts-point {
-  fill-opacity: 0.5;
+  fill-opacity: 0.125;
 }
 
 .highcharts-errorbar-series .highcharts-point {

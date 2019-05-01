@@ -144,32 +144,32 @@ function updateSequence(country, index, b) {
 }
 
 function renderMap(data) {
-  // data.points.push({
-  //   x: NaN,
-  //   y: NaN,
-  //   lat: NaN,
-  //   lon: NaN,
-  //   name: "",
-  //   sequence: data.labels.map(function(year) {
-  //     return {
-  //       value: 1250000,
-  //       year
-  //     };
-  //   })
-  // });
-  // data.points.push({
-  //   x: NaN,
-  //   y: NaN,
-  //   lat: NaN,
-  //   lon: NaN,
-  //   name: "",
-  //   sequence: data.labels.map(function(year) {
-  //     return {
-  //       value: 2,
-  //       year
-  //     };
-  //   })
-  // });
+  data.points.push({
+    x: NaN,
+    y: NaN,
+    lat: NaN,
+    lon: NaN,
+    name: "",
+    sequence: data.labels.map(function(year) {
+      return {
+        value: 1250000,
+        year
+      };
+    })
+  });
+  data.points.push({
+    x: NaN,
+    y: NaN,
+    lat: NaN,
+    lon: NaN,
+    name: "",
+    sequence: data.labels.map(function(year) {
+      return {
+        value: 2,
+        year
+      };
+    })
+  });
 
   chart = Highcharts.mapChart("container", {
     chart: {
@@ -196,7 +196,7 @@ function renderMap(data) {
       dataClasses: [
         {
           to: 72,
-          color: "#22415e",
+          color: "#264F69",
           name: "Surveillance Score:"
         },
         {
