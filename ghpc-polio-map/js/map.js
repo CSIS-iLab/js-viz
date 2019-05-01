@@ -175,7 +175,9 @@ function renderMap(data) {
     tooltip: {
       headerFormat: "",
       pointFormatter: function pointFormatter() {
-        currentYear = document.querySelector(".label.active").innerText;
+        currentYear = document.querySelector(".label.active").dataset.id;
+        currentYear = parseInt(currentYear, 10);
+
         return (
           '<div><span style="font-size:18px;color:' +
           this.color +

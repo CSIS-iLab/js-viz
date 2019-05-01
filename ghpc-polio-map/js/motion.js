@@ -28,10 +28,7 @@
         motion.dataSeries[index] = series;
         for (i = 0; i < series.data.length; i++) {
           if (series.data[i].sequence) {
-            motion.dataLength = Math.max(
-              motion.dataLength,
-              series.data[i].sequence.length
-            );
+            motion.dataLength = series.data[i].sequence.length;
           }
         }
       }
@@ -122,7 +119,7 @@
     this.playOutputEnd = H.createElement(
       "span",
       {
-        id: "play-output",
+        id: "play-output-end",
         name: this.options.axisLabel,
         className: "label"
       },
@@ -130,6 +127,13 @@
       this.playControls,
       null
     );
+
+    document
+      .querySelector("#play-output-start")
+      .setAttribute("data-id", this.options.labels[0]);
+    document
+      .querySelector("#play-output-end")
+      .setAttribute("data-id", this.options.labels[this.dataLength - 1]);
 
     if (isArray(this.options.labels)) {
       this.playOutputEnd.innerHTML =
@@ -139,16 +143,19 @@
       this.playOutputEnd.innerHTML = this.dataLength - 1;
       this.playOutputStart.innerHTML = 0;
     }
-
     for (let i = 0; i < this.options.labels.length - 1; i++) {
       this.ticks.innerHTML += `<div class="tick" style="flex-basis:${100 /
         (this.options.labels.length - 1)}%"></div>`;
     }
 
     for (let i = 0; i < this.options.labels.length - 2; i++) {
-      this.labels.innerHTML += `<div class="label" style="flex-basis:${100 /
-        (this.options.labels.length - 2)}%">${
+      this.labels.innerHTML += `<div data-id="${
         this.options.labels[i + 1]
+      }" class="label" style="flex-basis:${100 /
+        (this.options.labels.length - 2)}%">${
+        window.innerWidth > 768
+          ? this.options.labels[i + 1]
+          : "'" + this.options.labels[i + 1].toString().replace("20", "")
       }</div>`;
     }
 
@@ -298,8 +305,8 @@
           for (i = 0; i < series.data.length; i++) {
             point = series.data[i];
             try {
-              if (point.sequence) {
-                point.update(point.sequence[roundedInput], false, false);
+              if (point.sequence && point.sequence[roundedInput]) {
+                point.update(point.sequence[roundedInput].value, false, false);
               }
             } catch (e) {
               console.error(
@@ -307,8 +314,7 @@
                 e,
                 " \nat point:",
                 point,
-                " \nwith new value:",
-                point.sequence[roundedInput]
+                " \nwith new value:"
               );
             }
           }

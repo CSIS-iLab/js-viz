@@ -79,7 +79,6 @@ fetch("https://code.highcharts.com/mapdata/custom/world-eckert3.geo.json")
             }
           });
         });
-
         renderMap(dataObj);
       }
     });
@@ -157,8 +156,9 @@ function renderMap(data) {
       headerFormat: "",
       useHTML: true,
       pointFormatter: function pointFormatter() {
-        currentYear = document.querySelector(".label.active").innerText;
+        currentYear = document.querySelector(".label.active").dataset.id;
         currentYear = parseInt(currentYear, 10);
+
         var index = currentYear - 2014;
 
         var reached =
