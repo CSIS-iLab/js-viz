@@ -281,11 +281,11 @@ g.highcharts-series,
   stroke-width: 1px;
 }
 .highcharts-mapbubble-series .highcharts-point {
-  stroke-width: 1px;
+  stroke-width: 2px;
   fill-opacity: 0;
 }
 .highcharts-mapbubble-series .highcharts-point-hover {
-  stroke-width: 2px;
+  stroke-width: 4px;
   fill-opacity: 0.25;
 }
 
