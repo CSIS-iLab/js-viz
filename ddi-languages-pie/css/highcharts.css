@@ -224,52 +224,52 @@ g.highcharts-series,
 /* Series options */
 /* Default colors */
 .highcharts-color-0 {
-  fill: #440109;
-  stroke: #440109;
+  fill: #b20e21;
+  stroke: #b20e21;
 }
 
 .highcharts-color-1 {
-  fill: #571c22;
-  stroke: #571c22;
+  fill: #b72435;
+  stroke: #b72435;
 }
 
 .highcharts-color-2 {
-  fill: #6a373b;
-  stroke: #6a373b;
+  fill: #bb3b48;
+  stroke: #bb3b48;
 }
 
 .highcharts-color-3 {
-  fill: #7d5154;
-  stroke: #7d5154;
+  fill: #c0515c;
+  stroke: #c0515c;
 }
 
 .highcharts-color-4 {
-  fill: #906c6e;
-  stroke: #906c6e;
+  fill: #c46770;
+  stroke: #c46770;
 }
 
 .highcharts-color-5 {
-  fill: #a28787;
-  stroke: #a28787;
+  fill: #c97e83;
+  stroke: #c97e83;
 }
 
 .highcharts-color-6 {
-  fill: #b5a2a0;
-  stroke: #b5a2a0;
+  fill: #cd9497;
+  stroke: #cd9497;
 }
 
 .highcharts-color-7 {
-  fill: #c8bcb9;
-  stroke: #c8bcb9;
+  fill: #d2aaab;
+  stroke: #d2aaab;
 }
 
 .highcharts-color-8 {
-  fill: #dbd7d2;
-  stroke: #dbd7d2;
+  fill: #d6c1be;
+  stroke: #d6c1be;
 }
 .highcharts-color-9 {
-  fill: #d6bebc;
-  stroke: #d6bebc;
+  fill: #dbd7d2;
+  stroke: #dbd7d2;
 }
 .highcharts-color-10 {
   fill: #d1a5a6;
@@ -302,8 +302,8 @@ g.highcharts-series,
 }
 
 .highcharts-drilldown-point {
-  fill: #dbd7d2;
-  stroke: #dbd7d2;
+  fill: #440109;
+  stroke: #440109;
 }
 
 .highcharts-area {
@@ -878,7 +878,7 @@ input.highcharts-range-selector {
 text.highcharts-drilldown-data-label,
 .highcharts-drilldown-axis-label {
   cursor: pointer;
-  fill: #0a8672;
+  fill: #b20e21;
   font-weight: bold;
   /* text-decoration: underline; */
   transition: all 0.3s ease-in-out;
@@ -952,12 +952,12 @@ text.highcharts-drilldown-data-label:hover,
 
 .highcharts-drillup-button {
   cursor: pointer;
-  fill: #0a8672;
+  fill: #b20e21;
   stroke-width: 0;
 }
 
 .highcharts-drillup-button:hover {
-  fill: #67bce2;
+  fill: #440109;
   transition: all 0.3s ease-in-out;
 }
 .highcharts-drillup-button text {

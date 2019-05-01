@@ -1,19 +1,7 @@
 Highcharts.setOptions({
   lang: {
     thousandsSep: ","
-  },
-
-  colors: [
-    "#344a45",
-    "#3a5a56",
-    "#3e6a69",
-    "#437a7f",
-    "#488b96",
-    "#4f9cae",
-    "#59acc8",
-    "#67bce2",
-    "#0095AB"
-  ]
+  }
 });
 
 Highcharts.chart("container", {
