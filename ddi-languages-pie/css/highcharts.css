@@ -301,9 +301,14 @@ g.highcharts-series,
   stroke: #b20e21;
 }
 
+.highcharts-color-0 > .highcharts-point:not(.highcharts-drilldown-point) {
+  fill: #d2aaab;
+  stroke: #fff;
+}
+
 .highcharts-drilldown-point {
-  fill: #440109;
-  stroke: #440109;
+  fill: #b20e21;
+  stroke: #b20e21;
 }
 
 .highcharts-area {
