@@ -121,11 +121,16 @@ function renderMap(data) {
           pattern: {
             color: "black",
             path: {
-              d: "M 0 0 L 10 10 M 9 -1 L 11 1 M -1 9 L 1 11"
+              d:
+                "M 0 0 L 6 6" +
+                //
+                "M 5.5 -1 L 5.5 1 " +
+                //
+                "M -1 5.5 L 1 5.5"
             },
-            width: 10,
-            height: 10,
-            opacity: 1
+            width: 5,
+            height: 5,
+            opacity: 0.5
           }
         },
 
