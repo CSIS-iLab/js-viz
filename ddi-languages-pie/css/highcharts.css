@@ -223,51 +223,51 @@ g.highcharts-series,
 
 /* Series options */
 /* Default colors */
-.highcharts-color-0 {
+.highcharts-color-9 {
   fill: #b20e21;
   stroke: #b20e21;
 }
 
-.highcharts-color-1 {
+.highcharts-color-8 {
   fill: #b72435;
   stroke: #b72435;
 }
 
-.highcharts-color-2 {
+.highcharts-color-7 {
   fill: #bb3b48;
   stroke: #bb3b48;
 }
 
-.highcharts-color-3 {
+.highcharts-color-6 {
   fill: #c0515c;
   stroke: #c0515c;
 }
 
-.highcharts-color-4 {
+.highcharts-color-5 {
   fill: #c46770;
   stroke: #c46770;
 }
 
-.highcharts-color-5 {
+.highcharts-color-4 {
   fill: #c97e83;
   stroke: #c97e83;
 }
 
-.highcharts-color-6 {
+.highcharts-color-3 {
   fill: #cd9497;
   stroke: #cd9497;
 }
 
-.highcharts-color-7 {
+.highcharts-color-2 {
   fill: #d2aaab;
   stroke: #d2aaab;
 }
 
-.highcharts-color-8 {
+.highcharts-color-1 {
   fill: #d6c1be;
   stroke: #d6c1be;
 }
-.highcharts-color-9 {
+.highcharts-color-0 {
   fill: #dbd7d2;
   stroke: #dbd7d2;
 }
