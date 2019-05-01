@@ -1,9 +1,6 @@
-var clicked = false,
-  series = [];
-
 var dataObj = { data: [], labels: [] };
 
-var geoData, currentSeries, currentPoint, currentYear, currentIndex, chart, max;
+var geoData, currentYear, chart;
 
 var apikey = "rALBgvFj5slsDlhhw4Vjfw",
   table = "gadm36_zaf_1";
@@ -42,10 +39,9 @@ fetch(
             });
 
             if (countryData) {
-              console.log(45);
               mapFragilityYearsToSequence(countryData, a, index, year);
             } else {
-              var country = Object.assign({}, tileData);
+              var country = {};
 
               country.name_1 = a[0];
 
@@ -153,9 +149,9 @@ function renderMap(data) {
           this.color +
           '">\u25CF </span><b>' +
           this.name_1 +
-          "</b><br/>\n      " +
+          "</b><br/>" +
           currentYear +
-          " Prevalence:\n       " +
+          " Prevalence: " +
           this.value +
           " (units)</div>"
         );
