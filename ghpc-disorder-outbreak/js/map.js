@@ -237,6 +237,14 @@ function renderMap(data) {
         name: "bubbles",
         type: "mapbubble",
         maxSize: "12%",
+        ranges: [
+          {
+            value: 125000000
+          },
+          {
+            value: 2
+          }
+        ],
         color: "#c89a49",
         borderColor: "white",
         states: {
