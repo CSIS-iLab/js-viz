@@ -144,6 +144,33 @@ function updateSequence(country, index, b) {
 }
 
 function renderMap(data) {
+  // data.points.push({
+  //   x: NaN,
+  //   y: NaN,
+  //   lat: NaN,
+  //   lon: NaN,
+  //   name: "",
+  //   sequence: data.labels.map(function(year) {
+  //     return {
+  //       value: 1250000,
+  //       year
+  //     };
+  //   })
+  // });
+  // data.points.push({
+  //   x: NaN,
+  //   y: NaN,
+  //   lat: NaN,
+  //   lon: NaN,
+  //   name: "",
+  //   sequence: data.labels.map(function(year) {
+  //     return {
+  //       value: 2,
+  //       year
+  //     };
+  //   })
+  // });
+
   chart = Highcharts.mapChart("container", {
     chart: {
       marginTop: 0,
@@ -237,14 +264,8 @@ function renderMap(data) {
         name: "bubbles",
         type: "mapbubble",
         maxSize: "12%",
-        ranges: [
-          {
-            value: 125000000
-          },
-          {
-            value: 2
-          }
-        ],
+
+        sizeBy: "width",
         color: "#c89a49",
         borderColor: "white",
         states: {
