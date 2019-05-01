@@ -113,7 +113,7 @@ function renderMap(data) {
         data: data.pepfar,
         mapData: geoData.district,
         joinBy: ["name_2", "name_2"],
-        borderWidth: 1,
+        borderWidth: 0.25,
         borderColor: "black",
         nullColor: "transparent",
         colorAxis: false,

@@ -98,7 +98,8 @@ function renderMap(data) {
         data: data.data,
         mapData: geoData,
         joinBy: ["name_1", "name_1"],
-        borderWidth: 0.125,
+        borderWidth: 2,
+        borderColor: "black",
         showInLegend: false,
         states: {
           hover: {
