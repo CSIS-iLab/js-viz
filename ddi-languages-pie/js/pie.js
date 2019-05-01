@@ -44,7 +44,7 @@ Highcharts.chart("container", {
   },
   tooltip: {
     headerFormat:
-      '<span style="color:{point.color}"> \u25CF</span> <span style="font-size: 13px;text-align:center;margin-bottom: 5px;font-weight: bold;font-family: \'Roboto\', arial, sans-serif;"> {point.key}</span><br/>',
+      "<span style=\"font-size: 13px;text-align:center;margin-bottom: 5px;font-weight: bold;font-family: 'Roboto', arial, sans-serif;\"> {point.key}</span><br/>",
 
     pointFormatter: function() {
       var suffix = "% of total<br/>";
