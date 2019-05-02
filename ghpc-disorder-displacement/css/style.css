@@ -119,7 +119,7 @@ body {
 
 #container,
 #play-controls {
-  background-color: #1e3953;
+  /* background-color: #1e3953; */
   color: #fff;
   padding: 24px;
   max-width: calc(100vw - 48px);

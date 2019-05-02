@@ -5,25 +5,15 @@ Highcharts.chart("container", {
     googleSpreadsheetWorksheet: 1,
     complete: function(data) {
       data.series[0].marker = {
-        fillColor: "#49acb2",
-        radius: 6
+        fillColor: "#1e3953",
+        radius: 4.5
       };
 
-      data.series[0].lineColor = "#d46c44";
+      data.series[0].lineColor = "#1e3953";
       data.series[0].lineWidth = 3;
 
-      data.series[0].color = {
-        pattern: {
-          color: "#49acb2",
-          path: {
-            d: "M 0 0 L 3 3",
-            strokeWidth: 3
-          },
-          width: 4.5,
-          height: 4.5,
-          opacity: 0.5
-        }
-      };
+      data.series[0].color = "#49acb2";
+      data.series[0].opacity = 0.75;
     }
   },
   chart: {
@@ -50,7 +40,7 @@ Highcharts.chart("container", {
   },
   yAxis: {
     title: "",
-    gridLineColor: "#455a77",
+    gridLineColor: "#b8cbdf",
     tickInterval: 10,
     labels: {
       rotation: -30,
@@ -58,19 +48,19 @@ Highcharts.chart("container", {
         return this.value > 0 ? this.value + "M" : "";
       },
       style: {
-        color: "#b8cbdf"
+        // color: "#1e3953"
       }
     }
   },
   xAxis: {
-    lineColor: "#455a77",
-    tickColor: "#455a77",
+    lineColor: "#b8cbdf",
+    tickColor: "#b8cbdf",
     tickInterval: 1,
     labels: {
       rotation: -30,
       x: 16,
       style: {
-        color: "#b8cbdf"
+        // color: "#1e3953"
       }
     }
   },
