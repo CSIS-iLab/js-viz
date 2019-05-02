@@ -26,11 +26,18 @@ Highcharts.chart("container", {
 
   title: {
     text: "GLOBAL FORCED DISPLACEMENT",
-    align: "left"
+    align: "left",
+    style: {
+      fontSize: "24px"
+    }
   },
   subtitle: {
     text: "Lorem ipsum dolor",
-    align: "left"
+    align: "left",
+    style: {
+      fontSize: "18px",
+      fontStyle: "italic"
+    }
   },
   credits: {
     enabled: true,
