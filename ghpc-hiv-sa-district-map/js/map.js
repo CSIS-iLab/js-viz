@@ -51,7 +51,7 @@ fetch(
 
               district.name_2 = tileData.properties.name_2;
               district.value = parseInt(a[3], 10) > -1 ? a[3] : null;
-              district.pepfar = a[2];
+              district.pepfar = a[2].toLowerCase() === "yes" ? true : false;
 
               a[2].toLowerCase() === "yes"
                 ? dataObj.pepfar.push(district)
