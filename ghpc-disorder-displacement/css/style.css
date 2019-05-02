@@ -111,7 +111,6 @@ tr:not(.section) td:not(:last-of-type) {
 }
 
 body {
-  padding-top: 24px;
   font-family: "Open Sans", Arial, Helvetica, sans-serif;
   font-size: 16px;
   /* background-color: #618bab; */
@@ -121,7 +120,7 @@ body {
 #play-controls {
   /* background-color: #1e3953; */
   color: #fff;
-  padding: 24px;
+  padding: 0 24px;
   max-width: calc(100vw - 48px);
 }
 

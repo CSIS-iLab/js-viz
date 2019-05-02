@@ -20,17 +20,21 @@ Highcharts.chart("container", {
     type: "area",
     height: "50%",
     spacingBottom: 25,
+    marginTop: 75,
     backgroundColor: "transparent"
   },
 
   title: {
-    text: ""
+    text: "GLOBAL FORCED DISPLACEMENT",
+    align: "left"
   },
   subtitle: {
-    text: ""
+    text: "Lorem ipsum dolor",
+    align: "left"
   },
   credits: {
     enabled: true,
+    position: { x: 10, align: "left" },
     href: false,
     text:
       "CSIS Gobal Health Policy Center | Source: UNHCR Annual Global Trends Reports"
