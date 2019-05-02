@@ -39,8 +39,8 @@ fetch("https://code.highcharts.com/mapdata/custom/world-palestine.geo.json")
             if (countryData) {
               mapFragilityYearsToSequence(countryData, a, index, year);
             } else {
-              var country = Object.assign({}, tileData);
-              country["hc-key"] = country.properties["hc-key"];
+              var country = {};
+              country["hc-key"] = tileData.properties["hc-key"];
               country["iso-a3"] = a[0];
 
               mapFragilityYearsToSequence(country, a, index, year);
@@ -64,7 +64,7 @@ fetch("https://code.highcharts.com/mapdata/custom/world-palestine.geo.json")
               });
 
               if (countryPointData) {
-                var pointValue = parseInt(b[6], 10) > -1 ? b[6] : null;
+                var pointValue = parseInt(b[6], 10) > 10 ? b[6] : null;
                 mapOutbreakYearsToSequence(countryPointData, b);
               } else {
                 var countryPoint = {};
@@ -106,7 +106,7 @@ function mapFragilityYearsToSequence(country, a, index, year) {
 }
 
 function mapOutbreakYearsToSequence(country, b) {
-  var pointValue = parseInt(b[6], 10) > -1 ? b[6] : null;
+  var pointValue = parseInt(b[6], 10) > 10 ? b[6] : null;
 
   var yearColumn = b[4].toString().split("-");
   var yearOne = yearColumn[0];
@@ -128,7 +128,7 @@ function mapOutbreakYearsToSequence(country, b) {
 }
 
 function updateSequence(country, index, b) {
-  var value = parseInt(b[6], 10) > -1 ? b[6] : null;
+  var value = parseInt(b[6], 10) > 10 ? b[6] : null;
 
   country.sequence[index] = country.sequence[index] || {};
 
@@ -165,7 +165,7 @@ function renderMap(data) {
     name: "",
     sequence: data.labels.map(function(year) {
       return {
-        value: 2,
+        value: 10,
         year
       };
     })
@@ -195,32 +195,27 @@ function renderMap(data) {
     colorAxis: {
       dataClasses: [
         {
-          to: 72,
-          color: "#264F69",
-          name: "Surveillance Score:"
+          to: 60,
+          color: "#244864"
         },
         {
-          from: 72,
-          to: 84,
-          color: "#2B6178",
-          name: window.innerWidth > 768 ? "Less than 25" : "< 25"
+          from: 60,
+          to: 75,
+          color: "#2B6178"
         },
         {
-          from: 84,
-          to: 96,
-          color: "#326D83",
-          name: window.innerWidth > 768 ? "Greater than 25" : "> 25"
+          from: 75,
+          to: 90,
+          color: "#326D83"
         },
         {
-          from: 96,
-          to: 108,
-          color: "#3A7A8D",
-          name: window.innerWidth > 768 ? "Greater than 50" : "> 50"
+          from: 90,
+          to: 105,
+          color: "#3A7A8D"
         },
         {
-          from: 108,
-          color: "#418698",
-          name: window.innerWidth > 768 ? "Greater than 75" : "> 75"
+          from: 105,
+          color: "#418698"
         }
       ]
     },
@@ -249,6 +244,7 @@ function renderMap(data) {
         mapData: Highcharts.maps["custom/world-palestine"],
         joinBy: ["hc-key", "hc-key"],
         borderWidth: 1,
+        borderColor: "#1e3953",
         showInLegend: false,
         states: {
           hover: {
@@ -263,9 +259,10 @@ function renderMap(data) {
         data: data.points,
         name: "bubbles",
         type: "mapbubble",
-        maxSize: "12%",
+        maxSize: "25%",
+        minSize: "2px",
 
-        sizeBy: "width",
+        sizeBy: "area",
         color: "#c89a49",
         borderColor: "white",
         states: {
@@ -417,6 +414,7 @@ function pointFormatter() {
   table += '<td colspan="2">' + this.name + " (" + currentYear + ")" + "</td>";
   table += "</tr>";
   table += "</thead>";
+  table += "<tbody>";
 
   if (fragilityValue) {
     table += '<tr class="section section-fragility">';
@@ -459,6 +457,8 @@ function pointFormatter() {
       "<td><strong>" + outbreakValue.toLocaleString() + " total</strong></td>";
     table += "</tr>";
   }
+  table += "</tbody>";
+  table += "</table>";
 
   return table;
 }

@@ -281,11 +281,11 @@ g.highcharts-series,
   stroke-width: 1px;
 }
 .highcharts-mapbubble-series .highcharts-point {
-  stroke-width: 2px;
+  stroke-width: 1.5px;
   fill-opacity: 0;
 }
 .highcharts-mapbubble-series .highcharts-point-hover {
-  stroke-width: 4px;
+  stroke-width: 3px;
   fill-opacity: 0.25;
 }
 
@@ -757,9 +757,16 @@ input.highcharts-range-selector {
 }
 
 /* Highmaps */
+
 .highcharts-map-series .highcharts-point {
   transition: fill 500ms, fill-opacity 500ms, stroke-width 250ms;
+}
+
+.highcharts-series-0 .highcharts-point {
   stroke: #1e3953;
+}
+.highcharts-series-0 .highcharts-null-point {
+  fill: #244864;
 }
 
 .highcharts-map-series .highcharts-point-hover {
@@ -788,10 +795,6 @@ input.highcharts-range-selector {
 
 .highcharts-coloraxis-marker {
   fill: #999999;
-}
-
-.highcharts-null-point {
-  fill: #22415e;
 }
 
 /* 3d charts */

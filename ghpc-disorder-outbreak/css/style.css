@@ -67,6 +67,9 @@ tr.section-outbreak ~ tr td {
   background-color: rgba(184, 158, 105, 0.5);
   color: black;
 }
+tbody td {
+  width: 50%;
+}
 
 td {
   padding: 6px;
