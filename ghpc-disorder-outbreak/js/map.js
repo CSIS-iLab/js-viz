@@ -196,47 +196,30 @@ function renderMap(data) {
       dataClasses: [
         {
           to: 60,
-          color: "#244864"
+          color: "#D0DADF"
         },
         {
           from: 60,
           to: 75,
-          color: "#2B6178"
+          color: "#AFBFC9"
         },
         {
           from: 75,
           to: 90,
-          color: "#326D83"
+          color: "#758896"
         },
         {
           from: 90,
           to: 105,
-          color: "#3A7A8D"
+          color: "#526774"
         },
         {
           from: 105,
-          color: "#418698"
+          color: "#304854"
         }
       ]
     },
 
-    xAxis: {
-      crosshair: {
-        zIndex: 5,
-        dashStyle: "dot",
-        snap: false,
-        color: "gray"
-      }
-    },
-
-    yAxis: {
-      crosshair: {
-        zIndex: 5,
-        dashStyle: "dot",
-        snap: false,
-        color: "gray"
-      }
-    },
     series: [
       {
         data: data.base,
@@ -244,7 +227,6 @@ function renderMap(data) {
         mapData: Highcharts.maps["custom/world-palestine"],
         joinBy: ["hc-key", "hc-key"],
         borderWidth: 1,
-        borderColor: "#1e3953",
         showInLegend: false,
         states: {
           hover: {
@@ -263,7 +245,7 @@ function renderMap(data) {
         minSize: "2px",
 
         sizeBy: "area",
-        color: "#c89a49",
+        color: "#FF6221",
         borderColor: "white",
         states: {
           inactive: {
@@ -279,9 +261,9 @@ function renderMap(data) {
         verticalAlign: "top",
         align: "right",
         theme: {
-          fill: "#b89e69",
+          fill: "#FF6221",
           "stroke-width": 0,
-          style: { color: "white", stroke: "#b89e69" }
+          style: { color: "white", stroke: "#FF6221" }
         }
       },
       buttons: {

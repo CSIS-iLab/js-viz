@@ -133,15 +133,15 @@
 /* Credits */
 .highcharts-credits {
   cursor: pointer;
-  fill: #fff;
+  fill: #000;
   font-size: 0.7em;
   transition: fill 250ms, font-size 250ms;
 }
 .highcharts-credits tspan {
-  fill: #fff;
+  fill: #000;
 }
 .highcharts-credits:hover {
-  fill: #fff;
+  fill: #000;
   font-size: 1em;
 }
 
@@ -287,6 +287,7 @@ g.highcharts-series,
 .highcharts-mapbubble-series .highcharts-point-hover {
   stroke-width: 3px;
   fill-opacity: 0.25;
+  stroke: #ff6221;
 }
 
 .highcharts-dense-data .highcharts-point {
@@ -662,7 +663,7 @@ text.highcharts-data-label {
 
 .highcharts-button-hover .highcharts-button-box {
   transition: all 0.3s ease-in-out;
-  fill: #a58d5d;
+  fill: #e45527;
 }
 
 .highcharts-button-pressed {
@@ -763,10 +764,11 @@ input.highcharts-range-selector {
 }
 
 .highcharts-series-0 .highcharts-point {
-  stroke: #1e3953;
+  stroke: #fff;
+  stroke-opacity: 0.2;
 }
 .highcharts-series-0 .highcharts-null-point {
-  fill: #244864;
+  fill: #d0dadf;
 }
 
 .highcharts-map-series .highcharts-point-hover {

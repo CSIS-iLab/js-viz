@@ -3,11 +3,11 @@
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 128.2 94.2" style="enable-background:new 0 0 128.2 94.2" xml:space="preserve">
 <style type="text/css">
-	.st0{stroke:#b89e69;stroke-width:3;stroke-miterlimit:10;fill: rgba(184, 158, 105, 0);}
-	.st1{stroke-width:3;fill:rgba(184, 158, 105, 0);stroke:#000;stroke-width:3;stroke-miterlimit:10;stroke-dasharray:3;}
-	.st2{fill:rgba(184, 158, 105, 0);}
-	.st3{stroke-width:3;stroke:#b89e69;stroke-width:3;stroke-miterlimit:10;fill: rgba(184, 158, 105, 0);}
-	.st4{fill:none;stroke:#000;stroke-width:3;stroke-miterlimit:10;stroke-dasharray:2.9091,2.9091;fill: rgba(184, 158, 105, 0);}
+	.st0{stroke:#FF6221;stroke-width:3;stroke-miterlimit:10;fill: transparent;}
+	.st1{stroke-width:3;fill:transparent;stroke:#000;stroke-width:3;stroke-miterlimit:10;stroke-dasharray:3;}
+	.st2{fill:transparent;}
+	.st3{stroke-width:3;stroke:#FF6221;stroke-width:3;stroke-miterlimit:10;fill: transparent;}
+	.st4{fill:none;stroke:#000;stroke-width:3;stroke-miterlimit:10;stroke-dasharray:2.9091,2.9091;fill: transparent;}
 	.st5{fill:#000}
 	.st6{font-size:18px;font-family: "Open Sans", Arial, Helvetica, sans-serif;}
 </style>

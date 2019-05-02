@@ -1,5 +1,5 @@
 @import "https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css";
-/* $color-white: #ffffff;
+/* $color-white: #fff;
 $color-black: #000000;
 $color-dust: #b89e69;
 $color-warm-gray: #7d7d7d;
@@ -55,7 +55,7 @@ tr.section-fragility td {
   color: white;
 }
 tr.section-outbreak td {
-  background-color: rgba(184, 158, 105, 1);
+  background-color: rgba(255, 98, 33, 1);
   color: white;
 }
 tr.section-fragility td:last-of-type {
@@ -64,7 +64,7 @@ tr.section-fragility td:last-of-type {
 }
 
 tr.section-outbreak ~ tr td {
-  background-color: rgba(184, 158, 105, 0.5);
+  background-color: rgba(255, 98, 33, 0.5);
   color: black;
 }
 tbody td {
@@ -87,7 +87,7 @@ tr:not(.section) td:not(:last-of-type) {
 
 .header {
   padding-left: 12px;
-  border-left: 6px solid #2b6178;
+  border-left: 6px solid #e3eaec;
   max-width: 700px;
 }
 
@@ -119,8 +119,8 @@ body {
 
 #container,
 #play-controls {
-  background-color: #1e3953;
-  color: #fff;
+  background-color: #e3eaec;
+  color: #000;
   padding: 24px;
   max-width: calc(100vw - 48px);
 }
@@ -176,7 +176,7 @@ body {
 #play-pause-button {
   position: relative;
   top: -0.5rem;
-  background-color: #b89e69;
+  background-color: #ff6221;
   color: #fff;
   border: none;
   border-radius: 3px;
@@ -197,7 +197,7 @@ body {
 }
 #play-pause-button:hover {
   transition: all 0.3s ease-in-out;
-  background-color: #a58d5d;
+  background-color: #e45527;
 }
 
 #play-range {
@@ -206,7 +206,7 @@ body {
   z-index: 99;
   cursor: pointer;
   -webkit-appearance: none;
-  background-color: #fff;
+  background-color: #000;
   height: 4px;
   margin: 7px 0;
   border-radius: 2px;
@@ -263,13 +263,13 @@ body {
 
 .label.active,
 #ticks .label:hover {
-  color: #fff;
-  -webkit-box-shadow: inset -1px -6px 0 -2px #fff;
-  box-shadow: inset -1px -6px 0 -2px #fff;
+  color: #000;
+  -webkit-box-shadow: inset -1px -6px 0 -2px #000;
+  box-shadow: inset -1px -6px 0 -2px #000;
 }
 
 .tick:not(:first-child) {
-  border-left: 1px solid #fff;
+  border-left: 1px solid #000;
 }
 
 .tabletitle {
@@ -307,7 +307,7 @@ body {
 }
 .outbreak-legend > li:nth-of-type(2) {
   /* border-radius: 50%; */
-  /* background-color: rgba(184, 158, 105, 0.67);
+  /* background-color: rgba(255, 98, 33, 0.67);
   border: 2px solid #b89e69; */
   background: url(../img/scale.svg) no-repeat center center;
   width: 75px;
@@ -343,19 +343,19 @@ body {
 }
 
 .fragility-legend__colors > li:nth-of-type(1) {
-  background-color: #2b6178;
+  background-color: #afbfc9;
 }
 
 .fragility-legend__colors > li:nth-of-type(2) {
-  background-color: #326d83;
+  background-color: #758896;
 }
 
 .fragility-legend__colors > li:nth-of-type(3) {
-  background-color: #3a7a8d;
+  background-color: #526774;
 }
 
 .fragility-legend__colors > li:nth-of-type(4) {
-  background-color: #418698;
+  background-color: #304854;
 }
 
 .fragility-legend > li:nth-of-type(2) {
