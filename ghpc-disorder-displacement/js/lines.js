@@ -13,7 +13,7 @@ Highcharts.chart("container", {
       data.series[0].lineWidth = 3;
 
       data.series[0].color = "#155c6c";
-      data.series[0].opacity = 0.5;
+      data.series[0].fillOpacity = 0.5;
     }
   },
   chart: {
