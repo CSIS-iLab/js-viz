@@ -120,8 +120,6 @@ body {
 #play-controls {
   /* background-color: #1e3953; */
   color: #fff;
-  padding: 0 24px;
-  max-width: calc(100vw - 48px);
 }
 
 .header,
@@ -362,10 +360,7 @@ body {
 }
 
 @media screen and (max-width: 768px) {
-  #container,
-  #container2,
-  .heading,
-  body {
+  #container {
   }
 
   .fragility-legend {

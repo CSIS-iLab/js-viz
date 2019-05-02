@@ -18,7 +18,9 @@ Highcharts.chart("container", {
   },
   chart: {
     type: "area",
-    backgroundColor: "transparent"
+    backgroundColor: "transparent",
+    marginLeft: 10,
+    marginRight: 10
   },
 
   title: {
