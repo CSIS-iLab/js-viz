@@ -264,8 +264,8 @@ body {
 .label.active,
 #ticks .label:hover {
   color: #000;
-  -webkit-box-shadow: inset -1px -6px 0 -2px #000;
-  box-shadow: inset -1px -6px 0 -2px #000;
+  /* -webkit-box-shadow: inset -1px -6px 0 -2px #000;
+  box-shadow: inset -1px -6px 0 -2px #000; */
 }
 
 .tick:not(:first-child) {
