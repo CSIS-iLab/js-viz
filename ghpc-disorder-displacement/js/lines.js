@@ -64,7 +64,6 @@ Highcharts.chart("container", {
     tickColor: "#b8cbdf",
     tickInterval: 1,
     labels: {
-      x: 16,
       style: {
         // color: "#1e3953"
       }
@@ -76,7 +75,7 @@ Highcharts.chart("container", {
       "<span style=\"font-size: 13px;text-align:center;margin-bottom: 5px;font-weight: bold;font-family: 'Roboto', arial, sans-serif;\">{point.key}</span><br/>",
     pointFormatter: function() {
       return `
-      $${this.y.toFixed(1)} Million Displaced`;
+      ${this.y.toFixed(1)} Million Displaced`;
     }
   },
   responsive: {
