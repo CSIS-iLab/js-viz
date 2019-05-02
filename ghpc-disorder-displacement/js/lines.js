@@ -18,9 +18,6 @@ Highcharts.chart("container", {
   },
   chart: {
     type: "area",
-    height: "50%",
-    spacingBottom: 25,
-    marginTop: 75,
     backgroundColor: "transparent"
   },
 
@@ -83,5 +80,50 @@ Highcharts.chart("container", {
       return `
       $${this.y.toFixed(1)} Million Displaced`;
     }
+  },
+  responsive: {
+    rules: [
+      {
+        condition: {
+          maxWidth: 400
+        },
+        chartOptions: {
+          chart: {
+            height: "80%",
+            spacingBottom: 25,
+            marginTop: 100
+          }
+        }
+      },
+      {
+        condition: {
+          minWidth: 401,
+          maxWidth: 700
+        },
+        chartOptions: {
+          chart: {
+            height: "50%",
+            spacingBottom: 25,
+            marginTop: 75
+          }
+        }
+      },
+      {
+        condition: {
+          minWidth: 701,
+          spacingBottom: 25,
+          marginTop: 100
+        },
+        chartOptions: {
+          chart: {
+            height: "30%",
+            marginTop: 100
+          }
+        }
+      }
+    ]
   }
 });
+var resizeEvent = window.document.createEvent("UIEvents");
+resizeEvent.initUIEvent("resize", true, false, window, 0);
+window.dispatchEvent(resizeEvent);
