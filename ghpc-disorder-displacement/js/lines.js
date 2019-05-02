@@ -5,15 +5,15 @@ Highcharts.chart("container", {
     googleSpreadsheetWorksheet: 1,
     complete: function(data) {
       data.series[0].marker = {
-        fillColor: "#1e3953",
+        fillColor: "#e45527",
         radius: 4.5
       };
 
-      data.series[0].lineColor = "#1e3953";
+      data.series[0].lineColor = "#155c6c";
       data.series[0].lineWidth = 3;
 
-      data.series[0].color = "#49acb2";
-      data.series[0].opacity = 0.75;
+      data.series[0].color = "#155c6c";
+      data.series[0].opacity = 0.5;
     }
   },
   chart: {
@@ -51,7 +51,6 @@ Highcharts.chart("container", {
     gridLineColor: "#b8cbdf",
     tickInterval: 10,
     labels: {
-      rotation: -30,
       formatter: function() {
         return this.value > 0 ? this.value + "M" : "";
       },
@@ -65,7 +64,6 @@ Highcharts.chart("container", {
     tickColor: "#b8cbdf",
     tickInterval: 1,
     labels: {
-      rotation: -30,
       x: 16,
       style: {
         // color: "#1e3953"
