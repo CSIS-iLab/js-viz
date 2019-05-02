@@ -64,7 +64,7 @@ fetch("https://code.highcharts.com/mapdata/custom/world-palestine.geo.json")
               });
 
               if (countryPointData) {
-                var pointValue = parseInt(b[6], 10) > 10 ? b[6] : null;
+                var pointValue = parseInt(b[6], 10) > -1 ? b[6] : null;
                 mapOutbreakYearsToSequence(countryPointData, b);
               } else {
                 var countryPoint = {};
@@ -106,7 +106,7 @@ function mapFragilityYearsToSequence(country, a, index, year) {
 }
 
 function mapOutbreakYearsToSequence(country, b) {
-  var pointValue = parseInt(b[6], 10) > 10 ? b[6] : null;
+  var pointValue = parseInt(b[6], 10) > -1 ? b[6] : null;
 
   var yearColumn = b[4].toString().split("-");
   var yearOne = yearColumn[0];
@@ -128,7 +128,7 @@ function mapOutbreakYearsToSequence(country, b) {
 }
 
 function updateSequence(country, index, b) {
-  var value = parseInt(b[6], 10) > 10 ? b[6] : null;
+  var value = parseInt(b[6], 10) > -1 ? b[6] : null;
 
   country.sequence[index] = country.sequence[index] || {};
 
