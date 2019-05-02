@@ -13,6 +13,18 @@ Highcharts.chart("container", {
       data.series[0].lineWidth = 3;
 
       data.series[0].color = "#155c6c";
+      data.series[0].color = {
+        pattern: {
+          color: "#155c6c",
+          path: {
+            d: "M 0 0 L 3 3",
+            strokeWidth: 3
+          },
+          width: 3,
+          height: 3,
+          opacity: 0.5
+        }
+      };
       data.series[0].fillOpacity = 0.5;
     }
   },
@@ -86,7 +98,7 @@ Highcharts.chart("container", {
         },
         chartOptions: {
           chart: {
-            height: "80%",
+            height: "100%",
             spacingBottom: 25,
             marginTop: 100
           }
@@ -99,7 +111,7 @@ Highcharts.chart("container", {
         },
         chartOptions: {
           chart: {
-            height: "50%",
+            height: "80%",
             spacingBottom: 25,
             marginTop: 75
           }
@@ -113,7 +125,7 @@ Highcharts.chart("container", {
         },
         chartOptions: {
           chart: {
-            height: "30%",
+            height: "50%",
             marginTop: 100
           }
         }
