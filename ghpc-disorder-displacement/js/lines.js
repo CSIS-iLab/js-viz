@@ -65,6 +65,7 @@ Highcharts.chart("container", {
   xAxis: {
     lineColor: "#455a77",
     tickColor: "#455a77",
+    tickInterval: 1,
     labels: {
       rotation: -30,
       x: 16,
