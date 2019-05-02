@@ -58,7 +58,7 @@ Highcharts.chart("container", {
         return this.value > 0 ? this.value + "M" : "";
       },
       style: {
-        color: "white"
+        color: "#b8cbdf"
       }
     }
   },
@@ -70,7 +70,7 @@ Highcharts.chart("container", {
       rotation: -30,
       x: 16,
       style: {
-        color: "white"
+        color: "#b8cbdf"
       }
     }
   },
