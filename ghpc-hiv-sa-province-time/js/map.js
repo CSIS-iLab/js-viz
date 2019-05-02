@@ -2,8 +2,8 @@ var dataObj = { data: [], labels: [] };
 
 var geoData, currentYear, chart;
 
-var apikey = "rALBgvFj5slsDlhhw4Vjfw",
-  table = "gadm36_zaf_1";
+var apikey = "vXc19iyIcMbZYF_io-g4nw",
+  table = "simplified_za_level_1";
 fetch(
   "https://csis.carto.com/api/v2/sql?api_key=" +
     apikey +

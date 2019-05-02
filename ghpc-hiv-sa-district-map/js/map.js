@@ -3,8 +3,8 @@ var dataObj = { data: [], pepfar: [], not: [] };
 var geoData = {};
 var chart;
 
-var apikey = "rALBgvFj5slsDlhhw4Vjfw",
-  table = "gadm36_zaf_";
+var apikey = "vXc19iyIcMbZYF_io-g4nw",
+  table = "simplified_za_level_";
 
 fetch(
   "https://csis.carto.com/api/v2/sql?api_key=" +
