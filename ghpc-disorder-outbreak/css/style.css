@@ -324,7 +324,7 @@ body {
   margin: 0 3px;
 }
 
-.fragility-legend > li {
+.fragility-legend .label-value {
   font-size: 13.5px;
   letter-spacing: -0.5;
 }
