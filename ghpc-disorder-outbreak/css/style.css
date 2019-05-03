@@ -248,13 +248,13 @@ body {
   cursor: pointer;
 }
 
-#labels .label {
+#play-controls .label {
   transition: all 0.3s ease-in-out;
   display: block;
   height: 1.5rem;
 }
 
-#labels .label.active,
+#play-controls .label.active,
 #ticks .label:hover {
   color: #e45527;
   font-weight: bold;
