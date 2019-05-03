@@ -305,7 +305,7 @@ body {
   flex-basis: 400px;
 }
 .fragility-legend > li:nth-of-type(2) {
-  background: url(../img/scaleFragility.svg) no-repeat center center;
+  background: url(../img/scaleFragility.svg) no-repeat center 27px;
   width: 250px;
   height: 75px;
 }
