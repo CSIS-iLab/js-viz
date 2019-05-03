@@ -134,6 +134,7 @@
     document
       .querySelector("#play-output-end")
       .setAttribute("data-id", this.options.labels[this.dataLength - 1]);
+    this.playRange.value = this.chart.options.motion.startIndex;
 
     if (isArray(this.options.labels)) {
       this.playOutputEnd.innerHTML =
@@ -239,8 +240,9 @@
   Motion.prototype.play = function() {
     var motion = this;
     if (
-      this.paused &&
-      parseFloat(this.playRange.value) === parseFloat(this.playRange.max)
+      (this.paused &&
+        parseFloat(this.playRange.value) === parseFloat(this.playRange.max)) ||
+      parseFloat(this.playRange.value) === this.chart.options.motion.startIndex
     ) {
       this.reset();
     }
@@ -298,7 +300,6 @@
       i;
     if (this.currentAxisValue !== roundedInput) {
       this.currentAxisValue = roundedInput;
-      this.chart.options.motion.startIndex = roundedInput;
       for (seriesKey in this.dataSeries) {
         if (this.dataSeries.hasOwnProperty(seriesKey)) {
           series = this.dataSeries[seriesKey];
@@ -322,6 +323,7 @@
       }
       this.attractToStep();
     }
+
     this.chart.redraw();
   };
 

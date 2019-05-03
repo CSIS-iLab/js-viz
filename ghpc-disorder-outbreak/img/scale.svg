@@ -1,32 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 22.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 128.2 94.2" style="enable-background:new 0 0 128.2 94.2" xml:space="preserve">
+	 viewBox="0 0 200 94.2" style="enable-background:new 0 0 200 94.2" xml:space="preserve">
 <style type="text/css">
-	.st0{stroke:#FF6221;stroke-width:3;stroke-miterlimit:10;fill: transparent;}
-	.st1{stroke-width:3;fill:transparent;stroke:#000;stroke-width:3;stroke-miterlimit:10;stroke-dasharray:3;}
-	.st2{fill:transparent;}
-	.st3{stroke-width:3;stroke:#FF6221;stroke-width:3;stroke-miterlimit:10;fill: transparent;}
-	.st4{fill:none;stroke:#000;stroke-width:3;stroke-miterlimit:10;stroke-dasharray:2.9091,2.9091;fill: transparent;}
-	.st5{fill:#000}
-	.st6{font-size:18px;font-family: "Open Sans", Arial, Helvetica, sans-serif;}
+	circle{stroke-width:3;stroke:#FF6221;stroke-width:3;stroke-miterlimit:10;fill: transparent;}
+	line{fill:none;stroke:#000;stroke-width:3;stroke-miterlimit:10;stroke-dasharray:2.9091,2.9091;fill: transparent;}
+	text{fill:#000;font-size:18px;font-family: "Open Sans", Arial, Helvetica, sans-serif;}
 </style>
 <g transform="translate(31, 40)">
-	<circle class="st0" cx="0" cy="42.2" r="2"/>
-	<circle class="st0" cx="0" cy="28.2" r="16"/>
-	<circle class="st0" cx="0" cy="14.2" r="30"/>
-	<line class="st1" x1="0" y1="40.2" x2="35" y2="40.2"/>
-	<line class="st1" x1="0" y1="12.2" x2="35" y2="12.2"/>
-	<g>
-		<line class="st2" x1="0" y1="-15.8" x2="35" y2="-15.8"/>
-		<g>
-			<line class="st3" x1="0" y1="-15.8" x2="1.5" y2="-15.8"/>
-			<line class="st4" x1="4.4" y1="-15.8" x2="32" y2="-15.8"/>
-			<line class="st3" x1="33.5" y1="-15.8" x2="35" y2="-15.8"/>
-		</g>
-	</g>
-	<text transform="matrix(1 0 0 1 35 43.25)" class="st5 st6">1</text>
-	<text transform="matrix(1 0 0 1 35 15.25)" class="st5 st6">0.63 M</text>
-	<text transform="matrix(1 0 0 1 35 -12.75)" class="st5 st6">1.25 M</text>
+	<circle cx="0" cy="37.2" r="4"/>
+	<circle cx="0" cy="25.2" r="16"/>
+	<circle cx="0" cy="14.2" r="30"/>
+	<line x1="0" y1="30.2" x2="35" y2="30.2"/>
+	<line x1="0" y1="6.2" x2="35" y2="6.2"/>
+	<line x1="0" y1="-19.2" x2="35" y2="-19.2"/>
+	<text transform="matrix(1 0 0 1 35 43.25)">less than 1K</text>
+	<text transform="matrix(1 0 0 1 35 15.25)">less than 0.63M</text>
+	<text transform="matrix(1 0 0 1 35 -12.75)">less than 1.25M</text>
 </g>
 </svg>

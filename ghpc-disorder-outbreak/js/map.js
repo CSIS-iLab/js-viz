@@ -1,6 +1,7 @@
 var clicked = false,
   series = [];
 
+var threshold = 1000;
 var dataObj = { base: [], points: [], labels: [] };
 
 var geoData, currentSeries, currentPoint, currentYear, currentIndex, chart, max;
@@ -64,7 +65,6 @@ fetch("https://code.highcharts.com/mapdata/custom/world-palestine.geo.json")
               });
 
               if (countryPointData) {
-                var pointValue = parseInt(b[6], 10) > -1 ? b[6] : null;
                 mapOutbreakYearsToSequence(countryPointData, b);
               } else {
                 var countryPoint = {};
@@ -93,6 +93,17 @@ fetch("https://code.highcharts.com/mapdata/custom/world-palestine.geo.json")
     });
   });
 
+function assignValue(cases) {
+  switch (true) {
+    case Number.isNaN(cases):
+      return null;
+    case cases < threshold:
+      return threshold;
+    case cases > threshold:
+      return cases;
+  }
+}
+
 function mapFragilityYearsToSequence(country, a, index, year) {
   var value = parseInt(a[index + 2], 10) > -1 ? a[index + 2] : null;
 
@@ -106,8 +117,6 @@ function mapFragilityYearsToSequence(country, a, index, year) {
 }
 
 function mapOutbreakYearsToSequence(country, b) {
-  var pointValue = parseInt(b[6], 10) > -1 ? b[6] : null;
-
   var yearColumn = b[4].toString().split("-");
   var yearOne = yearColumn[0];
 
@@ -128,18 +137,27 @@ function mapOutbreakYearsToSequence(country, b) {
 }
 
 function updateSequence(country, index, b) {
-  var value = parseInt(b[6], 10) > -1 ? b[6] : null;
+  var value = assignValue(parseInt(b[6], 10));
+  var tooltipValue = parseInt(b[6], 10) > -1 ? b[6] : null;
 
   country.sequence[index] = country.sequence[index] || {};
 
   if (country.sequence[index].value) {
     country.sequence[index].value += value ? value : 0;
+    country.sequence[index].tooltipValue += tooltipValue ? tooltipValue : 0;
   } else {
     country.sequence[index].value = value ? value : null;
+    country.sequence[index].tooltipValue = tooltipValue ? tooltipValue : null;
   }
 
   country.sequence[index].diseases = country.sequence[index].diseases || [];
-  country.sequence[index].diseases.push({ disease: b[5], cases: value });
+  country.sequence[index].diseases.push({
+    disease: b[5],
+    cases: tooltipValue,
+    notes: [b[7], b[8]].filter(function(d) {
+      return d;
+    })
+  });
   country.sequence[index].year = parseInt(dataObj.labels[index], 10);
 }
 
@@ -153,19 +171,6 @@ function renderMap(data) {
     sequence: data.labels.map(function(year) {
       return {
         value: 1250000,
-        year
-      };
-    })
-  });
-  data.points.push({
-    x: NaN,
-    y: NaN,
-    lat: NaN,
-    lon: NaN,
-    name: "",
-    sequence: data.labels.map(function(year) {
-      return {
-        value: 10,
         year
       };
     })
@@ -242,7 +247,7 @@ function renderMap(data) {
         name: "bubbles",
         type: "mapbubble",
         maxSize: "25%",
-        minSize: "2px",
+        minSize: "3px",
 
         sizeBy: "area",
         color: "#FF6221",
@@ -281,7 +286,6 @@ function renderMap(data) {
     tooltip: {
       headerFormat: "",
       useHTML: true,
-      // pointFormat: "Lat: {point.lat}<br>" + "Lon: {point.lon}<br>"
       pointFormatter: pointFormatter,
       nullFormatter: pointFormatter
     },
@@ -290,10 +294,11 @@ function renderMap(data) {
       enabled: true,
       labels: data.labels,
       series: [0, 1],
+      startIndex: data.labels.indexOf(2018),
       updateInterval: 1250,
       axisLabel: "year",
       magnet: {
-        round: "floor", // ceil / floor / round
+        round: "floor",
         step: 1
       }
     },
@@ -344,12 +349,11 @@ function renderMap(data) {
     }
   });
 
-  chart.motion.reset();
-
   let resizeEvent = window.document.createEvent("UIEvents");
   resizeEvent.initUIEvent("resize", true, false, window, 0);
   window.dispatchEvent(resizeEvent);
 }
+
 function pointFormatter() {
   var point = this;
   currentYear = document.querySelector(".label.active").dataset.id;
@@ -381,12 +385,23 @@ function pointFormatter() {
   });
 
   var outbreakValue = outbreakCountry
-    ? outbreakCountry.sequence[index].value
+    ? outbreakCountry.sequence[index].tooltipValue
     : null;
 
   var outbreakDiseases = outbreakCountry
     ? outbreakCountry.sequence[index].diseases
     : null;
+
+  var outbreakNotes =
+    outbreakCountry && outbreakDiseases
+      ? outbreakDiseases
+          .map(function(d) {
+            return d.notes;
+          })
+          .reduce(function(a, b) {
+            return a.concat(b);
+          })
+      : [];
 
   var table = "";
 
@@ -399,7 +414,12 @@ function pointFormatter() {
   table += "<tbody>";
 
   if (fragilityValue) {
-    table += '<tr class="section section-fragility">';
+    var lightColors = ["#AFBFC9", "#D0DADF"];
+    console.log(color);
+    table +=
+      '<tr class="section section-fragility" style="' +
+      (lightColors.indexOf(color) > -1 ? ";color:black" : "") +
+      '">';
     table += '<td style="background-color:' + color + '">Fragility Score</td>';
     table +=
       '<td style="background-color:rgba(' +
@@ -424,7 +444,7 @@ function pointFormatter() {
           o.disease +
           "</td>" +
           "<td>" +
-          o.cases.toLocaleString() +
+          (o.cases ? o.cases.toLocaleString() : "") +
           "</td>" +
           "</tr>"
         );
@@ -438,8 +458,21 @@ function pointFormatter() {
     table +=
       "<td><strong>" + outbreakValue.toLocaleString() + " total</strong></td>";
     table += "</tr>";
+    table += "</tbody>";
+
+    if (outbreakNotes.length) {
+      table += "<tfoot>";
+
+      var outbreakNotes = outbreakNotes
+        .map(function(o) {
+          return '<tr><td colspan="2">' + o + "</td></tr>";
+        })
+        .join("");
+      table += outbreakNotes;
+
+      table += "</tfoot>";
+    }
   }
-  table += "</tbody>";
   table += "</table>";
 
   return table;
