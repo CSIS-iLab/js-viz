@@ -311,14 +311,8 @@ body {
 }
 
 @media screen and (max-width: 768px) {
-  #container,
-  #container2,
-  .heading,
-  body {
-  }
-
-  .fragility-legend {
-    /* flex-wrap: wrap; */
+  .legends {
+    flex-wrap: wrap;
   }
 }
 
