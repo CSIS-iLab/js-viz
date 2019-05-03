@@ -415,7 +415,7 @@ function pointFormatter() {
 
   if (fragilityValue) {
     var lightColors = ["#AFBFC9", "#D0DADF"];
-    console.log(color);
+
     table +=
       '<tr class="section section-fragility" style="' +
       (lightColors.indexOf(color) > -1 ? ";color:black" : "") +

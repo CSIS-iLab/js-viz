@@ -134,6 +134,7 @@
     document
       .querySelector("#play-output-end")
       .setAttribute("data-id", this.options.labels[this.dataLength - 1]);
+
     this.playRange.value = this.chart.options.motion.startIndex;
 
     if (isArray(this.options.labels)) {
@@ -329,7 +330,7 @@
 
   // Moves output value to data point
   Motion.prototype.attractToStep = function() {
-    var labels = Array.from(document.querySelectorAll(".label"));
+    var labels = Array.from(document.querySelectorAll("#play-controls .label"));
 
     labels.forEach(l => l.classList.remove("active"));
 
