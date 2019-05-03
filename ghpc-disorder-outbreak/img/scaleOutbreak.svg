@@ -13,7 +13,7 @@
 	<line x1="0" y1="30.2" x2="35" y2="30.2"/>
 	<line x1="0" y1="6.2" x2="35" y2="6.2"/>
 	<line x1="0" y1="-19.2" x2="35" y2="-19.2"/>
-	<text transform="matrix(1 0 0 1 35 43.25)">&lt; 1K</text>
+	<text transform="matrix(1 0 0 1 35 43.25)">&lt;1K</text>
 	<text transform="matrix(1 0 0 1 35 15.25)">0.63M</text>
 	<text transform="matrix(1 0 0 1 35 -12.75)">1.25M</text>
 </g>

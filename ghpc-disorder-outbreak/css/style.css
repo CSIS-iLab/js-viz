@@ -179,7 +179,6 @@ body {
   font-size: 15px;
   outline: none;
   cursor: pointer;
-  margin-right: 2.5%;
   display: flex;
   align-content: center;
   justify-content: center;
@@ -208,8 +207,8 @@ body {
 #range {
   position: relative;
   top: -10px;
-  margin: 2.5% 2.8% 2.5% 2.5%;
-  width: 85%;
+  margin: 2.5% 1% 2.5% 2.5%;
+  width: 100%;
 }
 
 #ticks {
@@ -241,7 +240,7 @@ body {
   left: 50%;
   transform: translateX(-50%);
   height: 1.5rem;
-  width: 91%;
+  width: 106%;
   margin: auto auto auto auto;
 }
 #ticks .tick {
@@ -278,88 +277,37 @@ body {
   font-size: 24px;
 }
 
-.legends,
-.outbreak-legend,
-.outbreak-legend__colors,
-.fragility-legend,
-.fragility-legend__over ul,
-.fragility-legend__under ul {
-  display: flex;
-  list-style-type: none;
-  padding-left: 0;
-}
 .legends {
   justify-content: space-between;
   max-width: 700px;
 }
+
+.legends,
+.legends ul {
+  align-items: center;
+  display: flex;
+  list-style-type: none;
+}
+.legends .label-value {
+  white-space: nowrap;
+}
+
 .outbreak-legend {
   flex-basis: 400px;
 }
-
-.outbreak-legend > li:nth-of-type(1) {
-  align-items: center;
-  display: flex;
-}
 .outbreak-legend > li:nth-of-type(2) {
-  /* border-radius: 50%; */
-  /* background-color: rgba(255, 98, 33, 0.67);
-  border: 2px solid #b89e69; */
-  background: url(../img/scale.svg) no-repeat center center;
+  background: url(../img/scaleOutbreak.svg) no-repeat center center;
   width: 150px;
   height: 75px;
 }
 
 .fragility-legend {
-  width: 70%;
-  align-items: center;
+  flex-basis: 400px;
 }
-.fragility-legend__under ul li,
-.fragility-legend__over ul li {
-  height: 30px;
-  width: 100%;
-}
-
-.legends > ul > li {
-  white-space: nowrap;
-  margin: 0 3px;
-}
-
-.fragility-legend .label-value {
-  font-size: 13.5px;
-  letter-spacing: -0.5;
-}
-
-.fragility-legend .label {
-  align-items: center;
-  display: flex;
-}
-.fragility-legend .label strong {
-  font-size: 12px;
-}
-
-.fragility-legend__under {
-  flex-basis: 20%;
-}
-.fragility-legend__over {
-  flex-basis: 80%;
-}
-.fragility-legend__under li {
-  background-color: #d0dadf;
-}
-.fragility-legend__over li:nth-of-type(4) {
-  background-color: #afbfc9;
-}
-
-.fragility-legend__over li:nth-of-type(3) {
-  background-color: #758896;
-}
-
-.fragility-legend__over li:nth-of-type(2) {
-  background-color: #526774;
-}
-
-.fragility-legend__over li:nth-of-type(1) {
-  background-color: #304854;
+.fragility-legend > li:nth-of-type(2) {
+  background: url(../img/scaleFragility.svg) no-repeat center center;
+  width: 250px;
+  height: 75px;
 }
 
 @media screen and (max-width: 768px) {
