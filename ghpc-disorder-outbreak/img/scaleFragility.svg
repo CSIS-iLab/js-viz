@@ -7,8 +7,8 @@
 	.st2{fill:#758896;}
 	.st3{fill:#536875;}
 	.st4{fill:#304854;}
-	.st5{font-family:'ArialMT';}
-	.st6{font-size:14px;}
+	text{fill:#000;font-size:14px;font-family: "Open Sans", Arial, Helvetica, sans-serif;}
+
 </style>
 
 
