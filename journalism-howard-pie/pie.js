@@ -21,9 +21,9 @@ Highcharts.chart('container', {
             cursor: 'pointer',
             colors: ["#cf6c1d", "#a9bc52", "#a18a92"],
             dataLabels: {
-                enabled: true,
-                format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-            }
+                enabled: false
+            },
+            showInLegend: true
         }
     },
     series: [{
