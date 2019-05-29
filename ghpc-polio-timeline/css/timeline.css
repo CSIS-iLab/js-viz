@@ -1,0 +1,13 @@
+.tl-timenav,
+.tl-headline-date,
+.tl-slidenav-description,
+.tl-menubar {
+  display: none;
+}
+
+.tl-timeline {
+  max-height: 500px;
+}
+.tl-storyslider {
+  height: 100% !important;
+}
