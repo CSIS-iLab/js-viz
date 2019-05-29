@@ -50,7 +50,7 @@ function parseJson(json) {
         text: rowData.text
       },
       group: rowData.group,
-      media: {
+      background: {
         // caption: rowData.caption,
         // credit: rowData.media_2,
         url: rowData.background
