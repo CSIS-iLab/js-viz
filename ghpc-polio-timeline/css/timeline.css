@@ -8,6 +8,8 @@
 .tl-timeline {
   max-height: 500px;
 }
-.tl-storyslider {
-  height: 100% !important;
+.tl-storyslider,
+body,
+html {
+  height: 99% !important;
 }
