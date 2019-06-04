@@ -246,7 +246,7 @@ function renderMap(series) {
             },
             credits: {
               text:
-                'CSIS | <a href="http://apps.who.int/gho/data/view.main.IHRCTRY03v?lang=en">WHO</a> | '
+                'CSIS | WHO | '
             }
           }
         },
@@ -262,7 +262,7 @@ function renderMap(series) {
             credits: {
               align: "right",
               text:
-                'CSIS | <a href="http://apps.who.int/gho/data/view.main.IHRCTRY03v?lang=en">WHO</a> | '
+                'CSIS | WHO | '
             }
           }
         },
@@ -273,7 +273,7 @@ function renderMap(series) {
           chartOptions: {
             credits: {
               text:
-                'CSIS Global Health Policy Center | <a href="http://apps.who.int/gho/data/view.main.IHRCTRY03v?lang=en">World Health Organization</a> | '
+                'CSIS Global Health Policy Center | World Health Organization | '
             }
           }
         }
