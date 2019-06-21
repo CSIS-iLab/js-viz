@@ -83,19 +83,25 @@ function renderMap(data) {
       href: true
     },
     legend: {
+      title: {
+        text: 'Prevalance',
+        style: {
+          fontSize: '16px'
+        }
+      },
       enabled: true,
+      align: 'left',
       layout: 'vertical',
       verticalAlign: 'top',
-      floating: false,
-      x: -250
+      floating: true,
+      x: window.innerWidth / 15,
+      itemStyle: {
+        fontSize: '14px',
+        fontWeight: 'normal'
+      }
     },
     colorAxis: {
       dataClasses: [
-        {
-          to: -1,
-          color: 'transparent',
-          name: 'Prevalance:'
-        },
         {
           from: 0,
           to: 10,
@@ -175,6 +181,7 @@ function renderMap(data) {
     tooltip: {
       headerFormat: '',
       useHTML: true,
+      backgroundColor: 'rgba(255,255,255,.9)',
       pointFormatter: function pointFormatter() {
         currentYear = document.querySelector('.label.active').dataset.id
 
@@ -186,9 +193,9 @@ function renderMap(data) {
           this.name_1 +
           '</b><br/>' +
           currentYear +
-          ' Prevalence: ' +
+          ' HIV Prevalence: ' +
           this.value +
-          ' (units)</div>'
+          '%</div>'
         )
       }
     },

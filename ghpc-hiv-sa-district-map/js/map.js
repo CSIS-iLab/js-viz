@@ -83,18 +83,44 @@ function renderMap(data) {
       href: true
     },
     legend: {
+      title: {
+        text: 'Prevalance',
+        style: {
+          fontSize: '16px'
+        }
+      },
       enabled: true,
+      align: 'left',
       layout: 'vertical',
       verticalAlign: 'top',
-      floating: false,
-      x: -250
+      floating: true,
+      x: window.innerWidth / 15,
+      itemStyle: {
+        fontSize: '14px',
+        fontWeight: 'normal'
+      }
     },
     colorAxis: {
       dataClasses: [
         {
           to: -1,
-          color: 'transparent',
-          name: 'Prevalance:'
+          color: {
+            pattern: {
+              color: 'black',
+              path: {
+                d:
+                  'M 0 0 L 6 6' +
+                  //
+                  'M 5.5 -1 L 5.5 1 ' +
+                  //
+                  'M -1 5.5 L 1 5.5'
+              },
+              width: 5,
+              height: 5,
+              opacity: 0.5
+            }
+          },
+          name: 'PEPFAR Focus District'
         },
         {
           from: 0,
@@ -230,17 +256,18 @@ function renderMap(data) {
     tooltip: {
       headerFormat: '',
       useHTML: true,
+      backgroundColor: 'rgba(255,255,255,.9)',
       pointFormatter: function pointFormatter() {
         return (
           '<div><span style="font-size:18px;color:' +
           this.color +
           '">\u25CF </span><b>' +
           this.name_2 +
-          '</b><br/>' +
-          (this.pepfar ? 'PEPFAR Focus District<br/>' : '') +
-          ' Prevalence:' +
+          ' District</b><br/>' +
+          (this.pepfar ? '<em>PEPFAR Focus District</em><br/>' : '') +
+          ' HIV Prevalence: ' +
           this.value +
-          ' (units)</div>'
+          '%</div>'
         )
       }
     },
