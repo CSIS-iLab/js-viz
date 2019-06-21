@@ -84,7 +84,7 @@ function renderMap(data) {
     },
     legend: {
       title: {
-        text: 'Prevalance',
+        text: 'Prevalence',
         style: {
           fontSize: '16px'
         }
