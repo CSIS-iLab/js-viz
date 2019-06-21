@@ -212,7 +212,7 @@ function renderMap(data) {
           },
           chartOptions: {
             chart: {
-              height: '33%'
+              height: '66%'
             },
 
             credits: {
@@ -227,7 +227,7 @@ function renderMap(data) {
           },
           chartOptions: {
             chart: {
-              height: '50%'
+              height: '100%'
             },
 
             credits: {
