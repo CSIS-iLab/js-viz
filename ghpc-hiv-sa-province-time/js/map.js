@@ -1,81 +1,81 @@
-var dataObj = { data: [], labels: [] };
+var dataObj = { data: [], labels: [] }
 
-var geoData, currentYear, chart;
+var geoData, currentYear, chart
 
-var apikey = "vXc19iyIcMbZYF_io-g4nw",
-  table = "simplified_za_level_1";
+var apikey = 'vXc19iyIcMbZYF_io-g4nw',
+  table = 'simplified_za_level_1'
 fetch(
-  "https://csis.carto.com/api/v2/sql?api_key=" +
+  'https://csis.carto.com/api/v2/sql?api_key=' +
     apikey +
-    "&format=geojson&q=SELECT%20*%20FROM%20" +
+    '&format=geojson&q=SELECT%20*%20FROM%20' +
     table
 )
   .then(function(resp) {
-    return resp.json();
+    return resp.json()
   })
   .then(function(json) {
-    geoData = json;
+    geoData = json
 
     Highcharts.data({
-      googleSpreadsheetKey: "19oi9wuSR4O9Blr7p6LArWLCVcxAGBUyld0HtGNVqqyU",
+      googleSpreadsheetKey: '19oi9wuSR4O9Blr7p6LArWLCVcxAGBUyld0HtGNVqqyU',
       googleSpreadsheetWorksheet: 1,
       switchRowsAndColumns: true,
       parsed: function parsed(columns) {
         columns.forEach(function(a, i) {
           if (i === 0) {
-            dataObj.labels = a.filter(c => parseInt(c, 10));
-            return;
+            dataObj.labels = a.filter(c => parseInt(c, 10))
+            return
           }
 
           dataObj.labels.forEach(function(year, index) {
             var tileData = geoData.features.find(function(province) {
-              return province.properties.name_1.indexOf(a[0]) > -1;
-            });
+              return province.properties.name_1.indexOf(a[0]) > -1
+            })
 
-            if (!tileData) return;
+            if (!tileData) return
 
             var countryData = dataObj.data.find(function(d) {
-              return d.name_1 === a[0];
-            });
+              return d.name_1 === a[0]
+            })
 
             if (countryData) {
-              mapFragilityYearsToSequence(countryData, a, index, year);
+              mapFragilityYearsToSequence(countryData, a, index, year)
             } else {
-              var country = {};
+              var country = {}
 
-              country.name_1 = a[0];
+              country.name_1 = a[0]
 
-              mapFragilityYearsToSequence(country, a, index, year);
-              dataObj.data.push(country);
+              mapFragilityYearsToSequence(country, a, index, year)
+              dataObj.data.push(country)
             }
-          });
-        });
-        console.log(dataObj);
-        renderMap(dataObj);
+          })
+        })
+        console.log(dataObj)
+        renderMap(dataObj)
       }
-    });
-  });
+    })
+  })
 
 function mapFragilityYearsToSequence(country, a, index, year) {
-  var value = parseInt(a[index + 1], 10) > -1 ? a[index + 1] : null;
+  var value = parseInt(a[index + 1], 10) > -1 ? a[index + 1] : null
 
-  country.sequence = country.sequence || [];
+  country.sequence = country.sequence || []
   if (parseInt(year, 10)) {
-    country.sequence.push({ year: year, value: value });
+    country.sequence.push({ year: year, value: value })
   }
-  country[a[1]] = country[a[1]] || [];
+  country[a[1]] = country[a[1]] || []
 
-  country[a[1]].push(value);
+  country[a[1]].push(value)
 }
 
 function renderMap(data) {
-  chart = Highcharts.mapChart("container", {
+  chart = Highcharts.mapChart('container', {
     chart: {
       marginTop: 0,
       marginBottom: 25
     },
     title: {
-      text: ""
+      text: ''
     },
 
     credits: {
@@ -83,23 +83,57 @@ function renderMap(data) {
       href: true
     },
     legend: {
-      enabled: false,
-      layout: "horizontal",
-      verticalAlign: "top",
+      enabled: true,
+      layout: 'vertical',
+      verticalAlign: 'top',
       floating: false,
-      x: -133
+      x: -250
     },
     colorAxis: {
-      minColor: "#EDA27C",
-      maxColor: "#4C8984"
+      dataClasses: [
+        {
+          to: -1,
+          color: 'transparent',
+          name: 'Prevalance:'
+        },
+        {
+          from: 0,
+          to: 10,
+          color: '#4C8984',
+          name: window.innerWidth > 768 ? 'Less than 10%' : '< 10%'
+        },
+        {
+          from: 10,
+          to: 15,
+          color: '#75baa9',
+          name: window.innerWidth > 768 ? 'Less than 15%' : '< 15%'
+        },
+        {
+          from: 15,
+          to: 20,
+          color: '#EDA27C',
+          name: window.innerWidth > 768 ? 'Less than 20%' : '< 20%'
+        },
+        {
+          from: 20,
+          to: 25,
+          color: '#e86259',
+          name: window.innerWidth > 768 ? 'Less than 25%' : '< 25%'
+        },
+        {
+          from: 25,
+          color: '#8b0000',
+          name: window.innerWidth > 768 ? 'Less than 30%' : '< 30%'
+        }
+      ]
     },
     series: [
       {
         data: data.data,
         mapData: geoData,
-        joinBy: ["name_1", "name_1"],
+        joinBy: ['name_1', 'name_1'],
         borderWidth: 2,
-        borderColor: "black",
+        borderColor: 'black',
         showInLegend: false,
         states: {
           hover: {
@@ -109,7 +143,7 @@ function renderMap(data) {
         dataLabels: {
           enabled: true,
           formatter: function() {
-            return this.point.properties.name_1;
+            return this.point.properties.name_1
           }
         }
       }
@@ -118,12 +152,12 @@ function renderMap(data) {
       enabled: true,
       enableMouseWheelZoom: false,
       buttonOptions: {
-        verticalAlign: "top",
-        align: "right",
+        verticalAlign: 'top',
+        align: 'right',
         theme: {
-          fill: "#0faa91",
-          "stroke-width": 0,
-          style: { color: "white" }
+          fill: '#0faa91',
+          'stroke-width': 0,
+          style: { color: 'white' }
         }
       },
       buttons: {
@@ -139,23 +173,23 @@ function renderMap(data) {
       enabled: false
     },
     tooltip: {
-      headerFormat: "",
+      headerFormat: '',
       useHTML: true,
       pointFormatter: function pointFormatter() {
-        currentYear = document.querySelector(".label.active").dataset.id;
+        currentYear = document.querySelector('.label.active').dataset.id
 
-        currentYear = parseInt(currentYear, 10);
+        currentYear = parseInt(currentYear, 10)
         return (
           '<div><span style="font-size:18px;color:' +
           this.color +
           '">\u25CF </span><b>' +
           this.name_1 +
-          "</b><br/>" +
+          '</b><br/>' +
           currentYear +
-          " Prevalence: " +
+          ' Prevalence: ' +
           this.value +
-          " (units)</div>"
-        );
+          ' (units)</div>'
+        )
       }
     },
 
@@ -164,9 +198,9 @@ function renderMap(data) {
       labels: data.labels,
       series: 0,
       updateInterval: 1250,
-      axisLabel: "year",
+      axisLabel: 'year',
       magnet: {
-        round: "floor", // ceil / floor / round
+        round: 'floor', // ceil / floor / round
         step: 1
       }
     },
@@ -178,11 +212,11 @@ function renderMap(data) {
           },
           chartOptions: {
             chart: {
-              height: "33%"
+              height: '33%'
             },
 
             credits: {
-              text: ""
+              text: ''
             }
           }
         },
@@ -193,12 +227,12 @@ function renderMap(data) {
           },
           chartOptions: {
             chart: {
-              height: "50%"
+              height: '50%'
             },
 
             credits: {
-              align: "right",
-              text: ""
+              align: 'right',
+              text: ''
             }
           }
         },
@@ -208,17 +242,17 @@ function renderMap(data) {
           },
           chartOptions: {
             credits: {
-              text: ""
+              text: ''
             }
           }
         }
       ]
     }
-  });
+  })
 
-  chart.motion.reset();
+  chart.motion.reset()
 
-  let resizeEvent = window.document.createEvent("UIEvents");
-  resizeEvent.initUIEvent("resize", true, false, window, 0);
-  window.dispatchEvent(resizeEvent);
+  let resizeEvent = window.document.createEvent('UIEvents')
+  resizeEvent.initUIEvent('resize', true, false, window, 0)
+  window.dispatchEvent(resizeEvent)
 }
