@@ -282,6 +282,9 @@ function renderMap(data) {
             minWidth: 701
           },
           chartOptions: {
+            chart: {
+              height: '50%'
+            },
             credits: {
               text: ''
             }
