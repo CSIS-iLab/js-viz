@@ -120,7 +120,7 @@ function renderMap(data) {
               opacity: 0.5
             }
           },
-          name: 'PEPFAR Focus District'
+          name: 'Overlay indicates PEPFAR Focus District'
         },
         {
           from: 0,

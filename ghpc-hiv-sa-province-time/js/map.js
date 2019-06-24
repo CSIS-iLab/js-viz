@@ -191,7 +191,7 @@ function renderMap(data) {
           this.color +
           '">\u25CF </span><b>' +
           this.name_1 +
-          '</b><br/>' +
+          ' Province</b><br/>' +
           currentYear +
           ' HIV Prevalence: ' +
           this.value +
