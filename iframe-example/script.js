@@ -1,5 +1,5 @@
 const SPREADSHEET_ID = '123BpzTEYtesF2LI0VA_0ial9mQx4dlek9hoM3GRjwas'
-let chart = window.location.search.replace('?id=', '')
+let chart = window.location.search.replace('?id=', '').replace(/_/g, ' ')
 
 let chartColors = [
   '#6cd0da',
