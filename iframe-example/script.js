@@ -51,43 +51,7 @@ gapi.load('client', function() {
             data: {
               switchRowsAndColumns: true,
               csv: sheetData.rows.map(r => r.join(',')).join('\n'),
-              complete: d => {
-                let newSeries = d.series
-                  .filter(s => s.name.toLowerCase().indexOf('actual') < 0)
-                  .reduce(function(total, obj) {
-                    let name = obj.name.split(' ')[1]
-
-                    let series = total.find(s => s.name === name)
-
-                    if (!series) {
-                      total.push({
-                        name: name ? name : 'Actual',
-                        data: obj.data.map(d => [d[0], d[1] ? 0 : undefined])
-                      })
-                      series = total.find(s => s.name === name)
-                    }
-
-                    series.data = series.data.map((d, i) => [
-                      d[0],
-                      (d[1] += obj.data[i][1])
-                    ])
-
-                    return total
-                  }, [])
-
-                let actualSeries = d.series.find(
-                  s => s.name.toLowerCase().indexOf('actual') > -1
-                )
-
-                newSeries.push({ ...actualSeries })
-                newSeries.forEach((s, i) => {
-                  s.name = i === 8 ? s.name : 'PB ' + s.name
-                  s.color = i === 8 ? 'black' : chartColors[i]
-                  s.type = i === 8 ? 'line' : 'area'
-                })
-
-                d.series = newSeries
-              }
+              complete: complete
             },
 
             credits: {
@@ -107,7 +71,12 @@ gapi.load('client', function() {
               }
             },
             tooltip: {
-              shared: true
+              headerFormat:
+                '<span style="font-size: 13px;text-align:center;margin-bottom: 5px;font-weight: bold;font-family: \'Roboto\', arial, sans-serif;">{point.key}</span><br/>',
+
+              useHTML: true,
+              shared: true,
+              pointFormatter: pointFormatter
             },
             legend: {
               align: 'center',
@@ -151,43 +120,7 @@ gapi.load('client', function() {
             data: {
               switchRowsAndColumns: true,
               csv: sheetData.rows.map(r => r.join(',')).join('\n'),
-              complete: d => {
-                let newSeries = d.series
-                  .filter(s => s.name.toLowerCase().indexOf('actual') < 0)
-                  .reduce(function(total, obj) {
-                    let name = obj.name.split(' ')[1]
-
-                    let series = total.find(s => s.name === name)
-
-                    if (!series) {
-                      total.push({
-                        name: name ? name : 'Actual',
-                        data: obj.data.map(d => [d[0], d[1] ? 0 : undefined])
-                      })
-                      series = total.find(s => s.name === name)
-                    }
-
-                    series.data = series.data.map((d, i) => [
-                      d[0],
-                      (d[1] += obj.data[i][1])
-                    ])
-
-                    return total
-                  }, [])
-
-                let actualSeries = d.series.find(
-                  s => s.name.toLowerCase().indexOf('actual') > -1
-                )
-
-                newSeries.push({ ...actualSeries })
-                newSeries.forEach((s, i) => {
-                  s.name = i === 8 ? s.name : 'PB ' + s.name
-                  s.color = i === 8 ? 'black' : chartColors[i]
-                  s.type = i === 8 ? 'line' : 'line'
-                })
-
-                d.series = newSeries
-              }
+              complete: complete
             },
 
             credits: {
@@ -207,7 +140,12 @@ gapi.load('client', function() {
               }
             },
             tooltip: {
-              shared: true
+              headerFormat:
+                '<span style="font-size: 13px;text-align:center;margin-bottom: 5px;font-weight: bold;font-family: \'Roboto\', arial, sans-serif;">{point.key}</span><br/>',
+
+              useHTML: true,
+              shared: true,
+              pointFormatter: pointFormatter
             },
             legend: {
               align: 'center',
@@ -241,3 +179,66 @@ gapi.load('client', function() {
         })
     })
 })
+
+count = 0
+function pointFormatter() {
+  let toolTipData = this.series.userOptions.tooltipData
+    ? this.series.userOptions.tooltipData[this.index]
+    : null
+
+  return (
+    '<strong>' +
+    this.series.name +
+    '</strong><br/>' +
+    (toolTipData
+      ? 'A: ' +
+        toolTipData[1][0] +
+        '<br/>B: ' +
+        toolTipData[1][1] +
+        '<br/><br/>'
+      : this.y)
+  )
+}
+
+function complete(d) {
+  let newSeries = d.series
+    .filter(s => s.name.toLowerCase().indexOf('actual') < 0)
+    .reduce(function(total, obj) {
+      let name = obj.name.split(' ')[1]
+
+      let series = total.find(s => s.name === name)
+
+      if (!series) {
+        total.push({
+          name: name ? name : 'Actual',
+          data: obj.data.map(d => [d[0], d[1] ? 0 : undefined]),
+          tooltipData: obj.data.map(d => [d[0], []])
+        })
+        series = total.find(s => s.name === name)
+      }
+
+      series.data = series.data.map((d, i) => {
+        if (series.tooltipData[i][1]) {
+          series.tooltipData[i][1].push(obj.data[i][1])
+        } else {
+          series.tooltipData[i][1] = []
+        }
+
+        return [d[0], (d[1] += obj.data[i][1])]
+      })
+
+      return total
+    }, [])
+  let actualSeries = d.series.find(
+    s => s.name.toLowerCase().indexOf('actual') > -1
+  )
+
+  newSeries.push({ ...actualSeries })
+  newSeries.forEach((s, i) => {
+    s.name = i === 8 ? s.name : 'PB ' + s.name
+    s.color = i === 8 ? 'black' : chartColors[i]
+    s.type = i === 8 ? 'line' : count ? 'area' : 'line'
+  })
+  count++
+  d.series = newSeries
+}
