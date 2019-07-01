@@ -1,6 +1,17 @@
 const SPREADSHEET_ID = '123BpzTEYtesF2LI0VA_0ial9mQx4dlek9hoM3GRjwas'
-console.log(window.location.search)
-console.log(window.location.href)
+let chart = window.location.search.replace('?id=', '')
+
+let chartColors = [
+  '#6cd0da',
+  '#26a3a7',
+  '#f6cd37',
+  '#fc9603',
+  '#ff7058',
+  '#e13c2b',
+  '#618096',
+  '#374961',
+  '#85bb32'
+]
 gapi.load('client', function() {
   gapi.client
     .init({
@@ -14,42 +25,108 @@ gapi.load('client', function() {
       gapi.client.sheets.spreadsheets.values
         .get({
           spreadsheetId: SPREADSHEET_ID,
-          range: `'${'KC-46 FYDP History'}'!A:Z`
+          range: `'${chart}'!A:Z`
         })
         .then(function(sheet) {
           let sheetData = {
-            rows: sheet.result.values
+            title: sheet.result.values[0],
+            subtitle: sheet.result.values[1],
+            credits: sheet.result.values[2],
+            yAxis: sheet.result.values[3],
+            rows: sheet.result.values.slice(4)
           }
 
           Highcharts.chart('container', {
+            chart: {
+              type: 'column'
+              // type: 'area'
+              // type: 'line'
+            },
             title: {
-              text: 'KC-46 FYDP History'
+              text: sheetData.title
             },
             data: {
+              switchRowsAndColumns: true,
               csv: sheetData.rows.map(r => r.join(',')).join('\n'),
-              complete: d => {}
+              complete: d => {
+                let newSeries = d.series
+                  .filter(s => s.name.toLowerCase().indexOf('actual') < 0)
+                  .reduce(function(total, obj) {
+                    let name = obj.name.split(' ')[1]
+
+                    let series = total.find(s => s.name === name)
+
+                    if (!series) {
+                      total.push({
+                        name: name ? name : 'Actual',
+                        data: obj.data.map(d => [d[0], d[1] ? 0 : undefined])
+                      })
+                      series = total.find(s => s.name === name)
+                    }
+
+                    series.data = series.data.map((d, i) => [
+                      d[0],
+                      (d[1] += obj.data[i][1])
+                    ])
+
+                    return total
+                  }, [])
+
+                let actualSeries = d.series.find(
+                  s => s.name.toLowerCase().indexOf('actual') > -1
+                )
+
+                newSeries.push({ ...actualSeries })
+                newSeries.forEach((s, i) => {
+                  s.color = i === 8 ? 'black' : chartColors[i]
+                  s.type = i === 8 ? 'line' : 'area'
+                })
+
+                d.series = newSeries
+              }
             },
 
-            subtitle: {
-              text: 'Source: U.S. Department of Defense'
+            credits: {
+              href: false,
+              position: { align: 'center' },
+              text: sheetData.credits
             },
-
+            xAxis: {
+              allowDecimals: false
+            },
             yAxis: {
+              allowDecimals: false,
               title: {
-                text:
-                  'RDT&E and Procurement Funding<br>(in millions of current $)'
+                text: sheetData.yAxis,
+                margin: 10,
+                x: -15
               }
             },
             legend: {
-              layout: 'vertical',
-              align: 'right',
-              verticalAlign: 'middle'
+              align: 'center',
+              verticalAlign: 'bottom',
+              layout: 'horizontal',
+              itemStyle: {
+                textOverflow: null
+              }
             },
-
             plotOptions: {
-              series: {
-                label: {
-                  connectorAllowed: false
+              area: {
+                marker: {
+                  enabled: false,
+                  symbol: 'circle'
+                }
+              },
+              column: {
+                stacking: 'normal',
+                maxPointWidth: 150
+              },
+
+              line: {
+                dashStyle: 'LongDash',
+                marker: {
+                  enabled: false,
+                  symbol: 'circle'
                 }
               }
             }
