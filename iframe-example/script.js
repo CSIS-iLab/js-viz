@@ -45,6 +45,9 @@ gapi.load('client', function() {
             title: {
               text: sheetData.title
             },
+            subtitle: {
+              text: sheetData.subtitle
+            },
             data: {
               switchRowsAndColumns: true,
               csv: sheetData.rows.map(r => r.join(',')).join('\n'),
