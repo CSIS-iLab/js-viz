@@ -78,6 +78,7 @@ gapi.load('client', function() {
 
                 newSeries.push({ ...actualSeries })
                 newSeries.forEach((s, i) => {
+                  s.name = i === 8 ? s.name : 'PB ' + s.name
                   s.color = i === 8 ? 'black' : chartColors[i]
                   s.type = i === 8 ? 'line' : 'area'
                 })
@@ -101,6 +102,9 @@ gapi.load('client', function() {
                 margin: 10,
                 x: -15
               }
+            },
+            tooltip: {
+              shared: true
             },
             legend: {
               align: 'center',
