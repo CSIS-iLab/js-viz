@@ -23,6 +23,11 @@ Highcharts.chart('hcContainer', {
       href: 'http://popstats.unhcr.org/en/asylum_seekers',
       text: "CSIS Bootcamp in Journalism | Source: UNCHR"
     },
+    tooltip: {
+    pointFormat: '{series.name}: <b>{point.y}</b><br/>',
+    valueSuffix: '%',
+    shared: true
+},
     // Chart Legend
     legend: {
       enabled: false
@@ -42,6 +47,9 @@ Highcharts.chart('hcContainer', {
     },
     // Y Axis
     yAxis: {
+      labels: {
+    format: '{value}%'
+},
       title: {
         text: "By Percent"
       },
