@@ -12,10 +12,12 @@ Highcharts.chart('hcContainer', {
     },
     // Chart Title and Subtitle
     title: {
-      text: "Percentage of Total Population"
+      text: "Curacao and Aruba Less Visible but Deeply Affected",
+      align: 'left'
     },
     subtitle: {
-      text: "The relative size of refugee populations ... "
+      text: "Although most Venezuelan migrants end up in Colombia, they account for a larger share of the population in the small Caribbean nations of Curacao and Aruba. This sudden influx has challenged the public resources available in those countries, with little outside aid and attention to compensate.",
+      align: 'left'
     },
     // Credits
     credits: {
@@ -24,8 +26,8 @@ Highcharts.chart('hcContainer', {
       text: "CSIS Bootcamp in Journalism | Source: UNCHR"
     },
     tooltip: {
-    pointFormat: '{series.name}: <b>{point.y}</b><br/>',
-    valueSuffix: '%',
+    pointFormat: '{series.name} <strong>{point.y}</strong><br/>',
+    valueSuffix: '% of the population',
     shared: true
 },
     // Chart Legend
