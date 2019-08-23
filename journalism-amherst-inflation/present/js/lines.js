@@ -1,4 +1,4 @@
-Highcharts.setOptions({
+  Highcharts.setOptions({
     lang: {
         thousandsSep: ','
     }
@@ -7,15 +7,13 @@ Highcharts.setOptions({
 Highcharts.chart('hcContainer', {
     // Load Data in from Google Sheets
     data: {
-      googleSpreadsheetKey: '1R5A9iwIePPXDRwmGzzVg7Eut2_OMQ_U-fbU8A2n3dSw',
+      googleSpreadsheetKey: '1e5PeUnB8FzLQ3d7IUzaYqKixpbUX7lCWUexliBQhbOg',
+      googleSpreadsheetWorksheet: 1
     },
     // General Chart Options
     chart: {
       zoomType: 'x',
-      type: 'line',
-      animation: {
-    duration: 1000000000000
-}
+      type: 'spline'
     },
     // Chart Title and Subtitle
     title: {
