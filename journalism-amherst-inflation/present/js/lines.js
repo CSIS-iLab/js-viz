@@ -18,11 +18,11 @@ Highcharts.chart('hcContainer', {
     },
     // Chart Title and Subtitle
     title: {
-      text: "In 2019, A Billion Bolivars Gets You Less Than a Dollar",
+      text: "By 2019, One Dollar Gets You Over a Billion Bolivars",
       align: "left"
     },
     subtitle: {
-      text: "A recent boom in inflation and stagnant wages have driven an estimated 94% of Venezuelans into poverty, according to the United Nations. The International Monetary Fund estimates inflation will exceed 10 million percent by the end of this year. Click and drag to zoom in on specific dates.",
+      text: "By August 2019, one U.S. Dollar was equivalent to 1.3 billion Bolivars and the exchange rate, relative to the start of 2016, surged by 155 million percent. This has driven an estimated 30 million Venezuelans into poverty, according to the United Nations.",
       align: "left"
       },
 

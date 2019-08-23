@@ -17,10 +17,10 @@ Highcharts.chart('hcContainer', {
     },
     // Chart Title and Subtitle
     title: {
-      text: "Six Years of Gradual Inflation Preluded Venezuela’s Crisis"
+      text: "In 2010, One Dollar Got You Eight Bolivars"
     },
     subtitle: {
-      text: "2010-2016: Although didn't seem much, the actual inflation rate in Venezuela between 2010 to 2016 had a significant effect to Venezuelans and the country's economy. Click and drag to zoom in on specific dates."
+      text: "When former president Hugo Chávez declared an 'economic war' in June 2010, one U.S. Dollar was equivalent to about eight Bolivars. Between that time and the end of 2015, the exchange rate jumped by 10,438 percent, with poverty and shortages increasing around the country."
     },
 
     // Credits
