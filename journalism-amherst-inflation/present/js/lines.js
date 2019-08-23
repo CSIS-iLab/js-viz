@@ -62,8 +62,11 @@ Highcharts.chart('hcContainer', {
 //},
     // Y Axis
     yAxis: {
+      labels: {
+      format: '{value:,f} Bs'
+    },
       title: {
-        text: "In Millions Bolivar"
+        text: "In Venezuelan Bolivar"
       }
     },
 

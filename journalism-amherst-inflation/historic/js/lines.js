@@ -17,10 +17,12 @@ Highcharts.chart('hcContainer', {
     },
     // Chart Title and Subtitle
     title: {
-      text: "In 2010, One Dollar Got You Eight Bolivars"
+      text: "In 2010, One Dollar Got You Eight Bolivars",
+      align: "left"
     },
     subtitle: {
-      text: "When former president Hugo Chávez declared an 'economic war' in June 2010, one U.S. Dollar was equivalent to about eight Bolivars. Between that time and the end of 2015, the exchange rate jumped by 10,438 percent, with poverty and shortages increasing around the country."
+      text: "When former president Hugo Chávez declared an 'economic war' in June 2010, one U.S. Dollar was equivalent to about eight Bolivars. Between that time and the end of 2015, the exchange rate jumped by 10,438 percent, with poverty and shortages increasing around the country.",
+      align: "left"
     },
 
     // Credits
@@ -59,8 +61,11 @@ Highcharts.chart('hcContainer', {
 //},
     // Y Axis
     yAxis: {
+      labels: {
+      format: '{value:,f} Bs'
+    },
       title: {
-        text: "In Hundreds Bolivar"
+        text: "In Venezuelan Bolivar"
       }
     },
 
