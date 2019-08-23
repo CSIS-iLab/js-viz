@@ -34,12 +34,13 @@ Highcharts.chart('hcContainer', {
     },
     // Chart Legend
     legend: {
-      title: {
-        text: 'Equivalent to 1 USD'
-      },
-      align: 'center',
-      verticalAlign: 'bottom',
-      layout: 'horizontal'
+      enabled: false
+      //title: {
+      //  text: 'Equivalent to 1 USD'
+      //},
+      //align: 'center',
+      //verticalAlign: 'bottom',
+      //layout: 'horizontal'
     },
     tooltip: {
     pointFormat: '{series.name}: <b>{point.y}</b><br/>',
@@ -66,7 +67,7 @@ Highcharts.chart('hcContainer', {
       format: '{value:,f} Bs'
     },
       title: {
-        text: "In Venezuelan Bolivar"
+        text: "$1 USD in Venezuelan Bolivars (Bs)"
       }
     },
 
