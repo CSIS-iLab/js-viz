@@ -1,4 +1,4 @@
-  Highcharts.setOptions({
+Highcharts.setOptions({
     lang: {
         thousandsSep: ','
     }
