@@ -1,4 +1,5 @@
 Highcharts.setOptions({
+      colors: ['#003F5C'],
     lang: {
         thousandsSep: ','
     }
@@ -17,11 +18,13 @@ Highcharts.chart('hcContainer', {
     },
     // Chart Title and Subtitle
     title: {
-      text: "Inflation in Venezuela since 2016"
+      text: "In 2019, A Billion Bolivars Gets You Less Than a Dollar",
+      align: "left"
     },
     subtitle: {
-      text: "Click and drag to zoom in"
-    },
+      text: "A recent boom in inflation and stagnant wages have driven an estimated 94% of Venezuelans into poverty, according to the United Nations. The International Monetary Fund estimates inflation will exceed 10 million percent by the end of this year. Click and drag to zoom in on specific dates.",
+      align: "left"
+      },
 
     // Credits
     credits: {

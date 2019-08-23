@@ -1,4 +1,5 @@
 Highcharts.setOptions({
+    colors: ['#003F5C'],
     lang: {
         thousandsSep: ','
     }

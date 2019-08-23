@@ -1,4 +1,5 @@
 Highcharts.setOptions({
+      colors: ['#003F5C'],
     lang: {
         thousandsSep: ','
     }
@@ -16,10 +17,10 @@ Highcharts.chart('hcContainer', {
     },
     // Chart Title and Subtitle
     title: {
-      text: "Inflation in Venezuela 2010 – 2016"
+      text: "Six Years of Gradual Inflation Preluded Venezuela’s Crisis"
     },
     subtitle: {
-      text: "Click and drag to zoom in"
+      text: "2010-2016: Although didn't seem much, the actual inflation rate in Venezuela between 2010 to 2016 had a significant effect to Venezuelans and the country's economy. Click and drag to zoom in on specific dates."
     },
 
     // Credits
