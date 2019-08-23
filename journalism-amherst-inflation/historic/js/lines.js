@@ -7,20 +7,16 @@ Highcharts.setOptions({
 Highcharts.chart('hcContainer', {
     // Load Data in from Google Sheets
     data: {
-      googleSpreadsheetKey: '1R5A9iwIePPXDRwmGzzVg7Eut2_OMQ_U-fbU8A2n3dSw',
-      googleSpreadsheetWorksheet: 1
+      googleSpreadsheetKey: '1UiDIeBA-QJUAKFogEtYhNa95UGim--UjuuRq7pqkkqA'
     },
     // General Chart Options
     chart: {
       zoomType: 'x',
-      type: 'line',
-      animation: {
-    duration: 1000000000000
-}
+      type: 'spline'
     },
     // Chart Title and Subtitle
     title: {
-      text: "Inflation in Venezuela since 2016"
+      text: "Inflation in Venezuela 2010 – 2016"
     },
     subtitle: {
       text: "Click and drag to zoom in"
@@ -63,7 +59,7 @@ Highcharts.chart('hcContainer', {
     // Y Axis
     yAxis: {
       title: {
-        text: "In Millions Bolivar"
+        text: "In Hundreds Bolivar"
       }
     },
 
