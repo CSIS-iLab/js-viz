@@ -12,7 +12,7 @@ Highcharts.chart('hcContainer', {
 
   // Chart Colors
   colors: ['#004165', '#e86259', '#EDA27C', "#0064a6", '#75baa9', '#4C8984'],
-  // colors: ['#e86259', "#4C8984", "#004165", "#75baa9", "#0064a6"],
+
 
   // Chart Title and Subtitle
   title: {
@@ -38,8 +38,6 @@ Highcharts.chart('hcContainer', {
   },
   //  Tooltip 
   tooltip: {
-    // headerFormat: '',
-    // pointFormat: '<span style="color:{point.color}">\u25cf</span> {series.name}<br/>{point.x} Cases: {point.y}',
     shared: true
   },
   // Y Axis
@@ -48,15 +46,4 @@ Highcharts.chart('hcContainer', {
       text: "Polio Cases"
     },
   },
-  // Additional Plot Options
-  plotOptions:
-  {
-    column: {
-      stacking: 'normal', // Normal bar graph
-      // stacking: "normal", // Stacked bar graph
-      dataLabels: {
-        enabled: false,
-      }
-    }
-  }
 })
