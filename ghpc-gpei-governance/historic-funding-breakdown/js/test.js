@@ -19,7 +19,6 @@ $(function () {
         // googleSpreadsheetWorksheet: 1,
         switchRowsAndColumns: true,
         parsed: function (columns) {
-            console.log(columns)
             $.each(columns, function (i, code) {
                 if (i == 0) {
                     return
@@ -28,10 +27,6 @@ $(function () {
                 var level1 = code[0];
                 var level2 = code[1];
                 var value = code[2];
-                var level4 = code[3];
-                var year = code[4];
-                var value_current = code[5];
-                var value_constant = code[6];
 
                 // var type = code[0];
                 // var series = code[1];
@@ -54,20 +49,21 @@ $(function () {
                     data[level1][level2].data[level1] = {
                         name: level1,
                         y: value,
-                        label: level2,
+                        // label: level2,
                         drilldown: level1
                     }
+                    console.log(data[level1][level2].data[level1].y)
                 }
 
                 drilldownData[level2] = drilldownData[level2] || {}
                 drilldownData[level2][level1] = drilldownData[level2][level1] || {
-                    name: level1,
+                    name: level2,
                     id: level1,
                     data: []
                 }
 
                 drilldownData[level2][level1].data.push(
-                    [level2, value]
+                    [level2, value],
                 )
                 drilldownData[level2][level1].data.sort(function (a, b) {
                     if (b[1] < a[1]) return -1;
@@ -83,6 +79,7 @@ $(function () {
                 return [value];
             });
 
+
             // Convert each series & its data property into an array.
             dataArray.forEach(function (value) {
                 var series = $.map(value, function (item, index) {
@@ -93,7 +90,6 @@ $(function () {
                     return [item];
                 });
                 seriesData.push(series)
-                console.log(series)
             })
 
             // Convert drilldown object to array
@@ -107,25 +103,25 @@ $(function () {
                 });
                 seriesDrilldown.push(series)
             })
-            populateSelect()
+            // populateSelect()
             renderChart(seriesData[0], seriesDrilldown[0], datasets[0])
         }
     })
 
-    function populateSelect() {
-        var options = '';
-        $.each(datasets, function (i, dataset) {
-            options += '<option value="' + i + '">' + dataset + '</option>';
-        })
-        $('.datasets').append(options);
+    // function populateSelect() {
+    //     var options = '';
+    //     $.each(datasets, function (i, dataset) {
+    //         options += '<option value="' + i + '">' + dataset + '</option>';
+    //     })
+    //     $('.datasets').append(options);
 
-        // Destroy & redraw chart so we get smooth animation when switching datasets.
-        // $('.datasets').on('change', function() {
-        //   var chart = $('#hcContainer').highcharts()
-        //   chart.destroy()
-        //   renderChart(seriesData[this.value], seriesDrilldown[this.value],datasets[this.value])
-        // })
-    }
+    //     // Destroy & redraw chart so we get smooth animation when switching datasets.
+    //     // $('.datasets').on('change', function() {
+    //     //   var chart = $('#hcContainer').highcharts()
+    //     //   chart.destroy()
+    //     //   renderChart(seriesData[this.value], seriesDrilldown[this.value],datasets[this.value])
+    //     // })
+    // }
 
 
     function renderChart(data, drilldown, dataset) {
@@ -136,65 +132,73 @@ $(function () {
             },
             // Chart Title and Subtitle
             title: {
-                text: "Area Chart Multiple Drilldown"
+                text: "GPEI Contributions by Donor 1985-2018"
             },
             subtitle: {
-                text: "Click a column for a budget breakdown"
+                text: "Click a slice for funding breakdown by donor"
             },
             // Credits
             credits: {
                 enabled: true,
-                href: false,
-                text: "CSIS Defense360 | Source: "
+                href: "http://polioeradication.org/financing/donors/historical-contributions/",
+                text: "CSIS Global Health | Source: Polio Global Eradication Initiative"
             },
             // Chart Legend
-            legend: {
-                align: 'center',
-                verticalAlign: 'bottom',
-                layout: 'horizontal'
-            },
-            // X Axis
-            xAxis: {
-                allowDecimals: false,
-                type: 'category',
-                tickmarkPlacement: 'on'
-            },
+            // legend: {
+            //     align: 'center',
+            //     verticalAlign: 'bottom',
+            //     layout: 'horizontal'
+            // },
+            // // X Axis
+            // xAxis: {
+            //     allowDecimals: false,
+            //     type: 'category',
+            //     tickmarkPlacement: 'on'
+            // },
             // Y Axis
-            yAxis: {
-                title: {
-                    text: "Budget Authority, in Billions (" + dataset + " Dollars)"
-                },
-                labels: {
-                    formatter: function () {
-                        var label = "$" + this.value / 1000 + "B";
-                        return label;
-                    }
-                }
-            },
+            // yAxis: {
+            //     title: {
+            //         text: "Budget Authority, in Billions (" + dataset + " Dollars)"
+            //     },
+            //     labels: {
+            //         formatter: function () {
+            //             var label = "$" + this.value / 1000 + "B";
+            //             return label;
+            //         }
+            //     }
+            // },
             // Tooltip
             tooltip: {
                 valueDecimals: 2,
                 valuePrefix: '$',
-                valueSuffix: 'M'
             },
             series: data,
             drilldown: {
                 series: drilldown
             },
             // Additional Plot Options
-            plotOptions:
-            {
-                series: {
-                    stacking: "normal",
-                    dataLabels: {
-                        enabled: false,
-                    }
-                },
-                column: {
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    startAngle: 30,
+                    cursor: 'pointer',
                     dataLabels: {
                         enabled: true,
+                        format: '<b>{point.name}</b><br>{point.percentage:.1f} %',
+                        distance: 0,
+                        filter: {
+                            property: 'percentage',
+                            operator: '>',
+                            value: 4
+                        }
                     }
-                }
+                },
+                series: {
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.name}: {point.y:.1f}'
+                    }
+                },
             }
         }
         $('#hcContainer').highcharts(chartCont);
