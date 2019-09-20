@@ -28,13 +28,16 @@ Highcharts.chart('hcContainer', {
         href: false,
         text: "CSIS Global Health | Source: Polio Global Eradication Initiative"
     },
-    plotOptions: {
-        series: {
-            dataLabels: {
-                enabled: true,
-                format: '{point.name}: {point.y:.1f}%'
-            }
-        }
+    // plotOptions: {
+    //     series: {
+    //         dataLabels: {
+    //             enabled: true,
+    //             format: '{point.name}: {point.y:.1f}%'
+    //         }
+    //     }
+    // },
+    drilldown: {
+        series: true
     },
 
     tooltip: {
@@ -42,22 +45,22 @@ Highcharts.chart('hcContainer', {
         pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
     },
 
-    plotOptions: {
-        pie: {
-            allowPointSelect: true,
-            startAngle: 30,
-            cursor: 'pointer',
-            dataLabels: {
-                enabled: true,
-                format: '<b>{point.name}</b><br>{point.percentage:.1f} %',
-                distance: 0,
-                filter: {
-                    property: 'percentage',
-                    operator: '>',
-                    value: 4
-                }
-            }
-        }
-    },
+    //     plotOptions: {
+    //         pie: {
+    //             allowPointSelect: true,
+    //             startAngle: 30,
+    //             cursor: 'pointer',
+    //             dataLabels: {
+    //                 enabled: true,
+    //                 format: '<b>{point.name}</b><br>{point.percentage:.1f} %',
+    //                 distance: 0,
+    //                 filter: {
+    //                     property: 'percentage',
+    //                     operator: '>',
+    //                     value: 4
+    //                 }
+    //             }
+    //         }
+    //     },
 
 });

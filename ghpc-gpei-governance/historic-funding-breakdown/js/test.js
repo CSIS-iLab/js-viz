@@ -17,7 +17,7 @@ $(function () {
         // },
         // googleSpreadsheetKey: '1NyJlNTTLUrdhVjhVWO0f3BYnV4uWnCuUnoyOFaEBn2Q',
         // googleSpreadsheetWorksheet: 1,
-        // switchRowsAndColumns: true,
+        switchRowsAndColumns: true,
         parsed: function (columns) {
             console.log(columns)
             $.each(columns, function (i, code) {
@@ -27,7 +27,7 @@ $(function () {
 
                 var level1 = code[0];
                 var level2 = code[1];
-                var level3 = code[2];
+                var value = code[2];
                 var level4 = code[3];
                 var year = code[4];
                 var value_current = code[5];
@@ -48,29 +48,28 @@ $(function () {
                 }
 
                 // Check to see if we already have data for that year, series, and type. If we do, then add the row's value to the existing values. If we don't, set the other year values.
-                if (data[level1][level2].data[year]) {
-                    data[level1][level2].data[year].y += value_current
+                if (data[level1][level2].data[level1]) {
+                    data[level1][level2].data[level1].y += value
                 } else {
-                    data[level1][level2].data[year] = {
-                        name: year,
-                        x: year,
-                        y: value_current,
+                    data[level1][level2].data[level1] = {
+                        name: level1,
+                        y: value,
                         label: level2,
-                        drilldown: year
+                        drilldown: level1
                     }
                 }
 
-                drilldownData[level1] = drilldownData[level1] || {}
-                drilldownData[level1][year] = drilldownData[level1][year] || {
-                    name: year,
-                    id: year,
+                drilldownData[level2] = drilldownData[level2] || {}
+                drilldownData[level2][level1] = drilldownData[level2][level1] || {
+                    name: level1,
+                    id: level1,
                     data: []
                 }
 
-                drilldownData[level1][year].data.push(
-                    [level3, value_current]
+                drilldownData[level2][level1].data.push(
+                    [level2, value]
                 )
-                drilldownData[level1][year].data.sort(function (a, b) {
+                drilldownData[level2][level1].data.sort(function (a, b) {
                     if (b[1] < a[1]) return -1;
                     if (b[1] > a[1]) return 1;
                     return 0;
@@ -94,6 +93,7 @@ $(function () {
                     return [item];
                 });
                 seriesData.push(series)
+                console.log(series)
             })
 
             // Convert drilldown object to array
@@ -132,8 +132,7 @@ $(function () {
         var chartCont = {
             // General Chart Options
             chart: {
-                type: 'column',
-                zoomType: 'x'
+                type: 'pie',
             },
             // Chart Title and Subtitle
             title: {
