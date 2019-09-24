@@ -18,7 +18,11 @@
 //              donor
 //              y - donor contribution amount
 
-
+Highcharts.setOptions({
+    lang: {
+        thousandsSep: ","
+    }
+});
 // Set default values for series and drilldownseries
 var seriesArray = []
 var seriesObj = {
@@ -42,7 +46,7 @@ Highcharts.data({
         var seriesData = []
         var group = ""
         var drilldownName = ""
-        var drilldownSeriesArray = []
+        var drilldownArray = []
         var drilldownID = ""
         var drilldownData = []
 
@@ -53,6 +57,7 @@ Highcharts.data({
                 return
             }
             var groupRow = row[0]
+            var drilldownRow = row[0].toLowerCase() + ";" + row[1]
             var donor = row[1]
             var amount = row[2]
             // console.log(group)
@@ -61,6 +66,7 @@ Highcharts.data({
 
             // check if group name exists in root series
             if (group !== groupRow) {
+                // update group
                 group = groupRow
                 // if group doesn't exist, create group (name, y, drilldown name)
                 seriesData.push({ "name": group, "y": amount, "drilldown": group })
@@ -70,10 +76,28 @@ Highcharts.data({
                 seriesData[objIndex].y += amount
             }
             // check if donor/group relationship exists in drilldown series
-            // if (donor)
-            // if relationship exists, add value to y
-            // if relationship doesn't exist, push new array of donor and value to the drilldown group's data array
+            if (drilldownName !== drilldownRow) {
+                if (i == 1) {
+                    // update drilldownName
+                    drilldownName = drilldownRow
+                }
+                else {
+                    var names = drilldownName.split(";")
+                    // if drilldown doesn't exist, push id name and data to drilldownData array
+                    drilldownData.push({
+                        "id": names[0],
+                        "name": names[0],
+                        "data": drilldownArray
+                    })
+                    console.log(drilldownData)
+                    drilldownName = drilldownRow
+                }
+                drilldownArray = []
 
+            }
+            // if relationship doesn't exist, push new array of donor and value to the drilldown group's data array
+            drilldownArray.push([row[1], row[2]])
+            // console.log(drilldownArray) 
         })
         seriesObj.data.push(seriesData)
         console.log(seriesObj)

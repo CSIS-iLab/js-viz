@@ -1,3 +1,9 @@
+Highcharts.setOptions({
+  lang: {
+    thousandsSep: ","
+  }
+});
+
 Highcharts.chart('hcContainer', {
   // Load Data in from Google Sheets
   data: {
@@ -7,11 +13,12 @@ Highcharts.chart('hcContainer', {
   // General Chart Options
   chart: {
     zoomType: 'x',
-    type: 'spline'
+    type: 'spline',
+    height: "40%"
   },
 
   // Chart Colors
-  colors: ['#004165', '#e86259', '#EDA27C', "#0064a6", '#75baa9', '#4C8984'],
+  colors: ['#004165', '#e86259', '#75baa9', '#EDA27C', "#0064a6", '#4C8984'],
 
 
   // Chart Title and Subtitle
@@ -19,7 +26,7 @@ Highcharts.chart('hcContainer', {
     text: "Global Polio Caseload"
   },
   subtitle: {
-    text: "Click and drag to zoom in"
+    text: "Hover over a point to see the number of cases in that country. Click and drag to zoom in."
   },
   // Credits
   credits: {
@@ -46,4 +53,11 @@ Highcharts.chart('hcContainer', {
       text: "Polio Cases"
     },
   },
+  // plotOptions: {
+  //   spline: {
+  //     marker: {
+  //       symbol: "circle"
+  //     }
+  //   }
+  // }
 })
