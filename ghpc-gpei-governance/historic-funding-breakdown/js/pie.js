@@ -22,7 +22,7 @@
 var seriesArray = []
 var seriesObj = {
     name: "Contributions",
-    colorByPoint: false,
+    colorByPoint: true,
     // array of objects
     data: []
 }
@@ -62,7 +62,7 @@ Highcharts.data({
                 drilldownData.push({
                     "id": group,
                     "name": group,
-                    "data": [donor, amount]
+                    "data": [[donor, amount]]
                 })
             } else {
                 // if group exists, add value to y
@@ -72,13 +72,10 @@ Highcharts.data({
                 drilldownData[objIndex].data.push([donor, amount])
             }
         })
-        // // var drilldownArray = Object.keys(drilldownData).map(i => drilldownData[i])
-        // var drilldownArray = drilldownData.map(obj => Object.values(obj))
-        // // var seriesArray = Object.keys(seriesData).map(i => seriesData[i])
-        // var seriesArray = seriesData.map(obj => Object.values(obj))
+
         seriesObj.data.push(seriesData)
         seriesArray.push(seriesObj)
-        console.log(seriesArray)
+        console.log(drilldownData)
 
 
         renderChart(seriesArray, drilldownData)
@@ -94,7 +91,6 @@ function renderChart(seriesArray, drilldownData) {
             thousandsSep: ","
         }
     });
-    console.log(seriesArray)
     Highcharts.chart('hcContainer', {
         // General Chart Options
         chart: {
