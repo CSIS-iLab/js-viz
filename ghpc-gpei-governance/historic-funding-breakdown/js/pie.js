@@ -18,11 +18,6 @@
 //              donor
 //              y - donor contribution amount
 
-Highcharts.setOptions({
-    lang: {
-        thousandsSep: ","
-    }
-});
 // Set default values for series and drilldownseries
 var seriesArray = []
 var seriesObj = {
@@ -31,10 +26,7 @@ var seriesObj = {
     // array of objects
     data: []
 }
-var drilldownSeries = {
-    // array of objects
-    series: []
-}
+var drilldownData = []
 
 Highcharts.data({
     // Load Data in from Google Sheets
@@ -46,9 +38,8 @@ Highcharts.data({
         var seriesData = []
         var group = ""
         var drilldownName = ""
-        var drilldownArray = []
+        // var drilldownArray = []
         var drilldownID = ""
-        var drilldownData = []
 
         // iterate over data
         columns.forEach(function (row, i) {
@@ -60,51 +51,100 @@ Highcharts.data({
             var drilldownRow = row[0].toLowerCase() + ";" + row[1]
             var donor = row[1]
             var amount = row[2]
-            // console.log(group)
-            // console.log(donor)
-            // console.log(amount)
 
             // check if group name exists in root series
             if (group !== groupRow) {
                 // update group
                 group = groupRow
                 // if group doesn't exist, create group (name, y, drilldown name)
-                seriesData.push({ "name": group, "y": amount, "drilldown": group })
+                seriesObj.data.push({ "name": group, "y": amount, "drilldown": group })
+                // if drilldown doesn't exist, push id name and data to drilldownData array
+                drilldownData.push({
+                    "id": group,
+                    "name": group,
+                    "data": [donor, amount]
+                })
             } else {
                 // if group exists, add value to y
-                objIndex = seriesData.findIndex((obj => obj.name == groupRow))
-                seriesData[objIndex].y += amount
+                objIndex = seriesObj.data.findIndex((obj => obj.name == groupRow))
+                seriesObj.data[objIndex].y += amount
+                // if drilldown exists, push new array of donor and amount into data array
+                drilldownData[objIndex].data.push([donor, amount])
             }
-            // check if donor/group relationship exists in drilldown series
-            if (drilldownName !== drilldownRow) {
-                if (i == 1) {
-                    // update drilldownName
-                    drilldownName = drilldownRow
-                }
-                else {
-                    var names = drilldownName.split(";")
-                    // if drilldown doesn't exist, push id name and data to drilldownData array
-                    drilldownData.push({
-                        "id": names[0],
-                        "name": names[0],
-                        "data": drilldownArray
-                    })
-                    console.log(drilldownData)
-                    drilldownName = drilldownRow
-                }
-                drilldownArray = []
-
-            }
-            // if relationship doesn't exist, push new array of donor and value to the drilldown group's data array
-            drilldownArray.push([row[1], row[2]])
-            // console.log(drilldownArray) 
         })
+        // // var drilldownArray = Object.keys(drilldownData).map(i => drilldownData[i])
+        // var drilldownArray = drilldownData.map(obj => Object.values(obj))
+        // // var seriesArray = Object.keys(seriesData).map(i => seriesData[i])
+        // var seriesArray = seriesData.map(obj => Object.values(obj))
         seriesObj.data.push(seriesData)
-        console.log(seriesObj)
+        seriesArray.push(seriesObj)
+        console.log(seriesArray)
 
 
-
-
+        renderChart(seriesArray, drilldownData)
 
     }
 })
+
+function renderChart(seriesArray, drilldownData) {
+
+    // format numbers
+    Highcharts.setOptions({
+        lang: {
+            thousandsSep: ","
+        }
+    });
+    console.log(seriesArray)
+    Highcharts.chart('hcContainer', {
+        // General Chart Options
+        chart: {
+            type: 'pie',
+        },
+        // Chart Title and Subtitle
+        title: {
+            text: "GPEI Contributions by Donor 1985-2018"
+        },
+        subtitle: {
+            text: "Click a slice for funding breakdown by donor"
+        },
+        // Credits
+        credits: {
+            enabled: true,
+            href: "http://polioeradication.org/financing/donors/historical-contributions/",
+            text: "CSIS Global Health | Source: Polio Global Eradication Initiative"
+        },
+        tooltip: {
+            valueDecimals: 2,
+            valuePrefix: '$',
+        },
+        series: seriesArray,
+        drilldown: {
+            series: drilldownData
+        },
+        // Additional Plot Options
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                startAngle: 30,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b><br>{point.percentage:.1f} %',
+                    distance: 0,
+                    filter: {
+                        property: 'percentage',
+                        operator: '>',
+                        value: 4
+                    }
+                }
+            },
+            series: {
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.name}: {point.y:.1f}'
+                }
+            },
+        }
+    })
+
+}
