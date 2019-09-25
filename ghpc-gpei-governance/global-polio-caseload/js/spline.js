@@ -1,6 +1,12 @@
 Highcharts.setOptions({
   lang: {
     thousandsSep: ","
+  },
+  chart: {
+    style: {
+      fontFamily: '"Open Sans", Arial, Helvetica, sans-serif',
+      fontSize: '16px'
+    }
   }
 });
 
@@ -14,7 +20,6 @@ Highcharts.chart('hcContainer', {
   chart: {
     zoomType: 'x',
     type: 'spline',
-    height: "40%"
   },
 
   // Chart Colors
@@ -23,10 +28,10 @@ Highcharts.chart('hcContainer', {
 
   // Chart Title and Subtitle
   title: {
-    text: "Global Polio Caseload"
+    text: '<span style="font-size: 32px; color: #333333; max-width: 1280px; text-align: center">Global Polio Caseload 2000-2019</span>'
   },
   subtitle: {
-    text: "Hover over a point to see the number of cases in that country. Click and drag to zoom in."
+    text: '<span style="font-size: 16px; color: #333333; max-width: 1280px; margin-bottom: 1.5rem; line-height: 1.4">Hover over a point to see the number of cases per country. Click and drag to zoom in.</span>'
   },
   // Credits
   credits: {
@@ -37,8 +42,9 @@ Highcharts.chart('hcContainer', {
   // Chart Legend
   legend: {
     title: {
-      text: '<br/><span style="font-size: 12px; color: #808080; font-weight: normal">(Click to hide)</span>'
+      text: '<br><span style="font-size: 12px; color: #808080; font-weight: normal">(Click to hide)</span>',
     },
+    margin: 20,
     align: 'center',
     verticalAlign: 'bottom',
     layout: 'horizontal'

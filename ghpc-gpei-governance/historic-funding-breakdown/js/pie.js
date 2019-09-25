@@ -37,9 +37,7 @@ Highcharts.data({
         // create default variables
         var seriesData = []
         var group = ""
-        var drilldownName = ""
-        // var drilldownArray = []
-        var drilldownID = ""
+
 
         // iterate over data
         columns.forEach(function (row, i) {
@@ -48,7 +46,6 @@ Highcharts.data({
                 return
             }
             var groupRow = row[0]
-            var drilldownRow = row[0].toLowerCase() + ";" + row[1]
             var donor = row[1]
             var amount = row[2]
 
@@ -96,6 +93,8 @@ function renderChart(seriesArray, drilldownData) {
         chart: {
             type: 'pie',
         },
+        // Chart Colors
+        colors: ["#0064a6", '#e86259', '#EDA27C', '#75baa9', '#4C8984', '#004165'],
         // Chart Title and Subtitle
         title: {
             text: "GPEI Contributions by Donor 1985-2018"
@@ -127,11 +126,6 @@ function renderChart(seriesArray, drilldownData) {
                     enabled: true,
                     format: '<b>{point.name}</b><br>{point.percentage:.1f} %',
                     distance: 0,
-                    filter: {
-                        property: 'percentage',
-                        operator: '>',
-                        value: 4
-                    }
                 }
             },
             series: {
