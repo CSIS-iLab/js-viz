@@ -48,13 +48,19 @@ Highcharts.data({
             var groupRow = row[0]
             var donor = row[1]
             var amount = row[2]
+            var labelRank = row[3]
 
             // check if group name exists in root series
             if (group !== groupRow) {
                 // update group
                 group = groupRow
+                var drilldownGroup = group
+                if (donor == "null") {
+                    // if group doesn't exist, create group (name, y, drilldown name)
+                    drilldownGroup = null
+                }
                 // if group doesn't exist, create group (name, y, drilldown name)
-                seriesObj.data.push({ "name": group, "y": amount, "drilldown": group })
+                seriesObj.data.push({ "name": group, "y": amount, "drilldown": drilldownGroup, "labelrank": labelRank })
                 // if drilldown doesn't exist, push id name and data to drilldownData array
                 drilldownData.push({
                     "id": group,
@@ -71,13 +77,12 @@ Highcharts.data({
         })
         // sort series by value of y
         seriesObj.data.sort(function (a, b) {
-            return a.y - b.y
+            return b.y - a.y
         })
         // seriesObj.data.push(seriesData)
         seriesArray.push(seriesObj)
 
         renderChart(seriesArray, drilldownData)
-
     }
 })
 
@@ -96,13 +101,13 @@ function renderChart(seriesArray, drilldownData) {
             type: 'pie',
         },
         // Chart Colors
-        colors: ["#0064a6", '#e86259', '#EDA27C', '#75baa9', '#4C8984', '#004165'],
+        colors: ['#0f3c68', '#25496f', '#3e5f7a', '#557786', '#6d9293', '#789e98', '#88b1a1', '#9ccaac'],
         // Chart Title and Subtitle
         title: {
             text: "GPEI Contributions by Donor 1985-2018"
         },
         subtitle: {
-            text: "Click a slice for funding breakdown by donor"
+            text: "Hover over a slice to see that donor's contribution to the GPEI. Click to see a breakdown of donors who contributed between $10 and $100 million, or to see contributions under $10 million"
         },
         // Credits
         credits: {
@@ -118,7 +123,7 @@ function renderChart(seriesArray, drilldownData) {
         drilldown: {
             series: drilldownData,
             drillUpButton: {
-                position: { align: "left", y: -5 },
+                position: { align: "left", y: -10 },
                 relativeTo: "spacingBox"
             }
         },
@@ -126,8 +131,8 @@ function renderChart(seriesArray, drilldownData) {
         plotOptions: {
             pie: {
                 allowPointSelect: true,
-                startAngle: 30,
-                cursor: 'pointer',
+                // startAngle: 30,
+                // cursor: 'pointer',
                 dataLabels: {
                     enabled: true,
                     format: '<b>{point.name}</b><br>{point.percentage:.1f}%',
