@@ -107,7 +107,7 @@ function renderChart(seriesArray, drilldownData) {
         // Credits
         credits: {
             enabled: true,
-            href: "http://polioeradication.org/financing/donors/historical-contributions/",
+            href: false,
             text: "CSIS Global Health | Source: Polio Global Eradication Initiative"
         },
         tooltip: {

@@ -51,7 +51,7 @@ Highcharts.chart('hcContainer', {
   },
   //  Tooltip 
   tooltip: {
-    shared: true
+    shared: true,
   },
   // Y Axis
   yAxis: {
