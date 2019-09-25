@@ -69,11 +69,12 @@ Highcharts.data({
                 drilldownData[objIndex].data.push([donor, amount])
             }
         })
-
-        seriesObj.data.push(seriesData)
+        // sort series by value of y
+        seriesObj.data.sort(function (a, b) {
+            return a.y - b.y
+        })
+        // seriesObj.data.push(seriesData)
         seriesArray.push(seriesObj)
-        console.log(drilldownData)
-
 
         renderChart(seriesArray, drilldownData)
 
@@ -85,7 +86,8 @@ function renderChart(seriesArray, drilldownData) {
     // format numbers
     Highcharts.setOptions({
         lang: {
-            thousandsSep: ","
+            thousandsSep: ",",
+            drillUpText: "◁ Back to Main"
         }
     });
     Highcharts.chart('hcContainer', {
@@ -114,7 +116,11 @@ function renderChart(seriesArray, drilldownData) {
         },
         series: seriesArray,
         drilldown: {
-            series: drilldownData
+            series: drilldownData,
+            drillUpButton: {
+                position: { align: "left", y: -5 },
+                relativeTo: "spacingBox"
+            }
         },
         // Additional Plot Options
         plotOptions: {
@@ -124,14 +130,13 @@ function renderChart(seriesArray, drilldownData) {
                 cursor: 'pointer',
                 dataLabels: {
                     enabled: true,
-                    format: '<b>{point.name}</b><br>{point.percentage:.1f} %',
-                    distance: 0,
-                }
-            },
-            series: {
-                dataLabels: {
-                    enabled: true,
-                    format: '{point.name}: {point.y:.1f}'
+                    format: '<b>{point.name}</b><br>{point.percentage:.1f}%',
+                    padding: 0
+                    // filter: {
+                    //     property: 'percentage',
+                    //     operator: '>',
+                    //     value: 2
+                    // }
                 }
             },
         }
