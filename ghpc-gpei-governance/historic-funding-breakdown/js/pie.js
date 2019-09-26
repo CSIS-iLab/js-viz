@@ -129,7 +129,7 @@ function renderChart(seriesArray, drilldownData) {
         drilldown: {
             series: drilldownData,
             drillUpButton: {
-                position: { align: "left", y: -10 },
+                position: { align: "left", y: 450 },
                 relativeTo: "spacingBox"
             }
         },
