@@ -93,6 +93,12 @@ function renderChart(seriesArray, drilldownData) {
         lang: {
             thousandsSep: ",",
             drillUpText: "◁ Back to Main"
+        },
+        chart: {
+            style: {
+                fontFamily: '"Open Sans", Arial, Helvetica, sans-serif',
+                fontSize: '16px'
+            }
         }
     });
     Highcharts.chart('hcContainer', {
@@ -104,10 +110,10 @@ function renderChart(seriesArray, drilldownData) {
         colors: ['#0f3c68', '#25496f', '#3e5f7a', '#557786', '#6d9293', '#789e98', '#88b1a1', '#9ccaac'],
         // Chart Title and Subtitle
         title: {
-            text: "GPEI Contributions by Donor 1985-2018"
+            text: '<span style="font-size: 32px; color: #333333; max-width: 1280px; text-align: center">GPEI Contributions by Donor 1985-2018</span>'
         },
         subtitle: {
-            text: "Hover over a slice to see that donor's contribution to the GPEI. Click to see a breakdown of donors who contributed between $10 and $100 million, or to see contributions under $10 million"
+            text: `<span style="font-size: 16px; color: #333333; max-width: 1280px; margin-bottom: 1.5rem; line-height: 1.4">Hover over a slice to see that donor's contribution to the GPEI. Click to see a breakdown of donors who contributed between $10 and $100 million, or to see contributions under $10 million</span>`
         },
         // Credits
         credits: {
