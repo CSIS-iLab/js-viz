@@ -1,8 +1,37 @@
+// 
+
+
+Highcharts.data({
+
+  // Load Data in from Google Sheets
+  googleSpreadsheetKey: '1sLlKirSAEv5QYBQa2LJlzWMNmF3HkNFnjBHbUAJ5RFU',
+  googleSpreadsheetWorksheet: 1,
+  switchRowsAndColumns: true,
+  parsed: function parsed(columns) {
+    // iterate over data
+    columns.forEach(function (row, i) {
+      // skip first row
+      if (i == 0) {
+        return
+      }
+      // name the columns
+      var region = row[0]
+      var population = row[1]
+      var stunting = row[2]
+      var anemia = row[3]
+      var overweight = row[4]
+    })
+  }
+
+})
+
+
 Highcharts.chart('hcContainer', {
   // Load Data in from Google Sheets
   data: {
     googleSpreadsheetKey: '1sLlKirSAEv5QYBQa2LJlzWMNmF3HkNFnjBHbUAJ5RFU',
-    googleSpreadsheetWorksheet: 1
+    googleSpreadsheetWorksheet: 1,
+    switchRowsAndColumns: true,
   },
   // General Chart Options
   chart: {
@@ -11,7 +40,7 @@ Highcharts.chart('hcContainer', {
   },
   // Chart Title and Subtitle
   title: {
-    text: "Interactive Title"
+    text: "The Triple Burden of Malnutrition in Tanzania"
   },
   subtitle: {
     text: "Click and drag to zoom in"
@@ -20,7 +49,7 @@ Highcharts.chart('hcContainer', {
   credits: {
     enabled: true,
     href: false,
-    text: "CSIS Project Name | Source: NAME"
+    text: "CSIS Global Health Policy Center | Source: Tanzania National Nutrition Survey 2018"
   },
   // Chart Legend
   legend: {
