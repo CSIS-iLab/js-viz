@@ -21,6 +21,7 @@
 
 var regionData = []
 var dataPoints = []
+var regionArray = []
 
 Highcharts.data({
 
@@ -36,22 +37,20 @@ Highcharts.data({
         return
       }
       // name the columns
-      var region = row[0]
       var population = row[1]
+      var region = row[0]
       var stunting = row[2]
       var anemia = row[3]
       var overweight = row[4]
-      var regionArray = []
 
       // For each row, determine lowest percentage and assign that to x
       // For each row, determine highest percentage and assign that to x2
       // For each row, assign the index to y
-      var data = row.slice(2, 5)
+      var data = row.slice(2)
       const min = Math.min.apply(Math, data)
       const max = Math.max.apply(Math, data)
       // Push row object into regionData array
       regionData.push({ "x": min, "x2": max, "y": i })
-
       // For each row, push region to regionArray
       regionArray.push(region)
 
@@ -63,26 +62,15 @@ Highcharts.data({
       // Push category object into dataPoints array
       dataPoints.push({ "x": stunting, "y": i, "color": "red" }, { "x": anemia, "y": i, "color": 'blue' }, { "x": overweight, "y": i, "color": 'green' })
     })
-    console.log(dataPoints)
+    renderChart(regionData, dataPoints, regionArray)
   }
-  renderChart(regionArray, dataPoints)
 })
 
-function renderChart(regionArray, dataPoints) {
+function renderChart(regionData, dataPoints, regionArray) {
+  console.log(regionArray)
 
 
   Highcharts.chart('hcContainer', {
-    // Load Data in from Google Sheets
-    data: {
-      googleSpreadsheetKey: '1sLlKirSAEv5QYBQa2LJlzWMNmF3HkNFnjBHbUAJ5RFU',
-      googleSpreadsheetWorksheet: 1,
-      switchRowsAndColumns: true,
-    },
-    // General Chart Options
-    chart: {
-      zoomType: 'x',
-      type: 'line'
-    },
     // Chart Title and Subtitle
     title: {
       text: "The Triple Burden of Malnutrition in Tanzania"
@@ -109,19 +97,45 @@ function renderChart(regionArray, dataPoints) {
     yAxis: {
       title: {
         text: "Y Axis Title"
-      }
+      },
+      categories: regionArray,
+      labels: {
+        enabled: true,
+        step: 1
+      },
+      showLastLabel: false
     },
     // Additional Plot Options
     plotOptions:
     {
       line: {
-        marker: {
-          enabled: false,
-          symbol: "circle",
-          radius: 3
-        },
-        lineWidth: 3
+        gapSize: 2
+      },
+      // line: {
+      //   marker: {
+      //     enabled: false,
+      //     symbol: "circle",
+      //     radius: 3
+      //   },
+      //   lineWidth: 3
+      // }
+    },
+    series: [{
+      type: 'xrange',
+      pointWidth: 5,
+      id: 'main',
+      data: regionData,
+      dataLabels: {
+        align: 'center',
+        enabled: true
       }
-    }
+    }, {
+      type: 'scatter',
+      linkedTo: 'main',
+      marker: {
+        radius: 5
+      },
+      data: dataPoints
+    }]
   })
 }
