@@ -103,7 +103,7 @@ function renderChart(regionData, dataPoints, regionArray) {
         enabled: true,
         step: 1
       },
-      showLastLabel: false
+      showLastLabel: false,
     },
     // Additional Plot Options
     plotOptions:
@@ -122,7 +122,7 @@ function renderChart(regionData, dataPoints, regionArray) {
     },
     series: [{
       type: 'xrange',
-      pointWidth: 5,
+      pointWidth: 2,
       id: 'main',
       data: regionData,
       dataLabels: {
@@ -133,7 +133,7 @@ function renderChart(regionData, dataPoints, regionArray) {
       type: 'scatter',
       linkedTo: 'main',
       marker: {
-        radius: 5
+        radius: 3
       },
       data: dataPoints
     }]
