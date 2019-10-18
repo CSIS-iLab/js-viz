@@ -23,6 +23,9 @@ var regionData = []
 var dataPoints = []
 var regionArray = []
 var population = []
+var sColor = "red"
+var aColor = "blue"
+var oColor = "green"
 Highcharts.data({
 
   // Load Data in from Google Sheets
@@ -58,13 +61,13 @@ Highcharts.data({
       // For each category in a row assign the index to y
       // For each category in a row assign the category color
       // Push category object into dataPoints array
-      dataPoints.push({ "x": stunting, "y": i - 1, "color": "red", "name": 'Stunting', "population": population, "region": region, "tipGroup": tipGroup }, { "x": anemia, "y": i - 1, "color": 'blue', "name": "Anemia", "population": population, "region": region, "tipGroup": tipGroup }, { "x": overweight, "y": i - 1, "color": 'green', "name": "Overweight", "population": population, "region": region, "tipGroup": tipGroup })
+      dataPoints.push({ "x": stunting, "y": i - 1, "color": sColor, "name": 'Stunting', "population": population, "region": region, "tipGroup": tipGroup }, { "x": anemia, "y": i - 1, "color": aColor, "name": "Anemia", "population": population, "region": region, "tipGroup": tipGroup }, { "x": overweight, "y": i - 1, "color": oColor, "name": "Overweight", "population": population, "region": region, "tipGroup": tipGroup })
     })
     renderChart(regionData, dataPoints, regionArray)
   }
 })
 
-function renderChart(regionData, dataPoints, regionArray) {
+function renderChart(regionData, dataPoints, regionArray, sColor, aColor, oColor) {
 
   Highcharts.setOptions({
     lang: {
@@ -126,7 +129,7 @@ function renderChart(regionData, dataPoints, regionArray) {
       useHTML: true,
       // pointFormat: 'Region: {point.region} Population: {point.population}<br/>{point.name}: {point.x}',
       formatter: function () {
-        console.log(this.point.tipGroup)
+        console.log(this.point)
         catName = Object.keys(this.point.tipGroup)
         catNum = Object.values(this.point.tipGroup)
         return 'Region: ' + this.point.region + '<br/>' + 'Population: ' + this.point.population + '<br/>' + catName[0] + ': ' + catNum[0] + '<br/>' + catName[1] + ': ' + catNum[1] + '<br/>' + catName[2] + ': ' + catNum[2]
