@@ -22,7 +22,7 @@
 var regionData = []
 var dataPoints = []
 var regionArray = []
-
+var population = []
 Highcharts.data({
 
   // Load Data in from Google Sheets
@@ -37,7 +37,7 @@ Highcharts.data({
         return
       }
       // name the columns
-      var population = row[1]
+      population.push(row[1])
       var region = row[0]
       var stunting = row[2]
       var anemia = row[3]
@@ -50,7 +50,7 @@ Highcharts.data({
       const min = Math.min.apply(Math, data)
       const max = Math.max.apply(Math, data)
       // Push row object into regionData array
-      regionData.push({ "x": min, "x2": max, "y": i })
+      regionData.push({ "x": min, "x2": max, "y": i - 1, name: region })
       // For each row, push region to regionArray
       regionArray.push(region)
 
@@ -60,17 +60,20 @@ Highcharts.data({
       // For each category in a row assign the index to y
       // For each category in a row assign the category color
       // Push category object into dataPoints array
-      dataPoints.push({ "x": stunting, "y": i, "color": "red" }, { "x": anemia, "y": i, "color": 'blue' }, { "x": overweight, "y": i, "color": 'green' })
+      dataPoints.push({ "x": stunting, "y": i - 1, "color": "red", name: 'Stunting' }, { "x": anemia, "y": i - 1, "color": 'blue', name: "Anemia" }, { "x": overweight, "y": i - 1, "color": 'green', name: "Overweight" })
     })
-    renderChart(regionData, dataPoints, regionArray)
+    renderChart(regionData, dataPoints, regionArray, population)
   }
 })
 
-function renderChart(regionData, dataPoints, regionArray) {
+function renderChart(regionData, dataPoints, regionArray, population) {
   console.log(regionArray)
 
 
   Highcharts.chart('hcContainer', {
+    chart: {
+      height: '50%'
+    },
     // Chart Title and Subtitle
     title: {
       text: "The Triple Burden of Malnutrition in Tanzania"
@@ -84,6 +87,15 @@ function renderChart(regionData, dataPoints, regionArray) {
       href: false,
       text: "CSIS Global Health Policy Center | Source: Tanzania National Nutrition Survey 2018"
     },
+    tooltip: {
+      useHTML: true,
+      pointFormat: '{series.name}: { point.key } ',
+      // formatter: function () {
+      //   console.log(this.points[0])
+      //   return this.points[0].series.name + ': ' + this.points[0].point.yCategory
+      // },
+      shared: true,
+    },
     // Chart Legend
     legend: {
       title: {
@@ -96,14 +108,10 @@ function renderChart(regionData, dataPoints, regionArray) {
     // Y Axis
     yAxis: {
       title: {
-        text: "Y Axis Title"
+        enabled: false
       },
       categories: regionArray,
-      labels: {
-        enabled: true,
-        step: 1
-      },
-      showLastLabel: false,
+      gridLineColor: 'transparent',
     },
     // Additional Plot Options
     plotOptions:
@@ -111,19 +119,17 @@ function renderChart(regionData, dataPoints, regionArray) {
       line: {
         gapSize: 2
       },
-      // line: {
-      //   marker: {
-      //     enabled: false,
-      //     symbol: "circle",
-      //     radius: 3
-      //   },
-      //   lineWidth: 3
-      // }
+      series: {
+        borderWidth: 0,
+        pointPadding: 0,
+        groupPadding: 0,
+      }
     },
     series: [{
       type: 'xrange',
       pointWidth: 2,
       id: 'main',
+      name: "Region",
       data: regionData,
       dataLabels: {
         align: 'center',
@@ -134,6 +140,9 @@ function renderChart(regionData, dataPoints, regionArray) {
       linkedTo: 'main',
       marker: {
         radius: 3
+      },
+      tooltip: {
+        pointFormat: '{point.name}: {point.x}'
       },
       data: dataPoints
     }]
