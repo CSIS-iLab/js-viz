@@ -42,7 +42,6 @@ Highcharts.data({
       var stunting = row[2]
       var anemia = row[3]
       var overweight = row[4]
-
       // For each row, determine lowest percentage and assign that to x
       // For each row, determine highest percentage and assign that to x2
       // For each row, assign the index to y
@@ -50,17 +49,16 @@ Highcharts.data({
       const min = Math.min.apply(Math, data)
       const max = Math.max.apply(Math, data)
       // Push row object into regionData array
-      regionData.push({ "x": min, "x2": max, "y": i - 1, name: region })
+      regionData.push({ "x": min, "x2": max, "y": i - 1, name: region, "color": 'lightGray' })
       // For each row, push region to regionArray
       regionArray.push(region)
 
-      // Assign a color to each category
-
+      var tipGroup = { "Stunting": stunting, "Anemia": anemia, "Overweight": overweight }
       // For each category in a row assign the percentage to x
       // For each category in a row assign the index to y
       // For each category in a row assign the category color
       // Push category object into dataPoints array
-      dataPoints.push({ "x": stunting, "y": i - 1, "color": "red", "name": 'Stunting', "population": population, "region": region }, { "x": anemia, "y": i - 1, "color": 'blue', "name": "Anemia", "population": population, "region": region }, { "x": overweight, "y": i - 1, "color": 'green', "name": "Overweight", "population": population, "region": region })
+      dataPoints.push({ "x": stunting, "y": i - 1, "color": "red", "name": 'Stunting', "population": population, "region": region, "tipGroup": tipGroup }, { "x": anemia, "y": i - 1, "color": 'blue', "name": "Anemia", "population": population, "region": region, "tipGroup": tipGroup }, { "x": overweight, "y": i - 1, "color": 'green', "name": "Overweight", "population": population, "region": region, "tipGroup": tipGroup })
     })
     renderChart(regionData, dataPoints, regionArray)
   }
@@ -92,15 +90,6 @@ function renderChart(regionData, dataPoints, regionArray) {
       href: false,
       text: "CSIS Global Health Policy Center | Source: Tanzania National Nutrition Survey 2018"
     },
-    tooltip: {
-      useHTML: true,
-      pointFormat: '{series.name}: { point.key } ',
-      // formatter: function () {
-      //   console.log(this.points[0])
-      //   return this.points[0].series.name + ': ' + this.points[0].point.yCategory
-      // },
-      shared: true,
-    },
     // Chart Legend
     legend: {
       title: {
@@ -129,9 +118,20 @@ function renderChart(regionData, dataPoints, regionArray) {
         pointPadding: 0,
         groupPadding: 0,
       },
-      xrange: {
-        enableMouseTracking: false
-      }
+      // xrange: {
+      //   enableMouseTracking: false
+      // }
+    },
+    tooltip: {
+      useHTML: true,
+      // pointFormat: 'Region: {point.region} Population: {point.population}<br/>{point.name}: {point.x}',
+      formatter: function () {
+        console.log(this.point.tipGroup)
+        catName = Object.keys(this.point.tipGroup)
+        catNum = Object.values(this.point.tipGroup)
+        return 'Region: ' + this.point.region + '<br/>' + 'Population: ' + this.point.population + '<br/>' + catName[0] + ': ' + catNum[0] + '<br/>' + catName[1] + ': ' + catNum[1] + '<br/>' + catName[2] + ': ' + catNum[2]
+      },
+      shared: true,
     },
     series: [{
       type: 'xrange',
@@ -139,20 +139,17 @@ function renderChart(regionData, dataPoints, regionArray) {
       id: 'main',
       name: "Region",
       data: regionData,
-      tooltip: {
-        enabled: false
-      }
     }, {
       type: 'scatter',
       linkedTo: 'main',
       marker: {
         radius: 5
       },
-      tooltip: {
-        pointFormat: 'Region: {point.region} Population: {point.population}<br/>{point.name}: {point.x} ',
-        shared: true,
-        useHTML: true
-      },
+      // tooltip: {
+      //   pointFormat: 'Region: {point.region} Population: {point.population}<br/>{point.name}: {point.x} ',
+      //   shared: true,
+      //   useHTML: true
+      // },
       data: dataPoints
     }]
   })
