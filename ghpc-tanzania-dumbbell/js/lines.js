@@ -37,7 +37,7 @@ Highcharts.data({
         return
       }
       // name the columns
-      population.push(row[1])
+      var population = row[1]
       var region = row[0]
       var stunting = row[2]
       var anemia = row[3]
@@ -60,14 +60,19 @@ Highcharts.data({
       // For each category in a row assign the index to y
       // For each category in a row assign the category color
       // Push category object into dataPoints array
-      dataPoints.push({ "x": stunting, "y": i - 1, "color": "red", name: 'Stunting' }, { "x": anemia, "y": i - 1, "color": 'blue', name: "Anemia" }, { "x": overweight, "y": i - 1, "color": 'green', name: "Overweight" })
+      dataPoints.push({ "x": stunting, "y": i - 1, "color": "red", "name": 'Stunting', "population": population, "region": region }, { "x": anemia, "y": i - 1, "color": 'blue', "name": "Anemia", "population": population, "region": region }, { "x": overweight, "y": i - 1, "color": 'green', "name": "Overweight", "population": population, "region": region })
     })
-    renderChart(regionData, dataPoints, regionArray, population)
+    renderChart(regionData, dataPoints, regionArray)
   }
 })
 
-function renderChart(regionData, dataPoints, regionArray, population) {
-  console.log(regionArray)
+function renderChart(regionData, dataPoints, regionArray) {
+
+  Highcharts.setOptions({
+    lang: {
+      thousandsSep: ","
+    }
+  })
 
 
   Highcharts.chart('hcContainer', {
@@ -123,6 +128,9 @@ function renderChart(regionData, dataPoints, regionArray, population) {
         borderWidth: 0,
         pointPadding: 0,
         groupPadding: 0,
+      },
+      xrange: {
+        enableMouseTracking: false
       }
     },
     series: [{
@@ -131,18 +139,19 @@ function renderChart(regionData, dataPoints, regionArray, population) {
       id: 'main',
       name: "Region",
       data: regionData,
-      dataLabels: {
-        align: 'center',
-        enabled: true
+      tooltip: {
+        enabled: false
       }
     }, {
       type: 'scatter',
       linkedTo: 'main',
       marker: {
-        radius: 3
+        radius: 5
       },
       tooltip: {
-        pointFormat: '{point.name}: {point.x}'
+        pointFormat: 'Region: {point.region} Population: {point.population}<br/>{point.name}: {point.x} ',
+        shared: true,
+        useHTML: true
       },
       data: dataPoints
     }]
