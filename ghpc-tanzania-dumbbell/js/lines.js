@@ -56,13 +56,15 @@ Highcharts.data({
       // For each row, push region to regionArray
       regionArray.push(region)
 
-      var tipGroup = { "Stunting": stunting, "Anemia": anemia, "Overweight": overweight }
+      var tipGroup = { "Stunting": { "name": "Stunting", 'val': stunting, 'color': sColor }, "Anemia": { "name": "Anemia", "val": anemia, 'color': aColor }, "Overweight": { "name": "Overweight", "val": overweight, 'color': oColor } }
       // For each category in a row assign the percentage to x
       // For each category in a row assign the index to y
       // For each category in a row assign the category color
       // Push category object into dataPoints array
       dataPoints.push({ "x": stunting, "y": i - 1, "color": sColor, "name": 'Stunting', "population": population, "region": region, "tipGroup": tipGroup }, { "x": anemia, "y": i - 1, "color": aColor, "name": "Anemia", "population": population, "region": region, "tipGroup": tipGroup }, { "x": overweight, "y": i - 1, "color": oColor, "name": "Overweight", "population": population, "region": region, "tipGroup": tipGroup })
     })
+    dataPoints.sort((a, b) => b.x - a.x)
+
     renderChart(regionData, dataPoints, regionArray)
   }
 })
@@ -78,14 +80,14 @@ function renderChart(regionData, dataPoints, regionArray, sColor, aColor, oColor
 
   Highcharts.chart('hcContainer', {
     chart: {
-      height: '50%'
+      height: '65%'
     },
     // Chart Title and Subtitle
     title: {
       text: "The Triple Burden of Malnutrition in Tanzania"
     },
     subtitle: {
-      text: "Click and drag to zoom in"
+      text: "This chart shows the co-occurrence of three major types of malnutrition—overweight or obese, stunting, and anemia. The key population for stunting, or below average height for age, is children under 5. Women of reproductive age (15 to 49 years) are the key population for anemia and overweight or obese. Data is unavailable for Zanzibar."
     },
     // Credits
     credits: {
@@ -95,12 +97,25 @@ function renderChart(regionData, dataPoints, regionArray, sColor, aColor, oColor
     },
     // Chart Legend
     legend: {
-      title: {
-        text: 'Legend Title<br/><span style="font-size: 12px; color: #808080; font-weight: normal">(Click to hide)</span>'
+      enabled: false,
+      // title: {
+      //   text: 'Legend Title<br/><span style="font-size: 12px; color: #808080; font-weight: normal">Data unavailable for Zanzibar</span>'
+      // },
+      // align: 'center',
+      // verticalAlign: 'bottom',
+      // layout: 'horizontal'
+    },
+    xAxis: {
+      labels: {
+        format: '{value}%'
       },
-      align: 'center',
-      verticalAlign: 'bottom',
-      layout: 'horizontal'
+      title: {
+        enabled: true,
+        text: 'Percent of Population'
+      },
+      maxPadding: 0.15,
+      offset: 15,
+      // startOnTick: true
     },
     // Y Axis
     yAxis: {
@@ -127,12 +142,11 @@ function renderChart(regionData, dataPoints, regionArray, sColor, aColor, oColor
     },
     tooltip: {
       useHTML: true,
-      // pointFormat: 'Region: {point.region} Population: {point.population}<br/>{point.name}: {point.x}',
       formatter: function () {
-        console.log(this.point)
-        catName = Object.keys(this.point.tipGroup)
-        catNum = Object.values(this.point.tipGroup)
-        return 'Region: ' + this.point.region + '<br/>' + 'Population: ' + this.point.population + '<br/>' + catName[0] + ': ' + catNum[0] + '<br/>' + catName[1] + ': ' + catNum[1] + '<br/>' + catName[2] + ': ' + catNum[2]
+        anemiaArr = this.point.tipGroup['Anemia']
+        stuntingArr = this.point.tipGroup['Stunting']
+        overweightArr = this.point.tipGroup['Overweight']
+        return 'Region: <b>' + this.point.region + '</b><br/>' + 'Population: <b>' + this.point.population + '</b><br/>' + '<span style="color:' + anemiaArr.color + '">\u25CF </span>' + anemiaArr.name + ': ' + anemiaArr.val + '%<br/>' + '<span style="color:' + stuntingArr.color + '">\u25CF </span>' + stuntingArr.name + ': ' + stuntingArr.val + '%<br/>' + '<span style="color:' + overweightArr.color + '">\u25CF </span>' + overweightArr.name + ': ' + overweightArr.val + '%'
       },
       shared: true,
     },
@@ -148,11 +162,6 @@ function renderChart(regionData, dataPoints, regionArray, sColor, aColor, oColor
       marker: {
         radius: 5
       },
-      // tooltip: {
-      //   pointFormat: 'Region: {point.region} Population: {point.population}<br/>{point.name}: {point.x} ',
-      //   shared: true,
-      //   useHTML: true
-      // },
       data: dataPoints
     }]
   })
