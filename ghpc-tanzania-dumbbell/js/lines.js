@@ -62,8 +62,14 @@ Highcharts.data({
       // For each category in a row assign the category color
       // Push category object into dataPoints array
       dataPoints.push({ "x": stunting, "y": i - 1, "color": sColor, "name": 'Stunting', "population": population, "region": region, "tipGroup": tipGroup, "showInLegend": true }, { "x": anemia, "y": i - 1, "color": aColor, "name": "Anemia", "population": population, "region": region, "tipGroup": tipGroup }, { "x": overweight, "y": i - 1, "color": oColor, "name": "Overweight", "population": population, "region": region, "tipGroup": tipGroup })
+      // row.sort((function (index) {
+      //   return function (a, b) {
+      //     return (a[index] === b[index] ? 0 : (a[index] < b[index] ? -1 : 1))
+      //   }
+      // })(3))
     })
-    dataPoints.sort((a, b) => b.x - a.x)
+    dataPoints.sort((a, b) => b[1] - a[1])
+    console.log(dataPoints)
     renderChart(regionData, dataPoints, regionArray, sColor, aColor, oColor)
   }
 })
@@ -99,9 +105,11 @@ function renderChart(regionData, dataPoints, regionArray, sColor, aColor, oColor
       layout: 'horizontal',
       useHTML: true,
       labelFormatter: function () {
-        this.legendSymbol.destroy()
         return '<span style="color:' + aColor + '">\u25CF</span> Anemia ' + '<span style="color:' + sColor + '">\u25CF</span> Stunting ' + '<span style="color:' + oColor + '">\u25CF</span> Overweight'
       },
+      symbolHeight: 0,
+      symbolWidth: 0,
+      symbolRadius: 0
     },
     xAxis: {
       labels: {
@@ -111,10 +119,11 @@ function renderChart(regionData, dataPoints, regionArray, sColor, aColor, oColor
         enabled: true,
         text: 'Percent of Population'
       },
-      // maxPadding: 0.15,
+      maxPadding: 0.15,
       minPadding: 0.3,
       offset: 15,
-      // startOnTick: true
+      startOnTick: true,
+      tickInterval: 10,
     },
     // Y Axis
     yAxis: {
