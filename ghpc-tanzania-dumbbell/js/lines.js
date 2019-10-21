@@ -61,22 +61,19 @@ Highcharts.data({
       // For each category in a row assign the index to y
       // For each category in a row assign the category color
       // Push category object into dataPoints array
-      dataPoints.push({ "x": stunting, "y": i - 1, "color": sColor, "name": 'Stunting', "population": population, "region": region, "tipGroup": tipGroup }, { "x": anemia, "y": i - 1, "color": aColor, "name": "Anemia", "population": population, "region": region, "tipGroup": tipGroup }, { "x": overweight, "y": i - 1, "color": oColor, "name": "Overweight", "population": population, "region": region, "tipGroup": tipGroup })
+      dataPoints.push({ "x": stunting, "y": i - 1, "color": sColor, "name": 'Stunting', "population": population, "region": region, "tipGroup": tipGroup, "showInLegend": true }, { "x": anemia, "y": i - 1, "color": aColor, "name": "Anemia", "population": population, "region": region, "tipGroup": tipGroup }, { "x": overweight, "y": i - 1, "color": oColor, "name": "Overweight", "population": population, "region": region, "tipGroup": tipGroup })
     })
     dataPoints.sort((a, b) => b.x - a.x)
-
-    renderChart(regionData, dataPoints, regionArray)
+    renderChart(regionData, dataPoints, regionArray, sColor, aColor, oColor)
   }
 })
 
 function renderChart(regionData, dataPoints, regionArray, sColor, aColor, oColor) {
-
   Highcharts.setOptions({
     lang: {
       thousandsSep: ","
     }
   })
-
 
   Highcharts.chart('hcContainer', {
     chart: {
@@ -97,13 +94,14 @@ function renderChart(regionData, dataPoints, regionArray, sColor, aColor, oColor
     },
     // Chart Legend
     legend: {
-      enabled: false,
-      // title: {
-      //   text: 'Legend Title<br/><span style="font-size: 12px; color: #808080; font-weight: normal">Data unavailable for Zanzibar</span>'
-      // },
-      // align: 'center',
-      // verticalAlign: 'bottom',
-      // layout: 'horizontal'
+      align: 'center',
+      verticalAlign: 'top',
+      layout: 'horizontal',
+      useHTML: true,
+      labelFormatter: function () {
+        this.legendSymbol.destroy()
+        return '<span style="color:' + aColor + '">\u25CF</span> Anemia ' + '<span style="color:' + sColor + '">\u25CF</span> Stunting ' + '<span style="color:' + oColor + '">\u25CF</span> Overweight'
+      },
     },
     xAxis: {
       labels: {
@@ -113,7 +111,8 @@ function renderChart(regionData, dataPoints, regionArray, sColor, aColor, oColor
         enabled: true,
         text: 'Percent of Population'
       },
-      maxPadding: 0.15,
+      // maxPadding: 0.15,
+      minPadding: 0.3,
       offset: 15,
       // startOnTick: true
     },
@@ -136,9 +135,12 @@ function renderChart(regionData, dataPoints, regionArray, sColor, aColor, oColor
         pointPadding: 0,
         groupPadding: 0,
       },
-      // xrange: {
-      //   enableMouseTracking: false
-      // }
+      xrange: {
+        enableMouseTracking: false
+      },
+      scatter: {
+        showInLegend: true
+      }
     },
     tooltip: {
       useHTML: true,
@@ -156,13 +158,14 @@ function renderChart(regionData, dataPoints, regionArray, sColor, aColor, oColor
       id: 'main',
       name: "Region",
       data: regionData,
+      showInLegend: false
     }, {
       type: 'scatter',
       linkedTo: 'main',
       marker: {
-        radius: 5
+        radius: 3
       },
-      data: dataPoints
+      data: dataPoints,
     }]
   })
 }
