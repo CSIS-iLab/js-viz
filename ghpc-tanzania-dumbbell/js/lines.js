@@ -67,6 +67,10 @@ Highcharts.data({
       //   }
       // })(3))
     })
+    // default data sort
+    console.log(columns)
+    columns.sort((a, b) => b[2] - a[2])
+    console.log(columns)
     dataset = columns
     populateSelect()
     renderChart(regionData, dataPoints, regionArray, sColor, aColor, oColor)
@@ -80,11 +84,13 @@ function populateSelect() {
     option.innerHTML = column
     datasets.appendChild(option)
   })
-  console.log(datasets)
-  datasets.onchange(function () {
-
-    dataset.sort((a, b) => b[2] - a[2])
-  })
+  datasets.onchange = function () {
+    var chart = Highcharts.chart('hcContainer', {})
+    chart.destroy()
+    dataset.sort((a, b) => b[this.value] - a[this.value])
+    console.log(dataset)
+    renderChart(regionData, dataPoints, regionArray, sColor, aColor, oColor)
+  }
 
 }
 
