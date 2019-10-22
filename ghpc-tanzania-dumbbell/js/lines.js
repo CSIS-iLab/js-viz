@@ -23,6 +23,7 @@ var regionData = []
 var dataPoints = []
 var regionArray = []
 var population = []
+var dataset = {}
 var sColor = "red"
 var aColor = "blue"
 var oColor = "green"
@@ -45,11 +46,11 @@ Highcharts.data({
       var stunting = row[2]
       var anemia = row[3]
       var overweight = row[4]
-      // For each row, determine lowest percentage and assign that to x
-      // For each row, determine highest percentage and assign that to x2
-      // For each row, assign the index to y
+
       var data = row.slice(2)
+      // For each row, determine lowest percentage and assign that to x
       const min = Math.min.apply(Math, data)
+      // For each row, determine highest percentage and assign that to x2
       const max = Math.max.apply(Math, data)
       // Push row object into regionData array
       regionData.push({ "x": min, "x2": max, "y": i - 1, name: region, "color": 'lightGray' })
@@ -57,22 +58,29 @@ Highcharts.data({
       regionArray.push(region)
 
       var tipGroup = { "Stunting": { "name": "Stunting", 'val': stunting, 'color': sColor }, "Anemia": { "name": "Anemia", "val": anemia, 'color': aColor }, "Overweight": { "name": "Overweight", "val": overweight, 'color': oColor } }
-      // For each category in a row assign the percentage to x
-      // For each category in a row assign the index to y
-      // For each category in a row assign the category color
-      // Push category object into dataPoints array
-      dataPoints.push({ "x": stunting, "y": i - 1, "color": sColor, "name": 'Stunting', "population": population, "region": region, "tipGroup": tipGroup, "showInLegend": true }, { "x": anemia, "y": i - 1, "color": aColor, "name": "Anemia", "population": population, "region": region, "tipGroup": tipGroup }, { "x": overweight, "y": i - 1, "color": oColor, "name": "Overweight", "population": population, "region": region, "tipGroup": tipGroup })
+      // For each category in a row assign the percentage to x, index to y and the category color then push to dataPoints array
+      dataPoints.push({ "x": stunting, "y": i - 1, "color": sColor, "name": 'Stunting', "population": population, "region": region, "tipGroup": tipGroup }, { "x": anemia, "y": i - 1, "color": aColor, "name": "Anemia", "population": population, "region": region, "tipGroup": tipGroup }, { "x": overweight, "y": i - 1, "color": oColor, "name": "Overweight", "population": population, "region": region, "tipGroup": tipGroup })
       // row.sort((function (index) {
       //   return function (a, b) {
       //     return (a[index] === b[index] ? 0 : (a[index] < b[index] ? -1 : 1))
       //   }
       // })(3))
     })
-    dataPoints.sort((a, b) => b[1] - a[1])
-    console.log(dataPoints)
+    dataset = columns
+    populateSelect()
     renderChart(regionData, dataPoints, regionArray, sColor, aColor, oColor)
   }
 })
+
+function populateSelect() {
+  var options = ""
+  dataset[0].forEach(function (column, i) {
+    options += '<optionvalue="' + i + '">' + column + '</option>'
+    console.log(this.value)
+  })
+  dataset.sort((a, b) => b[2] - a[2])
+
+}
 
 function renderChart(regionData, dataPoints, regionArray, sColor, aColor, oColor) {
   Highcharts.setOptions({
