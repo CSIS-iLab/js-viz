@@ -27,6 +27,7 @@ var dataset = {}
 var sColor = "red"
 var aColor = "blue"
 var oColor = "green"
+
 Highcharts.data({
 
   // Load Data in from Google Sheets
@@ -71,14 +72,19 @@ Highcharts.data({
     renderChart(regionData, dataPoints, regionArray, sColor, aColor, oColor)
   }
 })
-
 function populateSelect() {
-  var options = ""
+  var datasets = document.getElementById('datasets')
   dataset[0].forEach(function (column, i) {
-    options += '<optionvalue="' + i + '">' + column + '</option>'
-    console.log(this.value)
+    var option = document.createElement("option")
+    option.value = i
+    option.innerHTML = column
+    datasets.appendChild(option)
   })
-  dataset.sort((a, b) => b[2] - a[2])
+  console.log(datasets)
+  datasets.onchange(function () {
+
+    dataset.sort((a, b) => b[2] - a[2])
+  })
 
 }
 
