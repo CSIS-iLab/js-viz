@@ -41,6 +41,11 @@ Highcharts.data({
       if (i == 0) {
         return
       }
+      // default data sort
+      console.log(columns)
+      var dataRows = columns.slice(1)
+      dataRows.sort()
+      console.log(dataRows)
       // name the columns
       var population = row[1]
       var region = row[0]
@@ -67,10 +72,6 @@ Highcharts.data({
       //   }
       // })(3))
     })
-    // default data sort
-    console.log(columns)
-    columns.sort((a, b) => b[2] - a[2])
-    console.log(columns)
     dataset = columns
     populateSelect()
     renderChart(regionData, dataPoints, regionArray, sColor, aColor, oColor)
