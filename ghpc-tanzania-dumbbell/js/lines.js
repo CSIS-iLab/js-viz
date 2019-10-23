@@ -191,13 +191,13 @@ function renderChart(regionData, dataPoints, regionArray, sColor, aColor, oColor
     },
     // Chart Legend
     legend: {
-      align: 'center',
+      align: 'right',
       verticalAlign: 'top',
       layout: 'horizontal',
-      useHTML: true,
       labelFormatter: function () {
         return '<span style="color:' + aColor + '">\u25CF</span> Anemia<br/>' + '<span style="color:' + sColor + '">\u25CF</span> Stunting<br/>' + '<span style="color:' + oColor + '">\u25CF</span> Overweight'
       },
+      // remove default formatting
       symbolHeight: 0,
       symbolWidth: 0,
       symbolRadius: 0,
@@ -205,6 +205,7 @@ function renderChart(regionData, dataPoints, regionArray, sColor, aColor, oColor
         'cursor': 'default'
       }
     },
+    // X Axis
     xAxis: {
       labels: {
         format: '{value}%'
@@ -215,6 +216,7 @@ function renderChart(regionData, dataPoints, regionArray, sColor, aColor, oColor
       },
       maxPadding: 0.15,
       minPadding: 0.3,
+      // move down to give bottom region more space
       offset: 15,
       startOnTick: true,
       tickInterval: 10,
@@ -258,7 +260,7 @@ function renderChart(regionData, dataPoints, regionArray, sColor, aColor, oColor
         overweightArr = this.point.tipGroup['Overweight']
         return 'Region: <b>' + this.point.region + '</b><br/>' + 'Population: <b>' + this.point.population + '</b><br/>' + '<span style="color:' + anemiaArr.color + '">\u25CF </span>' + anemiaArr.name + ': ' + anemiaArr.val + '%<br/>' + '<span style="color:' + stuntingArr.color + '">\u25CF </span>' + stuntingArr.name + ': ' + stuntingArr.val + '%<br/>' + '<span style="color:' + overweightArr.color + '">\u25CF </span>' + overweightArr.name + ': ' + overweightArr.val + '%'
       },
-      shared: true,
+      backgroundColor: 'rgb(255, 255, 255)'
     },
     series: [{
       type: 'xrange',
