@@ -175,6 +175,18 @@ function renderChart(regionData, dataPoints, regionArray, sColor, aColor, oColor
     chart: {
       height: '80%'
     },
+    exporting: {
+      sourceWidth: 723,
+      sourceHeight: 775,
+      chartOptions: {
+        title: {
+          text: "The Triple Burden of Malnutrition in Tanzania"
+        },
+        subtitle: {
+          text: "This chart shows the co-occurrence of three major types of malnutrition—overweight or obese, stunting, and anemia. The key population for stunting, or below average height for age, is children under 5. Women of reproductive age (15 to 49 years) are the key population for anemia and overweight or obese. Data is unavailable for Zanzibar."
+        }
+      }
+    },
     // Chart Title and Subtitle
     title: {
       text: undefined,
@@ -188,14 +200,18 @@ function renderChart(regionData, dataPoints, regionArray, sColor, aColor, oColor
     credits: {
       enabled: true,
       href: false,
-      text: "CSIS Global Health Policy Center | Source: Tanzania National Nutrition Survey 2018"
+      text: "CSIS Global Health Policy Center | Source: Tanzania National Nutrition Survey 2018",
+      position: {
+        y: 0
+      }
     },
     // Chart Legend
     legend: {
       align: 'left',
       verticalAlign: 'top',
+      useHTML: true,
       labelFormatter: function () {
-        return '<span style="color:' + aColor + '">\u25CF</span> Anemia   ' + '<span style="color:' + sColor + '">\u25CF</span> Stunting   ' + '<span style="color:' + oColor + '">\u25CF</span> Overweight'
+        return '<span style="color:' + aColor + '">\u25CF</span> Anemia <span style="font-size:16px; color:#ffffff">.</span>' + '<span style="color:' + sColor + '">\u25CF</span> Stunting <span style="font-size:16px; color:#ffffff">.</span>' + '<span style="color:' + oColor + '">\u25CF</span> Overweight'
       },
       // remove default formatting
       symbolHeight: 0,
@@ -212,7 +228,7 @@ function renderChart(regionData, dataPoints, regionArray, sColor, aColor, oColor
       },
       title: {
         enabled: true,
-        text: 'Percent of Population'
+        text: 'Percent of Population',
       },
       maxPadding: 0.15, // increase axis to 60%
       minPadding: 0.3, // decrease axis to 0%

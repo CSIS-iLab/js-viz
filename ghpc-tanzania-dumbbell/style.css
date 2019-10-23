@@ -1,7 +1,18 @@
 
-h2 {
+h2, p {
     color: #333333;
-    font-size: 18px;
     text-align: center;
-    font-family: "Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;
+    font-family: "Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica, sans-serif;
+    font-weight: 100;
+}
+h2 {
+    font-size: 18px;
+}
+p {
+    font-size: 12px;
+    margin: 0 18px;
+}
+
+select {
+    margin-left: 21px;
 }
