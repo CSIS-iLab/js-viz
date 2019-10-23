@@ -125,9 +125,6 @@ Highcharts.data({
     })
     dataset = columns
     populateSelect()
-    console.log(regionData)
-    console.log(dataPoints)
-    console.log(regionArray)
     renderChart(regionData, dataPoints, regionArray, sColor, aColor, oColor)
   }
 })
@@ -146,24 +143,23 @@ function populateSelect() {
     regionArray = []
     regionData.sort((a, b) => {
       var key = this.value.toLowerCase()
+      console.log(key)
       return b[key] - a[key]
     })
     regionData.forEach(function (row, i) {
-      console.log(row.region)
-      console.log(i)
+      row.y = i
       // if the row region matches the dataPoints region, update y to i value
-      console.log(dataPoints)
-      if (row.region === dataPoints.region) {
-        dataPoints.y = i
-      }
+      // console.log(dataPoints)
+      dataPoints.forEach(function (dataRow, j) {
+        if (row.region.toLowerCase() === dataRow.region.toLowerCase()) {
+          dataRow.y = i
+        }
+      })
       // Push region to regionArray
       regionArray.push(row.region)
     })
-    console.log(regionArray)
     renderChart(regionData, dataPoints, regionArray, sColor, aColor, oColor)
   }
-  // I need to refresh regionData dataPoints and regionArray with newly sorted dataset
-  // 
 }
 
 function renderChart(regionData, dataPoints, regionArray, sColor, aColor, oColor) {
