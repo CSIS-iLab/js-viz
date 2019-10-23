@@ -35,17 +35,23 @@ Highcharts.data({
   googleSpreadsheetWorksheet: 1,
   switchRowsAndColumns: true,
   parsed: function parsed(columns) {
+    // default data sort
+    columns.sort((a, b) => {
+      // exclude header row
+      if (a[0] == b[0]) return 0
+      if (a[0] == 'Region') return -1
+      if (b[0] == 'Region') return 1
+      // sort alphabetically
+      if (a[0] < b[0]) return 1
+      if (a[0] > b[0]) return -1
+      return 0
+    })
     // iterate over data
     columns.forEach(function (row, i) {
       // skip first row
       if (i == 0) {
         return
       }
-      // default data sort
-      console.log(columns)
-      var dataRows = columns.slice(1)
-      dataRows.sort()
-      console.log(dataRows)
       // name the columns
       var population = row[1]
       var region = row[0]
@@ -63,20 +69,56 @@ Highcharts.data({
       // For each row, push region to regionArray
       regionArray.push(region)
 
-      var tipGroup = { "Stunting": { "name": "Stunting", 'val': stunting, 'color': sColor }, "Anemia": { "name": "Anemia", "val": anemia, 'color': aColor }, "Overweight": { "name": "Overweight", "val": overweight, 'color': oColor } }
+      var tipGroup = {
+        "Stunting": {
+          "name": "Stunting",
+          'val': stunting,
+          'color': sColor
+        },
+        "Anemia": {
+          "name": "Anemia",
+          "val": anemia,
+          'color': aColor
+        },
+        "Overweight": {
+          "name": "Overweight",
+          "val": overweight,
+          'color': oColor
+        }
+      }
       // For each category in a row assign the percentage to x, index to y and the category color then push to dataPoints array
-      dataPoints.push({ "x": stunting, "y": i - 1, "color": sColor, "name": 'Stunting', "population": population, "region": region, "tipGroup": tipGroup }, { "x": anemia, "y": i - 1, "color": aColor, "name": "Anemia", "population": population, "region": region, "tipGroup": tipGroup }, { "x": overweight, "y": i - 1, "color": oColor, "name": "Overweight", "population": population, "region": region, "tipGroup": tipGroup })
-      // row.sort((function (index) {
-      //   return function (a, b) {
-      //     return (a[index] === b[index] ? 0 : (a[index] < b[index] ? -1 : 1))
-      //   }
-      // })(3))
+      dataPoints.push({
+        "x": stunting,
+        "y": i - 1,
+        "color": sColor,
+        "name": 'Stunting',
+        "population": population,
+        "region": region,
+        "tipGroup": tipGroup
+      }, {
+        "x": anemia,
+        "y": i - 1,
+        "color": aColor,
+        "name": "Anemia",
+        "population": population,
+        "region": region,
+        "tipGroup": tipGroup
+      }, {
+        "x": overweight,
+        "y": i - 1,
+        "color": oColor,
+        "name": "Overweight",
+        "population": population,
+        "region": region,
+        "tipGroup": tipGroup
+      })
     })
     dataset = columns
     populateSelect()
     renderChart(regionData, dataPoints, regionArray, sColor, aColor, oColor)
   }
 })
+
 function populateSelect() {
   var datasets = document.getElementById('datasets')
   dataset[0].forEach(function (column, i) {
@@ -88,11 +130,19 @@ function populateSelect() {
   datasets.onchange = function () {
     var chart = Highcharts.chart('hcContainer', {})
     chart.destroy()
-    dataset.sort((a, b) => b[this.value] - a[this.value])
+    dataset.sort((a, b) => {
+      if (a[this.value] == b[this.value]) return 0
+      if (a[this.value] == 'Region') return -1
+      if (b[this.value] == 'Region') return 1
+      if (a[this.value] < b[this.value]) return 1
+      if (a[this.value] > b[this.value]) return -1
+      return 0
+    })
     console.log(dataset)
     renderChart(regionData, dataPoints, regionArray, sColor, aColor, oColor)
   }
-
+  // I need to refresh regionData dataPoints and regionArray with newly sorted dataset
+  // Can I pass dataset
 }
 
 function renderChart(regionData, dataPoints, regionArray, sColor, aColor, oColor) {
