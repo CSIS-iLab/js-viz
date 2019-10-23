@@ -65,7 +65,17 @@ Highcharts.data({
       // For each row, determine highest percentage and assign that to x2
       const max = Math.max.apply(Math, data)
       // Push row object into regionData array
-      regionData.push({ "x": min, "x2": max, "y": i - 1, name: region, "color": 'lightGray' })
+      regionData.push({
+        "x": min,
+        "x2": max,
+        "y": i - 1,
+        "region": region,
+        "color": 'lightGray',
+        "anemia": anemia,
+        "stunting": stunting,
+        "overweight": overweight,
+        "population": population
+      })
       // For each row, push region to regionArray
       regionArray.push(region)
 
@@ -115,6 +125,9 @@ Highcharts.data({
     })
     dataset = columns
     populateSelect()
+    console.log(regionData)
+    console.log(dataPoints)
+    console.log(regionArray)
     renderChart(regionData, dataPoints, regionArray, sColor, aColor, oColor)
   }
 })
@@ -123,26 +136,34 @@ function populateSelect() {
   var datasets = document.getElementById('datasets')
   dataset[0].forEach(function (column, i) {
     var option = document.createElement("option")
-    option.value = i
-    option.innerHTML = column
+    option.value = column
+    option.text = column
     datasets.appendChild(option)
   })
   datasets.onchange = function () {
     var chart = Highcharts.chart('hcContainer', {})
     chart.destroy()
-    dataset.sort((a, b) => {
-      if (a[this.value] == b[this.value]) return 0
-      if (a[this.value] == 'Region') return -1
-      if (b[this.value] == 'Region') return 1
-      if (a[this.value] < b[this.value]) return 1
-      if (a[this.value] > b[this.value]) return -1
-      return 0
+    regionArray = []
+    regionData.sort((a, b) => {
+      var key = this.value.toLowerCase()
+      return b[key] - a[key]
     })
-    console.log(dataset)
+    regionData.forEach(function (row, i) {
+      console.log(row.region)
+      console.log(i)
+      // if the row region matches the dataPoints region, update y to i value
+      console.log(dataPoints)
+      if (row.region === dataPoints.region) {
+        dataPoints.y = i
+      }
+      // Push region to regionArray
+      regionArray.push(row.region)
+    })
+    console.log(regionArray)
     renderChart(regionData, dataPoints, regionArray, sColor, aColor, oColor)
   }
   // I need to refresh regionData dataPoints and regionArray with newly sorted dataset
-  // Can I pass dataset
+  // 
 }
 
 function renderChart(regionData, dataPoints, regionArray, sColor, aColor, oColor) {
