@@ -17,7 +17,6 @@
 //      y: match id from this region
 //      color: each data type will have a corresponding color
 
-// yAxis categories is an array of regions
 
 var regionData = []
 var dataPoints = []
@@ -26,7 +25,7 @@ var population = []
 var dataset = {}
 var sColor = "#f68a41"
 var aColor = "#842037"
-var oColor = "#3e777e"
+var oColor = "#52a091"
 
 Highcharts.data({
 
@@ -38,12 +37,12 @@ Highcharts.data({
     // default data sort
     columns.sort((a, b) => {
       // exclude header row
-      if (a[0] == b[0]) return 0
-      if (a[0] == 'Region') return -1
-      if (b[0] == 'Region') return 1
+      if (a[3] == b[3]) return 0
+      if (a[3] == 'Region') return -1
+      if (b[3] == 'Region') return 1
       // sort alphabetically
-      if (a[0] < b[0]) return 1
-      if (a[0] > b[0]) return -1
+      if (a[3] < b[3]) return 1
+      if (a[3] > b[3]) return -1
       return 0
     })
     // iterate over data
@@ -268,7 +267,7 @@ function renderChart(regionData, dataPoints, regionArray, sColor, aColor, oColor
       type: 'scatter',
       linkedTo: 'main',
       marker: {
-        radius: 3
+        radius: 3.5
       },
       data: dataPoints,
     }]
