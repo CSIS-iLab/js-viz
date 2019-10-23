@@ -142,14 +142,17 @@ function populateSelect() {
     chart.destroy()
     regionArray = []
     regionData.sort((a, b) => {
-      var key = this.value.toLowerCase()
-      console.log(key)
-      return b[key] - a[key]
+      var words = this.value.toLowerCase().split(" ")
+      var key = words[0]
+      // return b[key] - a[key]
+      if (a[key] < b[key]) return 1
+      if (a[key] > b[key]) return -1
+      return 0
     })
+    console.log(regionData)
     regionData.forEach(function (row, i) {
       row.y = i
       // if the row region matches the dataPoints region, update y to i value
-      // console.log(dataPoints)
       dataPoints.forEach(function (dataRow, j) {
         if (row.region.toLowerCase() === dataRow.region.toLowerCase()) {
           dataRow.y = i
