@@ -24,9 +24,9 @@ var dataPoints = []
 var regionArray = []
 var population = []
 var dataset = {}
-var sColor = "red"
-var aColor = "blue"
-var oColor = "green"
+var sColor = "#f68a41"
+var aColor = "#842037"
+var oColor = "#3e777e"
 
 Highcharts.data({
 
@@ -174,7 +174,7 @@ function renderChart(regionData, dataPoints, regionArray, sColor, aColor, oColor
 
   Highcharts.chart('hcContainer', {
     chart: {
-      height: '65%'
+      height: '80%'
     },
     // Chart Title and Subtitle
     title: {
@@ -191,11 +191,10 @@ function renderChart(regionData, dataPoints, regionArray, sColor, aColor, oColor
     },
     // Chart Legend
     legend: {
-      align: 'right',
+      align: 'left',
       verticalAlign: 'top',
-      layout: 'horizontal',
       labelFormatter: function () {
-        return '<span style="color:' + aColor + '">\u25CF</span> Anemia<br/>' + '<span style="color:' + sColor + '">\u25CF</span> Stunting<br/>' + '<span style="color:' + oColor + '">\u25CF</span> Overweight'
+        return '<span style="color:' + aColor + '">\u25CF</span> Anemia   ' + '<span style="color:' + sColor + '">\u25CF</span> Stunting   ' + '<span style="color:' + oColor + '">\u25CF</span> Overweight'
       },
       // remove default formatting
       symbolHeight: 0,
@@ -214,10 +213,9 @@ function renderChart(regionData, dataPoints, regionArray, sColor, aColor, oColor
         enabled: true,
         text: 'Percent of Population'
       },
-      maxPadding: 0.15,
-      minPadding: 0.3,
-      // move down to give bottom region more space
-      offset: 15,
+      maxPadding: 0.15, // increase axis to 60%
+      minPadding: 0.3, // decrease axis to 0%
+      offset: 15, // move down to give bottom region more space
       startOnTick: true,
       tickInterval: 10,
     },
@@ -232,9 +230,6 @@ function renderChart(regionData, dataPoints, regionArray, sColor, aColor, oColor
     // Additional Plot Options
     plotOptions:
     {
-      line: {
-        gapSize: 2
-      },
       series: {
         borderWidth: 0,
         pointPadding: 0,
