@@ -196,11 +196,14 @@ function renderChart(regionData, dataPoints, regionArray, sColor, aColor, oColor
       layout: 'horizontal',
       useHTML: true,
       labelFormatter: function () {
-        return '<span style="color:' + aColor + '">\u25CF</span> Anemia ' + '<span style="color:' + sColor + '">\u25CF</span> Stunting ' + '<span style="color:' + oColor + '">\u25CF</span> Overweight'
+        return '<span style="color:' + aColor + '">\u25CF</span> Anemia<br/>' + '<span style="color:' + sColor + '">\u25CF</span> Stunting<br/>' + '<span style="color:' + oColor + '">\u25CF</span> Overweight'
       },
       symbolHeight: 0,
       symbolWidth: 0,
-      symbolRadius: 0
+      symbolRadius: 0,
+      itemStyle: {
+        'cursor': 'default'
+      }
     },
     xAxis: {
       labels: {
@@ -234,6 +237,11 @@ function renderChart(regionData, dataPoints, regionArray, sColor, aColor, oColor
         borderWidth: 0,
         pointPadding: 0,
         groupPadding: 0,
+        events: {
+          legendItemClick: function () {
+            return false
+          }
+        }
       },
       xrange: {
         enableMouseTracking: false
