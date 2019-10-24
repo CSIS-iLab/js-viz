@@ -17,11 +17,15 @@
   <h2>The Triple Burden of Malnutrition in Tanzania</h2>
   <p>This chart shows the co-occurrence of three major types of malnutrition—overweight or obese, stunting, and anemia.
     The key population for stunting, or below average height for age, is children under 5. Women of reproductive age (15
-    to 49 years) are the key population for anemia and overweight or obese. Data is unavailable for Zanzibar.</p>
-  <select id="datasets"></select>
+    to 49 years) are the key population for anemia and overweight or obese. Data is unavailable for Zanzibar. Hover over
+    a dot to see the percentages of anemia, stunting, and being overweight/obese in each region. Click the dropdown to
+    sort by a different indicator.</p>
+  <select id="datasets">
+    <option value=" " disabled selected>Sort by:</option>
+  </select>
   <!-- Highcharts chart container -->
   <div id="hcContainer"></div>
-
+  <img src="mobileChart.png" alt="The Triple Burden of Malnutrition in Tanzania" id="mobileImage">
   <!-- Include jQuery & Highcharts Libraries; Adjust per project -->
   <script src="https://code.highcharts.com/highcharts.js"></script>
   <script src="https://code.highcharts.com/highcharts-more.js"></script>

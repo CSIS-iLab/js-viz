@@ -211,7 +211,7 @@ function renderChart(regionData, dataPoints, regionArray, sColor, aColor, oColor
       verticalAlign: 'top',
       useHTML: true,
       labelFormatter: function () {
-        return '<span style="color:' + aColor + '">\u25CF</span> Anemia <span style="font-size:16px; color:#ffffff">.</span>' + '<span style="color:' + sColor + '">\u25CF</span> Stunting <span style="font-size:16px; color:#ffffff">.</span>' + '<span style="color:' + oColor + '">\u25CF</span> Overweight'
+        return '<span style="color:' + aColor + '">\u25CF</span> Anemia <span style="font-size:16px; color:#ffffff">.</span>' + '<span style="color:' + sColor + '">\u25CF</span> Stunting <span style="font-size:16px; color:#ffffff">.</span>' + '<span style="color:' + oColor + '">\u25CF</span> Overweight/Obese'
       },
       // remove default formatting
       symbolHeight: 0,
@@ -230,9 +230,9 @@ function renderChart(regionData, dataPoints, regionArray, sColor, aColor, oColor
         enabled: true,
         text: 'Percent of Population',
       },
-      maxPadding: 0.15, // increase axis to 60%
-      minPadding: 0.3, // decrease axis to 0%
-      offset: 15, // move down to give bottom region more space
+      maxPadding: 0.15, // extend axis to 60%
+      minPadding: 0.3, // extend axis to 0%
+      offset: 15, // move axis down to give final region more space
       startOnTick: true,
       tickInterval: 10,
     },
