@@ -130,6 +130,7 @@ Highcharts.data({
 
 function populateSelect() {
   var datasets = document.getElementById('datasets')
+  dataset[0].sort()
   dataset[0].forEach(function (column, i) {
     var option = document.createElement("option")
     option.value = column
@@ -148,7 +149,6 @@ function populateSelect() {
       if (a[key] > b[key]) return -1
       return 0
     })
-    console.log(regionData)
     regionData.forEach(function (row, i) {
       row.y = i
       // if the row region matches the dataPoints region, update y to i value
