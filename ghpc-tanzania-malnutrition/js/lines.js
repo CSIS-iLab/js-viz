@@ -124,7 +124,7 @@ Highcharts.data({
     })
     dataset = columns
     populateSelect()
-    renderChart(regionData, dataPoints, regionArray, sColor, aColor, oColor)
+    renderChart(regionData, dataPoints, regionArray)
   }
 })
 
@@ -160,11 +160,11 @@ function populateSelect() {
       // Push region to regionArray
       regionArray.push(row.region)
     })
-    renderChart(regionData, dataPoints, regionArray, sColor, aColor, oColor)
+    renderChart(regionData, dataPoints, regionArray)
   }
 }
 
-function renderChart(regionData, dataPoints, regionArray, sColor, aColor, oColor) {
+function renderChart(regionData, dataPoints, regionArray) {
   Highcharts.setOptions({
     lang: {
       thousandsSep: ","
