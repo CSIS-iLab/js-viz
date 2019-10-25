@@ -270,7 +270,7 @@ function renderChart(regionData, dataPoints, regionArray) {
         anemiaArr = this.point.tipGroup['Anemia']
         stuntingArr = this.point.tipGroup['Stunting']
         overweightArr = this.point.tipGroup['Overweight']
-        return 'Region: <b>' + this.point.region + '</b><br/>' + 'Population: <b>' + this.point.population + '</b><br/>' + '<span style="color:' + anemiaArr.color + '">\u25CF </span>' + anemiaArr.name + ': ' + anemiaArr.val + '%<br/>' + '<span style="color:' + stuntingArr.color + '">\u25CF </span>' + stuntingArr.name + ': ' + stuntingArr.val + '%<br/>' + '<span style="color:' + overweightArr.color + '">\u25CF </span>' + overweightArr.name + ': ' + overweightArr.val + '%'
+        return 'Region: <b>' + this.point.region + '</b><br/>' + 'Population: <b>' + this.point.population.toLocaleString() + '</b><br/>' + '<span style="color:' + anemiaArr.color + '">\u25CF </span>' + anemiaArr.name + ': ' + anemiaArr.val + '%<br/>' + '<span style="color:' + stuntingArr.color + '">\u25CF </span>' + stuntingArr.name + ': ' + stuntingArr.val + '%<br/>' + '<span style="color:' + overweightArr.color + '">\u25CF </span>' + overweightArr.name + ': ' + overweightArr.val + '%'
       },
       backgroundColor: 'rgb(255, 255, 255)'
     },
