@@ -52,17 +52,17 @@ Highcharts.data({
         return
       }
       // name the columns
-      var population = row[1]
-      var region = row[0]
-      var stunting = row[2]
-      var anemia = row[3]
-      var overweight = row[4]
+      const population = row[1]
+      const region = row[0]
+      const stunting = row[2]
+      const anemia = row[3]
+      const overweight = row[4]
 
-      var data = row.slice(2)
+      const percentages = [stunting, anemia, overweight]
       // For each row, determine lowest percentage and assign that to x
-      const min = Math.min.apply(Math, data)
+      const min = Math.min(...percentages)
       // For each row, determine highest percentage and assign that to x2
-      const max = Math.max.apply(Math, data)
+      const max = Math.max(...percentages)
       // Push row object into regionData array
       regionData.push({
         "x": min,
