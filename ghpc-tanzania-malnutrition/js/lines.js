@@ -18,14 +18,14 @@
 //      color: each data type will have a corresponding color
 
 
-var regionData = []
-var dataPoints = []
-var regionArray = []
-var population = []
-var dataset = {}
-var sColor = "#f68a41"
-var aColor = "#842037"
-var oColor = "#52a091"
+let regionData = []
+let dataPoints = []
+let regionArray = []
+let population = []
+let dataset = {}
+const sColor = "#f68a41"
+const aColor = "#842037"
+const oColor = "#52a091"
 
 Highcharts.data({
 
@@ -78,7 +78,7 @@ Highcharts.data({
       // For each row, push region to regionArray
       regionArray.push(region)
 
-      var tipGroup = {
+      const tipGroup = {
         "Stunting": {
           "name": "Stunting",
           'val': stunting,
@@ -129,21 +129,21 @@ Highcharts.data({
 })
 
 function populateSelect() {
-  var datasets = document.getElementById('datasets')
+  const datasets = document.getElementById('datasets')
   dataset[0].sort()
   dataset[0].forEach(function (column, i) {
-    var option = document.createElement("option")
+    const option = document.createElement("option")
     option.value = column
     option.text = column
     datasets.appendChild(option)
   })
   datasets.onchange = function () {
-    var chart = Highcharts.chart('hcContainer', {})
+    const chart = Highcharts.chart('hcContainer', {})
     chart.destroy()
     regionArray = []
     regionData.sort((a, b) => {
-      var words = this.value.toLowerCase().split(" ")
-      var key = words[0]
+      const words = this.value.toLowerCase().split(" ")
+      const key = words[0]
       // return b[key] - a[key]
       if (a[key] < b[key]) return 1
       if (a[key] > b[key]) return -1
