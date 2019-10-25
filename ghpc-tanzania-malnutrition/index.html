@@ -24,7 +24,8 @@
       #hcContainer,
       h2,
       p,
-      select {
+      select,
+      label {
         display: none;
       }
 
@@ -36,7 +37,8 @@
     }
 
     h2,
-    p {
+    p,
+    label {
       color: #333333;
       font-family: "Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica, sans-serif;
       font-weight: 100;
@@ -50,13 +52,18 @@
     p {
       text-align: left;
       font-size: 12px;
-      margin: 0 18px;
+      margin: 0 auto;
       max-width: 1000px;
     }
 
-    select {
+    label {
+      font-size: 12px;
+      margin-left: 25px;
+    }
+
+    select,
+    label {
       margin-top: 17px;
-      margin-left: 21px;
     }
   </style>
 
@@ -66,8 +73,9 @@
     to 49 years) are the key population for anemia and overweight or obese. Data is unavailable for Zanzibar. Hover over
     a dot to see the percentages of anemia, stunting, and being overweight/obese in each region. Click the dropdown to
     sort by a different indicator.</p>
+  <label for="datasets">Sort By:</label>
   <select id="datasets">
-    <option value=" " disabled selected>Sort by:</option>
+    <!-- <option value=" " disabled selected>Sort by:</option> -->
   </select>
   <!-- Highcharts chart container -->
   <div id="hcContainer"></div>
