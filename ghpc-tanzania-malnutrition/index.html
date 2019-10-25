@@ -7,13 +7,59 @@
   <title>The Triple Burden of Malnutrition in Tanzania</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href='style.css' rel='stylesheet'>
 
   <!-- Include Project Fonts -->
 
 </head>
 
 <body>
+
+  <style>
+    #mobileImage {
+      display: none;
+    }
+
+    @media only screen and (max-width: 725px) {
+
+      #hcContainer,
+      h2,
+      p,
+      select {
+        display: none;
+      }
+
+      #mobileImage {
+        display: block;
+        width: 90vw;
+        margin: 0 auto;
+      }
+    }
+
+    h2,
+    p {
+      color: #333333;
+      font-family: "Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica, sans-serif;
+      font-weight: 100;
+    }
+
+    h2 {
+      text-align: center;
+      font-size: 23px;
+    }
+
+    p {
+      text-align: left;
+      font-size: 12px;
+      margin: 0 18px;
+      max-width: 1000px;
+    }
+
+    select {
+      margin-top: 17px;
+      margin-left: 21px;
+    }
+  </style>
+
   <h2>The Triple Burden of Malnutrition in Tanzania</h2>
   <p>This chart shows the co-occurrence of three major types of malnutrition—overweight or obese, stunting, and anemia.
     The key population for stunting, or below average height for age, is children under 5. Women of reproductive age (15
@@ -31,8 +77,9 @@
   <script src="https://code.highcharts.com/highcharts-more.js"></script>
   <script src="https://code.highcharts.com/modules/data.js"></script>
   <script src="https://code.highcharts.com/modules/xrange.js"></script>
+  <script src="https://code.highcharts.com/modules/exporting.js"></script>
   <!-- Include iFrame Resizer -->
-  <script src="//csis-ilab.github.io/cpower-viz/globaljs/iframeSizer.contentWindow.min.js"></script>
+  <script src="https://csis-ilab.github.io/cpower-viz/globaljs/iframeSizer.contentWindow.min.js"></script>
   <!-- Include Project Specific Highcharts Theme -->
 
   <!-- Include Project Specific Javascript Files -->
