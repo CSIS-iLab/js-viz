@@ -22,35 +22,52 @@ let regionData = []
 let dataPoints = []
 let regionArray = []
 let population = []
-let dataset = {}
 const sColor = "#f68a41"
 const aColor = "#842037"
 const oColor = "#52a091"
+let defaultSort = 'anemia'
+
+let malnutrition = {
+  stunting: {
+    name: "Stunting",
+    color: sColor,
+    col: 2
+  },
+  anemia: {
+    name: "Anemia",
+    color: aColor,
+    col: 3
+  },
+  overweight: {
+    name: "Overweight or Obese",
+    color: oColor,
+    col: 4
+  }
+}
+
+const malnutritionList = Object.keys(malnutrition)
+
+const dropdownOptions = [
+  { name: "Population (2018 Estimated)", value: "population" },
+  { name: "Region", value: "region" }
+]
+
 
 Highcharts.data({
-
   // Load Data in from Google Sheets
   googleSpreadsheetKey: '1sLlKirSAEv5QYBQa2LJlzWMNmF3HkNFnjBHbUAJ5RFU',
   googleSpreadsheetWorksheet: 1,
   switchRowsAndColumns: true,
   parsed: function parsed(columns) {
+    // Remove header row (first element in columns array)
+    columns.shift()
+
     // default data sort
-    columns.sort((a, b) => {
-      // exclude header row
-      if (a[3] == b[3]) return 0
-      if (a[3] == 'Region') return -1
-      if (b[3] == 'Region') return 1
-      // sort alphabetically
-      if (a[3] < b[3]) return 1
-      if (a[3] > b[3]) return -1
-      return 0
-    })
+    const defaultSortValue = malnutrition[defaultSort].col
+    columns.sort((a, b) => b[defaultSortValue] - a[defaultSortValue])
+
     // iterate over data
-    columns.forEach(function (row, i) {
-      // skip first row
-      if (i == 0) {
-        return
-      }
+    columns.forEach((row, i) => {
       // name the columns
       const population = row[1]
       const region = row[0]
@@ -63,105 +80,105 @@ Highcharts.data({
       const min = Math.min(...percentages)
       // For each row, determine highest percentage and assign that to x2
       const max = Math.max(...percentages)
+
+      const y = i
+
       // Push row object into regionData array
       regionData.push({
-        "x": min,
-        "x2": max,
-        "y": i - 1,
-        "region": region,
-        "color": 'lightGray',
-        "anemia": anemia,
-        "stunting": stunting,
-        "overweight": overweight,
-        "population": population
+        x: min,
+        x2: max,
+        y,
+        region,
+        color: 'lightGray',
+        anemia,
+        stunting,
+        overweight,
+        population
       })
       // For each row, push region to regionArray
       regionArray.push(region)
 
-      const tipGroup = {
-        "Stunting": {
-          "name": "Stunting",
-          'val': stunting,
-          'color': sColor
-        },
-        "Anemia": {
-          "name": "Anemia",
-          "val": anemia,
-          'color': aColor
-        },
-        "Overweight": {
-          "name": "Overweight",
-          "val": overweight,
-          'color': oColor
-        }
-      }
-      // For each category in a row assign the percentage to x, index to y and the category color then push to dataPoints array
-      dataPoints.push({
-        "x": stunting,
-        "y": i - 1,
-        "color": sColor,
-        "name": 'Stunting',
-        "population": population,
-        "region": region,
-        "tipGroup": tipGroup
-      }, {
-        "x": anemia,
-        "y": i - 1,
-        "color": aColor,
-        "name": "Anemia",
-        "population": population,
-        "region": region,
-        "tipGroup": tipGroup
-      }, {
-        "x": overweight,
-        "y": i - 1,
-        "color": oColor,
-        "name": "Overweight",
-        "population": population,
-        "region": region,
-        "tipGroup": tipGroup
+      let tipGroup = {}
+      malnutritionList.forEach(item => {
+        const { color, name, col } = malnutrition[item]
+
+        const value = row[col]
+
+        tipGroup[item] = malnutrition[item]
+        tipGroup[item].val = value
+        // Populate malnutrition point data
+        dataPoints.push({
+          x: value,
+          y,
+          color,
+          name,
+          population,
+          region,
+          tipGroup
+        })
       })
     })
-    dataset = columns
     populateSelect()
     renderChart(regionData, dataPoints, regionArray)
   }
 })
 
 function populateSelect() {
+  // Target the sort element
   const datasets = document.getElementById('datasets')
-  dataset[0].sort()
-  dataset[0].forEach(function (column, i) {
-    const option = document.createElement("option")
-    option.value = column
-    option.text = column
-    datasets.appendChild(option)
+
+  // Add malnutritions to dropdownOptions array
+  for (let value in malnutrition) {
+    dropdownOptions.push({
+      name: malnutrition[value].name,
+      value
+    })
+  }
+
+  // Sort dropdown options
+  dropdownOptions.sort((a, b) => a.name.localeCompare(b.name))
+
+  // Create option elements for dropdown
+  dropdownOptions.forEach((option, i) => {
+    const optionEl = document.createElement("option")
+    if (option.value === defaultSort) {
+      optionEl.selected = 'selected'
+    }
+    optionEl.value = option.value
+    optionEl.text = option.name
+    datasets.appendChild(optionEl)
   })
   datasets.onchange = function () {
-    const chart = Highcharts.chart('hcContainer', {})
-    chart.destroy()
     regionArray = []
-    regionData.sort((a, b) => {
-      const words = this.value.toLowerCase().split(" ")
-      const key = words[0]
-      // return b[key] - a[key]
-      if (a[key] < b[key]) return 1
-      if (a[key] > b[key]) return -1
-      return 0
-    })
-    regionData.forEach(function (row, i) {
+
+    // Sort the region data based on the selection
+    regionData = sortRegions(regionData, this.value)
+
+    // Update y value based on sort
+    regionData.forEach((row, i) => {
       row.y = i
+
+      // Push region to RegionArray
+      regionArray.push(row.region)
+
       // if the row region matches the dataPoints region, update y to i value
-      dataPoints.forEach(function (dataRow, j) {
-        if (row.region.toLowerCase() === dataRow.region.toLowerCase()) {
+      dataPoints.forEach((dataRow, j) => {
+        if (row.region === dataRow.region) {
           dataRow.y = i
         }
       })
-      // Push region to regionArray
-      regionArray.push(row.region)
     })
+    const chart = Highcharts.chart('hcContainer', {})
+    chart.destroy()
     renderChart(regionData, dataPoints, regionArray)
   }
+}
+
+function sortRegions(dataToSort, sortBy) {
+  if (sortBy === "region") {
+    return dataToSort.sort((a, b) => b[sortBy].localeCompare(a[sortBy]))
+  }
+  return dataToSort.sort((a, b) => b[sortBy] - a[sortBy])
 }
 
 function renderChart(regionData, dataPoints, regionArray) {
@@ -211,14 +228,24 @@ function renderChart(regionData, dataPoints, regionArray) {
       verticalAlign: 'top',
       useHTML: true,
       labelFormatter: function () {
-        return '<span style="color:' + aColor + '">\u25CF</span> Anemia <span style="font-size:16px; color:#ffffff">.</span>' + '<span style="color:' + sColor + '">\u25CF</span> Stunting <span style="font-size:16px; color:#ffffff">.</span>' + '<span style="color:' + oColor + '">\u25CF</span> Overweight/Obese'
+        return (
+          '<span style="color:' +
+          aColor +
+          '">\u25CF</span> Anemia <span style="font-size:16px; color:#ffffff">.</span>' +
+          '<span style="color:' +
+          sColor +
+          '">\u25CF</span> Stunting <span style="font-size:16px; color:#ffffff">.</span>' +
+          '<span style="color:' +
+          oColor +
+          '">\u25CF</span> Overweight or Obese'
+        )
       },
       // remove default formatting
       symbolHeight: 0,
       symbolWidth: 0,
       symbolRadius: 0,
       itemStyle: {
-        'cursor': 'default'
+        cursor: 'default'
       }
     },
     // X Axis
@@ -267,10 +294,38 @@ function renderChart(regionData, dataPoints, regionArray) {
     tooltip: {
       useHTML: true,
       formatter: function () {
-        anemiaArr = this.point.tipGroup['Anemia']
-        stuntingArr = this.point.tipGroup['Stunting']
-        overweightArr = this.point.tipGroup['Overweight']
-        return 'Region: <b>' + this.point.region + '</b><br/>' + 'Population: <b>' + this.point.population.toLocaleString() + '</b><br/>' + '<span style="color:' + anemiaArr.color + '">\u25CF </span>' + anemiaArr.name + ': ' + anemiaArr.val + '%<br/>' + '<span style="color:' + stuntingArr.color + '">\u25CF </span>' + stuntingArr.name + ': ' + stuntingArr.val + '%<br/>' + '<span style="color:' + overweightArr.color + '">\u25CF </span>' + overweightArr.name + ': ' + overweightArr.val + '%'
+        anemiaArr = this.point.tipGroup['anemia']
+        stuntingArr = this.point.tipGroup['stunting']
+        overweightArr = this.point.tipGroup['overweight']
+        return (
+          'Region: <b>' +
+          this.point.region +
+          '</b><br/>' +
+          'Population: <b>' +
+          this.point.population.toLocaleString() +
+          '</b><br/>' +
+          '<span style="color:' +
+          anemiaArr.color +
+          '">\u25CF </span>' +
+          anemiaArr.name +
+          ': ' +
+          anemiaArr.val +
+          '%<br/>' +
+          '<span style="color:' +
+          stuntingArr.color +
+          '">\u25CF </span>' +
+          stuntingArr.name +
+          ': ' +
+          stuntingArr.val +
+          '%<br/>' +
+          '<span style="color:' +
+          overweightArr.color +
+          '">\u25CF </span>' +
+          overweightArr.name +
+          ': ' +
+          overweightArr.val +
+          '%'
+        )
       },
       backgroundColor: 'rgb(255, 255, 255)'
     },
