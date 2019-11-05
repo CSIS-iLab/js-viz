@@ -229,7 +229,7 @@ function renderChart(regionData, dataPoints, regionArray) {
     credits: {
       enabled: true,
       href: false,
-      text: "CSIS Global Health Policy Center | Source: Tanzania National Nutrition Survey 2018",
+      text: "CSIS Global Food Security Project | Source: Tanzania National Nutrition Survey 2018",
       position: {
         y: 0
       }
