@@ -98,15 +98,29 @@ Highcharts.data({
       // For each row, push region to regionArray
       regionArray.push(region)
 
-      let tipGroup = {}
+      const tipGroup = {
+        "stunting": {
+          "name": "Stunting",
+          'val': stunting,
+          'color': sColor
+        },
+        "anemia": {
+          "name": "Anemia",
+          "val": anemia,
+          'color': aColor
+        },
+        "overweight": {
+          "name": "Overweight",
+          "val": overweight,
+          'color': oColor
+        }
+      }
+
       malnutritionList.forEach(item => {
         const { color, name, col } = malnutrition[item]
 
-        const value = row[col]
+        let value = row[col]
 
-        tipGroup[item] = malnutrition[item]
-        tipGroup[item].val = value
-        // Populate malnutrition point data
         dataPoints.push({
           x: value,
           y,
@@ -200,7 +214,7 @@ function renderChart(regionData, dataPoints, regionArray) {
           text: "The Triple Burden of Malnutrition in Tanzania"
         },
         subtitle: {
-          text: "This chart shows the co-occurrence of three major types of malnutrition—overweight or obese, stunting, and anemia. The key population for stunting, or below average height for age, is children under 5. Women of reproductive age (15 to 49 years) are the key population for anemia and overweight or obese. Data is unavailable for Zanzibar."
+          text: "This chart shows the co-occurrence of three major types of malnutrition—overweight or obese, stunting, and anemia. The key population for stunting, or below average height for age, is children under 5. Women of reproductive age (15 to 49 years) are the key population for anemia and overweight or obese."
         }
       }
     },
