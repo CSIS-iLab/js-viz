@@ -1,0 +1,254 @@
+{
+  "storymap": {
+    "attribution": "",
+    "call_to_action": true,
+    "zoomify": false,
+    "slides": [
+      {
+        "date": "",
+        "media": {
+          "url": "",
+          "caption": "",
+          "credit": ""
+        },
+        "type": "overview",
+        "location": {
+          "line": true
+        },
+        "text": {
+          "headline": "POPULAR PROTEST MOVEMENTS IN AFRICA",
+          "text": "<div>Beginning in 2011, sub-Saharan African nations have seen an uptick in grassroots, pro-democracy movements.<br></div><div><br></div><div>Zachariah Mampilly, Africa Uprising: Popular Protest and Political Change</div>"
+        }
+      },
+      {
+        "date": "",
+        "media": {
+          "url": "https://www.youtube.com/watch?v=tCuKAn-T0pk",
+          "caption": "",
+          "credit": "Y en a Marre Officiel"
+        },
+        "location": {
+          "iconSize": [
+            48,
+            38.53125
+          ],
+          "lon": -14.28333,
+          "zoom": 12,
+          "lat": 14.36667,
+          "line": true,
+          "icon": "//uploads.knightlab.com/storymapjs/1f8d716c905dfcd641b89ee2f9e633b8/protests-sub-saharan-africa/_images/mapmarkerRED.png",
+          "use_custom_marker": true
+        },
+        "text": {
+          "headline": "Y'en a Marre",
+          "text": "In January 2011, a group of Senegalese musicians and journalists form the group Y'en a Marre (\"Fed Up\") to register youth voters and protest ineffective government.<br>"
+        }
+      },
+      {
+        "date": "",
+        "media": {
+          "url": "https://www.youtube.com/watch?v=GyjGtVCjVHo",
+          "caption": "",
+          "credit": "NTVUganda"
+        },
+        "location": {
+          "iconSize": [
+            48,
+            38.53125
+          ],
+          "lon": 32.39,
+          "zoom": 12,
+          "lat": 1.28,
+          "line": true,
+          "icon": "//uploads.knightlab.com/storymapjs/1f8d716c905dfcd641b89ee2f9e633b8/protests-sub-saharan-africa/_images/mapmarkerRED.png",
+          "use_custom_marker": true
+        },
+        "background": {
+          "color": "#ffffff",
+          "opacity": 100
+        },
+        "text": {
+          "headline": "Walk to work",
+          "text": "In April 2011, opposition party leader known as Kizza Besigye began leading group marches to work in Kampala, the capital of Uganda, to protest high transportation costs.<br>"
+        }
+      },
+      {
+        "date": "",
+        "media": {
+          "url": "//uploads.knightlab.com/storymapjs/1f8d716c905dfcd641b89ee2f9e633b8/protests-sub-saharan-africa/_images/elezioni-Congo.jpg",
+          "caption": "https://www.pressenza.com/it/2018/11/opposizione-divisa-in-repubblica-democratica-del-congo-in-vista-delle-elezioni-del-23-dicembre/",
+          "credit": "Pressenza International Press Agency"
+        },
+        "location": {
+          "iconSize": [
+            48,
+            38.53125
+          ],
+          "lon": 23.656,
+          "zoom": 12,
+          "lat": -2.88,
+          "line": true,
+          "icon": "//uploads.knightlab.com/storymapjs/1f8d716c905dfcd641b89ee2f9e633b8/protests-sub-saharan-africa/_images/mapmarkerRED.png",
+          "use_custom_marker": true
+        },
+        "text": {
+          "headline": "LUCHA",
+          "text": "<span><span>Formed in 2011, </span>Lutte pour le changement is an ongoing movement fighting for civil and political rights for Congolese citizens to protect them from government abuse.</span><br>"
+        }
+      },
+      {
+        "date": "",
+        "media": {
+          "url": "//uploads.knightlab.com/storymapjs/1f8d716c905dfcd641b89ee2f9e633b8/protests-sub-saharan-africa/_images/6683921221_843e47e434_c.jpg",
+          "caption": "https://www.flickr.com/photos/73929126@N04/6683921221",
+          "credit": "Temi KOGBE, flickr"
+        },
+        "location": {
+          "iconSize": [
+            48,
+            38.53125
+          ],
+          "lon": 8,
+          "zoom": 7,
+          "lat": 9,
+          "line": true,
+          "icon": "//uploads.knightlab.com/storymapjs/1f8d716c905dfcd641b89ee2f9e633b8/protests-sub-saharan-africa/_images/mapmarkerRED.png",
+          "use_custom_marker": true
+        },
+        "text": {
+          "headline": "Occupy Nigeria",
+          "text": "The Occupy Nigeria movement began in January 2012 following the government's removal of an important fuel subsidy. The protests which broke out across the country utilized Facebook and Twitter.<br>"
+        }
+      },
+      {
+        "date": "",
+        "media": {
+          "url": "//uploads.knightlab.com/storymapjs/1f8d716c905dfcd641b89ee2f9e633b8/protests-sub-saharan-africa/_images/800px-People_march_in_Ouagadougou_against_Blaise_Compaore's_plan_to_stay_in_power,_29_October_2014.jpg",
+          "caption": "https://www.voanews.com/gallery/protesters-storm-burkina-faso-parliament",
+          "credit": "VOA News"
+        },
+        "location": {
+          "iconSize": [
+            48,
+            38.53125
+          ],
+          "lon": -2.06667,
+          "zoom": 10,
+          "lat": 12.26667,
+          "line": true,
+          "icon": "//uploads.knightlab.com/storymapjs/1f8d716c905dfcd641b89ee2f9e633b8/protests-sub-saharan-africa/_images/mapmarkerRED.png",
+          "use_custom_marker": true
+        },
+        "text": {
+          "headline": "Burkina Faso 2014",
+          "text": "<span>In October 2014, Burkinese protested against former President Blaise Compaor\\u00e9 who wanted to amend the Constitution to allow him to run for President again. Protestors set fire to the parliament building. Compaor\\u00e9 stepped down in the following election year.</span><br>"
+        }
+      },
+      {
+        "date": "",
+        "media": {
+          "url": "https://www.youtube.com/watch?v=1rrLFCmJzT8",
+          "caption": "\"Nobody Wanna See Us Together\" was a protest anthem for #FeesMustFall demonstrators in 2015.",
+          "credit": ""
+        },
+        "location": {
+          "iconSize": [
+            48,
+            38.53125
+          ],
+          "lon": 24,
+          "zoom": 12,
+          "lat": -29,
+          "line": true,
+          "icon": "//uploads.knightlab.com/storymapjs/1f8d716c905dfcd641b89ee2f9e633b8/protests-sub-saharan-africa/_images/mapmarkerRED.png",
+          "use_custom_marker": true
+        },
+        "text": {
+          "headline": "#FeesMustFall",
+          "text": "<div><span>Student-led protests began in October 2015 in South Africa, demanding increased government funding of universities and a stop increases in student fees. The protests ended after the government announced there would be no fee increases in 2016.<br></span></div>"
+        }
+      },
+      {
+        "date": "",
+        "media": {
+          "url": "https://www.youtube.com/watch?v=7PLGwPwQZbM",
+          "caption": "",
+          "credit": "africanews"
+        },
+        "location": {
+          "iconSize": [
+            48,
+            38.53125
+          ],
+          "lon": 39,
+          "zoom": 12,
+          "lat": 8,
+          "line": true,
+          "icon": "//uploads.knightlab.com/storymapjs/1f8d716c905dfcd641b89ee2f9e633b8/protests-sub-saharan-africa/_images/mapmarkerRED.png",
+          "use_custom_marker": true
+        },
+        "text": {
+          "headline": "Ethiopia 2016",
+          "text": "<span>In August 2016, Ethiopians demanded an end to human rights violations. The government resulted in Internet restriction and attacking protestors.</span><br>"
+        }
+      },
+      {
+        "date": "",
+        "media": {
+          "url": "//uploads.knightlab.com/storymapjs/1f8d716c905dfcd641b89ee2f9e633b8/protests-sub-saharan-africa/_images/800px-Sudanese_protestors_celebrate_signing_of_political_agreement.png",
+          "caption": "https://www.youtube.com/watch?v=15BMbCXl_O4",
+          "credit": "VOA News"
+        },
+        "location": {
+          "iconSize": [
+            48,
+            38.53125
+          ],
+          "lon": 32,
+          "zoom": 12,
+          "lat": 15,
+          "line": true,
+          "icon": "//uploads.knightlab.com/storymapjs/1f8d716c905dfcd641b89ee2f9e633b8/protests-sub-saharan-africa/_images/mapmarkerRED.png",
+          "use_custom_marker": true
+        },
+        "text": {
+          "headline": "Sudan 2018-2019",
+          "text": "<span>The Sudanese Revolution started in December 2018 and ended in September 2019. Protestors peacefully demonstrated against the high cost of living and they received a violent response from the government. This turned into a demand for President Omar al-Bashir to step down, which resulted in a coup. Sudanese continued to call for the Transitional Military Council (TMC) to step aside, which resulted in the massacre of 128 people, the rape of 70, and the injury of many others. The TMC eventually dissipated and the Sovereignty Council and Transitional Cabinet formed.</span><br>"
+        }
+      },
+      {
+        "date": "",
+        "media": {
+          "url": "https://www.youtube.com/watch?v=QlHluQFjCaM",
+          "caption": "",
+          "credit": "Bobi Wine"
+        },
+        "location": {
+          "iconSize": [
+            48,
+            38.53125
+          ],
+          "lon": 32.39,
+          "zoom": 12,
+          "lat": 1.28,
+          "line": true,
+          "icon": "//uploads.knightlab.com/storymapjs/1f8d716c905dfcd641b89ee2f9e633b8/protests-sub-saharan-africa/_images/mapmarkerRED.png",
+          "use_custom_marker": true
+        },
+        "background": {
+          "color": "#ffffff",
+          "opacity": 100
+        },
+        "text": {
+          "headline": "People Power Movement & Bobi Wine",
+          "text": "Since 2017, musician and member of Uganda's parliament, Bobi Wine, has been leading a popular protest movement against the increasingly autocratic regime of president Yoweri Museveni.<br>"
+        }
+      }
+    ],
+    "map_access_token": "pk.eyJ1IjoibW9sbHlqb2h1bnRlciIsImEiOiJjazJ6NXpzemEwMmlzM21scjB0cWFqMWVzIn0.eRjD1AkwCZtzOkY-j1WWZg",
+    "map_type": "mapbox:mapbox://styles/mollyjohunter/ck2yvjap30jd51cpm1ddnckxi",
+    "call_to_action_text": "",
+    "map_as_image": true,
+    "map_subdomains": "abcd"
+  }
+}
