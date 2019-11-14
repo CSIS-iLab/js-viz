@@ -1,2 +1,2 @@
-# japanrok-timeline
-To host the SPA for the Japan-ROK timeline
+# journalism-iowa-storymap
+To host the SPA for the Iowa Journalism Storymap
