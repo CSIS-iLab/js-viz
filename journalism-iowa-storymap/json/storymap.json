@@ -63,10 +63,6 @@
           "icon": "//uploads.knightlab.com/storymapjs/1f8d716c905dfcd641b89ee2f9e633b8/protests-sub-saharan-africa/_images/mapmarkerRED.png",
           "use_custom_marker": true
         },
-        "background": {
-          "color": "#ffffff",
-          "opacity": 100
-        },
         "text": {
           "headline": "Walk to work",
           "text": "In April 2011, opposition party leader known as Kizza Besigye began leading group marches to work in Kampala, the capital of Uganda, to protest high transportation costs.<br>"
@@ -234,10 +230,6 @@
           "line": true,
           "icon": "//uploads.knightlab.com/storymapjs/1f8d716c905dfcd641b89ee2f9e633b8/protests-sub-saharan-africa/_images/mapmarkerRED.png",
           "use_custom_marker": true
-        },
-        "background": {
-          "color": "#ffffff",
-          "opacity": 100
         },
         "text": {
           "headline": "People Power Movement & Bobi Wine",
