@@ -47,7 +47,9 @@
 	var storymap_data = 'json/storymap.json';
 
 	// certain settings must be passed within a separate options object
-	var storymap_options = {};
+	var storymap_options = {
+		  "font_css": "stock:opensans-gentiumbook"
+	};
 
 	var storymap = new VCO.StoryMap('mapdiv', storymap_data, storymap_options);
 	window.onresize = function(event) {
