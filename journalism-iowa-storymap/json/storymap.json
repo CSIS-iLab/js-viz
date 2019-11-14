@@ -33,7 +33,7 @@
             38.53125
           ],
           "lon": -14.28333,
-          "zoom": 12,
+          "zoom": 6,
           "lat": 14.36667,
           "line": true,
           "icon": "//uploads.knightlab.com/storymapjs/1f8d716c905dfcd641b89ee2f9e633b8/protests-sub-saharan-africa/_images/mapmarkerRED.png",
@@ -57,7 +57,7 @@
             38.53125
           ],
           "lon": 32.39,
-          "zoom": 12,
+          "zoom": 6,
           "lat": 1.28,
           "line": true,
           "icon": "//uploads.knightlab.com/storymapjs/1f8d716c905dfcd641b89ee2f9e633b8/protests-sub-saharan-africa/_images/mapmarkerRED.png",
@@ -85,7 +85,7 @@
             38.53125
           ],
           "lon": 23.656,
-          "zoom": 12,
+          "zoom": 6,
           "lat": -2.88,
           "line": true,
           "icon": "//uploads.knightlab.com/storymapjs/1f8d716c905dfcd641b89ee2f9e633b8/protests-sub-saharan-africa/_images/mapmarkerRED.png",
@@ -109,7 +109,7 @@
             38.53125
           ],
           "lon": 8,
-          "zoom": 7,
+          "zoom": 6,
           "lat": 9,
           "line": true,
           "icon": "//uploads.knightlab.com/storymapjs/1f8d716c905dfcd641b89ee2f9e633b8/protests-sub-saharan-africa/_images/mapmarkerRED.png",
@@ -133,7 +133,7 @@
             38.53125
           ],
           "lon": -2.06667,
-          "zoom": 10,
+          "zoom": 6,
           "lat": 12.26667,
           "line": true,
           "icon": "//uploads.knightlab.com/storymapjs/1f8d716c905dfcd641b89ee2f9e633b8/protests-sub-saharan-africa/_images/mapmarkerRED.png",
@@ -157,7 +157,7 @@
             38.53125
           ],
           "lon": 24,
-          "zoom": 12,
+          "zoom": 6,
           "lat": -29,
           "line": true,
           "icon": "//uploads.knightlab.com/storymapjs/1f8d716c905dfcd641b89ee2f9e633b8/protests-sub-saharan-africa/_images/mapmarkerRED.png",
@@ -181,7 +181,7 @@
             38.53125
           ],
           "lon": 39,
-          "zoom": 12,
+          "zoom": 6,
           "lat": 8,
           "line": true,
           "icon": "//uploads.knightlab.com/storymapjs/1f8d716c905dfcd641b89ee2f9e633b8/protests-sub-saharan-africa/_images/mapmarkerRED.png",
@@ -205,7 +205,7 @@
             38.53125
           ],
           "lon": 32,
-          "zoom": 12,
+          "zoom": 6,
           "lat": 15,
           "line": true,
           "icon": "//uploads.knightlab.com/storymapjs/1f8d716c905dfcd641b89ee2f9e633b8/protests-sub-saharan-africa/_images/mapmarkerRED.png",
@@ -229,7 +229,7 @@
             38.53125
           ],
           "lon": 32.39,
-          "zoom": 12,
+          "zoom": 6,
           "lat": 1.28,
           "line": true,
           "icon": "//uploads.knightlab.com/storymapjs/1f8d716c905dfcd641b89ee2f9e633b8/protests-sub-saharan-africa/_images/mapmarkerRED.png",
