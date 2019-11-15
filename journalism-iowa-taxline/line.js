@@ -14,7 +14,7 @@ Highcharts.chart('container', {
 
     yAxis: {
         title: {
-            text: 'Number of Google Searches'
+            text: 'Popularity'
         }
     },
 
