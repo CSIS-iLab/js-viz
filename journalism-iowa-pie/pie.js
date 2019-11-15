@@ -8,9 +8,7 @@ Highcharts.chart('container', {
     text: 'Uganda Bureau of Statistics',
     href: 'https://www.ubos.org/uganda-profile/'
     },
-  caption: {
-    text: 'President Yoweri Museveni came to power in 1986.  Ugandans age 0 to 30 make up 78% up the population. This percentage does not include Ugandans aged 30 to 33. Therefore, more than 78% of the Ugandan population have never known another leader.'
-  },
+
   chart: {
     plotBackgroundColor: null,
     plotBorderWidth: null,
