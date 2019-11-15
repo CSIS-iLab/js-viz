@@ -17,12 +17,14 @@ Highcharts.chart('container', {
             text: 'Number of Google Searches'
         }
     },
+
     legend: {
         layout: 'horizontal',
         align: 'center',
         verticalAlign: 'bottom'
     },
- xAxis: {
+
+    xAxis: {
         type: 'datetime',
                 plotLines: [{
             color: '#c21414',
@@ -30,14 +32,17 @@ Highcharts.chart('container', {
             dashStyle: 'dot',
             value: Date.UTC(2018, 6, 1),
             label: {
-                text: 'Media tax came into effect',
+                text: 'Media tax comes into effect',
+                verticalAlign: 'middle',
+                align: 'left',
+                rotation: 0,
                 style: {
-                    color: '#576071',
-                    fontWeight: 'bold'
+                    color: '#576071'
                 }
             }
         }]
     },
+
     plotOptions: {
         series: {
             pointStart: Date.UTC(2016, 0, 3),
@@ -249,8 +254,6 @@ Highcharts.chart('container', {
 5,
 4,
 4]
-
-
     }],
 
     responsive: {
