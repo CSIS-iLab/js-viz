@@ -7,6 +7,10 @@ Highcharts.chart('container', {
         text: 'Searches for "VPN" in Uganda, 2016 - Present'
     },
 
+    subtitle: {
+      text: 'Ugandans can use virtual private networks (VPNs) to access the internet without incurring a penalty from the social media tax. Interest in Google searches for VPNs rose dramatically when the social media tax was announced.'
+    },
+
 
      credits: {
         text: 'Source: Google Trends'
