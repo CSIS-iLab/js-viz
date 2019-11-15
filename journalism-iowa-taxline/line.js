@@ -51,7 +51,7 @@ Highcharts.chart('container', {
     },
 
     series: [{
-        name: 'Searches for "VPN"',
+        name: '"VPN" Popularity',
         data: [0,
 0,
 1,
