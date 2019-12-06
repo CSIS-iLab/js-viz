@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>
+Entreprenurial Initiatives in Greece | The CSIS Journalism Bootcamp in International Reporting
+</title>
+
+<link rel="stylesheet" href="https://use.typekit.net/ats0hoc.css">
+
+<style>
+h2 {
+  font-family: "baskerville-urw", serif !important;
+  font-weight: 700;
+}
+.tl-timemarker-content {
+  font-family: "canada-type-gibson", sans-serif !important;
+  font-weight: 600 !important;
+}
+.tl-timemarker-content h2 {
+  font-family: "canada-type-gibson", sans-serif !important;
+  font-weight: 600 !important;
+}
+.tl-text p {
+  font-family: "baskerville-urw", serif !important;
+  font-size: 18px;
+}
+.tl-text .tl-headline-date, .tl-text h3.tl-headline-date {
+    font-family: "canada-type-gibson", sans-serif !important;
+    font-weight: 600 !important;
+}
+.tl-timeera.tl-timeera-color2 .tl-timeera-background {
+  background-color: #657786 !important;
+}
+.tl-timeera.tl-timeera-color3 .tl-timeera-background {
+  background-color: #003152 !important;
+}
+</style>
+
+</head>
+
+<body>
+<link title="timeline-styles" rel="stylesheet" href="https://cdn.knightlab.com/libs/timeline3/latest/css/timeline.css">
+
+ <script src="https://cdn.knightlab.com/libs/timeline3/latest/js/timeline.js"></script>
+
+  <div id="timeline-embed" style="width:100%;height:700px;" ></div>
+
+  <script type="text/javascript">
+         var additionalOptions = {
+            start_at_end:'false',
+  start_at_slide:     '0',
+initial_zoom: '1'
+          }
+      // The TL.Timeline constructor takes at least two arguments:
+      // the id of the Timeline container (no '#'), and
+      // the URL to your JSON data file or Google spreadsheet.
+      // the id must refer to an element "above" this code,
+      // and the element must have CSS styling to give it width and height
+      // optionally, a third argument with configuration options can be passed.
+      // See below for more about options.
+      timeline = new TL.Timeline('timeline-embed',
+        'https://docs.google.com/spreadsheets/d/138WqIIo_t6UYliUMsQmMu6ZmQAtypgztxGqTXlYO4gY/',
+additionalOptions);
+    </script>
+</body>
+
+</html>
