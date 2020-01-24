@@ -16,7 +16,7 @@ Highcharts.chart('hcContainer', {
   credits: {
     enabled: true,
     href: false,
-    text: "CSIS"
+    text: "CSIS | Center for Strategic and International Studies"
   },
   // Chart Legend
   legend: {
