@@ -10,7 +10,7 @@ Highcharts.chart('hcContainer', {
   },
   // Colors
   colors: [
-    '#013446', '#0092A8', '#66C6CB', '#AA272F', '#781256', '#F0B733',
+    '#66C6CB', '#0092A8', '#013446'
   ],
   // Chart Title and Subtitle
   title: {
