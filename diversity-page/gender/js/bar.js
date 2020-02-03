@@ -8,6 +8,10 @@ Highcharts.chart('hcContainer', {
   chart: {
     type: 'column'
   },
+  // Colors
+  colors: [
+    '#013446', '#0092A8', '#66C6CB', '#AA272F', '#781256', '#F0B733',
+  ],
   // Chart Title and Subtitle
   title: {
     text: "CSIS Staff Breakdown by Gender"
