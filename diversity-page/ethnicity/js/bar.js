@@ -14,7 +14,7 @@ Highcharts.chart('hcContainer', {
   ],
   // Chart Title and Subtitle
   title: {
-    text: "CSIS Staff Breakdown by Race/Ethnicity"
+    text: "Race/Ethnicity*"
   },
   // Credits
   credits: {
@@ -29,7 +29,8 @@ Highcharts.chart('hcContainer', {
     },
     align: 'center',
     verticalAlign: 'bottom',
-    layout: 'horizontal'
+    layout: 'horizontal',
+    reversed: true
   },
   //  Tooltip 
   tooltip: {

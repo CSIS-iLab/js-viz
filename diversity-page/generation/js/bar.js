@@ -14,7 +14,7 @@ Highcharts.chart('hcContainer', {
   ],
   // Chart Title and Subtitle
   title: {
-    text: "CSIS Staff Breakdown by Generation"
+    text: "Generation"
   },
   // Credits
   credits: {
@@ -29,7 +29,8 @@ Highcharts.chart('hcContainer', {
     },
     align: 'center',
     verticalAlign: 'bottom',
-    layout: 'horizontal'
+    layout: 'horizontal',
+    reversed: true
   },
   //  Tooltip 
   tooltip: {
@@ -38,6 +39,12 @@ Highcharts.chart('hcContainer', {
   // X Axis
   xAxis: {
     type: 'category',
+    labels: {
+      formatter: function () {
+        let splitStr = this.value.split('(')
+        return splitStr[0] + '<br/>(' + splitStr[1]
+      }
+    }
   },
   // Y Axis
   yAxis: {
