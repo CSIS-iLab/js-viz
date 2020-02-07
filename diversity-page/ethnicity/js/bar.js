@@ -14,7 +14,7 @@ Highcharts.chart('hcContainer', {
   ],
   // Chart Title and Subtitle
   title: {
-    text: "Race/Ethnicity*"
+    text: "Race/Ethnicity*, Dec 2019"
   },
   // Credits
   credits: {
