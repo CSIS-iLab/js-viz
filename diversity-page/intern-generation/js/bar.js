@@ -33,9 +33,9 @@ Highcharts.chart('hcContainer', {
     layout: 'horizontal',
   },
   //  Tooltip 
-  tooltip: {
-    shared: true,
-  },
+  // tooltip: {
+  //   shared: true,
+  // },
   // X Axis
   xAxis: {
     type: 'category',
