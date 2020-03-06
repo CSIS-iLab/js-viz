@@ -11,11 +11,11 @@ Highcharts.chart('hcContainer', {
   },
   // Colors
   colors: [
-    '#66C6CB', '#0092A8', '#013446', '#781256', '#AA272F', '#F0B733'
+    '#66C6CB', '#0092A8', '#013446', '#781256', '#AA272F', '#F0B733', '#D5641C'
   ],
   // Chart Title and Subtitle
   title: {
-    text: "Race/Ethnicity*, Mar 2020"
+    text: "Race/Ethnicity*, 2019"
   },
   // Credits
   credits: {
