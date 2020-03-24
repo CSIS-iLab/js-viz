@@ -34,11 +34,14 @@
         $('#example').DataTable( {
           data: dataset,
           columns: [
-            { title: 'Region', data: 'region' },
-            { title: 'Current Confirmed Cases', data: 'confirmed' },
-            { title: 'Deaths', data: 'deaths' },
-            { title: 'Recovered', data: 'recovered' },
-            { title: 'Currently, one in ... people is confirmed to have the virus', data: 'ratio' }
+            { title: 'Country', data: 'Country' },
+            { title: 'Total Cases', data: 'Total Cases' },
+            { title: 'Cases Last 24hr', data: 'Cases Last 24hr' },
+            { title: 'Total Deaths', data: 'Total Deaths' },
+            { title: '# Tests', data: '# Tests' },
+            { title: '# Recovered', data: '# Recovered' },
+            { title: 'Cases per Million', data: 'Cases per Million' },
+            { title: 'Total Population', data: 'Total Population' }
           ]
         });
       } 
