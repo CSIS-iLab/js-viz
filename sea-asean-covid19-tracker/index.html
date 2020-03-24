@@ -1,0 +1,56 @@
+<html>
+  <head>
+    <!--JQuery CDN from Google Hosted Libraries-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> 
+
+    <!--DataTables.net library and css-->
+    <link rel="stylesheet" href="http://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css"></link>
+    <script src="http://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+
+    <!--Import Tabletop to use for reading Google spreadsheet-->
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/tabletop.js/1.5.1/tabletop.min.js'></script>
+
+    <!--Use Tabletop and Datatables to read Google Spreadsheet-->
+    <script type='text/javascript'>    
+      var publicSpreadsheetUrl = 'https://docs.google.com/spreadsheets/d/1FaJQvGn-DjUNyFPyAkurQrBlVULRJ2GHFDEJ0cjolHw/edit?usp=sharing';
+      
+      /*init() and showInfo() are from Tabletop, with the addition of displayInfo to use Datatables*/
+      function init() {
+        Tabletop.init( { 
+          key: publicSpreadsheetUrl,
+          callback: showInfo,
+          callback: displayInfo,
+          simpleSheet: true } )
+      }
+
+      function showInfo(data, tabletop) {
+        alert('Successfully processed!')
+        var dataset = data
+        console.log(dataset);
+      }
+
+      
+      /*function to use Datatables to display data */
+      function displayInfo(dataset) {
+        $('#example').DataTable( {
+          data: dataset,
+          columns: [
+            { title: 'Region' },
+            { title: 'Current Confirmed Cases' },
+            { title: 'Deaths' },
+            { title: 'Recovered' },
+            { title: 'Currently, one in ... people is confirmed to have the virus' }
+          ]
+        });
+      } 
+      
+      window.addEventListener('DOMContentLoaded', init)
+
+    </script>
+  </head>
+  <body>
+    <table id="example" class="display" width="100%">
+
+    </table>
+  </body>
+</html>
