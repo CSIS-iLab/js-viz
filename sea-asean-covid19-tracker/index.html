@@ -19,12 +19,13 @@
         Tabletop.init( { 
           key: publicSpreadsheetUrl,
           callback: showInfo,
+          parseNumbers: true,
           /*callback: displayInfo,*/
           simpleSheet: true } )
       }
 
       function showInfo(data, tabletop) {
-        alert('Successfully processed!')
+        console.log(data)
         /*var dataset = data
         console.log(dataset);*/
         displayInfo(data)
@@ -36,11 +37,11 @@
         $('#example').DataTable( {
           data: dataset,
           columns: [
-            { title: 'Region' },
-            { title: 'Current Confirmed Cases' },
-            { title: 'Deaths' },
-            { title: 'Recovered' },
-            { title: 'Currently, one in ... people is confirmed to have the virus' }
+            { title: 'Region', data: 'region' },
+            { title: 'Current Confirmed Cases', data: 'confirmed' },
+            { title: 'Deaths', data: 'deaths' },
+            { title: 'Recovered', data: 'recovered' },
+            { title: 'Currently, one in ... people is confirmed to have the virus', data: 'ratio' }
           ]
         });
       } 
