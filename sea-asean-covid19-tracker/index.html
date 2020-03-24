@@ -19,14 +19,15 @@
         Tabletop.init( { 
           key: publicSpreadsheetUrl,
           callback: showInfo,
-          callback: displayInfo,
+          /*callback: displayInfo,*/
           simpleSheet: true } )
       }
 
       function showInfo(data, tabletop) {
         alert('Successfully processed!')
-        var dataset = data
-        console.log(dataset);
+        /*var dataset = data
+        console.log(dataset);*/
+        displayInfo(data)
       }
 
       
