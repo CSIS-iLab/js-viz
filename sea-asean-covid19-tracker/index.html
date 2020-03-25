@@ -35,13 +35,13 @@
           data: dataset,
           columns: [
             { title: 'Country', data: 'Country' },
-            { title: 'Total Cases', data: 'Total Cases' },
-            { title: 'Cases Last 24hr', data: 'Cases Last 24hr' },
-            { title: 'Total Deaths', data: 'Total Deaths' },
-            { title: '# Tests', data: '# Tests' },
-            { title: '# Recovered', data: '# Recovered' },
-            { title: 'Cases per Million', data: 'Cases per Million' },
-            { title: 'Total Population', data: 'Total Population' }
+            { title: 'Total Cases', data: 'Total Cases', className:'dt-body-right' },
+            { title: 'Cases Last 24hr', data: 'Cases Last 24hr', className: 'dt-body-right' },
+            { title: 'Total Deaths', data: 'Total Deaths', className: 'dt-body-right' },
+            { title: '# Tests', data: '# Tests', className: 'dt-body-right' },
+            { title: '# Recovered', data: '# Recovered', className: 'dt-body-right' },
+            { title: 'Cases per Million', data: 'Cases per Million', className: 'dt-body-right' },
+            { title: 'Total Population', data: 'Total Population', className: 'dt-body-right' }
           ],
           paging: false,
           searching: false,
@@ -54,7 +54,7 @@
     </script>
   </head>
   <body>
-    <table id="example" class="display" style="max-width:800px;">
+    <table id="example" class="display compact" style="max-width:800px;">
 
     </table>
   </body>
