@@ -1,8 +1,9 @@
-thead th {
+table.dataTable thead th {
   background: #0065a4;
   color: #fff;
   padding: 0.6em 0.9em;
   /* text-transform: uppercase; */
+  font-family: Expo-serif-pro, "Liberation Sans", Helvetica, Arial, sans-serif;
 }
 
 table {
@@ -12,3 +13,11 @@ table {
   margin: 0 0 1.6em;
 }
 
+.sorting_1 {
+  font-family: source-sans-pro, sans-serif;
+  font-weight: bold;
+}
+
+.dt-body-right {
+  font-family: source-sans-pro, sans-serif;
+}
