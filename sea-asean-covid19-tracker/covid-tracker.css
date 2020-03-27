@@ -7,10 +7,10 @@ table.dataTable thead th {
 }
 
 table {
+  max-width: 800px;
   border-collapse: collapse;
   border-spacing: 0;
   line-height: 1.2;
-  margin: 0 0 1.6em;
 }
 
 tbody td:first-child {
@@ -18,24 +18,37 @@ tbody td:first-child {
   font-weight: bold;
 }
 
+.dtr-details {
+  width: 100%;
+}
+
+.dtr-details li {
+  display: flex;
+  justify-content: space-between;
+}
+
+.child .dtr-data {
+  font-weight: normal;
+}
+
 .dt-body-right {
   font-family: source-sans-pro, sans-serif;
-  min-width: 6em;
+  min-width: 50px;
 }
 
 table.dataTable tfoot td {
+  padding: 0.5rem 0.25rem 0.5rem 0;
   font-size: 14px;
   color: #666;
 }
 
-a:link {
+a {
   color: #0065a4;
-  background-color: transparent;
   text-decoration: none;
+  transition: color 0.3s ease-in-out;
 }
 
 a:hover {
   color: #0a8672;
-  background-color: transparent;
   text-decoration: underline;
 }

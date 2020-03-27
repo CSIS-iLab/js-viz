@@ -1,39 +1,49 @@
 <html>
   <head>
     <!--Typekit css-->
-    <link rel="stylesheet" href="https://use.typekit.net/zyg0duc.css">
-    
+    <link rel="stylesheet" href="https://use.typekit.net/zyg0duc.css" />
+
     <!--DataTables.net css-->
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.20/r-2.2.3/datatables.min.css"/>
-     
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.datatables.net/v/dt/dt-1.10.20/r-2.2.3/datatables.min.css"
+    />
+
     <!--custom css-->
-    <link href="covid-tracker.css" rel="stylesheet"/>
+    <link href="covid-tracker.css" rel="stylesheet" />
   </head>
-  
+
   <body>
-    <table id="example" class="display compact" style="max-width:800px;">
+    <table id="table" class="display">
       <tfoot>
         <tr>
           <td colspan="8">
-            <span id="lastUpdated"></span>
-            <a href="https://www.arcgis.com/apps/opsdashboard/index.html#/bda7594740fd40299423467b48e9ecf6">Johns Hopkins University</a>
+            <em>Last Updated:</em> <span id="lastUpdated"></span><br />
+            <em>Source:</em>
+            <a
+              href="https://www.arcgis.com/apps/opsdashboard/index.html#/bda7594740fd40299423467b48e9ecf6"
+              >Johns Hopkins University</a
+            >
             <span>and Southeast Asian Health Ministries</span>
           </td>
         </tr>
       </tfoot>
     </table>
-  
+
     <!--JQuery CDN from Google Hosted Libraries-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     <!--DataTables.net library-->
-    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.20/r-2.2.3/datatables.min.js"></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.datatables.net/v/dt/dt-1.10.20/r-2.2.3/datatables.min.js"
+    ></script>
 
     <!--Import Tabletop to use for reading Google spreadsheet-->
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/tabletop.js/1.5.1/tabletop.min.js'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tabletop.js/1.5.1/tabletop.min.js"></script>
 
     <!--Import covid-tracker.js file-->
     <script src="covid-tracker.js"></script>
-  
   </body>
 </html>
