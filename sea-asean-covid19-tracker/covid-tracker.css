@@ -27,3 +27,15 @@ table.dataTable tfoot td {
   font-size: 14px;
   color: #666;
 }
+
+a:link {
+  color: #0065a4;
+  background-color: transparent;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #0a8672;
+  background-color: transparent;
+  text-decoration: underline;
+}
