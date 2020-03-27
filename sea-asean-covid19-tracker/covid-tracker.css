@@ -1,0 +1,14 @@
+thead th {
+  background: #0065a4;
+  color: #fff;
+  padding: 0.6em 0.9em;
+  /* text-transform: uppercase; */
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  line-height: 1.2;
+  margin: 0 0 1.6em;
+}
+
