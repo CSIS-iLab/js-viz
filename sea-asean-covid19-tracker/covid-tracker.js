@@ -49,7 +49,7 @@ function displayInfo(dataset) {
     paging: false,
     searching: false,
     info: false,
-    order: [[1, 'asc']]
+    order: [[1, 'desc']]
   });
 }
 
