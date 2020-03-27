@@ -48,7 +48,8 @@ function displayInfo(dataset) {
     ],
     paging: false,
     searching: false,
-    info: false
+    info: false,
+    order: [[1, 'asc']]
   });
 }
 
