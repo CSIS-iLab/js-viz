@@ -22,3 +22,7 @@ table {
   font-family: source-sans-pro, sans-serif;
   min-width: 6em;
 }
+
+table.dataTable tfoot td {
+  font-size: 14px;
+}
