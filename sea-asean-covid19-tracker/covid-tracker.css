@@ -13,7 +13,7 @@ table {
   margin: 0 0 1.6em;
 }
 
-td:nth-child(1) {
+tbody td:first-child {
   font-family: source-sans-pro, sans-serif;
   font-weight: bold;
 }
