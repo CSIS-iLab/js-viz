@@ -13,7 +13,7 @@ function init() {
 
 function showInfo(data, tabletop) {
   let lastUpdatedEl = document.getElementById("lastUpdated")
-  lastUpdatedEl.innerHTML = "Last Updated: " +  tabletop.modelNames[0] + " &#183;" + " Source: "
+  lastUpdatedEl.innerHTML = "Last Updated: " +  tabletop.modelNames[0] + "<br/> Source: "
   displayInfo(data)
 }
 
