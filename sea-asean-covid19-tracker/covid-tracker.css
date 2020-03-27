@@ -20,4 +20,5 @@ table {
 
 .dt-body-right {
   font-family: source-sans-pro, sans-serif;
+  min-width: 50px;
 }
