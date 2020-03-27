@@ -12,8 +12,6 @@ function init() {
 }
 
 function showInfo(data, tabletop) {
-  console.log(data)
-  console.log(tabletop.modelNames[0])
   let lastUpdatedEl = document.getElementById("lastUpdated")
   lastUpdatedEl.innerHTML = tabletop.modelNames[0]
   displayInfo(data)
