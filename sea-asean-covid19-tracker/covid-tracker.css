@@ -2,8 +2,6 @@ table.dataTable thead th {
   background: #0065a4;
   color: #fff;
   padding: 0.6em 0.9em;
-  /* text-transform: uppercase; */
-  font-family: Expo-serif-pro, "Liberation Sans", Helvetica, Arial, sans-serif;
 }
 
 table {
@@ -13,8 +11,13 @@ table {
   line-height: 1.2;
 }
 
-tbody td:first-child {
+th,
+td {
+  min-width: 50px;
   font-family: source-sans-pro, sans-serif;
+}
+
+tbody td:first-child {
   font-weight: bold;
 }
 
@@ -29,11 +32,6 @@ tbody td:first-child {
 
 .child .dtr-data {
   font-weight: normal;
-}
-
-.dt-body-right {
-  font-family: source-sans-pro, sans-serif;
-  min-width: 50px;
 }
 
 table.dataTable tfoot td {
@@ -51,4 +49,57 @@ a {
 a:hover {
   color: #0a8672;
   text-decoration: underline;
+}
+
+/*
+ * Sort styling
+ */
+table.dataTable thead th {
+  position: relative;
+  background-image: none !important; /* Remove the DataTables bootstrap integration styling */
+}
+
+table.dataTable thead th.sorting:after,
+table.dataTable thead th.sorting_asc:after,
+table.dataTable thead th.sorting_desc:after {
+  position: absolute;
+  top: 33%;
+  right: 5px;
+  display: block;
+  font-family: FontAwesome;
+}
+
+table.dataTable thead th.sorting:after {
+  content: "\f0dc";
+  color: #ddd;
+  font-size: 0.8em;
+  padding-top: 0.12em;
+}
+table.dataTable thead th.sorting_asc:after {
+  content: "\f0de";
+}
+table.dataTable thead th.sorting_desc:after {
+  content: "\f0dd";
+}
+
+div.dataTables_scrollBody table.dataTable thead th.sorting:after,
+div.dataTables_scrollBody table.dataTable thead th.sorting_asc:after,
+div.dataTables_scrollBody table.dataTable thead th.sorting_desc:after {
+  content: "";
+}
+
+table.dataTable.dtr-inline.collapsed
+  > tbody
+  > tr[role="row"]
+  > td:first-child:before,
+table.dataTable.dtr-inline.collapsed
+  > tbody
+  > tr[role="row"]
+  > th:first-child:before {
+  top: 11px;
+  color: #0065a4;
+  background-color: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
 }
