@@ -17,7 +17,7 @@ L.tileLayer('https://api.mapbox.com/styles/v1/ilabmedia/cjhw4r6kx0sia2spem2u2o8f
 map.attributionControl.addAttribution('<a href="https://aerospace.csis.org">CSIS Aerospace Security</a>')
 
 const client = new carto.Client({
-  apiKey: 'oo0wpDLkK1uBpLY-dpQ3uA',
+  apiKey: 'yyH22tYmbYA8DzKt2Ggnyg',
   username: 'csis'
 });
 
