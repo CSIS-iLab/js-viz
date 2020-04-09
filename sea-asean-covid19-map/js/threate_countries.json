@@ -1,0 +1,232 @@
+{
+  "98": {
+     "30": {
+        "inclination": 30,
+        "china_min": 0,
+        "china_max": 0,
+        "north_korea_min": 0,
+        "north_korea_max": 0,
+        "russia_min": 0,
+        "russia_max": 0,
+        "iran_min": 0,
+        "iran_max": 0
+     },
+     "45": {
+        "inclination": 45,
+        "china_min": 0,
+        "china_max": 0,
+        "north_korea_min": 0,
+        "north_korea_max": 0,
+        "russia_min": 0,
+        "russia_max": 0,
+        "iran_min": 0,
+        "iran_max": 0
+     },
+     "60": {
+        "inclination": 60,
+        "china_min": 0,
+        "china_max": 0,
+        "north_korea_min": 0,
+        "north_korea_max": 0,
+        "russia_min": 0,
+        "russia_max": 0,
+        "iran_min": 0,
+        "iran_max": 0
+     },
+     "90": {
+        "inclination": 90,
+        "china_min": 0,
+        "china_max": 0,
+        "north_korea_min": 0,
+        "north_korea_max": 0,
+        "russia_min": 0,
+        "russia_max": 0,
+        "iran_min": 0,
+        "iran_max": 0
+     }
+  },
+  "496": {
+     "30": {
+        "inclination": 30,
+        "china_min": 0,
+        "china_max": 4,
+        "north_korea_min": 0,
+        "north_korea_max": 0,
+        "russia_min": 0,
+        "russia_max": 0,
+        "iran_min": 0,
+        "iran_max": 4
+     },
+     "45": {
+        "inclination": 45,
+        "china_min": 0,
+        "china_max": 4,
+        "north_korea_min": 3,
+        "north_korea_max": 4,
+        "russia_min": 0,
+        "russia_max": 4,
+        "iran_min": 1,
+        "iran_max": 3
+     },
+     "60": {
+        "inclination": 60,
+        "china_min": 0,
+        "china_max": 2,
+        "north_korea_min": 1,
+        "north_korea_max": 1,
+        "russia_min": 0,
+        "russia_max": 4,
+        "iran_min": 0,
+        "iran_max": 1
+     },
+     "90": {
+        "inclination": 90,
+        "china_min": 0,
+        "china_max": 0,
+        "north_korea_min": 0,
+        "north_korea_max": 0,
+        "russia_min": 0,
+        "russia_max": 7,
+        "iran_min": 0,
+        "iran_max": 0
+     }
+  },
+  "1012": {
+     "30": {
+        "inclination": 30,
+        "china_min": 0,
+        "china_max": 9,
+        "north_korea_min": 0,
+        "north_korea_max": 0,
+        "russia_min": 0,
+        "russia_max": 0,
+        "iran_min": 0,
+        "iran_max": 9
+     },
+     "45": {
+        "inclination": 45,
+        "china_min": 0,
+        "china_max": 8,
+        "north_korea_min": 7,
+        "north_korea_max": 8,
+        "russia_min": 0,
+        "russia_max": 8,
+        "iran_min": 2,
+        "iran_max": 8
+     },
+     "60": {
+        "inclination": 60,
+        "china_min": 2,
+        "china_max": 7,
+        "north_korea_min": 2,
+        "north_korea_max": 3,
+        "russia_min": 0,
+        "russia_max": 7,
+        "iran_min": 2,
+        "iran_max": 3
+     },
+     "90": {
+        "inclination": 90,
+        "china_min": 2,
+        "china_max": 3,
+        "north_korea_min": 2,
+        "north_korea_max": 2,
+        "russia_min": 2,
+        "russia_max": 17,
+        "iran_min": 2,
+        "iran_max": 2
+     }
+  },
+  "1484": {
+     "30": {
+        "inclination": 30,
+        "china_min": 0,
+        "china_max": 14,
+        "north_korea_min": 0,
+        "north_korea_max": 0,
+        "russia_min": 0,
+        "russia_max": 0,
+        "iran_min": 0,
+        "iran_max": 13
+     },
+     "45": {
+        "inclination": 45,
+        "china_min": 0,
+        "china_max": 13,
+        "north_korea_min": 9,
+        "north_korea_max": 13,
+        "russia_min": 0,
+        "russia_max": 12,
+        "iran_min": 5,
+        "iran_max": 13
+     },
+     "60": {
+        "inclination": 60,
+        "china_min": 3,
+        "china_max": 12,
+        "north_korea_min": 4,
+        "north_korea_max": 4,
+        "russia_min": 0,
+        "russia_max": 13,
+        "iran_min": 4,
+        "iran_max": 5
+     },
+     "90": {
+        "inclination": 90,
+        "china_min": 2,
+        "china_max": 4,
+        "north_korea_min": 2,
+        "north_korea_max": 3,
+        "russia_min": 3,
+        "russia_max": 25,
+        "iran_min": 2,
+        "iran_max": 3
+     }
+  },
+  "2013": {
+     "30": {
+        "inclination": 30,
+        "china_min": 0,
+        "china_max": 19,
+        "north_korea_min": 0,
+        "north_korea_max": 0,
+        "russia_min": 0,
+        "russia_max": 0,
+        "iran_min": 0,
+        "iran_max": 19
+     },
+     "45": {
+        "inclination": 45,
+        "china_min": 0,
+        "china_max": 18,
+        "north_korea_min": 14,
+        "north_korea_max": 18,
+        "russia_min": 0,
+        "russia_max": 18,
+        "iran_min": 7,
+        "iran_max": 16
+     },
+     "60": {
+        "inclination": 60,
+        "china_min": 4,
+        "china_max": 7,
+        "north_korea_min": 5,
+        "north_korea_max": 5,
+        "russia_min": 5,
+        "russia_max": 33,
+        "iran_min": 4,
+        "iran_max": 5
+     },
+     "90": {
+        "inclination": 90,
+        "china_min": 4,
+        "china_max": 7,
+        "north_korea_min": 5,
+        "north_korea_max": 5,
+        "russia_min": 5,
+        "russia_max": 33,
+        "iran_min": 4,
+        "iran_max": 5
+     }
+  }
+}
