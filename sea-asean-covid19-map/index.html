@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Aerospace Security | Satellite Coverage</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <!-- Include Leaflet -->
+    <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script>
+    <link href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" rel="stylesheet">
+    <!-- Include CARTO.js -->
+    <script src="https://cartodb-libs.global.ssl.fastly.net/carto.js/v4.0.2/carto.min.js"></script>
+    <!-- <link href="https://csis-ilab.github.io/aerospace-viz/globals/styles.css" rel="stylesheet"> -->
+    <link rel="stylesheet" href="../globals/styles.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <base target="_blank">
+  </head>
+  <body>
+    <div id="map">
+    </div>
+    <!-- Description -->
+    <aside class="toolbox">
+      <h1 class="title">Space-Based Missile Defense: How Much is Enough?</h1>
+      <section id="panel-primary">
+        <p>Use the dropdown menus below to build a constellation of space-based missile interceptors. Hover over the interactive map to learn more about the effective boost phase missile defense created by each constellation. <button id="show-secondary" class="toggle-panels">Learn More &#8594;</button></p>
+        <div id="filterWidget" class="widget">
+          <label for="size" class="filter-label">Constellation Size</label>
+          <select name="size" id="size" class="js-size selection">
+            <option value="98">Small (98 Satellites)</option>
+            <option value="496" selected>Medium (496 Satellites)</option>
+            <option value="1012">Large (1,012 Satellites)</option>
+            <option value="1484">Extra Large (1,484 Satellites)</option>
+            <option value="2013">Mega (2,013 Satellites)</option>
+          </select>
+          <label for="inclination" class="filter-label">Inclination</label>
+          <select name="inclination" id="inclination" class="js-inclinations selection">
+            <option value="30">30&deg;</option>
+            <option value="45" selected>45&deg;</option>
+            <option value="60">60&deg;</option>
+            <option value="90">90&deg;</option>
+          </select>
+        </div>
+        <section id="legend">
+          <span class="filter-label">Interceptors Within Range</span>
+          <div class="legend-bar-container">
+            <span id="legend-min" class="legend-label"></span>
+            <span id="legend-max" class="legend-label"></span>
+          </div>
+          <div id="legend-bar"></div>
+          <p id="noCoverage" class="is-hidden">The selected constellation could not guarantee boost phase missile defense for any region on Earth.</p>
+          <p id="constellation-details">With this constellation, a minimum of <span class="value-changed" data-country="north_korea_min"></span> to <span class="value-changed" data-country="north_korea_max"></span> interceptors would always be within range of North Korea, Iran would be covered by <span class="value-changed" data-country="iran_min"></span> to <span class="value-changed" data-country="iran_max"></span> interceptors, China by <span class="value-changed" data-country="china_min"></span> to <span class="value-changed" data-country="china_max"></span>, and Russia by <span class="value-changed" data-country="russia_min"></span> to <span class="value-changed" data-country="russia_max"></span>.</p>
+        </section>
+      </section>
+      <section id="panel-secondary" class="is-hidden">
+        <p>Space-based missile interceptors (SBIs) are weapons in space designed to descend from orbit and strike a missile during flight. Although no SBIs are currently in operation, they remain a particularly attractive option to some missile defense advocates due to their potential ability to intercept missiles during boost phase—the first phase of flight, while the missile's engines are still firing and the warhead remains inside the rocket body.</p>
+        <p>But due to the limited time frame in which a missile is in boost phase—about three minutes for a solid-fueled intercontinental ballistic missile—SBIs face a simple, but significant technical challenge: being in the right place at the right time. In order to guarantee enough interceptors are within range of a given threat region, hundreds or thousands of SBIs may be required, offering excellent missile defense to irrelevant regions in the process.</p>
+        <button id="hide-secondary" class="toggle-panels">&#8592; Explore Constellations</button>
+      </section>
+    </aside>
+    <script src="js/app.js"></script>
+  </body>
+</html>
