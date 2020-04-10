@@ -13,9 +13,6 @@ Highcharts.chart('hcContainer', {
   title: {
     text: "Chart Tracker COVID19 SEA"
   },
-  subtitle: {
-    text: "Click and drag to zoom in"
-  },
   // Credits
   credits: {
     enabled: true,
