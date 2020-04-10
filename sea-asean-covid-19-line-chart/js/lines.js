@@ -31,7 +31,7 @@ Highcharts.chart('hcContainer', {
   // Y Axis
   yAxis: {
     title: {
-      text: "Y Axis Title"
+      text: "Number of Cumulative Cases"
     }
   },
   // Additional Plot Options
