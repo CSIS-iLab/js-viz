@@ -11,7 +11,7 @@ Highcharts.chart('hcContainer', {
   },
   // Chart Title and Subtitle
   title: {
-    text: "Interactive Title"
+    text: "Chart Tracker COVID19 SEA"
   },
   subtitle: {
     text: "Click and drag to zoom in"
