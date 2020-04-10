@@ -34,6 +34,12 @@ Highcharts.chart('hcContainer', {
       text: "Number of Cumulative Cases"
     }
   },
+  // Tooltip 
+  tooltip: {
+    shared: true,
+    useHTML: true,
+    xDateFormat: '%B %e, %Y'
+  },
   // Additional Plot Options
   plotOptions:
   {
