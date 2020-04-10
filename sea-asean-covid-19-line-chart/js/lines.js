@@ -1,3 +1,11 @@
+Highcharts.setOptions({
+  lang: {
+    decimalPoint: '.',
+    thousandsSep: ','
+  }
+});
+
+
 Highcharts.chart('hcContainer', {
   // Load Data in from Google Sheets
   data: {
