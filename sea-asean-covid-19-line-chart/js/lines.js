@@ -1,7 +1,7 @@
 Highcharts.chart('hcContainer', {
   // Load Data in from Google Sheets
   data: {
-    googleSpreadsheetKey: '1T98pKXiTxv7I3CNrR95lqR_lybe2NrS0ri601Mm20e4',
+    googleSpreadsheetKey: '1hvUG-GDb9fWX1GO-xm26R5lsWnLTmWPKoFY-0Y6BAWA',
     googleSpreadsheetWorksheet: 1
   },
   // General Chart Options
