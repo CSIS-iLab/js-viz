@@ -38,6 +38,11 @@ Highcharts.chart('hcContainer', {
       text: "Number of Cumulative Cases"
     }
   },
+  xAxis: {
+    dateTimeLabelFormats: {
+      day: '%b %e'
+    }
+  },
   // Tooltip 
   tooltip: {
     shared: true,
