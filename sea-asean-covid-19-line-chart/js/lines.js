@@ -40,7 +40,8 @@ Highcharts.chart('hcContainer', {
   },
   xAxis: {
     dateTimeLabelFormats: {
-      day: '%b %e'
+      day: '%b %e',
+      week: '%b %e'
     }
   },
   // Tooltip 
