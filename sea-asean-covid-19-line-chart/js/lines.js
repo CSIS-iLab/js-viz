@@ -84,10 +84,10 @@ Highcharts.chart('hcContainer', {
     labels: {
       formatter: function () {
         if (this.value > 999999) {
-          return this.value / 1000000 + "m"
+          return this.value / 1000000 + "M"
         }
         else if (this.value > 0) {
-          return this.value / 1000 + "k"
+          return this.value / 1000 + "K"
         }
         else {
           return this.value
