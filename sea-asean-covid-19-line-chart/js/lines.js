@@ -16,6 +16,24 @@ Highcharts.chart('hcContainer', {
     zoomType: 'x',
     type: 'line'
   },
+  // Colors
+  colors: [
+    '#752596',
+    '#67bce2',
+    '#788ca8',
+    '#b24f9d',
+    '#e22129',
+    '#75986a',
+    '#607a81',
+    '#004165',
+    '#0095AB',
+    '#66c6cb',
+    '#252d3a',
+    '#51746d',
+    '#566377',
+    '#0065a4',
+    '#0faa91'
+  ],
   // Chart Title and Subtitle
   title: {
     text: "Cumulative number of reported Covid-19 cases in Southeast Asia"
