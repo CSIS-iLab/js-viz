@@ -13,7 +13,7 @@ Highcharts.chart('hcContainer', {
   },
   // General Chart Options
   chart: {
-    zoomType: 'x',
+    zoomType: 'xy',
     type: 'line'
   },
   // Colors
@@ -74,7 +74,7 @@ Highcharts.chart('hcContainer', {
   legend: {
     align: 'center',
     verticalAlign: 'bottom',
-    layout: 'horizontal'
+    layout: 'horizontal',
   },
   // Y Axis
   yAxis: {
