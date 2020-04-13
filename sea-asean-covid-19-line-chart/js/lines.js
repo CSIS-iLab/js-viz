@@ -42,7 +42,7 @@ Highcharts.chart('hcContainer', {
   credits: {
     enabled: true,
     href: false,
-    text: "CSIS Project Name | Source: Johns Hopkins University"
+    text: "CSIS Southeast Asia Program | Source: Johns Hopkins University"
   },
   // Chart Legend
   legend: {
