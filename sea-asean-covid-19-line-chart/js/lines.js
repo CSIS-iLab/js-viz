@@ -79,7 +79,7 @@ Highcharts.chart('hcContainer', {
   // Y Axis
   yAxis: {
     title: {
-      text: "Number of Cumulative Cases (in Millions)"
+      text: "Number of Cumulative Cases"
     },
     labels: {
       formatter: function () {
