@@ -83,7 +83,15 @@ Highcharts.chart('hcContainer', {
     },
     labels: {
       formatter: function () {
-       return this.value
+        if (this.value > 999999) {
+          return this.value / 1000000 + "M"
+        }
+        else if (this.value > 0) {
+          return this.value / 1000 + "K"
+        }
+        else {
+          return this.value
+        }
       }
     }
   },
