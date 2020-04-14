@@ -19,46 +19,46 @@ Highcharts.chart('hcContainer', {
   // Colors
   colors: [
   // World 
-  '#000',
+  //'#000',
   
   // ASEAN 
-  '#67bce2',
+  //'#67bce2',
   
   // Brunei
-  '#788ca8',
+  '#4E79A7',
 
   // Cambodia
-  '#b24f9d',
+  '#F28E2C',
 
   // China
-  '#e22129',
+  //'#e22129',
   
   // Indonesia
-  '#75986a',
+  '#76B7B2',
 
   // Laos
-  '#607a81',
+  '#EDC949',
 
   // Malaysia
-  '#004165',
+  '#BAD97C',
 
   // Myanmar
-  '#0095AB',
+  '#E15759',
 
   // Philippines
-  '#66c6cb',
+  '#7FA8D9',
 
   // Singapore
-  '#752596',
+  '#FF9DA7',
 
   // Thailand
-  '#51746d',
+  '#59A14F',
 
   // United States
-  '#566377',
+  //'#566377',
 
   // Vietnam
-  '#0065a4'
+  '#AF7AA1'
   ],
   // Chart Title and Subtitle
   title: {
@@ -79,7 +79,7 @@ Highcharts.chart('hcContainer', {
   // Y Axis
   yAxis: {
     title: {
-      text: "Number of Cumulative Cases (in Millions)"
+      text: "Number of Cumulative Cases"
     },
     labels: {
       formatter: function () {
