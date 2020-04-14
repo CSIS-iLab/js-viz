@@ -16,50 +16,6 @@ Highcharts.chart('hcContainer', {
     zoomType: 'xy',
     type: 'line'
   },
-  // Colors
-  colors: [
-  // World 
-  '#000',
-  
-  // ASEAN 
-  '#67bce2',
-  
-  // Brunei
-  '#788ca8',
-
-  // Cambodia
-  '#b24f9d',
-
-  // China
-  '#e22129',
-  
-  // Indonesia
-  '#75986a',
-
-  // Laos
-  '#607a81',
-
-  // Malaysia
-  '#004165',
-
-  // Myanmar
-  '#0095AB',
-
-  // Philippines
-  '#66c6cb',
-
-  // Singapore
-  '#752596',
-
-  // Thailand
-  '#51746d',
-
-  // United States
-  '#566377',
-
-  // Vietnam
-  '#0065a4'
-  ],
   // Chart Title and Subtitle
   title: {
     text: "Cumulative number of reported Covid-19 cases in Southeast Asia"
