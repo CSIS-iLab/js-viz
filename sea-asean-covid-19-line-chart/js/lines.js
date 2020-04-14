@@ -25,40 +25,40 @@ Highcharts.chart('hcContainer', {
   //'#67bce2',
   
   // Brunei
-  '#75c596',
+  '#4E79A7',
 
   // Cambodia
-  '#000',
+  '#F28E2C',
 
   // China
   //'#e22129',
   
   // Indonesia
-  '#b24f9d',
+  '#76B7B2',
 
   // Laos
-  '#ef9a9a',
+  '#EDC949',
 
   // Malaysia
-  '#f7890e',
+  '#BAD97C',
 
   // Myanmar
-  '#e22129',
+  '#E15759',
 
   // Philippines
-  '#67bce2',
+  '#7FA8D9',
 
   // Singapore
-  '#752596',
+  '#FF9DA7',
 
   // Thailand
-  '#51746d',
+  '#59A14F',
 
   // United States
   //'#566377',
 
   // Vietnam
-  '#0065a4'
+  '#AF7AA1'
   ],
   // Chart Title and Subtitle
   title: {
