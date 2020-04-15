@@ -13,7 +13,7 @@ map.zoomControl.setPosition('topright')
 
 L.tileLayer('https://api.mapbox.com/styles/v1/ilabmedia/cjhw4r6kx0sia2spem2u2o8fu/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw').addTo(map);
 
-map.attributionControl.addAttribution('<a href="https://aerospace.csis.org">CSIS Southeast Asia Program/a>')
+map.attributionControl.addAttribution('<a href="https://www.csis.org/programs/southeast-asia-program">CSIS Southeast Asia Program/a>')
 
 const client = new carto.Client({
   apiKey: 'yyH22tYmbYA8DzKt2Ggnyg',
