@@ -20,10 +20,10 @@ const client = new carto.Client({
   username: 'csis'
 });
 
-const satelliteData = new carto.source.SQL(`
+const covidData = new carto.source.SQL(`
   SELECT *
-  FROM aerospace_satellite_map_data
-  WHERE number_satellites='${currentSatellitesNum}' AND inclination='${currentInclination}'
+  FROM carto_test 
+  WHERE total_cases='${totalCases}' AND total_deaths='${totalDeaths}'
   `);
 
 const satelliteStyle = new carto.style.CartoCSS(`
