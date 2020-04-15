@@ -23,7 +23,7 @@ const covidData = new carto.source.SQL(`
   FROM carto_test 
   WHERE total_cases='${totalCases}' AND total_deaths='${totalDeaths}'
   `);
-
+  
 const satelliteStyle = new carto.style.CartoCSS(`
   #layer {
     polygon-fill: ramp([coverage], (#fde0c5, #facba6, #f8b58b, #f59e72, #f2855d, #ef6a4c, #eb4a40), quantiles);
