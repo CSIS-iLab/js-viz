@@ -62,7 +62,7 @@ Highcharts.chart('hcContainer', {
   ],
   // Chart Title and Subtitle
   title: {
-    text: "Cumulative number of reported Covid-19 cases in Southeast Asia"
+    text: "Cumulative Number of Reported Covid-19 Cases in Southeast Asia"
   },
   // Credits
   credits: {
