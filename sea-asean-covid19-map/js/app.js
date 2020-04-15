@@ -11,7 +11,7 @@ map.zoomControl.setPosition('topright')
 // Leaflet
 //https://api.mapbox.com/styles/v1/ilabmedia/cjhux052501oe2slrii14wz3j/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw
 
-L.tileLayer('https://api.mapbox.com/styles/v1/ilabmedia/cjhw4r6kx0sia2spem2u2o8fu/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw').addTo(map);
+L.tileLayer('https://api.mapbox.com/styles/v1/ilabmedia/ck909nhog00nz1iqp7gximt6s/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw').addTo(map);
 
 map.attributionControl.addAttribution('<a href="https://www.csis.org/programs/southeast-asia-program">CSIS Southeast Asia Program/a>')
 
