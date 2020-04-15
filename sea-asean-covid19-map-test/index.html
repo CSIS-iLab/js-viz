@@ -36,17 +36,26 @@
     </aside>
 
     <script>
+
+      // 1. Setting up the Leaflet Map
+
+      // 1.1 Creating the Leaflet Map
       const map = L.map('map').setView([0, 110], 4);
       map.scrollWheelZoom.disable();
 
+      // 1.2 Adding basemap and labels layers
+
+      // Basemap of countries with no labels
       L.tileLayer('https://api.mapbox.com/styles/v1/ilabmedia/ck909nhog00nz1iqp7gximt6s/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw', {
         maxZoom: 18
       }).addTo(map);
 
+      // Basemap of labels only 
       L.tileLayer('https://api.mapbox.com/styles/v1/ilabmedia/ck8rn1khs0k691inz8zh0ejdd/wmts?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw', {
         maxZoom: 18
       }).addTo(map);
 
+      // 2. Defining a carto.Client
       const client = new carto.Client({
         apiKey: 'PXpBveKGMqDPVQLCJ4DRmg',
         username: 'csis'
