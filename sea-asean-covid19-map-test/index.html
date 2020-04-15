@@ -66,7 +66,7 @@
      // 3.1 Defining the layers
      // Country Layer
      const countryDataset = new carto.source.Dataset(`carto_test`);
-     const style = new carto.style.CartoCSS(`
+     const countryStyle = new carto.style.CartoCSS(`
         #layer {
          polgyon-fill: #825DBA;
           polygon-opacity: 0.5;
@@ -78,7 +78,7 @@
         }
       `);
 
-      const layer = new carto.layer.Layer(source, style);
+      const aseanCountries= new carto.layer.Layer(countryDataset, countryStyle);
 
       client.addLayer(layer);
       client.getLeafletLayer().addTo(map);
