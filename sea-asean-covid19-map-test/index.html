@@ -61,14 +61,20 @@
         username: 'csis'
       });
 
-      const source = new carto.source.Dataset(`
-        carto_test
-      `);
-      const style = new carto.style.CartoCSS(`
+      // 3. Displaying the countries on the map
+
+     // 3.1 Defining the layers
+     // Country Layer
+     const countryDataset = new carto.source.Dataset(`carto_test`);
+     const style = new carto.style.CartoCSS(`
         #layer {
-          marker-width: 7;
-          marker-fill: #EE4D5A;
-          marker-line-color: #FFFFFF;
+         polgyon-fill: #825DBA;
+          polygon-opacity: 0.5;
+          :: outline {
+            line-width: 1;
+            line-color: #fff;
+            line-opacity: 0.5;
+          }
         }
       `);
 
