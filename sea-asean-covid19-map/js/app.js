@@ -1,6 +1,4 @@
 const widgetDom = document.querySelector('#filterWidget');
-let currentInclination = 45
-let currentSatellitesNum = 496
 const map = L.map('map').setView([15, 25], 2.4);
 // map.scrollWheelZoom.disable();
 map.zoomControl.setPosition('topright')
