@@ -16,7 +16,7 @@ L.tileLayer('https://api.mapbox.com/styles/v1/ilabmedia/ck909nhog00nz1iqp7gximt6
 map.attributionControl.addAttribution('<a href="https://www.csis.org/programs/southeast-asia-program">CSIS Southeast Asia Program/a>')
 
 const client = new carto.Client({
-  apiKey: 'yyH22tYmbYA8DzKt2Ggnyg',
+  apiKey: 'PXpBveKGMqDPVQLCJ4DRmg', 
   username: 'csis'
 });
 
