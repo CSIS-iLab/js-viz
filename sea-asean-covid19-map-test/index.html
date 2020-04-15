@@ -43,6 +43,10 @@
         maxZoom: 18
       }).addTo(map);
 
+      L.tileLayer('https://api.mapbox.com/styles/v1/ilabmedia/ck8rn1khs0k691inz8zh0ejdd/wmts?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw', {
+        maxZoom: 18
+      }).addTo(map);
+
       const client = new carto.Client({
         apiKey: 'PXpBveKGMqDPVQLCJ4DRmg',
         username: 'csis'
