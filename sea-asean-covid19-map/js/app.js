@@ -91,7 +91,6 @@ inclinationDataview.on('dataChanged', data => {
   inclinationsDom.onchange = event => {
     currentInclination = event.target.value;
     filterByInclinationAndSatelliteNum(currentInclination, currentSatellitesNum);
-    updateThreatCountries(currentInclination, currentSatellitesNum);
   };
 });
 
@@ -106,7 +105,6 @@ sizeDataview.on('dataChanged', data => {
   sizesDom.onchange = event => {
     currentSatellitesNum = event.target.value;
     filterByInclinationAndSatelliteNum(currentInclination, currentSatellitesNum);
-    updateThreatCountries(currentInclination, currentSatellitesNum);
   };
 });
 
@@ -121,15 +119,7 @@ function filterByInclinationAndSatelliteNum(inclination, satellitesNum) {
 
 client.addDataviews([sizeDataview, inclinationDataview]);
 
-updateThreatCountries(currentInclination, currentSatellitesNum) // Call once on initial load
-function updateThreatCountries(inclination, satellitesNum) {
-  let threat_countries_current_coverage = threat_countries[satellitesNum][inclination]
-  const valueElements = document.querySelectorAll('.value-changed')
-  valueElements.forEach(function(el) {
-    let value = el.dataset.country
-    el.innerHTML = threat_countries_current_coverage[value]
-  })
-}
+
 
 /*----------  More Information  ----------*/
 const buttons = document.querySelectorAll('.toggle-panels')
