@@ -36,7 +36,7 @@
     </aside>
 
     <script>
-      const map = L.map('map').setView([30, 0], 3);
+      const map = L.map('map').setView([0, 110], 4);
       map.scrollWheelZoom.disable();
 
       L.tileLayer('https://api.mapbox.com/styles/v1/ilabmedia/ck909nhog00nz1iqp7gximt6s/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw', {
@@ -58,6 +58,7 @@
           marker-line-color: #FFFFFF;
         }
       `);
+
       const layer = new carto.layer.Layer(source, style);
 
       client.addLayer(layer);
