@@ -40,7 +40,7 @@
       // 1. Setting up the Leaflet Map
 
       // 1.1 Creating the Leaflet Map
-      const map = L.map('map').setView([0, 110], 4);
+      const map = L.map('map').setView([10, 110], 5);
       map.scrollWheelZoom.disable();
 
       // 1.2 Adding basemap and labels layers
@@ -55,7 +55,7 @@
         maxZoom: 18
       }).addTo(map);
 
-      /*// 2. Defining a carto.Client
+      // 2. Defining a carto.Client
       const client = new carto.Client({
         apiKey: 'PXpBveKGMqDPVQLCJ4DRmg',
         username: 'csis'
@@ -85,7 +85,7 @@
       const countryLabels 
 
       client.addLayer(layer);
-      client.getLeafletLayer().addTo(map); */
+      client.getLeafletLayer().addTo(map); 
     </script>
   </body>
 </html>
