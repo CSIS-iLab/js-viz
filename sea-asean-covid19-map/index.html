@@ -63,9 +63,9 @@
       });
 
       // 3. Define carto.source.SQL to select the
-      // total_cases column from the carto_test dataset
+      // total_cases column from the sea_covid19_tracker_map dataset
       const totalCasesSource = new carto.source.SQL(`
-        SELECT total_cases from carto_test
+        SELECT total_cases from sea_covid19_tracker_map
       `);
 
       // 4. Style the total_cases data
@@ -85,9 +85,9 @@
       const totalCases = new carto.layer.Layer(totalCasesSource, totalCasesStyle);
       
       // 6. Define carto.source.SQL to select the
-      // total_deaths column from the carto_test dataset
+      // total_deaths column from the sea_covid19_tracker_map dataset
       const totalDeathsSource = new carto.source.SQL(`
-        SELECT total_deaths from carto_test
+        SELECT total_deaths from sea_covid19_tracker_map
       `);
 
       // 7. Style the total_deaths data
