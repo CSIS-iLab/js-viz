@@ -1,7 +1,7 @@
 Highcharts.chart("hcContainer", {
   // Load Data in from Google Sheets
   data: {
-    googleSpreadsheetKey: "1s9bdw5ob4BpCEUUQl-4lQnTQSsi7S-q927lKT7k6l6k",
+    googleSpreadsheetKey: "14m3yFJqWpdo-SecoFTIetBVBnhzTgMf131VbxBFsrxY",
     googleSpreadsheetWorksheet: 2,
     parseDate: function(thisDate) {
       return Date.parse(thisDate.replace('-', '/1/'));
