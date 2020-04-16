@@ -62,10 +62,13 @@
         username: 'csis'
       });
 
-      // 3. Define carto.source.Dataset object that 
-      // points to the imported dataset named carto_test
+      // 3. Define carto.source.SQL to select the
+      // total_cases column from the carto_test dataset
+      const total_cases = new carto.source.SQL(`
+        SELECT total_cases from carto_test
+      `);
 
-
+      // 4. 
 
      // 3.1 Defining the layers
 
