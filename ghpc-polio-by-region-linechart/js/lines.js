@@ -23,7 +23,7 @@ Highcharts.chart("hcContainer", {
   ],
   // Chart Title and Subtitle
   title: {
-    text: "Breakdown of International Payments by Currency"
+    text: "Global Polio Cases by Region, 1980-2019"
   },
   // Credits
   credits: {
