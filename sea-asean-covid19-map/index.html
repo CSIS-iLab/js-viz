@@ -64,9 +64,7 @@
 
       // 3. Define carto.source.SQL to select the
       // total_cases column from the sea_covid19_tracker_map dataset
-      const totalCasesSource = new carto.source.SQL(`
-        SELECT total_cases from sea_covid19_tracker_map
-      `);
+      const totalCasesSource = new carto.source.Dataset('sea_covid19_tracker_map');
 
       // 4. Style the total_cases data
       const totalCasesStyle = new carto.style.CartoCSS(`
@@ -81,7 +79,7 @@
         }
       `);
 
-      // 5.  Combine total_cases source and style
+     /* // 5.  Combine total_cases source and style
       const totalCases = new carto.layer.Layer(totalCasesSource, totalCasesStyle);
       
       // 6. Define carto.source.SQL to select the
@@ -108,7 +106,11 @@
 
       // 9. Notify carto.Client that the layers exist. The client 
       // is responsible for grouping layers into a single Leaflet layer.
-      client.addLayers([totalCases, totalDeaths]);
+      client.addLayers([totalCases, totalDeaths]);*/totalCasesSource
+
+      const layer = new carto.layer.Layer(totalCasesSource, totalCasesStyle);
+
+      client.addLayer(layer);
 
       // 10. Add layer to map
       client.getLeafletLayer().addTo(map);
