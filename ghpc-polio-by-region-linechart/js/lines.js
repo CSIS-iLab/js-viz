@@ -1,11 +1,11 @@
 Highcharts.chart("hcContainer", {
   // Load Data in from Google Sheets
   data: {
-    googleSpreadsheetKey: "14m3yFJqWpdo-SecoFTIetBVBnhzTgMf131VbxBFsrxY",
-    googleSpreadsheetWorksheet: 2,
+    googleSpreadsheetKey: "14m3yFJqWpdo-SecoFTIetBVBnhzTgMf131VbxBFsrxY"
+    /*googleSpreadsheetWorksheet: 2,
     parseDate: function(thisDate) {
       return Date.parse(thisDate.replace('-', '/1/'));
-    }
+    }*/
   },
   // General Chart Options
   chart: {
@@ -13,12 +13,13 @@ Highcharts.chart("hcContainer", {
   },
   // Colors
   colors: [
-    '#58a897',
-    '#3b75bb',
-    '#a483a8',
-    '#8cb561',
-    '#ef9a9a',
-    '#ed392a'
+    '#4F72BE',
+    '#DE8244',
+    '#A5A5A5',
+    '#F5C243',
+    '#6A9AD0',
+    '#0A8672',
+    '#0FAA94'
   ],
   // Chart Title and Subtitle
   title: {
