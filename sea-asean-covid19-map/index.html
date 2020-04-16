@@ -81,37 +81,37 @@
         }
       `);
 
-    // 5.  Combine total_cases source and style
-    const totalCases = new carto.layer.Layer(totalCasesSource, totalCasesStyle);
-     
-    // 6. Define carto.source.SQL to select the
-    // total_deaths column from the carto_test dataset
-    const totalDeathsSource = new carto.source.SQL(`
-      SELECT total_deaths from carto_test
-    `);
-
-    // 7. Style the total_deaths data
-    const totalDeathsStyle = new carto.style.CartoCSS(`
-      #layer {
-        polygon-fill: ramp([total_deaths], (#b5e6ff, #99cbec, #7cb0da, #5e96c8, #3d7db6, #0065a4), quantiles);
-      }
-      #layer::outline {
-        line-width: 1;
-        line-color: #FFFFFF;
-        line-opacity: 0.5;
-      }
-    `);
+      // 5.  Combine total_cases source and style
+      const totalCases = new carto.layer.Layer(totalCasesSource, totalCasesStyle);
       
-    // 8. Combine total_deaths source and style
+      // 6. Define carto.source.SQL to select the
+      // total_deaths column from the carto_test dataset
+      const totalDeathsSource = new carto.source.SQL(`
+        SELECT total_deaths from carto_test
+      `);
 
-    const totalDeaths = new carto.layer.Layer(totalDeathsSource, totalDeathsStyle);
+      // 7. Style the total_deaths data
+      const totalDeathsStyle = new carto.style.CartoCSS(`
+        #layer {
+          polygon-fill: ramp([total_deaths], (#b5e6ff, #99cbec, #7cb0da, #5e96c8, #3d7db6, #0065a4), quantiles);
+        }
+        #layer::outline {
+          line-width: 1;
+          line-color: #FFFFFF;
+          line-opacity: 0.5;
+        }
+      `);
+        
+      // 8. Combine total_deaths source and style
 
-    // 9. Notify carto.Client that the layers exist. The client 
-    // is responsible for grouping layers into a single Leaflet layer.
-    client.addLayers(totalCases, totalDeaths);
+      const totalDeaths = new carto.layer.Layer(totalDeathsSource, totalDeathsStyle);
 
-    // 10. Add layer to map
-    client.getLeafletLayer().addTo(map);
+      // 9. Notify carto.Client that the layers exist. The client 
+      // is responsible for grouping layers into a single Leaflet layer.
+      client.addLayers(totalCases, totalDeaths);
+
+      // 10. Add layer to map
+      client.getLeafletLayer().addTo(map);
 
     </script>
   </body>
