@@ -62,8 +62,8 @@
         username: 'csis'
       });
 
-      // 3. Define carto.source.SQL to select the
-      // total_cases column from the sea_covid19_tracker_map dataset
+      // 3. Define carto.source.Dataset to use
+      // the sea_covid19_tracker_map dataset
       const totalCasesSource = new carto.source.Dataset('sea_covid19_tracker_map');
 
       // 4. Style the total_cases data
