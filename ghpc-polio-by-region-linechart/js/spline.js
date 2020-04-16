@@ -16,7 +16,8 @@ Highcharts.chart("hcContainer", {
   },
   // General Chart Options
   chart: {
-    type: "line"
+    zoomType: 'x',
+    type: 'spline'
   },
   // Colors
   colors: [
