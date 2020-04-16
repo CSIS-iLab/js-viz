@@ -40,7 +40,7 @@ Highcharts.chart("hcContainer", {
   // Y Axis
   yAxis: {
     title: {
-      text: "Share of Total Payments (%)"
+      text: "Number of Polio Cases (WPV and cVDPV)"
     }
   },
   // Tooltip
