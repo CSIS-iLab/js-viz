@@ -58,7 +58,7 @@ Highcharts.chart("hcContainer", {
   },
   // Additional Plot Options
   plotOptions: {
-    line: {
+    spline: {
       marker: {
         enabled: false,
         symbol: "circle",
