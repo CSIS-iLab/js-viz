@@ -29,7 +29,7 @@ Highcharts.chart("hcContainer", {
   credits: {
     enabled: true,
     href: false,
-    text: "CSIS China Power Project | Source: SWIFT"
+    text: "CSIS Global Health Policy Center | Source: WHO, GPEI"
   },
   // Chart Legend
   legend: {
