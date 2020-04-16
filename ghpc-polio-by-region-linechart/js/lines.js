@@ -1,3 +1,10 @@
+Highcharts.setOptions({
+  lang: {
+    thousandsSep: ','
+  }
+});
+
+
 Highcharts.chart("hcContainer", {
   // Load Data in from Google Sheets
   data: {
@@ -45,11 +52,8 @@ Highcharts.chart("hcContainer", {
   },
   // Tooltip
   tooltip: {
-    valueDecimals: 1,
     shared: true,
-    useHTML: true,
-    valueSuffix: '%',
-    xDateFormat: '%B %Y'
+    useHTML: true
   },
   // Additional Plot Options
   plotOptions: {
