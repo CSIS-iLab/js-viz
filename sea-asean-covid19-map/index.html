@@ -108,7 +108,7 @@
 
       // 9. Notify carto.Client that the layers exist. The client 
       // is responsible for grouping layers into a single Leaflet layer.
-      client.addLayers(totalCases, totalDeaths);
+      client.addLayers([totalCases, totalDeaths]);
 
       // 10. Add layer to map
       client.getLeafletLayer().addTo(map);
