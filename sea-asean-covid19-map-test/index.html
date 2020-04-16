@@ -64,7 +64,7 @@
 
       // 3. Define carto.source.SQL to select the
       // total_cases column from the carto_test dataset
-      const totalCases = new carto.source.SQL(`
+      const totalCasesSource = new carto.source.SQL(`
         SELECT total_cases from carto_test
       `);
 
@@ -81,31 +81,16 @@
         }
       `);
 
-      // 4. 
+      // 4.  Combine total_cases source and style
+      const totalCases = new carto.layer.Layer(totalCasesSource, totalCasesStyle);
+     
+      // 5. Notify carto.Client that the layer exists. The client 
+      // is responsible for grouping layers into a single Leaflet layer.
+      client.addLayers(totalCases);
 
-     // 3.1 Defining the layers
+      // 6. Add layer to map
+      client.getLeafletLayer().addTo(map);
 
-     // ASEAN Country Layer
-     /*const countryDataset = new carto.source.Dataset(`carto_test`);
-     const countryStyle = new carto.style.CartoCSS(`
-        #layer {
-         polgyon-fill: #825DBA;
-          polygon-opacity: 0.5;
-          :: outline {
-            line-width: 1;
-            line-color: #fff;
-            line-opacity: 0.5;
-          }
-        }
-      `);
-
-      const aseanCountries= new carto.layer.Layer(countryDataset, countryStyle);
-
-      // Labels layer
-      const countryLabels 
-
-      client.addLayer(layer);
-      client.getLeafletLayer().addTo(map); */
     </script>
   </body>
 </html>
