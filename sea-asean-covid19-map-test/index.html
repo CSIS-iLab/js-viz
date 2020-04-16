@@ -64,8 +64,21 @@
 
       // 3. Define carto.source.SQL to select the
       // total_cases column from the carto_test dataset
-      const total_cases = new carto.source.SQL(`
+      const totalCases = new carto.source.SQL(`
         SELECT total_cases from carto_test
+      `);
+
+      // 4. Style the total_cases data
+      const totalCasesStyle = new carto.style.CartoCSS(`
+        #layer {
+          polygon-fill: ramp([total_cases], (#b5e6ff, #99cbec, #7cb0da, #5e96c8, #3d7db6, #0065a4), quantiles);
+          polygon-opacity: 0.65;
+        }
+        #layer::outline {
+          line-width: 1;
+          line-color: #FFFFFF;
+          line-opacity: 0.5;
+        }
       `);
 
       // 4. 
