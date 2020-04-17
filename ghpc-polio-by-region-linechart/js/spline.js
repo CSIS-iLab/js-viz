@@ -37,7 +37,7 @@ Highcharts.chart("hcContainer", {
     text: '<span style="font-size: 32px; color: #333333; max-width: 1280px; text-align: center">Global Polio Cases by Region, 1980-2019</span>'
   },
   subtitle: {
-    text: '<span style="color: #333333; max-width: 1280px; margin-bottom: 1.5rem; line-height: 1.4">Hover over a line to see the number of cases per region in that year. <br> Click and drag to zoom.</span>'
+    text: '<span style="color: #333333; max-width: 1280px; margin-bottom: 1.5rem; line-height: 1.4">Hover over a line to see the number of cases per region in that year. Click and drag to zoom.</span>'
   },
   // Credits
   credits: {
