@@ -74,7 +74,7 @@ Highcharts.chart("hcContainer", {
         symbol: "circle",
         radius: 3
       },
-      lineWidth: 3
+      lineWidth: 2
     }
   }
 });
