@@ -1,6 +1,7 @@
 Highcharts.setOptions({
   lang: {
-    thousandsSep: ','
+    thousandsSep: ',',
+    numericSymbols: null
   },
   chart: {
     style: {
