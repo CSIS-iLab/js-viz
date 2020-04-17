@@ -41,6 +41,15 @@
       const map = L.map('map').setView([10, 110], 5);
       map.scrollWheelZoom.disable();
 
+      // 1.1 Create separate pane in Leaflet and
+      // set zIndex to bring it to the front, while
+      // telling it to ignore pointerEvents so it 
+      // doesn't confuse user actions as clicking
+      // on country labels
+      map.createPane('labels');
+      map.getPane('labels').style.zIndex = 650;
+      map.getPane('labels').style.pointerEvents = 'none';
+
       // 2. Add basemap of countries with no labels 
       // from Mapbox using Third Party CARTO Integration
       // URL
@@ -50,9 +59,12 @@
 
       // 3. Add basemap of *only* country labels 
       // from Mapbox using Third Party CARTO
-      // Integration URL
+      // Integration URL. Specify pane as 'labels'
+      // so above 1.1 will take effect, putting 
+      // labels on top of everything else
       L.tileLayer('https://api.mapbox.com/styles/v1/ilabmedia/ck8rn1khs0k691inz8zh0ejdd/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw', {
-        maxZoom: 18
+        maxZoom: 18,
+        pane: 'labels' 
       }).addTo(map);
 
       // 4. Defining a carto.Client, the entry point to CARTO.js
