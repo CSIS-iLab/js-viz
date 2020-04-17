@@ -1,6 +1,12 @@
 Highcharts.setOptions({
   lang: {
     thousandsSep: ','
+  },
+  chart: {
+    style: {
+      fontFamily: '"Source Sans", Arial, Helvetica, sans-serif',
+      fontSize: '16px'
+    }
   }
 });
 
