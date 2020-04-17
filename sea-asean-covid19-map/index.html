@@ -102,6 +102,7 @@
       const totalDeathsStyle = new carto.style.CartoCSS(`
         #layer {
           polygon-fill: ramp([total_deaths], (#b5e6ff, #99cbec, #7cb0da, #5e96c8, #3d7db6, #0065a4), quantiles);
+          polygon-opacity: 0.65;
         }
         #layer::outline {
           line-width: 1;
