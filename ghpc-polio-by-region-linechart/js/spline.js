@@ -48,7 +48,7 @@ Highcharts.chart("hcContainer", {
   // Y Axis
   yAxis: {
     title: {
-      text: "Number of Polio Cases (WPV and cVDPV)"
+      text: '<span style="font-size: 16px">Number of Polio Cases <br> (WPV and cVDPV)</span>'
     }
   },
   // Tooltip
