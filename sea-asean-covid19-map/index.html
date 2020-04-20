@@ -77,17 +77,18 @@
 
 
       // Style the total_cases data
-      function totalCasesStyle(totalCasesOpacity) {new carto.style.CartoCSS(`
-        #layer {
-          polygon-fill: ramp([total_cases], (#b5e6ff, #99cbec, #7cb0da, #5e96c8, #3d7db6, #0065a4), quantiles);
-          polygon-opacity: {totalCasesOpacity};
-        }
-        #layer::outline {
-          line-width: 1;
-          line-color: #FFFFFF;
-          line-opacity: 0.5;
-        }
-      `)
+      function totalCasesStyle(totalCasesOpacity) {
+        new carto.style.CartoCSS(`
+          #layer {
+            polygon-fill: ramp([total_cases], (#b5e6ff, #99cbec, #7cb0da, #5e96c8, #3d7db6, #0065a4), quantiles);
+            polygon-opacity: {totalCasesOpacity};
+          }
+          #layer::outline {
+            line-width: 1;
+            line-color: #FFFFFF;
+            line-opacity: 0.5;
+          }
+        `)
       };
 
       // Combine total_cases source and style
@@ -97,17 +98,18 @@
       const totalDeathsSource = new carto.source.Dataset('sea_covid19_tracker_map');
 
       // Style the total_deaths data
-      function totalDeathsStyle(totalDeathsOpacity) {new carto.style.CartoCSS(`
-        #layer {
-          polygon-fill: ramp([total_deaths], (#b5e6ff, #99cbec, #7cb0da, #5e96c8, #3d7db6, #0065a4), quantiles);
-          polygon-opacity: {totalDeathsOpacity};
-        }
-        #layer::outline {
-          line-width: 1;
-          line-color: #FFFFFF;
-          line-opacity: 0.5;
-        }
-      `)
+      function totalDeathsStyle(totalDeathsOpacity) {
+        new carto.style.CartoCSS(`
+          #layer {
+            polygon-fill: ramp([total_deaths], (#b5e6ff, #99cbec, #7cb0da, #5e96c8, #3d7db6, #0065a4), quantiles);
+            polygon-opacity: {totalDeathsOpacity};
+          }
+          #layer::outline {
+            line-width: 1;
+            line-color: #FFFFFF;
+            line-opacity: 0.5;
+          }
+        `)
       };
         
       
