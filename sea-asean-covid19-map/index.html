@@ -77,7 +77,7 @@
 
 
       // Style the total_cases data
-      const totalCasesStyle = new carto.style.CartoCSS(`
+      function totalCasesStyle(totalCasesOpacity) {new carto.style.CartoCSS(`
         #layer {
           polygon-fill: ramp([total_cases], (#b5e6ff, #99cbec, #7cb0da, #5e96c8, #3d7db6, #0065a4), quantiles);
           polygon-opacity: {totalCasesOpacity};
@@ -87,7 +87,8 @@
           line-color: #FFFFFF;
           line-opacity: 0.5;
         }
-      `);
+      `)
+      };
 
       // Combine total_cases source and style
       const totalCases = new carto.layer.Layer(totalCasesSource, totalCasesStyle);
@@ -96,7 +97,7 @@
       const totalDeathsSource = new carto.source.Dataset('sea_covid19_tracker_map');
 
       // Style the total_deaths data
-      const totalDeathsStyle = new carto.style.CartoCSS(`
+      function totalDeathsStyle(totalDeathsOpacity) {new carto.style.CartoCSS(`
         #layer {
           polygon-fill: ramp([total_deaths], (#b5e6ff, #99cbec, #7cb0da, #5e96c8, #3d7db6, #0065a4), quantiles);
           polygon-opacity: {totalDeathsOpacity};
@@ -106,16 +107,17 @@
           line-color: #FFFFFF;
           line-opacity: 0.5;
         }
-      `);
+      `)
+      };
         
       
-      
-      document.getElementById("total-cases-button").addEventListener("click", totalCasesStyle(totalCasesOpacity, totalDeathsOpacity));
-      document.getElementById("total-deaths-button").addEventListener("click", dataStyle(totalCasesOpacity, totalDeathsOpacity));
-
-
       // Combine total_deaths source and style
       const totalDeaths = new carto.layer.Layer(totalDeathsSource, totalDeathsStyle);
+
+
+      document.getElementById("total-cases-button").addEventListener("click", totalCasesStyle(0.65), totalDeathsStyle(0.0));
+      document.getElementById("total-deaths-button").addEventListener("click", totalCasesStyle(0.0), totalDeathsStyle(0.65));
+
 
       // Notify carto.Client that the layers exist. The client 
       // is responsible for grouping layers into a single Leaflet layer.
