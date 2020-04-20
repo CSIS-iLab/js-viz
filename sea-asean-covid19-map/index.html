@@ -76,7 +76,7 @@
 
       // 3. Define carto.source.Dataset to use
       // the sea_covid19_tracker_map dataset
-      const totalCasesSource = new carto.source.Dataset('sea_covid19_tracker_map');
+      const dataSource = new carto.source.Dataset('sea_covid19_tracker_map');
 
       // 4. Style the total_cases data
       const totalCasesStyle = new carto.style.CartoCSS(`
@@ -93,10 +93,6 @@
 
      // 5.  Combine total_cases source and style
       const totalCases = new carto.layer.Layer(totalCasesSource, totalCasesStyle);
-
-      // 6. Define carto.source.Dataset to use
-      // the sea_covid19_tracker_map dataset
-      const totalDeathsSource = new carto.source.Dataset('sea_covid19_tracker_map');
 
       // 7. Style the total_deaths data
       const totalDeathsStyle = new carto.style.CartoCSS(`
