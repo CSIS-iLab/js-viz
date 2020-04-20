@@ -79,7 +79,7 @@
       const dataSource = new carto.source.Dataset('sea_covid19_tracker_map');
 
       // 4. Style the total_cases data
-      const totalCasesStyle = new carto.style.CartoCSS(`
+      const dataStyle = new carto.style.CartoCSS(`
         #layer {
           polygon-fill: ramp([total_cases], (#b5e6ff, #99cbec, #7cb0da, #5e96c8, #3d7db6, #0065a4), quantiles);
           polygon-opacity: 0.65;
@@ -94,20 +94,7 @@
      // 5.  Combine total_cases source and style
       const totalCases = new carto.layer.Layer(totalCasesSource, totalCasesStyle);
 
-      // 7. Style the total_deaths data
-      const totalDeathsStyle = new carto.style.CartoCSS(`
-        #layer {
-          polygon-fill: ramp([total_deaths], (#b5e6ff, #99cbec, #7cb0da, #5e96c8, #3d7db6, #0065a4), quantiles);
-          polygon-opacity: 0.65;
-        }
-        #layer::outline {
-          line-width: 1;
-          line-color: #FFFFFF;
-          line-opacity: 0.5;
-        }
-      `);
-        
-      // 8. Combine total_deaths source and style
+     // 8. Combine total_deaths source and style
 
       const totalDeaths = new carto.layer.Layer(totalDeathsSource, totalDeathsStyle);
 
