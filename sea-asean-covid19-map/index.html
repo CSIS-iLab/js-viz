@@ -78,7 +78,7 @@
       // the sea_covid19_tracker_map dataset
       const dataSource = new carto.source.Dataset('sea_covid19_tracker_map');
 
-      // 4. Style the total_cases data
+      // 4. Style the data
       const dataStyle = new carto.style.CartoCSS(`
         #layer {
           polygon-fill: ramp([total_cases], (#b5e6ff, #99cbec, #7cb0da, #5e96c8, #3d7db6, #0065a4), quantiles);
