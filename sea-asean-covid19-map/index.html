@@ -94,14 +94,14 @@
         }
       `);
 
-     // 5.  Combine total_cases source and style
+      // 5.  Combine total_cases source and style
       const dataLayer = new carto.layer.Layer(dataSource, dataStyle);
 
-      // 9. Notify carto.Client that the layers exist. The client 
+      // 6. Notify carto.Client that the layers exist. The client 
       // is responsible for grouping layers into a single Leaflet layer.
       client.addLayer(dataLayer);
 
-      // 10. Add layer to map
+      // 7. Add layer to map
       client.getLeafletLayer().addTo(map);
 
     </script>
