@@ -26,6 +26,8 @@
       href="https://carto.com/developers/carto-js/examples/maps/public/style.css"
       rel="stylesheet"
     />
+    <link rel="stylesheet" type="text/css" href="map.css">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap" rel="stylesheet">
   </head>
   <body>
     <div id="map"></div>
@@ -43,8 +45,8 @@
             interactive map to learn more detail about each country.
           </p>
           <br />
-          <button id="total-cases-button">Total Cases</button>
-          <button id="total-deaths-button">Total Deaths</button>
+          <button class="btn" id="total-cases-button">Total Cases</button>
+          <button class="btn" id="total-deaths-button">Total Deaths</button>
         </section>
         <footer class="js-footer"></footer>
       </div>
@@ -188,7 +190,10 @@
           console.log("clicked death");
           setTotalCasesStyle(0.0);
           setTotalDeathsStyle(0.65);
-        });
+          if (this.classList.contains("active")) {
+            this.classList.remove("active");
+          } else this.classList.add("active");
+          });
 
       // Notify carto.Client that the layers exist. The client
       // is responsible for grouping layers into a single Leaflet layer.

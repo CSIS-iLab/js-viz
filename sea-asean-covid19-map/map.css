@@ -1,0 +1,22 @@
+.btn {
+  background: #0faa91;
+  color: #fff;
+  border-radius: 5px;
+  border: 1px solid #0faa91;
+  cursor: pointer;
+    display: inline-block;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 300;
+    line-height: 1.29412;
+    margin: 0 0 1.6em;
+    padding: 0.55em 1.8em;
+    text-align: center;
+    text-decoration: none !important;
+    text-transform: uppercase;
+    vertical-align: baseline;
+}
+
+.btn.active, .btn:active {
+  background: #cecece;
+  text-decoration: none;
+}
