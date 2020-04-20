@@ -94,10 +94,6 @@
      // 5.  Combine total_cases source and style
       const dataLayer = new carto.layer.Layer(dataSource, dataStyle);
 
-     // 8. Combine total_deaths source and style
-
-      const totalDeaths = new carto.layer.Layer(totalDeathsSource, totalDeathsStyle);
-
       // 9. Notify carto.Client that the layers exist. The client 
       // is responsible for grouping layers into a single Leaflet layer.
       client.addLayers([totalCases, totalDeaths]);
