@@ -38,6 +38,7 @@
     <script>
 
       var dataColumn;
+      var dataOpacity;
 
       // 1. Create Leaflet Map
       const map = L.map('map').setView([10, 110], 5);
@@ -83,8 +84,8 @@
       // 4. Style the data
       const dataStyle = new carto.style.CartoCSS(`
         #layer {
-          polygon-fill: ramp([total_cases], (#b5e6ff, #99cbec, #7cb0da, #5e96c8, #3d7db6, #0065a4), quantiles);
-          polygon-opacity: 0.65;
+          polygon-fill: ramp([{dataColumn}], (#b5e6ff, #99cbec, #7cb0da, #5e96c8, #3d7db6, #0065a4), quantiles);
+          polygon-opacity: {dataOpacity};
         }
         #layer::outline {
           line-width: 1;
