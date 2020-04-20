@@ -36,7 +36,7 @@
     </aside>
 
     <script>
-
+      // Variable declaration and initial assignment
       let totalCasesOpacity = 0.65;
       let totalDeathsOpacity = 0;
 
@@ -108,6 +108,12 @@
         }
       `);
         
+      
+      
+      document.getElementById("total-cases-button").addEventListener("click", totalCasesStyle(totalCasesOpacity, totalDeathsOpacity));
+      document.getElementById("total-deaths-button").addEventListener("click", dataStyle(totalCasesOpacity, totalDeathsOpacity));
+
+
       // Combine total_deaths source and style
       const totalDeaths = new carto.layer.Layer(totalDeathsSource, totalDeathsStyle);
 
