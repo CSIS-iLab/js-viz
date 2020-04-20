@@ -1,8 +1,8 @@
 .btn {
-  background: #0faa91;
-  color: #fff;
+  background: #cecece;
+  color: #000;
   border-radius: 5px;
-  border: 1px solid #0faa91;
+  border: 1px solid #cecece;
   cursor: pointer;
     display: inline-block;
     font-family: 'Source Sans Pro', sans-serif;
@@ -17,6 +17,6 @@
 }
 
 .btn.active, .btn:active {
-  background: #cecece;
-  text-decoration: none;
+  background: #0faa91; 
+  border: 1px solid #0faa91;
 }
