@@ -64,7 +64,10 @@ Highcharts.chart("hcContainer", {
   // Tooltip
   tooltip: {
     shared: true,
-    useHTML: true
+    useHTML: true,
+    style: {
+      lineHeight: '21px'
+    }
   },
   // Additional Plot Options
   plotOptions: {
