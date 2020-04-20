@@ -210,21 +210,6 @@
       // Add layer to map
       client.getLeafletLayer().addTo(map);
 
-
-      function renderLegend(metadata) {
-        document.getElementById('legend-min').innerHTML = metadata.getMin();
-        document.getElementById('legend-max').innerHTML = metadata.getMax();
-        if ( metadata.getMin() ) {
-          document.getElementById('legend-bar').classList.remove('is-hidden')
-          document.getElementById('constellation-details').classList.remove('is-hidden')
-          document.getElementById('noCoverage').classList.add('is-hidden')
-        } else {
-          document.getElementById('legend-bar').classList.add('is-hidden')
-          document.getElementById('constellation-details').classList.add('is-hidden')
-          document.getElementById('noCoverage').classList.remove('is-hidden')
-        }
-      }
-
     </script>
   </body>
 </html>
