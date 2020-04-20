@@ -86,6 +86,9 @@
         }
       ).addTo(map);
 
+      //Update footer 
+      map.attributionControl.addAttribution('<a href="https://www.csis.org/programs/southeast-asia-program">CSIS Southeast Asia Program</a>')
+
       // Defining a carto.Client, the entry point to CARTO.js which
       // handles communication between app and CARTO account
       const client = new carto.Client({
