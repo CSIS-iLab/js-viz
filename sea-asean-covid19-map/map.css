@@ -20,3 +20,38 @@
   background: #0faa91; 
   border: 1px solid #0faa91;
 }
+
+.legend-bar-container {
+  display: flex;
+}
+
+.legend-label {
+  flex: 1 0 auto;
+  flex-basis: 50%;
+  font-family: "Abel", Arial, sans-serif;
+  font-size: 12px;
+  padding: 0 3px 5px;
+}
+
+#legend-max {
+  text-align: right;
+}
+
+#legend-bar {
+  width: 100%;
+  height: 12px;
+  border: 1px solid #d8d8d8;
+  border-radius: 5px;
+  background: rgb(253,224,197);
+  background: linear-gradient(90deg,#b5e6ff 0%, #99cbec 14%, #7cb0da 28%, #5e96c8 56%, #0065a4 86%);
+  margin-bottom: 0.5rem;
+}
+
+
+#b5e6ff, #99cbec, #7cb0da, #5e96c8, #3d7db6, #0065a4
+
+
+
+.is-hidden {
+  display: none;
+}

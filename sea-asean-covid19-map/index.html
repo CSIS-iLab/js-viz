@@ -34,7 +34,7 @@
 
     <!-- Description -->
     <aside class="toolbox">
-      <div class="box">
+      <section class="box">
         <header>
           <h1>COVID-19 Totals</h1>
         </header>
@@ -50,9 +50,14 @@
           <br>
           <button class="btn" id="total-cases-button">Total Cases</button>
           <button class="btn" id="total-deaths-button">Total Deaths</button>
+          <br>
+          <div class="legend-bar-container">
+            <span id="legend-min" class="legend-label"></span>
+            <span id="legend-max" class="legend-label"></span>
+          </div>
+          <div id="legend-bar"></div>
         </section>
         <footer class="js-footer"></footer>
-      </div>
     </aside>
 
     <script>
@@ -204,6 +209,22 @@
 
       // Add layer to map
       client.getLeafletLayer().addTo(map);
+
+
+      function renderLegend(metadata) {
+        document.getElementById('legend-min').innerHTML = metadata.getMin();
+        document.getElementById('legend-max').innerHTML = metadata.getMax();
+        if ( metadata.getMin() ) {
+          document.getElementById('legend-bar').classList.remove('is-hidden')
+          document.getElementById('constellation-details').classList.remove('is-hidden')
+          document.getElementById('noCoverage').classList.add('is-hidden')
+        } else {
+          document.getElementById('legend-bar').classList.add('is-hidden')
+          document.getElementById('constellation-details').classList.add('is-hidden')
+          document.getElementById('noCoverage').classList.remove('is-hidden')
+        }
+      }
+
     </script>
   </body>
 </html>
