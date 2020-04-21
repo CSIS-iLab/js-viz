@@ -221,7 +221,7 @@
       let totalDeathsMax = 0
       totalDeaths.on('metadataChanged', function(event) {
         event.styles.forEach(function (styleMetadata) {
-          totalDeathsMin = styleMetadata.getmin()
+          totalDeathsMin = styleMetadata.getMin()
           totalDeathsMax = styleMetadata.getMax()
         });
       });
@@ -230,7 +230,7 @@
       let totalCasesMax = 0
       totalCases.on('metadataChanged', function(event) {
         event.styles.forEach(function (styleMetadata) {
-          totalCasesMin = styleMetadata.getmin()
+          totalCasesMin = styleMetadata.getMin()
           totalCasesMax = styleMetadata.getMax()
         });
       });
@@ -250,7 +250,7 @@
 
       function renderLegend(min, max) {
         document.getElementById('legend-min').innerHTML = min;
-        document.getElementById('legend-max').innerHTML = max;
+        document.getElementById('legend-max').innerHTML = max.toLocaleString('en-US');
       }
 
     </script>
