@@ -253,6 +253,11 @@
         document.getElementById('legend-max').innerHTML = max.toLocaleString('en-US');
       }
 
+      document.addEventListener('DOMContentLoaded', function() {
+        renderLegend(totalCasesMin, totalCasesMax)
+      }, false);
+
+      
     </script>
   </body>
 </html>
