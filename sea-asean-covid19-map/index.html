@@ -122,8 +122,6 @@
           }
         `);
 
-      console.log(totalCasesStyle);
-
       function setTotalCasesStyle(totalCasesOpacity) {
         totalCasesStyle.setContent(`
           #layer {
@@ -161,7 +159,6 @@
             line-opacity: 0.5;
           }
         `);
-      console.log(totalDeathsStyle);
 
       function setTotalDeathsStyle(totalDeathsOpacity) {
         totalDeathsStyle.setContent(`
@@ -183,10 +180,7 @@
         totalDeathsStyle
       );
 
-      /*const totalCasesButton = document
-          .getElementById("total-cases-button")
-
-
+      const totalCasesButton = document.getElementById("total-cases-button")
       const totalDeathsButton = document.getElementById("total-deaths-button")
 
 
@@ -212,9 +206,9 @@
           totalCasesButton.classList.remove('active')
           totalDeathsButton.classList.add('active')
         }
-      } */ 
+      } 
 
-      document
+      /*document
         .getElementById("total-cases-button")
         .addEventListener("click", function () {
           console.log("clicked total cases");
@@ -232,7 +226,7 @@
           } else this.classList.add("active");
           });
 
-          
+     */      
 
       // Notify carto.Client that the layers exist. The client
       // is responsible for grouping layers into a single Leaflet layer.
@@ -257,15 +251,6 @@
       function renderLegend(metadata) {
         document.getElementById('legend-min').innerHTML = metadata.getMin();
         document.getElementById('legend-max').innerHTML = metadata.getMax();
-        if ( metadata.getMin() ) {
-          document.getElementById('legend-bar').classList.remove('is-hidden')
-          document.getElementById('constellation-details').classList.remove('is-hidden')
-          document.getElementById('noCoverage').classList.add('is-hidden')
-        } else {
-          document.getElementById('legend-bar').classList.add('is-hidden')
-          document.getElementById('constellation-details').classList.add('is-hidden')
-          document.getElementById('noCoverage').classList.remove('is-hidden')
-        }
       }
 
     </script>
