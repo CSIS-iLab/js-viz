@@ -40,11 +40,11 @@
           <button class="btn active" id="total-cases-button">Total Cases</button>
           <button class="btn" id="total-deaths-button">Total Deaths</button>
         </div>
-        <div class="legend-bar-container">
-          <span id="legend-min" class="legend-label"></span>
-          <span id="legend-max" class="legend-label"></span>
-        </div>
-        <div id="legend-bar"></div>
+        <ul class="legend">
+          <li id="small">10</li>
+          <li id="medium">1,000</li>
+          <li id="large">>10,000</li>
+        </ul>
       </section>
       <footer class="js-footer"></footer>
   </aside>
@@ -91,27 +91,28 @@
     // Defining a carto.Client, the entry point to CARTO.js which
     // handles communication between app and CARTO account
     const client = new carto.Client({
-      apiKey: "PXpBveKGMqDPVQLCJ4DRmg",
+      apiKey: "5QG-UzbQNxyNreqAyYCckw",
       username: "csis",
     });
 
     // Define carto.source.Dataset to use the sea_covid19_tracker_map dataset
-    const totalCasesSource = new carto.source.Dataset(
-      "sea_covid19_tracker_map"
-    );
+    const dataSource = new carto.source.SQL(`
+      SELECT *
+      FROM map_data_coronavirus_covid19_cases_in_sea
+    `);
 
     // Style the total_cases data
-    let totalCasesStyle = new carto.style.CartoCSS(`
-          #layer {
-            polygon-fill: ramp([total_cases], (#b5e6ff, #99cbec, #7cb0da, #5e96c8, #3d7db6, #0065a4), quantiles);
-            polygon-opacity: ${totalCasesOpacity};
-          }
-          #layer::outline {
-            line-width: 1;
-            line-color: #FFFFFF;
-            line-opacity: 0.5;
-          }
-        `);
+    let dataStyle = new carto.style.CartoCSS(`
+      #layer {
+        marker-width: ramp([total_cases], range(10, 150), equal(500));
+        marker-fill: #0064a3;
+        marker-fill-opacity: 0.6;
+        marker-allow-overlap: true;
+        marker-line-width: 1;
+        marker-line-color: #025488;
+        marker-line-opacity: 1;
+      }
+    `);
 
     function setTotalCasesStyle(totalCasesOpacity) {
       totalCasesStyle.setContent(`
@@ -129,48 +130,8 @@
 
     // Combine total_cases source and style
     const totalCases = new carto.layer.Layer(
-      totalCasesSource,
-      totalCasesStyle, {
-      featureOverColumns: ['country', 'total_cases', 'total_deaths']
-    }
-    );
-
-    // Define carto.source.Dataset to use the sea_covid19_tracker_map dataset
-    const totalDeathsSource = new carto.source.Dataset(
-      "sea_covid19_tracker_map"
-    );
-
-    // Style the total_deaths data
-    let totalDeathsStyle = new carto.style.CartoCSS(`
-          #layer {
-            polygon-fill: ramp([total_deaths], (#b5e6ff, #99cbec, #7cb0da, #5e96c8, #3d7db6, #0065a4), quantiles);
-            polygon-opacity: ${totalDeathsOpacity};
-          }
-          #layer::outline {
-            line-width: 1;
-            line-color: #FFFFFF;
-            line-opacity: 0.5;
-          }
-        `);
-
-    function setTotalDeathsStyle(totalDeathsOpacity) {
-      totalDeathsStyle.setContent(`
-          #layer {
-            polygon-fill: ramp([total_deaths], (#b5e6ff, #99cbec, #7cb0da, #5e96c8, #3d7db6, #0065a4), quantiles);
-            polygon-opacity: ${totalDeathsOpacity};
-          }
-          #layer::outline {
-            line-width: 1;
-            line-color: #FFFFFF;
-            line-opacity: 0.5;
-          }
-        `);
-    }
-
-    // Combine total_deaths source and style
-    const totalDeaths = new carto.layer.Layer(
-      totalDeathsSource,
-      totalDeathsStyle, {
+      dataSource,
+      dataStyle, {
       featureOverColumns: ['country', 'total_cases', 'total_deaths']
     }
     );
@@ -183,7 +144,6 @@
         setTotalCasesStyle(1);
         setTotalDeathsStyle(0.0);
         toggleActiveButton('totalCases');
-        renderLegend(totalCasesMin, totalCasesMax);
       });
 
     totalDeathsButton
@@ -191,7 +151,6 @@
         setTotalCasesStyle(0.0);
         setTotalDeathsStyle(1);
         toggleActiveButton('totalDeaths');
-        renderLegend(totalDeathsMin, totalDeathsMax);
       });
 
     function toggleActiveButton(activeButton) {
@@ -206,12 +165,12 @@
 
     // Notify carto.Client that the layers exist. The client
     // is responsible for grouping layers into a single Leaflet layer.
-    client.addLayers([totalCases, totalDeaths]);
+    client.addLayer(totalCases);
 
     // Add layer to map
     client.getLeafletLayer().addTo(map);
 
-    const popup = L.popup({ closeButton: false });
+  const popup = L.popup({ closeButton: false });
     totalCases.on(carto.layer.events.FEATURE_OVER, event => {
       popup.setLatLng(event.latLng);
 
@@ -227,16 +186,14 @@
         ];
 
         content += `
-    <h2 class="popupHeaderStyle"> 
-      ${data.country}
-    </h2> 
-    <p class="popupEntryStyle"> 
-      Total deaths: ${data.total_deaths}
-    </p>
-    <p class="popupEntryStyle"> 
-      Total cases: ${data.total_cases}
-    </p>
-    `
+          <h2 class="popup__title"> 
+          ${data.country}
+          </h2>
+          <p class="popup__values">
+          Total Cases: <span>${data.total_cases.toLocaleString('en-us')}</span><br />
+          Total Deaths: <span>${data.total_deaths.toLocaleString('en-us')}</span>
+          </p>
+        `
         popup.setContent("" + content);
         popup.openOn(map);
       }
@@ -245,35 +202,6 @@
     totalCases.on(carto.layer.events.FEATURE_OUT, event => {
       popup.removeFrom(map);
     });
-
-    let totalDeathsMin = 0
-    let totalDeathsMax = 0
-    totalDeaths.on('metadataChanged', function (event) {
-      event.styles.forEach(function (styleMetadata) {
-        totalDeathsMin = styleMetadata.getMin()
-        totalDeathsMax = styleMetadata.getMax()
-      });
-    });
-
-    let totalCasesMin = 0
-    let totalCasesMax = 0
-    let isBeforeFirstRender = true
-    totalCases.on('metadataChanged', function (event) {
-      event.styles.forEach(function (styleMetadata) {
-        totalCasesMin = styleMetadata.getMin()
-        totalCasesMax = styleMetadata.getMax()
-
-        if (isBeforeFirstRender) {
-          renderLegend(totalCasesMin, totalCasesMax)
-          isBeforeFirstRender = false
-        }
-      });
-    });
-
-    function renderLegend(min, max) {
-      document.getElementById('legend-min').innerHTML = min.toLocaleString('en-US');
-      document.getElementById('legend-max').innerHTML = max.toLocaleString('en-US');
-    }
   </script>
 </body>
 
