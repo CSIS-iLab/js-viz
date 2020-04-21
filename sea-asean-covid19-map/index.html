@@ -187,14 +187,16 @@
         .addEventListener("click", function () {
           setTotalCasesStyle(0.65);
           setTotalDeathsStyle(0.0);
-          toggleActiveButton('totalCases')
+          toggleActiveButton('totalCases');
+          renderLegend(totalCasesMin, totalCasesMax);
         });
       
       totalDeathsButton
         .addEventListener("click", function () {
           setTotalCasesStyle(0.0);
           setTotalDeathsStyle(0.65);
-          toggleActiveButton('totalDeaths')
+          toggleActiveButton('totalDeaths');
+          renderLegend(totalDeathsMin, totalDeathsMax);
         });
 
       function toggleActiveButton(activeButton) {
@@ -214,23 +216,42 @@
       // Add layer to map
       client.getLeafletLayer().addTo(map);
 
-  /*    totalCases.on('metadatachanged', function(event) {
+
+      let totalDeathsMin = 0
+      let totalDeathsMax = 0
+      totalDeaths.on('metadataChanged', function(event) {
         event.styles.forEach(function (styleMetadata) {
-          renderLegend(styleMetadata)
+          totalDeathsMin = styleMetadata.getmin()
+          totalDeathsMax = styleMetadata.getMax()
         });
       });
 
-
-      totalDeaths.on('metadatachanged', function(event) {
+      let totalCasesMin = 0
+      let totalCasesMax = 0
+      totalCases.on('metadataChanged', function(event) {
         event.styles.forEach(function (styleMetadata) {
-          renderLegend(styleMetadata)
+          totalCasesMin = styleMetadata.getmin()
+          totalCasesMax = styleMetadata.getMax()
         });
       });
 
-      function renderLegend(metadata) {
-        document.getElementById('legend-min').innerHTML = metadata.getMin();
-        document.getElementById('legend-max').innerHTML = metadata.getMax();
-      }*/
+     /*totalCases.on('metadataChanged', function(event) {
+        event.styles.forEach(function (styleMetadata) {
+          renderLegend(styleMetadata)
+        });
+      }); 
+
+
+      totalDeaths.on('metadataChanged', function(event) {
+        event.styles.forEach(function (styleMetadata) {
+          renderLegend(styleMetadata)
+        });
+      });*/
+
+      function renderLegend(min, max) {
+        document.getElementById('legend-min').innerHTML = min;
+        document.getElementById('legend-max').innerHTML = max;
+      }
 
     </script>
   </body>
