@@ -58,7 +58,7 @@
 
     <script>
       // Variable declaration and initial assignment
-      let totalCasesOpacity = 0.65;
+      let totalCasesOpacity = 1;
       let totalDeathsOpacity = 0;
 
       // Create Leaflet Map
@@ -183,7 +183,7 @@
 
       totalCasesButton
         .addEventListener("click", function () {
-          setTotalCasesStyle(0.65);
+          setTotalCasesStyle(1);
           setTotalDeathsStyle(0.0);
           toggleActiveButton('totalCases');
           renderLegend(totalCasesMin, totalCasesMax);
@@ -192,7 +192,7 @@
       totalDeathsButton
         .addEventListener("click", function () {
           setTotalCasesStyle(0.0);
-          setTotalDeathsStyle(0.65);
+          setTotalDeathsStyle(1);
           toggleActiveButton('totalDeaths');
           renderLegend(totalDeathsMin, totalDeathsMax);
         });
