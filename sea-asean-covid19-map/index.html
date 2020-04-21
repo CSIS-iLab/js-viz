@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Single layer | CARTO</title>
+    <title>Covid-19 Cases in Southeast Asia | CSIS Southeast Asia Program</title>
+
     <meta name="viewport" content="initial-scale=1.0" />
     <meta charset="utf-8" />
 
@@ -14,10 +15,6 @@
 
     <!-- Include CARTO.js -->
     <script src="https://libs.cartocdn.com/carto.js/v4.2.0/carto.min.js"></script>
-    <link
-      href="https://fonts.googleapis.com/css?family=Montserrat:600"
-      rel="stylesheet"
-    />
     <link
       href="https://fonts.googleapis.com/css?family=Open+Sans"
       rel="stylesheet"
@@ -50,6 +47,7 @@
           <br>
           <button class="btn active" id="total-cases-button">Total Cases</button>
           <button class="btn" id="total-deaths-button">Total Deaths</button>
+          <br>
           <br>
           <div class="legend-bar-container">
             <span id="legend-min" class="legend-label"></span>
@@ -185,6 +183,37 @@
         totalDeathsStyle
       );
 
+      /*const totalCasesButton = document
+          .getElementById("total-cases-button")
+
+
+      const totalDeathsButton = document.getElementById("total-deaths-button")
+
+
+      totalCasesButton
+        .addEventListener("click", function () {
+          setTotalCasesStyle(0.65);
+          setTotalDeathsStyle(0.0);
+          toggleActiveButton('totalCases')
+        });
+      
+      totalDeathsButton
+        .addEventListener("click", function () {
+          setTotalCasesStyle(0.0);
+          setTotalDeathsStyle(0.65);
+          toggleActiveButton('totalDeaths')
+        });
+​
+      function toggleActiveButton(activeButton) {
+        if (activeButton == 'totalCases') {
+          totalCasesButton.classList.add('active')
+          totalDeathsButton.classList.remove('active')
+        } else {
+          totalCasesButton.classList.remove('active')
+          totalDeathsButton.classList.add('active')
+        }
+      } */ 
+
       document
         .getElementById("total-cases-button")
         .addEventListener("click", function () {
@@ -203,12 +232,41 @@
           } else this.classList.add("active");
           });
 
+          
+
       // Notify carto.Client that the layers exist. The client
       // is responsible for grouping layers into a single Leaflet layer.
       client.addLayers([totalCases, totalDeaths]);
 
       // Add layer to map
       client.getLeafletLayer().addTo(map);
+
+      totalCases.on('metadatachanged', function(event) {
+        event.stlyes.forEach(function (styleMetadata) {
+          renderLegend(styleMetadata)
+        });
+      });
+
+
+      totalDeaths.on('metadatachanged', function(event) {
+        event.stlyes.forEach(function (styleMetadata) {
+          renderLegend(styleMetadata)
+        });
+      });
+
+      function renderLegend(metadata) {
+        document.getElementById('legend-min').innerHTML = metadata.getMin();
+        document.getElementById('legend-max').innerHTML = metadata.getMax();
+        if ( metadata.getMin() ) {
+          document.getElementById('legend-bar').classList.remove('is-hidden')
+          document.getElementById('constellation-details').classList.remove('is-hidden')
+          document.getElementById('noCoverage').classList.add('is-hidden')
+        } else {
+          document.getElementById('legend-bar').classList.add('is-hidden')
+          document.getElementById('constellation-details').classList.add('is-hidden')
+          document.getElementById('noCoverage').classList.remove('is-hidden')
+        }
+      }
 
     </script>
   </body>
