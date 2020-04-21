@@ -236,14 +236,14 @@
       client.getLeafletLayer().addTo(map);
 
       totalCases.on('metadatachanged', function(event) {
-        event.stlyes.forEach(function (styleMetadata) {
+        event.styles.forEach(function (styleMetadata) {
           renderLegend(styleMetadata)
         });
       });
 
 
       totalDeaths.on('metadatachanged', function(event) {
-        event.stlyes.forEach(function (styleMetadata) {
+        event.styles.forEach(function (styleMetadata) {
           renderLegend(styleMetadata)
         });
       });
