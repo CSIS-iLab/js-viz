@@ -24,7 +24,6 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" type="text/css" href="map.css">
-    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap" rel="stylesheet">
   </head>
   <body>
     <div id="map"></div>
@@ -39,16 +38,15 @@
           <p class="description open-sans">
             Hover over the
             interactive map to learn more detail about each country.
-            <br>
-            <br>
+          </p>
+          <p class="description open-sans">
             Use the buttons below to view the number of total confirmed COVID-19
             cases and total confirmed deaths from COVID-19. 
           </p>
-          <br>
-          <button class="btn active" id="total-cases-button">Total Cases</button>
-          <button class="btn" id="total-deaths-button">Total Deaths</button>
-          <br>
-          <br>
+          <div class="button-container">
+            <button class="btn active" id="total-cases-button">Total Cases</button>
+            <button class="btn" id="total-deaths-button">Total Deaths</button>
+          </div>
           <div class="legend-bar-container">
             <span id="legend-min" class="legend-label"></span>
             <span id="legend-max" class="legend-label"></span>
@@ -228,36 +226,23 @@
 
       let totalCasesMin = 0
       let totalCasesMax = 0
+      let isBeforeFirstRender = true
       totalCases.on('metadataChanged', function(event) {
         event.styles.forEach(function (styleMetadata) {
           totalCasesMin = styleMetadata.getMin()
           totalCasesMax = styleMetadata.getMax()
+
+          if (isBeforeFirstRender) {
+            renderLegend(totalCasesMin, totalCasesMax)
+            isBeforeFirstRender = false
+          }
         });
       });
 
-     /*totalCases.on('metadataChanged', function(event) {
-        event.styles.forEach(function (styleMetadata) {
-          renderLegend(styleMetadata)
-        });
-      }); 
-
-
-      totalDeaths.on('metadataChanged', function(event) {
-        event.styles.forEach(function (styleMetadata) {
-          renderLegend(styleMetadata)
-        });
-      });*/
-
       function renderLegend(min, max) {
-        document.getElementById('legend-min').innerHTML = min;
+        document.getElementById('legend-min').innerHTML = min.toLocaleString('en-US');
         document.getElementById('legend-max').innerHTML = max.toLocaleString('en-US');
       }
-
-      document.addEventListener('DOMContentLoaded', function() {
-        renderLegend(totalCasesMin, totalCasesMax)
-      }, false);
-
-      
     </script>
   </body>
 </html>
