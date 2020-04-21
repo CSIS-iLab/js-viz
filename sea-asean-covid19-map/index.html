@@ -183,7 +183,6 @@
       const totalCasesButton = document.getElementById("total-cases-button")
       const totalDeathsButton = document.getElementById("total-deaths-button")
 
-
       totalCasesButton
         .addEventListener("click", function () {
           setTotalCasesStyle(0.65);
@@ -197,7 +196,7 @@
           setTotalDeathsStyle(0.65);
           toggleActiveButton('totalDeaths')
         });
-​
+
       function toggleActiveButton(activeButton) {
         if (activeButton == 'totalCases') {
           totalCasesButton.classList.add('active')
@@ -208,26 +207,6 @@
         }
       } 
 
-      /*document
-        .getElementById("total-cases-button")
-        .addEventListener("click", function () {
-          console.log("clicked total cases");
-          setTotalCasesStyle(0.65);
-          setTotalDeathsStyle(0.0);
-        });
-      document
-        .getElementById("total-deaths-button")
-        .addEventListener("click", function () {
-          console.log("clicked death");
-          setTotalCasesStyle(0.0);
-          setTotalDeathsStyle(0.65);
-          if (this.classList.contains("active")) {
-            this.classList.remove("active");
-          } else this.classList.add("active");
-          });
-
-     */      
-
       // Notify carto.Client that the layers exist. The client
       // is responsible for grouping layers into a single Leaflet layer.
       client.addLayers([totalCases, totalDeaths]);
@@ -235,7 +214,7 @@
       // Add layer to map
       client.getLeafletLayer().addTo(map);
 
-      totalCases.on('metadatachanged', function(event) {
+  /*    totalCases.on('metadatachanged', function(event) {
         event.styles.forEach(function (styleMetadata) {
           renderLegend(styleMetadata)
         });
@@ -251,7 +230,7 @@
       function renderLegend(metadata) {
         document.getElementById('legend-min').innerHTML = metadata.getMin();
         document.getElementById('legend-max').innerHTML = metadata.getMax();
-      }
+      }*/
 
     </script>
   </body>
