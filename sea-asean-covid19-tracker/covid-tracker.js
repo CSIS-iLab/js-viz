@@ -9,7 +9,7 @@ function init() {
     key: publicSpreadsheetUrl,
     callback: showInfo,
     parseNumbers: true,
-    simpleSheet: true
+    simpleSheet: true,
   });
 }
 
@@ -26,30 +26,53 @@ function displayInfo(dataset) {
     data: dataset,
     columns: [
       { title: "Country", data: "Country" },
-      { title: "Cases", data: "Total Cases", className: "dt-body-right" },
+      {
+        title: "Cases",
+        data: "Total Cases",
+        className: "dt-body-right",
+        render: $.fn.dataTable.render.number(",", ".", 0),
+      },
       {
         title: "Cases Last 24hr",
         data: "Cases Last 24hr",
-        className: "dt-body-right"
+        className: "dt-body-right",
+        render: $.fn.dataTable.render.number(",", ".", 0),
       },
-      { title: "Deaths", data: "Total Deaths", className: "dt-body-right" },
-      { title: "Tests", data: "# Tests", className: "dt-body-right" },
-      { title: "Recovered", data: "# Recovered", className: "dt-body-right" },
+      {
+        title: "Deaths",
+        data: "Total Deaths",
+        className: "dt-body-right",
+        render: $.fn.dataTable.render.number(",", ".", 0),
+      },
+      {
+        title: "Tests",
+        data: "# Tests",
+        className: "dt-body-right",
+        render: $.fn.dataTable.render.number(",", ".", 0),
+      },
+      {
+        title: "Recovered",
+        data: "# Recovered",
+        className: "dt-body-right",
+        render: $.fn.dataTable.render.number(",", ".", 0),
+      },
       {
         title: "Cases per Million",
         data: "Cases per Million",
-        className: "dt-body-right"
+        className: "dt-body-right",
+        render: $.fn.dataTable.render.number(",", ".", 0),
       },
       {
         title: "Population",
         data: "Total Population",
-        className: "dt-body-right"
-      }
+        className: "dt-body-right",
+        render: $.fn.dataTable.render.number(",", ".", 0),
+      },
     ],
     paging: false,
     searching: false,
     info: false,
-    order: [[1, 'desc']]
+    order: [[7, "desc"]],
   });
 }
 
