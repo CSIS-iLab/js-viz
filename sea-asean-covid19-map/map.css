@@ -79,9 +79,9 @@ hr {
 .legend[data-type="total_cases"] {
   --bg: rgba(0, 100, 163, 0.6);
   --border: #025488;
-  --small: 10px;
-  --medium: 20px;
-  --large: 26px;
+  --small: 6px;
+  --medium: 15px;
+  --large: 34px;
 }
 
 .legend[data-type="total_deaths"] {
@@ -89,7 +89,7 @@ hr {
   --border: #480e2c;
   --small: 5px;
   --medium: 10px;
-  --large: 15px;
+  --large: 18px;
 }
 
 .legend li {

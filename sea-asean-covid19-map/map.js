@@ -1,5 +1,5 @@
 // Create Leaflet Map
-const map = L.map("map").setView([10, 124], 4);
+const map = L.map("map").setView([10, 124], 4.4);
 map.scrollWheelZoom.disable();
 
 // Create separate pane in Leaflet and set zIndex to bring it to
@@ -25,7 +25,7 @@ L.tileLayer(
   "https://api.mapbox.com/styles/v1/ilabmedia/ck8rn1khs0k691inz8zh0ejdd/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw",
   {
     maxZoom: 18,
-    pane: "labels",
+    // pane: "labels",
   }
 ).addTo(map);
 
@@ -37,17 +37,22 @@ map.attributionControl.addAttribution(
 // Defining a carto.Client, the entry point to CARTO.js which
 // handles communication between app and CARTO account
 const client = new carto.Client({
-  apiKey: "5QG-UzbQNxyNreqAyYCckw",
+  apiKey: "5coONLpr98cXcl5qM9t64w",
   username: "csis",
 });
 
 // Define carto.source.Dataset to use the sea_covid19_tracker_map dataset
 const dataSource = new carto.source.SQL(`
-      SELECT *,
-      sum(total_cases) AS total_cases_sum
-      FROM map_data_coronavirus_covid19_cases_in_sea
-      GROUP BY cartodb_id
-    `);
+  SELECT *
+  FROM coronavirus_covid19_cases_in_sea
+  WHERE country != 'World' AND country != 'USA'
+`);
+
+const southeastAsiaSource = new carto.source.SQL(`
+  SELECT *
+  FROM coronavirus_covid19_cases_in_sea
+  WHERE country != 'World' AND country != 'USA' AND country != 'China'
+`);
 
 // Style the total_cases data
 let dataStyle = new carto.style.CartoCSS(setLayerStyle("total_cases"));
@@ -65,9 +70,13 @@ client.addLayer(dataLayer);
 client.getLeafletLayer().addTo(map);
 
 // Calculate Total Cases & Deaths
-const total_cases = new carto.dataview.Formula(dataSource, "total_cases", {
-  operation: carto.operation.SUM,
-});
+const total_cases = new carto.dataview.Formula(
+  southeastAsiaSource,
+  "total_cases",
+  {
+    operation: carto.operation.SUM,
+  }
+);
 total_cases.on("dataChanged", (data) => {
   sum_total_cases = data.result;
   document.getElementById("total_cases").innerHTML = data.result.toLocaleString(
@@ -76,9 +85,13 @@ total_cases.on("dataChanged", (data) => {
 });
 client.addDataview(total_cases);
 
-const total_deaths = new carto.dataview.Formula(dataSource, "total_deaths", {
-  operation: carto.operation.SUM,
-});
+const total_deaths = new carto.dataview.Formula(
+  southeastAsiaSource,
+  "total_deaths",
+  {
+    operation: carto.operation.SUM,
+  }
+);
 total_deaths.on("dataChanged", (data) => {
   sum_total_deaths = data.result;
   document.getElementById(
@@ -108,7 +121,7 @@ function toggleActiveDataset(activeDataset) {
 }
 
 function setLayerStyle(activeDataset) {
-  let max = 150;
+  let max = 300;
   let bins = 500;
   let bg = "#0064a3";
   let border = "#025488";
