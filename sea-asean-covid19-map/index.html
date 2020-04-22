@@ -184,8 +184,7 @@
           marker-line-color: ${border};
           marker-line-opacity: 1;
 
-          [total_cases = 0],
-          [total_deaths = 0] {
+          [${activeDataset} = 0] {
             marker-width: 0;
           }
         }
