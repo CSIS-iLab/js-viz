@@ -67,7 +67,8 @@ Highcharts.chart("hcContainer", {
     shared: true,
     useHTML: true,
     style: {
-      lineHeight: '21px'
+      lineHeight: '21px',
+      opacity: 0.8
     },
     headerFormat: '<span style="font-size: 12px"><b>{point.key}</b></span><br/>'
   },
