@@ -5,8 +5,8 @@ Highcharts.setOptions({
   },
   chart: {
     style: {
-      fontFamily: '"Source Sans", Arial, Helvetica, sans-serif',
-      fontSize: '16px'
+      fontSize: '16px',
+      fontFamily: "'Source Sans Pro'"
     }
   }
 });
