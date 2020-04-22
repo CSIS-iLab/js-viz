@@ -21,7 +21,7 @@ Highcharts.chart("hcContainer", {
   chart: {
     zoomType: 'x',
     type: 'spline',
-    height: (9 / 16 * 100) + '%' 
+    height: 50 + '%'
   },
   // Colors
   colors: [
@@ -61,6 +61,10 @@ Highcharts.chart("hcContainer", {
     title: {
       text: 'Number of Polio Cases <br> (WPV and cVDPV)'
     }
+  },
+  // X Axis
+  xAxis: {
+    tickInterval: 2
   },
   // Tooltip
   tooltip: {
