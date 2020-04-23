@@ -48,7 +48,10 @@ Highcharts.chart("hcContainer", {
   // Chart Legend
   legend: {
     title: {
-      text: '<br><b><span style="font-size: 12px; color: #808080">(Click to hide)</b></span>',
+      text: '<br><span style="font-size: 12px; color: #808080";>(Click to hide)</span>',
+    },
+    itemStyle: {
+      fontWeight: 900
     },
     margin: 40,
     align: "center",
