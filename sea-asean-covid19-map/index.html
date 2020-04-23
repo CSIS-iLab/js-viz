@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Covid-19 Cases in Southeast Asia | CSIS Southeast Asia Program</title>
+
+  <meta name="viewport" content="initial-scale=1.0" />
+  <meta charset="utf-8" />
+
+  <!-- Include Leaflet -->
+  <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
+  <link href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" rel="stylesheet" />
+
+  <!-- Include CARTO.js -->
+  <script src="https://libs.cartocdn.com/carto.js/v4.2.0/carto.min.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" />
+  <link href="https://carto.com/developers/carto-js/examples/maps/public/style.css" rel="stylesheet" />
+  <link rel="stylesheet" type="text/css" href="map.css">
+</head>
+
+<body>
+  <div id="map"></div>
+
+  <!-- Description -->
+  <aside class="toolbox">
+    <section class="box">
+      <header>
+        <h1>Mapping Covid-19 in Southeast Asia</h1>
+      </header>
+      <section>
+        <p class="description open-sans">
+          Hover over the
+          interactive map to learn more detail about each country.
+        </p>
+        <hr />
+        <div class="button-container">
+          <div class="button__title">View Confirmed Cases in SEA</div>
+          <button class="btn active" id="total-cases-button">Total Cases <span id="total_cases"></span></button>
+          <button class="btn" id="total-deaths-button">Total Deaths <span id="total_deaths"></span></button>
+        </div>
+        <hr />
+        <ul id="legend" class="legend" data-type="total_cases">
+          <li id="small">10</li>
+          <li id="medium">1,000</li>
+          <li id="large">>10,000</li>
+        </ul>
+      </section>
+      <footer class="js-footer"></footer>
+  </aside>
+
+  <script src="map.js"></script>
+</body>
+
+</html>

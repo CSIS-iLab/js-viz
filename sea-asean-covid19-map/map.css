@@ -1,0 +1,149 @@
+body {
+  font-family: "Open Sans", Arial, sans-serif;
+}
+
+hr {
+  margin: 1.25rem 0;
+  border: 0.5px solid #d4d0cb;
+}
+
+.open-sans {
+  color: #333;
+  font-size: 16px;
+  line-height: 1.3;
+}
+
+@media screen and (max-width: 640px) {
+  .open-sans {
+    font-size: 14px;
+  }
+}
+
+.button-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 1rem 0;
+}
+
+.button__title {
+  flex: 1 1 100%;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.btn {
+  display: inline-block;
+  flex: 1 1 50%;
+  margin: 0;
+  padding: 0.55em 1.5em;
+  color: #333;
+  font-size: 12px;
+  line-height: 1.2;
+  text-align: center;
+  text-transform: uppercase;
+  background: #e9e9ea;
+  border: 1px solid #d4d0cb;
+  cursor: pointer;
+  transition: color 0.3s ease-in-out, background 0.3s ease-in-out;
+}
+
+.btn:hover {
+  background: #d8d8d8;
+}
+
+.btn.active {
+  color: #000;
+  font-weight: bold;
+  background: #fff;
+  border-color: #000;
+}
+
+.btn span:not(:empty) {
+  display: block;
+  margin-top: 0.5rem;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.legend {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.legend[data-type="total_cases"] {
+  --bg: rgba(0, 100, 163, 0.6);
+  --border: #025488;
+  --small: 6px;
+  --medium: 15px;
+  --large: 34px;
+}
+
+.legend[data-type="total_deaths"] {
+  --bg: rgba(96, 20, 59, 0.6);
+  --border: #480e2c;
+  --small: 5px;
+  --medium: 10px;
+  --large: 18px;
+}
+
+.legend li {
+  display: flex;
+  align-items: center;
+}
+
+.legend li + li {
+  margin-left: 1rem;
+}
+
+.legend li::before {
+  content: "";
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 0.5rem;
+  background: #e9e9ea;
+  background: var(--bg);
+  border: 1px solid #d4d0cb;
+  border-color: var(--border);
+  border-radius: 50%;
+}
+
+#small::before {
+  width: var(--small);
+  height: var(--small);
+}
+
+#medium::before {
+  width: var(--medium);
+  height: var(--medium);
+}
+
+#large::before {
+  width: var(--large);
+  height: var(--large);
+}
+
+.is-hidden {
+  display: none;
+}
+
+.popup__title {
+  margin-bottom: 0.5rem;
+  font-size: 18px;
+  text-align: center;
+}
+
+.popup__values {
+  margin: 0 !important;
+  font-size: 16px;
+}
+
+.popup__values span {
+  font-weight: bold;
+}
