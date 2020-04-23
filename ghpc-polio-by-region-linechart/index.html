@@ -10,10 +10,61 @@
   <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap" rel="stylesheet">
 </head>
 <body>
+  <style>
+    #mobileImage {
+      display: none;
+    }
 
+    @media only screen and (max-width: 725px) {
+
+      #hcContainer,
+      h2,
+      p,
+      select,
+      label {
+        display: none;
+      }
+
+      #mobileImage {
+        display: block;
+        width: 90vw;
+        margin: 0 auto;
+      }
+    }
+
+    h2,
+    p,
+    label {
+      color: #333333;
+      font-family: "Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica, sans-serif;
+      font-weight: 100;
+    }
+
+    h2 {
+      text-align: center;
+      font-size: 23px;
+    }
+
+    p {
+      text-align: left;
+      font-size: 12px;
+      margin: 0 auto;
+      max-width: 1000px;
+    }
+
+    label {
+      font-size: 12px;
+      margin-left: 25px;
+    }
+
+    select,
+    label {
+      margin-top: 17px;
+    }
+  </style>
   <!-- Highcharts chart container -->
   <div id="hcContainer"></div>
-
+  <img src="mobileChart.png" alt="Global Polio Cases by Region, 1980 - 2019" id="mobileImage">
   <!-- Include Highcharts Libraries; Adjust per project -->
   <script src="https://code.highcharts.com/highcharts.js"></script>
   <script src="https://code.highcharts.com/highcharts-more.js"></script>
