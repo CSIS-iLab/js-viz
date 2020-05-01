@@ -69,9 +69,9 @@ $(function () {
               return [activity.xData[j], val];
           });
 
-          $('<div class="chart">')
-              .appendTo('#container')
-              .highcharts({
+          //$('<div id="chart' + i + '" class="col-md-20">').appendTo('#container');
+
+          Highcharts.chart('container', {
                   chart: {
                       marginLeft: 40, // Keep all charts left aligned
                       spacingTop: 20,
