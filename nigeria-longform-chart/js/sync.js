@@ -69,7 +69,6 @@ $(function () {
               return [activity.xData[j], val];
           });
 
-          //$('<div id="chart' + i + '" class="col-md-20">').appendTo('#container');
 
           Highcharts.chart('container', {
                   chart: {
