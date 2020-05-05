@@ -18,8 +18,8 @@ $(function () {
 
       for (i = 0; i < Highcharts.charts.length; i = i + 1) {
           chart = Highcharts.charts[i];
-          event = chart.pointer.normalize(e.originalEvent); // Find coordinates within the chart
-          point = chart.series[0].searchPoint(event, true); // Get the hovered point
+         // event = chart.pointer.normalize(e.originalEvent); // Find coordinates within the chart
+          //point = chart.series[0].searchPoint(event, true); // Get the hovered point
 
           if (point) {
               point.highlight(e);
