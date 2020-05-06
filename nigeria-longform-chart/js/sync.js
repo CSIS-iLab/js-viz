@@ -130,7 +130,8 @@ $(function() {
               crosshair: true,
               events: {
                 setExtremes: syncExtremes
-              }
+              },
+              tickInterval: 1
             },
             yAxis: {
               title: {
