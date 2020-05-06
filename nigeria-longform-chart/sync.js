@@ -22,15 +22,15 @@ $(function() {
         e = chart.pointer.normalize(e); // Find coordinates within the chart
   
         for (j = 0; j < chart.series.length; j++) {
-            point = chart.series[j].searchPoint(e, true);
+          point = chart.series[j].searchPoint(e, true);
   
           if (point) {
-              points.push(point);
+            points.push(point);
           }
         }
   
-              if (points.length) {
-            for (j = 0; j < points.length; j++) {
+        if (points.length) {
+          for (j = 0; j < points.length; j++) {
             points[j].onMouseOver();
           }
           
@@ -175,25 +175,25 @@ $(function() {
               },
               formatter: function () {
                 var value = this.y,
-                    shortValue = '',
-                    suffix = '';
+                  shortValue = '',
+                  suffix = '';
   
                 if (this.points.length === 3) {
-                    value = Math.abs(this.points[1].y - this.points[2].y);
+                  value = Math.abs(this.points[1].y - this.points[2].y);
                 }
   
-                              if (value / 1000 >= 1 && value / 1000 < 1000) {
-                    shortValue = (value / 1000).toFixed(2);
-                    suffix = ' Thousand';
+                if (value / 1000 >= 1 && value / 1000 < 1000) {
+                  shortValue = (value / 1000).toFixed(2);
+                  suffix = ' Thousand';
                 } else if (value / 1000000 >= 1 && value / 1000000 < 1000) {
-                    shortValue = (value / 1000000).toFixed(2);
-                    suffix = ' Million';
+                  shortValue = (value / 1000000).toFixed(2);
+                  suffix = ' Million';
                 } else if (value / 1000000000 >= 1 ) {
-                    shortValue = (value / 1000000000).toFixed(2);
-                    suffix = ' Billion';
+                  shortValue = (value / 1000000000).toFixed(2);
+                  suffix = ' Billion';
                 }
                 
-                  return dataset.unit + ': <b>' + (shortValue || value) + suffix + '</b>';
+                return dataset.unit + ': <b>' + (shortValue || value) + suffix + '</b>';
               }
             },
             series: [{
@@ -204,7 +204,7 @@ $(function() {
               fillOpacity: 0.3,
               xtooltip: {
                 xvalueSuffix: ' ' + dataset.unit,
-                              pointFormat: dataset.unit + ': <b>{point.y}</b>'
+                pointFormat: dataset.unit + ': <b>{point.y}</b>'
               }
             }]
           });
@@ -225,4 +225,3 @@ $(function() {
   
     });
   });
-  
