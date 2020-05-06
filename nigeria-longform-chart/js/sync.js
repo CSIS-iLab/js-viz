@@ -118,7 +118,8 @@ $(function() {
               text: dataset.name,
               align: 'left',
               margin: 0,
-              x: 30
+              x: 30,
+              y: 0
             },
             credits: {
               enabled: false
