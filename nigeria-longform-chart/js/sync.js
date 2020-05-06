@@ -59,10 +59,6 @@ $(function() {
       });
     }
   
-    // Get the data. The contents of the data file can be viewed at 
-    // https://github.com/highslide-software/highcharts.com/blob/master/samples/data/activity.json
-    //$.getJSON('http://www.highcharts.com/samples/data/jsonp.php?filename=activity.json&callback=?', function (activity) {
-  
     var activity = {
         "xData": [2014, 2015, 2016, 2017, 2018, 2019],
         "datasets": [{
