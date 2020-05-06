@@ -62,7 +62,7 @@ $(function() {
     var activity = {
         "xData": [2014, 2015, 2016, 2017, 2018, 2019],
         "datasets": [{
-          "name": "Internally-displaced People (IDPs)<br>in Northeast Nigeria, 2014-2019",
+          "name": "Internally-displaced People (IDPs)<br>in Northeast Nigeria",
           "data": [389280, 2151978, 1770444, 1702680, 2026602, 2039092],
           "unit": "IDPs in NE Nigeria",
           "type": "line",
@@ -76,7 +76,7 @@ $(function() {
           "color": 'tomato',
           "valueDecimals": 0
         }, {
-          "name": "UN Humanitarian Appeal<br>Funding Gap, 2014-2019",
+          "name": "UN Humanitarian Appeal<br>Funding Gap",
           "data": [17794549, 57989983, 267880318, 733410453, 715210134, 581092637],
           "unit": "Unmet UN Appeal Funding Requirements",
           "type": "line",
