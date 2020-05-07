@@ -207,6 +207,7 @@ $(function() {
               name: dataset.name,
               type: dataset.type,
               color: dataset.color,
+              fillColor: '#ebf2fa',
               fillOpacity: 0.3,
               xtooltip: {
                 xvalueSuffix: ' ' + dataset.unit,
