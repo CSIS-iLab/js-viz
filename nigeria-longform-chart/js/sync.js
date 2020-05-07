@@ -87,7 +87,7 @@ $(function() {
           "data": [93397393, 100263495, 484179598, 1054431494, 1047768587, 847703581],
           "unit": "Total Requirements (US$)",
           "type": "area",
-          "color": '#008000',
+          "lineColor": '#008000',
           "valueDecimals": 0
         }]
       },
