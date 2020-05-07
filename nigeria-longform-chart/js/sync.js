@@ -86,22 +86,19 @@ $(function() {
   
     $.each(activity.datasets, function(i, dataset) {
   
-      // Add X values
       dataset.data = Highcharts.map(dataset.data, function(val, i) {
         return [activity.xData[i], val];
       });
   
-      if (i % 2 == 0) { //first series of chart
+      if (i % 2 == 0) { 
   
         $('<div class="chart">')
           .appendTo('#container')
           .highcharts({
             chart: {
-              marginLeft: 60, // Keep all charts left aligned
+              marginLeft: 60, 
               spacingTop: 20,
-              spacingBottom: 20,
-              // zoomType: 'x'
-              // pinchType: null // Disable zoom on touch devices
+              spacingBottom: 20
             },
             title: {
               text: dataset.name,
