@@ -5,11 +5,6 @@ $(function() {
       }
     });
   
-  
-    /**
-     * In order to synchronize tooltips and crosshairs, override the 
-     * built-in events with handlers defined on the parent element.
-     */
     $('#container').bind('mousemove touchmove', function(e) {
       var chart,
         points = [],
@@ -19,7 +14,7 @@ $(function() {
   
       for (i = 0; i < Highcharts.charts.length; i++) {
         chart = Highcharts.charts[i];
-        e = chart.pointer.normalize(e); // Find coordinates within the chart
+        e = chart.pointer.normalize(e); 
   
         for (j = 0; j < chart.series.length; j++) {
           point = chart.series[j].searchPoint(e, true);
@@ -39,14 +34,9 @@ $(function() {
         }
       }
     });
-    /**
-     * Override the reset function, we don't need to hide the tooltips and crosshairs.
-     */
+
     Highcharts.Pointer.prototype.reset = function() {};
   
-    /**
-     * Synchronize zooming through the setExtremes event handler.
-     */
     function syncExtremes(e) {
       var thisChart = this.chart;
   
@@ -71,9 +61,9 @@ $(function() {
         }, {
           "name": "",
           "data": [],
-          "unit": "ms",
-          "type": "line",
-          "color": 'tomato',
+          "unit": "",
+          "type": "",
+          "color": '',
           "valueDecimals": 0
         }, {
           "name": "UN Humanitarian Appeal<br>Funding Gap",
