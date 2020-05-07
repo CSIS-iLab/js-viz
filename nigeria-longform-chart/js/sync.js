@@ -66,7 +66,7 @@ $(function() {
           "data": [389280, 2151978, 1770444, 1702680, 2026602, 2039092],
           "unit": "IDPs in NE Nigeria",
           "type": "line",
-          "color": 'green',
+          "color": '#304C87',
           "valueDecimals": 0
         }, {
           "name": "",
