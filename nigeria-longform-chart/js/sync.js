@@ -194,6 +194,14 @@ $(function() {
                 return dataset.unit + ': <b>' + (shortValue || value) + suffix + '</b>';
               }
             },
+            plotOptions: {
+              series: {
+               stacking: 'normal'
+               },				 
+              area: {
+                fillColor: '#ffffff00'
+              }
+           },
             series: [{
               data: dataset.data,
               name: dataset.name,
