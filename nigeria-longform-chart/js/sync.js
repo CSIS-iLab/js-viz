@@ -82,8 +82,6 @@ $(function() {
       },
       lastChart;
   
-  
-  
     $.each(activity.datasets, function(i, dataset) {
   
       dataset.data = Highcharts.map(dataset.data, function(val, i) {
@@ -201,7 +199,6 @@ $(function() {
               }
             }]
           });
-  
       } else { 
         lastChart = Highcharts.charts[Highcharts.charts.length - 1];
         lastChart.addSeries({
@@ -215,6 +212,5 @@ $(function() {
           }
         });
       }
-  
     });
   });
