@@ -121,8 +121,10 @@ $(function() {
               y: 0
             },
             credits: {
-              enabled: false
-            },
+             enabled: true,
+             href: false,
+             text: "CSIS Africa Program & CSIS Humanitarian Agenda | Source: DTM Nigeria & UN OCHA"
+           },
             legend: {
               enabled: false
             },
@@ -195,7 +197,7 @@ $(function() {
             },
             plotOptions: {
               series: {
-               stacking: 'normal'
+               stacking: 'normal',
                },				 
               area: {
                 fillColor: '#ffffff00'
