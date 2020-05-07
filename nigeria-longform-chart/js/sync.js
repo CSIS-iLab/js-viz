@@ -68,7 +68,7 @@ $(function() {
         }, {
           "name": "UN Humanitarian Appeal<br>Funding Gap",
           "data": [17794549, 57989983, 267880318, 733410453, 715210134, 581092637],
-          "unit": "Unmet UN Appeal Funding Requirements",
+          "unit": "Unmet UN Appeal Funding Requirements (US$)",
           "type": "area",
           "color": '#008000',
           "valueDecimals": 0
