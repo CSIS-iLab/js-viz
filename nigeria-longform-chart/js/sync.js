@@ -126,7 +126,10 @@ $(function() {
                 formatter:function(){
       
                   if(this.value >= 1000000000){
-                      return '$' + (this.value / 1000000000) + 'B';
+                    return '$' + (this.value / 1000000000) + 'B';
+                  }
+                  else if(this.value >= 3000000) {
+                    return '$' + (this.value / 1000000) + 'M';
                   }
                   else if(this.value >= 1000000) {
                       return (this.value / 1000000) + 'M';
