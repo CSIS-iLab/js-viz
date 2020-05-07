@@ -124,8 +124,9 @@ $(function() {
               },
               labels:{
                 formatter:function(){
-                    if(this.value >= 1000000000){
-                      return (this.value / 1000000000) + 'B';
+      
+                  if(this.value >= 1000000000){
+                      return '$' + (this.value / 1000000000) + 'B';
                   }
                   else if(this.value >= 1000000) {
                       return (this.value / 1000000) + 'M';
