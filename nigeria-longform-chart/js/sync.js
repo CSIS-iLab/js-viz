@@ -145,8 +145,8 @@ $(function() {
               shared: true,
               positioner: function() {
                 return {
-                  x: this.chart.chartWidth - this.label.width, // right aligned
-                  y: 20 // align to title
+                  x: this.chart.chartWidth - this.label.width, 
+                  y: 20 
                 };
               },
               borderWidth: 0,
@@ -202,7 +202,7 @@ $(function() {
             }]
           });
   
-      } else { //second series of chart
+      } else { 
         lastChart = Highcharts.charts[Highcharts.charts.length - 1];
         lastChart.addSeries({
           data: dataset.data,
