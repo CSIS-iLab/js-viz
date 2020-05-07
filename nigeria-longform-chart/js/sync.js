@@ -80,14 +80,13 @@ $(function() {
           "data": [17794549, 57989983, 267880318, 733410453, 715210134, 581092637],
           "unit": "Unmet UN Appeal Funding Requirements",
           "type": "area",
-          "color": '#F7A45D',
+          "color": '#008000',
           "valueDecimals": 0
         }, {
           "name": "",
           "data": [93397393, 100263495, 484179598, 1054431494, 1047768587, 847703581],
           "unit": "Total Requirements (US$)",
           "type": "area",
-          "lineColor": '#008000',
           "valueDecimals": 0
         }]
       },
