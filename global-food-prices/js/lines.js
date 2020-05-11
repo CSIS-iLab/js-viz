@@ -48,5 +48,8 @@ Highcharts.chart('hcContainer', {
       },
       lineWidth: 3
     }
+  },
+  tooltip: {
+    valueDecimals: 1
   }
 })
