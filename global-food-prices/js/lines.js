@@ -11,7 +11,7 @@ Highcharts.chart('hcContainer', {
   },
   // Chart Title and Subtitle
   title: {
-    text: "Interactive Title"
+    text: "Global Food Prices"
   },
   subtitle: {
     text: "Click and drag to zoom in"
@@ -20,12 +20,12 @@ Highcharts.chart('hcContainer', {
   credits: {
     enabled: true,
     href: false,
-    text: "CSIS Project Name | Source: NAME"
+    text: "CSIS Global Food Security Program | Source: Food & Agriculture Organization of the United Nations"
   },
   // Chart Legend
   legend: {
     title: {
-      text: 'Legend Title<br/><span style="font-size: 12px; color: #808080; font-weight: normal">(Click to hide)</span>'
+      text: 'Food Price Index<br/><span style="font-size: 12px; color: #808080; font-weight: normal">(Click to hide)</span>'
     },
     align: 'center',
     verticalAlign: 'bottom',
@@ -34,7 +34,7 @@ Highcharts.chart('hcContainer', {
   // Y Axis
   yAxis: {
     title: {
-      text: "Y Axis Title"
+      text: "Food Price Index (points)"
     }
   },
   // Additional Plot Options
