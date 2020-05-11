@@ -1,7 +1,7 @@
 Highcharts.chart('hcContainer', {
   // Load Data in from Google Sheets
   data: {
-    googleSpreadsheetKey: '1T98pKXiTxv7I3CNrR95lqR_lybe2NrS0ri601Mm20e4',
+    googleSpreadsheetKey: '1bmJkbGwoBJDW2dXkqxrWZNwC6NzwABQM-a1DcUVDkJs',
     googleSpreadsheetWorksheet: 1
   },
   // General Chart Options
@@ -25,7 +25,7 @@ Highcharts.chart('hcContainer', {
   // Chart Legend
   legend: {
     title: {
-      text: 'Food Price Index<br/><span style="font-size: 12px; color: #808080; font-weight: normal">(Click to hide)</span>'
+      text: ''
     },
     align: 'center',
     verticalAlign: 'bottom',
