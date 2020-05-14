@@ -11,73 +11,61 @@ function reqListener() {
     let impact = row.impact
     let country = row.country
 
+    // Create object for each impact level
     impactCategories[impact] = impactCategories[impact] || {
       name: impact,
       countries: []
     }
 
+    // Add countries to array in impact object
     impactCategories[impact].countries.push(country)
 
   });
+
+  // Remove object keys
   impactObjects = Object.values(impactCategories)
-  console.log(impactObjects)
+
+
   impactObjects.forEach(impact => {
+    let impactID = impact.name.split(" ")[0].toLowerCase()
+
     console.log(impact)
+    let tip = impact.name + '<br/>' + impact.countries
+
+    // Create div for each impact level
     let newDiv = document.createElement("div")
+    newDiv.setAttribute('id', impactID)
+    newDiv.setAttribute('class', 'impact-div')
+    newDiv.setAttribute('data-tippy-content', tip)
+    // newDiv.setAttribute('data-tippy-content', impact.countries)
+
+    // Add impact level as header to div
     let newH2 = document.createElement("h2")
     newH2.innerHTML = impact.name
     newDiv.appendChild(newH2)
+
+    // Create ul for countries
     let list = document.createElement("ul")
+
+    // Add li/div for each country in this impact level
     impact.countries.forEach(country => {
       let item = document.createElement('li')
-      item.innerHTML = country
+      item.setAttribute('class', 'country')
+      item.setAttribute('id', country.toLowerCase())
       list.appendChild(item)
     })
+    // Add list to impact div
     newDiv.appendChild(list)
+    // Add impact divs to body
     document.body.appendChild(newDiv)
+  })
+  tippy('[data-tippy-content]', {
+    delay: [100, 200],
   })
 }
 
 
-document.body.onload = addElement;
-function addElement() {
-  // create a new div element 
-  var newDiv = document.createElement("div");
-  // and give it some content 
-  var newContent = document.createTextNode(impactObjects[0].name);
-  // add the text node to the newly created div
-  newDiv.appendChild(newContent);
 
-  // add the newly created element and its content into the DOM 
-  var currentDiv = document.getElementById("div1");
-  document.body.insertBefore(newDiv, currentDiv);
-}
-
-function makeUL(array) {
-  // Create the list element:
-  var list = document.createElement('ul');
-
-  for (var i = 0; i < array.length; i++) {
-    // Create the list item:
-    var item = document.createElement('li');
-
-    // Set its contents:
-    item.appendChild(document.createTextNode(array[i]));
-
-    // Add it to the list:
-    list.appendChild(item);
-  }
-
-  // Finally, return the constructed list:
-  return list;
-}
-
-
-
-
-// impactCategories.forEach((cat, i) => {
-//   console.log(cat)
-// })
 
 
 var oReq = new XMLHttpRequest();
