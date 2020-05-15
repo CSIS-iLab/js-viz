@@ -18,20 +18,11 @@ Highcharts.chart('hcContainer', {
   },
   // Colors
   colors: [
-  // World 
-  //'#000',
-  
-  // ASEAN 
-  //'#67bce2',
-  
   // Brunei
   '#4E79A7',
 
   // Cambodia
   '#F28E2C',
-
-  // China
-  //'#e22129',
   
   // Indonesia
   '#76B7B2',
@@ -53,9 +44,6 @@ Highcharts.chart('hcContainer', {
 
   // Thailand
   '#59A14F',
-
-  // United States
-  //'#566377',
 
   // Vietnam
   '#AF7AA1'
@@ -80,19 +68,6 @@ Highcharts.chart('hcContainer', {
   yAxis: {
     title: {
       text: "Number of Cumulative Cases"
-    },
-    labels: {
-      formatter: function () {
-        if (this.value > 999999) {
-          return this.value / 1000000 + "M"
-        }
-        else if (this.value > 0) {
-          return this.value / 1000 + "K"
-        }
-        else {
-          return this.value
-        }
-      }
     }
   },
   xAxis: {
@@ -105,7 +80,8 @@ Highcharts.chart('hcContainer', {
   tooltip: {
     shared: true,
     useHTML: true,
-    xDateFormat: '%B %e, %Y'
+    xDateFormat: '%B %e, %Y',
+    valueDecimals: 2
   },
   // Additional Plot Options
   plotOptions:
