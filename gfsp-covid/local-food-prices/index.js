@@ -29,7 +29,7 @@ function reqListener() {
   impactObjects.forEach(impact => {
     let impactID = impact.name.split(" ")[0].toLowerCase()
 
-    console.log(impact)
+    console.log(impact.countries.length)
     let tip = impact.name + '<br/>' + impact.countries
 
     // Create div for each impact level
@@ -50,12 +50,20 @@ function reqListener() {
     // Add li/div for each country in this impact level
     impact.countries.forEach(country => {
       let item = document.createElement('li')
-      item.setAttribute('class', 'country')
+      item.setAttribute('class', ' list country')
       item.setAttribute('id', country.toLowerCase())
       list.appendChild(item)
     })
+
+    // Add total to list
+    let total = document.createElement('li')
+    total.setAttribute('class', 'list total')
+    total.innerHTML = impact.countries.length
+    list.appendChild(total)
+
     // Add list to impact div
     newDiv.appendChild(list)
+
     // Add impact divs to body
     document.body.appendChild(newDiv)
   })
