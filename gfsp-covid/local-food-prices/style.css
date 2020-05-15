@@ -7,5 +7,20 @@ ul {
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  background-color: green;
+}
+
+#severe .country {
+  background-color: #731765;
+}
+
+#high .country {
+  background-color: #903179;
+}
+
+#moderate .country {
+  background-color: #ae498d;
+}
+
+#low .country {
+  background-color: #cc62a2;
 }
