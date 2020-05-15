@@ -28,15 +28,18 @@ function reqListener() {
 
   impactObjects.forEach(impact => {
     let impactID = impact.name.split(" ")[0].toLowerCase()
+    let width = '30'
+    let height = '30'
+    let containerWidth = (impact.countries.length + 1) * width + 'px'
 
-    console.log(impact.countries.length)
     let tip = impact.name + '<br/>' + impact.countries
 
     // Create div for each impact level
     let newDiv = document.createElement("div")
     newDiv.setAttribute('id', impactID)
-    newDiv.setAttribute('class', 'impact-div')
+    newDiv.setAttribute('class', 'impact-container')
     newDiv.setAttribute('data-tippy-content', tip)
+    newDiv.style.width = containerWidth
     // newDiv.setAttribute('data-tippy-content', impact.countries)
 
     // Add impact level as header to div
@@ -52,6 +55,8 @@ function reqListener() {
       let item = document.createElement('li')
       item.setAttribute('class', ' list country')
       item.setAttribute('id', country.toLowerCase())
+      item.style.width = width + 'px'
+      item.style.height = height + 'px'
       list.appendChild(item)
     })
 
