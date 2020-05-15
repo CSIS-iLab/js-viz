@@ -32,7 +32,7 @@ function reqListener() {
     let height = '30'
     let containerWidth = (impact.countries.length + 1) * width + 'px'
 
-    let tip = impact.name + '<br/>' + impact.countries
+    let tip = '<h3 class="tooltip-header">' + impact.name + '</h3><br/><p class="tooltip-country">' + impact.countries.join('<br/>') + '</p>'
 
     // Create div for each impact level
     let newDiv = document.createElement("div")
@@ -74,6 +74,8 @@ function reqListener() {
   })
   tippy('[data-tippy-content]', {
     delay: [100, 200],
+    allowHTML: true,
+    placement: 'auto-end'
   })
 }
 
