@@ -50,7 +50,7 @@ Highcharts.chart('hcContainer', {
   ],
   // Chart Title and Subtitle
   title: {
-    text: "Cumulative Number of Reported Covid-19 Cases in Southeast Asia"
+    text: "Covid-19 Mortality Rate by Country in Southeast Asia"
   },
   // Credits
   credits: {
@@ -67,7 +67,7 @@ Highcharts.chart('hcContainer', {
   // Y Axis
   yAxis: {
     title: {
-      text: "Number of Cumulative Cases Per Million"
+      text: "Covid-19 Mortality Rate by Country (per Million)"
     }
   },
   xAxis: {
