@@ -1,6 +1,7 @@
 ul {
   list-style: none;
   padding-left: 0;
+  display: flex;
 }
 
 .list {
@@ -22,4 +23,24 @@ ul {
 
 #low .country {
   background-color: #cc62a2;
+}
+
+.total {
+
+  align-content: center;
+}
+
+.total span {
+  margin-left: 10px;
+  line-height: 30px;
+  font-size: 20px;
+  background-size: 100;
+}
+
+.tooltip-header {
+  margin-bottom: 0;
+}
+
+.tooltip-country {
+  margin-top: 0;
 }

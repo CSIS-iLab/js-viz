@@ -27,17 +27,20 @@ function reqListener() {
 
 
   impactObjects.forEach(impact => {
+
+    impact.countries.sort()
     let impactID = impact.name.split(" ")[0].toLowerCase()
     let width = '30'
     let height = '30'
     let containerWidth = (impact.countries.length + 1) * width + 'px'
 
-    let tip = '<h3 class="tooltip-header">' + impact.name + '</h3><br/><p class="tooltip-country">' + impact.countries.join('<br/>') + '</p>'
+    let tip = '<h3 class="tooltip-header">' + impact.name + '</h3><p class="tooltip-country">' + impact.countries.join(', ') + '</p>'
 
     // Create div for each impact level
     let newDiv = document.createElement("div")
     newDiv.setAttribute('id', impactID)
     newDiv.setAttribute('class', 'impact-container')
+    newDiv.setAttribute('tabindex', '0')
     newDiv.setAttribute('data-tippy-content', tip)
     newDiv.style.width = containerWidth
     // newDiv.setAttribute('data-tippy-content', impact.countries)
@@ -63,7 +66,9 @@ function reqListener() {
     // Add total to list
     let total = document.createElement('li')
     total.setAttribute('class', 'list total')
-    total.innerHTML = impact.countries.length
+    total.innerHTML = '<span>' + impact.countries.length + '</span>'
+    total.style.width = width + 'px'
+    total.style.height = height + 'px'
     list.appendChild(total)
 
     // Add list to impact div
@@ -75,7 +80,9 @@ function reqListener() {
   tippy('[data-tippy-content]', {
     delay: [100, 200],
     allowHTML: true,
-    placement: 'auto-end'
+    placement: 'auto-end',
+    theme: 'light',
+    arrow: false,
   })
 }
 
