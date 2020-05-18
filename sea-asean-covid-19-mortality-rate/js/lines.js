@@ -81,7 +81,20 @@ Highcharts.chart('hcContainer', {
     shared: true,
     useHTML: true,
     xDateFormat: '%B %e, %Y',
-    valueDecimals: 2
+    valueDecimals: 2,
+    formatter: function (tooltip) {
+      var items = this.points || splat(this),
+          series = items[0].series,
+          s;
+
+      // sort the values
+      items.sort(function(a, b){
+          return ((a.y < b.y) ? -1 : ((a.y > b.y) ? 1 : 0));
+      });
+      items.reverse();
+
+      return tooltip.defaultFormatter.call(this, tooltip);
+    }
   },
   // Additional Plot Options
   plotOptions:
