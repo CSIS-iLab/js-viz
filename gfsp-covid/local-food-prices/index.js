@@ -3,6 +3,10 @@ let impactCategories = {};
 let impactObjects = {};
 
 function reqListener() {
+  let title = document.createElement("h1");
+  title.setAttribute("id", "title");
+  title.innerHTML = "Local Food Prices: Impact of Cost of Food Basket";
+  document.body.appendChild(title);
   let data = JSON.parse(this.responseText);
 
   data.forEach((row) => {

@@ -4,6 +4,11 @@ body {
   margin: 30px;
 }
 
+#title {
+  font-weight: 400;
+  text-align: center;
+}
+
 h2 {
   font-weight: 400;
   margin-bottom: 5px;
