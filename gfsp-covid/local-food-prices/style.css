@@ -1,46 +1,73 @@
+body {
+  font-family: "Source Sans Pro", sans-serif;
+  color: #444444;
+  margin: 30px;
+}
+
+h2 {
+  font-weight: 400;
+  margin-bottom: 5px;
+}
+
 ul {
   list-style: none;
   padding-left: 0;
   display: flex;
+  margin: 0;
 }
 
 .list {
   display: inline-block;
   border-radius: 50%;
+  margin-right: 1px;
 }
 
 #severe .country {
-  background-color: #731765;
+  background-color: #16300b;
 }
 
 #high .country {
-  background-color: #903179;
+  background-color: #2b4f1d;
 }
 
 #moderate .country {
-  background-color: #ae498d;
+  background-color: #416f31;
 }
 
 #low .country {
-  background-color: #cc62a2;
+  background-color: #599245;
 }
 
 .total {
-
-  align-content: center;
+  margin-left: 7px;
+  line-height: 25px;
+  font-size: 1.05em;
+  font-style: italic;
+  font-weight: 300;
 }
 
-.total span {
-  margin-left: 10px;
-  line-height: 30px;
-  font-size: 20px;
-  background-size: 100;
+.source {
+  margin-top: 10px;
+  font-size: 0.6em;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.tippy-content {
+  padding: 17px;
 }
 
 .tooltip-header {
-  margin-bottom: 0;
+  margin: 0 0 10px 0;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #d4d4d4;
+  font-size: 1.4em;
+  font-weight: 400;
 }
 
 .tooltip-country {
-  margin-top: 0;
+  margin: 0;
+  line-height: 30px;
+  font-size: 1.2em;
+  font-weight: 300;
 }
