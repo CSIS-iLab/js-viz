@@ -10,7 +10,8 @@ Highcharts.chart('hcContainer', {
     type: 'line',
     style: {
       fontFamily: 'Source Sans Pro'
-    }
+    },
+    width: 800
   },
   // Chart Title and Subtitle
   title: {
