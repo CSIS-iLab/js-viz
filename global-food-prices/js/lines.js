@@ -7,7 +7,10 @@ Highcharts.chart('hcContainer', {
   // General Chart Options
   chart: {
     zoomType: 'x',
-    type: 'line'
+    type: 'line',
+    style: {
+      fontFamily: 'Source Sans Pro'
+    }
   },
   // Chart Title and Subtitle
   title: {
@@ -40,6 +43,9 @@ Highcharts.chart('hcContainer', {
   // Additional Plot Options
   plotOptions:
   {
+    series: {
+      color: '#599245'
+    },
     line: {
       marker: {
         enabled: false,
