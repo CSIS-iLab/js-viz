@@ -34,14 +34,10 @@ ul {
 }
 
 #high .country {
-  background-color: #2b4f1d;
+  background-color: #365f27;
 }
 
 #moderate .country {
-  background-color: #416f31;
-}
-
-#low .country {
   background-color: #599245;
 }
 
