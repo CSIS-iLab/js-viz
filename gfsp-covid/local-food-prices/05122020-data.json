@@ -1,290 +1,290 @@
 [
   {
     "country": "Cameroon",
-    "impact": "Severe (greater than or equal to 10%)"
+    "impact": "Severe Impact (greater than or equal to 10%)"
   },
   {
     "country": "Central African Republic",
-    "impact": "Severe (greater than or equal to 10%)"
+    "impact": "Severe Impact (greater than or equal to 10%)"
   },
   {
     "country": "Chad",
-    "impact": "Severe (greater than or equal to 10%)"
+    "impact": "Severe Impact (greater than or equal to 10%)"
   },
   {
     "country": "Ghana",
-    "impact": "Severe (greater than or equal to 10%)"
+    "impact": "Severe Impact (greater than or equal to 10%)"
   },
   {
     "country": "Guinea-Bissau",
-    "impact": "Severe (greater than or equal to 10%)"
+    "impact": "Severe Impact (greater than or equal to 10%)"
   },
   {
     "country": "Lebanon",
-    "impact": "Severe (greater than or equal to 10%)"
+    "impact": "Severe Impact (greater than or equal to 10%)"
   },
   {
     "country": "Libya",
-    "impact": "Severe (greater than or equal to 10%)"
+    "impact": "Severe Impact (greater than or equal to 10%)"
   },
   {
     "country": "Mozambique",
-    "impact": "Severe (greater than or equal to 10%)"
+    "impact": "Severe Impact (greater than or equal to 10%)"
   },
   {
     "country": "Rwanda",
-    "impact": "Severe (greater than or equal to 10%)"
+    "impact": "Severe Impact (greater than or equal to 10%)"
   },
   {
     "country": "Sierra Leone",
-    "impact": "Severe (greater than or equal to 10%)"
+    "impact": "Severe Impact (greater than or equal to 10%)"
   },
   {
     "country": "Sudan",
-    "impact": "Severe (greater than or equal to 10%)"
+    "impact": "Severe Impact (greater than or equal to 10%)"
   },
   {
     "country": "Syria",
-    "impact": "Severe (greater than or equal to 10%)"
+    "impact": "Severe Impact (greater than or equal to 10%)"
   },
   {
     "country": "Thailand",
-    "impact": "Severe (greater than or equal to 10%)"
+    "impact": "Severe Impact (greater than or equal to 10%)"
   },
   {
     "country": "Turkey",
-    "impact": "Severe (greater than or equal to 10%)"
+    "impact": "Severe Impact (greater than or equal to 10%)"
   },
   {
     "country": "Zambia",
-    "impact": "Severe (greater than or equal to 10%)"
+    "impact": "Severe Impact (greater than or equal to 10%)"
   },
   {
     "country": "Bangladesh",
-    "impact": "High (5-10%)"
+    "impact": "High Impact (5-10%)"
   },
   {
     "country": "Burkina Faso",
-    "impact": "High (5-10%)"
+    "impact": "High Impact (5-10%)"
   },
   {
     "country": "Burundi",
-    "impact": "High (5-10%)"
+    "impact": "High Impact (5-10%)"
   },
   {
     "country": "Cabo Verde",
-    "impact": "High (5-10%)"
+    "impact": "High Impact (5-10%)"
   },
   {
     "country": "Cape Verde",
-    "impact": "High (5-10%)"
+    "impact": "High Impact (5-10%)"
   },
   {
     "country": "Congo (DRC)",
-    "impact": "High (5-10%)"
+    "impact": "High Impact (5-10%)"
   },
   {
     "country": "Niger",
-    "impact": "High (5-10%)"
+    "impact": "High Impact (5-10%)"
   },
   {
     "country": "Nigeria",
-    "impact": "High (5-10%)"
+    "impact": "High Impact (5-10%)"
   },
   {
     "country": "Senegal",
-    "impact": "High (5-10%)"
+    "impact": "High Impact (5-10%)"
   },
   {
     "country": "Somalia",
-    "impact": "High (5-10%)"
+    "impact": "High Impact (5-10%)"
   },
   {
     "country": "Mexico",
-    "impact": "Moderate (0-5%)"
+    "impact": "Moderate Impact (0-5%)"
   },
   {
     "country": "Guatemala",
-    "impact": "Moderate (0-5%)"
+    "impact": "Moderate Impact (0-5%)"
   },
   {
     "country": "Panama",
-    "impact": "Moderate (0-5%)"
+    "impact": "Moderate Impact (0-5%)"
   },
   {
     "country": "El Salvador",
-    "impact": "Moderate (0-5%)"
+    "impact": "Moderate Impact (0-5%)"
   },
   {
     "country": "Haiti",
-    "impact": "Moderate (0-5%)"
+    "impact": "Moderate Impact (0-5%)"
   },
   {
     "country": "Dominican Republic",
-    "impact": "Moderate (0-5%)"
+    "impact": "Moderate Impact (0-5%)"
   },
   {
     "country": "Ecuador",
-    "impact": "Moderate (0-5%)"
+    "impact": "Moderate Impact (0-5%)"
   },
   {
     "country": "Bolivia",
-    "impact": "Moderate (0-5%)"
+    "impact": "Moderate Impact (0-5%)"
   },
   {
     "country": "Guinea",
-    "impact": "Moderate (0-5%)"
+    "impact": "Moderate Impact (0-5%)"
   },
   {
     "country": "Mali",
-    "impact": "Moderate (0-5%)"
+    "impact": "Moderate Impact (0-5%)"
   },
   {
     "country": "Gambia",
-    "impact": "Moderate (0-5%)"
+    "impact": "Moderate Impact (0-5%)"
   },
   {
     "country": "Togo",
-    "impact": "Moderate (0-5%)"
+    "impact": "Moderate Impact (0-5%)"
   },
   {
     "country": "Kenya",
-    "impact": "Moderate (0-5%)"
+    "impact": "Moderate Impact (0-5%)"
   },
   {
     "country": "Angola",
-    "impact": "Moderate (0-5%)"
+    "impact": "Moderate Impact (0-5%)"
   },
   {
     "country": "Lesotho",
-    "impact": "Moderate (0-5%)"
+    "impact": "Moderate Impact (0-5%)"
   },
   {
     "country": "Djibouti",
-    "impact": "Moderate (0-5%)"
+    "impact": "Moderate Impact (0-5%)"
   },
   {
     "country": "Yemen",
-    "impact": "Moderate (0-5%)"
+    "impact": "Moderate Impact (0-5%)"
   },
   {
     "country": "Jordan",
-    "impact": "Moderate (0-5%)"
+    "impact": "Moderate Impact (0-5%)"
   },
   {
     "country": "Iraq",
-    "impact": "Moderate (0-5%)"
+    "impact": "Moderate Impact (0-5%)"
   },
   {
     "country": "Afghanistan",
-    "impact": "Moderate (0-5%)"
+    "impact": "Moderate Impact (0-5%)"
   },
   {
     "country": "Tajikistan",
-    "impact": "Moderate (0-5%)"
+    "impact": "Moderate Impact (0-5%)"
   },
   {
     "country": "Kyrgyzstan",
-    "impact": "Moderate (0-5%)"
+    "impact": "Moderate Impact (0-5%)"
   },
   {
     "country": "Pakistan",
-    "impact": "Moderate (0-5%)"
+    "impact": "Moderate Impact (0-5%)"
   },
   {
     "country": "Cambodia",
-    "impact": "Moderate (0-5%)"
+    "impact": "Moderate Impact (0-5%)"
   },
   {
     "country": "Sri Lanka",
-    "impact": "Moderate (0-5%)"
+    "impact": "Moderate Impact (0-5%)"
   },
   {
     "country": "Philippines",
-    "impact": "Moderate (0-5%)"
+    "impact": "Moderate Impact (0-5%)"
   },
   {
     "country": "Armenia",
-    "impact": "Low (less than 0%)"
+    "impact": "Low Impact (less than 0%)"
   },
   {
     "country": "Benin",
-    "impact": "Low (less than 0%)"
+    "impact": "Low Impact (less than 0%)"
   },
   {
     "country": "Colombia",
-    "impact": "Low (less than 0%)"
+    "impact": "Low Impact (less than 0%)"
   },
   {
     "country": "Congo",
-    "impact": "Low (less than 0%)"
+    "impact": "Low Impact (less than 0%)"
   },
   {
     "country": "Cote d’Ivoire",
-    "impact": "Low (less than 0%)"
+    "impact": "Low Impact (less than 0%)"
   },
   {
     "country": "Egypt",
-    "impact": "Low (less than 0%)"
+    "impact": "Low Impact (less than 0%)"
   },
   {
     "country": "Ethiopia",
-    "impact": "Low (less than 0%)"
+    "impact": "Low Impact (less than 0%)"
   },
   {
     "country": "Honduras",
-    "impact": "Low (less than 0%)"
+    "impact": "Low Impact (less than 0%)"
   },
   {
     "country": "India",
-    "impact": "Low (less than 0%)"
+    "impact": "Low Impact (less than 0%)"
   },
   {
     "country": "Indonesia",
-    "impact": "Low (less than 0%)"
+    "impact": "Low Impact (less than 0%)"
   },
   {
     "country": "Laos",
-    "impact": "Low (less than 0%)"
+    "impact": "Low Impact (less than 0%)"
   },
   {
     "country": "Malawi",
-    "impact": "Low (less than 0%)"
+    "impact": "Low Impact (less than 0%)"
   },
   {
     "country": "Mauritania",
-    "impact": "Low (less than 0%)"
+    "impact": "Low Impact (less than 0%)"
   },
   {
     "country": "Myanmar",
-    "impact": "Low (less than 0%)"
+    "impact": "Low Impact (less than 0%)"
   },
   {
     "country": "Namibia",
-    "impact": "Low (less than 0%)"
+    "impact": "Low Impact (less than 0%)"
   },
   {
     "country": "Nicaragua",
-    "impact": "Low (less than 0%)"
+    "impact": "Low Impact (less than 0%)"
   },
   {
     "country": "Peru",
-    "impact": "Low (less than 0%)"
+    "impact": "Low Impact (less than 0%)"
   },
   {
     "country": "Tanzania",
-    "impact": "Low (less than 0%)"
+    "impact": "Low Impact (less than 0%)"
   },
   {
     "country": "Uganda",
-    "impact": "Low (less than 0%)"
+    "impact": "Low Impact (less than 0%)"
   },
   {
     "country": "South Sudan",
-    "impact": "Low (less than 0%)"
+    "impact": "Low Impact (less than 0%)"
   },
   {
     "country": "India",
-    "impact": "Low (less than 0%)"
+    "impact": "Low Impact (less than 0%)"
   }
 ]

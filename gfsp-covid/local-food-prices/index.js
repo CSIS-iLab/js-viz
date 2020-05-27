@@ -5,7 +5,8 @@ let impactObjects = {};
 function reqListener() {
   let title = document.createElement("h1");
   title.setAttribute("id", "title");
-  title.innerHTML = "Local Food Prices: Impact of Cost of Food Basket";
+  title.innerHTML =
+    "Countries with Food Price Increases (January - March 2020)";
   document.body.appendChild(title);
   let data = JSON.parse(this.responseText);
 
@@ -46,7 +47,7 @@ function reqListener() {
     newDiv.setAttribute("class", "impact-container");
     newDiv.setAttribute("tabindex", "0");
     newDiv.setAttribute("data-tippy-content", tip);
-    newDiv.style.width = containerWidth;
+    newDiv.style.maxWidth = containerWidth;
 
     // Add impact level as header to div
     let newH2 = document.createElement("h2");
