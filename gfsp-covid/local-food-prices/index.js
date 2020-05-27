@@ -71,7 +71,6 @@ function reqListener() {
     let total = document.createElement("li");
     total.setAttribute("class", "list total");
     total.innerHTML = "<span>" + impact.countries.length + " countries</span>";
-    // total.style.width = "100%";
     total.style.height = height + "px";
     list.appendChild(total);
 
