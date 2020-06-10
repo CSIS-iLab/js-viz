@@ -61,6 +61,8 @@ Highcharts.chart("hc-viet", {
   },
   // Y Axis
   yAxis: {
+    startOnTick: true,
+    tickPositions: [-8, -4, 0, 4, 8],
     title: {
       text: "",
     },

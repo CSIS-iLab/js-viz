@@ -61,6 +61,9 @@ Highcharts.chart("hc-phil", {
   },
   // Y Axis
   yAxis: {
+    startOnTick: true,
+    // tickPositions: [-8, -6, -4, -2, 0, 2, 4, 6, 8],
+    tickPositions: [-8, -4, 0, 4, 8],
     title: {
       text: "",
     },
