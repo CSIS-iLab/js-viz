@@ -1,0 +1,57 @@
+ul {
+  text-align: center;
+  /* margin-right: 9%; */
+}
+
+.reduce > ul > li {
+  display: inline-block;
+  width: 18%;
+}
+
+@media screen and (max-width: 600px) {
+  .reduce > ul > li {
+    width: 45% !important;
+  }
+}
+
+.gridMap {
+  float: left;
+  border: 1px solid;
+  height: 200px;
+  width: 100%;
+  margin: 1px;
+}
+
+@media screen and (max-width: 600px) {
+  .gridMap {
+    width: 80% !important;
+  }
+}
+
+.reduce {
+  width: 100%;
+  height: 80px;
+  border: 0;
+  /*transform: scale(0.75);*/
+  transform-origin: 0 0;
+}
+
+h1 {
+  text-align: center;
+}
+
+p {
+  text-align: center;
+}
+
+.reduce {
+  width: 100%;
+  height: 50px;
+  border: 0;
+  /*transform: scale(0.75);*/
+  transform-origin: 0 2;
+}
+
+.highcharts-container {
+  margin-top: 15px;
+}
