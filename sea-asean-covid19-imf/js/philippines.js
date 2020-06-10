@@ -53,7 +53,7 @@ Highcharts.chart("hc-phil", {
   subtitle: false,
   // Credits
   credits: {
-    enabled: true,
+    enabled: false,
     href: false,
     text: "CSIS Southeast Asia Program | Source: IMF",
   },
@@ -137,21 +137,5 @@ Highcharts.chart("hc-phil", {
         radius: 5,
       },
     },
-
-    // annotations: [
-    //   {
-    //     labels: [
-    //       {
-    //         point: {
-    //           x: 6.2,
-    //           y: 100,
-    //           xAxis: 0,
-    //           yAxis: 0,
-    //         },
-    //         text: "<b>Pre-Covid: 6.2</b>",
-    //       },
-    //     ],
-    //   },
-    // ],
   },
 });

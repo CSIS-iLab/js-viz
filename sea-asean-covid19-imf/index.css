@@ -5,7 +5,7 @@ ul {
   border: solid 0.5px #666666;
   padding: 0px;
   margin: 0px;
-  width: 90%;
+  width: 100%;
 }
 
 li {
@@ -16,6 +16,8 @@ li {
 .reduce > ul > li {
   display: inline-block;
   width: 18%;
+  margin: 0px;
+  padding: 0px;
 }
 
 @media screen and (max-width: 600px) {
@@ -46,12 +48,22 @@ li {
   transform-origin: 0 0;
 }
 
-h1 {
+h1,
+h3 {
   text-align: center;
+  font-family: "Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica,
+    sans-serif;
+  color: #333333;
+  padding: 5px 0px;
+  margin: 0px;
 }
 
-p {
-  text-align: center;
+.title {
+  font-size: 18px;
+}
+
+.subtitle {
+  font-size: 14px;
 }
 
 .reduce {
@@ -64,4 +76,16 @@ p {
 
 .highcharts-container {
   margin-top: 15px;
+}
+
+.source {
+  text-align: right;
+  position: absolute;
+  bottom: 45%;
+  left: 87%;
+  justify-content: right;
+  font-size: 10px;
+  font-family: "Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica,
+    sans-serif;
+  color: "#999999";
 }

@@ -49,7 +49,7 @@ Highcharts.chart("hc-thai", {
   subtitle: false,
   // Credits
   credits: {
-    enabled: true,
+    enabled: false,
     href: false,
     text: "CSIS Southeast Asia Program | Source: IMF",
   },
