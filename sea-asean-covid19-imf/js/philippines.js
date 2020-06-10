@@ -14,7 +14,6 @@ Highcharts.chart("hc-phil", {
   chart: {
     zoomType: "xy",
     type: "line",
-    // inverted: true,
   },
 
   // Colors
@@ -76,7 +75,7 @@ Highcharts.chart("hc-phil", {
         color: "rgb(230, 230, 230)",
         width: 2,
         value: 0,
-        zIndex: 5,
+        zIndex: -5,
       },
     ],
     title: {
@@ -99,13 +98,13 @@ Highcharts.chart("hc-phil", {
         color: "rgb(230, 230, 230)",
         width: 2,
         value: 0,
-        zIndex: 5,
+        zIndex: -5,
       },
       {
         color: "rgb(230, 230, 230)",
         width: 2,
         value: 1,
-        zIndex: 5,
+        zIndex: -5,
       },
     ],
   },
@@ -129,15 +128,16 @@ Highcharts.chart("hc-phil", {
         radius: 5,
       },
     },
+
     // annotations: [
     //   {
     //     labels: [
     //       {
     //         point: {
     //           x: 6.2,
-    //           y: 2,
-    //           xAxis: 4,
-    //           yAxis: 2,
+    //           y: 100,
+    //           xAxis: 0,
+    //           yAxis: 0,
     //         },
     //         text: "<b>Pre-Covid: 6.2</b>",
     //       },
