@@ -32,7 +32,7 @@ Highcharts.chart("hc-indo", {
     // // Myanmar
     // "#E15759",
 
-    // // Philippines
+    // Philippines
     // "#7FA8D9",
 
     // // Singapore
@@ -61,8 +61,19 @@ Highcharts.chart("hc-indo", {
   },
   // Y Axis
   yAxis: {
+    gridLineColor: "transparent",
     startOnTick: true,
+    // tickPositions: [-8, -6, -4, -2, 0, 2, 4, 6, 8],
     tickPositions: [-8, -4, 0, 4, 8],
+    plotLines: [
+      {
+        dashStyle: "longdash",
+        color: "rgb(230, 230, 230)",
+        width: 2,
+        value: 0,
+        zIndex: 5,
+      },
+    ],
     title: {
       text: "",
     },
@@ -73,7 +84,28 @@ Highcharts.chart("hc-indo", {
     },
   },
   xAxis: {
-    formatter: {},
+    lineColor: "transparent",
+    gridLineColor: "transparent",
+    labels: {
+      enabled: false,
+    },
+    plotLines: [
+      {
+        color: "rgb(230, 230, 230)",
+        width: 2,
+        value: 0,
+        zIndex: 5,
+      },
+      {
+        color: "rgb(230, 230, 230)",
+        width: 2,
+        value: 1,
+        zIndex: 5,
+      },
+    ],
+  },
+  exporting: {
+    enabled: false,
   },
   // Tooltip
   tooltip: {
@@ -85,11 +117,27 @@ Highcharts.chart("hc-indo", {
   plotOptions: {
     line: {
       marker: {
-        enabled: false,
-        symbol: "circle",
-        radius: 3,
+        enabled: true,
+        fillColor: "#FFFFFF",
+        lineWidth: 2,
+        lineColor: null,
+        radius: 5,
       },
-      lineWidth: 3,
     },
+    // annotations: [
+    //   {
+    //     labels: [
+    //       {
+    //         point: {
+    //           x: 6.2,
+    //           y: 2,
+    //           xAxis: 4,
+    //           yAxis: 2,
+    //         },
+    //         text: "<b>Pre-Covid: 6.2</b>",
+    //       },
+    //     ],
+    //   },
+    // ],
   },
 });
