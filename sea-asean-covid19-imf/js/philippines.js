@@ -4,9 +4,9 @@ Highcharts.chart("hc-phil", {
     googleSpreadsheetKey: "1JFh3wyAtvmWmglO-wGaRhlJm6iM9z6f88r-7nrzoSXg",
     googleSpreadsheetWorksheet: 2,
     parsed: function (data) {
-      console.log(data);
-      console.log(this);
-      return data;
+      // console.log(data);
+      // console.log(this);
+      // return data;
     },
   },
 
@@ -88,10 +88,19 @@ Highcharts.chart("hc-phil", {
     },
   },
   xAxis: {
+    opposite: true,
+    offset: 0,
     lineColor: "transparent",
     gridLineColor: "transparent",
     labels: {
-      enabled: false,
+      enabled: true,
+      formatter: function (params) {
+        if (params.value === "Pre-Covid (09/19)") {
+          return "Pre-Covid";
+        } else {
+          return "Post-Covid";
+        }
+      },
     },
     plotLines: [
       {
