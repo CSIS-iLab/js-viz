@@ -81,11 +81,25 @@ h3 {
 .source {
   text-align: right;
   position: absolute;
-  bottom: 45%;
+  bottom: 43%;
   left: 87%;
   justify-content: right;
   font-size: 10px;
   font-family: "Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica,
     sans-serif;
   color: "#999999";
+}
+
+@media screen and (max-width: 600px) {
+  .source {
+    bottom: -28%;
+    left: 60%;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .source {
+    bottom: 43%;
+    left: 65%;
+  }
 }
