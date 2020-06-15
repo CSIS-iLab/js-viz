@@ -1,17 +1,22 @@
+.mini-chart-container {
+  position: relative;
+  max-width: 800px;
+}
+
 ul {
   text-align: center;
-  /* margin-right: 9%; */
   text-align: center;
   padding: 0px;
   margin: 0px;
-  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
 }
 
 li {
   margin: 0px;
   padding: 0px;
 }
-
+/* 
 .reduce > ul > li {
   display: inline-block;
   width: 18%;
@@ -45,7 +50,7 @@ li {
   height: 80px;
   border: 0;
   transform-origin: 0 0;
-}
+} */
 
 h1,
 p {
@@ -64,22 +69,17 @@ p {
 .subtitle {
   font-size: 14px;
 }
-
+/* 
 .reduce {
   width: 100%;
   height: 50px;
   border: 0;
-  /*transform: scale(0.75);*/
   transform-origin: 0 2;
-}
+} */
 
-.highcharts-container {
+/* .highcharts-container {
   margin-top: 15px;
-}
-
-.mini-chart-container {
-  position: relative;
-}
+} */
 
 .source {
   position: relative;
@@ -102,6 +102,7 @@ p {
 .highcharts-title > tspan {
   font-size: 14px;
   font-weight: 600;
+  text-align: center;
 }
 
 .highcharts-tooltip > span {
