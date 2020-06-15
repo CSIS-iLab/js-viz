@@ -9,7 +9,6 @@ Highcharts.chart("hc-cam", {
   chart: {
     zoomType: "xy",
     type: "line",
-    // inverted: true,
   },
 
   // Colors
@@ -17,8 +16,8 @@ Highcharts.chart("hc-cam", {
     // // Brunei
     // "#4E79A7",
 
-    // Cambodia
-    "#F28E2C",
+    // // Cambodia
+    // "#F28E2C",
 
     // // Indonesia
     // "#76B7B2",
@@ -33,7 +32,8 @@ Highcharts.chart("hc-cam", {
     // "#E15759",
 
     // Philippines
-    // "#7FA8D9",
+    "#7FA8D9",
+    "#4E79A7",
 
     // // Singapore
     // "#FF9DA7",
@@ -45,7 +45,9 @@ Highcharts.chart("hc-cam", {
     // "#AF7AA1",
   ],
   // Chart Title and Subtitle
-  title: false,
+  title: {
+    text: "Cambodia",
+  },
   subtitle: false,
   // Credits
   credits: {
@@ -83,22 +85,30 @@ Highcharts.chart("hc-cam", {
     },
   },
   xAxis: {
+    tickPositions: [2019, 2020, 2021],
+    offset: 0,
     lineColor: "transparent",
     gridLineColor: "transparent",
     labels: {
-      enabled: false,
+      enabled: true,
     },
     plotLines: [
       {
         color: "rgb(230, 230, 230)",
         width: 2,
-        value: 0,
+        value: 2019,
         zIndex: -5,
       },
       {
         color: "rgb(230, 230, 230)",
         width: 2,
-        value: 1,
+        value: 2020,
+        zIndex: -5,
+      },
+      {
+        color: "rgb(230, 230, 230)",
+        width: 2,
+        value: 2021,
         zIndex: -5,
       },
     ],
@@ -110,7 +120,6 @@ Highcharts.chart("hc-cam", {
   tooltip: {
     shared: true,
     useHTML: true,
-    xDateFormat: "%B %e, %Y",
   },
   // Additional Plot Options
   plotOptions: {
@@ -123,20 +132,5 @@ Highcharts.chart("hc-cam", {
         radius: 5,
       },
     },
-    // annotations: [
-    //   {
-    //     labels: [
-    //       {
-    //         point: {
-    //           x: 6.2,
-    //           y: 2,
-    //           xAxis: 4,
-    //           yAxis: 2,
-    //         },
-    //         text: "<b>Pre-Covid: 6.2</b>",
-    //       },
-    //     ],
-    //   },
-    // ],
   },
 });
