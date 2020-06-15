@@ -98,3 +98,17 @@ h3 {
     top: 1100px !important;
   }
 }
+
+.highcharts-title > tspan {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.highcharts-tooltip > span {
+  max-width: 100px !important;
+}
+
+.highcharts-tick {
+  visibility: hidden;
+  display: none;
+}

@@ -4,7 +4,7 @@ Highcharts.chart("hc-phil", {
     googleSpreadsheetKey: "1JFh3wyAtvmWmglO-wGaRhlJm6iM9z6f88r-7nrzoSXg",
     googleSpreadsheetWorksheet: 2,
     parsed: function (data) {
-      // console.log(data);
+      console.log(data);
       // console.log(this);
       // return data;
     },
@@ -38,6 +38,7 @@ Highcharts.chart("hc-phil", {
 
     // Philippines
     "#7FA8D9",
+    "#4E79A7",
 
     // // Singapore
     // "#FF9DA7",
@@ -49,7 +50,9 @@ Highcharts.chart("hc-phil", {
     // "#AF7AA1",
   ],
   // Chart Title and Subtitle
-  title: false,
+  title: {
+    text: "Philippines",
+  },
   subtitle: false,
   // Credits
   credits: {
@@ -67,7 +70,6 @@ Highcharts.chart("hc-phil", {
   yAxis: {
     gridLineColor: "transparent",
     startOnTick: true,
-    // tickPositions: [-8, -6, -4, -2, 0, 2, 4, 6, 8],
     tickPositions: [-8, -4, 0, 4, 8],
     plotLines: [
       {
@@ -88,31 +90,30 @@ Highcharts.chart("hc-phil", {
     },
   },
   xAxis: {
-    opposite: true,
+    tickPositions: [2019, 2020, 2021],
     offset: 0,
     lineColor: "transparent",
     gridLineColor: "transparent",
     labels: {
       enabled: true,
-      formatter: function (params) {
-        if (params.value === "Pre-Covid (09/19)") {
-          return "Pre-Covid";
-        } else {
-          return "Post-Covid";
-        }
-      },
     },
     plotLines: [
       {
         color: "rgb(230, 230, 230)",
         width: 2,
-        value: 0,
+        value: 2019,
         zIndex: -5,
       },
       {
         color: "rgb(230, 230, 230)",
         width: 2,
-        value: 1,
+        value: 2020,
+        zIndex: -5,
+      },
+      {
+        color: "rgb(230, 230, 230)",
+        width: 2,
+        value: 2021,
         zIndex: -5,
       },
     ],
@@ -124,7 +125,6 @@ Highcharts.chart("hc-phil", {
   tooltip: {
     shared: true,
     useHTML: true,
-    xDateFormat: "%B %e, %Y",
   },
   // Additional Plot Options
   plotOptions: {
