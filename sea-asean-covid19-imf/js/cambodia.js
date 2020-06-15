@@ -65,7 +65,7 @@ Highcharts.chart("hc-cam", {
   yAxis: {
     gridLineColor: "transparent",
     startOnTick: true,
-    tickPositions: [-8, -4, 0, 4, 8],
+    tickPositions: [-14, -7, 0, 7, 14],
     plotLines: [
       {
         dashStyle: "longdash",
