@@ -23,16 +23,16 @@ function drawChart(index, id, name, sheet) {
     data: {
       googleSpreadsheetKey: "1JFh3wyAtvmWmglO-wGaRhlJm6iM9z6f88r-7nrzoSXg",
       googleSpreadsheetWorksheet: sheet,
+      dateFormat: "mm/dd/YYYY",
     },
 
     // General Chart Options
     chart: {
-      zoomType: "xy",
       type: "line",
     },
 
     // Colors
-    colors: ["#7FA8D9", "#4E79A7"],
+    colors: ["#7FA8D9", "#49719b"],
     // Chart Title and Subtitle
     title: {
       text: name,
@@ -67,11 +67,6 @@ function drawChart(index, id, name, sheet) {
       title: {
         text: "",
       },
-      labels: {
-        formatter: function () {
-          return this.value;
-        },
-      },
     },
     xAxis: {
       tickPositions: [2019, 2020, 2021],
@@ -80,6 +75,18 @@ function drawChart(index, id, name, sheet) {
       gridLineColor: "transparent",
       labels: {
         enabled: true,
+        formatter: function (params) {
+          // return `'${this.value}
+          if (params.value === 2019) {
+            return "'19";
+          } else if (params.value === 2020) {
+            return "'20";
+          } else {
+            return "'21";
+          }
+
+          // `;
+        },
       },
       plotLines: [
         {
@@ -109,6 +116,15 @@ function drawChart(index, id, name, sheet) {
     tooltip: {
       shared: true,
       useHTML: true,
+      // xDateFormat: " '%Y",
+      // formatter: function () {
+      //   console.log(this);
+      //   return `
+      //   '${this.x}<br>
+      //   <span style="color: ${this.points[0].point.series.color}">\u25CF</span> ${this.points[0].series.name}: <b>${this.y}</b>
+
+      //  `;
+      // },
     },
     // Additional Plot Options
     plotOptions: {
