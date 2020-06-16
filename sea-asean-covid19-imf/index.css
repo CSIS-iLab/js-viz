@@ -95,9 +95,9 @@ p {
   font-weight: 600;
 }
 
-.highcharts-tooltip > span {
+/* .highcharts-tooltip > span {
   max-width: 100px !important;
-}
+} */
 
 .highcharts-tick {
   visibility: hidden;
@@ -114,7 +114,7 @@ p {
   width: 20px;
 }
 
-text {
+.legend-text {
   color: #333333;
   font-size: 14px;
   font-weight: bold;
