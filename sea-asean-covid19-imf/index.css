@@ -14,6 +14,7 @@ ul {
 li {
   margin: 0px;
   padding: 0px;
+  list-style: none;
 }
 
 .reduce > ul > li {
@@ -78,7 +79,7 @@ p {
 
 .source {
   position: relative;
-  top: 500px;
+  top: 450px;
   text-align: right;
   justify-content: right;
   font-size: 10px;
