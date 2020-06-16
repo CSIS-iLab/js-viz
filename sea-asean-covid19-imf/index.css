@@ -7,8 +7,6 @@ ul {
   text-align: center;
   padding: 0px;
   margin: 0px;
-  /* display: grid; */
-  /* grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); */
 }
 
 li {
@@ -72,10 +70,6 @@ p {
   height: 50px;
   border: 0;
   transform-origin: 0 2;
-}
-
-.highcharts-container {
-  margin-top: 15px;
 }
 
 .source {
