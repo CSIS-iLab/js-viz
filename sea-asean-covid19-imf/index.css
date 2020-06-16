@@ -1,0 +1,129 @@
+.mini-chart-container {
+  max-width: 800px;
+}
+
+ul {
+  text-align: center;
+  text-align: center;
+  padding: 0px;
+  margin: 0px;
+  /* display: grid; */
+  /* grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); */
+}
+
+li {
+  margin: 0px;
+  padding: 0px;
+  list-style: none;
+}
+
+.reduce > ul > li {
+  display: inline-block;
+  width: 18%;
+  margin: 0px;
+  padding: 0px;
+}
+
+@media screen and (max-width: 600px) {
+  .reduce > ul > li {
+    width: 45% !important;
+  }
+}
+
+.gridMap {
+  float: left;
+  border: 1px solid;
+  height: 200px;
+  width: 100%;
+  margin: 1px;
+  color: #fff;
+}
+
+@media screen and (max-width: 600px) {
+  .gridMap {
+    width: 80% !important;
+  }
+}
+
+.reduce {
+  width: 100%;
+  height: 80px;
+  border: 0;
+  transform-origin: 0 0;
+}
+
+h1,
+p {
+  text-align: center;
+  font-family: "Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica,
+    sans-serif;
+  color: #333333;
+  padding: 5px 0px;
+  margin: 0px;
+}
+
+.title {
+  font-size: 18px;
+  text-align: center;
+}
+
+.reduce {
+  width: 100%;
+  height: 50px;
+  border: 0;
+  transform-origin: 0 2;
+}
+
+.highcharts-container {
+  margin-top: 15px;
+}
+
+.source {
+  position: relative;
+  top: 450px;
+  text-align: right;
+  justify-content: right;
+  font-size: 10px;
+  font-family: "Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica,
+    sans-serif;
+  color: "#999999";
+}
+
+@media screen and (max-width: 600px) {
+  .source {
+    position: relative;
+    top: 1100px !important;
+  }
+}
+
+.highcharts-title > tspan {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.highcharts-tooltip > span {
+  max-width: 100px !important;
+}
+
+.highcharts-tick {
+  visibility: hidden;
+  display: none;
+}
+
+.legend-container {
+  text-align: center;
+  height: 100%;
+}
+
+.legend-svg {
+  height: 18px;
+  width: 20px;
+}
+
+text {
+  color: #333333;
+  font-size: 14px;
+  font-weight: bold;
+  fill: #333333;
+  padding-right: 10px;
+}
