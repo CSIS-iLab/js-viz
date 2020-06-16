@@ -48,9 +48,10 @@ function drawChart(index, id, name, sheet) {
     },
     // Chart Legend
     legend: {
-      align: "center",
-      verticalAlign: "bottom",
-      layout: "horizontal",
+      enabled: false,
+      // align: "center",
+      // verticalAlign: "bottom",
+      // layout: "horizontal",
     },
     // Y Axis
     yAxis: {
@@ -115,15 +116,6 @@ function drawChart(index, id, name, sheet) {
     tooltip: {
       shared: true,
       useHTML: true,
-      // xDateFormat: " '%Y",
-      // formatter: function () {
-      //   console.log(this);
-      //   return `
-      //   '${this.x}<br>
-      //   <span style="color: ${this.points[0].point.series.color}">\u25CF</span> ${this.points[0].series.name}: <b>${this.y}</b>
-
-      //  `;
-      // },
     },
     // Additional Plot Options
     plotOptions: {
