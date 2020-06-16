@@ -76,7 +76,6 @@ function drawChart(index, id, name, sheet) {
       labels: {
         enabled: true,
         formatter: function (params) {
-          // return `'${this.value}
           if (params.value === 2019) {
             return "'19";
           } else if (params.value === 2020) {
@@ -84,8 +83,6 @@ function drawChart(index, id, name, sheet) {
           } else {
             return "'21";
           }
-
-          // `;
         },
       },
       plotLines: [
