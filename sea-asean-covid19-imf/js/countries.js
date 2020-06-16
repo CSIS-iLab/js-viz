@@ -116,6 +116,7 @@ function drawChart(index, id, name, sheet) {
     tooltip: {
       shared: true,
       useHTML: true,
+      valueDecimals: 1,
     },
     // Additional Plot Options
     plotOptions: {
