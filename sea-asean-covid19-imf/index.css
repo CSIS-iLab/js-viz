@@ -98,7 +98,7 @@ p {
 .highcharts-title > tspan {
   font-size: 14px;
   font-weight: 600;
-  text-align: center;
+  text-align: center !important;
 }
 
 .highcharts-tooltip > span {

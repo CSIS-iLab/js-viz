@@ -36,6 +36,8 @@ function drawChart(index, id, name, sheet) {
     // Chart Title and Subtitle
     title: {
       text: name,
+      align: "center",
+      x: 20,
     },
     subtitle: false,
     // Credits
