@@ -1,14 +1,14 @@
 const countries = [
-  { id: "phil", name: "Philippines", sheet: 2 },
-  { id: "indo", name: "Indonesia", sheet: 3 },
-  { id: "thai", name: "Thailand", sheet: 4 },
+  { id: "brun", name: "Brunei", sheet: 2 },
+  { id: "cam", name: "Cambodia", sheet: 3 },
+  { id: "indo", name: "Indonesia", sheet: 4 },
   { id: "laos", name: "Laos", sheet: 5 },
-  { id: "cam", name: "Cambodia", sheet: 6 },
+  { id: "malay", name: "Malaysia", sheet: 6 },
   { id: "myan", name: "Myanmar", sheet: 7 },
-  { id: "viet", name: "Vietnam", sheet: 8 },
-  { id: "malay", name: "Malaysia", sheet: 9 },
-  { id: "sing", name: "Singapore", sheet: 10 },
-  { id: "brun", name: "Brunei", sheet: 11 },
+  { id: "phil", name: "Philippines", sheet: 8 },
+  { id: "sing", name: "Singapore", sheet: 9 },
+  { id: "thai", name: "Thailand", sheet: 10 },
+  { id: "viet", name: "Vietnam", sheet: 11 },
 ];
 
 for (let i = 0; i < countries.length; i++) {
