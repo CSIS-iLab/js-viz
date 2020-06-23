@@ -1,0 +1,113 @@
+/*============================
+=            Chart           =
+============================*/
+
+.province {
+  margin: 0;
+  padding: 0;
+
+  @include breakpoint('medium') {
+    padding: 0 0.25rem;
+  }
+
+  &:not([data-id='AV']) {
+    @include breakpoint('medium') {
+      background-color: $off-white;
+      border: 1px solid $white;
+    }
+  }
+}
+
+.chart {
+  transition: opacity 0.3s linear;
+
+  &.is-faded {
+    opacity: 0.65;
+  }
+
+  &.is-highlighted {
+    .chart-title {
+      font-weight: bold;
+    }
+
+    .area {
+      fill: $highlight-color !important;
+    }
+
+    .path {
+      stroke: darken($highlight-color, 20%) !important;
+    }
+  }
+
+  .clip-area {
+    fill: $white;
+  }
+
+  .plot-area {
+    fill: transparent;
+  }
+
+  .path {
+    fill: none;
+    stroke: darken($grid-lines, 20%);
+    stroke-width: 2;
+  }
+
+  .area {
+    fill: $grid-lines;
+  }
+
+  &-title {
+    @include fontSize(12px);
+    text-anchor: middle;
+  }
+
+  .label-values {
+    @include fontSize(12px);
+    text-anchor: end;
+
+    tspan {
+      color: $tooltip-gray;
+    }
+  }
+
+  .axis {
+    &.is-hidden text {
+      display: none;
+    }
+
+    .domain {
+      stroke: $grid-lines;
+      stroke-width: 1;
+    }
+
+    line {
+      stroke: $grid-lines;
+    }
+
+    text {
+      fill: $disabled-button-color;
+    }
+
+    &--x .domain {
+      stroke-width: 0;
+    }
+  }
+
+  .point {
+    visibility: hidden;
+    opacity: 0;
+
+    &.is-visible {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    &-label,
+    &-year {
+      @include fontSize(10px);
+      text-anchor: middle;
+      font-weight: bold;
+    }
+  }
+}

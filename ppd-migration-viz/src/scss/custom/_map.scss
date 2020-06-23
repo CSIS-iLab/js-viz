@@ -1,0 +1,36 @@
+#interactive__map {
+  display: none;
+
+  @include breakpoint('medium') {
+    position: relative;
+    display: block;
+    grid-column: span 4;
+    grid-row: span 3;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  svg {
+    position: absolute;
+    top: -4rem;
+  }
+
+  path {
+    stroke: $white;
+    stroke-width: 0.5;
+  }
+
+  .map-province {
+    transition: all 0.3s linear;
+    transform: translate(-750px, 700px);
+
+    &.is-highlighted {
+      fill: $highlight-color !important;
+    }
+
+    &.is-faded {
+      opacity: 0.65;
+    }
+  }
+}

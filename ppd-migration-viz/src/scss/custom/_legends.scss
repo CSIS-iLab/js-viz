@@ -1,0 +1,26 @@
+#interactive__legend-container {
+  position: relative;
+  display: flex;
+  grid-column: 1 / -1;
+  grid-row: 1;
+  align-items: center;
+  height: 100%;
+
+  @include breakpoint('medium') {
+    grid-column: 6 / 9;
+    justify-content: center;
+  }
+
+  .filter-label {
+    margin-bottom: 0.5rem;
+  }
+
+  .filter-desc {
+    display: block;
+    font-weight: normal;
+  }
+
+  text {
+    @include fontSize(12px);
+  }
+}

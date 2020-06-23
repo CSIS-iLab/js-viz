@@ -1,0 +1,87 @@
+/*===============================
+=            Buttons            =
+===============================*/
+.btn {
+  margin: 0;
+  padding: 0.25rem 0.75rem;
+  color: $white;
+  font-family: $font-roboto;
+  @include fontSize(13px);
+  line-height: 1.69;
+  letter-spacing: 0.7px;
+  text-transform: uppercase;
+  border: 0;
+  border-radius: 2px;
+  transition: all 0.3s ease-in-out;
+
+  &:not([disabled]) {
+    cursor: pointer;
+  }
+
+  &[disabled] {
+    cursor: not-allowed;
+  }
+}
+
+.btn {
+  &.btn--blue {
+    color: $white;
+    background-color: $select-blue;
+
+    &:hover {
+      background-color: darken($select-blue, 10%);
+    }
+  }
+
+  &.btn--select {
+    color: $black;
+    background-color: $off-white;
+
+    &:hover {
+      background-color: darken($off-white, 5%);
+    }
+
+    &.is-selected {
+      color: $white;
+      background-color: $select-blue;
+    }
+  }
+
+  &.btn--transparent {
+    color: $tooltip-gray;
+    background-color: transparent;
+
+    &:hover {
+      color: darken($tooltip-gray, 15%);
+    }
+  }
+
+  &.btn--close {
+    color: $black;
+    background-color: transparent;
+
+    &::before,
+    &::after {
+      content: ' ';
+      position: absolute;
+      top: 0;
+      width: 2px;
+      height: 1em;
+      background-color: $gray;
+      transition: background-color 0.3s ease-in-out;
+    }
+
+    &::before {
+      transform: rotate(45deg);
+    }
+
+    &::after {
+      transform: rotate(-45deg);
+    }
+
+    &:hover::before,
+    &:hover::after {
+      background-color: $black;
+    }
+  }
+}

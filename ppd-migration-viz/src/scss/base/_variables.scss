@@ -1,0 +1,46 @@
+// Variables
+$white: #fff;
+$black: #000;
+$red: #ed392a;
+$dark-red: #c42d21;
+$green: #58a897;
+$bright-green: #8cb561;
+$light-blue: #83badc;
+$blue: #3b75bb;
+$purple: #a483a8;
+$dark-purple: #69518d;
+$orange: #f7890e;
+$yellow: #e7ae3f;
+$blue-gray: #728c99;
+$off-white: #f1f1f1;
+$gray: #333;
+$tooltip-gray: #808081;
+$select-blue: #455a64;
+$select-font-color: #555;
+$disabled-button-color: #4a4a4a;
+$disabled-button-bg: $off-white;
+$form-focus: $off-white;
+$dark-gray: #d4d0cb;
+$dark-blue: #1d435e;
+$grid-lines: #c5c5c5;
+$grid-lines--light: $off-white;
+$color__text-button-blue: $blue-gray;
+$color__background-button-blue: #2b3d46;
+$color__background-button-gray: #d6d6d6;
+$color__no-data: #efefef;
+$color__overview-label: #9b9b9b;
+$color__index-border: #b7b7b7;
+$color__details-table-stripe: #ddd;
+
+/*----------  Fonts  ----------*/
+$font-hind: 'Hind', sans-serif;
+$font-roboto: 'Roboto', sans-serif;
+
+/*----------  Structural  ----------*/
+$size-max-width: 700px;
+$size-content-max-width: 1000px;
+
+/*----------  Custom  ----------*/
+$grid-columns--mobile: 3;
+$grid-columns--desktop: 9;
+$highlight-color: #e0645b;

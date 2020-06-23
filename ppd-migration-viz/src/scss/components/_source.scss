@@ -1,0 +1,25 @@
+/*==============================
+=            Source            =
+==============================*/
+.interactive__source {
+  margin-top: 1rem;
+  padding-bottom: 2rem;
+  text-align: right;
+
+  a {
+    box-shadow: none;
+  }
+
+  img {
+    max-width: 300px;
+    height: auto;
+  }
+
+  p {
+    margin: 0;
+    color: $tooltip-gray;
+    font-size: 0.8rem;
+    line-height: 1.3;
+    text-align: right;
+  }
+}
