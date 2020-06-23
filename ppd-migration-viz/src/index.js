@@ -61,36 +61,6 @@ function drawChart() {
 
 function drawMap(lastYearValues) {
   map.features.forEach(province => {
-    console.log(province.geometry.coordinates, province.properties.name)
-    // if (province.properties.name === 'Dayr Az Zawr' || province.properties.name === 'Dayr Az Zawr') {
-    //   //   // if (province.geometry.coordinates[0][0].length > 1) {
-    //   province.geometry.coordinates[0][0] = province.geometry.coordinates[0][0].map(
-    //     f => {
-    //       let a = f[0]
-    //       let b = f[1]
-    //       return [b, a]
-    //     }
-    //   )
-    // }
-    // } else if (province.properties.name === 'Tartus') {
-    //   province.geometry.coordinates[1][0] = province.geometry.coordinates[1][0].map(
-    //     f => {
-    //       // console.log(f)
-    //       let a = f[0]
-    //       let b = f[1]
-    //       return [b, a]
-    //     }
-    //   )
-    // } else {
-    //   province.geometry.coordinates[0][0] = province.geometry.coordinates[0][0].map(
-    //     f => {
-    //       // console.log(f)
-    //       let a = f[0]
-    //       let b = f[1]
-    //       return [b, a]
-    //     }
-    //   )
-    // }
     return (province.properties.value =
       lastYearValues[province.properties.code] || province.properties.idp_2019)
   })
