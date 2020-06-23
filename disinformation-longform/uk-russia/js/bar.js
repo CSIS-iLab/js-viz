@@ -6,7 +6,10 @@ Highcharts.chart('hcContainer', {
         googleSpreadsheetWorksheet: 2
     },
     chart: {
-        type: 'bar'
+        type: 'bar',
+        style: {
+            fontFamily: 'Roboto'
+        }
     },
     title: {
         text: "UK's Ratings of Russia"

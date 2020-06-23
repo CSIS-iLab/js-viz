@@ -6,7 +6,10 @@ Highcharts.chart('hcContainer', {
         googleSpreadsheetWorksheet: 4
     },
     chart: {
-        type: 'bar'
+        type: 'bar',
+        style: {
+            fontFamily: 'Roboto'
+        }
     },
     title: {
         text: "Japan's Ratings of China"

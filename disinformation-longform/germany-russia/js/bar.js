@@ -6,7 +6,10 @@ Highcharts.chart('hcContainer', {
         googleSpreadsheetWorksheet: 1
     },
     chart: {
-        type: 'bar'
+        type: 'bar',
+        style: {
+            fontFamily: 'Roboto'
+        }
     },
     title: {
         text: "Germany's Ratings of Russia"

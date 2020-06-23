@@ -10,6 +10,9 @@ Highcharts.chart("hcContainer", {
     },
     chart: {
         type: "bar",
+        style: {
+            fontFamily: 'Roboto'
+        }
     },
     title: {
         text: "Australia's Ratings of China",
