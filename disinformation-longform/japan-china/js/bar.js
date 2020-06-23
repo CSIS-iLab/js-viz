@@ -12,17 +12,16 @@ Highcharts.chart('hcContainer', {
         text: "Japan's Ratings of China"
     },
     subtitle: {
-        text: ''
+        text: 'Hover to see the percentage of favorable or unfavorable responses toward China.'
     },
     credits: {
         enabled: true,
         href: false,
-        text: "CSIS [Project] | Source: PEW"
+        text: "CSIS | Source: PEW"
     },
     xAxis: [{
             categories: categories,
             reversed: true,
-            tickInterval: 1,
         },
         {
             // mirror axis on right side
@@ -47,15 +46,36 @@ Highcharts.chart('hcContainer', {
         },
     },
     tooltip: {
-        formatter: function () {
-            return (
-                "<b>" +
-                this.series.name + ", " +
-                this.point.category +
-                "</b><br/>" +
-                Highcharts.numberFormat(Math.abs(this.point.y), 1) +
-                "%"
-            );
-        },
+        shared: false,
+        borderColor: 'gray',
+        headerFormat: '<span style="font-size: 14px">{point.key}</span><br/>',
+        pointFormatter: function () {
+            var result = this.y
+                if (result < 0) {
+                    result = result * -1
+                } else if (result > 0) {
+                    result 
+                }
+            
+            return  '<span style="font-size: 14px;color:' + this.color + '">\u25CF</span> ' + this.series.name + ': <b>' + result + ' %</b><br/>'
+        }
+        
     },
+    series: [
+      {
+        name: "Favorable",
+        color: "#ED392A",
+        legendIndex: 2,
+        states: {
+            inactive: {opacity: 1}
+        }
+      },
+      { name: "Unfavorable",
+        color: "#7cb5ec",
+        legendIndex: 1,
+        states: {
+            inactive: {opacity: 1}
+        }
+      }
+    ]
 });

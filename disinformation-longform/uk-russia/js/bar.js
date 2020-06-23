@@ -12,7 +12,7 @@ Highcharts.chart('hcContainer', {
         text: "UK's Ratings of Russia"
     },
     subtitle: {
-        text: ''
+        text: 'Years where polling was not conducted are omitted.<br> Hover to see the percentage of favorable or unfavorable responses toward Russia.'
     },
     credits: {
         enabled: true,
@@ -21,8 +21,7 @@ Highcharts.chart('hcContainer', {
     },
     xAxis: [{
             categories: categories,
-            reversed: true,
-            tickInterval: 1,
+            reversed: true
         },
         {
             opposite: true,
@@ -46,15 +45,37 @@ Highcharts.chart('hcContainer', {
         },
     },
     tooltip: {
-        formatter: function () {
-            return (
-                "<b>" +
-                this.series.name + ", " +
-                this.point.category +
-                "</b><br/>" +
-                Highcharts.numberFormat(Math.abs(this.point.y), 1) +
-                "%"
-            );
-        },
+        shared: false,
+        borderColor: 'gray',
+        headerFormat: '<span style="font-size: 14px">{point.key}</span><br/>',
+        pointFormatter: function () {
+            var result = this.y
+                if (result < 0) {
+                    result = result * -1
+                } else if (result > 0) {
+                    result 
+                }
+            
+            return  '<span style="font-size: 14px;color:' + this.color + '">\u25CF</span> ' + this.series.name + ': <b>' + result + ' %</b><br/>'
+        }
+        
     },
+    
+    series: [
+      {
+        name: "Favorable",
+        color: "#ED392A",
+        legendIndex: 2,
+        states: {
+            inactive: {opacity: 1}
+        }
+      },
+      { name: "Unfavorable",
+        color: "#7cb5ec",
+        legendIndex: 1,
+        states: {
+            inactive: {opacity: 1}
+        }
+      }
+    ]
 });
