@@ -12,7 +12,10 @@ Highcharts.chart('hcContainer', {
         }
     },
     title: {
-        text: "Japan's Ratings of China"
+        text: "Japan's Ratings of China",
+        style: {
+            fontSize: '24px'
+        }    
     },
     subtitle: {
         text: 'Hover to see the percentage of favorable or unfavorable responses toward China.'
@@ -25,6 +28,7 @@ Highcharts.chart('hcContainer', {
     xAxis: [{
             categories: categories,
             reversed: true,
+            tickInterval: 2
         },
         {
             // mirror axis on right side

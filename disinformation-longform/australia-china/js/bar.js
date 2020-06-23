@@ -16,6 +16,9 @@ Highcharts.chart("hcContainer", {
     },
     title: {
         text: "Australia's Ratings of China",
+        style: {
+            fontSize: '24px'
+        }    
     },
     subtitle: {
         text: "Hover to see the percentage of favorable or unfavorable responses toward China.<br>Years where polling was not conducted are omitted.",
@@ -27,7 +30,8 @@ Highcharts.chart("hcContainer", {
     },
     xAxis: [{
             categories: categories,
-            reversed: true
+            reversed: true,
+            tickInterval: 2
         },
         {
             // mirror axis on right side
