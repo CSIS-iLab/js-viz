@@ -15,7 +15,7 @@ Highcharts.chart("hcContainer", {
         text: "Australia's Ratings of China",
     },
     subtitle: {
-        text: "Years where polling was not conducted are omitted.<br> Hover to see the percentage of favorable or unfavorable responses toward China.",
+        text: "Hover to see the percentage of favorable or unfavorable responses toward China.<br>Years where polling was not conducted are omitted.",
     },
     credits: {
         enabled: true,

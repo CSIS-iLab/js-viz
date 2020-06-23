@@ -12,7 +12,7 @@ Highcharts.chart('hcContainer', {
         text: "Germany's Ratings of Russia"
     },
     subtitle: {
-        text: 'Years where polling was not conducted are omitted.<br> Hover to see the percentage of favorable or unfavorable responses toward Russia.'
+        text: 'Hover to see the percentage of favorable or unfavorable responses toward Russia.<br>Years where polling was not conducted are omitted.'
     },
     credits: {
         enabled: true,
