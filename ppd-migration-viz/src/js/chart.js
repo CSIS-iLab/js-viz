@@ -132,8 +132,8 @@ function drawChart() {
     g.append('g')
       .attr('class', 'g-plot')
       .append('text')
-      .attr('class', 'chart-title')
-      .text(data.province)
+    // .attr('class', 'chart-title')
+    // .text(data.province)
 
     g.append('g').attr('class', 'g-points')
 
@@ -151,10 +151,10 @@ function drawChart() {
     g = svgEnter.merge(svg).select('g')
     drawAxis({ g, svgWidth })
 
-    g.select('.chart-title').attr(
-      'transform',
-      `translate(${svgWidth / 2} ${height + margin.bottom - 3})`
-    )
+    // g.select('.chart-title').attr(
+    //   'transform',
+    //   `translate(${svgWidth / 2} ${height + margin.bottom - 3})`
+    // )
 
     const plot = g.select('.g-plot')
 

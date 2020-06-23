@@ -1,18 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="UTF-8"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
     <title>PPD - Syrian Migration Viz</title>
-    <base target="_blank" />
-    <link
-      href="https://fonts.googleapis.com/css?family=Hind:400,600|Roboto:400,600"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="<%=htmlWebpackPlugin.files.chunks.main.css %>"
-    />
+    <base target="_blank"/>
+    <link href="https://fonts.googleapis.com/css?family=Hind:400,600|Roboto:400,600" rel="stylesheet"/>
+    <link rel="stylesheet" href="<%=htmlWebpackPlugin.files.chunks.main.css %>"/>
   </head>
   <body>
     <main class="interactive__container">
@@ -20,32 +14,26 @@
         <h1 class="interactive__title">Internet Penetration Across China</h1>
         <p>
           This interactive explores internet penetration across China. Use the
-          dropdown menu to choose between broadband and mobile phone
-          subscribers.
-          <span class="instructions--desktop"
-            >Hover on the map to highlight a corresponding chart.</span
-          >
+                    dropdown menu to choose between broadband and mobile phone
+                    subscribers.
+          <span class="instructions--desktop">Hover on the map to highlight a corresponding chart.</span>
           Interact with a chart to see change over time. Values are based on the
-          number of subscribers per 1000 people.
+                    number of subscribers per 1000 people.
         </p>
       </header>
-      <section id="interactive__filters">
+      <!-- <section id="interactive__filters">
         <div class="interactive__filters-category">
-          <label for="filter-category" class="filter-label">Select Types</label>
-          <select
-            id="filter-category"
-            class="filter-select filter-category"
-          ></select>
+          <label class="filter-label" for="filter-category">Select Types</label>
+          <select class="filter-select filter-category" id="filter-category"></select>
         </div>
-      </section>
+      </section> -->
       <section id="interactive__charts">
         <figure id="interactive__map"></figure>
         <div id="interactive__legend-container">
           <div class="interactive__legend-content">
-            <span class="filter-label"
-              >Number of Subscribers
-              <span class="filter-desc">(per 1000 people)</span></span
-            >
+            <span class="filter-label">Number of IDPS
+              <span class="filter-desc">(per 1000 people)</span>
+            </span>
             <svg id="interactive__legend"></svg>
           </div>
         </div>
