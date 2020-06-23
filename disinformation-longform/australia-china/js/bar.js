@@ -24,8 +24,7 @@ Highcharts.chart("hcContainer", {
     },
     xAxis: [{
             categories: categories,
-            reversed: true,
-            tickInterval: 1,
+            reversed: true
         },
         {
             // mirror axis on right side
