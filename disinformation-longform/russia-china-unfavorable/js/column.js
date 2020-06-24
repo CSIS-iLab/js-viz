@@ -37,6 +37,12 @@ Highcharts.chart('hcContainer', {
   },
   tooltip: {
     shared: true,
+    positioner: function(w, h, p) {
+      return {
+          x: p.plotX + this.chart.hoverSeries.xAxis.left - w/2,
+          y: p.plotY
+      }
+    },
     borderColor: 'gray',
     headerFormat: '<span style="font-size: 14px">{point.key}</span><br/>',
     pointFormatter: function () {
