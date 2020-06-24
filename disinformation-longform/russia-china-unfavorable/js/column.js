@@ -1,54 +1,68 @@
-Highcharts.chart('container', {
-
+Highcharts.chart('hcContainer', {
+  data: {
+    googleSpreadsheetKey: "1uf6yWzyUSU_-oQ85lK3695iQbWL_YbcmWB00PnZvxlA",
+    googleSpreadsheetWorksheet: 6
+  },
   chart: {
       type: 'column'
   },
-
   title: {
       text: 'Russia v. China: Unfavorable'
   },
-
-  xAxis: {
-      categories: ['Apples', 'Oranges', 'Pears', 'Grapes', 'Bananas']
+  subtitle: {
+    text: "Hover to see the percentage of favorable or unfavorable responses.<br>Years where polling was not conducted are omitted.",
   },
-
+  credits: {
+    enabled: true,
+    href: false,
+    text: "CSIS | Source: PEW",
+  } ,
   yAxis: {
-      allowDecimals: false,
-      min: 0,
-      title: {
-          text: 'Number of fruits'
-      }
+    title: "",
+    min: 0,
+    max: 100,
+    labels: {
+        formatter: function () {
+            return Math.abs(this.value) + "%";
+        },
+    }
   },
-
-  tooltip: {
-      formatter: function () {
-          return '<b>' + this.x + '</b><br/>' +
-              this.series.name + ': ' + this.y + '<br/>' +
-              'Total: ' + this.point.stackTotal;
-      }
-  },
-
   plotOptions: {
       column: {
-          stacking: 'normal'
-      }
+          stacking: ''
+      },
+    series: {
+      centerInCategory: true
+    }
   },
-
-  series: [{
-      name: 'John',
-      data: [5, 3, 4, 7, 2],
-      stack: 'male'
-  }, {
-      name: 'Joe',
-      data: [3, 4, 4, 2, 5],
-      stack: 'male'
-  }, {
-      name: 'Jane',
-      data: [2, 5, 6, 2, 1],
-      stack: 'female'
-  }, {
-      name: 'Janet',
-      data: [3, 0, 4, 4, 3],
-      stack: 'female'
-  }]
+  tooltip: {
+    shared: true,
+    borderColor: 'gray',
+    headerFormat: '<span style="font-size: 14px">{point.key}</span><br/>',
+    pointFormatter: function () {
+        var result = this.y
+            if (result < 0) {
+                result = result * -1
+            } else if (result > 0) {
+                result 
+            }
+        
+        return  '<span style="font-size: 14px;color:' + this.color + '">\u25CF</span> ' + this.series.name + ': <b>' + Highcharts.numberFormat(result,2) + ' %</b><br/>'
+    }  
+  },
+  series: [
+    {
+      name: "Russia",
+      color: "#8CB561",
+      states: {
+          inactive: {opacity: 1}
+      }
+    },
+    { name: "China",
+      color: "#83BADC",
+      states: {
+          inactive: {opacity: 1}
+      }
+    }
+  ]
 });
