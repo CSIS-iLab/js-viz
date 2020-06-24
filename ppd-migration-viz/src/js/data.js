@@ -30,12 +30,12 @@ async function parseData(url) {
         sortBy: 'year'
       }).sort((a, b) => a.province.localeCompare(b.province))
 
-      const avg = dataset.values.filter(d => d.id === 'AV')[0]
-      dataset.values = dataset.values.filter(d => d.id !== 'AV')
-      dataset.values.unshift(avg)
-
+      // const avg = dataset.values.filter(d => d.id === 'AV')[0]
+      // dataset.values = dataset.values.filter(d => d.id !== 'AV')
+      // dataset.values.unshift(avg)
       return dataset
     })
+  console.log(data)
   return data
 }
 

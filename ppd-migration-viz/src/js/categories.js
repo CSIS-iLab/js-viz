@@ -1,12 +1,13 @@
 const categories = {
-  mobile_per_1000: {
-    title: 'Mobile Phone Subscribers',
-    groupSize: 300
-  },
-  broadband_per_1000: {
-    title: 'Broadband Subscribers',
-    groupSize: 50
+  idp_total: {
+    title: 'Total IDPs per Governate',
+    groupSize: 150000
   }
+
+  // broadband_per_1000: {
+  //   title: 'Broadband Subscribers',
+  //   groupSize: 50
+  // }
 }
 
 const categoriesList = Object.keys(categories)

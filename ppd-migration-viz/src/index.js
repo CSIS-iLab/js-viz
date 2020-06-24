@@ -5,16 +5,17 @@ import parseData from './js/data'
 import { roundNumTo } from './js/helpers/helpers'
 import Legend from './js/legend'
 import Map from './js/map'
-import Selectors from './js/selectors'
+// import Selectors from './js/selectors'
 import './scss/main.scss'
 
-const dataSrc = './data/20190411-data.csv'
+// const dataSrc = './data/20190411-data.csv'
+const dataSrc = './data/2020_data.csv'
 const mapSrc = './data/china.geojson'
 
 let data
 let map
 let breakpoint = breakpoints.calculate()
-let currentCategory = 'broadband_per_1000'
+let currentCategory = 'idp_total'
 
 function init() {
   loadDataAndSetup(dataSrc, mapSrc)
@@ -22,33 +23,36 @@ function init() {
 
 async function loadDataAndSetup(dataSrc, mapSrc) {
   data = await parseData(dataSrc)
+  console.log(data)
   map = await Map.loadMapData(mapSrc)
-  setupSelector()
+  // setupSelector()
   drawChart()
 }
 
-function setupSelector() {
-  Selectors.setup({
-    selector: '#filter-category',
-    name: 'filter-category',
-    data: categoriesSelection,
-    current: currentCategory,
-    onChange: e => {
-      currentCategory = Selectors.getCurrent('#filter-category')
-      drawChart()
-    }
-  })
-}
+// function setupSelector() {
+//   Selectors.setup({
+//     selector: '#filter-category',
+//     name: 'filter-category',
+//     data: categoriesSelection,
+//     current: currentCategory,
+//     onChange: e => {
+//       currentCategory = Selectors.getCurrent('#filter-category')
+//       drawChart()
+//     }
+//   })
+// }
 
 function drawChart() {
   const lastYearValues = returnLastYearValues()
   Legend.colorDomain = lastYearValues.range
   Legend.setup()
 
+  // console.log(data.years.idp_total)
   Chart.init({
     data: data.values,
     container: '#interactive__charts',
     years: data.years[currentCategory],
+    // years: data.years.idp_total,
     currentCategory: currentCategory,
     scaleColor: Legend.returnColorScale()
   })
@@ -75,12 +79,11 @@ function drawMap(lastYearValues) {
 
 function returnLastYearValues() {
   const endYear =
-    data.years[currentCategory][data.years[currentCategory].length - 1]
-  const values = data.values.reduce(
+    // data.years[currentCategory][data.years[currentCategory].length - 1]
+    data.years['idp_total'].slice(-1)[0]
+  const values = data.values.slice(1).reduce(
     (acc, curr) => {
-      const value = curr.values
-        .filter(v => v.year === endYear)
-        .map(v => v[currentCategory])[0]
+      const value = curr.values.filter(v => v.year === endYear).map(v => v)
       acc[curr.id] = value
       acc.all.push(value)
       return acc
@@ -92,16 +95,24 @@ function returnLastYearValues() {
   return values
 }
 
-function getColorRange(values) {
+function getColorRange() {
   let range = []
+  let values = data.values
+  let smallVal = values[11].values[0]['idp_total']
+  let bigVal = values[12].values[1]['idp_total']
 
-  const groupSize = categories[currentCategory].groupSize
-  const start = roundNumTo(values[0], groupSize)
-  const end = roundNumTo(values[values.length - 1], groupSize)
+  const groupSize = categories['idp_total'].groupSize
+  // const start = roundNumTo(smallVal, groupSize)
+  // const end = roundNumTo(bigVal, groupSize)
+
+  const start = 150000
+  const end = 900000
 
   for (let i = start; i <= end; i += groupSize) {
     range.push(i)
   }
+
+  // console.log(range)
   return range
 }
 

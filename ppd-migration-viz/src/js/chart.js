@@ -186,7 +186,7 @@ function drawChart() {
       .merge(areaEl)
       .transition(t)
       .attr('d', d => area(d.values))
-      .style('fill', d => returnColor(d.values))
+      .style('fill', 'none')
 
     drawPoints(g, data)
   }
