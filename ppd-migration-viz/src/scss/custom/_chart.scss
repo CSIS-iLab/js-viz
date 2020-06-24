@@ -12,7 +12,7 @@
 
   &:not([data-id='AV']) {
     @include breakpoint('medium') {
-      background-color: $off-white;
+      // background-color: $off-white;
       border: 1px solid $white;
     }
   }
@@ -92,6 +92,10 @@
 
     &--x .domain {
       stroke-width: 0;
+    }
+
+    &--y {
+      // transform: translate(50px, 0px);
     }
   }
 

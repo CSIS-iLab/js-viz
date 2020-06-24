@@ -1,11 +1,12 @@
 import breakpoints from './helpers/breakpoints'
 import { categories } from './categories'
-import { axisBottom } from 'd3-axis'
+import { axisBottom, axisLeft } from 'd3-axis'
 import { format } from 'd3-format'
 import { line as d3Line, area as d3Area } from 'd3-shape'
 import { scaleLinear } from 'd3-scale'
 import { select, selectAll, mouse as d3Mouse } from 'd3-selection'
 import { transition } from 'd3-transition'
+import { range } from 'd3-array'
 import Grid from './grid'
 
 const chart = drawChart()
@@ -34,6 +35,7 @@ function drawChart() {
 
   let scaleX = scaleLinear()
   let scaleY = scaleLinear()
+  let scaleA = scaleLinear()
 
   function updateScales({ data }) {
     scaleX.domain([startYear, endYear]).range([0, width])
@@ -57,6 +59,11 @@ function drawChart() {
       year: year,
       [currentCategory]: 0
     }))
+
+    scaleA
+      .domain([0, maxValue])
+      .range([height, 0])
+      .nice()
   }
 
   function updateProvinces({ container, data }) {
@@ -88,10 +95,10 @@ function drawChart() {
     const svgWidth = width - margin.left - margin.right
     scaleX.range([0, svgWidth])
 
-    const area = d3Area()
-      .x(d => scaleX(d.year))
-      .y1(d => scaleY(d[currentCategory]))
-      .y0(scaleY(0))
+    // const area = d3Area()
+    //   .x(d => scaleX(d.year))
+    //   .y1(d => scaleY(d[currentCategory]))
+    //   .y0(scaleY(0))
 
     const line = d3Line()
       .x(d => scaleX(d.year))
@@ -128,6 +135,7 @@ function drawChart() {
     }
 
     g.append('g').attr('class', 'axis axis--x')
+    g.append('g').attr('class', 'axis axis--y')
 
     g.append('g')
       .attr('class', 'g-plot')
@@ -180,12 +188,15 @@ function drawChart() {
     areaEl
       .enter()
       .append('path')
-      .attr('class', 'area')
+      // .attr('class', 'area')
+      .attr('class', 'line')
       .attr('data-id', d => d.id)
-      .attr('d', area(defaultPathValues))
+      // .attr('d', area(defaultPathValues))
+      .attr('d', line(defaultPathValues))
       .merge(areaEl)
       .transition(t)
-      .attr('d', d => area(d.values))
+      // .attr('d', d => area(d.values))
+      .attr('d', d => line(d.values))
       .style('fill', 'none')
 
     drawPoints(g, data)
@@ -262,6 +273,26 @@ function drawChart() {
     g.select('.axis--x')
       .attr('transform', 'translate(0,' + height + ')')
       .call(xAxis)
+
+    const formatter = format('.2s')
+    console.log(height)
+
+    const yAxisGenerator = axisLeft(scaleA)
+      // .tickFormat(
+      //   d => `'${d.toString().slice(-2)}`
+      // )
+      // .scale(scaleY)
+      .tickFormat(d => formatter(d))
+      .ticks(height / 20)
+    // .ticks(height / 16)
+
+    const yAxis = g
+      .select('.axis--y')
+      // .attr('transform', 'translate(0,' + height + ')')
+      // .call(transitionY ? scaleLinear() : yAxisGenerator)
+      .call(yAxisGenerator)
+
+    // }
   }
 
   function returnGridPosition(pos) {

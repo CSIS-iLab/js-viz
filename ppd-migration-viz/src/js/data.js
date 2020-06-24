@@ -35,7 +35,7 @@ async function parseData(url) {
       // dataset.values.unshift(avg)
       return dataset
     })
-  console.log(data)
+  // console.log(data)
   return data
 }
 

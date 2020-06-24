@@ -56,7 +56,7 @@ function drawChart() {
     let plot = g.select('.g-plot')
 
     const provinces = plot.selectAll('path').data(data.features)
-    console.log(provinces)
+    // console.log(provinces)
 
     provinces
       .enter()

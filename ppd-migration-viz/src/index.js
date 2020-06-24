@@ -23,7 +23,6 @@ function init() {
 
 async function loadDataAndSetup(dataSrc, mapSrc) {
   data = await parseData(dataSrc)
-  console.log(data)
   map = await Map.loadMapData(mapSrc)
   // setupSelector()
   drawChart()
