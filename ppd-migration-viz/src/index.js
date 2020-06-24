@@ -10,7 +10,7 @@ import './scss/main.scss'
 
 // const dataSrc = './data/20190411-data.csv'
 const dataSrc = './data/2020_data.csv'
-const mapSrc = './data/china.geojson'
+const mapSrc = './data/syria.geojson'
 
 let data
 let map
