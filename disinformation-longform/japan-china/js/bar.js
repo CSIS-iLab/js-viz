@@ -12,7 +12,7 @@ Highcharts.chart('hcContainer', {
         }
     },
     title: {
-        text: "Japan's Ratings of China",
+        text: "Japan: Opinions on China",
         style: {
             fontSize: '24px'
         }    
