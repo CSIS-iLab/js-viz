@@ -4,7 +4,10 @@ Highcharts.chart('hcContainer', {
     googleSpreadsheetWorksheet: 8
   },
   chart: {
-      type: 'column'
+      type: 'column',
+      style: {
+        fontFamily: 'Roboto'
+    }
   },
   title: {
       text: 'Russia v. China: Unfavorable'
@@ -59,13 +62,13 @@ Highcharts.chart('hcContainer', {
   series: [
     {
       name: "Russia",
-      color: "#8CB561",
+      color: "#000",
       states: {
           inactive: {opacity: 1}
       }
     },
     { name: "China",
-      color: "#83BADC",
+      color: "#ED392A",
       states: {
           inactive: {opacity: 1}
       }

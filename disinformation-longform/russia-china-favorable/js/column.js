@@ -4,7 +4,10 @@ Highcharts.chart('hcContainer', {
     googleSpreadsheetWorksheet: 6
   },
   chart: {
-      type: 'column'
+      type: 'column',
+      style: {
+        fontFamily: 'Roboto'
+    }
   },
   title: {
       text: 'Russia v. China: Favorable'
@@ -42,7 +45,7 @@ Highcharts.chart('hcContainer', {
           x: p.plotX + this.chart.hoverSeries.xAxis.left - w/2,
           y: p.plotY
       }
-  },
+    },
     borderColor: 'gray',
     headerFormat: '<span style="font-size: 14px">{point.key}</span><br/>',
     pointFormatter: function () {
@@ -59,13 +62,13 @@ Highcharts.chart('hcContainer', {
   series: [
     {
       name: "Russia",
-      color: "#8CB561",
+      color: "#000",
       states: {
           inactive: {opacity: 1}
       }
     },
     { name: "China",
-      color: "#83BADC",
+      color: "#ED392A",
       states: {
           inactive: {opacity: 1}
       }
