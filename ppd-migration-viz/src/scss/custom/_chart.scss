@@ -13,7 +13,7 @@
   &:not([data-id='AV']) {
     @include breakpoint('medium') {
       // background-color: $off-white;
-      background-color: #f7f7f7;
+      // background-color: #f7f7f7;
       // border: 1px solid $white;
       // border: 1px solid $grid-lines;
     }
@@ -33,8 +33,7 @@
     }
 
     .area {
-      // fill: $highlight-color !important;
-      fill: none;
+      fill: $highlight-color !important;
     }
 
     .path {

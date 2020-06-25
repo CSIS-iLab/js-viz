@@ -92,6 +92,11 @@ function drawChart() {
     const svgWidth = width - margin.left - margin.right
     scaleX.range([0, svgWidth])
 
+    const area = d3Area()
+      .x(d => scaleX(d.year))
+      .y1(d => scaleY(d[currentCategory]))
+      .y0(scaleY(0))
+
     const line = d3Line()
       .x(d => scaleX(d.year))
       .y(d => scaleY(d[currentCategory]))
@@ -180,13 +185,13 @@ function drawChart() {
     areaEl
       .enter()
       .append('path')
-      .attr('class', 'line')
+      .attr('class', 'area')
       .attr('data-id', d => d.id)
-      .attr('d', line(defaultPathValues))
+      .attr('d', area(defaultPathValues))
       .merge(areaEl)
       .transition(t)
-      .attr('d', d => line(d.values))
-      .style('fill', 'none')
+      .attr('d', d => area(d.values))
+      .style('fill', d => returnColor(d.values))
 
     drawPoints(g, data)
   }
