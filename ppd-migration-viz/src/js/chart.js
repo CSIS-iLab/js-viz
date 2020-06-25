@@ -34,7 +34,6 @@ function drawChart() {
 
   let scaleX = scaleLinear()
   let scaleY = scaleLinear()
-  let scaleA = scaleLinear()
 
   function updateScales({ data }) {
     scaleX.domain([startYear, endYear]).range([0, width])
@@ -48,8 +47,6 @@ function drawChart() {
       .reduce((acc, val) => acc.concat(val), [])
 
     const maxValue = Math.max(...values)
-
-    scaleA.domain([20000, 1600000]).range([height, 0])
 
     scaleY
       .domain([0, maxValue])

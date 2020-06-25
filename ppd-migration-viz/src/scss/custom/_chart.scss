@@ -10,14 +10,10 @@
     padding: 0 0.25rem;
   }
 
-  &:not([data-id='AV']) {
-    @include breakpoint('medium') {
-      // background-color: $off-white;
-      // background-color: #f7f7f7;
-      // border: 1px solid $white;
-      // border: 1px solid $grid-lines;
-    }
-  }
+  // &:not([data-id='AV']) {
+  //   @include breakpoint('medium') {
+  //   }
+  // }
 }
 
 .chart {
