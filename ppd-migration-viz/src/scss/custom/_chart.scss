@@ -37,10 +37,10 @@
     }
   }
 
-  // .chart-title {
-  //   @include fontSize(30px);
-  //   transform: translate(100px, 212px);
-  // }
+  .chart-title {
+    @include fontSize(14px);
+    // transform: translate(100px, 212px);
+  }
 
   .clip-area {
     fill: $white;

@@ -35,7 +35,7 @@ function drawChart() {
     projection
       // .center([104, 40])
       .scale(width * 0.1)
-      .translate([width / 2, height / 2])
+      .translate([width / 2.3, height / 2.5])
     mapPath.projection(projection)
 
     let svg = container

@@ -46,42 +46,22 @@
   margin: 0 auto;
 
   @include breakpoint('medium') {
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(5, 1fr);
   }
 }
 
-.province[data-id='IB'] {
-  position: relative;
-  bottom: 80px;
-  left: -5px;
-}
-
-.province[data-id='HL'],
-.province[data-id='HA'],
-.province[data-id='RA'],
-.province[data-id='SU'],
-.province[data-id='DI'] {
+.province:nth-child(n + 8) {
   position: relative;
   left: 75px;
 }
 
-.province[data-id='DR'],
-.province[data-id='DY'],
-.province[data-id='HM'],
-.province[data-id='HI'] {
+.province[data-id='IB'] {
   position: relative;
-  left: 135px;
-  top: -20px;
-}
 
-.province[data-id='LA'],
-.province[data-id='QU'],
-.province[data-id='RD'],
-.province[data-id='TA'] {
-  position: relative;
-  left: 135px;
-  top: -15px;
+  @include breakpoint('medium') {
+    left: 57px;
+  }
 }
 
 .interactive__source {
