@@ -37,6 +37,11 @@
     }
   }
 
+  // .chart-title {
+  //   @include fontSize(30px);
+  //   transform: translate(100px, 212px);
+  // }
+
   .clip-area {
     fill: $white;
   }
@@ -85,6 +90,10 @@
 
     text {
       fill: $disabled-button-color;
+
+      // @include breakpoint('medium') {
+      //   font-size: 24px;
+      // }
     }
 
     &--x .domain {
@@ -108,4 +117,10 @@
       font-weight: bold;
     }
   }
+
+  // .g-points {
+  //   text {
+  //     @include fontSize(24px);
+  //   }
+  // }
 }
