@@ -7,6 +7,8 @@ import Legend from './js/legend'
 import Map from './js/map'
 // import Selectors from './js/selectors'
 import './scss/main.scss'
+import tippy from 'tippy.js'
+// import 'tippy.js/dist/tippy.css'
 
 // const dataSrc = './data/20190411-data.csv'
 const dataSrc = './data/2020_data.csv'
@@ -24,8 +26,12 @@ function init() {
 async function loadDataAndSetup(dataSrc, mapSrc) {
   data = await parseData(dataSrc)
   map = await Map.loadMapData(mapSrc)
-  // setupSelector()
   drawChart()
+
+  tippy('#interactive__tooltip', {
+    content:
+      'Trade values from 2019 have not yet been released. This interactive currently uses figures from 2018.'
+  })
 }
 
 // function setupSelector() {
