@@ -1,12 +1,11 @@
 import breakpoints from './helpers/breakpoints'
 import { categories } from './categories'
-import { axisBottom, axisLeft } from 'd3-axis'
+import { axisBottom } from 'd3-axis'
 import { format } from 'd3-format'
 import { line as d3Line, area as d3Area } from 'd3-shape'
 import { scaleLinear } from 'd3-scale'
 import { select, selectAll, mouse as d3Mouse } from 'd3-selection'
 import { transition } from 'd3-transition'
-import { range } from 'd3-array'
 import Grid from './grid'
 
 const chart = drawChart()
@@ -270,13 +269,6 @@ function drawChart() {
     g.select('.axis--x')
       .attr('transform', 'translate(0,' + height + ')')
       .call(xAxis)
-
-    const formatter = format('.2s')
-
-    const yAxisGenerator = axisLeft(scaleA).tickFormat(d => formatter(d))
-    // .outerTickSize(0)
-
-    const yAxis = g.select('.axis--y').call(yAxisGenerator)
   }
 
   function returnGridPosition(pos) {
