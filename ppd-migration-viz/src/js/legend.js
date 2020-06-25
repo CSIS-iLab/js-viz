@@ -40,23 +40,14 @@ const Legend = {
   },
   returnColorScale() {
     const colors = [
+      '#00a3fe',
       '#0083cb',
-      '#0078ba',
       '#006da9',
       '#006298',
       '#005787',
       '#004c76',
       '#004165'
     ]
-    // const colors = [
-    //   '#32b6ff',
-    //   '#10aaff',
-    //   '#0098ed',
-    //   '#0083cb',
-    //   '#006da9',
-    //   '#005787',
-    //   '#004165'
-    // ]
 
     let scaleColor = scaleThreshold()
       .domain(this.colorDomain)
