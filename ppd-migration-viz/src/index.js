@@ -64,8 +64,7 @@ function drawChart() {
 
 function drawMap(lastYearValues) {
   map.features.forEach(province => {
-    return (province.properties.value =
-      lastYearValues[province.properties.code] || province.properties.idp_2019)
+    return (province.properties.value = province.properties.idp_2019)
   })
 
   Map.init({

@@ -42,9 +42,6 @@
   grid-column-gap: 0.5rem;
   grid-row-gap: 0;
   // grid-template-columns: repeat(var(--grid-columns), 1fr);
-  // grid-template-rows: repeat(12, auto);
-
-  // grid-template-columns: repeat(2, auto);
   max-width: $size-max-width;
   margin: 0 auto;
 
@@ -54,14 +51,38 @@
   }
 }
 
-// .province[data-id='IB'] {
-//   grid-row: 1 / span 3;
-// }
+.province[data-id='IB'] {
+  position: relative;
+  bottom: 80px;
+  left: -5px;
+}
 
-// .province {
-//   grid-row: 5 / span 2;
-//   grid-column: 1/-1;
-// }
+.province[data-id='HL'],
+.province[data-id='HA'],
+.province[data-id='RA'],
+.province[data-id='SU'],
+.province[data-id='DI'] {
+  position: relative;
+  left: 75px;
+}
+
+.province[data-id='DR'],
+.province[data-id='DY'],
+.province[data-id='HM'],
+.province[data-id='HI'] {
+  position: relative;
+  left: 135px;
+  top: 10px;
+}
+
+.province[data-id='LA'],
+.province[data-id='QU'],
+.province[data-id='RD'],
+.province[data-id='TA'] {
+  position: relative;
+  left: 135px;
+  top: 20px;
+}
 
 .interactive__source {
   max-width: $size-max-width;

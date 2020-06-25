@@ -50,6 +50,8 @@ function drawChart() {
 
     const maxValue = Math.max(...values)
 
+    scaleA.domain([20000, 1600000]).range([height, 0])
+
     scaleY
       .domain([0, maxValue])
       .range([height, 0])
@@ -59,11 +61,6 @@ function drawChart() {
       year: year,
       [currentCategory]: 0
     }))
-
-    scaleA
-      .domain([20000, 1600000])
-      .range([height, 0])
-      .nice()
   }
 
   function updateProvinces({ container, data }) {
@@ -261,16 +258,17 @@ function drawChart() {
   function drawAxis({ g, svgWidth }) {
     const xAxis = axisBottom(scaleX)
       .tickValues([startYear, endYear])
-      .tickFormat(d => `'${d.toString().slice(-2)}`)
+      .tickFormat(d => {
+        // console.log(d)
+        return `'${d.toString().slice(-2)}`
+      })
     g.select('.axis--x')
       .attr('transform', 'translate(0,' + height + ')')
       .call(xAxis)
 
     const formatter = format('.2s')
 
-    const yAxisGenerator = axisLeft(scaleA)
-      .tickFormat(d => formatter(d))
-      .ticks(height / 20)
+    const yAxisGenerator = axisLeft(scaleA).tickFormat(d => formatter(d))
 
     const yAxis = g.select('.axis--y').call(yAxisGenerator)
   }

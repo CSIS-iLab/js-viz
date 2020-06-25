@@ -13,7 +13,9 @@
   &:not([data-id='AV']) {
     @include breakpoint('medium') {
       // background-color: $off-white;
-      border: 1px solid $white;
+      background-color: #f7f7f7;
+      // border: 1px solid $white;
+      // border: 1px solid $grid-lines;
     }
   }
 }
@@ -96,31 +98,29 @@
 
     &--y {
       .domain {
-        display: none;
+        stroke-width: 0;
       }
-      // display: none;
-      // .tick:last-child {
-      //   visibility: hidden;
-      //   display: none;
-      // }
 
       // transform: translate(50px, 0px);
       .tick {
-        text {
-          opacity: 0;
-        }
+        opacity: 0;
+        //   &:nth-of-type(2) text,
+        //   &:nth-of-type(3) text,
+        //   &:nth-of-type(4) text,
+        //   &:nth-of-type(5) text,
+        //   &:nth-of-type(6) text,
+        //   &:nth-of-type(7) text {
+        //     opacity: 0;
+        //   }
 
-        &:nth-child(2n) text {
-          opacity: 1;
-        }
-
-        line {
-          opacity: 0;
-        }
-
-        &:nth-child(2n) line {
-          opacity: 1;
-        }
+        //   &:nth-of-type(2) line,
+        //   &:nth-of-type(3) line,
+        //   &:nth-of-type(4) line,
+        //   &:nth-of-type(5) line,
+        //   &:nth-of-type(6) line,
+        //   &:nth-of-type(7) line {
+        //     opacity: 0;
+        //   }
       }
     }
   }
