@@ -61,7 +61,7 @@ function drawChart() {
     }))
 
     scaleA
-      .domain([0, maxValue])
+      .domain([20000, 1600000])
       .range([height, 0])
       .nice()
   }
@@ -94,11 +94,6 @@ function drawChart() {
   function makeSmallChart(data, i) {
     const svgWidth = width - margin.left - margin.right
     scaleX.range([0, svgWidth])
-
-    // const area = d3Area()
-    //   .x(d => scaleX(d.year))
-    //   .y1(d => scaleY(d[currentCategory]))
-    //   .y0(scaleY(0))
 
     const line = d3Line()
       .x(d => scaleX(d.year))
@@ -188,14 +183,11 @@ function drawChart() {
     areaEl
       .enter()
       .append('path')
-      // .attr('class', 'area')
       .attr('class', 'line')
       .attr('data-id', d => d.id)
-      // .attr('d', area(defaultPathValues))
       .attr('d', line(defaultPathValues))
       .merge(areaEl)
       .transition(t)
-      // .attr('d', d => area(d.values))
       .attr('d', d => line(d.values))
       .style('fill', 'none')
 
@@ -275,24 +267,12 @@ function drawChart() {
       .call(xAxis)
 
     const formatter = format('.2s')
-    console.log(height)
 
     const yAxisGenerator = axisLeft(scaleA)
-      // .tickFormat(
-      //   d => `'${d.toString().slice(-2)}`
-      // )
-      // .scale(scaleY)
       .tickFormat(d => formatter(d))
       .ticks(height / 20)
-    // .ticks(height / 16)
 
-    const yAxis = g
-      .select('.axis--y')
-      // .attr('transform', 'translate(0,' + height + ')')
-      // .call(transitionY ? scaleLinear() : yAxisGenerator)
-      .call(yAxisGenerator)
-
-    // }
+    const yAxis = g.select('.axis--y').call(yAxisGenerator)
   }
 
   function returnGridPosition(pos) {

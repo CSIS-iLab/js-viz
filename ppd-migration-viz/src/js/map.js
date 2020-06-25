@@ -16,9 +16,8 @@ function drawChart() {
   // let projection = geoMercator()
   //   .precision([0.1])
 
-  let projection = geoIdentity()
-    .reflectY(true)
-    .fitSize([200, 200])
+  let projection = geoIdentity().reflectY(true)
+  // .fitSize([200, 200])
   let mapPath = geoPath()
 
   let width = 200

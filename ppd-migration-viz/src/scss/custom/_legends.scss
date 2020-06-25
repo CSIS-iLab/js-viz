@@ -1,13 +1,14 @@
 #interactive__legend-container {
   position: relative;
   display: flex;
-  grid-column: 1 / -1;
-  grid-row: 1;
+  grid-column: 4 / span 3;
+  grid-row: 1 / span 1;
   align-items: center;
   height: 100%;
 
   @include breakpoint('medium') {
-    grid-column: 6 / 9;
+    grid-column: 5 / span 3;
+    grid-row: 1 / span 1;
     justify-content: center;
   }
 
