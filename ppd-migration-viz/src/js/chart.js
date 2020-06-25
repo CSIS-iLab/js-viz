@@ -269,6 +269,7 @@ function drawChart() {
     const formatter = format('.2s')
 
     const yAxisGenerator = axisLeft(scaleA).tickFormat(d => formatter(d))
+    // .outerTickSize(0)
 
     const yAxis = g.select('.axis--y').call(yAxisGenerator)
   }
