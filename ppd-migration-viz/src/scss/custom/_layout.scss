@@ -15,33 +15,13 @@
   }
 }
 
-// #interactive__filters {
-//   position: relative;
-//   z-index: 10;
-//   max-width: $size-max-width;
-//   margin: 0 auto 2rem;
-
-//   .interactive__filters-category {
-//     margin-bottom: 1rem;
-//   }
-
-//   .filter-label {
-//     display: inline-block;
-//     margin: 0 0.5rem 0 0;
-//   }
-
-//   .filter-category {
-//     max-width: 300px;
-//   }
-// }
-
 #interactive__charts {
   position: relative;
   display: grid;
-  // grid-auto-rows: min-content;
   grid-column-gap: 0.5rem;
   grid-row-gap: 0;
-  // grid-template-columns: repeat(var(--grid-columns), 1fr);
+  grid-template-columns: repeat(var(--grid-columns), 1fr);
+  grid-template-rows: repeat(9, 1fr);
   max-width: $size-max-width;
   margin: 0 auto;
 
@@ -53,11 +33,25 @@
 
 .province:nth-child(n + 8) {
   position: relative;
-  left: 75px;
+  left: 0;
+
+  @include breakpoint('medium') {
+    left: 75px;
+  }
+}
+
+.province[data-id='HL'] {
+  position: relative;
+  left: 60px;
+
+  @include breakpoint('medium') {
+    left: 0px;
+  }
 }
 
 .province[data-id='IB'] {
   position: relative;
+  left: 60px;
 
   @include breakpoint('medium') {
     left: 57px;

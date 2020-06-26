@@ -1,6 +1,9 @@
 import * as d3Fetch from 'd3-fetch'
 import { geoPath, geoMercator, geoIdentity } from 'd3-geo'
 import { select, selectAll } from 'd3-selection'
+import breakpoints from './helpers/breakpoints'
+
+let breakpoint = breakpoints.calculate()
 
 const chart = drawChart()
 
@@ -32,11 +35,12 @@ function drawChart() {
   }
 
   function updateDom({ container, data }) {
-    projection
-      // .center([104, 40])
-      .scale(width * 0.1)
-      .translate([width / 2.3, height / 2.5])
+    projection.scale(width * 0.1).translate([width / 2.3, height / 2.5])
     mapPath.projection(projection)
+
+    if (breakpoints.isMobile()) {
+      projection.scale(width * 0.1).translate([width / 2.5, height / 2])
+    }
 
     let svg = container
       .select('svg')

@@ -72,7 +72,10 @@ function drawChart() {
       .attr('data-id', d => d.id)
       .merge(provinces)
       .style('grid-column', d => returnGridPosition(Grid[d.id].x))
-      .style('grid-row', d => returnGridPosition(Grid[d.id].y))
+      .style('grid-row', d => {
+        console.log(Grid[d.id].y)
+        return returnGridPosition(Grid[d.id].y)
+      })
       .attr(
         'aria-label',
         d =>
@@ -265,7 +268,6 @@ function drawChart() {
     const xAxis = axisBottom(scaleX)
       .tickValues([startYear, endYear])
       .tickFormat(d => {
-        // console.log(d)
         return `'${d.toString().slice(-2)}`
       })
     g.select('.axis--x')
@@ -274,9 +276,6 @@ function drawChart() {
   }
 
   function returnGridPosition(pos) {
-    if (breakpoints.isMobile()) {
-      return
-    }
     return pos
   }
 

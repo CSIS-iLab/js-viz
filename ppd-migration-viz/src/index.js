@@ -62,9 +62,6 @@ function drawChart() {
     scaleColor: Legend.returnColorScale()
   })
 
-  if (breakpoints.isMobile()) {
-    return
-  }
   drawMap(lastYearValues)
 }
 
