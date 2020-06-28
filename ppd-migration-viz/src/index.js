@@ -30,7 +30,7 @@ async function loadDataAndSetup(dataSrc, mapSrc) {
 
   tippy('#interactive__tooltip', {
     content:
-      'Trade values from 2019 have not yet been released. This interactive currently uses figures from 2018.'
+      'Idlib has seen the greatest increase of IDPs since 2016 as Assad’s government regains control of surrounding areas.'
   })
 }
 
