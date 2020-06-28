@@ -21,8 +21,8 @@ function resize(args) {
 }
 
 function drawChart() {
-  const margin = { top: 10, right: 10, bottom: 40, left: 15 }
-  // const margin = { top: 20, right: 25, bottom: 55, left: 25 }
+  const margin = { top: 10, right: 12, bottom: 40, left: 15 }
+
   let width = 200
   let height = 200
 
@@ -72,10 +72,7 @@ function drawChart() {
       .attr('data-id', d => d.id)
       .merge(provinces)
       .style('grid-column', d => returnGridPosition(Grid[d.id].x))
-      .style('grid-row', d => {
-        console.log(Grid[d.id].y)
-        return returnGridPosition(Grid[d.id].y)
-      })
+      .style('grid-row', d => returnGridPosition(Grid[d.id].y))
       .attr(
         'aria-label',
         d =>
@@ -160,10 +157,6 @@ function drawChart() {
       'transform',
       `translate(${svgWidth / 2} ${height + margin.bottom - 3})`
     )
-    // .attr(
-    //   'transform',
-    //   `translate(${svgWidth / 2} ${height + margin.bottom - 5})`
-    // )
 
     const plot = g.select('.g-plot')
 

@@ -85,9 +85,9 @@
     text {
       fill: $disabled-button-color;
 
-      // @include breakpoint('medium') {
-      //   font-size: 24px;
-      // }
+      @include breakpoint('medium') {
+        font-size: 12px;
+      }
     }
 
     &--x .domain {
@@ -112,9 +112,11 @@
     }
   }
 
-  // .g-points {
-  //   text {
-  //     @include fontSize(24px);
-  //   }
-  // }
+  .g-points {
+    text {
+      @include breakpoint('medium') {
+        @include fontSize(11px);
+      }
+    }
+  }
 }
