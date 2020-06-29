@@ -88,8 +88,8 @@ module.exports = {
     new CleanWebpackPlugin('dist', {}),
     new CopyWebpackPlugin([
       {
-        from: './src/img/cpp-logo-red.svg',
-        to: './img/cpp-logo-red.svg',
+        from: './src/img/PPD_short-01.png',
+        to: './img/PPD_short-01.png',
         toType: 'file'
       },
       {

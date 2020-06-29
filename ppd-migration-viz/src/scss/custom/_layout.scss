@@ -21,7 +21,7 @@
   grid-column-gap: 0.5rem;
   grid-row-gap: 0;
   grid-template-columns: repeat(var(--grid-columns), 1fr);
-  grid-template-rows: repeat(9, 1fr);
+  grid-template-rows: repeat(8, 1fr);
   max-width: $size-max-width;
   margin: 0 auto;
 
