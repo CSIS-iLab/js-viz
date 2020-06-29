@@ -63,7 +63,7 @@ Highcharts.chart('hcContainer', {
       }
     },
     { name: "China",
-      color: "#ED392A",
+      color: "#a43135",
       states: {
           inactive: {opacity: 1}
       }

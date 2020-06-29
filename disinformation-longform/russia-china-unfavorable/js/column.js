@@ -16,7 +16,7 @@ Highcharts.chart('hcContainer', {
     }   
   },
   subtitle: {
-    text: "Russia's scores are the average of polling conducted in that year in the United Kingdom and Germany. <br>China's scores are the average of polling conducted in that year in Australia and Japan.<br> Years where one country was missing data are ommitted. <br>Hover to see the overall percentage of unfavorable responses to Russia and China."
+    text: "Russia's scores are the average of polling conducted in that year in the United Kingdom and Germany. <br>China's scores are the average of polling conducted in that year in Australia and Japan.<br> Years where one country was missing data are omitted. <br>Hover to see the overall percentage of unfavorable responses to Russia and China."
   },
   credits: {
     enabled: true,
@@ -63,7 +63,7 @@ Highcharts.chart('hcContainer', {
       }
     },
     { name: "China",
-      color: "#ED392A",
+      color: "#a43135",
       states: {
           inactive: {opacity: 1}
       }
