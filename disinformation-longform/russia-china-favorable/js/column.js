@@ -46,7 +46,7 @@ Highcharts.chart('hcContainer', {
     positioner: function(w, h, p) {
       return {
           x: p.plotX + this.chart.hoverSeries.xAxis.left - w/2,
-          y: p.plotY
+          y: p.plotY + 150
       }
     },
     borderColor: 'gray',
