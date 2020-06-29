@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <title>PPD - Syrian Migration Viz</title>
+    <base target="_blank"/>
+    <link href="https://fonts.googleapis.com/css?family=Hind:400,600|Roboto:400,600" rel="stylesheet"/>
+    <link rel="stylesheet" href="main.css?27d25f0cd47ab001d516"/>
+  </head>
+
+  <body>
+    <main class="interactive__container">
+      <header id="interactive__header">
+        <h1 class="interactive__title">IDP population by Governate in Syria: 2016-2019</h1>
+        <p>
+          After almost a decade of civil war, Syria has the highest IDP population in the world with over 6.1 million forced to leave home.
+          <span class="instructions--desktop">Hover over a section of the map to see its corresponding chart.</span>
+          Interact with a chart to see change over time. Values are based on the number of IDPs per governate.
+        </p>
+      </header>
+      <section id="interactive__charts">
+        <figure id="interactive__map"></figure>
+        <div class="interactive__tooltip-container" id="interactive__legend-container">
+          <div class="interactive__legend-content">
+            <span class="filter-label">Number of IDPS
+              <span class="filter-desc"></span>
+            </span>
+            <svg id="interactive__legend"></svg>
+          </div>
+          <span class="tip-content" id="interactive__tooltip"></span>
+        </div>
+      </section>
+      <footer class="interactive__source">
+        <a class="source-holder" href="https://www.csis.org/programs/project-prosperity-and-development">CSIS | PPD</a>
+        <!-- <div class="source-details"> -->
+        <a href="https://hno-syria.org/#resources">
+          Source: HNO
+        </a>
+        <!-- </div> -->
+      </footer>
+      <template class="tooltip" id="tooltip">
+        <button aria-label="Close tooltip" class="btn btn--close tooltip-close"></button>
+        <h1 class="tooltip__heading"></h1>
+        <div class="tooltip__content"></div>
+      </template>
+    </main>
+    <div class="tooltip"></div>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+    <script src="https://csis-ilab.github.io/cpower-viz/globaljs/iframeSizer.contentWindow.min.js"></script>
+    <script src="main.js?27d25f0cd47ab001d516"></script>
+  </body>
+</html>
