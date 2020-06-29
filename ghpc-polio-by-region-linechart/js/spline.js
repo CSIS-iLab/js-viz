@@ -37,7 +37,9 @@ Highcharts.chart("hcContainer", {
     text: '<span style="font-size: 32px; color: #333333; text-align: center">Global Polio Cases by World Bank Regions, 1980-2019</span>'
   },
   subtitle: {
-    text: '<span style="color: #333333; margin-bottom: 1.5rem; line-height: 1.4">To see the original World Health Organization region breakdown of cases, click here for the data from <a href="https://www.who.int/immunization/monitoring_surveillance/data/en/" target="_blank" style="color: #0065A6;">1980-2016</a>, <a href="https://extranet.who.int/polis/public/CaseCount.aspx" target="_blank" style="color:#0065A6;">2017-2018</a>, or <a href="http://polioeradication.org/polio-today/polio-now/this-week/" target="_blank" style="color: #0065A6;">2019</a>.<br> Hover over a line to see the number of cases per World Bank <a href="http://datatopics.worldbank.org/sdgatlas/the-world-by-region.html" target="_blank" style="color: #0065A6;">region</a> in that year. Click and drag to zoom.</span>'
+    useHTML: 'true',
+    align: 'center',
+    text: '<span style="color: #333333; margin-bottom: 1.5rem; line-height: 1.4;">To see the original World Health Organization region breakdown of cases, click here for the data from <a href="https://www.who.int/immunization/monitoring_surveillance/data/en/" target="_blank" style="color: #0065A6;">1980-2016</a>, <a href="https://extranet.who.int/polis/public/CaseCount.aspx" target="_blank" style="color:#0065A6;">2017-2018</a>, or <a href="http://polioeradication.org/polio-today/polio-now/this-week/" target="_blank" style="color: #0065A6;">2019</a>.<br> Hover over a line to see the number of cases per World Bank <a href="http://datatopics.worldbank.org/sdgatlas/the-world-by-region.html" target="_blank" style="color: #0065A6;">region</a> in that year. Click and drag to zoom.</span>'
   },
   // Credits
   credits: {
