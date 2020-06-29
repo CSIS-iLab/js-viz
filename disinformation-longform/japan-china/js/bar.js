@@ -67,7 +67,7 @@ Highcharts.chart('hcContainer', {
     series: [
       {
         name: "Favorable",
-        color: "#B22031",
+        color: "#ED4031",
         legendIndex: 2,
         states: {
             inactive: {opacity: 1}
