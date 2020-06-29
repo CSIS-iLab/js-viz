@@ -370,6 +370,13 @@ function drawChart() {
       selectAll('.chart .point').classed('is-visible', false)
       selectAll(
         '.chart .point-circle[data-year="' +
+          startYear +
+          '"], .chart .point-label[data-year="' +
+          startYear +
+          '"]'
+      ).classed('is-visible', true)
+      selectAll(
+        '.chart .point-circle[data-year="' +
           endYear +
           '"], .chart .point-label[data-year="' +
           endYear +
