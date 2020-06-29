@@ -33,7 +33,7 @@ Highcharts.chart('hcContainer', {
         },
     ],
     yAxis: {
-        title: "",
+        title: null,
         max: 100,
         min: -100,
         labels: {
@@ -59,7 +59,7 @@ Highcharts.chart('hcContainer', {
                     result 
                 }
             
-            return  '<span style="font-size: 14px;color:' + this.color + '">\u25CF</span> ' + this.series.name + ': <b>' + result + ' %</b><br/>'
+            return  '<span style="font-size: 14px;color:' + this.color + '">\u25CF</span> ' + this.series.name + ': <b>' + result + '%</b><br/>'
         }
         
     },

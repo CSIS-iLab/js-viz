@@ -34,7 +34,7 @@ Highcharts.chart('hcContainer', {
         },
     ],
     yAxis: {
-        title: "",
+        title: null,
         max: 100,
         min: -100,
         labels: {
