@@ -1,5 +1,3 @@
-var categories
-
 Highcharts.chart('hcContainer', {
     data: {
         googleSpreadsheetKey: "1uf6yWzyUSU_-oQ85lK3695iQbWL_YbcmWB00PnZvxlA",
@@ -26,13 +24,11 @@ Highcharts.chart('hcContainer', {
         text: "CSIS | Source: PEW"
     },
     xAxis: [{
-            categories: categories,
             reversed: true,
             tickInterval: 2
         },
         {
             opposite: true,
-            categories: categories,
             linkedTo: 0
         },
     ],
