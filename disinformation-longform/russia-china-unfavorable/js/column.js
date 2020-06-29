@@ -10,7 +10,7 @@ Highcharts.chart('hcContainer', {
     }
   },
   title: {
-      text: 'Russia v. China: Unfavorable'
+      text: "Case Study Countries' Unfavorable Opinions on Russia and China"
   },
   subtitle: {
     text: "Russia's scores are the average of polling conducted in that year in the United Kingdom and Germany. <br>China's scores are the average of polling conducted in that year in Australia and Japan.<br> Years where one country was missing data are ommitted. <br>Hover to see the overall percentage of favorable responses to Russia and China."
