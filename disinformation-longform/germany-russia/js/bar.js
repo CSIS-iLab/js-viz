@@ -12,7 +12,7 @@ Highcharts.chart('hcContainer', {
         }
     },
     title: {
-        text: "Germany's Ratings of Russia",
+        text: "Germany: Opinions on Russia",
         style: {
             fontSize: '24px'
         }    

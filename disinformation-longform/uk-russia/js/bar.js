@@ -12,7 +12,7 @@ Highcharts.chart('hcContainer', {
         }
     },
     title: {
-        text: "UK's Ratings of Russia",
+        text: "UK: Opinions on Russia",
         style: {
             fontSize: '24px'
         }    

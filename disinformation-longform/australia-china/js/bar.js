@@ -15,7 +15,7 @@ Highcharts.chart("hcContainer", {
         }
     },
     title: {
-        text: "Australia's Ratings of China",
+        text: "Australia: Opinions on China",
         style: {
             fontSize: '24px'
         }    
