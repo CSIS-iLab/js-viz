@@ -1,6 +1,4 @@
-// Data gathered from http://populationpyramid.net/germany/2015/
 
-// Age categories
 var categories
 
 Highcharts.chart("hcContainer", {
@@ -41,7 +39,7 @@ Highcharts.chart("hcContainer", {
         },
     ],
     yAxis: {
-        title: "",
+        title: null,
         min: -100,
         max: 100,
         labels: {
@@ -69,7 +67,7 @@ Highcharts.chart("hcContainer", {
                     result 
                 }
             
-            return  '<span style="font-size: 14px;color:' + this.color + '">\u25CF</span> ' + this.series.name + ': <b>' + result + ' %</b><br/>'
+            return  '<span style="font-size: 14px;color:' + this.color + '">\u25CF</span> ' + this.series.name + ': <b>' + result + '%</b><br/>'
         }
         
     },
