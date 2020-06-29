@@ -1,5 +1,5 @@
 import * as d3Fetch from 'd3-fetch'
-import { geoPath, geoMercator, geoIdentity } from 'd3-geo'
+import { geoPath, geoIdentity } from 'd3-geo'
 import { select, selectAll } from 'd3-selection'
 import breakpoints from './helpers/breakpoints'
 
@@ -16,11 +16,7 @@ function resize() {
 function drawChart() {
   const margin = { top: 0, right: 5, bottom: 0, left: 5 }
 
-  // let projection = geoMercator()
-  //   .precision([0.1])
-
   let projection = geoIdentity().reflectY(true)
-  // .fitSize([200, 200])
   let mapPath = geoPath()
 
   let width = 200
@@ -35,7 +31,7 @@ function drawChart() {
   }
 
   function updateDom({ container, data }) {
-    projection.scale(width * 0.1).translate([width / 2.3, height / 2.5])
+    projection.scale(width * 0.12).translate([-75, 230])
     mapPath.projection(projection)
 
     if (breakpoints.isMobile()) {
@@ -59,7 +55,6 @@ function drawChart() {
     let plot = g.select('.g-plot')
 
     const provinces = plot.selectAll('path').data(data.features)
-    // console.log(provinces)
 
     provinces
       .enter()

@@ -6,11 +6,13 @@
   align-items: center;
   height: 100%;
   right: 50px;
+  top: -10px;
 
   @include breakpoint('medium') {
     grid-column: 4 / span 2;
     grid-row: 1 / span 1;
     justify-content: center;
+    right: 20px;
   }
 
   .filter-label {
