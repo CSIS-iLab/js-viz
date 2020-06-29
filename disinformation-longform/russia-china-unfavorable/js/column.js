@@ -51,16 +51,8 @@ Highcharts.chart('hcContainer', {
     },
     borderColor: 'gray',
     headerFormat: '<span style="font-size: 14px">{point.key}</span><br/>',
-    pointFormatter: function () {
-        var result = this.y
-            if (result < 0) {
-                result = result * -1
-            } else if (result > 0) {
-                result 
-            }
-        
-        return  '<span style="font-size: 14px;color:' + this.color + '">\u25CF</span> ' + this.series.name + ': <b>' + Highcharts.numberFormat(result,2) + ' %</b><br/>'
-    }  
+    valueDecimals: 2,
+    valueSuffix: "%"
   },
   series: [
     {
