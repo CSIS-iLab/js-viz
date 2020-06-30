@@ -30,6 +30,8 @@ async function loadDataAndSetup(dataSrc, mapSrc) {
     content:
       'Idlib has seen the greatest increase of IDPs since 2016 as Assad’s government regains control of surrounding areas.'
   })
+
+  hideLoading()
 }
 
 function drawChart() {
@@ -89,6 +91,15 @@ function getColorRange() {
   }
 
   return range
+}
+
+function hideLoading() {
+  document.querySelectorAll('.loading-container').forEach(loader => {
+    loader.style.display = 'none'
+    document
+      .querySelectorAll('.hide-on-load')
+      .forEach(el => el.classList.remove('hide-on-load'))
+  })
 }
 
 function resizeChart() {

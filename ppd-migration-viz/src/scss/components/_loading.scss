@@ -14,19 +14,31 @@
   border-top-color: rgba(0, 0, 0, 0.3);
   position: absolute;
   top: 50%;
-  left: 50%;
+  left: 170px;
   animation: loading 1.2s linear infinite;
   -webkit-animation: loading 1.2s linear infinite;
   box-sizing: border-box;
+
+  @include breakpoint('medium') {
+    left: -100px;
+  }
 }
 
-@keyframes loading{
-  0%{transform:rotate(0deg)}
-  100%{transform:rotate(360deg)}
+@keyframes loading {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
-@-webkit-keyframes loading{
-  0%{-webkit-transform:rotate(0deg)}
-  100%{-webkit-transform:rotate(360deg)}
+@-webkit-keyframes loading {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
 }
 
 .hide-on-load {
