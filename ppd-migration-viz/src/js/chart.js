@@ -62,7 +62,6 @@ function drawChart() {
 
   function updateProvinces({ container, data }) {
     const provinces = container.selectAll('.province').data(data, d => d.id)
-
     provinces.exit().remove()
 
     provinces

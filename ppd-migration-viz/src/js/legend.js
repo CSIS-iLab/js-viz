@@ -39,16 +39,6 @@ const Legend = {
     return values[1]
   },
   returnColorScale() {
-    // const colors = [
-    //   '#a5d6f9',
-    //   '#85c3f3',
-    //   '#66b0e9',
-    //   '#499ddd',
-    //   '#2c8acc',
-    //   '#1177b9',
-    //   '#0064a3'
-    // ]
-
     const colors = [
       '#b9dff4',
       '#9cd2ef',
