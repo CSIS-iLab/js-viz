@@ -55,7 +55,9 @@
   left: 60px;
 
   @include breakpoint('medium') {
-    left: 35px;
+    position: absolute;
+    left: 0px;
+    width: 180px;
   }
 }
 
