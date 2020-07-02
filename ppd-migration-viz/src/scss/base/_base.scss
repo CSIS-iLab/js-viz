@@ -1,0 +1,44 @@
+:root {
+  --grid-columns: #{$grid-columns--mobile};
+
+  @include breakpoint('medium') {
+    --grid-columns: #{$grid-columns--desktop};
+  }
+}
+
+// General
+body {
+  --breakpoint: 'xsmall';
+  margin: 0;
+  padding: 0 1rem;
+  color: $gray;
+  font-family: $font-expo;
+  @include fontSize(18px);
+
+  @include breakpoint('small') {
+    --breakpoint: 'small';
+  }
+
+  @include breakpoint('medium') {
+    --breakpoint: 'medium';
+  }
+
+  @include breakpoint('large') {
+    --breakpoint: 'large';
+  }
+}
+
+/*----------  Interactive Header  ----------*/
+.interactive__title {
+  font-family: $font-expo;
+  margin: 1rem auto;
+  @include fontSize(23px);
+  font-weight: 400;
+  line-height: 1.36;
+  color: $black;
+  text-align: center;
+
+  @include breakpoint('medium') {
+    @include fontSize(25px);
+  }
+}

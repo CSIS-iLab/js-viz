@@ -1,0 +1,42 @@
+/*==============================
+=            Source            =
+==============================*/
+.interactive__source {
+  position: relative;
+  padding-bottom: 0;
+  text-align: center;
+
+  @include breakpoint('medium') {
+    margin: 1.5rem auto 0;
+    text-align: right;
+    top: -10px;
+    left: -40px;
+  }
+
+  a {
+    box-shadow: none;
+    color: #004165;
+    text-decoration: none;
+  }
+
+  img {
+    max-width: 300px;
+    height: auto;
+  }
+
+  p {
+    position: relative;
+    top: -20px;
+    left: 75px;
+    margin: 0;
+    color: $gray;
+    font-size: 0.8rem;
+    line-height: 1.3;
+
+    @include breakpoint('medium') {
+      text-align: right;
+      top: -30px;
+      left: -20px;
+    }
+  }
+}
