@@ -9,7 +9,7 @@
   @include breakpoint('medium') {
     margin: 1.5rem auto 0;
     text-align: right;
-    top: -40px;
+    top: -10px;
     left: -40px;
   }
 
@@ -29,7 +29,7 @@
     top: -20px;
     left: 75px;
     margin: 0;
-    color: $tooltip-gray;
+    color: $gray;
     font-size: 0.8rem;
     line-height: 1.3;
 

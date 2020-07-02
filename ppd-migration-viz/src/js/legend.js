@@ -27,7 +27,7 @@ const Legend = {
 
     svg.select('.legendQuant').call(legend)
 
-    svg.selectAll('text').each(function(d, i, n) {
+    svg.selectAll('text').each(function (d, i, n) {
       select(this).attr('transform', 'translate(40, 23)')
     })
   },
@@ -48,6 +48,7 @@ const Legend = {
       '#3579b2',
       '#0064a3'
     ]
+
 
     let scaleColor = scaleThreshold()
       .domain(this.colorDomain)
