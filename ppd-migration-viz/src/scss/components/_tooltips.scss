@@ -85,10 +85,11 @@
       background: $white;
       border: 1px solid $black;
       border-radius: 50%;
+      z-index: 200;
 
       @include breakpoint('medium') {
         left: -60px;
-        top: 75px;
+        top: 65px;
       }
     }
   }

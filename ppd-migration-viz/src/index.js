@@ -7,7 +7,6 @@ import Legend from './js/legend'
 import Map from './js/map'
 import './scss/main.scss'
 import tippy from 'tippy.js'
-// import 'tippy.js/dist/tippy.css'
 
 const dataSrc = './data/2020_data.csv'
 const mapSrc = './data/syria.geojson'
