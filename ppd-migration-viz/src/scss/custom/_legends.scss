@@ -26,6 +26,7 @@
   }
 
   text {
+    font-family: $font-pro;
     @include fontSize(12px);
   }
 }

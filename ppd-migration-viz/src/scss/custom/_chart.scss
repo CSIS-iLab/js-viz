@@ -113,6 +113,9 @@
   }
 
   .g-points {
+    font-family: $font-pro;
+    font-weight: 300;
+
     text {
       @include breakpoint('medium') {
         @include fontSize(11px);
