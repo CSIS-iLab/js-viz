@@ -1,14 +1,14 @@
 const countries = [
   { id: "brun", name: "Brunei", sheet: 2 },
   { id: "cam", name: "Cambodia", sheet: 3 },
-  { id: "indo", name: "Indonesia", sheet: 8 },
-  { id: "laos", name: "Laos", sheet: 4 },
-  { id: "malay", name: "Malaysia", sheet: 9 },
-  { id: "myan", name: "Myanmar", sheet: 5 },
-  { id: "phil", name: "Philippines", sheet: 10 },
-  { id: "sing", name: "Singapore", sheet: 6 },
-  { id: "thai", name: "Thailand", sheet: 11 },
-  { id: "viet", name: "Vietnam", sheet: 7 },
+  { id: "indo", name: "Indonesia", sheet: 4 },
+  { id: "laos", name: "Laos", sheet: 5 },
+  { id: "malay", name: "Malaysia", sheet: 6 },
+  { id: "myan", name: "Myanmar", sheet: 7 },
+  { id: "phil", name: "Philippines", sheet: 8 },
+  { id: "sing", name: "Singapore", sheet: 9 },
+  { id: "thai", name: "Thailand", sheet: 10 },
+  { id: "viet", name: "Vietnam", sheet: 11 },
 ];
 
 for (let i = 0; i < countries.length; i++) {
@@ -21,7 +21,7 @@ function drawChart(index, id, name, sheet) {
   Highcharts.chart(`hc-${id}`, {
     // Load Data in from Google Sheets
     data: {
-      googleSpreadsheetKey: "1A4WblnV1TOeZlfJWJMBFLMwzF6yKTXYe6dG-UyyySxo",
+      googleSpreadsheetKey: "1JFh3wyAtvmWmglO-wGaRhlJm6iM9z6f88r-7nrzoSXg",
       googleSpreadsheetWorksheet: sheet,
       dateFormat: "mm/dd/YYYY",
     },
@@ -32,7 +32,7 @@ function drawChart(index, id, name, sheet) {
     },
 
     // Colors
-    colors: ["#7FA8D9", '#0078b2', "#49719b"],
+    colors: ["#7FA8D9", "#49719b"],
     // Chart Title and Subtitle
     title: {
       text: name,
