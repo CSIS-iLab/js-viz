@@ -13,11 +13,12 @@ li {
   margin: 0px;
   padding: 0px;
   list-style: none;
+  width: 50%;
 }
 
 .reduce > ul > li {
   display: inline-block;
-  width: 18%;
+  width: 16%;
   margin: 0px;
   padding: 0px;
 }
