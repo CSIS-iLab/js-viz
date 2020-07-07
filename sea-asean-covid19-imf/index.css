@@ -90,14 +90,23 @@ p {
   }
 }
 
+.header-container {
+  text-align: center;
+  position: relative;
+}
+
 .highcharts-title > tspan {
   font-size: 14px;
   font-weight: 600;
 }
 
-/* .highcharts-tooltip > span {
-  max-width: 100px !important;
-} */
+.subtitle {
+  position: relative;
+  width: 85%;
+  left: 55px;
+  font-size: 14px;
+  font-weight: 400;
+}
 
 .highcharts-tick {
   visibility: hidden;
