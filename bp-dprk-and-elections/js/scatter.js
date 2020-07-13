@@ -25,21 +25,21 @@ let population = []
 const sColor = "#f68a41"
 const aColor = "#842037"
 const oColor = "#52a091"
-let defaultSort = 'anemia'
+let defaultSort = 'year'
 
-let malnutrition = {
-  stunting: {
-    name: "Stunting",
+let electionData = {
+  electionType: {
+    name: "General/Presidential",
     color: sColor,
     col: 2
   },
   anemia: {
-    name: "Anemia",
+    name: "Provocation Description",
     color: aColor,
     col: 3
   },
   overweight: {
-    name: "Overweight or Obese",
+    name: "Number of Days before or After",
     color: oColor,
     col: 4
   }
