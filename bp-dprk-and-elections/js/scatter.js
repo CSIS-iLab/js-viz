@@ -4,7 +4,7 @@ let electionData = []
 Highcharts.data({
   // Load Data in from Google Sheets
   googleSpreadsheetKey: '11nBD55d0t4QE1h-OeymUg897azDIC6CHME2UenQ8WSw',
-  googleSpreadsheetWorksheet: 1,
+  googleSpreadsheetWorksheet: 2,
 
   // Switching transposes the data
   switchRowsAndColumns: true,
