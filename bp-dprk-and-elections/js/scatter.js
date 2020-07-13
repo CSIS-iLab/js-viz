@@ -22,64 +22,64 @@ let regionData = []
 let dataPoints = []
 let regionArray = []
 let population = []
-const sColor = "#f68a41"
-const aColor = "#842037"
-const oColor = "#52a091"
-let defaultSort = 'year'
 
+
+// Columns below are actual places (0,1,2,...) in sheet
+// Only below in .data is data transposed for parsing
 let electionData = {
   electionType: {
     name: "General/Presidential",
-    color: sColor,
+    col: 1
+  },
+  provocationType: {
+    name: "Provocation Description",
     col: 2
   },
-  anemia: {
-    name: "Provocation Description",
-    color: aColor,
+  numberofDays: {
+    name: "Number of Days before or After",
     col: 3
   },
-  overweight: {
-    name: "Number of Days before or After",
-    color: oColor,
+  provocationDate: {
+    name: "Provocation Date",
     col: 4
   }
 }
 
-const malnutritionList = Object.keys(malnutrition)
-
-const dropdownOptions = [
-  { name: "Population (2018 Estimated)", value: "population" },
-  { name: "Region", value: "region" }
-]
+const electionList = Object.keys(electionData)
 
 
 Highcharts.data({
   // Load Data in from Google Sheets
   googleSpreadsheetKey: '1sLlKirSAEv5QYBQa2LJlzWMNmF3HkNFnjBHbUAJ5RFU',
   googleSpreadsheetWorksheet: 1,
-  switchRowsAndColumns: true,
-  parsed: function parsed(columns) {
-    // Remove header row (first element in columns array)
-    columns.shift()
 
-    // default data sort
-    const defaultSortValue = malnutrition[defaultSort].col
-    columns.sort((a, b) => b[defaultSortValue] - a[defaultSortValue])
+  // Switching transposes the data
+  switchRowsAndColumns: true,
+
+
+  parsed: function parsed(columns) {
+    // Remove header first element in columns array 
+    // This is the header row in the unswitched sheet
+    columns.shift()
 
     // iterate over data
     columns.forEach((row, i) => {
-      // name the columns
-      const population = row[1]
-      const region = row[0]
-      const stunting = row[2]
-      const anemia = row[3]
-      const overweight = row[4]
+      // name the rows (original sheet: columns)
+      const electionYear = row[0]
+      const electionType = row[1]
+      const provocationDescription = row[2]
+      const numberofDays = row[3]
+      const provocationDate = row[4]
 
-      const percentages = [stunting, anemia, overweight]
+
+      //We don't need to calculate percentage for this chart
+      //Since the days are already calculated - positive, after
+      // negative, before 
+      /*const percentages = [stunting, anemia, overweight]
       // For each row, determine lowest percentage and assign that to x
       const min = Math.min(...percentages)
       // For each row, determine highest percentage and assign that to x2
-      const max = Math.max(...percentages)
+      const max = Math.max(...percentages)*/
 
       const y = i
 
@@ -137,64 +137,6 @@ Highcharts.data({
   }
 })
 
-function populateSelect() {
-  // Target the sort element
-  const datasets = document.getElementById('datasets')
-
-  // Add malnutritions to dropdownOptions array
-  for (let value in malnutrition) {
-    dropdownOptions.push({
-      name: malnutrition[value].name,
-      value
-    })
-  }
-
-  // Sort dropdown options
-  dropdownOptions.sort((a, b) => a.name.localeCompare(b.name))
-
-  // Create option elements for dropdown
-  dropdownOptions.forEach((option, i) => {
-    const optionEl = document.createElement("option")
-    if (option.value === defaultSort) {
-      optionEl.selected = 'selected'
-    }
-    optionEl.value = option.value
-    optionEl.text = option.name
-    datasets.appendChild(optionEl)
-  })
-  datasets.onchange = function () {
-    regionArray = []
-
-    // Sort the region data based on the selection
-    regionData = sortRegions(regionData, this.value)
-
-    // Update y value based on sort
-    regionData.forEach((row, i) => {
-      row.y = i
-
-      // Push region to RegionArray
-      regionArray.push(row.region)
-
-      // if the row region matches the dataPoints region, update y to i value
-      dataPoints.forEach((dataRow, j) => {
-        if (row.region === dataRow.region) {
-          dataRow.y = i
-        }
-      })
-    })
-    const chart = Highcharts.chart('hcContainer', {})
-    chart.destroy()
-    renderChart(regionData, dataPoints, regionArray)
-  }
-}
-
-function sortRegions(dataToSort, sortBy) {
-  if (sortBy === "region") {
-    return dataToSort.sort((a, b) => b[sortBy].localeCompare(a[sortBy]))
-  }
-  return dataToSort.sort((a, b) => b[sortBy] - a[sortBy])
-}
-
 function renderChart(regionData, dataPoints, regionArray) {
   Highcharts.setOptions({
     lang: {
@@ -238,19 +180,7 @@ function renderChart(regionData, dataPoints, regionArray) {
     legend: {
       align: 'left',
       verticalAlign: 'top',
-      useHTML: true,
-      labelFormatter: function () {
-        return (
-          '<span style="color:' +
-          aColor +
-          '">\u25CF</span> Anemia <span style="font-size:16px; color:#ffffff">.</span>' +
-          '<span style="color:' +
-          sColor +
-          '">\u25CF</span> Stunting <span style="font-size:16px; color:#ffffff">.</span>' +
-          '<span style="color:' +
-          oColor +
-          '">\u25CF</span> Overweight or Obese'
-        )
+      useHTML: true
       },
       // remove default formatting
       symbolHeight: 0,
@@ -258,7 +188,6 @@ function renderChart(regionData, dataPoints, regionArray) {
       symbolRadius: 0,
       itemStyle: {
         cursor: 'default'
-      }
     },
     // X Axis
     xAxis: {
