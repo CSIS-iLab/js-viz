@@ -3,25 +3,6 @@ let electionData = []
 
 // Columns below are actual places (0,1,2,...) in sheet
 // Only below in .data is data transposed for parsing
-let election = {
-  electionType: {
-    name: "General/Presidential",
-    col: 1
-  },
-  provocationType: {
-    name: "Provocation Description",
-    col: 2
-  },
-  numberOfDays: {
-    name: "Number of Days before or After",
-    col: 3
-  },
-  provocationDate: {
-    name: "Provocation Date",
-    col: 4
-  }
-}
-
 const electionList = Object.keys(electionData)
 
 
