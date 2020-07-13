@@ -1,14 +1,9 @@
 
 let electionData = []
 
-// Columns below are actual places (0,1,2,...) in sheet
-// Only below in .data is data transposed for parsing
-const electionList = Object.keys(electionData)
-
-
 Highcharts.data({
   // Load Data in from Google Sheets
-  googleSpreadsheetKey: '1sLlKirSAEv5QYBQa2LJlzWMNmF3HkNFnjBHbUAJ5RFU',
+  googleSpreadsheetKey: '11nBD55d0t4QE1h-OeymUg897azDIC6CHME2UenQ8WSw',
   googleSpreadsheetWorksheet: 1,
 
   // Switching transposes the data
@@ -27,7 +22,7 @@ Highcharts.data({
       const electionType = row[1]
       const provocationDescription = row[2]
       const numberOfDays = row[3]
-      const provocationDate = row[4]
+      const provocationDate = row[5]
  
       const y = i
 
