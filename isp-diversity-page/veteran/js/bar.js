@@ -1,63 +1,57 @@
-Highcharts.chart('hcContainer', {
+Highcharts.chart("hcContainer", {
   // Load Data in from Google Sheets
   data: {
-    googleSpreadsheetKey: '1susmb2O7l-sRkILnlxZyatXmtebTrGjQk_K-qPqjzgs',
-    googleSpreadsheetWorksheet: 6,
-    switchRowsAndColumns: true
+    googleSpreadsheetKey: "16poMVWLNa7B8oTs6zcM1pj4Pmr6Smbmwxt7dg4Xwz-o",
+    googleSpreadsheetWorksheet: 1,
   },
   // General Chart Options
   chart: {
-    type: 'column'
+    type: "column",
   },
   // Colors
-  colors: [
-    '#66C6CB', '#0092A8', '#013446'
-  ],
+  colors: ["#66C6CB", "#0092A8", "#013446"],
   // Chart Title and Subtitle
   title: {
-    text: "Generation, 2019"
+    text: "Veteran Status, July 2020",
   },
   // Credits
   credits: {
     enabled: true,
     href: false,
-    text: "CSIS | Center for Strategic and International Studies"
+    text: "CSIS | Center for Strategic and International Studies",
   },
   // Chart Legend
   legend: {
     title: {
-      text: '<br/><span style="font-size: 12px; color: #808080; font-weight: normal">(Click to hide)</span>'
+      text:
+        '<br/><span style="font-size: 12px; color: #808080; font-weight: normal">(Click to hide)</span>',
     },
-    align: 'center',
-    verticalAlign: 'bottom',
-    layout: 'horizontal',
+    align: "center",
+    verticalAlign: "bottom",
+    layout: "horizontal",
   },
-  //  Tooltip 
-  // tooltip: {
-  //   shared: true,
-  // },
+  //  Tooltip
+  tooltip: {
+    shared: true,
+  },
   // X Axis
   xAxis: {
-    type: 'category',
-    labels: {
-      enabled: false
-    }
+    type: "category",
   },
   // Y Axis
   yAxis: {
     title: {
-      text: "Number of Interns"
+      text: "Number of Employees",
     },
   },
   // Additional Plot Options
-  plotOptions:
-  {
+  plotOptions: {
     column: {
-      stacking: null, // Normal bar graph
-      // stacking: "normal", // Stacked bar graph
+      // stacking: null, // Normal bar graph
+      stacking: "normal", // Stacked bar graph
       dataLabels: {
         enabled: false,
-      }
-    }
-  }
-})
+      },
+    },
+  },
+});
