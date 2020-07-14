@@ -49,7 +49,7 @@ function renderChart(electionData) {
 
   Highcharts.chart('hcContainer', {
     chart: {
-      type: scatter,
+      type: 'scatter',
       height: '80%'
     },
     // Chart Title and Subtitle
