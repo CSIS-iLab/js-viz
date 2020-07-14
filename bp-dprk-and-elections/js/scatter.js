@@ -11,33 +11,37 @@ Highcharts.data({
 
 
   parsed: function parsed(columns) {
-    // Remove header first element in columns array 
-    // This is the header row in the unswitched sheet
-    columns.shift()
 
+    // Remove header first element in columns array
+    // This is the header row in the unswitched sheet
+    columns.shift();
+    console.log(columns);
     // iterate over data
     columns.forEach((row, i) => {
       // name the rows (original sheet: columns)
-      const electionYear = row[0]
-      const electionType = row[1]
-      const provocationDescription = row[2]
-      const numberOfDays = row[3]
-      const provocationDate = row[5]
- 
-      const y = i
+      const electionDate = row[0];
+      let electionYear = electionDate.slice(0, 4);
+
+      const electionType = row[1];
+      const provocationDescription = row[2];
+      const numberOfDays = row[3];
+      const provocationDate = row[5];
+
+      const y = electionYear;
 
       // Push row object into regionData array
       electionData.push({
         x: numberOfDays,
         y,
-        electionYear,
         electionType,
         provocationDescription,
-        provocationDate
-      })
-  })
-  renderChart(electionData)
-  } 
+        numberOfDays,
+        provocationDate,
+      });
+    });
+    renderChart(electionData)
+    console.log(electionData);
+  }
 })
 
 function renderChart(electionData) {
