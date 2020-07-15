@@ -15,9 +15,8 @@ Highcharts.data({
     // Remove header first element in columns array
     // This is the header row in the unswitched sheet
     columns.shift();
-    console.log(columns);
     // iterate over data
-    columns.forEach((row, i) => {
+    columns.forEach((row) => {
       // name the rows (original sheet: columns)
       const electionDate = row[0];
       let electionYear = electionDate.slice(0, 4);
