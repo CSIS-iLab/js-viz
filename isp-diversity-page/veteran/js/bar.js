@@ -12,7 +12,7 @@ Highcharts.chart("hcContainer", {
   colors: ["#66C6CB", "#0092A8", "#013446"],
   // Chart Title and Subtitle
   title: {
-    text: "Veteran Status, July 2020",
+    text: "Veteran Status*, July 2020",
   },
   // Credits
   credits: {
