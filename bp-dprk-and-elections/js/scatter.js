@@ -1,49 +1,72 @@
+//regionData
+let yearData = []
 
-let electionData = []
+// regionArray
+let yearArray = []
+// used to calculate yearArray
+let allYears = []
+
+let electionYearAndDays = {}
+let mins = []
+let maxes = []
 
 Highcharts.data({
   // Load Data in from Google Sheets
   googleSpreadsheetKey: '11nBD55d0t4QE1h-OeymUg897azDIC6CHME2UenQ8WSw',
   googleSpreadsheetWorksheet: 2,
-
-  // Switching transposes the data
   switchRowsAndColumns: true,
-
-
   parsed: function parsed(columns) {
-
-    // Remove header first element in columns array
-    // This is the header row in the unswitched sheet
     columns.shift();
-    // iterate over data
-    columns.forEach((row) => {
-      // name the rows (original sheet: columns)
+    columns.forEach((row, i) => {
       const electionDate = row[0];
       let electionYear = electionDate.slice(0, 4);
-
       const electionType = row[1];
       const provocationDescription = row[2];
       const numberOfDays = row[3];
       const provocationDate = row[5];
+      const y = i;
 
-      const y = electionYear;
-
-      // Push row object into regionData array
-      electionData.push({
-        x: numberOfDays,
-        y,
-        electionType,
-        provocationDescription,
-        numberOfDays,
-        provocationDate,
-      });
+      if (electionYear >= "1990") {
+        if (!yearArray.includes(electionYear)) {
+          yearArray.push(electionYear)
+        }
+        if (!electionYearAndDays[electionYear]) {
+          electionYearAndDays[electionYear] = []
+        }
+        electionYearAndDays[electionYear].push(numberOfDays)
+      }
     });
-    renderChart(electionData)
-    console.log(electionData);
+
+    yearArray.forEach((year) => {
+      let min = Math.min(...electionYearAndDays[year])
+      if (!mins.includes(min)) {
+        mins.push(min)
+      }
+    })
+    console.log(mins)
+
+    yearArray.forEach((year) => {
+      let max = Math.max(...electionYearAndDays[year])
+      if (!maxes.includes(max)) {
+        maxes.push(max)
+      }
+    })
+    console.log(maxes)
+
+    for (i = 0; i < yearArray.length; i++) {
+      yearData.push({
+        x: mins[i],
+        x2: maxes[i],
+        y: i,
+        year: yearArray[i],
+        color: 'lightGray',
+        points: electionYearAndDays[yearArray[i]]
+      })
+    }
   }
 })
 
-function renderChart(electionData) {
+function renderChart(yearData, yearArray) {
   Highcharts.setOptions({
     lang: {
       thousandsSep: ","
@@ -54,6 +77,18 @@ function renderChart(electionData) {
     chart: {
       type: 'scatter',
       height: '80%'
+    },
+    exporting: {
+      sourceWidth: 723,
+      sourceHeight: 775,
+      chartOptions: {
+        title: {
+          text: "The Triple Burden of Malnutrition in Tanzania"
+        },
+        subtitle: {
+          text: "This chart shows the co-occurrence of three major types of malnutrition—overweight or obese, stunting, and anemia. The key population for stunting, or below average height for age, is children under 5. Women of reproductive age (15 to 49 years) are the key population for anemia and overweight or obese."
+        }
+      }
     },
     // Chart Title and Subtitle
     title: {
@@ -101,6 +136,7 @@ function renderChart(electionData) {
       title: {
         enabled: 'Election Year'
       },
+      categories: yearArray,
       gridLineColor: 'transparent',
     },
     // Additional Plot Options
@@ -127,5 +163,20 @@ function renderChart(electionData) {
       useHTML: true,
       backgroundColor: 'rgb(255, 255, 255)'
     },
+    series: [{
+      type: 'xrange',
+      pointWidth: 2,
+      id: 'main',
+      name: "Election Year",
+      data: yearData,
+      showInLegend: false
+    }, {
+      type: 'scatter',
+      linkedTo: 'main',
+      marker: {
+        radius: 3.5
+      },
+      data: dataPoints
+    }]
   })
 }
