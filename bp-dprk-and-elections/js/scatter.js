@@ -1,17 +1,16 @@
-//regionData
 let yearData = [];
 
-// regionArray
 let yearArray = [];
-// used to calculate yearArray
 let allYears = [];
+
+let dataPoints = []
 
 let electionYearAndDays = {};
 let mins = [];
 let maxes = [];
 
+
 Highcharts.data({
-  // Load Data in from Google Sheets
   googleSpreadsheetKey: "11nBD55d0t4QE1h-OeymUg897azDIC6CHME2UenQ8WSw",
   googleSpreadsheetWorksheet: 2,
   switchRowsAndColumns: true,
@@ -20,20 +19,31 @@ Highcharts.data({
     columns.forEach((row, i) => {
       const electionDate = row[0];
       let electionYear = electionDate.slice(0, 4);
+      let electionYearNumber = parseFloat(electionYear)
       const electionType = row[1];
       const provocationDescription = row[2];
-      const numberOfDays = row[3];
+      const numberOfDaysString = row[3];
+      let numberOfDaysNumber = parseFloat(numberOfDaysString)
       const provocationDate = row[5];
       const y = i;
 
       if (electionYear >= "1990") {
+
+        dataPoints.push({
+          x: numberOfDaysNumber,
+          y: electionYearNumber,
+          electionType: electionType,
+          provocationDescription: provocationDescription,
+          name: provocationDate
+        })
+
         if (!yearArray.includes(electionYear)) {
           yearArray.push(electionYear);
         }
         if (!electionYearAndDays[electionYear]) {
           electionYearAndDays[electionYear] = [];
         }
-        electionYearAndDays[electionYear].push(numberOfDays);
+        electionYearAndDays[electionYear].push(numberOfDaysString);
       }
     });
 
@@ -57,37 +67,23 @@ Highcharts.data({
         x2: maxes[i],
         y: i,
         year: yearArray[i],
-        color: "lightGray",
-        // points: electionYearAndDays[yearArray[i]],
+        color: "lightGray"
       });
     }
-    renderChart(yearData, yearArray);
+    renderChart(yearData, yearArray, dataPoints);
   },
 });
 
-function renderChart(yearData, yearArray) {
+function renderChart(yearData, yearArray, dataPoints ) {
   Highcharts.setOptions({
     lang: {
-      thousandsSep: ",",
+      thousandsSep: "",
     },
   });
   Highcharts.chart("hcContainer", {
     chart: {
       // type: "xrange",
       height: "80%",
-    },
-    exporting: {
-      sourceWidth: 723,
-      sourceHeight: 775,
-      chartOptions: {
-        title: {
-          text: "The Triple Burden of Malnutrition in Tanzania",
-        },
-        subtitle: {
-          text:
-            "This chart shows the co-occurrence of three major types of malnutrition—overweight or obese, stunting, and anemia. The key population for stunting, or below average height for age, is children under 5. Women of reproductive age (15 to 49 years) are the key population for anemia and overweight or obese.",
-        },
-      },
     },
     // Chart Title and Subtitle
     title: {
@@ -128,16 +124,21 @@ function renderChart(yearData, yearArray) {
       minPadding: 0.3, // extend axis to 0%
       offset: 15, // move axis down to give final region more space
       startOnTick: true,
-      tickInterval: 10,
+      tickInterval: 50,
+      min: -400,
+      max: 400
     },
     // Y Axis
     yAxis: {
+      min: yearArray[0],
+      max: parseFloat(yearArray[yearArray.length - 1]),
       title: {
         enabled: true,
         text: "Election Year",
       },
       categories: yearArray,
       gridLineColor: "transparent",
+      tickInterval: 2
     },
     // Additional Plot Options
     plotOptions: {
@@ -171,14 +172,15 @@ function renderChart(yearData, yearArray) {
         data: yearData,
         showInLegend: false,
       },
-      // {
-      //   type: "scatter",
-      //   linkedTo: "main",
-      //   marker: {
-      //     radius: 3.5,
-      //   },
-      //   data: newArray,
-      // },
+      {
+        type: 'scatter',
+        linkedTo: 'main',
+        name: "Provocation",
+        marker: {
+          radius: 3.5
+        },
+        data: dataPoints,
+      }
     ],
   });
 }
