@@ -3,14 +3,14 @@ let yearData = [];
 let yearArray = [];
 let allYears = [];
 
-let dataPoints = []
+let dataPoints = [];
 
 let electionYearAndDays = {};
 let mins = [];
 let maxes = [];
 
-
 Highcharts.data({
+  // Load Data in from Google Sheets
   googleSpreadsheetKey: "11nBD55d0t4QE1h-OeymUg897azDIC6CHME2UenQ8WSw",
   googleSpreadsheetWorksheet: 2,
   switchRowsAndColumns: true,
@@ -19,13 +19,12 @@ Highcharts.data({
     columns.forEach((row, i) => {
       const electionDate = row[0];
       let electionYear = electionDate.slice(0, 4);
-      let electionYearNumber = parseFloat(electionYear)
+      let electionYearNumber = parseFloat(electionYear);
       const electionType = row[1];
       const provocationDescription = row[2];
-      const numberOfDaysString = row[3];
-      let numberOfDaysNumber = parseFloat(numberOfDaysString)
+      const numberOfDays = row[3];
+      let numberOfDaysNumber = parseFloat(numberOfDays)
       const provocationDate = row[5];
-      const y = i;
 
       if (electionYear >= "1990") {
 
@@ -37,13 +36,13 @@ Highcharts.data({
           name: provocationDate
         })
 
-        if (!yearArray.includes(electionYear)) {
-          yearArray.push(electionYear);
+        if (!yearArray.includes(electionYearNumber)) {
+          yearArray.push(electionYearNumber);
         }
-        if (!electionYearAndDays[electionYear]) {
-          electionYearAndDays[electionYear] = [];
+        if (!electionYearAndDays[electionYearNumber]) {
+          electionYearAndDays[electionYearNumber] = [];
         }
-        electionYearAndDays[electionYear].push(numberOfDaysString);
+        electionYearAndDays[electionYearNumber].push(numberOfDays);
       }
     });
 
@@ -65,16 +64,16 @@ Highcharts.data({
       yearData.push({
         x: mins[i],
         x2: maxes[i],
-        y: i,
+        y: yearArray[i],
         year: yearArray[i],
-        color: "lightGray"
+        color: "lightGray",
       });
     }
     renderChart(yearData, yearArray, dataPoints);
   },
 });
 
-function renderChart(yearData, yearArray, dataPoints ) {
+function renderChart(yearData, yearArray, dataPoints) {
   Highcharts.setOptions({
     lang: {
       thousandsSep: "",
@@ -130,14 +129,14 @@ function renderChart(yearData, yearArray, dataPoints ) {
     },
     // Y Axis
     yAxis: {
-      min: yearArray[0],
-      max: parseFloat(yearArray[yearArray.length - 1]),
       title: {
         enabled: true,
         text: "Election Year",
       },
       categories: yearArray,
       gridLineColor: "transparent",
+      min: yearArray[0],
+      max: parseFloat(yearArray[yearArray.length - 1]),
       tickInterval: 2
     },
     // Additional Plot Options
@@ -173,14 +172,15 @@ function renderChart(yearData, yearArray, dataPoints ) {
         showInLegend: false,
       },
       {
-        type: 'scatter',
-        linkedTo: 'main',
-        name: "Provocation",
+        type: "scatter",
+        color: "#10355F",
+        linkedTo: "main",
         marker: {
-          radius: 3.5
+          radius: 3.5,
         },
         data: dataPoints,
-      }
+        name: "Provocation"
+      },
     ],
   });
 }
