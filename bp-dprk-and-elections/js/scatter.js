@@ -33,7 +33,7 @@ Highcharts.data({
           y: electionYearNumber,
           electionType: electionType,
           provocationDescription: provocationDescription,
-          name: provocationDate
+          provocationDate: provocationDate
         })
 
         if (!yearArray.includes(electionYearNumber)) {
@@ -117,7 +117,7 @@ function renderChart(yearData, yearArray, dataPoints) {
     xAxis: {
       title: {
         enabled: true,
-        text: "Days before or after an Election",
+        text: 'Days before or after an Election <br> (election day = 0)',
       },
       maxPadding: 0.15, // extend axis to 60%
       minPadding: 0.3, // extend axis to 0%
@@ -125,7 +125,12 @@ function renderChart(yearData, yearArray, dataPoints) {
       startOnTick: true,
       tickInterval: 50,
       min: -400,
-      max: 400
+      max: 400,
+      plotLines: [{
+        color: '#FFC726',
+        width: 1,
+        value: 0
+      }]
     },
     // Y Axis
     yAxis: {
@@ -161,6 +166,20 @@ function renderChart(yearData, yearArray, dataPoints) {
     tooltip: {
       useHTML: true,
       backgroundColor: "rgb(255, 255, 255)",
+      formatter: function() {
+        let point = this.point 
+        let daysBeforeOrAfter = ""
+        if (point.x < 0) {
+          daysBeforeOrAfter = `<b>Days before election:</b> ${(point.x)*-1}`
+        } else {
+          daysBeforeOrAfter = `<b>Days after election:</b> ${(point.x)}`
+        }
+
+        return `<b>Provocation Date:</b> ${point.provocationDate}<br>
+                <b>Provocation Type:</b> ${point.provocationDescription}<br>
+                <b>Election Type:</b> ${point.electionType}<br>
+                ` + daysBeforeOrAfter
+      }
     },
     series: [
       {
