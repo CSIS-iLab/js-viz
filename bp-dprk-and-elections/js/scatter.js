@@ -4,6 +4,8 @@ let yearArray = [];
 let allYears = [];
 
 let dataPoints = [];
+let dataMarkers = [];
+let allPoints = [];
 
 let electionYearAndDays = {};
 let mins = [];
@@ -36,13 +38,22 @@ Highcharts.data({
           provocationDate: provocationDate
         })
 
+
         if (!yearArray.includes(electionYearNumber)) {
           yearArray.push(electionYearNumber);
+          
+          dataMarkers.push({
+            x: 0,
+            y: electionYearNumber,
+            electionDate: electionDate,
+            color: "#FFC726"
+          })
+
         }
         if (!electionYearAndDays[electionYearNumber]) {
           electionYearAndDays[electionYearNumber] = [];
         }
-        electionYearAndDays[electionYearNumber].push(numberOfDays);
+        electionYearAndDays[electionYearNumber].push(numberOfDays)
       }
     });
 
@@ -68,12 +79,14 @@ Highcharts.data({
         year: yearArray[i],
         color: "lightGray",
       });
-    }
-    renderChart(yearData, yearArray, dataPoints);
+  }
+
+    allPoints = dataPoints.concat(dataMarkers)
+    renderChart(yearData, yearArray, allPoints);
   },
 });
 
-function renderChart(yearData, yearArray, dataPoints) {
+function renderChart(yearData, yearArray, allPoints) {
   Highcharts.setOptions({
     lang: {
       thousandsSep: "",
@@ -126,11 +139,6 @@ function renderChart(yearData, yearArray, dataPoints) {
       tickInterval: 50,
       min: -400,
       max: 400,
-      plotLines: [{
-        color: '#FFC726',
-        width: 1,
-        value: 0
-      }]
     },
     // Y Axis
     yAxis: {
@@ -170,15 +178,26 @@ function renderChart(yearData, yearArray, dataPoints) {
         let point = this.point 
         let daysBeforeOrAfter = ""
         if (point.x < 0) {
-          daysBeforeOrAfter = `<b>Days before election:</b> ${(point.x)*-1}`
+          daysBeforeOrAfter = `
+            <b>Provocation Date:</b> ${point.provocationDate}<br>
+            <b>Provocation Type:</b> ${point.provocationDescription}<br>
+            <b>Election Type:</b> ${point.electionType}<br>
+            <b>Days before election:</b> ${(point.x)*-1}`
+        } else if (point.x > 0) {
+          daysBeforeOrAfter = `
+            <b>Provocation Date:</b> ${point.provocationDate}<br>
+            <b>Provocation Type:</b> ${point.provocationDescription}<br>
+            <b>Election Type:</b> ${point.electionType}<br>
+            <b>Days after election:</b> ${(point.x)}`
         } else {
-          daysBeforeOrAfter = `<b>Days after election:</b> ${(point.x)}`
+          daysBeforeOrAfter = `
+            <b>Election Date:</b> ${point.electionDate}
+          `
         }
 
-        return `<b>Provocation Date:</b> ${point.provocationDate}<br>
-                <b>Provocation Type:</b> ${point.provocationDescription}<br>
-                <b>Election Type:</b> ${point.electionType}<br>
-                ` + daysBeforeOrAfter
+        return daysBeforeOrAfter
+
+        
       }
     },
     series: [
@@ -197,7 +216,7 @@ function renderChart(yearData, yearArray, dataPoints) {
         marker: {
           radius: 3.5,
         },
-        data: dataPoints,
+        data: allPoints,
         name: "Provocation"
       },
     ],
