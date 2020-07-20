@@ -169,7 +169,8 @@ function renderChart(yearData, yearArray, allPoints) {
       gridLineColor: "transparent",
       min: yearArray[0],
       max: parseFloat(yearArray[yearArray.length - 1]),
-      tickInterval: 2
+      tickInterval: 2,
+      reversed: true
     },
     // Additional Plot Options
     plotOptions: {
