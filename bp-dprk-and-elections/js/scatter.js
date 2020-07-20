@@ -18,7 +18,7 @@ Highcharts.data({
   switchRowsAndColumns: true,
   parsed: function parsed(columns) {
     columns.shift();
-    columns.forEach((row, i) => {
+    columns.forEach((row) => {
       const electionDate = row[0];
       let electionYear = electionDate.slice(0, 4);
       let electionYearNumber = parseFloat(electionYear);
@@ -30,14 +30,22 @@ Highcharts.data({
 
       if (electionYear >= "1990") {
 
+        let color = ""
+
+        if (electionType == "General / Presidential") {
+          color = "#FFC726"
+        } else {
+          color = "#10355F"
+        }
+
         dataPoints.push({
           x: numberOfDaysNumber,
           y: electionYearNumber,
           electionType: electionType,
           provocationDescription: provocationDescription,
-          provocationDate: provocationDate
+          provocationDate: provocationDate,
+          color: color
         })
-
 
         if (!yearArray.includes(electionYearNumber)) {
           yearArray.push(electionYearNumber);
@@ -46,7 +54,7 @@ Highcharts.data({
             x: 0,
             y: electionYearNumber,
             electionDate: electionDate,
-            color: "#FFC726"
+            color: "#F55536"
           })
 
         }
@@ -115,6 +123,7 @@ function renderChart(yearData, yearArray, allPoints) {
     },
     // Chart Legend
     legend: {
+      enabled: false,
       align: "left",
       verticalAlign: "top",
       useHTML: true,
@@ -166,6 +175,7 @@ function renderChart(yearData, yearArray, allPoints) {
       },
       xrange: {
         enableMouseTracking: false,
+        showInLegend: false
       },
       scatter: {
         showInLegend: true,
@@ -211,14 +221,13 @@ function renderChart(yearData, yearArray, allPoints) {
       },
       {
         type: "scatter",
-        color: "#10355F",
         linkedTo: "main",
         marker: {
           radius: 3.5,
         },
         data: allPoints,
         name: "Provocation"
-      },
+        },
     ],
   });
 }
