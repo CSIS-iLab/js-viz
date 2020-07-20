@@ -44,6 +44,7 @@ Highcharts.data({
           electionType: electionType,
           provocationDescription: provocationDescription,
           provocationDate: provocationDate,
+          electionDate: electionDate,
           color: color
         })
 
@@ -205,6 +206,7 @@ function renderChart(yearData, yearArray, allPoints) {
     },
     tooltip: {
       useHTML: true,
+      borderColor: '#333',
       backgroundColor: "rgb(255, 255, 255)",
       formatter: function() {
         let point = this.point 
@@ -221,6 +223,12 @@ function renderChart(yearData, yearArray, allPoints) {
             <b>Provocation Type:</b> ${point.provocationDescription}<br>
             <b>Election Type:</b> ${point.electionType}<br>
             <b>Days after election:</b> ${(point.x)}`
+        } else if (point.provocationDate == point.electionDate) {
+          daysBeforeOrAfter = `
+          <b>Election Date:</b> ${point.electionDate}<br>
+          <b>Provocation Date:</b> ${point.provocationDate}<br>
+          <b>Provocation Type:</b> ${point.provocationDescription}<br>
+          <b>Election Type:</b> ${point.electionType}`
         } else {
           daysBeforeOrAfter = `
             <b>Election Date:</b> ${point.electionDate}
