@@ -133,10 +133,10 @@ function renderChart(yearData, yearArray, allPoints) {
       cursor: "default",
     },
     // X Axis
-    xAxis: {
+    xAxis: [{
       title: {
-        enabled: true,
-        text: 'Days before or after an Election <br> (election day = 0)',
+        enabled: false,
+        text: 'Days After Election',
       },
       maxPadding: 0.15, // extend axis to 60%
       minPadding: 0.3, // extend axis to 0%
@@ -154,8 +154,11 @@ function renderChart(yearData, yearArray, allPoints) {
           }
         }
       }
-
     },
+    {categories: ['Days Before Election', 'Days After Election'],
+    lineWidth: 0
+    }
+  ],
     // Y Axis
     yAxis: {
       title: {
@@ -178,6 +181,9 @@ function renderChart(yearData, yearArray, allPoints) {
           legendItemClick: function () {
             return false;
           },
+        states: {
+          inactive: {opacity: 1}
+        }
         },
       },
       xrange: {
@@ -187,6 +193,14 @@ function renderChart(yearData, yearArray, allPoints) {
       scatter: {
         showInLegend: true,
       },
+      column: {
+        animation: false,
+        opacity: 0,
+        states:{
+        inactive: {opacity: 0},
+        active: {opacity: 0}
+        }
+      }
     },
     tooltip: {
       useHTML: true,
@@ -225,6 +239,7 @@ function renderChart(yearData, yearArray, allPoints) {
         name: "Election Year",
         data: yearData,
         showInLegend: false,
+        states: {inactive: {opacity: 1}}
       },
       {
         type: "scatter",
@@ -233,8 +248,17 @@ function renderChart(yearData, yearArray, allPoints) {
           radius: 3.5,
         },
         data: allPoints,
-        name: "Provocation"
+        name: "Provocation",
+        states: {inactive: {opacity: 1}}
         },
+      {
+        type: "column",
+        name: '',
+        data: [0, 0],
+        showInLegend: false,
+        color: "rgb(255, 255, 255)",
+        xAxis: 1  
+      }
     ],
   });
 }
