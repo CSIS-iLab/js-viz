@@ -124,9 +124,6 @@ function renderChart(yearData, yearArray, allPoints) {
     // Chart Legend
     legend: {
       enabled: false,
-      align: "left",
-      verticalAlign: "top",
-      useHTML: true,
     },
     // remove default formatting
     symbolHeight: 0,
@@ -148,6 +145,16 @@ function renderChart(yearData, yearArray, allPoints) {
       tickInterval: 50,
       min: -400,
       max: 400,
+      labels: {
+        formatter: function() {
+          if (this.value < 0) {
+            return ((this.value)*-1)
+          } else {
+            return this.value
+          }
+        }
+      }
+
     },
     // Y Axis
     yAxis: {
