@@ -25,17 +25,16 @@ Highcharts.data({
       const electionType = row[1];
       const provocationDescription = row[2];
       const numberOfDays = row[3];
-      let numberOfDaysNumber = parseFloat(numberOfDays)
+      let numberOfDaysNumber = parseFloat(numberOfDays);
       const provocationDate = row[5];
 
       if (electionYear >= "1990") {
-
-        let color = ""
+        let color = "";
 
         if (electionType == "General / Presidential") {
-          color = "#FFC726"
+          color = "#FFC726";
         } else {
-          color = "#10355F"
+          color = "#10355F";
         }
 
         dataPoints.push({
@@ -45,24 +44,23 @@ Highcharts.data({
           provocationDescription: provocationDescription,
           provocationDate: provocationDate,
           electionDate: electionDate,
-          color: color
-        })
+          color: color,
+        });
 
         if (!yearArray.includes(electionYearNumber)) {
           yearArray.push(electionYearNumber);
-          
+
           dataMarkers.push({
             x: 0,
             y: electionYearNumber,
             electionDate: electionDate,
-            color: "#F55536"
-          })
-
+            color: "#F55536",
+          });
         }
         if (!electionYearAndDays[electionYearNumber]) {
           electionYearAndDays[electionYearNumber] = [];
         }
-        electionYearAndDays[electionYearNumber].push(numberOfDays)
+        electionYearAndDays[electionYearNumber].push(numberOfDays);
       }
     });
 
@@ -89,14 +87,14 @@ Highcharts.data({
           year: yearArray[i],
           color: "lightGray",
         });
-      } else if (mins[i] > 0)  {
+      } else if (mins[i] > 0) {
         yearData.push({
           x: 0,
           x2: maxes[i],
           y: yearArray[i],
           year: yearArray[i],
           color: "lightGray",
-        });      
+        });
       } else {
         yearData.push({
           x: mins[i],
@@ -108,7 +106,7 @@ Highcharts.data({
       }
     }
 
-    allPoints = dataPoints.concat(dataMarkers)
+    allPoints = dataPoints.concat(dataMarkers);
     renderChart(yearData, yearArray, allPoints);
   },
 });
@@ -152,32 +150,34 @@ function renderChart(yearData, yearArray, allPoints) {
       cursor: "default",
     },
     // X Axis
-    xAxis: [{
-      title: {
-        enabled: false,
-        text: 'Days After Election',
+    xAxis: [
+      {
+        title: {
+          enabled: false,
+          text: "Days After Election",
+        },
+        maxPadding: 0.15, // extend axis to 60%
+        minPadding: 0.3, // extend axis to 0%
+        offset: 15, // move axis down to give final region more space
+        startOnTick: true,
+        tickInterval: 50,
+        min: -400,
+        max: 400,
+        labels: {
+          formatter: function () {
+            if (this.value < 0) {
+              return this.value * -1;
+            } else {
+              return this.value;
+            }
+          },
+        },
       },
-      maxPadding: 0.15, // extend axis to 60%
-      minPadding: 0.3, // extend axis to 0%
-      offset: 15, // move axis down to give final region more space
-      startOnTick: true,
-      tickInterval: 50,
-      min: -400,
-      max: 400,
-      labels: {
-        formatter: function() {
-          if (this.value < 0) {
-            return ((this.value)*-1)
-          } else {
-            return this.value
-          }
-        }
-      }
-    },
-    {categories: ['Days Before Election', 'Days After Election'],
-    lineWidth: 0
-    }
-  ],
+      {
+        categories: ["Days Before Election", "Days After Election"],
+        lineWidth: 0,
+      },
+    ],
     // Y Axis
     yAxis: {
       title: {
@@ -189,7 +189,7 @@ function renderChart(yearData, yearArray, allPoints) {
       min: yearArray[0],
       max: parseFloat(yearArray[yearArray.length - 1]),
       tickInterval: 2,
-      reversed: true
+      reversed: true,
     },
     // Additional Plot Options
     plotOptions: {
@@ -201,14 +201,14 @@ function renderChart(yearData, yearArray, allPoints) {
           legendItemClick: function () {
             return false;
           },
-        states: {
-          inactive: {opacity: 1}
-        }
+          states: {
+            inactive: { opacity: 1 },
+          },
         },
       },
       xrange: {
         enableMouseTracking: false,
-        showInLegend: false
+        showInLegend: false,
       },
       scatter: {
         showInLegend: true,
@@ -216,49 +216,47 @@ function renderChart(yearData, yearArray, allPoints) {
       column: {
         animation: false,
         opacity: 0,
-        states:{
-        inactive: {opacity: 0},
-        active: {opacity: 0}
-        }
-      }
+        states: {
+          inactive: { opacity: 0 },
+          active: { opacity: 0 },
+        },
+      },
     },
     tooltip: {
       useHTML: true,
-      borderColor: '#333',
+      borderColor: "#333",
       backgroundColor: "rgb(255, 255, 255)",
-      formatter: function() {
-        let point = this.point 
-        let daysBeforeOrAfter = ""
-        if (point.series.name == 'empty') {
-          return false 
+      formatter: function () {
+        let point = this.point;
+        let daysBeforeOrAfter = "";
+        if (point.series.name == "empty") {
+          return false;
         } else if (point.x < 0) {
           daysBeforeOrAfter = `
             <b>Provocation Date:</b> ${point.provocationDate}<br>
             <b>Provocation Type:</b> ${point.provocationDescription}<br>
             <b>Election Type:</b> ${point.electionType}<br>
-            <b>Days before election:</b> ${(point.x)*-1}`
+            <b>Days before election:</b> ${point.x * -1}`;
         } else if (point.x > 0) {
           daysBeforeOrAfter = `
             <b>Provocation Date:</b> ${point.provocationDate}<br>
             <b>Provocation Type:</b> ${point.provocationDescription}<br>
             <b>Election Type:</b> ${point.electionType}<br>
-            <b>Days after election:</b> ${(point.x)}`
+            <b>Days after election:</b> ${point.x}`;
         } else if (point.provocationDate == point.electionDate) {
           daysBeforeOrAfter = `
           <b>Election Date:</b> ${point.electionDate}<br>
           <b>Provocation Date:</b> ${point.provocationDate}<br>
           <b>Provocation Type:</b> ${point.provocationDescription}<br>
-          <b>Election Type:</b> ${point.electionType}`
+          <b>Election Type:</b> ${point.electionType}`;
         } else {
           daysBeforeOrAfter = `
             <b>Election Date:</b> ${point.electionDate}
-          `
+          `;
         }
 
-        return daysBeforeOrAfter
-
-        
-      }
+        return daysBeforeOrAfter;
+      },
     },
     series: [
       {
@@ -268,7 +266,7 @@ function renderChart(yearData, yearArray, allPoints) {
         name: "Election Year",
         data: yearData,
         showInLegend: false,
-        states: {inactive: {opacity: 1}}
+        states: { inactive: { opacity: 1 } },
       },
       {
         type: "scatter",
@@ -278,16 +276,16 @@ function renderChart(yearData, yearArray, allPoints) {
         },
         data: allPoints,
         name: "Provocation",
-        states: {inactive: {opacity: 1}}
-        },
+        states: { inactive: { opacity: 1 } },
+      },
       {
         type: "column",
-        name: 'empty',
+        name: "empty",
         data: [0, 0],
         showInLegend: false,
         color: "rgb(255, 255, 255)",
-        xAxis: 1  
-      }
+        xAxis: 1,
+      },
     ],
   });
 }
