@@ -81,14 +81,32 @@ Highcharts.data({
     });
 
     for (i = 0; i < yearArray.length; i++) {
-      yearData.push({
-        x: mins[i],
-        x2: maxes[i],
-        y: yearArray[i],
-        year: yearArray[i],
-        color: "lightGray",
-      });
-  }
+      if (mins[i] && maxes[i] < 0) {
+        yearData.push({
+          x: mins[i],
+          x2: 0,
+          y: yearArray[i],
+          year: yearArray[i],
+          color: "lightGray",
+        });
+      } else if (mins[i] > 0)  {
+        yearData.push({
+          x: 0,
+          x2: maxes[i],
+          y: yearArray[i],
+          year: yearArray[i],
+          color: "lightGray",
+        });      
+      } else {
+        yearData.push({
+          x: mins[i],
+          x2: maxes[i],
+          y: yearArray[i],
+          year: yearArray[i],
+          color: "lightGray",
+        });
+      }
+    }
 
     allPoints = dataPoints.concat(dataMarkers)
     renderChart(yearData, yearArray, allPoints);
