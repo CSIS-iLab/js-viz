@@ -211,7 +211,9 @@ function renderChart(yearData, yearArray, allPoints) {
       formatter: function() {
         let point = this.point 
         let daysBeforeOrAfter = ""
-        if (point.x < 0) {
+        if (point.series.name == 'empty') {
+          return false 
+        } else if (point.x < 0) {
           daysBeforeOrAfter = `
             <b>Provocation Date:</b> ${point.provocationDate}<br>
             <b>Provocation Type:</b> ${point.provocationDescription}<br>
@@ -262,7 +264,7 @@ function renderChart(yearData, yearArray, allPoints) {
         },
       {
         type: "column",
-        name: '',
+        name: 'empty',
         data: [0, 0],
         showInLegend: false,
         color: "rgb(255, 255, 255)",
