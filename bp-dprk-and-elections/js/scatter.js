@@ -55,6 +55,7 @@ Highcharts.data({
             y: electionYearNumber,
             electionDate: electionDate,
             color: "#F55536",
+            marker: {symbol: 'diamond'}
           });
         }
         if (!electionYearAndDays[electionYearNumber]) {
