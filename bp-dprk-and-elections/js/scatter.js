@@ -153,6 +153,7 @@ function renderChart(yearData, yearArray, allPoints) {
     // X Axis
     xAxis: [
       {
+        reversed: true,
         title: {
           enabled: false,
           text: "Days After Election",
@@ -236,13 +237,13 @@ function renderChart(yearData, yearArray, allPoints) {
             <b>Provocation Date:</b> ${point.provocationDate}<br>
             <b>Provocation Type:</b> ${point.provocationDescription}<br>
             <b>Election Type:</b> ${point.electionType}<br>
-            <b>Days before election:</b> ${point.x * -1}`;
+            <b>Days after election:</b> ${point.x * -1}`;
         } else if (point.x > 0) {
           daysBeforeOrAfter = `
             <b>Provocation Date:</b> ${point.provocationDate}<br>
             <b>Provocation Type:</b> ${point.provocationDescription}<br>
             <b>Election Type:</b> ${point.electionType}<br>
-            <b>Days after election:</b> ${point.x}`;
+            <b>Days before election:</b> ${point.x}`;
         } else if (point.provocationDate == point.electionDate) {
           daysBeforeOrAfter = `
           <b>Election Date:</b> ${point.electionDate}<br>
