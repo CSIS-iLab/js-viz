@@ -160,10 +160,9 @@ function renderChart(yearData, yearArray, allPoints) {
         maxPadding: 0.15, // extend axis to 60%
         minPadding: 0.3, // extend axis to 0%
         offset: 15, // move axis down to give final region more space
-        startOnTick: true,
         tickInterval: 50,
-        min: -400,
-        max: 400,
+        min: -365,
+        max: 365,
         labels: {
           formatter: function () {
             if (this.value < 0) {
