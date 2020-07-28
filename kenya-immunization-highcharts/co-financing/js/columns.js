@@ -38,6 +38,11 @@ Highcharts.chart('hcContainer', {
   title: {
       text: 'Co-financing projections 2020-2024'
   },
+  credits: {
+    enabled: true,
+    href: false,
+    text: "CSIS Global Health Policy Center"
+  },
   yAxis: {
       min: 0,
       title: {
@@ -52,9 +57,10 @@ Highcharts.chart('hcContainer', {
     verticalAlign: "middle",
     layout: "vertical"
   },
-  tooltip: {
+  tooltip: { 
       useHTML: true,
       shared: true,
+      borderColor: 'gray',
   },
   plotOptions: {
       column: {
