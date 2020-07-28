@@ -23,6 +23,19 @@ Highcharts.chart("hcContainer", {
     zoomType: 'x',
     type: 'line'
   },
+  colors: [
+    // Kenya 
+    '#F26522',
+    
+    // AFRO Region-Measles 1st Dose 
+    '#F5A623',
+    
+    // Countries in the same income group
+    '#47ACB1',
+  
+    // Global
+    '#8E6C89',
+  ],
   // Chart Title and Subtitle
   title: {
     text: "Kenyan Immunization Coverage (Measles 1st Dose)"
