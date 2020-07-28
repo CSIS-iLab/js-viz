@@ -122,6 +122,7 @@ function renderChart(yearData, yearArray, allPoints) {
     chart: {
       // type: "xrange",
       height: "80%",
+      zoomType: 'xy'
     },
     // Chart Title and Subtitle
     title: {
