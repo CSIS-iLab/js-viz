@@ -55,7 +55,7 @@ Highcharts.data({
             y: electionYearNumber,
             electionDate: electionDate,
             color: "#F55536",
-            marker: {symbol: 'triangle'}
+            marker: { symbol: "triangle" },
           });
         }
         if (!electionYearAndDays[electionYearNumber]) {
@@ -122,7 +122,7 @@ function renderChart(yearData, yearArray, allPoints) {
     chart: {
       // type: "xrange",
       height: "80%",
-      zoomType: 'xy'
+      zoomType: "xy",
     },
     // Chart Title and Subtitle
     title: {
@@ -276,9 +276,21 @@ function renderChart(yearData, yearArray, allPoints) {
         marker: {
           radius: 5,
         },
-        data: allPoints,
+        data: dataPoints,
         name: "Provocation",
         states: { inactive: { opacity: 1 } },
+        zIndex: 2,
+      },
+      {
+        type: "scatter",
+        linkedTo: "main",
+        marker: {
+          radius: 5,
+        },
+        data: dataMarkers,
+        name: "Provocation",
+        states: { inactive: { opacity: 1 } },
+        zIndex: 1,
       },
       {
         type: "column",
