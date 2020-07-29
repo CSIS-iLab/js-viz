@@ -52,19 +52,19 @@ Highcharts.chart('hcContainer', {
   }],
   colors: [
     // HPV national
-    '#F26522',
+    '#b5dddf',
     
     // YF routine 
-    '#F5A623',
+    '#90cdd0',
     
     // Rota
-    '#8E6C89',
+    '#6bbcc0',
   
     // PCV
-    '#A7D49B',
+    '#47acb1',
 
     // Penta
-    '#47ACB1'
+    '#347d81'
   ],
   title: {
       text: 'Co-financing projections 2020-2024'
@@ -78,7 +78,7 @@ Highcharts.chart('hcContainer', {
     plotBands: {
       to: 5,
       from: 1.5,
-      color: '#FFE8EB'
+      color: 'rgb(216,217,220,0.5)'
     }
   },
   yAxis: {
@@ -113,6 +113,7 @@ Highcharts.chart('hcContainer', {
   plotOptions: {
       column: {
           stacking: 'normal',
+          borderColor: 'rgba(255,255,255,0)'
       }
   },
 });
