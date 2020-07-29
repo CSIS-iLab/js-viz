@@ -274,7 +274,7 @@ function renderChart(yearData, yearArray, allPoints) {
         type: "scatter",
         linkedTo: "main",
         marker: {
-          radius: 3.5,
+          radius: 5,
         },
         data: allPoints,
         name: "Provocation",
