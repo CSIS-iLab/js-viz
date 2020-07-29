@@ -5,7 +5,6 @@ let allYears = [];
 
 let dataPoints = [];
 let dataMarkers = [];
-let allPoints = [];
 
 let electionYearAndDays = {};
 let mins = [];
@@ -107,12 +106,11 @@ Highcharts.data({
       }
     }
 
-    allPoints = dataPoints.concat(dataMarkers);
-    renderChart(yearData, yearArray, allPoints);
+    renderChart(yearData, yearArray);
   },
 });
 
-function renderChart(yearData, yearArray, allPoints) {
+function renderChart(yearData, yearArray) {
   Highcharts.setOptions({
     lang: {
       thousandsSep: "",
