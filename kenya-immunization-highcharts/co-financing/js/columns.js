@@ -19,6 +19,37 @@ Highcharts.chart('hcContainer', {
   chart: {
       type: 'column'
   },
+  annotations: [{
+    labelOptions: {
+      backgroundColor: 'rgba(255,255,255, 0)',
+      verticalAlign: 'top',
+      borderColor: 'rgba(255,255,255,0)'
+    },
+    labels: [{
+      point: {
+        xAxis: 0,
+        yAxis: 0,
+        x: 2.5,
+        y: 12000000
+      },
+      style: {
+        fontSize: '14px'
+      },
+      text: 'Accelerated Transition Phase'
+    }, {
+      point: {
+        xAxis: 0,
+        yAxis: 0,
+        x: 2, 
+        y: 7000000
+      },
+      style: {
+        fontSize: '14px',
+        color: 'red'
+      },
+      text: 'Grace year'
+    }]
+  }],
   colors: [
     // HPV national
     '#F26522',
@@ -47,7 +78,7 @@ Highcharts.chart('hcContainer', {
     plotBands: {
       to: 5,
       from: 1.5,
-      color: 'pink'
+      color: '#FFE8EB'
     }
   },
   yAxis: {
