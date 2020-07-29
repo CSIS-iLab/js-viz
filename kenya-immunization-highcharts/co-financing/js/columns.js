@@ -43,6 +43,13 @@ Highcharts.chart('hcContainer', {
     href: false,
     text: "CSIS Global Health Policy Center"
   },
+  xAxis: {
+    plotBands: {
+      to: 5,
+      from: 1.5,
+      color: 'pink'
+    }
+  },
   yAxis: {
       min: 0,
       title: {
