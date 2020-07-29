@@ -86,10 +86,15 @@ Highcharts.chart('hcContainer', {
       title: {
           text: 'Millions'
       },
+      labels: {
+        formatter: function() {
+          return '$' + (this.value / 1000000) + 'M';
+        },
+      },
       stackLabels: {
           enabled: true,
           formatter: function() {
-            return 'Total: $' + Highcharts.numberFormat(this.total, 0, ',');
+            return 'Total: $' + (this.total/1000000).toFixed(2) + 'M';
           }
       }
   },
