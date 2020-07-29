@@ -50,6 +50,9 @@ Highcharts.chart('hcContainer', {
       },
       stackLabels: {
           enabled: true,
+          formatter: function() {
+            return 'Total: $' + Highcharts.numberFormat(this.total, 0, ',');
+          }
       }
   },
   legend: {
@@ -61,6 +64,8 @@ Highcharts.chart('hcContainer', {
       useHTML: true,
       shared: true,
       borderColor: 'gray',
+      headerFormat: '<span style="font-size: 12px">{point.key}</span><br/>',
+      valuePrefix: '$'
   },
   plotOptions: {
       column: {
