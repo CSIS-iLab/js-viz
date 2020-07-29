@@ -122,6 +122,13 @@ function renderChart(yearData, yearArray) {
       height: "80%",
       zoomType: "xy",
     },
+    exporting: {
+      buttons: {
+        contextButton: {
+          y: -15
+        }
+      }
+    },
     // Chart Title and Subtitle
     title: {
       text: null,
