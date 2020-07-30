@@ -68,6 +68,7 @@ Highcharts.chart("hcContainer", {
   },
   // Tooltip
   tooltip: {
+    borderColor: "gray",
     shared: true,
     useHTML: true,
     style: {
