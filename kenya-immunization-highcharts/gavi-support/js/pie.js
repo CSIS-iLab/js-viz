@@ -1,58 +1,45 @@
 var seriesArray = []
 var seriesObj = {
-    name: "Funding",
+    name: "Contributions",
     colorByPoint: true,
-    // array of objects
     data: []
 }
 var drilldownData = []
 
 Highcharts.data({
-    // Load Data in from Google Sheets
-    googleSpreadsheetKey: '1oAjsH6kab5UaiVJpa5TXt9J2voRQwZY6YipMVYdBXhs',
+    googleSpreadsheetKey: '10q0ygaHPEL53tAr8Nu3I4bh-PykxOYRIyDpa0RXE3jg',
     googleSpreadsheetWorksheet: 3,
     switchRowsAndColumns: true,
     parsed: function parsed(columns) {
-        // create default variables
-        var group = "Funding"
+        var seriesData = []
+        var group = ""
+        columns.shift()
+        columns.forEach(function (row) {
+            var groupRow = row[2]
+            var donor = row[0]
+            var amount = row[1]
 
-
-        // iterate over data
-        columns.forEach(function (row, i) {
-            // skip first row
-            if (i == 0) {
-                return
-            }
-            var groupRow = row[0]
-            var donor = row[1]
-            var amount = row[2]
-            var labelRank = row[3]
-
-            // check if group name exists in root series
             if (group !== groupRow) {
-                // update group
                 group = groupRow
-                // if group doesn't exist, create group (name, y, drilldown name)
-                seriesObj.data.push({ "name": group, "y": amount, "drilldown": group, "labelrank": labelRank })
-                // if drilldown doesn't exist, push id name and data to drilldownData array
+                var drilldownGroup = group
+                if (donor == "null") {
+                    drilldownGroup = null
+                }
+                seriesObj.data.push({ "name": group, "y": amount, "drilldown": drilldownGroup, })
                 drilldownData.push({
                     "id": group,
-                    "name": "Funding",
+                    "name": group,
                     "data": [[donor, amount]]
                 })
             } else {
-                // if group exists, add value to y
                 objIndex = seriesObj.data.findIndex((obj => obj.name == groupRow))
                 seriesObj.data[objIndex].y += amount
-                // if drilldown exists, push new array of donor and amount into data array
                 drilldownData[objIndex].data.push([donor, amount])
             }
         })
-        // sort series by value of y
         seriesObj.data.sort(function (a, b) {
             return b.y - a.y
         })
-        // seriesObj.data.push(seriesData)
         seriesArray.push(seriesObj)
 
         renderChart(seriesArray, drilldownData)
@@ -61,7 +48,6 @@ Highcharts.data({
 
 function renderChart(seriesArray, drilldownData) {
 
-    // format numbers
     Highcharts.setOptions({
         lang: {
             thousandsSep: ",",
@@ -75,13 +61,9 @@ function renderChart(seriesArray, drilldownData) {
         }
     });
     Highcharts.chart('hcContainer', {
-        // General Chart Options
         chart: {
             type: 'pie',
         },
-        // Chart Colors
-        colors: ['#36605A', '#008E9D', '#9B9B9B', '#557786', '#96B586', '#D05F4C', '#DDB460', '#83373E'],
-        // Chart Title and Subtitle
         title: {
             text: '<span style="font-size: 32px; color: #333333; max-width: 1280px; text-align: center">Gavi Commitments to the Republic of Kenya</span>'
         },
@@ -106,24 +88,15 @@ function renderChart(seriesArray, drilldownData) {
                 relativeTo: "spacingBox"
             }
         },
-        // Additional Plot Options
         plotOptions: {
             pie: {
                 allowPointSelect: true,
-                // startAngle: 30,
-                // cursor: 'pointer',
                 dataLabels: {
                     enabled: true,
                     format: '<b>{point.name}</b><br>{point.percentage:.1f}%',
                     padding: 0
-                    // filter: {
-                    //     property: 'percentage',
-                    //     operator: '>',
-                    //     value: 2
-                    // }
                 }
             },
         }
     })
-
 }
