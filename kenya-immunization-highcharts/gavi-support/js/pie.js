@@ -11,21 +11,18 @@ Highcharts.data({
     googleSpreadsheetWorksheet: 3,
     switchRowsAndColumns: true,
     parsed: function parsed(columns) {
-        var seriesData = []
         var group = ""
+        
         columns.shift()
         columns.forEach(function (row) {
-            var groupRow = row[2]
-            var donor = row[0]
-            var amount = row[1]
+            var groupRow = row[0]
+            var donor = row[1]
+            var amount = row[2]
+            var labelRank = row[3]
 
             if (group !== groupRow) {
                 group = groupRow
-                var drilldownGroup = group
-                if (donor == "null") {
-                    drilldownGroup = null
-                }
-                seriesObj.data.push({ "name": group, "y": amount, "drilldown": drilldownGroup, })
+                seriesObj.data.push({ "name": group, "y": amount, "drilldown": group, "labelrank": labelRank })
                 drilldownData.push({
                     "id": group,
                     "name": group,
@@ -64,11 +61,13 @@ function renderChart(seriesArray, drilldownData) {
         chart: {
             type: 'pie',
         },
+        colors: ['#c9b8c7', '#b39cb0', '#a588a1', '#8e6c89', '#5e475a', '#41313f', '#241b23'],
         title: {
-            text: '<span style="font-size: 32px; color: #333333; max-width: 1280px; text-align: center">Gavi Commitments to the Republic of Kenya</span>'
+            text: '<span style="font-size: 16px; color: #333333; max-width: 1280px; text-align: center">Gavi Commitments to the Republic of Kenya</span>',
+            margin: 50
         },
         subtitle: {
-            text: `<span style="font-size: 16px; color: #333333; max-width: 1280px; margin-bottom: 1.5rem; line-height: 1.4">This interactive shows how Gavi's support for Kenya has broken down since 2001. Hover over each slice and click to drill down to see a more detailed breakdown of support. Activities labeled as "active" were still supported as of 2019.</span>`
+            text: `<span style="font-size: 14px; color: #333333; max-width: 1280px; margin-bottom: 1.5rem; line-height: 1.4">This interactive shows how Gavi's support for Kenya has broken down since 2001. Hover over each slice and click to drill down to see a more detailed breakdown of support. Activities labeled as "active" were still supported as of 2019.</span>`
         },
         // Credits
         credits: {
@@ -83,13 +82,10 @@ function renderChart(seriesArray, drilldownData) {
         series: seriesArray,
         drilldown: {
             series: drilldownData,
-            drillUpButton: {
-                position: { align: "left", y: 450 },
-                relativeTo: "spacingBox"
-            }
         },
         plotOptions: {
             pie: {
+                size: "100%",
                 allowPointSelect: true,
                 dataLabels: {
                     enabled: true,
