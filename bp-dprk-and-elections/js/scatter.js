@@ -139,7 +139,7 @@ function renderChart(yearData, yearArray) {
     credits: {
       enabled: true,
       href: false,
-      text: "CSIS Beyond Parallel | Source: Beyond Parallel Database on North Korean Provocations",
+      text: "CSIS | Source: Beyond Parallel Database on North Korean Provocations",
       position: {
         y: 0,
       },
