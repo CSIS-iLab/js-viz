@@ -63,17 +63,17 @@ function renderChart(seriesArray, drilldownData) {
         },
         colors: ['#c9b8c7', '#b39cb0', '#a588a1', '#8e6c89', '#5e475a', '#41313f', '#241b23'],
         title: {
-            text: '<span style="font-size: 16px; color: #333333; max-width: 1280px; text-align: center">Gavi Commitments to the Republic of Kenya</span>',
+            text: '<span style="font-size: 16px; color: #333333; max-width: 1280px; text-align: center">Gavi Commitments to the Republic of Kenya, 2001-2023</span>',
             margin: 50
         },
         subtitle: {
-            text: `<span style="font-size: 14px; color: #333333; max-width: 1280px; margin-bottom: 1.5rem; line-height: 1.4">This interactive shows how Gavi's support for Kenya has broken down since 2001. Hover over each slice and click to drill down to see a more detailed breakdown of support. Activities labeled as "active" were still supported as of 2019.</span>`
+            text: `<span style="font-size: 14px; color: #333333; max-width: 1280px; margin-bottom: 1.5rem; line-height: 1.4">This interactive shows how Gavi's support for Kenya has broken down since 2001. Hover over each slice click to drill down to a more detailed breakdown of support. Activities labeled as "active" were still supported as of 2019.</span>`
         },
         // Credits
         credits: {
             enabled: true,
             href: false,
-            text: "CSIS Global Health Policy Center"
+            text: "CSIS Global Health Policy Center | Source: Gavi, the Vaccine Alliance"
         },
         tooltip: {
             valueDecimals: 0,

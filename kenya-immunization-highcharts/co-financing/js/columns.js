@@ -67,12 +67,16 @@ Highcharts.chart('hcContainer', {
     '#347d81'
   ],
   title: {
-      text: 'Co-financing projections 2020-2024'
+      text: "Kenya's Timeline for Gavi Transition",
+      margin: 35
+  },
+  subtitle: {
+    text: "Hover over the bars to see how Gavi's support will break down across the different vaccines it co-finances, and how Kenya's co-financing obligations will increase at it moves into accelerated transition in 2022, will the goal of taking on full financial responsibility for its immunization program in 2025."
   },
   credits: {
     enabled: true,
     href: false,
-    text: "CSIS Global Health Policy Center"
+    text: "CSIS Global Health Policy Center | Source: Gavi, the Vaccine Alliance"
   },
   xAxis: {
     plotBands: {
