@@ -144,7 +144,10 @@ Highcharts.chart("hcContainer", {
       stacking: null, // Normal bar graph
       // stacking: "normal", // Stacked bar graph
       dataLabels: {
-        enabled: false,
+        enabled: true,
+        formatter: function () {
+          return Highcharts.numberFormat(this.y, 1);
+        },
       },
     },
   },

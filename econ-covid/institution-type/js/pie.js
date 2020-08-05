@@ -43,7 +43,6 @@ Highcharts.chart("hcContainer", {
       dataLabels: {
         enabled: true,
         formatter: function () {
-          console.log(this);
           return Highcharts.numberFormat(this.percentage, 2) + "%";
         },
       },
