@@ -51,7 +51,7 @@ Highcharts.chart("hcContainer", {
     },
     series: {
       colorByPoint: true,
-      colors: ["#004165", "#0065A6", "#0FAA94", "#7b7d7c", "#E5EFF6"],
+      colors: ["#004165", "#0065A6", "#0A8672", "#7b7d7c", "#E5EFF6"],
     },
   },
 });
