@@ -41,7 +41,11 @@ Highcharts.chart("hcContainer", {
       allowPointSelect: true,
       cursor: "pointer",
       dataLabels: {
-        enabled: false,
+        enabled: true,
+        formatter: function () {
+          console.log(this);
+          return Highcharts.numberFormat(this.percentage, 2) + "%";
+        },
       },
       showInLegend: true,
     },
