@@ -16,7 +16,7 @@ Highcharts.chart("hcContainer", {
   credits: {
     enabled: true,
     href: false,
-    text: "CSIS Economics Program | Source: NAME",
+    text: "CSIS Economics Program | Source: IFI press releases",
   },
   // Chart Legend
   legend: {
