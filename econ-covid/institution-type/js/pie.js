@@ -43,7 +43,7 @@ Highcharts.chart("hcContainer", {
       dataLabels: {
         enabled: true,
         formatter: function () {
-          return Highcharts.numberFormat(this.percentage, 2) + "%";
+          return Highcharts.numberFormat(this.percentage, 1) + "%";
         },
       },
       showInLegend: true,
