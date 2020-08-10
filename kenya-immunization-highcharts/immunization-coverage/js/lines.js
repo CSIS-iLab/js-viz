@@ -10,8 +10,11 @@ Highcharts.setOptions({
   }
 });
 
+Highcharts.seriesTypes.line.prototype.drawLegendSymbol= Highcharts.seriesTypes.area.prototype.drawLegendSymbol;  
 
 Highcharts.chart("hcContainer", {
+
+
   // Load Data in from Google Sheets
   data: {
     googleSpreadsheetKey: "10q0ygaHPEL53tAr8Nu3I4bh-PykxOYRIyDpa0RXE3jg",
@@ -58,10 +61,12 @@ Highcharts.chart("hcContainer", {
     margin: 40,
     align: "center",
     verticalAlign: "bottom",
-    layout: "horizontal"
+    layout: "horizontal",
   },
   // Y Axis
   yAxis: {
+    max: 100,
+    min: 0,
     title: {
       text: '% DPT3 Coverage'
     }
@@ -72,6 +77,7 @@ Highcharts.chart("hcContainer", {
   },
   // Tooltip
   tooltip: {
+    valueSuffix: '%',
     borderColor: "gray",
     shared: true,
     useHTML: true,
@@ -91,5 +97,11 @@ Highcharts.chart("hcContainer", {
       },
       lineWidth: 2
     }
-  }
+  },
+  series: [
+    { dashStyle: "solid"},
+    { dashStyle: "dash"},
+    { dashStyle: "dash"},
+    { dashStyle: "dash"}
+  ]
 });
