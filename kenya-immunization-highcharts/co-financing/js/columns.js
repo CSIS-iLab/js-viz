@@ -17,7 +17,8 @@ Highcharts.chart('hcContainer', {
     switchRowsAndColumns: true
   },
   chart: {
-      type: 'column'
+      type: 'column',
+      marginBottom: 50
   },
   annotations: [{
     labelOptions: {
@@ -35,7 +36,7 @@ Highcharts.chart('hcContainer', {
       style: {
         fontSize: '14px'
       },
-      text: 'Accelerated Transition Phase'
+      text: '<b>Accelerated Transition Phase</b>'
     }, {
       point: {
         xAxis: 0,
@@ -47,7 +48,7 @@ Highcharts.chart('hcContainer', {
         fontSize: '14px',
         color: 'red'
       },
-      text: 'Grace year'
+      text: '(Grace year)'
     }]
   }],
   colors: [
@@ -67,11 +68,11 @@ Highcharts.chart('hcContainer', {
     '#347d81'
   ],
   title: {
-      text: "Kenya's Timeline for Gavi Transition",
+      text: "Kenya's Timeline for Transition From Gavi Financial Support",
       margin: 35
   },
   subtitle: {
-    text: "Hover over the bars to see how Gavi's support will break down across the different vaccines it co-finances, and how Kenya's co-financing obligations will increase at it moves into accelerated transition in 2022, will the goal of taking on full financial responsibility for its immunization program in 2025."
+    text: "Hover over the bars to see how Gavi's support will break down across the different vaccines it co-finances, and how Kenya's co-financing obligations will increase at it moves into accelerated transition in 2022, with the goal of taking on full financial responsibility for its immunization program in 2025."
   },
   credits: {
     enabled: true,
@@ -88,7 +89,7 @@ Highcharts.chart('hcContainer', {
   yAxis: {
       min: 0,
       title: {
-          text: 'Millions'
+          text: 'Kenyan Vaccine Support in Millions USD'
       },
       labels: {
         formatter: function() {
@@ -114,7 +115,7 @@ Highcharts.chart('hcContainer', {
       useHTML: true,
       shared: true,
       borderColor: 'gray',
-      headerFormat: '<span style="font-size: 12px">{point.key}</span><br/>',
+      headerFormat: '<span style="font-size: 12px">Gavi Funding Support Breakdown:<br>{point.key}</span><br>',
       valuePrefix: '$'
   },
   plotOptions: {
