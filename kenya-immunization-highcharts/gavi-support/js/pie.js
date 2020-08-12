@@ -60,6 +60,7 @@ function renderChart(seriesArray, drilldownData) {
     Highcharts.chart('hcContainer', {
         chart: {
             type: 'pie',
+            marginBottom: 50
         },
         colors: ['#c9b8c7', '#b39cb0', '#a588a1', '#8e6c89', '#5e475a', '#41313f', '#241b23'],
         title: {
@@ -78,6 +79,7 @@ function renderChart(seriesArray, drilldownData) {
         tooltip: {
             valueDecimals: 0,
             valuePrefix: '$',
+            headerFormat: '<span style="font-size: 12px"><br>{point.key}</span><br>',
         },
         series: seriesArray,
         drilldown: {
