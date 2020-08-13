@@ -87,11 +87,12 @@ function renderChart(seriesArray, drilldownData) {
         },
         plotOptions: {
             pie: {
-                size: "100%",
+                size: '100%',
                 allowPointSelect: true,
                 dataLabels: {
-                    enabled: true,
-                    format: '<b>{point.name}</b><br>{point.percentage:.1f}%',
+                    connectorShape: 'crookedLine',
+                    crookDistance: '60%',
+                    format: '{point.name}  {point.percentage:.1f}%',
                     padding: 0
                 }
             },
