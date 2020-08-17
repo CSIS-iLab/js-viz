@@ -45,7 +45,7 @@ Highcharts.chart("hcContainer", {
     margin: 40
   },
   subtitle: {
-    text: "Hover over the map and toggle on and off the sidebar options to see how Kenya's national immunization coverage has varied over the last several decades, based on the coverage for the first dose of measles-containing vaccine. Kenya moved from low to lower-middle income status in 2011."
+    text: "Hover over the map and toggle on and off the sidebar options to see how Kenya's national immunization coverage has varied over the last several decades, based on the coverage for the first dose of measles-containing vaccine."
   },
   // Credits
   credits: {
@@ -68,7 +68,7 @@ Highcharts.chart("hcContainer", {
     max: 100,
     min: 0,
     title: {
-      text: '% DPT3 Coverage'
+      text: '% coverage measles 1st dose'
     }
   },
   // X Axis
