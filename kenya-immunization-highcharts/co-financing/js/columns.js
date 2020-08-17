@@ -68,11 +68,11 @@ Highcharts.chart('hcContainer', {
     '#347d81'
   ],
   title: {
-      text: "Kenya's Timeline for Transition From Gavi Financial Support",
+      text: "Timeline for Kenya's Transition from Gavi Support",
       margin: 35
   },
   subtitle: {
-    text: "Hover over the bars to see how Gavi's support will break down across the different vaccines it co-finances, and how Kenya's co-financing obligations will increase at it moves into accelerated transition in 2022, with the goal of taking on full financial responsibility for its immunization program in 2025."
+    text: "Hover over the bars to see how Gavi's support will break down across the different vaccines it co-finances, and how Kenya's co-financing obligations will increase at it moves into accelerated transition in 2022, with the goal of taking on full financial responsibility for its immunization program by 2027. Gavi allows for a “grace year” with lower obligations in the first year of accelerated transition before a country’s co-financing requirements increase more dramatically."
   },
   credits: {
     enabled: true,
@@ -89,7 +89,7 @@ Highcharts.chart('hcContainer', {
   yAxis: {
       min: 0,
       title: {
-          text: 'Kenyan Vaccine Support in Millions USD'
+          text: 'Kenyan Co-Financing Projections<br> Millions USD'
       },
       labels: {
         formatter: function() {
