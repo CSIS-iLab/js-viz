@@ -84,6 +84,10 @@ function renderChart(seriesArray, drilldownData) {
         series: seriesArray,
         drilldown: {
             series: drilldownData,
+            activeDataLabelStyle: {
+                color: '#000',
+                textDecoration: "none"
+            }
         },
         plotOptions: {
             pie: {
