@@ -62,7 +62,7 @@ function renderChart(seriesArray, drilldownData) {
             type: 'pie',
             marginBottom: 50
         },
-        colors: ['#c9b8c7', '#b39cb0', '#a588a1', '#8e6c89', '#5e475a', '#41313f', '#241b23'],
+        colors: ['#f9b392', '#f69262', '#f26522', '#d54d0d', '#a43c0a', '#742a07', '#541e05'],
         title: {
             text: '<span style="font-size: 16px; color: #333333; max-width: 1280px; text-align: center">Gavi Commitments to the Republic of Kenya, 2001-2023</span>',
             margin: 50
