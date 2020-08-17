@@ -35,17 +35,17 @@ const style = new carto.style.CartoCSS(`
         }
       `);
 
-const populatedPlacesLayer = new carto.layer.Layer(source, style, {
-  featureOverColumns: ["name_of_asset", "location", "description"],
+const mapLayer = new carto.layer.Layer(source, style, {
+  featureOverColumns: ["_2018_guyanese_ancestry", "county_state"],
 });
 
-client.addLayer(populatedPlacesLayer);
+client.addLayer(mapLayer);
 
 client.getLeafletLayer().bringToFront().addTo(map);
 
 const popup = L.popup({ closeButton: true });
 
-populatedPlacesLayer.on(carto.layer.events.FEATURE_CLICKED, createPopup);
+mapLayer.on(carto.layer.events.FEATURE_CLICKED, createPopup);
 
 function createPopup(event) {
   popup.setLatLng(event.latLng);
