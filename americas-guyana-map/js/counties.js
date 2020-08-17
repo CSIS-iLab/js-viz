@@ -21,8 +21,15 @@ const client = new carto.Client({
 });
 
 const mapSource = new carto.source.SQL(
-  "SELECT * FROM guyana_graphic_counties_2018"
+  `SELECT
+  row_number() over() as cartodb_id,
+  ST_Centroid(ST_Collect(the_geom_webmercator)) as the_geom_webmercator,
+  cartodb_id as category,
+  sum(value) as value
+FROM (SELECT * FROM public.guyana_graphic_counties_2018) q
+GROUP BY cartodb_id`
 );
+
 const mapStyle = new carto.style.CartoCSS(`
 #layer {
   marker-width: ramp([value], range(5, 15), quantiles(5));
@@ -43,7 +50,7 @@ client.addLayer(mapLayer);
 
 client.getLeafletLayer().bringToFront().addTo(map);
 
-const popup = L.popup({ closeButton: true });
+// const popup = L.popup({ closeButton: true });
 
 // mapLayer.on(carto.layer.events.FEATURE_CLICKED, createPopup);
 
