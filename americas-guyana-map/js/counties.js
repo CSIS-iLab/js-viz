@@ -23,25 +23,21 @@ const client = new carto.Client({
 const source = new carto.source.SQL(
   "SELECT * FROM guyana_graphic_counties_2018"
 );
-const populatedPlacesStyle = new carto.style.CartoCSS(`
+const style = new carto.style.CartoCSS(`
         #layer {
-          marker-width: 12;
-          marker-fill: ramp([type_of_asset], (#3969ac, #f2b701, #7f3c8d, #11a579, #e73f74), ("Coastal Surveillance Radar Systems", "Indian Offshore Military Facility", "Commercial/Dual-use Facilities", "Foreign Military Facilities w/ Indian Access"), "=");
-          marker-fill-opacity: 1;
+          marker-width: ramp([value], range(5, 15), quantiles(5));
+          marker-fill: #6a2248;
+          marker-fill-opacity: 0.65;
           marker-allow-overlap: true;
           marker-line-width: 0.5;
-          marker-line-color: #fff;
-          marker-line-opacity: 0.5;
+          marker-line-color: #6a2248;
+          marker-line-opacity: 1;
         }
       `);
 
-const populatedPlacesLayer = new carto.layer.Layer(
-  source,
-  populatedPlacesStyle,
-  {
-    featureOverColumns: ["name_of_asset", "location", "description"],
-  }
-);
+const populatedPlacesLayer = new carto.layer.Layer(source, style, {
+  featureOverColumns: ["name_of_asset", "location", "description"],
+});
 
 client.addLayer(populatedPlacesLayer);
 
