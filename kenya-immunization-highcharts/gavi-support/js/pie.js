@@ -96,7 +96,7 @@ function renderChart(seriesArray, drilldownData) {
                 dataLabels: {
                     connectorShape: 'crookedLine',
                     crookDistance: '60%',
-                    format: '{point.name}  {point.percentage:.1f}%',
+                    format: '{point.name}',
                     padding: 0
                 }
             },
