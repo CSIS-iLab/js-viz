@@ -16,12 +16,12 @@ var map = L.map("map", {
 });
 
 const client = new carto.Client({
-  apiKey: "-zz8CT9UmMschCuI96Mnug",
+  apiKey: "3wBLygnVR609O76Bedwl9g",
   username: "csis",
 });
 
-const populatedPlacesSource = new carto.source.SQL(
-  "SELECT * FROM ior_feature_descriptions_11132019_1"
+const source = new carto.source.SQL(
+  "SELECT * FROM guyana_graphic_counties_2018"
 );
 const populatedPlacesStyle = new carto.style.CartoCSS(`
         #layer {
@@ -36,7 +36,7 @@ const populatedPlacesStyle = new carto.style.CartoCSS(`
       `);
 
 const populatedPlacesLayer = new carto.layer.Layer(
-  populatedPlacesSource,
+  source,
   populatedPlacesStyle,
   {
     featureOverColumns: ["name_of_asset", "location", "description"],
@@ -126,10 +126,10 @@ document
           ? [filter_checked]
           : [filter_notChecked];
 
-      populatedPlacesSource.getFilters().forEach(function (f) {
-        populatedPlacesSource.removeFilter(f);
+      source.getFilters().forEach(function (f) {
+        source.removeFilter(f);
       });
 
-      populatedPlacesSource.addFilter(new carto.filter.OR(filters));
+      source.addFilter(new carto.filter.OR(filters));
     }
   });
