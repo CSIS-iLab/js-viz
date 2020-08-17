@@ -4,9 +4,9 @@ var basemap = L.tileLayer(
 );
 
 var map = L.map("map", {
-  center: [12.95, 77.49],
-  zoom: 3,
-  maxZoom: 12,
+  center: [42, -96],
+  zoom: 5,
+  maxZoom: 7,
   scrollWheelZoom: true,
   minZoom: 3,
   zoomControl: true,
@@ -20,23 +20,23 @@ const client = new carto.Client({
   username: "csis",
 });
 
-const source = new carto.source.SQL(
+const mapSource = new carto.source.SQL(
   "SELECT * FROM guyana_graphic_counties_2018"
 );
-const style = new carto.style.CartoCSS(`
-        #layer {
-          marker-width: ramp([value], range(5, 15), quantiles(5));
-          marker-fill: #6a2248;
-          marker-fill-opacity: 0.65;
-          marker-allow-overlap: true;
-          marker-line-width: 0.5;
-          marker-line-color: #6a2248;
-          marker-line-opacity: 1;
-        }
+const mapStyle = new carto.style.CartoCSS(`
+#layer {
+  marker-width: ramp([value], range(5, 15), quantiles(5));
+  marker-fill: #6a2248;
+  marker-fill-opacity: 0.54;
+  marker-allow-overlap: false;
+  marker-line-width: 1;
+  marker-line-color: #6a2248;
+  marker-line-opacity: 1;
+}
       `);
 
-const mapLayer = new carto.layer.Layer(source, style, {
-  featureOverColumns: ["_2018_guyanese_ancestry", "county_state"],
+const mapLayer = new carto.layer.Layer(mapSource, mapStyle, {
+  featureOverColumns: ["value"],
 });
 
 client.addLayer(mapLayer);
@@ -45,32 +45,32 @@ client.getLeafletLayer().bringToFront().addTo(map);
 
 const popup = L.popup({ closeButton: true });
 
-mapLayer.on(carto.layer.events.FEATURE_CLICKED, createPopup);
+// mapLayer.on(carto.layer.events.FEATURE_CLICKED, createPopup);
 
-function createPopup(event) {
-  popup.setLatLng(event.latLng);
+// function createPopup(event) {
+//   popup.setLatLng(event.latLng);
 
-  if (!popup.isOpen()) {
-    var data = event.data;
-    var content = "<div>";
+//   if (!popup.isOpen()) {
+//     var data = event.data;
+//     var content = "<div>";
 
-    var keys = ["name_of_asset", "location", "description"];
+//     var keys = ["name_of_asset", "location", "description"];
 
-    content += `
-    <div class="popupHeaderStyle"> 
-      ${data.name_of_asset}
-    </div> 
-    <div class="popupEntryStyle"> 
-      ${data.location}
-    </div>
-    <p class="popupEntryStyle"> 
-      ${data.description}
-    </p>
-    `;
-    popup.setContent("" + content);
-    popup.openOn(map);
-  }
-}
+//     content += `
+//     <div class="popupHeaderStyle">
+//       ${data.name_of_asset}
+//     </div>
+//     <div class="popupEntryStyle">
+//       ${data.location}
+//     </div>
+//     <p class="popupEntryStyle">
+//       ${data.description}
+//     </p>
+//     `;
+//     popup.setContent("" + content);
+//     popup.openOn(map);
+//   }
+// }
 
 L.control
   .attribution({
@@ -81,51 +81,51 @@ L.control
   )
   .addTo(map);
 
-var checks = Array.from(
-  document.querySelectorAll(".type_of_asset ul input")
-).map(function (checkbox) {
-  return checkbox.name;
-});
+// var checks = Array.from(
+//   document.querySelectorAll(".type_of_asset ul input")
+// ).map(function (checkbox) {
+//   return checkbox.name;
+// });
 
-var filter_checks = new carto.filter.Category("type_of_asset", {
-  notIn: checks,
-});
+// var filter_checks = new carto.filter.Category("type_of_asset", {
+//   notIn: checks,
+// });
 
-document
-  .querySelector(".type_of_asset ul")
-  .addEventListener("click", function (e) {
-    var checkbox = e.target.type === "checkbox" ? e.target : null;
+// document
+//   .querySelector(".type_of_asset ul")
+//   .addEventListener("click", function (e) {
+//     var checkbox = e.target.type === "checkbox" ? e.target : null;
 
-    if (checkbox) {
-      var checked = Array.from(
-        document.querySelectorAll(".type_of_asset ul input:checked")
-      ).map(function (checkbox) {
-        return checkbox.name;
-      });
+//     if (checkbox) {
+//       var checked = Array.from(
+//         document.querySelectorAll(".type_of_asset ul input:checked")
+//       ).map(function (checkbox) {
+//         return checkbox.name;
+//       });
 
-      var notChecked = checks.filter(function (name) {
-        return checked.indexOf(name) < 0;
-      });
+//       var notChecked = checks.filter(function (name) {
+//         return checked.indexOf(name) < 0;
+//       });
 
-      var filter_checked = new carto.filter.Category("type_of_asset", {
-        in: checked,
-      });
+//       var filter_checked = new carto.filter.Category("type_of_asset", {
+//         in: checked,
+//       });
 
-      var filter_notChecked = new carto.filter.Category("type_of_asset", {
-        notIn: notChecked,
-      });
+//       var filter_notChecked = new carto.filter.Category("type_of_asset", {
+//         notIn: notChecked,
+//       });
 
-      var filters =
-        checkbox.name === "OTHERS" && checkbox.checked
-          ? [filter_checks, filter_checked]
-          : checkbox.name === "OTHERS" && !checkbox.checked
-          ? [filter_checked]
-          : [filter_notChecked];
+//       var filters =
+//         checkbox.name === "OTHERS" && checkbox.checked
+//           ? [filter_checks, filter_checked]
+//           : checkbox.name === "OTHERS" && !checkbox.checked
+//           ? [filter_checked]
+//           : [filter_notChecked];
 
-      source.getFilters().forEach(function (f) {
-        source.removeFilter(f);
-      });
+//       mapSource.getFilters().forEach(function (f) {
+//         mapSource.removeFilter(f);
+//       });
 
-      source.addFilter(new carto.filter.OR(filters));
-    }
-  });
+//       mapSource.addFilter(new carto.filter.OR(filters));
+//     }
+// });
