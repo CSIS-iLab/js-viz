@@ -86,7 +86,6 @@ function renderChart(seriesArray, drilldownData) {
             series: drilldownData,
             activeDataLabelStyle: {
                 color: '#000',
-                textDecoration: "none"
             }
         },
         plotOptions: {
