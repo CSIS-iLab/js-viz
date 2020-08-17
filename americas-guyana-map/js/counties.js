@@ -77,7 +77,7 @@ L.control
     position: "bottomright",
   })
   .setPrefix(
-    'Data by <a href="https://amti.csis.org" target="_blank">CSIS AMTI</a>, Leaflet contributors'
+    'Data by <a href="" target="_blank">CSIS</a>, Leaflet contributors'
   )
   .addTo(map);
 
