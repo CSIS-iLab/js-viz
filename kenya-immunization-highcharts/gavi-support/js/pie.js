@@ -80,6 +80,10 @@ function renderChart(seriesArray, drilldownData) {
             valueDecimals: 0,
             valuePrefix: '$',
             headerFormat: '<span style="font-size: 12px"><br>{point.key}</span><br>',
+            formatter: function() {
+                result = Highcharts.numberFormat(this.y, 0);
+                return '<span style="color:' + this.color + '">\u25CF</span> ' + this.series.name + ': <b>$' + result + ' (' + Math.round(this.percentage) + '%)</b>'
+            }
         },
         series: seriesArray,
         drilldown: {
