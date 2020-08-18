@@ -202,8 +202,8 @@ leaflet-control {
   --bg: rgba(106, 34, 72, 0.2);
   --border: #6a2248;
   --small: 6px;
-  --medium: 15px;
-  --large: 34px;
+  --medium: 30px;
+  --large: 45px;
 }
 
 .legend li {

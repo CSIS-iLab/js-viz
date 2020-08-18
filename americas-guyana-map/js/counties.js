@@ -6,7 +6,7 @@ var basemap = L.tileLayer(
 var map = L.map("map", {
   center: [40, -98],
   zoom: 5,
-  maxZoom: 7,
+  maxZoom: 12,
   scrollWheelZoom: true,
   minZoom: 3,
   zoomControl: true,
@@ -25,10 +25,10 @@ const mapSource = new carto.source.SQL(`SELECT * FROM guyana_counties`);
 
 const mapStyle = new carto.style.CartoCSS(`
         #layer {
-          marker-width: ramp([value], range(10, 50), quantiles(5));
+          marker-width: ramp([value], range(10, 60), quantiles(5));
           marker-fill: #6a2248;
           marker-fill-opacity: 0.2;
-          marker-allow-overlap: false;
+          marker-allow-overlap: true;
           marker-line-width: 4;
           marker-line-color: #6a2248;
           marker-line-opacity: 1;
