@@ -8,7 +8,7 @@ var map = L.map("map", {
   zoom: 5,
   maxZoom: 7,
   scrollWheelZoom: true,
-  minZoom: 5,
+  minZoom: 4,
   zoomControl: true,
   scrollWheelZoom: true,
   layers: [basemap],
