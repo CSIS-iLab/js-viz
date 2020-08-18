@@ -1,5 +1,5 @@
 var basemap = L.tileLayer(
-  "https://api.mapbox.com/styles/v1/ilabmedia/cj84s9bet10f52ro2lrna50yg/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw",
+  "https://api.mapbox.com/styles/v1/ilabmedia/cjrawc1zs2bzc2sq3y9wvt22t/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw",
   {}
 );
 
@@ -16,68 +16,57 @@ var map = L.map("map", {
 });
 
 const client = new carto.Client({
-  apiKey: "3wBLygnVR609O76Bedwl9g",
+  // apiKey: "3wBLygnVR609O76Bedwl9g",
+  apiKey: "axez8RM8WGdHVdLh4lGcng",
   username: "csis",
 });
 
-const mapSource = new carto.source.SQL(
-  `SELECT
-  row_number() over() as cartodb_id,
-  ST_Centroid(ST_Collect(the_geom_webmercator)) as the_geom_webmercator,
-  cartodb_id as category,
-  sum(value) as value
-FROM (SELECT * FROM public.guyana_graphic_counties_2018) q
-GROUP BY cartodb_id`
-);
+const mapSource = new carto.source.SQL(`SELECT * FROM guyana_counties`);
 
 const mapStyle = new carto.style.CartoCSS(`
-#layer {
-  marker-width: ramp([value], range(5, 15), quantiles(5));
-  marker-fill: #6a2248;
-  marker-fill-opacity: 0.54;
-  marker-allow-overlap: false;
-  marker-line-width: 1;
-  marker-line-color: #6a2248;
-  marker-line-opacity: 1;
-}
+        #layer {
+          marker-width: ramp([value], range(10, 50), quantiles(5));
+          marker-fill: #6a2248;
+          marker-fill-opacity: 0.2;
+          marker-allow-overlap: false;
+          marker-line-width: 4;
+          marker-line-color: #6a2248;
+          marker-line-opacity: 1;
+        }
       `);
 
 const mapLayer = new carto.layer.Layer(mapSource, mapStyle, {
-  featureOverColumns: ["value"],
+  featureOverColumns: ["value", "county_state"],
 });
 
 client.addLayer(mapLayer);
 
 client.getLeafletLayer().bringToFront().addTo(map);
 
-// const popup = L.popup({ closeButton: true });
+const popup = L.popup({ closeButton: true });
 
-// mapLayer.on(carto.layer.events.FEATURE_CLICKED, createPopup);
+mapLayer.on(carto.layer.events.FEATURE_CLICKED, createPopup);
 
-// function createPopup(event) {
-//   popup.setLatLng(event.latLng);
+function createPopup(event) {
+  popup.setLatLng(event.latLng);
 
-//   if (!popup.isOpen()) {
-//     var data = event.data;
-//     var content = "<div>";
+  if (!popup.isOpen()) {
+    var data = event.data;
+    console.log(event.data);
+    var content = "<div>";
 
-//     var keys = ["name_of_asset", "location", "description"];
-
-//     content += `
-//     <div class="popupHeaderStyle">
-//       ${data.name_of_asset}
-//     </div>
-//     <div class="popupEntryStyle">
-//       ${data.location}
-//     </div>
-//     <p class="popupEntryStyle">
-//       ${data.description}
-//     </p>
-//     `;
-//     popup.setContent("" + content);
-//     popup.openOn(map);
-//   }
-// }
+    content += `
+    <div class="popupHeaderStyle">
+      ${data.county_state}
+    </div>
+    <div class="popupEntryStyle">
+      ${data.value}
+    </div>
+    `;
+    popup.setContent("" + content);
+    popup.openOn(map);
+  }
+}
 
 L.control
   .attribution({
