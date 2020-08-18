@@ -55,38 +55,6 @@ div#results {
   color: #000;
 }
 
-.colorKey,
-.shapeKey {
-  display: inline-block;
-  height: 12px;
-  width: 12px;
-  margin: 3px 5px 0 5px;
-}
-
-.colorKey {
-  border-radius: 20px;
-}
-
-input[name="Coastal Surveillance Radar Systems"] + .colorKey {
-  background-color: #3969ac;
-  border-radius: 50%;
-}
-
-input[name="Indian Offshore Military Facility"] + .colorKey {
-  background-color: #f2b701;
-  border-radius: 50%;
-}
-
-input[name="Commercial/Dual-use Facilities"] + .colorKey {
-  background-color: #7f3c8d;
-  border-radius: 50%;
-}
-
-input[name="Foreign Military Facilities w/ Indian Access"] + .colorKey {
-  background-color: #11a579;
-  border-radius: 50%;
-}
-
 .leaflet-popup-content-wrapper {
   background-color: white;
   box-shadow: 0 3px 14px rgba(0, 0, 0, 0.4);
@@ -97,17 +65,15 @@ input[name="Foreign Military Facilities w/ Indian Access"] + .colorKey {
   font-family: "Source Sans Pro", sans-serif;
   font-weight: 600;
   text-transform: uppercase;
+  text-align: center;
 }
 
 .popupEntryStyle {
   padding: 0;
   margin: 0;
-  font: 12px/20px "Source Sans Pro", sans-serif;
+  font: 14px "Source Sans Pro", sans-serif;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-}
-
-p {
-  font: 12px/20px "Source Sans Pro", sans-serif;
+  text-align: center;
 }
 
 #copyright_bug {
@@ -128,11 +94,6 @@ p {
   border-radius: 6px;
 }
 
-.js-price-placeholder {
-  font-weight: 700;
-  color: #000;
-}
-
 #controls #info h3 {
   font-family: "Source Sans Pro", sans-serif;
   font-weight: 700;
@@ -140,15 +101,6 @@ p {
   font-size: 20px;
   line-height: 24px;
   margin: 16px 0 4px;
-}
-
-aside.toolbox {
-  display: block;
-  top: -24px;
-  left: calc(100vw - 324px);
-  position: relative;
-  -webkit-user-select: none;
-  user-select: none;
 }
 
 aside.toolbox .ui {
@@ -227,6 +179,7 @@ aside.toolbox .ui:checked ~ .hamburger span:nth-child(3) {
 leaflet-bar,
 leaflet-control {
   display: none;
+  visibility: hidden;
 }
 
 .menu-translate {
@@ -234,6 +187,60 @@ leaflet-control {
   font-size: 16px;
   font-family: "Source Sans Pro", sans-serif;
   color: #000;
+}
+
+.legend {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.legend[data-type="total_cases"] {
+  --bg: rgba(106, 34, 72, 0.2);
+  --border: #6a2248;
+  --small: 6px;
+  --medium: 15px;
+  --large: 34px;
+}
+
+.legend li {
+  display: flex;
+  align-items: center;
+}
+
+.legend li + li {
+  margin-left: 1rem;
+}
+
+.legend li::before {
+  content: "";
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 0.5rem;
+  background: #6a2248;
+  background: var(--bg);
+  border: 3px solid #6a2248;
+  border-color: var(--border);
+  border-radius: 50%;
+}
+
+#small::before {
+  width: var(--small);
+  height: var(--small);
+}
+
+#medium::before {
+  width: var(--medium);
+  height: var(--medium);
+}
+
+#large::before {
+  width: var(--large);
+  height: var(--large);
 }
 
 /* FOR DISPLAYS ≤ 425px */

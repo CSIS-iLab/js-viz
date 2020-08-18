@@ -46,12 +46,37 @@
 
     <link href="css/makeMap.css" rel="stylesheet" />
 
-    <link href="css/ior-features.css" rel="stylesheet" />
+    <link href="css/counties.css" rel="stylesheet" />
   </head>
 
   <body>
-    <nav id="menu-ui" class="menu-ui"></nav>
     <div id="map" class="map" tabindex="0"></div>
+
+    <aside class="toolbox">
+      <section class="box">
+        <header>
+          <h1>Mapping Guyanese Ancestry</h1>
+        </header>
+        <section>
+        <p class="description open-sans">
+          Hover over the interactive map to learn more detail about ...
+        </p>
+        <hr />
+        <div class="button-container">
+          <div class="button__title">View Total Population in US</div>
+          <!-- <button class="btn active" id="total-cases-button">Total Cases <span id="total_cases"></span></button>
+            <button class="btn" id="total-deaths-button">Total Deaths <span id="total_deaths"></span></button> -->
+        </div>
+        <hr />
+        <ul id="legend" class="legend" data-type="total_cases">
+          <li id="small">10</li>
+          <li id="medium">1,000</li>
+          <li id="large">>10,000</li>
+        </ul>
+      </section>
+      <footer class="js-footer"></footer>
+    </aside>
+
     <script src="js/counties.js"></script>
   </body>
 </html>
