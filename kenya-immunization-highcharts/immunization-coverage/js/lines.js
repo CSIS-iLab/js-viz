@@ -18,7 +18,7 @@ Highcharts.chart("hcContainer", {
   // Load Data in from Google Sheets
   data: {
     googleSpreadsheetKey: "10q0ygaHPEL53tAr8Nu3I4bh-PykxOYRIyDpa0RXE3jg",
-    googleSpreadsheetWorksheet: 1,
+    googleSpreadsheetWorksheet: 2,
     switchRowsAndColumns: true
   },
   // General Chart Options
@@ -45,7 +45,7 @@ Highcharts.chart("hcContainer", {
     margin: 40
   },
   subtitle: {
-    text: "Hover over the map and toggle on and off the sidebar options to see how Kenya's national immunization coverage has varied over the last several decades, based on the coverage for the first dose of measles-containing vaccine."
+    text: "Hover over the map and toggle on and off the sidebar options to see how Kenya's national immunization coverage has varied over the last several decades, based on the coverage for the DPT3 vaccine among 1-year-olds."
   },
   // Credits
   credits: {
@@ -68,7 +68,7 @@ Highcharts.chart("hcContainer", {
     max: 100,
     min: 0,
     title: {
-      text: '% coverage measles 1st dose'
+      text: 'DPT3: % coverage 1-year-olds'
     }
   },
   // X Axis
