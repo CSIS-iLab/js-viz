@@ -13,7 +13,7 @@ Highcharts.setOptions({
 Highcharts.chart('hcContainer', {
   data: {
     googleSpreadsheetKey: "10q0ygaHPEL53tAr8Nu3I4bh-PykxOYRIyDpa0RXE3jg",
-    googleSpreadsheetWorksheet: 2,
+    googleSpreadsheetWorksheet: 3,
     switchRowsAndColumns: true
   },
   chart: {

@@ -8,7 +8,7 @@ var drilldownData = []
 
 Highcharts.data({
     googleSpreadsheetKey: '10q0ygaHPEL53tAr8Nu3I4bh-PykxOYRIyDpa0RXE3jg',
-    googleSpreadsheetWorksheet: 3,
+    googleSpreadsheetWorksheet: 1,
     switchRowsAndColumns: true,
     parsed: function parsed(columns) {
         var group = ""
