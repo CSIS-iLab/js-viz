@@ -243,6 +243,14 @@ leaflet-control {
   height: var(--large);
 }
 
+.leaflet-top {
+  top: 38px;
+}
+
+aside.toolbox {
+  top: 38px;
+}
+
 /* FOR DISPLAYS ≤ 425px */
 
 .mobile-only {
