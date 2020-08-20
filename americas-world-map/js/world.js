@@ -4,11 +4,11 @@ var basemap = L.tileLayer(
 );
 
 var map = L.map("map", {
-  center: [40, -98],
-  zoom: 5,
+  center: [35.83, 9.34],
+  zoom: 2,
   maxZoom: 7,
   scrollWheelZoom: true,
-  minZoom: 4,
+  minZoom: 2,
   zoomControl: true,
   scrollWheelZoom: true,
   layers: [basemap],
@@ -35,7 +35,7 @@ const mapStyle = new carto.style.CartoCSS(`
       `);
 
 const mapLayer = new carto.layer.Layer(mapSource, mapStyle, {
-  featureOverColumns: ["value", "county_state"],
+  featureOverColumns: ["destination", "number_of_immigrants"],
 });
 
 client.addLayer(mapLayer);
@@ -56,10 +56,10 @@ function createPopup(event) {
 
     content += `
     <div class="popupHeaderStyle">
-      ${data.county_state}
+      ${data.destination}
     </div>
     <div class="popupEntryStyle">
-      ${data.value}
+      ${data.number_of_immigrants}
     </div>
     `;
     popup.setContent("" + content);
