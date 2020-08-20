@@ -5,7 +5,7 @@ var basemap = L.tileLayer(
 
 var map = L.map("map", {
   center: [40, -98],
-  zoom: 4.5,
+  zoom: 4,
   maxZoom: 7,
   scrollWheelZoom: true,
   minZoom: 4,
@@ -88,6 +88,6 @@ L.control
     position: "bottomright",
   })
   .setPrefix(
-    'Data by <a href="" target="_blank">CSIS</a>, Leaflet contributors'
+    '<a href="https://www.csis.org/programs/americas-program">CSIS Americas Program</a>, <a href="https://leafletjs.com/">Leaflet</a>'
   )
   .addTo(map);
