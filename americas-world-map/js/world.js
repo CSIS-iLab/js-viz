@@ -73,6 +73,6 @@ L.control
     position: "bottomright",
   })
   .setPrefix(
-    'Data by <a href="" target="_blank">CSIS</a>, Leaflet contributors'
+    '<a href="https://www.csis.org/programs/americas-program">CSIS Americas Program</a>, <a href="https://leafletjs.com/">Leaflet</a>'
   )
   .addTo(map);
