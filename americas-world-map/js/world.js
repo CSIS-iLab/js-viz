@@ -1,5 +1,5 @@
 var basemap = L.tileLayer(
-  "https://api.mapbox.com/styles/v1/ilabmedia/cjrawc1zs2bzc2sq3y9wvt22t/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw",
+  "https://api.mapbox.com/styles/v1/ilabmedia/cke3betua01e51ars02wx7zrt/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw",
   {}
 );
 
@@ -26,9 +26,10 @@ guyana_graphic_world_2019`);
 const mapStyle = new carto.style.CartoCSS(`
         #layer {
           polygon-fill: ramp([number_of_immigrants], (#ffc6c4, #ee919b, #cc607d, #9e3963, #672044), quantiles);
+          polygon-opacity: 0.9;
         }
         #layer::outline {
-          line-width: 1;
+          line-width: 0.5;
           line-color: #FFFFFF;
           line-opacity: 0.5;
         }
