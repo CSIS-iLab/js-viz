@@ -16,12 +16,12 @@ var map = L.map("map", {
 });
 
 const client = new carto.Client({
-  // apiKey: "3wBLygnVR609O76Bedwl9g",
-  apiKey: "axez8RM8WGdHVdLh4lGcng",
+  apiKey: "QrVFzfR1yEJrtXK_MszfWg",
   username: "csis",
 });
 
-const mapSource = new carto.source.SQL(`SELECT * FROM guyana_counties`);
+const mapSource = new carto.source.SQL(`SELECT * FROM 
+guyana_graphic_world_2019`);
 
 const mapStyle = new carto.style.CartoCSS(`
         #layer {
