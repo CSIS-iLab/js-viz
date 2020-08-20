@@ -189,60 +189,6 @@ leaflet-control {
   color: #000;
 }
 
-.legend {
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.legend[data-type="total_cases"] {
-  --bg: rgba(106, 34, 72, 0.2);
-  --border: #6a2248;
-  --small: 6px;
-  --medium: 30px;
-  --large: 45px;
-}
-
-.legend li {
-  display: flex;
-  align-items: center;
-}
-
-.legend li + li {
-  margin-left: 1rem;
-}
-
-.legend li::before {
-  content: "";
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  margin-right: 0.5rem;
-  background: #6a2248;
-  background: var(--bg);
-  border: 3px solid #6a2248;
-  border-color: var(--border);
-  border-radius: 50%;
-}
-
-#small::before {
-  width: var(--small);
-  height: var(--small);
-}
-
-#medium::before {
-  width: var(--medium);
-  height: var(--medium);
-}
-
-#large::before {
-  width: var(--large);
-  height: var(--large);
-}
-
 /* FOR DISPLAYS ≤ 425px */
 
 .mobile-only {
