@@ -191,11 +191,8 @@ leaflet-control {
 
 .legend {
   position: relative;
-  /* right: 20px; */
   top: 5px;
   display: flex;
-  /* align-items: center; */
-  /* justify-content: space-evenly; */
   margin: 0;
   padding: 0;
   list-style: none;
@@ -296,7 +293,7 @@ aside.toolbox {
 
 @media (max-width: 425px) {
   .box {
-    padding: 50px 24px 24px;
+    padding: 25px 24px 24px;
   }
 }
 
