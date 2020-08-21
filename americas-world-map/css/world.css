@@ -252,3 +252,7 @@ leaflet-control {
     display: none;
   }
 }
+
+#map {
+  max-width: 800px;
+}
