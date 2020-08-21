@@ -193,6 +193,78 @@ leaflet-control {
   color: #000;
 }
 
+.legend {
+  position: relative;
+  /* right: 20px; */
+  top: 5px;
+  display: flex;
+  /* align-items: center; */
+  /* justify-content: space-evenly; */
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.legend[data-type="total_cases"] {
+  --ramp1: #ffc6c4;
+  --ramp2: #ee919b;
+  --ramp3: #cc607d;
+  --ramp4: #9e3963;
+  --ramp5: #672044;
+}
+
+.legend li {
+  padding: 0px;
+  margin: 0;
+  position: relative;
+}
+
+.legend li::before {
+  content: "";
+  position: relative;
+  padding: 0;
+  margin: 0;
+  display: inline-block;
+  width: 25px;
+  height: 5px;
+  background: var(--bg);
+}
+
+#ramp1::before {
+  background-color: var(--ramp1);
+  border: 3px solid var(--ramp1);
+}
+
+#ramp2::before {
+  background-color: var(--ramp2);
+  border: 3px solid var(--ramp2);
+}
+
+#ramp3::before {
+  background-color: var(--ramp3);
+  border: 3px solid var(--ramp3);
+}
+
+#ramp4::before {
+  background-color: var(--ramp4);
+  border: 3px solid var(--ramp4);
+}
+
+#ramp5::before {
+  background-color: var(--ramp5);
+  border: 3px solid var(--ramp5);
+}
+
+.legend__value {
+  position: relative;
+}
+
+.legend__value > span {
+  position: absolute;
+  top: 15px;
+  right: 23px;
+}
+
 /* FOR DISPLAYS ≤ 425px */
 
 .mobile-only {

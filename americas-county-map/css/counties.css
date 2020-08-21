@@ -202,7 +202,6 @@ leaflet-control {
 }
 
 .legend[data-type="total_cases"] {
-  --bg: rgba(106, 34, 72, 0.2);
   --ramp1: #ffc6c4;
   --ramp2: #ee919b;
   --ramp3: #cc607d;
