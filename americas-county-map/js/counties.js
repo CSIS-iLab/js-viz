@@ -6,7 +6,7 @@ var basemap = L.tileLayer(
 var map = L.map("map", {
   center: [40, -98],
   zoom: 4,
-  maxZoom: 7,
+  maxZoom: 6,
   scrollWheelZoom: true,
   minZoom: 4,
   zoomControl: true,
@@ -42,6 +42,7 @@ const mapSource = new carto.source.SQL(
 const mapStyle = new carto.style.CartoCSS(`
         #layer {
           polygon-fill: ramp([value], (#ffc6c4, #ee919b, #cc607d, #9e3963, #672044), quantiles);
+          polygon-opacity: 0.9;
         }
         #layer::outline {
           line-width: 0.5;
