@@ -17,27 +17,12 @@ var map = L.map("map", {
 
 const client = new carto.Client({
   apiKey: "3wBLygnVR609O76Bedwl9g",
-  // apiKey: "axez8RM8WGdHVdLh4lGcng",
   username: "csis",
 });
-
-// const mapSource = new carto.source.SQL(`SELECT * FROM guyana_counties`);
 
 const mapSource = new carto.source.SQL(
   `SELECT * FROM guyana_graphic_counties_2018`
 );
-
-// const mapStyle = new carto.style.CartoCSS(`
-//         #layer {
-//           marker-width: ramp([value], range(10, 60), quantiles(5));
-//           marker-fill: #6a2248;
-//           marker-fill-opacity: 0.2;
-//           marker-allow-overlap: true;
-//           marker-line-width: 4;
-//           marker-line-color: #6a2248;
-//           marker-line-opacity: 1;
-//         }
-//       `);
 
 const mapStyle = new carto.style.CartoCSS(`
         #layer {

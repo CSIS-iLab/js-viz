@@ -190,9 +190,12 @@ leaflet-control {
 }
 
 .legend {
+  position: relative;
+  /* right: 20px; */
+  top: 5px;
   display: flex;
-  align-items: center;
-  justify-content: space-evenly;
+  /* align-items: center; */
+  /* justify-content: space-evenly; */
   margin: 0;
   padding: 0;
   list-style: none;
@@ -200,47 +203,63 @@ leaflet-control {
 
 .legend[data-type="total_cases"] {
   --bg: rgba(106, 34, 72, 0.2);
-  --border: #6a2248;
-  --small: 6px;
-  --medium: 30px;
-  --large: 45px;
+  --ramp1: #ffc6c4;
+  --ramp2: #ee919b;
+  --ramp3: #cc607d;
+  --ramp4: #9e3963;
+  --ramp5: #672044;
 }
 
 .legend li {
-  display: flex;
-  align-items: center;
-}
-
-.legend li + li {
-  margin-left: 1rem;
+  padding: 0px;
+  margin: 0;
+  position: relative;
 }
 
 .legend li::before {
   content: "";
+  position: relative;
+  padding: 0;
+  margin: 0;
   display: inline-block;
-  width: 10px;
-  height: 10px;
-  margin-right: 0.5rem;
-  background: #6a2248;
+  width: 25px;
+  height: 5px;
   background: var(--bg);
-  border: 3px solid #6a2248;
-  border-color: var(--border);
-  border-radius: 50%;
 }
 
-#small::before {
-  width: var(--small);
-  height: var(--small);
+#ramp1::before {
+  background-color: var(--ramp1);
+  border: 3px solid var(--ramp1);
 }
 
-#medium::before {
-  width: var(--medium);
-  height: var(--medium);
+#ramp2::before {
+  background-color: var(--ramp2);
+  border: 3px solid var(--ramp2);
 }
 
-#large::before {
-  width: var(--large);
-  height: var(--large);
+#ramp3::before {
+  background-color: var(--ramp3);
+  border: 3px solid var(--ramp3);
+}
+
+#ramp4::before {
+  background-color: var(--ramp4);
+  border: 3px solid var(--ramp4);
+}
+
+#ramp5::before {
+  background-color: var(--ramp5);
+  border: 3px solid var(--ramp5);
+}
+
+.legend__value {
+  position: relative;
+}
+
+.legend__value > span {
+  position: absolute;
+  top: 15px;
+  right: 23px;
 }
 
 .leaflet-top {
