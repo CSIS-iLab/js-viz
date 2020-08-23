@@ -36,7 +36,7 @@ Highcharts.chart('hcContainer', {
       style: {
         fontSize: '14px'
       },
-      text: '<b>Accelerated Transition Phase</b>'
+      text: '<b><em>Accelerated Transition Phase</em></b>'
     }, {
       point: {
         xAxis: 0,
@@ -48,7 +48,7 @@ Highcharts.chart('hcContainer', {
         fontSize: '14px',
         color: 'red'
       },
-      text: '(Grace year)'
+      text: '(Grace Year)'
     }]
   }],
   colors: [
@@ -89,7 +89,7 @@ Highcharts.chart('hcContainer', {
   yAxis: {
       min: 0,
       title: {
-          text: 'Kenyan Co-Financing Projections<br> Millions USD'
+          text: 'Kenya Co-Financing Projections<br> Millions USD'
       },
       labels: {
         formatter: function() {
@@ -104,9 +104,6 @@ Highcharts.chart('hcContainer', {
       }
   },
   legend: {
-    title: {
-      text: '<br><span style="font-size: 12px; color: #808080";>(Click to hide)</span>',
-    },
     align: "right",
     verticalAlign: "middle",
     layout: "vertical"
@@ -122,6 +119,13 @@ Highcharts.chart('hcContainer', {
       column: {
           stacking: 'normal',
           borderColor: 'rgba(255,255,255,0)'
+      },
+      series: {
+        events: {
+          legendItemClick: function() {
+            return false;
+          }
+        }
       }
   },
 });

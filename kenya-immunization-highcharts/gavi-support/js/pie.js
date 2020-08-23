@@ -68,7 +68,7 @@ function renderChart(seriesArray, drilldownData) {
             margin: 50
         },
         subtitle: {
-            text: `<span style="font-size: 14px; color: #333333; max-width: 1280px; margin-bottom: 1.5rem; line-height: 1.4">This interactive shows how Gavi's support for Kenya has broken down since 2001. Hover over each slice click to drill down to a more detailed breakdown of support. Activities labeled as "active" were still supported as of 2019.</span>`
+            text: `<span style="font-size: 14px; color: #333333; max-width: 1280px; margin-bottom: 1.5rem; line-height: 1.4">This interactive shows how Gavi's support for Kenya has broken down since 2001. Hover over each slice to see the value of each area of support, and click to drill down into a more detailed breakdown of the priorities and costs of each category. Activities labeled as "active" were still supported as of 2019.</span>`
         },
         // Credits
         credits: {
