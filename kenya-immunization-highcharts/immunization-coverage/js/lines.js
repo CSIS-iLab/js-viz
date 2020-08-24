@@ -68,7 +68,7 @@ Highcharts.chart("hcContainer", {
     max: 100,
     min: 0,
     title: {
-      text: '% coverage measles 1st dose'
+      text: '% Coverage Measles 1st Dose'
     }
   },
   // X Axis

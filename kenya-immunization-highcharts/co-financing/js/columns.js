@@ -89,7 +89,7 @@ Highcharts.chart('hcContainer', {
   yAxis: {
       min: 0,
       title: {
-          text: 'Kenya Co-Financing Projections<br> Millions USD'
+          text: 'Kenya Co-Financing Projections<br> in Millions USD'
       },
       labels: {
         formatter: function() {
