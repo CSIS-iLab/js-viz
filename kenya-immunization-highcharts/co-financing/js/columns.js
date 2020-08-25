@@ -34,10 +34,11 @@ Highcharts.chart('hcContainer', {
         y: 12000000
       },
       style: {
-        fontSize: '14px'
+        fontSize: '14px',
+        color: 'red'
       },
       text: '<b><em>Accelerated Transition Phase</em></b>'
-    }, {
+    },/* {
       point: {
         xAxis: 0,
         yAxis: 0,
@@ -49,7 +50,7 @@ Highcharts.chart('hcContainer', {
         color: 'red'
       },
       text: '(Grace Year)'
-    }]
+    }*/]
   }],
   colors: [
     // HPV national
@@ -68,11 +69,11 @@ Highcharts.chart('hcContainer', {
     '#347d81'
   ],
   title: {
-      text: "Timeline for Kenya's Transition from Gavi Support",
+      text: "<span style='font-size: 32px;'>Timeline for Kenya's Transition from Gavi Support</span>",
       margin: 35
   },
   subtitle: {
-    text: "Hover over the bars to see how Gavi's support will break down across the different vaccines it co-finances, and how Kenya's co-financing obligations will increase at it moves into accelerated transition in 2022, with the goal of taking on full financial responsibility for its immunization program by 2027. Gavi allows for a “grace year” with lower obligations in the first year of accelerated transition before a country’s co-financing requirements increase more dramatically."
+    text: "<span style='font-size: 16px;'>Hover over the bars to see how Gavi's support will break down across the different vaccines it co-finances, and how Kenya's co-financing obligations will increase at it moves into accelerated transition in 2022, with the goal of taking on full financial responsibility for its immunization program by 2027. Gavi allows for a “grace year” with lower obligations in the first year of accelerated transition before a country’s co-financing requirements increase more dramatically.</span>"
   },
   credits: {
     enabled: true,

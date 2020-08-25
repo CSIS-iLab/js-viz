@@ -41,11 +41,11 @@ Highcharts.chart("hcContainer", {
   ],
   // Chart Title and Subtitle
   title: {
-    text: "Historical Immunization Coverage in Kenya",
+    text: "<span style='font-size: 32px;'>Historical Immunization Coverage in Kenya</span>",
     margin: 40
   },
   subtitle: {
-    text: "Hover over the map and toggle on and off the sidebar options to see how Kenya's national immunization coverage has varied over the last several decades, based on the coverage with the first dose for the DPT3 vaccine among 1-year-olds."
+    text: "<span style='font-size: 16px;'>Hover over the map and toggle on and off the sidebar options to see how Kenya's national immunization coverage has varied over the last several decades, based on the coverage with the first dose for the DPT3 vaccine among 1-year-olds.</span>"
   },
   // Credits
   credits: {
