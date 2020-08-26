@@ -1,0 +1,9 @@
+button {
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+.tippy-content {
+  text-align: left;
+}
