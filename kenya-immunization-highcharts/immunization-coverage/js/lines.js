@@ -46,7 +46,7 @@ Highcharts.chart("hcContainer", {
   },
   subtitle: {
     text:
-      "<span style='font-size: 16px;'>Hover over the map and toggle on and off the legend options to see how Kenya's national immunization coverage has varied over the last several decades, based on the coverage with the first dose for the DPT3 vaccine among 1-year-olds.</span>",
+      "<span style='font-size: 16px;'>Hover over the map and toggle on and off the legend options to see how Kenya's national immunization coverage has varied over the last several decades, based on the coverage with the first dose for the DPT3 vaccine (third dose of diphtheria toxoid, tetanus toxoid, and pertussis containing vaccine) among 1-year-olds.</span>",
   },
   // Credits
   credits: {
@@ -70,7 +70,7 @@ Highcharts.chart("hcContainer", {
     max: 100,
     min: 0,
     title: {
-      text: "% Coverage Measles 1st Dose",
+      text: "% DTP3 Coverage",
     },
   },
   // X Axis
