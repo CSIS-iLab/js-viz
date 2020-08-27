@@ -52,7 +52,6 @@ users.forEach((user) => {
       user.desc +
       "</p>",
     allowHTML: true,
-    trigger: "click",
     arrow: "false",
     interactive: "true",
   });
