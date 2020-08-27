@@ -1,4 +1,6 @@
 button {
+  display: block;
+  margin: 0 auto;
   cursor: pointer;
   background: none;
   border: none;
@@ -6,4 +8,35 @@ button {
 
 .tippy-content {
   text-align: left;
+}
+
+.tip-header {
+  display: flex;
+  padding-top: 15px;
+}
+
+.tip-icon {
+  width: 40px;
+  height: 40px;
+  margin: auto 10px;
+}
+
+h2 {
+  display: inline;
+  margin: 0 15px;
+  font-size: 25px;
+  color: #be4248;
+  font-weight: bold;
+}
+
+p {
+  margin-top: 0;
+  color: rgba(265, 265, 265, 0.7);
+}
+
+@media only screen and (min-width: 600px) {
+  .wrapper {
+    display: flex;
+    justify-content: space-around;
+  }
 }
