@@ -8,11 +8,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Include Project Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+
+  <style>
+    .highcharts-legend {
+      margin-top: 60px;
+    }
+
+    #mobileImage {
+        display: none;
+      }
+
+    @media only screen and (max-width: 770px) {
+      #hcContainer {
+        display: none;
+      }
+
+      #mobileImage {
+          display: block;
+          width: 90vw;
+          margin: 0 auto;
+      }
+    }
+  </style>
 </head>
 <body>
   <!-- Highcharts chart container -->
   <div id="hcContainer"></div>
-
+  <img src="https://res.cloudinary.com/csisilab/image/upload/v1598543461/column_kpjykm.png" alt="Timeline for Kenya's Transition from Gavi Support" id="mobileImage">
   <!-- Include jQuery & Highcharts Libraries; Adjust per project -->
   <script src="https://code.highcharts.com/highcharts.js"></script>
   <script src="https://code.highcharts.com/highcharts-more.js"></script>
