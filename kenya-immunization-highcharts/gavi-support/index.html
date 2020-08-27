@@ -8,10 +8,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Include Project Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+
+  <style>
+    #mobileImage {
+      display: none;
+    }
+
+    @media only screen and (max-width: 725px) {
+      #hcContainer {
+        display: none;
+      }
+
+      #mobileImage {
+          display: block;
+          width: 90vw;
+          margin: 0 auto;
+      }
+    }
+  </style>
 </head>
 <body>
   <!-- Highcharts chart container -->
   <div id="hcContainer" style="max-width: 800px; margin: auto;"></div>
+  <img src="https://res.cloudinary.com/csisilab/image/upload/v1598543458/pie_muvifw.png" alt="Gavi Commitments to the Republic of Kenya 2021-2023" id="mobileImage">
+
 
   <!-- Include jQuery & Highcharts Libraries; Adjust per project -->
   <script src="https://code.highcharts.com/highcharts.js"></script>
