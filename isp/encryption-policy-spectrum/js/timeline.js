@@ -30,7 +30,7 @@ $(function () {
       },
     },
     // Colors
-    colors: ["#3B4A68", "#3E5A8E", "#406AB2", "#427CDD", "#4185F3"],
+    colors: ['#002b43', '#004165', '#005787', '#006da9', '#0083cb'],
     // Hardcoded data
     series: [
       {
@@ -88,6 +88,7 @@ $(function () {
     },
     // Tooltip
     tooltip: {
+      backgroundColor: '#FFF',
       headerFormat: "",
       style: {
         width: 350,
