@@ -33,20 +33,21 @@ img {
 }
 
 .tip-icon {
-  width: 40px;
-  height: 40px;
+  width: 25px;
+  height: 25px;
   margin: auto 10px;
 }
 
 h2 {
   display: inline;
   margin: 0 15px;
-  font-size: 25px;
+  font-size: 15px;
   color: #be4248;
   font-weight: bold;
 }
 
 p {
+  font-size: 10px;
   margin-top: 0;
   color: #333333;
 }
@@ -60,5 +61,18 @@ p {
   .main-icon {
     width: 180px;
     height: 180px;
+  }
+
+  .tip-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  h2 {
+    font-size: 25px;
+  }
+
+  p {
+    font-size: 12px;
   }
 }
