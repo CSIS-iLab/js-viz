@@ -54,5 +54,6 @@ users.forEach((user) => {
     allowHTML: true,
     arrow: "false",
     interactive: "true",
+    placement: "bottom",
   });
 });

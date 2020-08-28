@@ -7,8 +7,8 @@ img {
 }
 
 .main-icon {
-  width: 180px;
-  height: 180px;
+  width: 75px;
+  height: 75px;
 }
 
 .tippy-svg-arrow {
@@ -55,5 +55,10 @@ p {
   .wrapper {
     display: flex;
     justify-content: space-around;
+  }
+
+  .main-icon {
+    width: 180px;
+    height: 180px;
   }
 }
