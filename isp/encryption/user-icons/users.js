@@ -16,7 +16,7 @@ const users = [
       "Person-to-person communication; community building and information sharing;",
   },
   {
-    group: "biz-org",
+    group: "businesses",
     title: "Businesses and Organizations",
     desc:
       "In the Information Age, digital security is an essential part of running a business. Businesses and organization need encryption to secure data and communications. Organizations must contend with the threat of cybercrime and cyberattacks, law enforcement data requests, and the implications of requirements on data localization and data privacy, to name a few. Encryption is necessary for the security and privacy of customer and employee information. Data breaches that expose significant amounts of consumer and sensitive data routinely make headlines. Encryption may also be used against businesses, as is the case in ransomware that employs encryption to launch attacks, secure information for ransom, and collect the requisite ransom.",

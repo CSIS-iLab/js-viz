@@ -6,6 +6,11 @@ button {
   border: none;
 }
 
+.main-icon {
+  width: 180px;
+  height: 180px;
+}
+
 .tippy-box {
   background-color: rgba(0, 0, 0, 0);
   border: 1px solid #be4248;
