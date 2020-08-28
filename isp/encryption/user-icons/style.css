@@ -7,8 +7,8 @@ img {
 }
 
 .main-icon {
-  width: 75px;
-  height: 75px;
+  width: 65px;
+  height: 65px;
 }
 
 .tippy-svg-arrow {
@@ -29,7 +29,7 @@ img {
 
 .tip-header {
   display: flex;
-  padding-top: 15px;
+  padding-top: 5px;
 }
 
 .tip-icon {
@@ -61,6 +61,10 @@ p {
   .main-icon {
     width: 180px;
     height: 180px;
+  }
+
+  .tip-header {
+    padding-top: 15px;
   }
 
   .tip-icon {
