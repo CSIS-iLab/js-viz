@@ -5,6 +5,7 @@ $(function () {
       zoomType: "x",
       type: "timeline",
       height: "300px",
+      backgroundColor: "#FFF",
     },
     exporting: { enabled: true },
     // Chart Title and Subtitle
@@ -31,6 +32,7 @@ $(function () {
     },
     // Colors
     colors: ['#002b43', '#004165', '#005787', '#006da9', '#0083cb'],
+
     // Hardcoded data
     series: [
       {
@@ -95,6 +97,11 @@ $(function () {
     },
     // Additional Plot Options
     plotOptions: {
+      series: {
+        marker: {
+          height: 35
+        }
+      }
       // timeline: {
       //   stacking: null,
       //   borderColor: "transparent",
