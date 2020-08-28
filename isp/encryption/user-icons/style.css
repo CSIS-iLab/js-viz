@@ -1,4 +1,4 @@
-button {
+img {
   display: block;
   margin: 0 auto;
   cursor: pointer;
@@ -11,8 +11,12 @@ button {
   height: 180px;
 }
 
+.tippy-svg-arrow {
+  display: none; /* the arrow is displaying as "false" otherwise */
+}
+
 .tippy-box {
-  background-color: rgba(0, 0, 0, 0);
+  background-color: rgba(265, 265, 265);
   border: 1px solid #be4248;
   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
 }
