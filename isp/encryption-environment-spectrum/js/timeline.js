@@ -28,7 +28,7 @@ $(function () {
       },
       point: {
         valueDescriptionFormat: "{index}. {point.label}. {point.description}.",
-      },
+      }
     },
     // Colors
     colors: ['#111420', '#223045', '#30506d', '#377396', '#3898bf'],
