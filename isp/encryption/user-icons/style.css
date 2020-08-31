@@ -1,3 +1,8 @@
+body * {
+  font-family: "Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica,
+    sans-serif;
+}
+
 img {
   display: block;
   margin: 0 auto;
@@ -23,8 +28,6 @@ img {
 
 .tippy-content {
   text-align: left;
-  font-family: "Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica,
-    sans-serif;
 }
 
 .tip-header {
@@ -39,11 +42,17 @@ img {
 }
 
 h2 {
+  text-align: center;
+  font-weight: 400;
+  font-size: 20px;
+}
+
+h3 {
   display: inline;
   margin: 0 15px;
   font-size: 15px;
   color: #3898bf;
-  font-weight: bold;
+  font-weight: 400;
 }
 
 p {
@@ -72,7 +81,8 @@ p {
     height: 40px;
   }
 
-  h2 {
+  h2,
+  h3 {
     font-size: 25px;
   }
 

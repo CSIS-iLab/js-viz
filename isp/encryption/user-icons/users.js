@@ -46,14 +46,15 @@ users.forEach((user) => {
     content:
       "<div class='tip-header'><img src='icons/" +
       user.group +
-      ".png' alt='Icon' class='tip-icon' /><h2>" +
+      ".png' alt='Icon' class='tip-icon' /><h3>" +
       user.title +
-      "</h2></div><br/><p>" +
+      "</h3></div><br/><p>" +
       user.desc +
       "</p>",
     allowHTML: true,
     arrow: "false",
     interactive: "true",
     placement: "auto",
+    trigger: "click",
   });
 });
