@@ -10,11 +10,17 @@ $(function () {
     exporting: { enabled: true },
     // Chart Title and Subtitle
     title: {
-      text: "The Encryption Policy Environment Spectrum",
+      text: "User Experiences in Encryption Policy Environments",
+      style: {
+        fontFamily:'Lucida Grande'
+      },
     },
     subtitle: {
       text:
         "Call-out boxes show the segments of the policy environment spectrum. Hover to see examples of actors and states that fall within that segment.",
+      style: {
+        fontFamily:'Lucida Grande'
+      },
     },
     // Accessibility
     accessibility: {
@@ -34,7 +40,9 @@ $(function () {
     colors: ['#111420', '#223045', '#30506d', '#377396', '#3898bf'],
     // Hardcoded data
     series: [
-      {
+      {style: {
+        fontFamily:'Lucida Grande'
+        },
         data: [
           {
             name: "Design Mandates",
@@ -69,6 +77,9 @@ $(function () {
       enabled: true,
       href: false,
       text: "CSIS",
+      style: {
+        fontFamily:'Lucida Grande'
+      },
     },
     // Chart Legend
     legend: {
@@ -93,6 +104,7 @@ $(function () {
       headerFormat: "",
       style: {
         width: 350,
+        fontFamily:'Lucida Grande',
       },
     },
     // Additional Plot Options
