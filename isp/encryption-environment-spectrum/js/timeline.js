@@ -37,7 +37,7 @@ $(function () {
       }
     },
     // Colors
-    colors: ['#111420', '#223045', '#30506d', '#377396', '#3898bf'],
+    colors: ['#111420', '#1E2A3D', '#27425B', '#2C5D7A', '#2C7998'],
     // Hardcoded data
     series: [
       {style: {
