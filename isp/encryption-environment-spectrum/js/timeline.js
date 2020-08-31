@@ -15,13 +15,13 @@ $(function () {
         fontFamily:'Lucida Grande'
       },
     },
-    subtitle: {
-      text:
-        "Call-out boxes show the segments of the policy environment spectrum. Hover to see examples of actors and states that fall within that segment.",
-      style: {
-        fontFamily:'Lucida Grande'
-      },
-    },
+    // subtitle: {
+    //   text:
+    //     "Call-out boxes show the segments of the policy environment spectrum. Hover to see examples of actors and states that fall within that segment.",
+    //   style: {
+    //     fontFamily:'Lucida Grande'
+    //   },
+    // },
     // Accessibility
     accessibility: {
       screenReaderSection: {
