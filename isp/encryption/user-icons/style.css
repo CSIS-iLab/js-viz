@@ -3,6 +3,10 @@ body * {
     sans-serif;
 }
 
+body {
+  background-color: #c9d2d1;
+}
+
 img {
   display: block;
   cursor: pointer;
