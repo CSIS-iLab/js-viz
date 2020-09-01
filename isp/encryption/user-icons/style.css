@@ -29,7 +29,7 @@ img {
 
 .tippy-box {
   background-color: rgba(265, 265, 265);
-  border: 1px solid #3898bf;
+  border: 1px solid #004165;
   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
 }
 
@@ -58,7 +58,7 @@ h3 {
   display: inline;
   margin: 0 15px;
   font-size: 15px;
-  color: #3898bf;
+  color: #004165;
   align-self: center;
 }
 
