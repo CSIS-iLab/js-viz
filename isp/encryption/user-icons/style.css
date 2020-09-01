@@ -1,6 +1,5 @@
 body * {
-  font-family: "Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica,
-    sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 .interactive {
@@ -64,10 +63,17 @@ h3 {
   align-self: center;
 }
 
-p {
+.tippy-content p {
   font-size: 10px;
   margin-top: 0;
   color: #333333;
+}
+
+.credits {
+  color: #999999;
+  font-size: 9px;
+  text-align: end;
+  padding-top: 100px;
 }
 
 @media only screen and (min-width: 600px) {
@@ -100,5 +106,9 @@ p {
 
   p {
     font-size: 12px;
+  }
+
+  .credits {
+    padding-top: 230px;
   }
 }
