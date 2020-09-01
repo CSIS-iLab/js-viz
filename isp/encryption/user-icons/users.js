@@ -48,7 +48,7 @@ users.forEach((user) => {
       user.group +
       ".png' alt='Icon' class='tip-icon' /><h3>" +
       user.title +
-      "</h3></div><br/><p>" +
+      "</h3></div><p>" +
       user.desc +
       "</p>",
     allowHTML: true,

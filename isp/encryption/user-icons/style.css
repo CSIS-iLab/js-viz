@@ -5,16 +5,15 @@ body * {
 
 img {
   display: block;
-  margin: 0 auto;
   cursor: pointer;
   background: none;
   border: none;
 }
 
 .main-icon {
+  margin: 0 auto;
   width: 65px;
   height: 65px;
-  margin: 5px auto;
 }
 
 .tippy-svg-arrow {
@@ -34,12 +33,12 @@ img {
 .tip-header {
   display: flex;
   padding-top: 5px;
+  margin-bottom: 8px;
 }
 
 .tip-icon {
   width: 25px;
   height: 25px;
-  margin: auto 10px;
 }
 
 h2 {
@@ -55,6 +54,7 @@ h3 {
   font-size: 15px;
   color: #3898bf;
   font-weight: 400;
+  align-self: center;
 }
 
 p {
@@ -83,9 +83,12 @@ p {
     height: 40px;
   }
 
-  h2,
-  h3 {
+  h2 {
     font-size: 25px;
+  }
+
+  h3 {
+    font-size: 18px;
   }
 
   p {
