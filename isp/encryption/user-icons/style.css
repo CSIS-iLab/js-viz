@@ -3,8 +3,11 @@ body * {
     sans-serif;
 }
 
-body {
+.interactive {
   background-color: #c9d2d1;
+  margin: 15px;
+  padding: 20px;
+  height: 470px;
 }
 
 img {
