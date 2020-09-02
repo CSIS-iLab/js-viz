@@ -24,7 +24,7 @@ $(function () {
     },
     subtitle: {
       text:
-        "Hover over a segment to learn more about user experiences.",
+        "Hover over a segment of the spectrum to learn more about user experiences.",
       style: {
         fontFamily:'Roboto, sans-serif'
       },
