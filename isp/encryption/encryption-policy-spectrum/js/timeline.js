@@ -1,9 +1,9 @@
 Highcharts.setOptions({
   chart: {
-      style: {
-          fontFamily: 'Roboto, sans-serif'
-      }
-  }
+    style: {
+      fontFamily: "Roboto, sans-serif",
+    },
+  },
 });
 $(function () {
   $(`#hcContainer`).highcharts({
@@ -18,15 +18,15 @@ $(function () {
     title: {
       text: "The Spectrum of Encryption Policy",
       style: {
-        fontFamily: 'Roboto, sans-serif'
-      }
+        fontFamily: "Roboto, sans-serif",
+      },
     },
     subtitle: {
       text:
         "Hover over a segment of the spectrum to learn more about that encryption policy environment.",
       style: {
-          fontFamily: 'Roboto, sans-serif'
-      }
+        fontFamily: "Roboto, sans-serif",
+      },
     },
     // Accessibility
     accessibility: {
@@ -43,13 +43,14 @@ $(function () {
       },
     },
     // Colors
-    colors: ['#111420', '#1E2A3D', '#27425B', '#2C5D7A', '#2C7998'],
+    colors: ["#111420", "#1E2A3D", "#27425B", "#2C5D7A", "#2C7998"],
 
     // Hardcoded data
     series: [
-      {style: {
-        fontFamily: 'Roboto, sans-serif'
-      },
+      {
+        style: {
+          fontFamily: "Roboto, sans-serif",
+        },
         data: [
           {
             name: "Design Mandates",
@@ -85,8 +86,8 @@ $(function () {
       href: false,
       text: "CSIS International Security Program",
       style: {
-        fontFamily: 'Roboto, sans-serif'
-      }
+        fontFamily: "Roboto, sans-serif",
+      },
     },
     // Chart Legend
     legend: {
@@ -107,19 +108,19 @@ $(function () {
     // Tooltip
     tooltip: {
       useHTML: true,
-      backgroundColor: '#FFF',
+      backgroundColor: "#FFF",
       headerFormat: "",
       style: {
-        maxWidth: 350,
-    }
+        width: 300,
+      },
     },
     // Additional Plot Options
     plotOptions: {
       series: {
         marker: {
-          height: 35
-        }
-      }
+          height: 35,
+        },
+      },
     },
   });
 });

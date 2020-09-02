@@ -1,9 +1,9 @@
 Highcharts.setOptions({
   chart: {
     style: {
-      fontFamily: 'Roboto, sans-serif'
-    }
-  }
+      fontFamily: "Roboto, sans-serif",
+    },
+  },
 });
 $(function () {
   $(`#hcContainer`).highcharts({
@@ -18,14 +18,14 @@ $(function () {
     title: {
       text: "User Experiences in Encryption Policy Environments",
       style: {
-        fontFamily:'Roboto, sans-serif'
+        fontFamily: "Roboto, sans-serif",
       },
     },
     subtitle: {
       text:
         "Hover over a segment of the spectrum to learn more about user experiences.",
       style: {
-        fontFamily:'Roboto, sans-serif'
+        fontFamily: "Roboto, sans-serif",
       },
     },
     // Accessibility
@@ -40,15 +40,16 @@ $(function () {
       },
       point: {
         valueDescriptionFormat: "{index}. {point.label}. {point.description}.",
-      }
+      },
     },
     // Colors
-    colors: ['#111420', '#1E2A3D', '#27425B', '#2C5D7A', '#2C7998'],
+    colors: ["#111420", "#1E2A3D", "#27425B", "#2C5D7A", "#2C7998"],
     // Hardcoded data
     series: [
-      {style: {
-        fontFamily: 'Roboto, sans-serif'
-      },
+      {
+        style: {
+          fontFamily: "Roboto, sans-serif",
+        },
         data: [
           {
             name: "Design Mandates",
@@ -85,10 +86,11 @@ $(function () {
       //   y: 5
       // },
       href: false,
-      text: "<p style='margin-top:500px'>CSIS International Security Program | See Sources & Credits section below.</p>",
+      text:
+        "<p style='margin-top:500px'>CSIS International Security Program | See Sources & Credits section below.</p>",
       style: {
-        fontFamily: 'Roboto, sans-serif'
-      }
+        fontFamily: "Roboto, sans-serif",
+      },
     },
     // Chart Legend
     legend: {
@@ -109,19 +111,19 @@ $(function () {
     // Tooltip
     tooltip: {
       useHTML: true,
-      backgroundColor: '#FFF',
+      backgroundColor: "#FFF",
       headerFormat: "",
       style: {
-        maxWidth: 350,
+        width: 300,
       },
     },
     // Additional Plot Options
     plotOptions: {
       series: {
         marker: {
-          height: 35
-        }
-      }
+          height: 35,
+        },
+      },
     },
   });
 });
