@@ -84,7 +84,7 @@ $(function () {
       //   y: 5
       // },
       href: false,
-      text: "<p style='margin-top:500px'>CSIS International Security Program | Source:</p>",
+      text: "<p style='margin-top:500px'>CSIS International Security Program | See Sources & Credits section below.</p>",
       style: {
         fontFamily: 'Roboto, sans-serif'
       }

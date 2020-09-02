@@ -82,7 +82,7 @@ $(function () {
     credits: {
       enabled: true,
       href: false,
-      text: "CSIS International Security Program | Source:",
+      text: "CSIS International Security Program",
       style: {
         fontFamily: 'Roboto, sans-serif'
       }
