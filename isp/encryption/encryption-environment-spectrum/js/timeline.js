@@ -47,7 +47,9 @@ $(function () {
     colors: ['#111420', '#1E2A3D', '#27425B', '#2C5D7A', '#2C7998'],
     // Hardcoded data
     series: [
-      {
+      {style: {
+        fontFamily: 'Roboto, sans-serif'
+      },
         data: [
           {
             name: "Design Mandates",

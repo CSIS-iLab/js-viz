@@ -48,7 +48,9 @@ $(function () {
 
     // Hardcoded data
     series: [
-      {
+      {style: {
+        fontFamily: 'Roboto, sans-serif'
+      },
         data: [
           {
             name: "Design Mandates",
