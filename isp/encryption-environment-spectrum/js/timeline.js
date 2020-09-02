@@ -11,7 +11,7 @@ $(function () {
     chart: {
       zoomType: "x",
       type: "timeline",
-      height: "300px",
+      height: "350px",
       backgroundColor: "#FFF",
     },
     exporting: { enabled: true },
@@ -80,8 +80,11 @@ $(function () {
     // Credits
     credits: {
       enabled: true,
+      // position: {
+      //   y: 5
+      // },
       href: false,
-      text: "CSIS International Security Program | Source:",
+      text: "<p style='margin-top:500px'>CSIS International Security Program | Source:</p>",
       style: {
         fontFamily: 'Roboto, sans-serif'
       }

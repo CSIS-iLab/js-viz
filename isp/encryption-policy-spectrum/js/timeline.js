@@ -11,7 +11,7 @@ $(function () {
     chart: {
       zoomType: "x",
       type: "timeline",
-      height: "300px",
+      height: "350px",
       backgroundColor: "#FFF",
     },
     exporting: { enabled: true },
@@ -24,7 +24,7 @@ $(function () {
     },
     subtitle: {
       text:
-        "Hover over a segment to learn more about encryption policy environments.",
+        "Hover over a segment of the spectrum to learn more about that encryption policy environment.",
       style: {
           fontFamily: 'Roboto, sans-serif'
       }
