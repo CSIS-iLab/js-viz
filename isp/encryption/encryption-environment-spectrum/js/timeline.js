@@ -9,7 +9,6 @@ $(function () {
   $(`#hcContainer`).highcharts({
     // General Chart Options
     chart: {
-      zoomType: "x",
       type: "timeline",
       height: "350px",
       backgroundColor: "#FFF",
@@ -113,7 +112,7 @@ $(function () {
       backgroundColor: '#FFF',
       headerFormat: "",
       style: {
-        width: 350,
+        maxWidth: 350,
       },
     },
     // Additional Plot Options
@@ -123,16 +122,6 @@ $(function () {
           height: 35
         }
       }
-      // timeline: {
-      //   stacking: null,
-      //   borderColor: "transparent",
-      //   groupPadding: 0.1,
-      //   pointPadding: 0.05,
-      //   // pointWidth: 33,
-      //   dataLabels: {
-      //     enabled: false
-      //   }
-      // }
     },
   });
 });
