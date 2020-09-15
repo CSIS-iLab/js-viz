@@ -65,6 +65,7 @@ function renderChart(data) {
       verticalAlign: "bottom",
       layout: "horizontal",
     },
+    // Colors
     colors: ["#004165", "#E86259", "#75BAA9", "#EDA27C", "#0064A6", "#4C8984"],
     // Y Axis
     yAxis: {
