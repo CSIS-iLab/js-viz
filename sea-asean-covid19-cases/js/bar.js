@@ -48,7 +48,7 @@ Highcharts.data({
 
   
 
-    renderChart(data)
+    renderChart(data[0])
     return
   }
 })
@@ -113,7 +113,7 @@ function renderChart(data) {
       }
     },
 
-  series:data
+  series:[data]
 
   })
 }
