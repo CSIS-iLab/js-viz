@@ -6,7 +6,6 @@ Highcharts.chart('hcContainer', {
     },
     // General Chart Options
     chart: {
-      zoomType: 'x',
       type: 'column'
     },
     // Chart Title and Subtitle
@@ -20,11 +19,11 @@ Highcharts.chart('hcContainer', {
       text: "CSIS Economics Program | Source: IFI press releases"
     },
     // Colors
-    colors: ["#4285F4", "#EA4335", "#FBBC04", "#34A853"],
+    colors: ["#004165", "#0065A6", "#0A8672", "#7b7d7c"],
     // Chart Legend
     legend: {
       title: {
-        text: 'Legend Title<br/><span style="font-size: 12px; color: #808080; font-weight: normal">(Click to hide)</span>'
+        text: '<br/><span style="font-size: 12px; color: #808080; font-weight: normal">(Click to hide)</span>'
       },
       align: 'center',
       verticalAlign: 'bottom',
