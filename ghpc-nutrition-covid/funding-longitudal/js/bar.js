@@ -14,7 +14,6 @@ Highcharts.chart('hcContainer', {
     },
     // General Chart Options
     chart: {
-      zoomType: 'x',
       type: 'column'
     },
     // Chart Title and Subtitle
@@ -22,7 +21,12 @@ Highcharts.chart('hcContainer', {
       text: "Global Nutrition Funding <i>Millions USD</i>"
     },
     subtitle: {
-      text: "Click and drag to zoom in"
+      text: ""
+    },
+    yAxis: {
+      title: {
+        text: "",
+      },
     },
     // Credits
     credits: {

@@ -11,7 +11,6 @@ $(function () {
   $(`#hcContainer`).highcharts({
     // General Chart Options
     chart: {
-      zoomType: "x",
       type: "networkgraph",
     },
     // Chart Title and Subtitle
@@ -19,7 +18,7 @@ $(function () {
       text: "Food Nutrition and COVID-19",
     },
     subtitle: {
-      text: "Click and drag to zoom in",
+      text: "",
     },
     // Credits
     credits: {

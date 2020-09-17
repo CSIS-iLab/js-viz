@@ -14,7 +14,6 @@ Highcharts.chart('hcContainer', {
     },
     // General Chart Options
     chart: {
-      zoomType: 'x',
       type: 'bar'
     },
     // Chart Title and Subtitle
@@ -22,7 +21,7 @@ Highcharts.chart('hcContainer', {
       text: "Progress on 2025 Global Nutrition Targets"
     },
     subtitle: {
-      text: "Click and drag to zoom in"
+      text: ""
     },
     // Credits
     credits: {
@@ -33,7 +32,7 @@ Highcharts.chart('hcContainer', {
     // Chart Legend
     legend: {
       title: {
-        text: 'Legend Title<br/><span style="font-size: 12px; color: #808080; font-weight: normal">(Click to hide)</span>'
+        text: '<br/><span style="font-size: 12px; color: #808080; font-weight: normal">(Click to hide)</span>'
       },
       align: 'center',
       verticalAlign: 'bottom',
@@ -41,6 +40,11 @@ Highcharts.chart('hcContainer', {
     },
     // Colors
     colors: ["#004165", "#E86259", "#75BAA9", "#EDA27C", "#0064A6", "#4C8984"],
+    yAxis: {
+      title: {
+        text: "",
+      },
+    },
     // Tooltip
     tooltip: {
       useHTML: true,
