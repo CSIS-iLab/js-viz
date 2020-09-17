@@ -19,7 +19,7 @@ Highcharts.chart("hcContainer", {
     text: "CSIS Economics Program | Source: IFI press releases",
   },
   // Colors
-  colors: ["#004165", "#0065A6", "#0A8672", "#7b7d7c"],
+  colors: ["#004165", "#0065A6", "#0A8672", "#3ABCA6"],
   // Chart Legend
   legend: {
     title: {
@@ -39,7 +39,7 @@ Highcharts.chart("hcContainer", {
   tooltip: {
     valuePrefix: "$",
     valueSuffix: " billion USD",
-    valueDecimals: 2,
+    valueDecimals: 1,
   },
   // Additional Plot Options
   plotOptions: {

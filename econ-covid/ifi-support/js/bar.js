@@ -40,7 +40,7 @@ Highcharts.chart("hcContainer", {
   tooltip: {
     valuePrefix: "$",
     valueSuffix: " billion USD",
-    valueDecimals: 2,
+    valueDecimals: 1,
   },
   // Additional Plot Options
   plotOptions: {
