@@ -33,22 +33,25 @@ Highcharts.data({
       dataset[country].categories.push([benchmark1, benchmark2, benchmark3])
     }
 
-    console.log(dataset)
+    // console.log(dataset)
 
     const data = Object.values(dataset)
+    
 
-    // dropdown
+    // populating dropdown
     for (let value in data) {
+      // console.log(value)
       optionSelect.push({
         name: data[value].name,
+        data: data[value].data,
+        categories: data[value].categories
       })
     }
 
   console.log(data)
 
-  
     populateSelect()
-    renderChart(data[0])
+    renderChart(data[4])
     return
   }
 })
@@ -69,6 +72,7 @@ function populateSelect() {
   select.addEventListener("change", function () {
     let chart = Highcharts.chart("hcContainer", {});
     chart.destroy();
+    
     renderChart(optionSelect[this.value]);
     console.log(optionSelect[this.value])
   });
@@ -97,7 +101,7 @@ function renderChart(data) {
     // Chart Legend
     legend: {
       title: {
-        text: 'Legend Title<br/><span style="font-size: 12px; color: #808080; font-weight: normal">(Click to hide)</span>'
+        text: '<br/><span style="font-size: 12px; color: #808080; font-weight: normal">(Click to hide)</span>'
       },
       align: 'center',
       verticalAlign: 'bottom',
