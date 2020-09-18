@@ -14,7 +14,7 @@ Highcharts.chart("hcContainer", {
   },
   // Chart Title and Subtitle
   title: {
-    text: "Approved Support by Region",
+    text: "Support by Region",
   },
   // Credits
   credits: {
