@@ -1,4 +1,4 @@
-
+let optionSelect = []
 
 Highcharts.data({
   googleSpreadsheetKey: "1XbH8PkA4L8WlBoY-cLH4bLRO-a_L48YsHn9huKq2dHY",
@@ -37,34 +37,42 @@ Highcharts.data({
 
     const data = Object.values(dataset)
 
-    // // dropdown
-    // for (let country in dataset) {
-    //   countryNames.push({
-    //     country,
-    //   })
-    // }
+    // dropdown
+    for (let value in data) {
+      optionSelect.push({
+        name: data[value].name,
+      })
+    }
 
   console.log(data)
 
   
-
+    populateSelect()
     renderChart(data[0])
     return
   }
 })
 
-// function populateSelect() {
-//   const select = document.getElementById("datasets")
-//   dataset.forEach((option, i) => {
-//     const optionEl = document.createElement("option")
-//     if (i === 0) {
-//       option.selected = " selected"
-//     }
-//     optionEl.value = i
-//     optionEl.text = option.name
-//     select.appendChild(optionEl)
-//   })
-// }
+function populateSelect() {
+  const select = document.getElementById("optionSelect")
+  optionSelect.forEach((option, i) => {
+    const optionEl = document.createElement("option");
+    if (i === 0) {
+      optionEl.selected = " selected";
+    }
+    optionEl.value = i;
+    optionEl.text = option.name;
+    select.appendChild(optionEl);
+});
+
+  // Destroy & redraw chart so we get smooth animation when switching datasets.
+  select.addEventListener("change", function () {
+    let chart = Highcharts.chart("hcContainer", {});
+    chart.destroy();
+    renderChart(optionSelect[this.value]);
+    console.log(optionSelect[this.value])
+  });
+}
 
 function renderChart(data) {
   Highcharts.chart('hcContainer', {
