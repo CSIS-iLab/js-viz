@@ -10,7 +10,7 @@ Highcharts.chart("hcContainer", {
   },
   // Chart Title and Subtitle
   title: {
-    text: "IFI Support by Country Income Group",
+    text: "Support by Country Income Group",
   },
   // Credits
   credits: {
