@@ -1,3 +1,7 @@
+Highcharts.setOptions({
+  colors: ["#0065A6", "#0A8672"],
+});
+
 Highcharts.chart("hcContainer", {
   // Load Data in from Google Sheets
   data: {
@@ -20,7 +24,7 @@ Highcharts.chart("hcContainer", {
   },
   // Chart Legend
   legend: {
-    enabled: false,
+    // enabled: false,
     title: {
       text:
         '<br/><span style="font-size: 12px; color: #808080; font-weight: normal">(Click to hide)</span>',
@@ -52,9 +56,9 @@ Highcharts.chart("hcContainer", {
         },
       },
     },
-    series: {
-      colorByPoint: true,
-      colors: ["#004165", "#0065A6", "#0A8672", "#7b7d7c", "#E5EFF6"],
-    },
+    // series: {
+    //   colorByPoint: true,
+    //   colors: ["#004165", "#0065A6", "#0A8672", "#7b7d7c", "#E5EFF6"],
+    // },
   },
 });
