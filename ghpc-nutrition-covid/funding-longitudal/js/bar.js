@@ -25,11 +25,6 @@ Highcharts.chart('hcContainer', {
     },
     yAxis: {
       title: {
-        text: "",
-      },
-    },
-    xAxis: {
-      title: {
         text: "Millions USD",
       },
     },
@@ -37,17 +32,18 @@ Highcharts.chart('hcContainer', {
     credits: {
       enabled: true,
       href: false,
-      text: "CSIS Project Name | Source: NAME"
+      text: "CSIS Global Health Policy Center | Source: Global Nutrition Report"
     },
     // Chart Legend
-    // legend: {
-    //   title: {
-    //     text: 'Legend Title<br/><span style="font-size: 12px; color: #808080; font-weight: normal">(Click to hide)</span>'
-    //   },
-    //   align: 'center',
-    //   verticalAlign: 'bottom',
-    //   layout: 'horizontal'
-    // },
+    legend: {
+      enabled: false,
+      title: {
+        text: 'Legend Title<br/><span style="font-size: 12px; color: #808080; font-weight: normal">(Click to hide)</span>'
+      },
+      align: 'center',
+      verticalAlign: 'bottom',
+      layout: 'horizontal'
+    },
     // Colors
     colors: ["#004165", "#E86259", "#75BAA9", "#EDA27C", "#0064A6", "#4C8984"],
     // Additional Plot Options

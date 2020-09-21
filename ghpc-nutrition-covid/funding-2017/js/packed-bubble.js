@@ -53,7 +53,7 @@ function renderChart(data) {
     credits: {
       enabled: true,
       href: false,
-      text: "CSIS Project Name | Source: NAME",
+      text: "CSIS Global Health Policy Center | Source: Global Nutrition Report",
     },
     // Chart Legend
     legend: {
@@ -67,17 +67,11 @@ function renderChart(data) {
     },
     // Colors
     colors: ["#004165", "#E86259", "#75BAA9", "#EDA27C", "#0064A6", "#4C8984"],
-    // Y Axis
-    yAxis: {
-      title: {
-        text: "Y Axis Title",
-      },
-    },
     // Tooltip
     tooltip: {
       useHTML: true,
       // headerFormat: "",
-      pointFormat: '<b>{point.name}:</b> {point.value} Million USD '
+      pointFormat: '<b>{point.name}:</b> ${point.value} Million USD '
     },
     // Additional Plot Options
     plotOptions: {

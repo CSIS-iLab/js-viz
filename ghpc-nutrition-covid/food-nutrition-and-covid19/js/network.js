@@ -18,19 +18,13 @@ $(function () {
       text: "Nutrition and Covid-19",
     },
     subtitle: {
-      text: "There is a dynamic relationship between food, nutrition, and Covid-19. Click on each element to explore how each pandemic disruption has impacted nutrition.",
+      text: "There is a dynamic relationship between food, nutrition, and Covid-19. Hover over each element to explore how each pandemic disruption has impacted nutrition.",
     },
     // Credits
     credits: {
       enabled: true,
       href: false,
-      text: "CSIS Project Name | Source: NAME",
-    },
-    // Y Axis
-    yAxis: {
-      title: {
-        text: "Y Axis Title",
-      },
+      text: "CSIS Global Health Policy Center | Source: NAME",
     },
     // Additional Plot Options
     plotOptions: {
@@ -83,42 +77,42 @@ $(function () {
             id: "Nutrition & COVID-19",
             color: "#004165",
             marker: {
-              radius: 30
+              radius: 40
             }
           },
           {
             id: "Disrupted Supply Chains",
             color: "#E86259",
             marker: {
-              radius: 30
+              radius: 40
             }
           },
           {
             id: "Interrupted Food Markets",
             color: "#75BAA9",
             marker: {
-              radius: 30
+              radius: 40
             }
           },
           {
             id: "Loss of Income",
             color: "#EDA27C",
             marker: {
-              radius: 30
+              radius: 40
             }
           },
           {
             id: "Poor Regulation",
             color: "#0064A6",
             marker: {
-              radius: 30
+              radius: 40
             }
           },
           {
             id: "Misinformation",
             color: "#4C8984",
             marker: {
-              radius: 30
+              radius: 40
             }
           },
         ],

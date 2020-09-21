@@ -27,7 +27,7 @@ Highcharts.chart('hcContainer', {
     credits: {
       enabled: true,
       href: false,
-      text: "CSIS Project Name | Source: NAME"
+      text: "CSIS Global Health Policy Center | Source: 2020 Global Nutrition Report"
     },
     // Chart Legend
     legend: {
@@ -44,15 +44,12 @@ Highcharts.chart('hcContainer', {
       title: {
         text: "",
       },
+      visible: false,
     },
     // Tooltip
     tooltip: {
       useHTML: true,
-      hideDelay: 1500,
-      style: {
-        pointerEvents: 'auto',
-        // fontFamily: '"Open Sans", Arial, Helvetica, sans-serif'
-      }
+      shared: true,
     },
     // Additional Plot Options
     plotOptions:
