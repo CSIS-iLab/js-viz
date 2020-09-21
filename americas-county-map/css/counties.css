@@ -304,7 +304,11 @@ aside.toolbox {
 @media (max-width: 425px) {
   aside.toolbox {
     z-index: 1;
-    top: -36px;
+  }
+
+  .leaflet-bar {
+    right: 45px;
+    top: 50px;
   }
 }
 
