@@ -259,11 +259,15 @@ leaflet-control {
 }
 
 .leaflet-top {
-  top: 38px;
+  top: 70px;
+}
+
+.leaflet-left {
+  left: 50px;
 }
 
 aside.toolbox {
-  top: 38px;
+  top: 45px;
 }
 
 /* FOR DISPLAYS ≤ 425px */
