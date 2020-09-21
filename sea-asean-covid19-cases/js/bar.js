@@ -87,7 +87,7 @@ function renderChart(data) {
     },
     // Chart Title and Subtitle
     title: {
-      text: "SEA-ASEAN-COVID19-CASES"
+      text: "SEA ASEAN COVID19 CASES"
     },
     subtitle: {
       text: "Click and drag to zoom in"
@@ -96,12 +96,12 @@ function renderChart(data) {
     credits: {
       enabled: true,
       href: false,
-      text: "CSIS Project Name | Source: NAME"
+      text: "CSIS Southeast Asia Program | Source: SEA"
     },
     // Chart Legend
     legend: {
       title: {
-        text: '<br/><span style="font-size: 12px; color: #808080; font-weight: normal">(Click to hide)</span>'
+        text: '<br/><span style="font-size: 12px; font-weight: normal"></span>'
       },
       align: 'center',
       verticalAlign: 'bottom',
@@ -110,9 +110,22 @@ function renderChart(data) {
     // Y Axis
     yAxis: {
       title: { 
-        text: "Y Axis Title"
+        text: "Number of New Cases"
       },
     },
+    // x Axis
+    xAxis: {
+      categories: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+      },
+    // Tooltip
+    tooltip: {
+      useHTML: true,
+      formatter: function () {
+        // console.log(this)
+          return '<b>' + this.series.userOptions.name + '</b><br>Date: ' + this.key + '<br>New Cases: ' + this.y + '<br>';
+      }
+  },
+
     // Additional Plot Options
     plotOptions:
     {
@@ -121,11 +134,18 @@ function renderChart(data) {
         // stacking: "normal", // Stacked bar graph
         dataLabels: {
             enabled: false,
+        },
+        // Disable hide on click
+        events: {
+          legendItemClick: function(e) {
+              e.preventDefault()
+          }
         }
+        
       }
     },
 
-  series:[data]
+  series:[data],
 
   })
 }
