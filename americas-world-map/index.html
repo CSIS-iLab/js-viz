@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Guyanese Living Around the World | CSIS Americas Program</title>
+    <meta name="viewport" content="initial-scale=1.0" />
+    <meta charset="utf-8" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700"
+      rel="stylesheet"
+    />
+
+    <!-- Share meta -->
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:type" content="article" />
+    <meta
+      property="og:title"
+      content="Indian Strategic Maritime Investments - Asia Maritime Transparency Initiative"
+    />
+
+    <script src="https://unpkg.com/babel-polyfill@6.26.0/dist/polyfill.js"></script>
+    <!-- Include Leaflet -->
+    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
+    <link
+      href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+      rel="stylesheet"
+    />
+    <!-- Include CARTO.js -->
+    <script src="https://libs.cartocdn.com/carto.js/v4.1.11/carto.min.js"></script>
+    <link
+      href="https://carto.com/developers/carto-js/examples/maps/public/style.css"
+      rel="stylesheet"
+    />
+
+    <!-- Include Zoom Slider plugin -->
+    <script src="zoom-slider/zoomslider.js"></script>
+    <link href="zoom-slider/zoomslider.css" rel="stylesheet" />
+
+    <link
+      rel="preconnect stylesheet"
+      href="https://use.typekit.net/ats0hoc.css"
+    />
+
+    <link href="css/makeMap.css" rel="stylesheet" />
+
+    <link href="css/world.css" rel="stylesheet" />
+  </head>
+  
+  <body>
+    <div id="map" class="map" tabindex="0"></div>
+
+    <aside class="toolbox">
+
+      <div class="hamburger mobile-only">
+        <div class="menu-translate">
+          Guyanese Living Around the World
+        </div>
+      </div>
+
+      <section class="box">
+        <header>
+          <h1>Guyanese Living Around the World</h1>
+        </header>
+        <section>
+        <p class="description open-sans">
+          Hover over the interactive map to learn more detail about Guyanese living in countries around the world as of 2019
+        </p>
+        <hr />
+        <div class="button-container">
+          <div class="button__title">Total Population per Country</div>
+        </div>
+        <ul id="legend" class="legend" data-type="total_cases">
+          <li id="ramp1" class="legend__value"><span>0</span></li>
+          <li id="ramp2" class="legend__value"><span>60k</span></li>
+          <li id="ramp3" class="legend__value"><span>120k</span></li>
+          <li id="ramp4" class="legend__value"><span>180k</span></li>
+          <li id="ramp5" class="legend__value"><span>240k</span></li>
+        </ul>
+      </section>
+      <footer class="js-footer"></footer>
+    </aside>
+
+    <script src="js/world.js"></script>
+  </body>
+</html>
