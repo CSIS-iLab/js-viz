@@ -15,10 +15,10 @@ $(function () {
     },
     // Chart Title and Subtitle
     title: {
-      text: "Food Nutrition and COVID-19",
+      text: "Nutrition and Covid-19",
     },
     subtitle: {
-      text: "",
+      text: "There is a dynamic relationship between food, nutrition, and Covid-19. Click on each element to explore how each pandemic disruption has impacted nutrition.",
     },
     // Credits
     credits: {

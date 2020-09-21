@@ -44,10 +44,10 @@ function renderChart(data) {
     },
     // Chart Title and Subtitle
     title: {
-      text: "ODA Received in 2017",
+      text: "Allocation of Global Nutrition Funding (2017)",
     },
     subtitle: {
-      text: "Click and drag to zoom in",
+      text: "Official development assistance (ODA) for nutrition has plateaued in recent years. Hover over each bubble to see how this funding was dispersed globally in 2017.",
     },
     // Credits
     credits: {

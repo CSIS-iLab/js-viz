@@ -18,7 +18,7 @@ Highcharts.chart('hcContainer', {
     },
     // Chart Title and Subtitle
     title: {
-      text: "Global Nutrition Funding <i>Millions USD</i>"
+      text: "Global Nutrition ODA 2008-2017 (Millions USD)"
     },
     subtitle: {
       text: ""
@@ -26,6 +26,11 @@ Highcharts.chart('hcContainer', {
     yAxis: {
       title: {
         text: "",
+      },
+    },
+    xAxis: {
+      title: {
+        text: "Millions USD",
       },
     },
     // Credits

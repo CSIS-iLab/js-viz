@@ -18,10 +18,10 @@ Highcharts.chart('hcContainer', {
     },
     // Chart Title and Subtitle
     title: {
-      text: "Progress on 2025 Global Nutrition Targets"
+      text: "2025 Global Nutrition Targets"
     },
     subtitle: {
-      text: ""
+      text: "In 2012 the World Health Assembly endorsed a Comprehensive implementation plan on maternal, infant, and young child nutrition, to be achieved by 2025. In 2020, most of the 194 countries tracked by the Global Nutrition Report have either not been assessed or are not on track to meet these targets."
     },
     // Credits
     credits: {
