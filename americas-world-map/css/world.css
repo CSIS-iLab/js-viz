@@ -306,7 +306,7 @@ leaflet-control {
 @media (max-width: 425px) {
   .leaflet-touch .leaflet-bar {
     border: none;
-    top: 4px;
+    top: -33px;
   }
 }
 

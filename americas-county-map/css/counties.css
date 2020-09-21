@@ -304,18 +304,18 @@ aside.toolbox {
 @media (max-width: 425px) {
   aside.toolbox {
     z-index: 1;
+    top: -30px;
   }
 
   .leaflet-bar {
     right: 45px;
-    top: 50px;
   }
 }
 
 @media (max-width: 425px) {
   .leaflet-touch .leaflet-bar {
     border: none;
-    top: 4px;
+    top: -61px;
   }
 }
 
