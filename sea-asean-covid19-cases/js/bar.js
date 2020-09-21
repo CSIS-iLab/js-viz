@@ -33,14 +33,11 @@ Highcharts.data({
       dataset[country].categories.push([benchmark1, benchmark2, benchmark3])
     }
 
-    // console.log(dataset)
-
     const data = Object.values(dataset)
     
 
     // populating dropdown
     for (let value in data) {
-      // console.log(value)
       optionSelect.push({
         name: data[value].name,
         data: data[value].data,
@@ -51,7 +48,7 @@ Highcharts.data({
   console.log(data)
 
     populateSelect()
-    renderChart(data[4])
+    renderChart(data[0])
     return
   }
 })
@@ -68,13 +65,11 @@ function populateSelect() {
     select.appendChild(optionEl);
 });
 
-  // Destroy & redraw chart so we get smooth animation when switching datasets.
+  // Destroy & redraw chart
   select.addEventListener("change", function () {
     let chart = Highcharts.chart("hcContainer", {});
     chart.destroy();
-    
     renderChart(optionSelect[this.value]);
-    console.log(optionSelect[this.value])
   });
 }
 
@@ -82,7 +77,6 @@ function renderChart(data) {
   Highcharts.chart('hcContainer', {
     // General Chart Options
     chart: {
-      zoomType: 'x',
       type: 'column'
     },
     // Chart Title and Subtitle
@@ -115,7 +109,7 @@ function renderChart(data) {
     },
     // x Axis
     xAxis: {
-      categories: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+      type: "category",
       },
     // Tooltip
     tooltip: {
