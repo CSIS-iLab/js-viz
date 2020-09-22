@@ -110,6 +110,7 @@ function renderChart(data) {
     // x Axis
     xAxis: {
       type: "category",
+      tickInterval: 15,
       },
     // Tooltip
     tooltip: {
