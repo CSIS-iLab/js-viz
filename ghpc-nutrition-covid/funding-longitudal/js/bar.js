@@ -32,7 +32,7 @@ Highcharts.chart('hcContainer', {
     credits: {
       enabled: true,
       href: false,
-      text: "CSIS Global Health Policy Center | Source: Global Nutrition Report"
+      text: "CSIS Global Health Policy Center | Source: WHO/UNICEF/World Bank/IHME"
     },
     // Chart Legend
     legend: {

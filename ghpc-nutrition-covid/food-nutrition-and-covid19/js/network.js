@@ -24,7 +24,7 @@ $(function () {
     credits: {
       enabled: true,
       href: false,
-      text: "CSIS Global Health Policy Center | Source: NAME",
+      text: "CSIS Global Health Policy Center",
     },
     // Additional Plot Options
     plotOptions: {
@@ -44,25 +44,25 @@ $(function () {
             from: "Nutrition & COVID-19",
             to: "Disrupted Supply Chains",
             tip:
-              "The pandemic’s disruption of supply chains has led to increased food insecurity and rising prices.",
+              "The pandemic’s disruption of supply chains has led to increased food insecurity and rising prices. <br> Sources: Johns Hopkins; Columbia; Forbes",
           },
           {
             from: "Nutrition & COVID-19",
             to: "Interrupted Food Markets",
             tip:
-              "Agricultural labor and markets have been disrupted due to travel restrictions and social distancing practices.",
+              "Agricultural labor and markets have been disrupted due to travel restrictions and social distancing practices. <br> Sources: International Labour Organization; World Bank",
           },
           {
             from: "Nutrition & COVID-19",
             to: "Loss of Income",
             tip:
-              "The economic impacts of the pandemic, particularly job loss and disruption to the informal economy, have made purchasing food more difficult.",
+              "The economic impacts of the pandemic, particularly job loss and disruption to the informal economy, have made purchasing food more difficult. <br> Sources: Godan; IFPRI",
           },
           {
             from: "Nutrition & COVID-19",
             to: "Poor Regulation",
             tip:
-              "Lack of oversight has created greater potential for contamination or adulteration of street food, and price gouging in unstable markets.",
+              "Lack of oversight has created greater potential for contamination or adulteration of street food, and price gouging in unstable markets. <br> Sources: Voa; All Africa",
           },
           {
             from: "Nutrition & COVID-19",

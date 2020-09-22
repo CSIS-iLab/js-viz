@@ -27,7 +27,7 @@ Highcharts.chart('hcContainer', {
     credits: {
       enabled: true,
       href: false,
-      text: "CSIS Global Health Policy Center | Source: 2020 Global Nutrition Report"
+      text: "CSIS Global Health Policy Center | Source: WHO; 2020 Global Nutrition Report"
     },
     // Chart Legend
     legend: {
