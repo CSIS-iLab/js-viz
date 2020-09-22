@@ -48,7 +48,7 @@ Highcharts.data({
   console.log(data)
 
     populateSelect()
-    renderChart(data[0])
+    renderChart(data[4])
     return
   }
 })
@@ -57,7 +57,7 @@ function populateSelect() {
   const select = document.getElementById("optionSelect")
   optionSelect.forEach((option, i) => {
     const optionEl = document.createElement("option");
-    if (i === 0) {
+    if (i === 4) {
       optionEl.selected = " selected";
     }
     optionEl.value = i;
