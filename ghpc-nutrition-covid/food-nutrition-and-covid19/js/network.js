@@ -127,13 +127,17 @@ $(function () {
     // Tooltip
     tooltip: {
       formatter: function () {
-        var text = this.point.name + "<br>";
+        if (this.key === "Nutrition & COVID-19") {
+          return "Nutrition & COVID-19";
+        } else {
+          var text = "";
 
-        if (this.point.linksTo[0]) {
-          text += this.point.linksTo[0].tip;
+          if (this.point.linksTo[0]) {
+            text += this.point.linksTo[0].tip;
+          }
+
+          return text;
         }
-
-        return text;
       },
     },
   });
