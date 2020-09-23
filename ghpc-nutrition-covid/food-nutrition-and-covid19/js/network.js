@@ -43,6 +43,7 @@ $(function () {
         dataLabels: {
           enabled: true,
           linkFormat: "",
+          verticalAlign: "middle",
         },
         data: [
           {
