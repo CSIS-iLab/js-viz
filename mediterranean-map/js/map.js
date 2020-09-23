@@ -1,7 +1,10 @@
-var basemap = L.tileLayer("", {});
+var basemap = L.tileLayer(
+  "https://api.mapbox.com/styles/v1/ilabmedia/ckfcrds6o1yxu1aqxezval4dr/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw",
+  {}
+);
 
 var map = L.map("map", {
-  center: [40, -98],
+  center: [37.14, 12.67],
   zoom: 4,
   maxZoom: 6,
   scrollWheelZoom: true,
