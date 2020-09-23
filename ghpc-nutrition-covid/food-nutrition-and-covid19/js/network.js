@@ -3,6 +3,7 @@ Highcharts.setOptions({
     style: {
       fontFamily: '"Open Sans", Arial, Helvetica, sans-serif',
       fontSize: "16px",
+      fontWeight: 700,
     },
   },
 });

@@ -3,9 +3,11 @@ Highcharts.setOptions({
     style: {
       fontFamily: '"Open Sans", Arial, Helvetica, sans-serif',
       fontSize: "16px",
+      fontWeight: 700,
     },
   },
 });
+
 Highcharts.data({
   googleSpreadsheetKey: "1YcIOXbY6seINOUcFqlvBDFsQ9iT7TUcmiHiY6u7dTSs",
   googleSpreadsheetWorksheet: 3,
