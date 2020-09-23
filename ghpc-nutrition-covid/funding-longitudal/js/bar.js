@@ -51,7 +51,7 @@ Highcharts.chart("hcContainer", {
   },
   tooltip: {
     valuePrefix: "$",
-    valueSuffix: " million USD",
+    valueSuffix: " million",
   },
   // Colors
   colors: ["#004165", "#E86259", "#75BAA9", "#EDA27C", "#0064A6", "#4C8984"],

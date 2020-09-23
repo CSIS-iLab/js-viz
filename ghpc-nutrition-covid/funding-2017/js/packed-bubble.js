@@ -79,7 +79,7 @@ function renderChart(data) {
     tooltip: {
       useHTML: true,
       // headerFormat: "",
-      pointFormat: "<b>{point.name}:</b> ${point.value} Million USD ",
+      pointFormat: "<b>{point.name}:</b> ${point.value} Million ",
     },
     // Additional Plot Options
     plotOptions: {
