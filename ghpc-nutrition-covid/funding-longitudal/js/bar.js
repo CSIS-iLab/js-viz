@@ -25,7 +25,7 @@ Highcharts.chart("hcContainer", {
   },
   yAxis: {
     title: {
-      text: "Million USD",
+      text: "Millions USD",
     },
   },
   // Credits
@@ -33,7 +33,7 @@ Highcharts.chart("hcContainer", {
     enabled: true,
     href: false,
     text:
-      "CSIS Global Health Policy Center | Source: WHO/UNICEF/World Bank/IHME",
+      "CSIS GHPC | Global Nutrition Report by WHO/UNICEF/World Bank/IHME (2020)",
   },
   // Chart Legend
   legend: {
