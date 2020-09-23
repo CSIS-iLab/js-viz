@@ -2,7 +2,7 @@ Highcharts.setOptions({
   chart: {
     style: {
       fontFamily: '"Open Sans", Arial, Helvetica, sans-serif',
-      fontSize: '16px'
+      fontSize: "16px",
     },
   },
 });
@@ -11,49 +11,53 @@ Highcharts.data({
   googleSpreadsheetWorksheet: 3,
   switchRowsAndColumns: true,
   parsed: function (columns) {
-    let dataset = {}
+    let dataset = {};
 
     for (let i = 1; i < columns.length; i++) {
-      const country = columns[i][1]
-      const ODA = columns[i][2]
-      const region = columns[i][0]
+      const country = columns[i][1];
+      const ODA = columns[i][2];
+      const region = columns[i][0];
 
       if (!dataset[region]) {
         dataset[region] = {
           name: region,
-          data: []
-        }
+          data: [],
+        };
       }
 
-      dataset[region].data.push({name: country, value: ODA})
+      dataset[region].data.push({ name: country, value: ODA });
     }
 
-    const data = Object.values(dataset)
-    renderChart(data)
-    return
-  }
-})
+    const data = Object.values(dataset);
+    renderChart(data);
+    return;
+  },
+});
 
 function renderChart(data) {
-
   Highcharts.chart("hcContainer", {
     // General Chart Options
     chart: {
       type: "packedbubble",
-      height: 600
+      height: 600,
     },
     // Chart Title and Subtitle
     title: {
       text: "Allocation of Global Nutrition Funding (2017)",
     },
     subtitle: {
-      text: "Official development assistance (ODA) for nutrition has plateaued in recent years. Hover over each bubble to see how this funding was dispersed globally in 2017.",
+      text:
+        "Official development assistance (ODA) for nutrition has plateaued in recent years. Hover over each bubble to see how this funding was dispersed globally in 2017.",
     },
     // Credits
     credits: {
       enabled: true,
       href: false,
-      text: "CSIS Global Health Policy Center | Source: WHO/UNICEF/World Bank/IHME",
+      position: {
+        y: -15,
+      },
+      text:
+        "CSIS Global Health Policy Center<br/>Source: Global Nutrition Report by WHO/UNICEF/World Bank/IHME (2020)",
     },
     // Chart Legend
     legend: {
@@ -71,20 +75,19 @@ function renderChart(data) {
     tooltip: {
       useHTML: true,
       // headerFormat: "",
-      pointFormat: '<b>{point.name}:</b> ${point.value} Million USD '
+      pointFormat: "<b>{point.name}:</b> ${point.value} Million USD ",
     },
     // Additional Plot Options
     plotOptions: {
       packedbubble: {
-        minSize: "20%",
-        maxSize: "100%",
+        minSize: "5",
+        maxSize: "100",
         zMin: 0,
         zMax: 1000,
         layoutAlgorithm: {
-          gravitationalConstant: 0.05,
+          gravitationalConstant: 0.02,
           splitSeries: true,
           seriesInteraction: false,
-          dragBetweenSeries: true,
           parentNodeLimit: true,
         },
         dataLabels: {
@@ -103,6 +106,6 @@ function renderChart(data) {
         },
       },
     },
-    series: data
+    series: data,
   });
 }
