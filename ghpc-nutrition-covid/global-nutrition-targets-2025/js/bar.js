@@ -2,7 +2,7 @@ Highcharts.setOptions({
   chart: {
     style: {
       fontFamily: '"Open Sans", Arial, Helvetica, sans-serif',
-      fontSize: "16px",
+      fontSize: "15px",
     },
   },
 });
@@ -59,6 +59,13 @@ Highcharts.chart("hcContainer", {
       text: "",
     },
     visible: false,
+  },
+  xAxis: {
+    labels: {
+      style: {
+        fontSize: "12px",
+      },
+    },
   },
   // Tooltip
   tooltip: {
