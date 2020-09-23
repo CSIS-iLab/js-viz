@@ -12,13 +12,15 @@ $(function () {
     // General Chart Options
     chart: {
       type: "networkgraph",
+      height: 700,
     },
     // Chart Title and Subtitle
     title: {
       text: "Nutrition and Covid-19",
     },
     subtitle: {
-      text: "There is a dynamic relationship between food, nutrition, and Covid-19. Hover over each element to explore how each pandemic disruption has impacted nutrition.",
+      text:
+        "There is a dynamic relationship between food, nutrition, and Covid-19. Hover over each element to explore how each pandemic disruption has impacted nutrition.",
     },
     // Credits
     credits: {
@@ -44,25 +46,25 @@ $(function () {
             from: "Nutrition & COVID-19",
             to: "Disrupted Supply Chains",
             tip:
-              "The pandemic’s disruption of supply chains has led to increased food insecurity and rising prices. <br> Sources: Johns Hopkins; Columbia; Forbes",
+              "The pandemic’s disruption of supply chains has led to increased food insecurity and rising prices.",
           },
           {
             from: "Nutrition & COVID-19",
             to: "Interrupted Food Markets",
             tip:
-              "Agricultural labor and markets have been disrupted due to travel restrictions and social distancing practices. <br> Sources: International Labour Organization; World Bank",
+              "Agricultural labor and markets have been disrupted due to travel restrictions and social distancing practices.",
           },
           {
             from: "Nutrition & COVID-19",
             to: "Loss of Income",
             tip:
-              "The economic impacts of the pandemic, particularly job loss and disruption to the informal economy, have made purchasing food more difficult. <br> Sources: Godan; IFPRI",
+              "The economic impacts of the pandemic, particularly job loss and disruption to the informal economy, have made purchasing food more difficult.",
           },
           {
             from: "Nutrition & COVID-19",
             to: "Poor Regulation",
             tip:
-              "Lack of oversight has created greater potential for contamination or adulteration of street food, and price gouging in unstable markets. <br> Sources: Voa; All Africa",
+              "Lack of oversight has created greater potential for contamination or adulteration of street food, and price gouging in unstable markets.",
           },
           {
             from: "Nutrition & COVID-19",
@@ -77,43 +79,43 @@ $(function () {
             id: "Nutrition & COVID-19",
             color: "#004165",
             marker: {
-              radius: 40
-            }
+              radius: 80,
+            },
           },
           {
             id: "Disrupted Supply Chains",
             color: "#E86259",
             marker: {
-              radius: 40
-            }
+              radius: 80,
+            },
           },
           {
             id: "Interrupted Food Markets",
-            color: "#75BAA9",
+            color: "#8e6c89",
             marker: {
-              radius: 40
-            }
+              radius: 80,
+            },
           },
           {
             id: "Loss of Income",
             color: "#EDA27C",
             marker: {
-              radius: 40
-            }
+              radius: 80,
+            },
           },
           {
             id: "Poor Regulation",
             color: "#0064A6",
             marker: {
-              radius: 40
-            }
+              radius: 80,
+            },
           },
           {
             id: "Misinformation",
             color: "#4C8984",
             marker: {
-              radius: 40
-            }
+              radius: 80,
+            },
           },
         ],
       },
@@ -121,10 +123,10 @@ $(function () {
     // Tooltip
     tooltip: {
       formatter: function () {
-        var text = "Name: " + this.point.name + "<br>";
+        var text = this.point.name + "<br>";
 
         if (this.point.linksTo[0]) {
-          text += "Description: " + this.point.linksTo[0].tip;
+          text += this.point.linksTo[0].tip;
         }
 
         return text;
