@@ -3,7 +3,6 @@ Highcharts.setOptions({
     style: {
       fontFamily: '"Open Sans", Arial, Helvetica, sans-serif',
       fontSize: "16px",
-      fontWeight: 700,
     },
   },
 });
@@ -20,6 +19,9 @@ Highcharts.chart("hcContainer", {
   // Chart Title and Subtitle
   title: {
     text: "2025 Global Nutrition Targets",
+    style: {
+      fontWeight: 700,
+    },
   },
   subtitle: {
     text:
@@ -29,8 +31,7 @@ Highcharts.chart("hcContainer", {
   credits: {
     enabled: true,
     href: false,
-    text:
-      "CSIS Global Health Policy Center | Source: WHO (2014); Global Nutrition Report (2020)",
+    text: "CSIS GHPC | Source: WHO (2014); Global Nutrition Report (2020)",
   },
   // Chart Legend
   legend: {

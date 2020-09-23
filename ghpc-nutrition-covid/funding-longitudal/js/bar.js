@@ -3,7 +3,6 @@ Highcharts.setOptions({
     style: {
       fontFamily: '"Open Sans", Arial, Helvetica, sans-serif',
       fontSize: "16px",
-      fontWeight: 700,
     },
   },
 });
@@ -20,6 +19,9 @@ Highcharts.chart("hcContainer", {
   // Chart Title and Subtitle
   title: {
     text: "Global Nutrition ODA 2008-2017",
+    style: {
+      fontWeight: 700,
+    },
   },
   subtitle: {
     text: "",

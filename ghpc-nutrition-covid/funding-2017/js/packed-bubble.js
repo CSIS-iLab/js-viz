@@ -3,7 +3,6 @@ Highcharts.setOptions({
     style: {
       fontFamily: '"Open Sans", Arial, Helvetica, sans-serif',
       fontSize: "16px",
-      fontWeight: 700,
     },
   },
 });
@@ -46,6 +45,9 @@ function renderChart(data) {
     // Chart Title and Subtitle
     title: {
       text: "Allocation of Global Nutrition Funding (2017)",
+      style: {
+        fontWeight: 700,
+      },
     },
     subtitle: {
       text:
@@ -59,7 +61,7 @@ function renderChart(data) {
         y: -15,
       },
       text:
-        "CSIS Global Health Policy Center<br/>Source: Global Nutrition Report by WHO/UNICEF/World Bank/IHME (2020)",
+        "CSIS GHPC<br/>Source: Global Nutrition Report by WHO/UNICEF/World Bank/IHME (2020)",
     },
     // Chart Legend
     legend: {

@@ -3,7 +3,6 @@ Highcharts.setOptions({
     style: {
       fontFamily: '"Open Sans", Arial, Helvetica, sans-serif',
       fontSize: "16px",
-      fontWeight: 700,
     },
   },
 });
@@ -18,6 +17,9 @@ $(function () {
     // Chart Title and Subtitle
     title: {
       text: "Nutrition and Covid-19",
+      style: {
+        fontWeight: 700,
+      },
     },
     subtitle: {
       text:
