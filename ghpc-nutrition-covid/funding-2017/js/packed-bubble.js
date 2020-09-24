@@ -51,7 +51,7 @@ function renderChart(data) {
     },
     subtitle: {
       text:
-        "Official development assistance (ODA) for nutrition has plateaued in recent years. Hover over each bubble to see how this funding was dispersed globally in 2017.",
+        "In recent years, official development assistance (ODA) for nutrition has plateaued (bottom). Hover over each bubble to see where this funding was distributed globally in 2017 (top). ODA amounts are based on total grants and loans received by low- and middle-income countries from donor governments, as reported to the OECD Development Assistance Committee’s Creditor Reporting System. This excludes nutrition funding included in humanitarian assistance. North America is omitted from the bubble chart because no ODA was allocated to that region in 2017.",
     },
     // Credits
     credits: {

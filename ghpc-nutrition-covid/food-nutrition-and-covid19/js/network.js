@@ -126,9 +126,10 @@ $(function () {
     ],
     // Tooltip
     tooltip: {
+      useHTML: true,
       formatter: function () {
         if (this.key === "Nutrition & COVID-19") {
-          return "Nutrition & COVID-19";
+          return "<div style='text-align: center;'>Nutrition & COVID-19</div>";
         } else {
           var text = "";
 
