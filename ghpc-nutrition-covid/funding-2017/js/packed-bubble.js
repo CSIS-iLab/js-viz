@@ -51,7 +51,7 @@ function renderChart(data) {
     },
     subtitle: {
       text:
-        "Official development assistance (ODA) for nutrition has plateaued in recent years. Hover over each bubble to see how this funding was dispersed globally in 2017.",
+        "",
     },
     // Credits
     credits: {
