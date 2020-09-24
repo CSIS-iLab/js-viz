@@ -223,8 +223,10 @@ const influenceButton = document.getElementById("influence-button");
 riskButton.addEventListener("click", function () {
   toggleActiveDataset("risk_level");
   // updateLegend("total_cases");
+  console.log(popup);
   activeIndicator = "risk_level";
   toggleActiveButton("risk");
+  popup.removeFrom(map);
 });
 
 influenceButton.addEventListener("click", function () {
@@ -232,6 +234,7 @@ influenceButton.addEventListener("click", function () {
   // updateLegend("total_deaths");
   activeIndicator = "ability_level";
   toggleActiveButton("influence");
+  popup.removeFrom(map);
 });
 
 function toggleActiveDataset(activeDataset) {
@@ -318,3 +321,7 @@ dataLayer.on(carto.layer.events.FEATURE_CLICKED, (event) => {
     popup.openOn(map);
   }
 });
+
+// dataLayer.on(carto.layer.events.FEATURE_OUT, (event) => {
+//   popup.removeFrom(map);
+// });
