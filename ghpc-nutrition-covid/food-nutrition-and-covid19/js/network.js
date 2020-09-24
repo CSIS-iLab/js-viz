@@ -23,7 +23,7 @@ $(function () {
     },
     subtitle: {
       text:
-        "There is a dynamic relationship between food, nutrition, and Covid-19. Hover over each element to explore how each pandemic disruption has impacted nutrition.",
+        "There is a dynamic relationship between food, nutrition, and Covid-19. Hover over each element to explore some of the ways in which the pandemic has impacted nutrition.",
     },
     // Credits
     credits: {
@@ -48,33 +48,33 @@ $(function () {
         data: [
           {
             from: "Nutrition & COVID-19",
-            to: "Disrupted Supply Chains",
+            to: "Supply Chains",
             tip:
-              "The pandemic’s disruption of supply chains has led to increased food insecurity and rising prices.",
+              "The pandemic’s disruption of supply chains, including suspended transportation routes or reductions in personnel available to manage warehouses, has limited the supply of nutritious food and raised the prices of what is available.",
           },
           {
             from: "Nutrition & COVID-19",
-            to: "Interrupted Food Markets",
+            to: "Labor and Food Markets",
             tip:
-              "Agricultural labor and markets have been disrupted due to travel restrictions and social distancing practices.",
+              "The supply of agricultural labor, including migratory or seasonal workers available to plant and harvest food, has been disrupted in many places due to travel restrictions, while stricter hygiene measures, social distancing requirements, and limited availability of some products have made it more difficult and expensive to access nutritious food in markets.",
           },
           {
             from: "Nutrition & COVID-19",
-            to: "Loss of Income",
+            to: "Income Loss",
             tip:
-              "The economic impacts of the pandemic, particularly job loss and disruption to the informal economy, have made purchasing food more difficult.",
+              "The economic impacts of the pandemic, including furloughs, layoffs, the closure of businesses, and disruptions to the informal economy, have made it more difficult for families to prioritize the purchase of nutritious food, even when it is available.",
           },
           {
             from: "Nutrition & COVID-19",
-            to: "Poor Regulation",
+            to: "Regulatory Processes",
             tip:
-              "Lack of oversight has created greater potential for contamination or adulteration of street food, and price gouging in unstable markets.",
+              "Diminished regulatory oversight in some places has created greater potential for the sale of contaminated or adulterated products, as well as price gouging in unstable markets, making it more difficult for consumers to access safe and nutritious food for their families.",
           },
           {
             from: "Nutrition & COVID-19",
             to: "Misinformation",
             tip:
-              "False claims about certain foods and Covid-19, particularly about natural cures, have led to criminal activity selling these fake remedies.",
+              "False claims about certain foods and Covid-19, particularly around ways to prevent infection or cure Covid-19 naturally, have inspired criminal activity selling these fake remedies.",
           },
         ],
         // Node Color and Size
@@ -87,28 +87,28 @@ $(function () {
             },
           },
           {
-            id: "Disrupted Supply Chains",
+            id: "Supply Chains",
             color: "#E86259",
             marker: {
               radius: 80,
             },
           },
           {
-            id: "Interrupted Food Markets",
+            id: "Labor and Food Markets",
             color: "#8e6c89",
             marker: {
               radius: 80,
             },
           },
           {
-            id: "Loss of Income",
+            id: "Income Loss",
             color: "#EDA27C",
             marker: {
               radius: 80,
             },
           },
           {
-            id: "Poor Regulation",
+            id: "Regulatory Processes",
             color: "#0064A6",
             marker: {
               radius: 80,
