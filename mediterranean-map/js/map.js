@@ -166,17 +166,6 @@ L.tileLayer(
   }
 ).addTo(map);
 
-// Add basemap of *only* country labels from Mapbox using Third
-// Party CARTO Integration URL. Specify pane as 'labels' so above
-// getPane will take effect, putting labels on top of everything else
-L.tileLayer(
-  "https://api.mapbox.com/styles/v1/ilabmedia/ckfcrds6o1yxu1aqxezval4dr/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw",
-  {
-    maxZoom: 18,
-    // pane: "labels",
-  }
-).addTo(map);
-
 //Update footer to attribute the program
 map.attributionControl.addAttribution(
   '<a href="https://www.csis.org/programs/southeast-asia-program">CSIS Southeast Asia Program</a>'
@@ -289,29 +278,53 @@ dataLayer.on(carto.layer.events.FEATURE_CLICKED, (event) => {
     var data = event.data;
     var content = "<div>";
 
-    // var keys = ["country", "risk_type"];
-
     let riskPopup = `
-          <h2 class="popup__title"> 
-          ${data.country}
-          </h2>
-          <p>
+      <h2 class="popup__title"> 
+        ${data.country}
+      </h2>
+      <p>
+        Risk Type: 
+        <span>
           ${data.risk_type}
-          ${data.risk_level}
+        </span>
+      </p>
+      <p>
+        Risk Level: 
+        <span>
           ${data.risk_label}
-          </p>
-        `;
+        </span>
+      </p>
+      <p>
+        Risk Value: 
+        <span>
+          ${data.risk_level}
+        </span>
+      </p>
+    `;
 
     let influencePopup = `
-        <h2 class="popup__title"> 
+      <h2 class="popup__title"> 
         ${data.country}
-        </h2>
-        <p>
-        ${data.risk_type}
-        ${data.ability_level}
-        ${data.u_s_ability_to_influence}
-        </p>
-      `;
+      </h2>
+      <p>
+        Risk Type: 
+        <span>
+          ${data.risk_type}
+        </span>
+      </p>
+      <p>
+        US Ability to Influence: 
+        <span>
+          ${data.u_s_ability_to_influence}
+        </span>
+      </p>
+      <p>
+        Influence Value: 
+        <span>
+          ${data.ability_level}
+        </span>
+      </p>
+    `;
 
     activeIndicator === "risk_level"
       ? (content += riskPopup)
@@ -321,7 +334,3 @@ dataLayer.on(carto.layer.events.FEATURE_CLICKED, (event) => {
     popup.openOn(map);
   }
 });
-
-// dataLayer.on(carto.layer.events.FEATURE_OUT, (event) => {
-//   popup.removeFrom(map);
-// });
