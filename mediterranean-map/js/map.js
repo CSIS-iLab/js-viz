@@ -259,7 +259,7 @@ function setLayerStyle(activeDataset) {
 // }
 
 function toggleActiveButton(activeButton) {
-  if (activeButton == "risk") {
+  if (activeButton === "risk") {
     riskButton.classList.add("active");
     riskButton.classList.remove("active");
   } else {
