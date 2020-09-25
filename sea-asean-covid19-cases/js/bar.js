@@ -50,8 +50,6 @@ Highcharts.data({
 
     console.log(data);
 
-    console.log(this);
-
     populateSelect();
     renderChart(data[4]);
     return;
@@ -79,6 +77,19 @@ function populateSelect() {
 }
 
 function renderChart(data) {
+  console.log(data, data.length);
+  let labelData = [];
+
+  for (let i = 0; i < data.data.length; i++) {
+    if (data.data[i].unemployment_rate) {
+      labelData.push({
+        point: { x: i, y: data.data[i].y, xAxis: 0, yAxis: 0 },
+        text: data.data[i].unemployment_rate.toString(),
+      });
+    }
+  }
+  console.log(labelData);
+
   Highcharts.chart("hcContainer", {
     // General Chart Options
     chart: {
@@ -123,7 +134,7 @@ function renderChart(data) {
     tooltip: {
       useHTML: true,
       formatter: function () {
-        // console.log(this);
+        console.log(this);
         return (
           "<b>" +
           this.series.userOptions.name +
@@ -161,15 +172,9 @@ function renderChart(data) {
         },
       },
     },
-
     annotations: [
       {
-        labels: [
-          {
-            point: { x: 50, y: 200, xAxis: 0, yAxis: 0 },
-            text: "test",
-          },
-        ],
+        labels: labelData,
       },
     ],
 
