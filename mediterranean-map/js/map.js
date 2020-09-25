@@ -233,7 +233,7 @@ function toggleActiveDataset(activeDataset) {
 function setLayerStyle(activeDataset) {
   return `
   #layer {
-    polygon-fill: ramp([${activeDataset}], (#be6769, #c98281, #d49c9b, #ddb6b5, #e5d0d0), quantiles);
+    polygon-fill: ramp([${activeDataset}],  (#e5d0d0, #ddb6b5,  #d49c9b, #c98281, #be6769), quantiles);
         polygon-opacity: 0.8;
       }
       #layer::outline {
@@ -253,9 +253,6 @@ function setLayerStyle(activeDataset) {
 //     values = ["1", "100", ">1,000"];
 //   }
 
-//   legend.setAttribute("data-type", activeDataset);
-
-//   legendItems.forEach((li, i) => (li.innerHTML = values[i]));
 // }
 
 function toggleActiveButton(activeButton) {
