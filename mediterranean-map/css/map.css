@@ -73,7 +73,8 @@ hr {
 
 .legend {
   display: flex;
-  align-items: center;
+  align-items: left;
+  text-align: left;
   justify-content: space-evenly;
   margin: 0;
   padding: 0;
@@ -91,7 +92,7 @@ hr {
 .legend li {
   position: relative;
   display: flex;
-  align-items: center;
+  align-items: left;
   padding: 0;
   margin: 0;
 }
@@ -148,7 +149,7 @@ hr {
 
 .popup__values {
   margin: 0 !important;
-  font-size: 16px;
+  font-size: 14px;
 }
 
 .popup__values span {

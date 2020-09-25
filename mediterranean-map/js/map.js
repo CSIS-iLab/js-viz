@@ -282,19 +282,19 @@ dataLayer.on(carto.layer.events.FEATURE_CLICKED, (event) => {
       <h2 class="popup__title"> 
         ${data.country}
       </h2>
-      <p>
+      <p class="popup__values">
         Risk Type: 
         <span>
           ${data.risk_type}
         </span>
       </p>
-      <p>
+      <p class="popup__values">
         Risk Level: 
         <span>
           ${data.risk_label}
         </span>
       </p>
-      <p>
+      <p class="popup__values">
         Risk Value: 
         <span>
           ${data.risk_level}
@@ -306,19 +306,19 @@ dataLayer.on(carto.layer.events.FEATURE_CLICKED, (event) => {
       <h2 class="popup__title"> 
         ${data.country}
       </h2>
-      <p>
+      <p class="popup__values">
         Risk Type: 
         <span>
           ${data.risk_type}
         </span>
       </p>
-      <p>
+      <p class="popup__values">
         US Ability to Influence: 
         <span>
           ${data.u_s_ability_to_influence}
         </span>
       </p>
-      <p>
+      <p class="popup__values">
         Influence Value: 
         <span>
           ${data.ability_level}
