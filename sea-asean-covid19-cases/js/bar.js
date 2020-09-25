@@ -18,6 +18,7 @@ Highcharts.data({
       const benchmark2 = columns[i][5]
       const benchmark3 = columns[i][6]
       const text = columns[i][7]
+      
 
       if (!dataset[country]) {
         dataset[country] = {
@@ -81,10 +82,10 @@ function renderChart(data) {
     },
     // Chart Title and Subtitle
     title: {
-      text: "SEA ASEAN COVID19 CASES"
+      text: "Covid-19 and Government Responses in Southeast Asia"
     },
     subtitle: {
-      text: "Click and drag to zoom in"
+      text: "Effectiveness of government policies on Covid-19 cases and the economy. Availability of economic data may vary by country."
     },
     // Credits
     credits: {
@@ -104,20 +105,21 @@ function renderChart(data) {
     // Y Axis
     yAxis: {
       title: { 
-        text: "Number of New Cases"
+        text: "New cases per day"
       },
     },
     // x Axis
     xAxis: {
       type: "category",
       tickInterval: 15,
+      crosshair: true,
       },
     // Tooltip
     tooltip: {
       useHTML: true,
       formatter: function () {
         // console.log(this)
-          return '<b>' + this.series.userOptions.name + '</b><br>Date: ' + this.key + '<br>New Cases: ' + this.y + '<br>';
+          return '<b>' + this.series.userOptions.name + '</b><br>Date: ' + this.key + '<br>New Cases: ' + this.y + '<br>' + (this.point.options.benchmark_text || '');
       }
   },
 
@@ -139,6 +141,11 @@ function renderChart(data) {
         
       }
     },
+
+    // annotations: [{
+    //   labels: [{
+    //   }]
+  // }],
 
   series:[data],
 
