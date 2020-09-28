@@ -84,7 +84,7 @@ function renderChart(data) {
     if (data.data[i].unemployment_rate) {
       labelData.push({
         point: { x: i, y: data.data[i].y, xAxis: 0, yAxis: 0 },
-        text: data.data[i].unemployment_rate.toString(),
+        text: "Unemployment Rate: " + data.data[i].unemployment_rate.toString() + "%",
       });
     }
   }
@@ -144,7 +144,7 @@ function renderChart(data) {
           this.y +
           "<br>" +
           (this.point.options.benchmark_text || "") +
-          "<ul><li>" +
+          ("<ul><li>" || "") +
           (this.point.options.benchmark1 || "") +
           "</li><li>" +
           (this.point.options.benchmark2 || "") +
