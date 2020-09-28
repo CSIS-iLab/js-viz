@@ -22,7 +22,8 @@ Highcharts.data({
         dataset[country] = {
           name: country,
           data: [],
-          // categories: []
+          event1:[],
+          categories: [],
         };
       }
 
@@ -31,6 +32,16 @@ Highcharts.data({
         y: cases,
         unemployment_rate: employment,
         benchmark_text: text,
+        benchmark1: benchmark1,
+        benchmark2: benchmark2,
+        benchmark3: benchmark3,
+      });
+
+      dataset[country].event1.push({
+        event: benchmark1,
+      });
+
+      dataset[country].categories.push({
         benchmark1: benchmark1,
         benchmark2: benchmark2,
         benchmark3: benchmark3,
@@ -44,7 +55,6 @@ Highcharts.data({
       optionSelect.push({
         name: data[value].name,
         data: data[value].data,
-        categories: data[value].categories,
       });
     }
 
@@ -77,7 +87,7 @@ function populateSelect() {
 }
 
 function renderChart(data) {
-  console.log(data, data.length);
+  console.log(data, data.data.length);
   let labelData = [];
 
   for (let i = 0; i < data.data.length; i++) {
@@ -91,7 +101,8 @@ function renderChart(data) {
       });
     }
   }
-  console.log(labelData);
+
+  // console.log(labelData);
 
   Highcharts.chart("hcContainer", {
     // General Chart Options
@@ -137,7 +148,7 @@ function renderChart(data) {
     tooltip: {
       useHTML: true,
       formatter: function () {
-        console.log(this);
+        // console.log(this);
         return (
           "<b>" +
           this.series.userOptions.name +
@@ -147,13 +158,13 @@ function renderChart(data) {
           this.y +
           "<br>" +
           (this.point.options.benchmark_text || "") +
-          ("<ul><li>" || "") +
+          ("<ul>" || "" + "<li>") +
           (this.point.options.benchmark1 || "") +
-          "</li><li>" +
+          "</li>" || "" + "<li>" +
           (this.point.options.benchmark2 || "") +
-          "</li><li>" +
+          "</li>" || "" + "<li>" +
           (this.point.options.benchmark3 || "") +
-          "</li></ul>" || ""
+          "</li></ul>"
         );
         // (this.point.options.benchmark_text || '')
       },
