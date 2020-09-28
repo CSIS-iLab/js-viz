@@ -84,7 +84,10 @@ function renderChart(data) {
     if (data.data[i].unemployment_rate) {
       labelData.push({
         point: { x: i, y: data.data[i].y, xAxis: 0, yAxis: 0 },
-        text: "Unemployment Rate: " + data.data[i].unemployment_rate.toString() + "%",
+        text:
+          "Unemployment Rate: " +
+          Highcharts.numberFormat(data.data[i].unemployment_rate.toString(), 2) +
+          "%",
       });
     }
   }
@@ -150,7 +153,7 @@ function renderChart(data) {
           (this.point.options.benchmark2 || "") +
           "</li><li>" +
           (this.point.options.benchmark3 || "") +
-          "</li></ul>"
+          "</li></ul>" || ""
         );
         // (this.point.options.benchmark_text || '')
       },
