@@ -22,8 +22,6 @@ Highcharts.data({
         dataset[country] = {
           name: country,
           data: [],
-          event1:[],
-          categories: [],
         };
       }
 
@@ -37,15 +35,7 @@ Highcharts.data({
         benchmark3: benchmark3,
       });
 
-      dataset[country].event1.push({
-        event: benchmark1,
-      });
-
-      dataset[country].categories.push({
-        benchmark1: benchmark1,
-        benchmark2: benchmark2,
-        benchmark3: benchmark3,
-      });
+      
     }
 
     const data = Object.values(dataset);
@@ -56,6 +46,8 @@ Highcharts.data({
         name: data[value].name,
         data: data[value].data,
       });
+      // populate event with first benchmark1 !== null
+      data[value].event = data[value].data.find(d => d.benchmark1 !== null)
     }
 
     console.log(data);
@@ -76,6 +68,7 @@ function populateSelect() {
     optionEl.value = i;
     optionEl.text = option.name;
     select.appendChild(optionEl);
+    
   });
 
   // Destroy & redraw chart
@@ -87,7 +80,7 @@ function populateSelect() {
 }
 
 function renderChart(data) {
-  console.log(data, data.data.length);
+  console.log(data);
   let labelData = [];
 
   for (let i = 0; i < data.data.length; i++) {
@@ -108,6 +101,7 @@ function renderChart(data) {
     // General Chart Options
     chart: {
       type: "column",
+      width: 800,
     },
     // Chart Title and Subtitle
     title: {
@@ -143,6 +137,20 @@ function renderChart(data) {
       type: "category",
       tickInterval: 15,
       crosshair: true,
+      // plotLines: [{
+      //   color: 'red', // Color value
+      //   value: data.event.name, // Value of where the line will appear
+      //   width: 5 // Width of the line    
+      // }]
+      plotBands: {
+        color: 'red', // Color value
+        from: data.event.name, // Start of the plot band
+        to: data.event.name // End of the plot band
+      },
+      label: { 
+        text: data.event.benchmark1, // Content of the label. 
+        align: 'left', // Positioning of the label. 
+      },
     },
     // Tooltip
     tooltip: {
