@@ -42,12 +42,13 @@ Highcharts.data({
 
     // populating dropdown
     for (let value in data) {
+      // populate event with first benchmark1 !== null
+      data[value].event = data[value].data.find(d => d.benchmark1 !== null)
       optionSelect.push({
         name: data[value].name,
         data: data[value].data,
+        event: data[value].event
       });
-      // populate event with first benchmark1 !== null
-      data[value].event = data[value].data.find(d => d.benchmark1 !== null)
     }
 
     console.log(data);
@@ -144,8 +145,8 @@ function renderChart(data) {
       // }]
       plotBands: {
         color: 'red', // Color value
-        from: data.event.name, // Start of the plot band
-        to: data.event.name // End of the plot band
+        from: data.event.name,
+        to: data.event.name
       },
       label: { 
         text: data.event.benchmark1, // Content of the label. 
@@ -158,21 +159,17 @@ function renderChart(data) {
       formatter: function () {
         // console.log(this);
         return (
-          "<b>" +
-          this.series.userOptions.name +
-          "</b><br>Date: " +
-          this.key +
-          "<br>New Cases: " +
-          this.y +
-          "<br>" +
-          (this.point.options.benchmark_text || "") +
+          `<b>${this.series.userOptions.name}</b>
+          <br>Date: ${this.key}<br>
+          New Cases: ${this.y}<br>
+          ${(this.point.options.benchmark_text || "") +
           ("<ul>" || "" + "<li>") +
           (this.point.options.benchmark1 || "") +
           "</li>" || "" + "<li>" +
           (this.point.options.benchmark2 || "") +
           "</li>" || "" + "<li>" +
-          (this.point.options.benchmark3 || "") +
-          "</li></ul>"
+          (this.point.options.benchmark3 || "")}
+          </li></ul>`
         );
         // (this.point.options.benchmark_text || '')
       },
