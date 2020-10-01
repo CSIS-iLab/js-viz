@@ -1,3 +1,64 @@
+$(document).ready(function () {
+  // Setup - add a text input to each footer cell
+  $("#table tfoot th").each(function () {
+    var title = $(this).text();
+    $(this).html('<input type="text" placeholder="Search ' + title + '" />');
+  });
+
+  var table = $("#table").DataTable({
+    responsive: true,
+    data: data,
+    columns: [
+      { title: "Mainland Counterpart", data: "Mainland Counterpart" },
+      {
+        title: "Region",
+        data: "Xinjiang Region",
+        className: "dt-body-left",
+      },
+      {
+        title: "Prioritized Industry",
+        data: "Prioritized Industry",
+        className: "dt-body-left",
+      },
+      {
+        title: "Affiliated Pairing Companies",
+        data: "Affiliated Pairing Companies",
+        className: "dt-body-left",
+      },
+      {
+        title: "Linked Infrastructure Projects",
+        data: "Linked Infrastructure Projects",
+        className: "dt-body-left",
+      },
+    ],
+    paging: false,
+    searching: false,
+    info: false,
+    order: [],
+    columnDefs: [
+      {
+        targets: [1, 2, 3, 4],
+        orderable: false,
+      },
+    ],
+    initComplete: function () {
+      // Apply the search
+      this.api()
+        .columns()
+        .every(function () {
+          var that = this;
+
+          $("input", this.footer()).on("keyup change clear", function () {
+            console.log(this.value)
+            if (that.search() == this.value) {
+              that.search(this.value).draw();
+            }
+          });
+        });
+    },
+  });
+});
+
 const data = [
   {
     "Mainland Counterpart": "Beijing",
@@ -193,43 +254,3 @@ const data = [
       '<a target="_blank"  href="http://www.xinjiang.gov.cn/xinjiang/dzdt/201912/09f5b8e1af3e4b269a1a9da446a95bc5.shtml">Yanqi Hebei Bazhou  Ecological Industrial Park; 53 of the first batch of listed aided construction projects and 23 key industrial aid  enterprises in Xinjiang.</a> <a target="_blank"  href="http://stdaily.com/02/xinjiang/2019-07/09/content_776362.shtml">Tashidian Coal Mine</a>',
   },
 ];
-
-$(document).ready(function () {
-  $("#table").DataTable({
-    responsive: true,
-    data: data,
-    columns: [
-      { title: "Mainland Counterpart", data: "Mainland Counterpart" },
-      {
-        title: "Region",
-        data: "Xinjiang Region",
-        className: "dt-body-right",
-      },
-      {
-        title: "Prioritized Industry",
-        data: "Prioritized Industry",
-        className: "dt-body-right",
-      },
-      {
-        title: "Affiliated Pairing Companies",
-        data: "Affiliated Pairing Companies",
-        className: "dt-body-right",
-      },
-      {
-        title: "Linked Infrastructure Projects",
-        data: "Linked Infrastructure Projects",
-        className: "dt-body-right",
-      },
-    ],
-    paging: false,
-    searching: false,
-    info: false,
-    order: [],
-    columnDefs: [
-      {
-        targets: [1, 2, 3, 4],
-        orderable: false,
-      },
-    ],
-  });
-});
