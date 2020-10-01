@@ -12,12 +12,13 @@ table {
 }
 
 th,
-td {
+td,
+caption {
   min-width: 50px;
   font-family: source-sans-pro, sans-serif;
 }
 
-tbody td:first-child {
+tbody td:first-child, caption {
   font-weight: bold;
 }
 
@@ -34,7 +35,7 @@ tbody td:first-child {
   font-weight: normal;
 }
 
-table.dataTable tfoot td {
+table.dataTable tfoot tr {
   padding: 0.5rem 0.25rem 0.5rem 0;
   font-size: 14px;
   color: #666;
@@ -51,6 +52,9 @@ a:hover {
   text-decoration: underline;
 }
 
+label {
+  display: none
+}
 /*
  * Sort styling
  */

@@ -2,7 +2,7 @@ $(document).ready(function () {
   // Setup - add a text input to each footer cell
   $("#table tfoot th").each(function () {
     var title = $(this).text();
-    $(this).html('<input type="text" placeholder="Search ' + title + '" />');
+    $(this).html('<input type="text" placeholder="Search: ' + title + '" />');
   });
 
   var table = $("#table").DataTable({
@@ -32,7 +32,7 @@ $(document).ready(function () {
       },
     ],
     paging: false,
-    searching: false,
+    searching: true,
     info: false,
     order: [],
     columnDefs: [
@@ -50,13 +50,14 @@ $(document).ready(function () {
 
           $("input", this.footer()).on("keyup change clear", function () {
             console.log(this.value)
-            if (that.search() == this.value) {
+            if (that.search() !== this.value) {
               that.search(this.value).draw();
             }
           });
         });
     },
   });
+
 });
 
 const data = [
@@ -136,9 +137,9 @@ const data = [
       "Altay City; Habahe County; Burqin County and Jimunai County in Altay Region",
     "Prioritized Industry": "Agriculture; Medicine; Tourism",
     "Affiliated Pairing Companies":
-      '<a target="_blank"  href="http://jldrc.jl.gov.cn/jgcs/dqc/yjdt/201601/t20160106_5227256.html">Changchun FAW-Volkswagen Co.; Ltd.  (长春一汽大众有限公司); Changchun Haoyue Halal Meat Co.; Ltd</a>.; (2015) <a target="_blank"  href="http://jldrc.jl.gov.cn/jgcs/dqc/yjdt/201510/t20151023_5227249.html">Xinji International Trade Co.; Ltd.;  Xinjiang Ashele Copper Co.; Ltd.; Xinjiang Kangyuan Biotechnology Co.; Ltd.;</a> J<a target="_blank"  href="http://jl.cri.cn/2019-01-18/78307e2e-2d2b-b621-cdc0-e01234122f06.html">ilin Northeast Asia Publishing and  Media Group; Jilin Publishing Group; "China National Geographic" magazine;</a>',
+      '<a target="_blank"  href="http://jldrc.jl.gov.cn/jgcs/dqc/yjdt/201601/t20160106_5227256.html">Changchun FAW-Volkswagen Co.; Ltd.  (长春一汽大众有限公司); Changchun Haoyue Halal Meat Co.; Ltd</a>.; (2015) <a target="_blank"  href="http://jldrc.jl.gov.cn/jgcs/dqc/yjdt/201510/t20151023_5227249.html">Xinji International Trade Co.; Ltd.;  Xinjiang Ashele Copper Co.; Ltd.; Xinjiang Kangyuan Biotechnology Co.; Ltd.;</a> <a target="_blank"  href="http://jl.cri.cn/2019-01-18/78307e2e-2d2b-b621-cdc0-e01234122f06.html">Jilin Northeast Asia Publishing and  Media Group; Jilin Publishing Group; "China National Geographic" magazine;</a>',
     "Linked Infrastructure Projects":
-      'A<a target="_blank"  href="http://district.ce.cn/zg/201910/09/t20191009_33292457.shtml">ltay Vocational and Technical College; Altay City  Teacher Training Complex; Altay City Honggun Town Boarding School</a>; (2015) <a target="_blank"  href="http://www.ce.cn/xwzx/gnsz/gdxw/201707/13/t20170713_24182990.shtml">Jiangxi New Village; Akto County Small and  Micro Business Incubation Park; Jiangxi Industrial Park;</a> <a target="_blank"  href="http://jldrc.jl.gov.cn/jgcs/dqc/yjdt/201510/t20151023_5227249.html">Jilin New Village of Qibal Township;  Habahe County People\'s Hospital; Habahe Middle School; and Habahe County Experimental Station of Altai District; Jilin  Academy of Agricultural Sciences</a>',
+      '<a target="_blank"  href="http://district.ce.cn/zg/201910/09/t20191009_33292457.shtml">Altay Vocational and Technical College; Altay City  Teacher Training Complex; Altay City Honggun Town Boarding School</a>; (2015) <a target="_blank"  href="http://www.ce.cn/xwzx/gnsz/gdxw/201707/13/t20170713_24182990.shtml">Jiangxi New Village; Akto County Small and  Micro Business Incubation Park; Jiangxi Industrial Park;</a> <a target="_blank"  href="http://jldrc.jl.gov.cn/jgcs/dqc/yjdt/201510/t20151023_5227249.html">Jilin New Village of Qibal Township;  Habahe County People\'s Hospital; Habahe Middle School; and Habahe County Experimental Station of Altai District; Jilin  Academy of Agricultural Sciences</a>',
   },
   {
     "Mainland Counterpart": "Jiangxi Province",
