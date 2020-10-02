@@ -1,9 +1,9 @@
 $(document).ready(function () {
   // Setup - add a text input to each footer cell
-  $("#table tfoot th").each(function () {
-    var title = $(this).text();
-    $(this).html('<input type="text" placeholder="Search: ' + title + '" />');
-  });
+  // $("#table tfoot th").each(function () {
+  //   var title = $(this).text();
+  //   $(this).html('<input type="text" placeholder="Search: ' + title + '" />');
+  // });
 
   var table = $("#table").DataTable({
     responsive: true,
@@ -32,6 +32,8 @@ $(document).ready(function () {
       },
     ],
     paging: false,
+    // scrollY: "400px",
+    // scrollCollapse: true,
     searching: true,
     info: false,
     order: [],
@@ -41,23 +43,25 @@ $(document).ready(function () {
         orderable: false,
       },
     ],
-    initComplete: function () {
-      // Apply the search
-      this.api()
-        .columns()
-        .every(function () {
-          var that = this;
+    // initComplete: function () {
+    //   // Apply the search
+    //   this.api()
+    //     .columns()
+    //     .every(function () {
+    //       var that = this;
 
-          $("input", this.footer()).on("keyup change clear", function () {
-            console.log(this.value)
-            if (that.search() !== this.value) {
-              that.search(this.value).draw();
-            }
-          });
-        });
-    },
+    //       $("input", this.footer()).on("keyup change clear", function () {
+    //         console.log(this.value)
+    //         if (that.search() !== this.value) {
+    //           that.search(this.value).draw();
+    //         }
+    //       });
+    //     });
+    // },
   });
-
+  $('#searchField').keyup(function(){
+    table.search($(this).val()).draw() ;
+  })
 });
 
 const data = [

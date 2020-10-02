@@ -11,6 +11,13 @@ table {
   line-height: 1.2;
 }
 
+table.dataTable tbody td {
+  vertical-align: top;
+}
+
+/* #wrapper{
+  max-width: 800px;
+} */
 th,
 td,
 caption {
@@ -52,8 +59,13 @@ a:hover {
   text-decoration: underline;
 }
 
-label {
-  display: none
+#table_filter {
+  display: none;
+}
+
+#search{
+  margin-left: 14rem;
+  font-family: source-sans-pro, sans-serif;
 }
 /*
  * Sort styling
