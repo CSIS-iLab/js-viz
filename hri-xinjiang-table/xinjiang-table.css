@@ -74,7 +74,8 @@ a:hover {
 }
 
 #table_filter {
-  padding-bottom: 1rem
+  padding-bottom: 1rem;
+  margin-right:20rem;
 }
 
 /*
