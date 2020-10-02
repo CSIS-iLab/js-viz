@@ -5,7 +5,6 @@ table.dataTable thead th {
 }
 
 table {
-  max-width: 800px;
   border-collapse: collapse;
   border-spacing: 0;
   line-height: 1.2;
@@ -20,7 +19,8 @@ table.dataTable tbody td {
 } */
 th,
 td,
-caption {
+caption,
+#table_filter {
   min-width: 50px;
   font-family: source-sans-pro, sans-serif;
 }
@@ -60,13 +60,9 @@ a:hover {
 }
 
 #table_filter {
-  display: none;
+  margin-right:20rem
 }
 
-#search{
-  margin-left: 14rem;
-  font-family: source-sans-pro, sans-serif;
-}
 /*
  * Sort styling
  */
