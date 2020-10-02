@@ -14,7 +14,7 @@ table.dataTable tbody td {
   vertical-align: top;
 }
 
-.odd .child { 
+.odd + .child { 
   background-color: #f9f9f9;
 
 }
