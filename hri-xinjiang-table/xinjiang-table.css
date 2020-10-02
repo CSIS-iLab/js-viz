@@ -14,18 +14,27 @@ table.dataTable tbody td {
   vertical-align: top;
 }
 
+.odd .child { 
+  background-color: #f9f9f9;
+
+}
 /* #wrapper{
   max-width: 800px;
 } */
+
 th,
 td,
-caption,
+#title,
 #table_filter {
   min-width: 50px;
   font-family: source-sans-pro, sans-serif;
 }
 
-tbody td:first-child, caption {
+#title {
+text-align: center;
+}
+
+tbody td:first-child{
   font-weight: bold;
 }
 
@@ -36,6 +45,11 @@ tbody td:first-child, caption {
 .dtr-details li {
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap
+}
+
+td.child {
+  border-top: 0 !important;
 }
 
 .child .dtr-data {
@@ -60,7 +74,7 @@ a:hover {
 }
 
 #table_filter {
-  margin-right:20rem
+  padding-bottom: 1rem
 }
 
 /*
