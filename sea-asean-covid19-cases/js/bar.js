@@ -89,7 +89,6 @@ function renderChart(data) {
       labelData.push({
         point: { x: i, y: data.data[i].y, xAxis: 0, yAxis: 0 },
         text:
-          "Unemployment Rate: " +
           Highcharts.numberFormat(data.data[i].unemployment_rate.toString(), 2) +
           "%",
       });
@@ -159,19 +158,15 @@ function renderChart(data) {
       formatter: function () {
         // console.log(this);
         return (
-          `<b>${this.series.userOptions.name}</b>
-          <br>Date: ${this.key}<br>
+          `Date: ${this.key}<br>
           New Cases: ${this.y}<br>
-          ${(this.point.options.benchmark_text || "") +
-          ("<ul>" || "" + "<li>") +
-          (this.point.options.benchmark1 || "") +
-          "</li>" || "" + "<li>" +
-          (this.point.options.benchmark2 || "") +
-          "</li>" || "" + "<li>" +
-          (this.point.options.benchmark3 || "")}
-          </li></ul>`
+          <ul>
+          <li> ${(this.point.options.benchmark1 || "")} </li>
+          <li> ${(this.point.options.benchmark2 || "")} </li>
+          <li> ${(this.point.options.benchmark3 || "")} </li>
+          </ul>
+          ${(this.point.options.benchmark_text || "")}`
         );
-        // (this.point.options.benchmark_text || '')
       },
     },
 
@@ -194,6 +189,12 @@ function renderChart(data) {
     annotations: [
       {
         labels: labelData,
+        labelOptions: {
+          backgroundColor: "rgba(255,255,255, 0)",
+          verticalAlign: "top",
+          borderColor: "rgba(255,255,255,0)",
+          fontWeight: 'bold'
+        },
       },
     ],
 
