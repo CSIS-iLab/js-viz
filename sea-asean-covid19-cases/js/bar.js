@@ -87,7 +87,7 @@ function renderChart(data) {
   for (let i = 0; i < data.data.length; i++) {
     if (data.data[i].unemployment_rate) {
       labelData.push({
-        point: { x: i, y: data.data[i].y, xAxis: 0, yAxis: 0 },
+        point: { x: i, y: 400, xAxis: 0, yAxis: 0 },
         text:
           Highcharts.numberFormat(data.data[i].unemployment_rate.toString(), 2) +
           "%",
@@ -109,7 +109,7 @@ function renderChart(data) {
     },
     subtitle: {
       text:
-        "Effectiveness of government policies on Covid-19 cases and the economy. Availability of economic data may vary by country.",
+        "Effectiveness of government policies on Covid-19 cases and the economy. Availability of economic data may vary by country. (Percentages indicate unemployment rate)",
     },
     // Credits
     credits: {
@@ -187,13 +187,12 @@ function renderChart(data) {
       },
     },
     annotations: [
-      {
+      { 
         labels: labelData,
         labelOptions: {
           backgroundColor: "rgba(255,255,255, 0)",
           verticalAlign: "top",
           borderColor: "rgba(255,255,255,0)",
-          fontWeight: 'bold'
         },
       },
     ],
