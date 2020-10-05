@@ -14,24 +14,13 @@ Highcharts.chart("hcContainer", {
   },
   // Chart Title and Subtitle
   title: {
-    text: "Support by Region",
+    text: "Approved Support by Region",
   },
   // Credits
   credits: {
     enabled: true,
     href: false,
     text: "CSIS Economics Program | Source: IFI press releases",
-  },
-  // Chart Legend
-  legend: {
-    // enabled: false,
-    title: {
-      text:
-        '<br/><span style="font-size: 12px; color: #808080; font-weight: normal">(Click to hide)</span>',
-    },
-    align: "center",
-    verticalAlign: "bottom",
-    layout: "horizontal",
   },
   // Y Axis
   yAxis: {

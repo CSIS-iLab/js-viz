@@ -10,7 +10,7 @@ Highcharts.chart('hcContainer', {
     },
     // Chart Title and Subtitle
     title: {
-      text: "Support by Month"
+      text: "Approved Support by Month"
     },
     subtitle: {
       text: ""
@@ -23,15 +23,6 @@ Highcharts.chart('hcContainer', {
     },
     // Colors
     colors: ["#004165"],
-    // Chart Legend
-    legend: {
-      title: {
-        text: '<br/><span style="font-size: 12px; color: #808080; font-weight: normal">(Click to hide)</span>'
-      },
-      align: 'center',
-      verticalAlign: 'bottom',
-      layout: 'horizontal'
-    },
     // Y Axis
     yAxis: {
       title: { 
@@ -48,6 +39,8 @@ Highcharts.chart('hcContainer', {
     // Tooltip
     tooltip: {
       valueDecimals: 1,
+      valuePrefix: "$",
+      valueSuffix: " billion",
     },
     // Additional Plot Options
     plotOptions:
