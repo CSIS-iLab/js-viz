@@ -43,7 +43,10 @@ Highcharts.data({
     // populating dropdown
     for (let value in data) {
       // populate event with first benchmark1 !== null
-      data[value].event = data[value].data.find(d => d.benchmark1 !== null)
+      let event = data[value].data.find((d) => d.benchmark1 !== null);
+      // Add index key to event object to create plotband
+      event["index"] = data[value].data.indexOf(event);
+      data[value].event = event;
       optionSelect.push({
         name: data[value].name,
         data: data[value].data,
@@ -82,12 +85,13 @@ function populateSelect() {
 
 function renderChart(data) {
   console.log(data);
+  let maxCases = Math.max(...data.data.map((d) => d.y));
   let labelData = [];
 
   for (let i = 0; i < data.data.length; i++) {
     if (data.data[i].unemployment_rate) {
       labelData.push({
-        point: { x: i, y: 400, xAxis: 0, yAxis: 0 },
+        point: { x: i, y: maxCases, xAxis: 0, yAxis: 0 },
         text:
           Highcharts.numberFormat(data.data[i].unemployment_rate.toString(), 2) +
           "%",
@@ -144,8 +148,8 @@ function renderChart(data) {
       // }]
       plotBands: {
         color: 'red', // Color value
-        from: data.event.name,
-        to: data.event.name
+        from: data.event.index,
+        to: data.event.index
       },
       label: { 
         text: data.event.benchmark1, // Content of the label. 
