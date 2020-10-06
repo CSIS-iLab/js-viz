@@ -1,219 +1,205 @@
-L.Control.Zoomslider = (function() {
-  var Knob = L.Draggable.extend({
-    initialize: function(element, stepHeight, knobHeight) {
-      L.Draggable.prototype.initialize.call(this, element, element);
-      this._element = element;
+L.Control.Zoomslider = (function () {
 
-      this._stepHeight = stepHeight;
-      this._knobHeight = knobHeight;
+	var Knob = L.Draggable.extend({
+		initialize: function (element, stepHeight, knobHeight) {
+			L.Draggable.prototype.initialize.call(this, element, element);
+			this._element = element;
 
-      this.on(
-        "predrag",
-        function() {
-          this._newPos.x = 0;
-          this._newPos.y = this._adjust(this._newPos.y);
-        },
-        this
-      );
-    },
+			this._stepHeight = stepHeight;
+			this._knobHeight = knobHeight;
 
-    _adjust: function(y) {
-      var value = Math.round(this._toValue(y));
-      value = Math.max(0, Math.min(this._maxValue, value));
-      return this._toY(value);
-    },
+			this.on('predrag', function () {
+				this._newPos.x = 0;
+				this._newPos.y = this._adjust(this._newPos.y);
+			}, this);
+		},
 
-    // y = k*v + m
-    _toY: function(value) {
-      return this._k * value + this._m;
-    },
-    // v = (y - m) / k
-    _toValue: function(y) {
-      return (y - this._m) / this._k;
-    },
+		_adjust: function (y) {
+			var value = Math.round(this._toValue(y));
+			value = Math.max(0, Math.min(this._maxValue, value));
+			return this._toY(value);
+		},
 
-    setSteps: function(steps) {
-      var sliderHeight = steps * this._stepHeight;
-      this._maxValue = steps - 1;
+		// y = k*v + m
+		_toY: function (value) {
+			return this._k * value + this._m;
+		},
+		// v = (y - m) / k
+		_toValue: function (y) {
+			return (y - this._m) / this._k;
+		},
 
-      // conversion parameters
-      // the conversion is just a common linear function.
-      this._k = -this._stepHeight;
-      this._m = sliderHeight - (this._stepHeight + this._knobHeight) / 2;
-    },
+		setSteps: function (steps) {
+			var sliderHeight = steps * this._stepHeight;
+			this._maxValue = steps - 1;
 
-    setPosition: function(y) {
-      L.DomUtil.setPosition(this._element, L.point(0, this._adjust(y)));
-    },
+			// conversion parameters
+			// the conversion is just a common linear function.
+            this._k = -this._stepHeight;
+            this._m = sliderHeight - (this._stepHeight + this._knobHeight) / 2;
+		},
 
-    setValue: function(v) {
-      this.setPosition(this._toY(v));
-    },
+		setPosition: function (y) { 
+			L.DomUtil.setPosition(this._element,
+								  L.point(0, this._adjust(y)));
+		},
 
-    getValue: function() {
-      return this._toValue(L.DomUtil.getPosition(this._element).y);
-    }
-  });
+		setValue: function (v) {
+			this.setPosition(this._toY(v));
+		},
 
-  var Zoomslider = L.Control.extend({
-    options: {
-      position: "topleft",
-      // Height of zoom-slider.png in px
-      stepHeight: 8,
-      // Height of the knob div in px (including border)
-      knobHeight: 6,
-      styleNS: "leaflet-control-zoomslider"
-    },
+		getValue: function () {
+			return this._toValue(L.DomUtil.getPosition(this._element).y);
+		}
+	});
 
-    onAdd: function(map) {
-      this._map = map;
-      this._ui = this._createUI();
-      this._knob = new Knob(
-        this._ui.knob,
-        this.options.stepHeight,
-        this.options.knobHeight
-      );
+	var Zoomslider = L.Control.extend({
+		options: {
+			position: 'topleft',
+			// Height of zoom-slider.png in px
+			stepHeight: 10,
+			// Height of the knob div in px (including border)
+			knobHeight: 6,
+			styleNS: 'leaflet-control-zoomslider'
+		},
 
-      map
-        .whenReady(this._initKnob, this)
-        .whenReady(this._initEvents, this)
-        .whenReady(this._updateSize, this)
-        .whenReady(this._updateKnobValue, this)
-        .whenReady(this._updateDisabled, this);
-      return this._ui.bar;
-    },
+		onAdd: function (map) {
+			this._map = map;
+			this._ui = this._createUI();
+			this._knob = new Knob(this._ui.knob,
+								  this.options.stepHeight,
+								  this.options.knobHeight);
 
-    onRemove: function(map) {
-      map
-        .off("zoomlevelschange", this._updateSize, this)
-        .off("zoomend zoomlevelschange", this._updateKnobValue, this)
-        .off("zoomend zoomlevelschange", this._updateDisabled, this);
-    },
+			map .whenReady(this._initKnob,           this)
+				.whenReady(this._initEvents,         this)
+				.whenReady(this._updateSize,         this)
+				.whenReady(this._updateKnobValue,    this)
+				.whenReady(this._updateDisabled,     this);
+			return this._ui.bar;
+		},
 
-    _createUI: function() {
-      var ui = {},
-        ns = this.options.styleNS;
+		onRemove: function (map) {
+			map .off('zoomlevelschange',         this._updateSize,      this)
+				.off('zoomend zoomlevelschange', this._updateKnobValue, this)
+				.off('zoomend zoomlevelschange', this._updateDisabled,  this);
+		},
 
-      (ui.bar = L.DomUtil.create("div", ns + " leaflet-bar")),
-        (ui.zoomIn = this._createZoomBtn("in", "top", ui.bar)),
-        (ui.wrap = L.DomUtil.create(
-          "div",
-          ns + "-wrap leaflet-bar-part",
-          ui.bar
-        )),
-        (ui.zoomOut = this._createZoomBtn("out", "bottom", ui.bar)),
-        (ui.body = L.DomUtil.create("div", ns + "-body", ui.wrap)),
-        (ui.knob = L.DomUtil.create("div", ns + "-knob"));
+		_createUI: function () {
+			var ui = {},
+				ns = this.options.styleNS;
 
-      L.DomEvent.disableClickPropagation(ui.bar);
-      L.DomEvent.disableClickPropagation(ui.knob);
+			ui.bar     = L.DomUtil.create('div', ns + ' leaflet-bar'),
+			ui.zoomIn  = this._createZoomBtn('in', 'top', ui.bar),
+			ui.wrap    = L.DomUtil.create('div', ns + '-wrap leaflet-bar-part', ui.bar),
+			ui.zoomOut = this._createZoomBtn('out', 'bottom', ui.bar),
+			ui.body    = L.DomUtil.create('div', ns + '-body', ui.wrap),
+			ui.knob    = L.DomUtil.create('div', ns + '-knob');
 
-      return ui;
-    },
-    _createZoomBtn: function(zoomDir, end, container) {
-      var classDef =
-          this.options.styleNS +
-          "-" +
-          zoomDir +
-          " leaflet-bar-part" +
-          " leaflet-bar-part-" +
-          end,
-        link = L.DomUtil.create("a", classDef, container);
+			L.DomEvent.disableClickPropagation(ui.bar);
+			L.DomEvent.disableClickPropagation(ui.knob);
 
-      link.href = "#";
-      link.title = "Zoom " + zoomDir;
+			return ui;
+		},
+		_createZoomBtn: function (zoomDir, end, container) {
+			var classDef = this.options.styleNS + '-' + zoomDir
+					+ ' leaflet-bar-part'
+					+ ' leaflet-bar-part-' + end,
+				link = L.DomUtil.create('a', classDef, container);
 
-      L.DomEvent.on(link, "click", L.DomEvent.preventDefault);
+			link.href = '#';
+			link.title = 'Zoom ' + zoomDir;
 
-      return link;
-    },
+			L.DomEvent.on(link, 'click', L.DomEvent.preventDefault);
 
-    _initKnob: function() {
-      this._knob.enable();
-      this._ui.body.appendChild(this._ui.knob);
-    },
-    _initEvents: function(map) {
-      this._map
-        .on("zoomlevelschange", this._updateSize, this)
-        .on("zoomend zoomlevelschange", this._updateKnobValue, this)
-        .on("zoomend zoomlevelschange", this._updateDisabled, this);
+			return link;
+		},
 
-      L.DomEvent.on(this._ui.body, "click", this._onSliderClick, this);
-      L.DomEvent.on(this._ui.zoomIn, "click", this._zoomIn, this);
-      L.DomEvent.on(this._ui.zoomOut, "click", this._zoomOut, this);
+		_initKnob: function () {
+			this._knob.enable();
+			this._ui.body.appendChild(this._ui.knob);
+		},
+		_initEvents: function (map) {
+			this._map
+				.on('zoomlevelschange',         this._updateSize,      this)
+				.on('zoomend zoomlevelschange', this._updateKnobValue, this)
+				.on('zoomend zoomlevelschange', this._updateDisabled,  this);
 
-      this._knob.on("dragend", this._updateMapZoom, this);
-    },
+			L.DomEvent.on(this._ui.body,    'click', this._onSliderClick, this);
+			L.DomEvent.on(this._ui.zoomIn,  'click', this._zoomIn,        this);
+			L.DomEvent.on(this._ui.zoomOut, 'click', this._zoomOut,       this);
 
-    _onSliderClick: function(e) {
-      var first = e.touches && e.touches.length === 1 ? e.touches[0] : e,
-        y = L.DomEvent.getMousePosition(first, this._ui.body).y;
+			this._knob.on('dragend', this._updateMapZoom, this);
+		},
 
-      this._knob.setPosition(y);
-      this._updateMapZoom();
-    },
+		_onSliderClick: function (e) {
+			var first = (e.touches && e.touches.length === 1 ? e.touches[0] : e),
+				y = L.DomEvent.getMousePosition(first, this._ui.body).y;
 
-    _zoomIn: function(e) {
-      this._map.zoomIn(e.shiftKey ? 3 : 1);
-    },
-    _zoomOut: function(e) {
-      this._map.zoomOut(e.shiftKey ? 3 : 1);
-    },
+			this._knob.setPosition(y);
+			this._updateMapZoom();
+		},
 
-    _zoomLevels: function() {
-      var zoomLevels = this._map.getMaxZoom() - this._map.getMinZoom() + 1;
-      return zoomLevels < Infinity ? zoomLevels : 0;
-    },
-    _toZoomLevel: function(value) {
-      return value + this._map.getMinZoom();
-    },
-    _toValue: function(zoomLevel) {
-      return zoomLevel - this._map.getMinZoom();
-    },
+		_zoomIn: function (e) {
+			this._map.zoomIn(e.shiftKey ? 3 : 1);
+		},
+		_zoomOut: function (e) {
+			this._map.zoomOut(e.shiftKey ? 3 : 1);
+		},
 
-    _updateSize: function() {
-      var steps = this._zoomLevels();
+		_zoomLevels: function () {
+			var zoomLevels = this._map.getMaxZoom() - this._map.getMinZoom() + 1;
+			return zoomLevels < Infinity ? zoomLevels : 0;
+		},
+		_toZoomLevel: function (value) {
+			return value + this._map.getMinZoom();
+		},
+		_toValue: function (zoomLevel) {
+			return zoomLevel - this._map.getMinZoom();
+		},
 
-      this._ui.body.style.height = this.options.stepHeight * steps + "px";
-      this._knob.setSteps(steps);
-    },
-    _updateMapZoom: function() {
-      this._map.setZoom(this._toZoomLevel(this._knob.getValue()));
-    },
-    _updateKnobValue: function() {
-      this._knob.setValue(this._toValue(this._map.getZoom()));
-    },
-    _updateDisabled: function() {
-      var zoomLevel = this._map.getZoom(),
-        className = this.options.styleNS + "-disabled";
+		_updateSize: function () {
+			var steps = this._zoomLevels();
 
-      L.DomUtil.removeClass(this._ui.zoomIn, className);
-      L.DomUtil.removeClass(this._ui.zoomOut, className);
+			this._ui.body.style.height = this.options.stepHeight * steps + 'px';
+			this._knob.setSteps(steps);
+		},
+		_updateMapZoom: function () {
+			this._map.setZoom(this._toZoomLevel(this._knob.getValue()));
+		},
+		_updateKnobValue: function () {
+			this._knob.setValue(this._toValue(this._map.getZoom()));
+		},
+		_updateDisabled: function () {
+			var zoomLevel = this._map.getZoom(),
+				className = this.options.styleNS + '-disabled';
 
-      if (zoomLevel === this._map.getMinZoom()) {
-        L.DomUtil.addClass(this._ui.zoomOut, className);
-      }
-      if (zoomLevel === this._map.getMaxZoom()) {
-        L.DomUtil.addClass(this._ui.zoomIn, className);
-      }
-    }
-  });
+			L.DomUtil.removeClass(this._ui.zoomIn,  className);
+			L.DomUtil.removeClass(this._ui.zoomOut, className);
 
-  return Zoomslider;
+			if (zoomLevel === this._map.getMinZoom()) {
+				L.DomUtil.addClass(this._ui.zoomOut, className);
+			}
+			if (zoomLevel === this._map.getMaxZoom()) {
+				L.DomUtil.addClass(this._ui.zoomIn, className);
+			}
+		}
+	});
+
+	return Zoomslider;
 })();
 
 L.Map.mergeOptions({
-  zoomControl: false,
-  zoomsliderControl: true
+	zoomControl: false,
+	zoomsliderControl: true
 });
 
-L.Map.addInitHook(function() {
-  if (this.options.zoomsliderControl) {
-    this.zoomsliderControl = new L.Control.Zoomslider();
-    this.addControl(this.zoomsliderControl);
-  }
+L.Map.addInitHook(function () {
+	if (this.options.zoomsliderControl) {
+		this.zoomsliderControl = new L.Control.Zoomslider();
+		this.addControl(this.zoomsliderControl);
+	}
 });
 
-L.control.zoomslider = function(options) {
-  return new L.Control.Zoomslider(options);
+L.control.zoomslider = function (options) {
+	return new L.Control.Zoomslider(options);
 };
