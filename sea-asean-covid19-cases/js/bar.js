@@ -145,7 +145,7 @@ function renderChart(data) {
         zIndex: -1,
       },
       plotBands: {
-        color: "red", // Color value
+        color: "#cccccc", // Color value
         from: data.event.index,
         to: data.event.index,
         label: {

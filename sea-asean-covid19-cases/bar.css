@@ -23,8 +23,3 @@ ul {
   margin-bottom: 0;
   font-size: 10px;
 }
-
-/* Appears to be overwritten by element.style documentation shows you can edit individual point but does not show an overall change*/
-.highcharts-annotation {
-  font-weight: bold;
-}
