@@ -10,6 +10,10 @@ div#results {
   background: #fff;
 }
 
+#map {
+  top: 0px;
+}
+
 #logo {
   position: absolute;
   top: 70px;
