@@ -10,17 +10,6 @@ div#results {
   background: #fff;
 }
 
-#logo {
-  position: absolute;
-  top: 70px;
-  right: 15px;
-  width: 50px;
-  height: 50px;
-  background-repeat: no-repeat;
-  background-color: transparent;
-  cursor: pointer;
-}
-
 .box header h1 {
   display: inline-block;
   color: #2e3c43;
@@ -30,23 +19,6 @@ div#results {
   font-weight: 700;
   padding-bottom: 10px;
   width: calc(100% - 67px);
-}
-
-.translate description mobile-toggle {
-  color: #747d82;
-  font-size: 12px;
-  line-height: 16px;
-  font-family: "Source Sans Pro", sans-serif;
-  font-weight: 400;
-}
-
-.mobile-toggle translate {
-  font-family: "Source Sans Pro", sans-serif;
-  font-weight: 700;
-  text-transform: uppercase;
-  font-size: 20px;
-  line-height: 24px;
-  margin: 16px 0 4px;
 }
 
 .ul {
@@ -76,16 +48,6 @@ div#results {
   text-align: center;
 }
 
-#copyright_bug {
-  font-family: "Source Sans Pro", sans-serif;
-  position: absolute;
-  background: rgba(255, 255, 255, 0.7);
-  font-size: 11px;
-  bottom: 0;
-  height: 16px;
-  padding: 0 0 0 10px;
-  border-radius: 3px;
-}
 
 .leaflet-popup-content-wrapper,
 .leaflet-popup-tip {
@@ -116,90 +78,16 @@ aside.toolbox .ui {
   box-shadow: 0 0 16px rgba(0, 0, 0, 0.25);
 }
 
-.hamburger {
-  position: relative;
-  width: 100%;
-  top: 50px;
-  left: 24px;
-  display: flex;
-  align-items: center;
-  background-color: #fff;
-  border-radius: 4px;
-  padding: 16px;
-  margin-left: -24px;
-  margin-right: -24px;
-}
-
-.hamburger .menu {
-  font-family: "Source Sans Pro", sans-serif;
-  color: black;
-  font-weight: 700;
-  font-size: 16px;
-  line-height: 16px;
-  margin: 0 0 0 12px;
-}
-
-.hamburger span {
-  display: block;
-  width: 33px;
-  height: 4px;
-  margin: 5px 0;
-  position: relative;
-  background: black;
-  border-radius: 3px;
-  z-index: 2;
-  transform-origin: 4px 0px;
-  transition: transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1),
-    background 0.5s cubic-bezier(0.77, 0.2, 0.05, 1), opacity 0.55s ease;
-}
-
-.hamburger span:nth-child(1) {
-  transform-origin: 0% 0%;
-}
-
-.hamburger span:nth-child(3) {
-  transform-origin: 0% 100%;
-}
-
-aside.toolbox .ui:checked ~ .hamburger span:nth-child(1) {
-  opacity: 1;
-  transform: rotate(45deg) translate(-3px, -3px);
-}
-
-aside.toolbox .ui:checked ~ .hamburger span:nth-child(2) {
-  opacity: 0;
-  transform: rotate(0deg) scale(0.2, 0.2);
-}
-
-aside.toolbox .ui:checked ~ .hamburger span:nth-child(3) {
-  transform: rotate(-45deg) translate(0, 0px);
-}
-
-.leaflet-control-zoom,
-leaflet-bar,
-leaflet-control {
-  display: none;
-  visibility: hidden;
-}
 
 .leaflet-top {
   top: 38px;
 }
 
-.menu-translate {
-  font-weight: 700;
-  font-size: 16px;
-  font-family: "Source Sans Pro", sans-serif;
-  color: #000;
-}
 
 .legend {
   position: relative;
-  /* right: 20px; */
   top: 5px;
   display: flex;
-  /* align-items: center; */
-  /* justify-content: space-evenly; */
   margin: 0;
   padding: 0;
   list-style: none;
@@ -263,64 +151,4 @@ leaflet-control {
   position: absolute;
   top: 15px;
   right: 23px;
-}
-
-/* FOR DISPLAYS ≤ 425px */
-
-.mobile-only {
-  visibility: hidden;
-  height: 0;
-}
-
-@media (max-width: 425px) {
-  .mobile-only {
-    visibility: visible;
-    height: 50px;
-    color: #747d82;
-    font-size: 12px;
-    line-height: 16px;
-    font-family: "Source Sans Pro", sans-serif;
-    font-weight: 400;
-  }
-}
-
-@media (max-width: 425px) {
-  .mobile-toggle {
-    display: none;
-  }
-}
-
-@media (max-width: 425px) {
-  .box {
-    padding: 25px 24px 24px;
-  }
-}
-
-@media (max-width: 425px) {
-  aside.toolbox {
-    z-index: 1;
-    top: -36px;
-  }
-}
-
-@media (max-width: 425px) {
-  .leaflet-touch .leaflet-bar {
-    border: none;
-    top: -33px;
-  }
-}
-
-@media (max-width: 425px) {
-  .box header h1 {
-    font-family: "Source Sans Pro", sans-serif;
-    font-weight: 700;
-    font-size: 20px;
-    line-height: 22px;
-  }
-}
-
-@media (max-width: 425px) {
-  aside.toolbox .ui:not(:checked) ~ .box {
-    display: none;
-  }
 }
