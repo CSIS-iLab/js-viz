@@ -82,18 +82,19 @@ function populateSelect() {
 
 function renderChart(data) {
   console.log(data);
-  let maxCases = Math.max(...data.data.map((d) => d.y));
+  // let maxCases = Math.max(...data.data.map((d) => d.y));
   let labelData = [];
 
   for (let i = 0; i < data.data.length; i++) {
     if (data.data[i].unemployment_rate) {
       labelData.push({
-        point: { x: i, y: maxCases, xAxis: 0, yAxis: 0 },
+        point: { x: i, y: 0, xAxis: 0, yAxis: 0 },
         text:
           Highcharts.numberFormat(
             data.data[i].unemployment_rate.toString(),
             2
           ) + "%",
+        align: "left",
       });
     }
   }
@@ -139,7 +140,10 @@ function renderChart(data) {
     xAxis: {
       type: "category",
       tickInterval: 15,
-      crosshair: true,
+      crosshair: {
+        color: "#F0F4F6",
+        zIndex: -1,
+      },
       plotBands: {
         color: "red", // Color value
         from: data.event.index,
@@ -156,11 +160,24 @@ function renderChart(data) {
       formatter: function () {
         // console.log(this);
         return `<p class="date">Date: ${this.key}</p>
-          New Cases: ${this.y}
+          New Cases: ${this.y} <br>
+          ${this.point.options.benchmark1 ? "Categories: " : ""}
           <ul>
-          <li> ${this.point.options.benchmark1 || ""} </li>
-          <li> ${this.point.options.benchmark2 || ""} </li>
-          <li> ${this.point.options.benchmark3 || ""} </li>
+          ${
+            this.point.options.benchmark1
+              ? `<li>${this.point.options.benchmark1} </li>`
+              : ""
+          }
+          ${
+            this.point.options.benchmark2
+              ? `<li>${this.point.options.benchmark2} </li>`
+              : ""
+          }
+          ${
+            this.point.options.benchmark3
+              ? `<li>${this.point.options.benchmark3} </li>`
+              : ""
+          }
           </ul>
           ${this.point.options.benchmark_text || ""}`;
       },
@@ -186,9 +203,14 @@ function renderChart(data) {
       {
         labels: labelData,
         labelOptions: {
-          backgroundColor: "rgba(255,255,255, 0)",
+          // backgroundColor: "rgba(255,255,255, 0)",
           verticalAlign: "top",
-          borderColor: "rgba(255,255,255,0)",
+          // borderColor: "rgba(255,255,255,0)",
+          shape: "connector",
+          style: {
+            fontSize: "0.8em",
+            textOutline: "2px white",
+          },
         },
       },
     ],

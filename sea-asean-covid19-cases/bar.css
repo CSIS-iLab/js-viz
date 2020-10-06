@@ -2,19 +2,20 @@
   display: none;
 }
 
-.highcharts-tooltip span {
-  height:auto;
-  /* max-width: 140px !important; */
-  width:140px;
+.highcharts-tooltip {
+  /* height:auto;
   overflow:auto;
-  white-space:normal !important; 
+  white-space:normal !important;  */
+  width: 80%;
+}
+
+.highcharts-plot-band-label {
+  transform: translate(5px, 0)
 }
 
 ul {
-  margin-top: 0;
-  margin-bottom: 0;
-  padding-left: 0;
-  list-style: none;
+  margin: 0 0 10px 10px;
+  padding-left: 10px;
 }
 
 .date {
