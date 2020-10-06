@@ -140,16 +140,13 @@ function renderChart(data) {
     xAxis: {
       type: "category",
       tickInterval: 15,
-      crosshair: {
-        color: "#F0F4F6",
-        zIndex: -1,
-      },
+      crosshair: true,
       plotBands: {
         color: "#cccccc", // Color value
         from: data.event.index,
         to: data.event.index,
         label: {
-          text: "First Major Government Interaction: " + data.event.benchmark1, // Content of the label.
+          text: "First Major Government Intervention: " + data.event.benchmark1, // Content of the label.
           align: "left", // Positioning of the label.
         },
       },
@@ -185,6 +182,9 @@ function renderChart(data) {
 
     // Additional Plot Options
     plotOptions: {
+      series:{
+        minPointLength: 2
+      },
       column: {
         stacking: null, // Normal bar graph
         // stacking: "normal", // Stacked bar graph
@@ -209,6 +209,8 @@ function renderChart(data) {
           shape: "connector",
           style: {
             fontSize: "0.8em",
+            fill: "none",
+            color: "#666",
             textOutline: "2px white",
           },
         },
