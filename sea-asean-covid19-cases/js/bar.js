@@ -34,8 +34,6 @@ Highcharts.data({
         benchmark2: benchmark2,
         benchmark3: benchmark3,
       });
-
-      
     }
 
     const data = Object.values(dataset);
@@ -50,7 +48,7 @@ Highcharts.data({
       optionSelect.push({
         name: data[value].name,
         data: data[value].data,
-        event: data[value].event
+        event: data[value].event,
       });
     }
 
@@ -72,7 +70,6 @@ function populateSelect() {
     optionEl.value = i;
     optionEl.text = option.name;
     select.appendChild(optionEl);
-    
   });
 
   // Destroy & redraw chart
@@ -93,8 +90,10 @@ function renderChart(data) {
       labelData.push({
         point: { x: i, y: maxCases, xAxis: 0, yAxis: 0 },
         text:
-          Highcharts.numberFormat(data.data[i].unemployment_rate.toString(), 2) +
-          "%",
+          Highcharts.numberFormat(
+            data.data[i].unemployment_rate.toString(),
+            2
+          ) + "%",
       });
     }
   }
@@ -141,19 +140,14 @@ function renderChart(data) {
       type: "category",
       tickInterval: 15,
       crosshair: true,
-      // plotLines: [{
-      //   color: 'red', // Color value
-      //   value: data.event.name, // Value of where the line will appear
-      //   width: 5 // Width of the line    
-      // }]
       plotBands: {
-        color: 'red', // Color value
+        color: "red", // Color value
         from: data.event.index,
-        to: data.event.index
-      },
-      label: { 
-        text: data.event.benchmark1, // Content of the label. 
-        align: 'left', // Positioning of the label. 
+        to: data.event.index,
+        label: {
+          text: "First Major Government Interaction: " + data.event.benchmark1, // Content of the label.
+          align: "left", // Positioning of the label.
+        },
       },
     },
     // Tooltip
@@ -161,16 +155,14 @@ function renderChart(data) {
       useHTML: true,
       formatter: function () {
         // console.log(this);
-        return (
-          `Date: ${this.key}<br>
-          New Cases: ${this.y}<br>
+        return `<p class="date">Date: ${this.key}</p>
+          New Cases: ${this.y}
           <ul>
-          <li> ${(this.point.options.benchmark1 || "")} </li>
-          <li> ${(this.point.options.benchmark2 || "")} </li>
-          <li> ${(this.point.options.benchmark3 || "")} </li>
+          <li> ${this.point.options.benchmark1 || ""} </li>
+          <li> ${this.point.options.benchmark2 || ""} </li>
+          <li> ${this.point.options.benchmark3 || ""} </li>
           </ul>
-          ${(this.point.options.benchmark_text || "")}`
-        );
+          ${this.point.options.benchmark_text || ""}`;
       },
     },
 
@@ -191,7 +183,7 @@ function renderChart(data) {
       },
     },
     annotations: [
-      { 
+      {
         labels: labelData,
         labelOptions: {
           backgroundColor: "rgba(255,255,255, 0)",

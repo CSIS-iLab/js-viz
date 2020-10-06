@@ -1,0 +1,29 @@
+.highcharts-legend-item rect {
+  display: none;
+}
+
+.highcharts-tooltip span {
+  height:auto;
+  /* max-width: 140px !important; */
+  width:140px;
+  overflow:auto;
+  white-space:normal !important; 
+}
+
+ul {
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+.date {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-size: 10px;
+}
+
+/* Appears to be overwritten by element.style documentation shows you can edit individual point but does not show an overall change*/
+.highcharts-annotation {
+  font-weight: bold;
+}
