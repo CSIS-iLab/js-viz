@@ -105,17 +105,12 @@ function renderChart(data) {
     // General Chart Options
     chart: {
       type: "column",
-      zoomType: 'x',
+      zoomType: "x",
       width: 800,
     },
     // Chart Title and Subtitle
-    title: {
-      text: "Covid-19 and Government Responses in Southeast Asia",
-    },
-    subtitle: {
-      text:
-        "Hover over the bars to get a closer view at the effectiveness of government policies on Covid-19 cases and their implications on the economy. Click and drag to zoom in. Availability of economic data may vary by country. Days with 0 Covid-19 cases may display economic data. Percentages indicate unemployment rate*",
-    },
+    title: false,
+    subtitle: false,
     // Credits
     credits: {
       enabled: true,
@@ -133,6 +128,7 @@ function renderChart(data) {
     },
     // Y Axis
     yAxis: {
+      tickPixelInterval: 100,
       title: {
         text: "New cases per day",
       },
@@ -187,8 +183,8 @@ function renderChart(data) {
 
     // Additional Plot Options
     plotOptions: {
-      series:{
-        minPointLength: 2
+      series: {
+        minPointLength: 2,
       },
       column: {
         stacking: null, // Normal bar graph
