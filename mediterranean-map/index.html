@@ -50,22 +50,29 @@
   </head>
 
   <body>
+    <nav id='menu-ui' class='menu-ui'></nav>
     <div id="map" class="map" tabindex="0"></div>
 
     <aside class="toolbox">
+      <input type="checkbox" checked class="ui mobile-only" />
 
-      <!-- <div class="hamburger mobile-only">
-        <div class="menu-translate">
-          Mediterranean Map
+      <div class="hamburger mobile-only">
+        <div class="icon">
+          <span></span>
+          <span></span>
+          <span></span>
         </div>
-      </div> -->
+        <h1 class="menu-translate">
+          Mediterranean Map
+        </h1>
+      </div>
 
       <section class="box">
-        <header >
-          <h1 class="header">Mediterranean Map</h1>
+        <header class="mobile-toggle">
+          <h1 class="translate">Mediterranean Map</h1>
         </header>
         <section>
-        <p class="description open-sans">
+        <p class="description open-sans mobile-toggle">
           Click on the interactive map to learn more detail about the Mediterranean Map
         </p>
         <hr />
