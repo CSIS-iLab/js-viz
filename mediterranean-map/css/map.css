@@ -149,7 +149,7 @@ hr {
 
 .popup__values {
   margin: 0 !important;
-  font-size: 14px;
+  font-size: 12px;
   text-transform: uppercase;
   line-height: 2;
   white-space: nowrap;
@@ -158,6 +158,7 @@ hr {
 .popup__values span {
   font-weight: bold;
   text-transform: lowercase;
+  font-size: 14px;
 }
 
 .leaflet-popup-content-wrapper {
