@@ -7,6 +7,7 @@ Highcharts.chart("hcContainer", {
   // General Chart Options
   chart: {
     type: "column",
+    spacingBottom: 25,
   },
   // Chart Title and Subtitle
   title: {
