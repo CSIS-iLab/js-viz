@@ -16,6 +16,10 @@ Highcharts.chart("hcContainer", {
   title: {
     text: "Approved Support by Region",
   },
+  // Legend
+  legend: {
+    enabled: false,
+  },
   // Credits
   credits: {
     enabled: true,
