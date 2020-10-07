@@ -1,5 +1,5 @@
 // Create Leaflet Map
-const map = L.map("map").setView([41.14, 25.67], 4.4);
+const map = L.map("map").setView([46.14, 15.67], 4.4);
 map.scrollWheelZoom.disable();
 
 // Create separate pane in Leaflet and set zIndex to bring it to
