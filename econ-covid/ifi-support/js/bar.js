@@ -7,6 +7,7 @@ Highcharts.chart("hcContainer", {
   // General Chart Options
   chart: {
     type: "column",
+    spacingBottom: 25,
   },
   // Chart Title and Subtitle
   title: {
@@ -32,7 +33,7 @@ Highcharts.chart("hcContainer", {
   },
   tooltip: {
     valuePrefix: "$",
-    valueSuffix: " billion USD",
+    valueSuffix: " billion",
     valueDecimals: 1,
   },
   // Additional Plot Options
