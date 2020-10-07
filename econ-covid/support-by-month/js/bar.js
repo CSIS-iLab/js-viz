@@ -1,12 +1,8 @@
-Highcharts.setOptions({
-  colors: ["#0065A6", "#0A8672"],
-});
-
 Highcharts.chart("hcContainer", {
   // Load Data in from Google Sheets
   data: {
     googleSpreadsheetKey: "1a0wC2PhRyHJ8HKz3BB1nCTcV1KUbR2DjnqWpPom6jDM",
-    googleSpreadsheetWorksheet: 1,
+    googleSpreadsheetWorksheet: 6,
   },
   // General Chart Options
   chart: {
@@ -15,7 +11,10 @@ Highcharts.chart("hcContainer", {
   },
   // Chart Title and Subtitle
   title: {
-    text: "Approved Support by Region",
+    text: "Approved Support by Month",
+  },
+  subtitle: {
+    text: "",
   },
   // Legend
   legend: {
@@ -27,14 +26,24 @@ Highcharts.chart("hcContainer", {
     href: false,
     text: "CSIS Economics Program | Source: IFI press releases",
   },
+  // Colors
+  colors: ["#004165"],
   // Y Axis
   yAxis: {
     title: {
       text: "USD Billions",
     },
   },
+  // X Axis
+  xAxis: {
+    type: "datetime",
+    labels: {
+      format: "{value:%B %Y}",
+    },
+  },
+  // Tooltip
   tooltip: {
-    valueDecimals: 2,
+    valueDecimals: 1,
     valuePrefix: "$",
     valueSuffix: " billion",
   },
@@ -50,9 +59,5 @@ Highcharts.chart("hcContainer", {
         },
       },
     },
-    // series: {
-    //   colorByPoint: true,
-    //   colors: ["#004165", "#0065A6", "#0A8672", "#7b7d7c", "#E5EFF6"],
-    // },
   },
 });

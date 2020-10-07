@@ -7,10 +7,15 @@ Highcharts.chart("hcContainer", {
   // General Chart Options
   chart: {
     type: "column",
+    spacingBottom: 25,
   },
   // Chart Title and Subtitle
   title: {
-    text: "Support by Country Income Group",
+    text: "Approved Support by Country Income Group",
+  },
+  // Legend
+  legend: {
+    enabled: false,
   },
   // Credits
   credits: {
@@ -19,18 +24,7 @@ Highcharts.chart("hcContainer", {
     text: "CSIS Economics Program | Source: IFI press releases",
   },
   // Colors
-  // Colors
   colors: ["#004165", "#0065A6"],
-  // Chart Legend
-  legend: {
-    title: {
-      text:
-        '<br/><span style="font-size: 12px; color: #808080; font-weight: normal">(Click to hide)</span>',
-    },
-    align: "center",
-    verticalAlign: "bottom",
-    layout: "horizontal",
-  },
   // Y Axis
   yAxis: {
     title: {
@@ -39,7 +33,7 @@ Highcharts.chart("hcContainer", {
   },
   tooltip: {
     valuePrefix: "$",
-    valueSuffix: " billion USD",
+    valueSuffix: " billion",
     valueDecimals: 1,
   },
   // Additional Plot Options
