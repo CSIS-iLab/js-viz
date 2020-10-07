@@ -105,6 +105,7 @@ function renderChart(data) {
     // General Chart Options
     chart: {
       type: "column",
+      zoomType: 'x',
       width: 800,
     },
     // Chart Title and Subtitle
@@ -113,7 +114,7 @@ function renderChart(data) {
     },
     subtitle: {
       text:
-        "Effectiveness of government policies on Covid-19 cases and the economy. Availability of economic data may vary by country. (Percentages indicate unemployment rate)",
+        "Hover over the bars to get a closer view at the effectiveness of government policies on Covid-19 cases and their implications on the economy. Click and drag to zoom in. Availability of economic data may vary by country. Days with 0 Covid-19 cases may display economic data. Percentages indicate unemployment rate*",
     },
     // Credits
     credits: {
@@ -141,8 +142,12 @@ function renderChart(data) {
       type: "category",
       tickInterval: 15,
       crosshair: true,
+      labels: {
+        rotation: -45,
+      },
       plotBands: {
         color: "#cccccc", // Color value
+        zIndex: 5,
         from: data.event.index,
         to: data.event.index,
         label: {
@@ -156,7 +161,7 @@ function renderChart(data) {
       useHTML: true,
       formatter: function () {
         // console.log(this);
-        return `<p class="date">Date: ${this.key}</p>
+        return `Date: ${this.key} <br>
           New Cases: ${this.y} <br>
           ${this.point.options.benchmark1 ? "Categories: " : ""}
           <ul>
