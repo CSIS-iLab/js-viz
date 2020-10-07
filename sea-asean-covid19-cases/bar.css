@@ -3,10 +3,14 @@
 }
 
 .highcharts-tooltip {
-  /* height:auto;
+  max-width: 300px !important;
+  width: 100% !important;
+}
+
+.highcharts-tooltip span{
+  height:auto;
   overflow:auto;
-  white-space:normal !important;  */
-  width: 80%;
+  white-space:normal !important;
 }
 
 .highcharts-plot-band-label {
