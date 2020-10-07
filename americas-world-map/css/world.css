@@ -13,18 +13,18 @@ div#results {
 .box header h1 {
   display: inline-block;
   color: #2e3c43;
-  line-height: 28px;
+  line-height: 26px;
   font-family: "Source Sans Pro", sans-serif;
-  font-size: 24px;
+  font-size: 21px;
   font-weight: 700;
   width: calc(100% - 67px);
 }
 
 .description {
-  color: #747D82;
+  color: #747d82;
   font-size: 12px;
   line-height: 16px;
-  font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+  font-family: "Open Sans", Arial, Helvetica, sans-serif;
 }
 
 .button__title {
@@ -56,7 +56,6 @@ div#results {
   text-align: center;
 }
 
-
 .leaflet-popup-content-wrapper,
 .leaflet-popup-tip {
   background-color: #e4e3e3;
@@ -73,11 +72,9 @@ div#results {
   margin: 16px 0 4px;
 }
 
-
 .leaflet-top {
   top: 38px;
 }
-
 
 .legend {
   position: relative;
