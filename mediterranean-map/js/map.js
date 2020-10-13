@@ -12,7 +12,7 @@ map.getPane("labels").style.pointerEvents = "none";
 // Add basemap of countries with no labels from Mapbox using
 // Third Party CARTO Integration URL
 L.tileLayer(
-  "https://api.mapbox.com/styles/v1/ilabmedia/ckfcrds6o1yxu1aqxezval4dr/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw",
+  "https://api.mapbox.com/styles/v1/ilabmedia/ckg87941h0c2o19o9gmknigfd/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw",
   {
     maxZoom: 10,
   }
@@ -94,7 +94,7 @@ function setLayerStyle(activeDataset) {
     #layer {
         polygon-fill: ramp([${activeDataset}], (#dab7b7, #d29d9e, #c98486, #bf6a6f, #b34f58), (1, 2, 3, 4, 5), "=", category);
     
-      polygon-opacity: 1;
+      polygon-opacity: 0.9;
 
      
     }
@@ -106,10 +106,11 @@ function setLayerStyle(activeDataset) {
     #layer::labels {
       text-name: [country];
       text-face-name: 'Lato Regular';
-      text-size: 14;
-      text-fill: black;
+      text-size: 13;
+      text-fill: #000;
+   
       text-label-position-tolerance: 0; 
-      text-dy: 0;
+      text-dy: -3;
       text-allow-overlap: false;
       text-placement: point;
       text-placement-type: dummy;
