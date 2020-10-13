@@ -81,21 +81,21 @@ function toggleActiveDataset(activeDataset) {
   dataStyle.setContent(setLayerStyle(activeDataset));
 }
 
-// polygon-fill: ramp([${activeDataset}], (#e5d0d0, #ddb6b5, #d49c9b, #c98281, #be6769, #cacdd3), (1, 2, 3, 5, 4, ), "=", category);
 
-// polygon-fill: ramp([${activeDataset}], (#cf9899, #c67f82, #bc676c, #b14d56, #a53041, #cacdd3), (1, 2, 3, 5, 4, ), "=", category);
 
-// polygon-fill: ramp([${activeDataset}],
-//   (#dab7b7, #d29d9e, #c98486,#bf6a6f,#b34f58), (1, 2, 3, 5, 4, ), "=", category);
+// polygon-fill: ramp([${activeDataset}], (#dab7b7, #d29d9e, #c98486, #bf6a6f, #b34f58), (1,
 
+// polygon-fill: ramp([${activeDataset}], (#F9ECED, #F8d6d7, #d29293, #b26268, #a44a5c), (1, 2, 3, 4, 5), "=", category);
+
+
+// polygon-fill: ramp([${activeDataset}], (#F5DCDD, #EBBFC0, #C57B7F, #A94F56, #8B1A31), (1, 2, 3, 4, 5), "=", category);
 function setLayerStyle(activeDataset) {
   // console.log(activeDataset);
   return `
     #layer {
-        polygon-fill: ramp([${activeDataset}], (#dab7b7, #d29d9e, #c98486, #bf6a6f, #b34f58), (1, 2, 3, 4, 5), "=", category);
+        polygon-fill: ramp([${activeDataset}], (#F9ECED, #F8d6d7, #d29293, #b26268, #a44a5c), (1, 2, 3, 4, 5), "=", category);
     
-      polygon-opacity: 0.9;
-
+      polygon-opacity: 0.8;
      
     }
     #layer::outline {

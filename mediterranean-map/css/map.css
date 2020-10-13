@@ -179,11 +179,11 @@ aside.toolbox .ui:checked ~ .hamburger span:nth-child(3) {
 }
 
 .legend[data-type="risk-type"] {
-  --ramp1: #e5d0d0;
-  --ramp2: #ddb6b5;
-  --ramp3: #d49c9b;
-  --ramp4: #c98281;
-  --ramp5: #be6769;
+  --ramp1: #F5DCDD;
+  --ramp2: #EBBFC0;
+  --ramp3: #C57B7F;
+  --ramp4: #A94F56;
+  --ramp5: rgba(139, 26, 49, 0.8);
 }
 
 .legend li {
