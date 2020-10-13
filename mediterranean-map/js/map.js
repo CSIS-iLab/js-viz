@@ -94,12 +94,26 @@ function setLayerStyle(activeDataset) {
     #layer {
         polygon-fill: ramp([${activeDataset}], (#dab7b7, #d29d9e, #c98486, #bf6a6f, #b34f58), (1, 2, 3, 4, 5), "=", category);
     
-      polygon-opacity: 0.9;
+      polygon-opacity: 1;
+
+     
     }
     #layer::outline {
       line-width: 1;
       line-color: #fff;
       line-opacity: 1;
+    }
+    #layer::labels {
+      text-name: [country];
+      text-face-name: 'Lato Regular';
+      text-size: 14;
+      text-fill: black;
+      text-label-position-tolerance: 0; 
+      text-dy: 0;
+      text-allow-overlap: false;
+      text-placement: point;
+      text-placement-type: dummy;
+      text-transform: uppercase;
     }
   `;
 }
