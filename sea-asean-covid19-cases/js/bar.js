@@ -6,8 +6,6 @@ Highcharts.data({
   switchRowsAndColumns: true,
   parsed: function (columns) {
     let dataset = {};
-
-    // columns.forEach((row, i)) {
     for (let i = 1; i < columns.length; i++) {
       const country = columns[i][0];
       const date = columns[i][1];
@@ -51,9 +49,6 @@ Highcharts.data({
         event: data[value].event,
       });
     }
-
-    console.log(data);
-
     populateSelect();
     renderChart(data[4]);
     return;
@@ -81,8 +76,6 @@ function populateSelect() {
 }
 
 function renderChart(data) {
-  console.log(data);
-  // let maxCases = Math.max(...data.data.map((d) => d.y));
   let labelData = [];
 
   for (let i = 0; i < data.data.length; i++) {
@@ -98,8 +91,6 @@ function renderChart(data) {
       });
     }
   }
-
-  // console.log(labelData);
 
   Highcharts.chart("hcContainer", {
     // General Chart Options
@@ -156,7 +147,6 @@ function renderChart(data) {
     tooltip: {
       useHTML: true,
       formatter: function () {
-        // console.log(this);
         return `Date: ${this.key} <br>
           New Cases: ${this.y} <br>
           ${this.point.options.benchmark1 ? "Categories: " : ""}
@@ -188,7 +178,6 @@ function renderChart(data) {
       },
       column: {
         stacking: null, // Normal bar graph
-        // stacking: "normal", // Stacked bar graph
         dataLabels: {
           enabled: false,
         },
@@ -204,9 +193,7 @@ function renderChart(data) {
       {
         labels: labelData,
         labelOptions: {
-          // backgroundColor: "rgba(255,255,255, 0)",
           verticalAlign: "top",
-          // borderColor: "rgba(255,255,255,0)",
           shape: "connector",
           style: {
             fontSize: "0.8em",
