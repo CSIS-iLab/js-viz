@@ -19,7 +19,7 @@ Highcharts.chart('hcContainer', {
   // Colors
   colors: [
   // Brunei
-  '#4E79A7',
+  '#004165',
 
   // Cambodia
   '#F28E2C',
@@ -46,7 +46,10 @@ Highcharts.chart('hcContainer', {
   '#59A14F',
 
   // Vietnam
-  '#AF7AA1'
+  '#AF7AA1',
+
+  // Timor-Leste
+  '#4271a8'
   ],
   // Chart Title and Subtitle
   title: {
