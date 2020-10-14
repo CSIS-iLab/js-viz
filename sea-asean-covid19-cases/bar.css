@@ -60,3 +60,7 @@ ul {
   margin: 0 0 10px 10px;
   padding-left: 10px;
 }
+
+.highcharts-grid path:last-child {
+  display: none;
+}
