@@ -81,10 +81,12 @@ function toggleActiveDataset(activeDataset) {
   dataStyle.setContent(setLayerStyle(activeDataset));
 }
 
+// polygon-fill: ramp([${activeDataset}], (#d0b3b4, #be9697, #ac7a7c, #9a5e62, #87424a), (1, 2, 3, 4, 5, ), "=", category);
+
 function setLayerStyle(activeDataset) {
   return `
     #layer {
-      polygon-fill: ramp([${activeDataset}], (#d0b3b4, #be9697, #ac7a7c, #9a5e62, #87424a), (1, 2, 3, 4, 5, ), "=", category);
+      polygon-fill: ramp([${activeDataset}], (#EED8D9, #D0ADB0, #BA8C91, #A46C72, #87424a), (1, 2, 3, 4, 5, ), "=", category);
     
       polygon-opacity: 0.9;
     }
