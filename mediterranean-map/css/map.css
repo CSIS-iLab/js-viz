@@ -129,9 +129,9 @@ aside.toolbox .ui:checked ~ .hamburger span:nth-child(3) {
 
 .button__title {
   flex: 1 1 100%;
-  margin-bottom: 0.5rem;
   font-weight: bold;
   text-align: left;
+  text-transform: uppercase;
 }
 
 .btn {
