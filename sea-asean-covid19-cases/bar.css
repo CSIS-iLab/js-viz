@@ -72,6 +72,8 @@ ul {
 }
 
 .legend-text {
+  font-family: "Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica,
+    sans-serif;
   color: #333333;
   font-size: 14px;
   font-weight: bold;
