@@ -31,6 +31,7 @@ Highcharts.data({
         benchmark1: benchmark1,
         benchmark2: benchmark2,
         benchmark3: benchmark3,
+        color: text ? "#94C9FF" : "#0065A6",
       });
     }
 
