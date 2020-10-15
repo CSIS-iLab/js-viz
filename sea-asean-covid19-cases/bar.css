@@ -35,6 +35,7 @@
 #hcContainer {
   padding-top: 10px;
   overflow: visible;
+  width: 800px;
 }
 
 .highcharts-legend-item rect {
