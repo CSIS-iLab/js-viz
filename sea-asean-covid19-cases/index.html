@@ -16,10 +16,31 @@
         Hover over the bars to get a closer view at the effectiveness of
         government policies on Covid-19 cases and their implications on the
         economy. Click and drag to zoom in. Availability of economic data may
-        vary by country. Days with 0 Covid-19 cases may display policy interventions.
-        Percentages indicate unemployment rate.
+        vary by country. Days with 0 Covid-19 cases may display policy
+        interventions. Percentages indicate unemployment rate.
       </p>
     </div>
+    <div class="legend-container">
+      <svg class="legend-svg">
+        <path
+          d="M 0 11 L 16 11"
+          fill="none"
+          stroke-width="2"
+          stroke="#94C9FF"
+        ></path>
+      </svg>
+      <text class="legend-text"> Day with Gov't Intervention</text>
+      <svg class="legend-svg">
+        <path
+          d="M 0 11 L 16 11"
+          fill="none"
+          stroke-width="2"
+          stroke="#0065A6"
+        ></path>
+      </svg>
+      <text class="legend-text"> Day without Gov't Inervention</text>
+    </div>
+
     <!-- Highcharts chart container -->
     <label for="optionSelect" class="sr-only">Select Country</label>
     <select name="optionSelect" id="optionSelect"></select>

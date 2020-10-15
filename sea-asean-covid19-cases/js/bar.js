@@ -31,6 +31,7 @@ Highcharts.data({
         benchmark1: benchmark1,
         benchmark2: benchmark2,
         benchmark3: benchmark3,
+        color: text ? "#94C9FF" : "#0065A6",
       });
     }
 
@@ -131,16 +132,6 @@ function renderChart(data) {
       crosshair: true,
       labels: {
         rotation: -45,
-      },
-      plotBands: {
-        color: "#cccccc", // Color value
-        zIndex: 5,
-        from: data.event.index,
-        to: data.event.index,
-        label: {
-          text: "First Major Government Intervention: " + data.event.benchmark1, // Content of the label.
-          align: "left", // Positioning of the label.
-        },
       },
     },
     // Tooltip
