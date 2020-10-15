@@ -133,16 +133,6 @@ function renderChart(data) {
       labels: {
         rotation: -45,
       },
-      plotBands: {
-        color: "#cccccc", // Color value
-        zIndex: 5,
-        from: data.event.index,
-        to: data.event.index,
-        label: {
-          text: "First Major Government Intervention: " + data.event.benchmark1, // Content of the label.
-          align: "left", // Positioning of the label.
-        },
-      },
     },
     // Tooltip
     tooltip: {
