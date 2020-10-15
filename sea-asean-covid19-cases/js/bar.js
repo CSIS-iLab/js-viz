@@ -98,7 +98,6 @@ function renderChart(data) {
     chart: {
       type: "column",
       zoomType: "x",
-      width: 800,
     },
     // Chart Title and Subtitle
     title: false,
