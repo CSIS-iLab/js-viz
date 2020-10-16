@@ -81,19 +81,16 @@ function toggleActiveDataset(activeDataset) {
   dataStyle.setContent(setLayerStyle(activeDataset));
 }
 
-
-
-// polygon-fill: ramp([${activeDataset}], (#dab7b7, #d29d9e, #c98486, #bf6a6f, #b34f58), (1,
+// polygon-fill: ramp([${activeDataset}], (#d0b3b4, #be9697, #ac7a7c, #9a5e62, #87424a), (1, 2, 3, 4, 5, ), "=", category);
 
 // polygon-fill: ramp([${activeDataset}], (#F9ECED, #F8d6d7, #d29293, #b26268, #a44a5c), (1, 2, 3, 4, 5), "=", category);
 
 
 // polygon-fill: ramp([${activeDataset}], (#F5DCDD, #EBBFC0, #C57B7F, #A94F56, #8B1A31), (1, 2, 3, 4, 5), "=", category);
 function setLayerStyle(activeDataset) {
-  // console.log(activeDataset);
   return `
     #layer {
-        polygon-fill: ramp([${activeDataset}], (#F9ECED, #F8d6d7, #d29293, #b26268, #a44a5c), (1, 2, 3, 4, 5), "=", category);
+      polygon-fill: ramp([${activeDataset}], (#EED8D9, #D0ADB0, #BA8C91, #A46C72, #87424a), (1, 2, 3, 4, 5, ), "=", category);
     
       polygon-opacity: 0.8;
      
@@ -105,30 +102,20 @@ function setLayerStyle(activeDataset) {
     }
     #layer::labels {
       text-name: [country];
-      text-face-name: 'Lato Regular';
-      text-size: 13;
+      text-face-name: 'Open Sans Regular';
+      text-size: 14;
       text-fill: #000;
-   
-      text-label-position-tolerance: 0; 
-      text-dy: -3;
+      text-label-position-tolerance: 0;
+      text-halo-radius: 0.8;
+      text-halo-fill: #ffffff;
+      text-dy: -2;
       text-allow-overlap: false;
       text-placement: point;
-      text-placement-type: dummy;
       text-transform: uppercase;
+      text-placement-type: dummy;
     }
   `;
 }
-
-// const legend = document.getElementById("legend");
-// const legendItems = legend.querySelectorAll("li");
-// function updateLegend(activeDataset) {
-//   let values = ["10", "1,000", ">10,000"];
-
-//   if (activeDataset === "total_deaths") {
-//     values = ["1", "100", ">1,000"];
-//   }
-
-// }
 
 function toggleActiveButton(activeButton) {
   if (activeButton === "risk") {
@@ -155,7 +142,7 @@ dataLayer.on(carto.layer.events.FEATURE_CLICKED, (event) => {
         ${data.country}
       </h2>
       <p class="popup__values">
-        Risk Type: 
+        Instability Markers: 
         <span>
           ${data.risk_type}
         </span>
@@ -179,7 +166,7 @@ dataLayer.on(carto.layer.events.FEATURE_CLICKED, (event) => {
         ${data.country}
       </h2>
       <p class="popup__values">
-        Risk Type: 
+        Influence Type: 
         <span>
           ${data.risk_type}
         </span>
