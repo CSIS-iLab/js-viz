@@ -4,7 +4,7 @@ var basemap = L.tileLayer(
 );
 
 var map = L.map("map", {
-  center: [18.83, 9.34],
+  center: [40.83, 9.34],
   zoom: 2,
   maxZoom: 7,
   scrollWheelZoom: true,
@@ -25,12 +25,32 @@ guyana_graphic_world_2019`);
 
 const mapStyle = new carto.style.CartoCSS(`
         #layer {
-          polygon-fill: ramp([number_of_immigrants], (#ffc6c4, #ee919b, #cc607d, #9e3963, #672044), quantiles);
-          polygon-opacity: 0.9;
+          #geonames_stats{
+            polygon-fill: #672044;
+            polygon-opacity: 0.9;
+            line-color: #FFF;
+            line-width: 0.5;
+            line-opacity: 0.5;
+          }
+          #geonames_stats [ number_of_immigrants <= 100000] {
+              polygon-fill: #93345d;
+          }
+          #geonames_stats [ number_of_immigrants <= 30000] {
+              polygon-fill: #b95073;
+          }
+          #geonames_stats [ number_of_immigrants <= 10000] {
+              polygon-fill: #da7489;
+          }
+          #geonames_stats [ number_of_immigrants <= 5000] {
+            polygon-fill: #f29ca3;
+          }
+          #geonames_stats [ number_of_immigrants <= 1000] {
+          polygon-fill: #ffc6c4;
+          }
         }
         #layer::outline {
           line-width: 0.5;
-          line-color: #FFFFFF;
+          line-color: #FFF;
           line-opacity: 0.5;
         }
       `);
