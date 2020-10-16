@@ -97,13 +97,13 @@ function setLayerStyle(activeDataset) {
     }
     #layer::labels {
       text-name: [country];
-      text-face-name: 'Lato Regular';
+      text-face-name: 'Open Sans Regular';
       text-size: 14;
       text-fill: #000;
       text-label-position-tolerance: 0;
-      text-halo-radius: 1;
+      text-halo-radius: 0.8;
       text-halo-fill: #ffffff;
-      text-dy: -3;
+      text-dy: -2;
       text-allow-overlap: false;
       text-placement: point;
       text-transform: uppercase;
