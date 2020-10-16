@@ -105,10 +105,11 @@ div#results {
 
 .legend[data-type="total_cases"] {
   --ramp1: #ffc6c4;
-  --ramp2: #ee919b;
-  --ramp3: #cc607d;
-  --ramp4: #9e3963;
-  --ramp5: #672044;
+  --ramp2: #f29ca3;
+  --ramp3: #da7489;
+  --ramp4: #b95073;
+  --ramp5: #93345d;
+  --ramp6: #672044;
 }
 
 .legend li {
@@ -151,6 +152,15 @@ div#results {
 #ramp5::before {
   background-color: var(--ramp5);
   border: 3px solid var(--ramp5);
+}
+
+#ramp6::before {
+  background-color: var(--ramp6);
+  border: 3px solid var(--ramp6);
+}
+
+#ramp6 > span {
+  right: 18px;
 }
 
 .legend__value {

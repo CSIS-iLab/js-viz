@@ -25,17 +25,39 @@ const mapSource = new carto.source.SQL(
   `SELECT * FROM guyana_graphic_counties_2018`
 );
 
-const mapStyle = new carto.style.CartoCSS(`
-        #layer {
-          polygon-fill: ramp([value], (#ffc6c4, #ee919b, #cc607d, #9e3963, #672044), quantiles);
-          polygon-opacity: 0.9;
-        }
-        #layer::outline {
-          line-width: 0.5;
-          line-color: #FFFFFF;
-          line-opacity: 0.5;
-        }
-      `);
+const mapStyle = new carto.style.CartoCSS(
+  `    
+    #layer {
+      #geonames_stats{
+        polygon-fill: #672044;
+        polygon-opacity: 0.9;
+        line-color: #FFF;
+        line-width: 0.5;
+        line-opacity: 0.5;
+      }
+      #geonames_stats [ value <= 30000] {
+          polygon-fill: #93345d;
+      }
+      #geonames_stats [ value <= 10000] {
+          polygon-fill: #b95073;
+      }
+      #geonames_stats [ value <= 1000] {
+          polygon-fill: #da7489;
+      }
+      #geonames_stats [ value <= 500] {
+        polygon-fill: #f29ca3;
+      }
+      #geonames_stats [ value <= 100] {
+      polygon-fill: #ffc6c4;
+      }
+    }
+    #layer::outline {
+      line-width: 0.5;
+      line-color: #FFFFFF;
+      line-opacity: 0.5;
+    }
+  `
+);
 
 const mapLayer = new carto.layer.Layer(mapSource, mapStyle, {
   featureOverColumns: ["value", "county_state"],
