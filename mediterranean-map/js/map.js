@@ -36,17 +36,18 @@ const riskDataSource = new carto.source.SQL(`
 `);
 
 // Style the total_cases data
-let dataStyle = new carto.style.CartoCSS(setLayerStyle("risk_level"));
+let dataStyle = new carto.style.CartoCSS(setLayerStyle("risk_value"));
 
 // Combine total_cases source and style
 const dataLayer = new carto.layer.Layer(riskDataSource, dataStyle, {
   featureOverColumns: [
     "country",
     "risk_level",
-    "risk_label",
-    "risk_type",
-    "u_s_ability_to_influence",
-    "ability_level",
+    "risk_value",
+    "instability_markers",
+    "influence_type",
+    "risk_level_2",
+    "risk_value_2"
   ],
 });
 
@@ -62,16 +63,14 @@ const riskButton = document.getElementById("risk-button");
 const influenceButton = document.getElementById("influence-button");
 
 riskButton.addEventListener("click", function () {
-  toggleActiveDataset("risk_level");
-  // updateLegend("total_cases");
+  toggleActiveDataset("risk_value");
   activeIndicator = "risk_level";
   toggleActiveButton("risk");
   popup.removeFrom(map);
 });
 
 influenceButton.addEventListener("click", function () {
-  toggleActiveDataset("ability_level");
-  // updateLegend("total_deaths");
+  toggleActiveDataset("risk_value_2");
   activeIndicator = "ability_level";
   toggleActiveButton("influence");
   popup.removeFrom(map);
@@ -144,19 +143,19 @@ dataLayer.on(carto.layer.events.FEATURE_CLICKED, (event) => {
       <p class="popup__values">
         Instability Markers: 
         <span>
-          ${data.risk_type}
+          ${data.instability_markers}
         </span>
       </p>
       <p class="popup__values">
         Risk Level: 
         <span>
-          ${data.risk_label}
+          ${data.risk_level}
         </span>
       </p>
       <p class="popup__values">
         Risk Value: 
         <span>
-          ${data.risk_level}
+          ${data.risk_value}
         </span>
       </p>
     `;
@@ -168,19 +167,19 @@ dataLayer.on(carto.layer.events.FEATURE_CLICKED, (event) => {
       <p class="popup__values">
         Influence Type: 
         <span>
-          ${data.risk_type}
+          ${data.influence_type}
         </span>
       </p>
       <p class="popup__values">
-        US Ability to Influence: 
+        Risk Level: 
         <span>
-          ${data.u_s_ability_to_influence}
+          ${data.risk_level_2}
         </span>
       </p>
       <p class="popup__values">
-        Influence Value: 
+        Risk Value: 
         <span>
-          ${data.ability_level}
+          ${data.risk_value_2}
         </span>
       </p>
     `;
