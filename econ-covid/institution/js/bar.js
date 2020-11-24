@@ -135,7 +135,7 @@ Highcharts.chart("hcContainer", {
     },
   },
   tooltip: {
-    valueDecimals: 2,
+    valueDecimals: 1,
     valuePrefix: "$",
     valueSuffix: " billion",
   },
