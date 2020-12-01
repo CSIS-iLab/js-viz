@@ -54,9 +54,13 @@ mapLayer.on(carto.layer.events.FEATURE_CLICKED, createPopup);
 function createPopup(event) {
   popup.setLatLng(event.latLng);
 
+  const pane = document.querySelector('.pane');
+  const paneContent = document.querySelector('.pane-content')
+  pane.classList.add('open');
+
   if (!popup.isOpen()) {
     var data = event.data;
-    console.log(event.data);
+   
     var content = "<div>";
 
     content += `
@@ -73,10 +77,16 @@ function createPopup(event) {
       Description: ${data.sidebar} <br>
     </div>
     `;
-    popup.setContent("" + content);
-    popup.openOn(map);
+
+    paneContent.innerHTML = content;
   }
 }
+
+const closeBtn = document.querySelector('.close-btn')
+closeBtn.addEventListener('click', function(e) {
+  const pane = document.querySelector('.pane');
+  pane.classList.remove('open');
+})
 
 L.control
   .attribution({
