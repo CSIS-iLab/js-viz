@@ -42,12 +42,14 @@ let dataStyle = new carto.style.CartoCSS(setLayerStyle("risk_value"));
 const dataLayer = new carto.layer.Layer(riskDataSource, dataStyle, {
   featureOverColumns: [
     "country",
+    "instability_markers",
     "risk_level",
     "risk_value",
-    "instability_markers",
+    "link",
     "influence_type",
     "risk_level_2",
-    "risk_value_2"
+    "risk_value_2",
+    "link"
   ],
 });
 
@@ -158,6 +160,12 @@ dataLayer.on(carto.layer.events.FEATURE_CLICKED, (event) => {
           ${data.risk_value}
         </span>
       </p>
+      <p class="popup__values">
+        Link: 
+        <span>
+          ${data.link}
+        </span>
+      </p>
     `;
 
     let influencePopup = `
@@ -180,6 +188,12 @@ dataLayer.on(carto.layer.events.FEATURE_CLICKED, (event) => {
         Risk Value: 
         <span>
           ${data.risk_value_2}
+        </span>
+      </p>
+      <p class="popup__values">
+        Link: 
+        <span>
+          ${data.link}
         </span>
       </p>
     `;
