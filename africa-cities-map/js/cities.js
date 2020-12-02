@@ -5,7 +5,7 @@ var basemap = L.tileLayer(
 
 var map = L.map("map", {
   center: [40, -98],
-  zoom: 4,
+  zoom: 5,
   maxZoom: 8,
   scrollWheelZoom: false,
   minZoom: 4,
@@ -28,12 +28,12 @@ const mapSource = new carto.source.SQL(
 const mapStyle = new carto.style.CartoCSS(
   `
   #layer {
-    marker-width: 7;
-    marker-fill: #EE4D5A;
+    marker-width: 10;
+    marker-fill: #66c6cb;
     marker-fill-opacity: 0.9;
     marker-allow-overlap: true;
     marker-line-width: 1;
-    marker-line-color: #FFFFFF;
+    marker-line-color: #0095AB;
     marker-line-opacity: 1;
   }    
   `
@@ -47,45 +47,55 @@ client.addLayer(mapLayer);
 
 client.getLeafletLayer().bringToFront().addTo(map);
 
-const popup = L.popup({ closeButton: true });
+const sidePanel = L.popup({ closeButton: true });
 
-mapLayer.on(carto.layer.events.FEATURE_CLICKED, createPopup);
+mapLayer.on(carto.layer.events.FEATURE_CLICKED, createSidePanel);
 
-function createPopup(event) {
-  popup.setLatLng(event.latLng);
+function createSidePanel(event) {
+  sidePanel.setLatLng(event.latLng);
 
-  const pane = document.querySelector('.pane');
-  const paneContent = document.querySelector('.pane-content')
-  pane.classList.add('open');
+  const panel = document.querySelector('.panel');
+  const panelContent = document.querySelector('.panel-content')
+  panel.classList.add('open');
 
-  if (!popup.isOpen()) {
+  if (!sidePanel.isOpen()) {
     var data = event.data;
    
     var content = "<div>";
 
     content += `
-    <div class="popupHeaderStyle">
+    <h2 class="sidePanelHeaderStyle">
       ${data.city_name}
-    </div>
-    <div class="popupEntryStyle">
-      African Sister City: ${data.african_sister_cities} <br>
-      Theme: ${data.theme} <br>
-      SSA Diaspora Population by State: ${data.ssa_diaspora_population_by_state} <br>
-      State Exports to Africa 2018: ${data.state_exports_to_africa_2018} <br>
-      Continental Imports to The United States: ${data.continental_imports_to_us_states} <br>
-      Linked Commentary: <a href="${data.linked_commentary}" target="_blank">Link</a> <br>
-      Description: ${data.sidebar} <br>
+    </h2>
+    <hr>
+    <div class="sidePanelEntryStyle">
+      ${data.african_sister_cities
+          ? `<p><b>African Sister City:</b> ${data.african_sister_cities} </p>`
+          : ""
+      }
+      <p><b>Theme:</b> ${data.theme} </p>
+      <p><b>SSA Diaspora Population by State:</b> ${data.ssa_diaspora_population_by_state} </p>
+      <p><b>State Exports to Africa 2018:</b> ${data.state_exports_to_africa_2018} </p>
+      <p><b>Continental Imports to The United States:</b> ${data.continental_imports_to_us_states} </p>
+      ${data.linked_commentary
+          ? `<p><b>Linked Commentary:</b> <a href="${data.linked_commentary}" target="_blank">View Commentary</a> </p>`
+          : ""
+      }
+      ${data.sidebar
+          ? `<p><b>Description:</b> ${data.sidebar}</p>`
+          : ""
+      }
     </div>
     `;
 
-    paneContent.innerHTML = content;
+    panelContent.innerHTML = content;
   }
 }
 
 const closeBtn = document.querySelector('.close-btn')
 closeBtn.addEventListener('click', function(e) {
-  const pane = document.querySelector('.pane');
-  pane.classList.remove('open');
+  const panel = document.querySelector('.panel');
+  panel.classList.remove('open');
 })
 
 L.control
