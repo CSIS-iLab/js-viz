@@ -61,7 +61,7 @@ function createSidePanel(event) {
   if (!sidePanel.isOpen()) {
     var data = event.data;
    
-    var content = "<div>";
+    var content = "<div class=" + "panel-overflow" + ">";
 
     content += `
     <h2 class="sidePanelHeaderStyle">

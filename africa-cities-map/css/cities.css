@@ -24,6 +24,7 @@ aside.toolbox {
   background: white;
   box-shadow: 2px 2px 2px 7px rgba(0, 0, 0, 0.1);
   transition: 0.5s all ease;
+  overflow: scroll;
 }
 
 .panel-content {
@@ -86,8 +87,13 @@ a:hover {
 }
 
 @media screen and (max-width: 480px) {
-  /* .panel {
-    width: 100%;
-  } */
+  .panel {
+    width: 80%;
+  }
+
+  .panel-overflow {
+    height: 100%;
+    overflow-y:scroll; 
+  }
 
 }
