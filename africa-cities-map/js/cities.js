@@ -29,11 +29,11 @@ const mapStyle = new carto.style.CartoCSS(
   `
   #layer {
     marker-width: 13;
-    marker-fill: #66c6cb;
-    marker-fill-opacity: 0.9;
+    marker-fill: #66C6CB;
+    marker-fill-opacity: 0.8;
     marker-allow-overlap: true;
     marker-line-width: 1;
-    marker-line-color: #0095AB;
+    marker-line-color: #566377;
     marker-line-opacity: 1;
   }    
   `

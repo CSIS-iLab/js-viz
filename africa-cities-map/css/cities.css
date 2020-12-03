@@ -44,7 +44,6 @@ aside.toolbox {
   font-family: "Source Sans Pro", sans-serif;
   background-color: white;
   color:#353535;
-  border:2px solid #353535;
   padding: 10px 5px;
   font-size: 16px;
   border-radius: 4px;
@@ -53,5 +52,9 @@ aside.toolbox {
 
 .close-btn:hover {
   color: #66c6cb;
-  border: 2px solid #66c6cb;
+  border-color: #66c6cb;
+}
+
+.close-btn:active {
+  outline-color: #66c6cb;
 }
