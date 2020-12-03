@@ -4,6 +4,10 @@ aside.toolbox {
   top: 2rem;
 }
 
+.box-header {
+  line-height: 1.1;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -43,20 +47,16 @@ aside.toolbox {
 .close-btn {
   font-family: "Source Sans Pro", sans-serif;
   background-color: white;
-  color:#353535;
   padding: 10px 5px;
   font-size: 16px;
   transition: 0.3s all ease;
+  border: none;
 }
 
 .close-btn:hover {
   color: #66c6cb;
-  border-color: #66c6cb;
 }
 
-.close-btn:active {
-  outline-color: #66c6cb;
-}
 
 .sidePanelHeaderStyle {
   text-transform: uppercase;
@@ -78,4 +78,8 @@ hr {
   text-transform: lowercase;
   font-weight: 600;
   font-size: 14px;
+}
+
+a {
+  color: #66C6CB;
 }
