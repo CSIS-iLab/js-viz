@@ -46,7 +46,6 @@ aside.toolbox {
   color:#353535;
   padding: 10px 5px;
   font-size: 16px;
-  border-radius: 4px;
   transition: 0.3s all ease;
 }
 
@@ -57,4 +56,26 @@ aside.toolbox {
 
 .close-btn:active {
   outline-color: #66c6cb;
+}
+
+.sidePanelHeaderStyle {
+  text-transform: uppercase;
+  line-height: 3%;
+  color: #353535;
+}
+
+hr {
+  color: rgba(0, 0, 0, 0.5)
+}
+
+.side-panel-value {
+  text-transform: uppercase;
+  color: #353535;
+  font-size: 12px;
+}
+
+.side-panel-value span {
+  text-transform: lowercase;
+  font-weight: 600;
+  font-size: 14px;
 }

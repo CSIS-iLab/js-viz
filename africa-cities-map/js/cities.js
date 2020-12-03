@@ -68,24 +68,22 @@ function createSidePanel(event) {
       ${data.city_name}
     </h2>
     <hr>
-    <div class="sidePanelEntryStyle">
       ${data.african_sister_cities
-          ? `<p><b>African Sister City:</b> ${data.african_sister_cities} </p>`
+          ? `<p class="side-panel-value">African Sister City: <span>${data.african_sister_cities}</span></p>`
           : ""
       }
-      <p><b>Theme:</b> ${data.theme} </p>
-      <p><b>SSA Diaspora Population by State:</b> ${data.ssa_diaspora_population_by_state} </p>
-      <p><b>State Exports to Africa 2018:</b> ${data.state_exports_to_africa_2018} </p>
-      <p><b>Continental Imports to The United States:</b> ${data.continental_imports_to_us_states} </p>
+      <p class="side-panel-value">Theme: <span>${data.theme}</span> </p>
+      <p class="side-panel-value">SSA Diaspora Population by State: <span>${data.ssa_diaspora_population_by_state}</span> </p>
+      <p class="side-panel-value">State Exports to Africa 2018: <span>${data.state_exports_to_africa_2018}</span> </p>
+      <p class="side-panel-value">Continental Imports to The United States: <span>${data.continental_imports_to_us_states}</span> </p>
       ${data.linked_commentary
-          ? `<p><b>Linked Commentary:</b> <a href="${data.linked_commentary}" target="_blank">View Commentary</a> </p>`
+          ? `<p class="side-panel-value">Linked Commentary: <a href="${data.linked_commentary}" target="_blank">View Commentary</a> </p>`
           : ""
       }
       ${data.sidebar
-          ? `<p><b>Description:</b> ${data.sidebar}</p>`
+          ? `<p class="side-panel-value">Description: <span>${data.sidebar}</span></p>`
           : ""
       }
-    </div>
     `;
 
     panelContent.innerHTML = content;
