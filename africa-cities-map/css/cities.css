@@ -83,3 +83,8 @@ hr {
 a {
   color: #66C6CB;
 }
+
+a:hover {
+  text-decoration: none; 
+  color: #0095AB;
+}
