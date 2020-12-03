@@ -12,16 +12,6 @@ aside.toolbox {
   box-sizing: border-box;
 }
 
-.toggle {
-  position: absolute;
-  right: 2rem;
-  top: 2rem;
-  padding: 0.5rem 1rem;
-  background: #212121;
-  color: white;
-  font-size: 1.2rem;
-}
-
 .panel {
   display:table;
   font-family: "Source Sans Pro", sans-serif;
@@ -93,4 +83,11 @@ a {
 a:hover {
   text-decoration: none; 
   color: #0095AB;
+}
+
+@media screen and (max-width: 480px) {
+  /* .panel {
+    width: 100%;
+  } */
+
 }
