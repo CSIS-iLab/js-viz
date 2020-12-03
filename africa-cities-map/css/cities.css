@@ -47,8 +47,7 @@ aside.toolbox {
 .close-btn {
   font-family: "Source Sans Pro", sans-serif;
   background-color: white;
-  padding: 10px 5px;
-  font-size: 16px;
+  font-size: 20px;
   transition: 0.3s all ease;
   border: none;
 }
@@ -65,23 +64,30 @@ aside.toolbox {
 }
 
 hr {
-  color: rgba(0, 0, 0, 0.5)
+  color: rgba(0, 0, 0, 0.5);
+  margin-bottom: 40px;
 }
 
 .side-panel-value {
   text-transform: uppercase;
   color: #353535;
-  font-size: 12px;
+  font-size: 15px;
 }
 
 .side-panel-value span {
   text-transform: capitalize;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 17px;
+}
+
+.side-panel-desc {
+  margin-top: 40px;
+  color: #353535;
+  font-size: 17px;
 }
 
 a {
-  color: #66C6CB;
+  color: #1ba7bd;
 }
 
 a:hover {

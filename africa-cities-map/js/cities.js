@@ -81,7 +81,7 @@ function createSidePanel(event) {
           : ""
       }
       ${data.sidebar
-          ? `<p class="side-panel-value">Description: <span>${data.sidebar}</span></p>`
+          ? `<p class="side-panel-desc">${data.sidebar}</p>`
           : ""
       }
     `;
