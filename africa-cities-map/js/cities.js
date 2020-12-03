@@ -28,7 +28,7 @@ const mapSource = new carto.source.SQL(
 const mapStyle = new carto.style.CartoCSS(
   `
   #layer {
-    marker-width: 10;
+    marker-width: 13;
     marker-fill: #66c6cb;
     marker-fill-opacity: 0.9;
     marker-allow-overlap: true;
