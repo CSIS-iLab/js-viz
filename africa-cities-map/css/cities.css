@@ -75,7 +75,7 @@ hr {
 }
 
 .side-panel-value span {
-  text-transform: lowercase;
+  text-transform: capitalize;
   font-weight: 600;
   font-size: 14px;
 }
