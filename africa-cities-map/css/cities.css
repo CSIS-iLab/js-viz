@@ -1,11 +1,24 @@
 aside.toolbox {
   position: absolute;
-  left: 2rem;
+  left: 3rem;
   top: 2rem;
+  border-radius: 3px;
+  font-family: "Source Sans Pro", sans-serif;
+}
+
+.box {
+  border-radius: 3px;
+}
+
+.box header h1{
+  font-family: "Source Sans Pro", sans-serif;
+  line-height: 1.1;
+  text-transform: uppercase;
 }
 
 .box-header {
   line-height: 1.1;
+  text-transform: uppercase;
 }
 
 * {
@@ -25,6 +38,7 @@ aside.toolbox {
   box-shadow: 2px 2px 2px 7px rgba(0, 0, 0, 0.1);
   transition: 0.5s all ease;
   overflow: scroll;
+  border-radius: 3px;
 }
 
 .panel-content {
@@ -84,6 +98,11 @@ a {
 a:hover {
   text-decoration: none; 
   color: #0095AB;
+}
+
+.leaflet-left {
+  margin-top: 1.5rem;
+  border-radius: 3px;
 }
 
 @media screen and (max-width: 480px) {
