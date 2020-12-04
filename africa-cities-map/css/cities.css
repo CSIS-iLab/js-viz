@@ -89,11 +89,57 @@ a:hover {
 @media screen and (max-width: 480px) {
   .panel {
     width: 80%;
+    right: -80%
+  }
+
+  .open {
+    right: 0%
   }
 
   .panel-overflow {
     height: 100%;
-    overflow-y:scroll; 
+    overflow-y:scroll;
+  }
+
+  .sidePanelHeaderStyle {
+    line-height: 110%;
+  }
+
+}
+
+@media screen and (width: 768px) {
+  .panel {
+    width: 40%;
+    right: -40%
+  }
+
+  .open {
+    right: 0%
+  }
+
+  .panel-overflow {
+    height: 100%;
+    overflow-y:scroll;
+  }
+
+  .sidePanelHeaderStyle {
+    line-height: 110%;
+  }
+
+}
+
+@media screen and (width: 1024px) {
+  .panel {
+    width: 40%;
+    right: -40%
+  }
+
+  .open {
+    right: 0%
+  }
+
+  .sidePanelHeaderStyle {
+    line-height: 110%;
   }
 
 }
