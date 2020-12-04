@@ -45,11 +45,9 @@ const dataLayer = new carto.layer.Layer(riskDataSource, dataStyle, {
     "instability_markers",
     "risk_level",
     "risk_value",
-    "link",
     "influence_type",
     "risk_level_2",
-    "risk_value_2",
-    "link"
+    "risk_value_2"
   ],
 });
 
@@ -82,12 +80,6 @@ function toggleActiveDataset(activeDataset) {
   dataStyle.setContent(setLayerStyle(activeDataset));
 }
 
-// polygon-fill: ramp([${activeDataset}], (#d0b3b4, #be9697, #ac7a7c, #9a5e62, #87424a), (1, 2, 3, 4, 5, ), "=", category);
-
-// polygon-fill: ramp([${activeDataset}], (#F9ECED, #F8d6d7, #d29293, #b26268, #a44a5c), (1, 2, 3, 4, 5), "=", category);
-
-
-// polygon-fill: ramp([${activeDataset}], (#F5DCDD, #EBBFC0, #C57B7F, #A94F56, #8B1A31), (1, 2, 3, 4, 5), "=", category);
 function setLayerStyle(activeDataset) {
   return `
     #layer {
@@ -160,12 +152,6 @@ dataLayer.on(carto.layer.events.FEATURE_CLICKED, (event) => {
           ${data.risk_value}
         </span>
       </p>
-      <p class="popup__values">
-        Link: 
-        <span>
-          ${data.link}
-        </span>
-      </p>
     `;
 
     let influencePopup = `
@@ -188,12 +174,6 @@ dataLayer.on(carto.layer.events.FEATURE_CLICKED, (event) => {
         Risk Value: 
         <span>
           ${data.risk_value_2}
-        </span>
-      </p>
-      <p class="popup__values">
-        Link: 
-        <span>
-          ${data.link}
         </span>
       </p>
     `;
