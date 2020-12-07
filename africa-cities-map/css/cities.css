@@ -1,6 +1,6 @@
 aside.toolbox {
   position: absolute;
-  left: 3rem;
+  left: 2rem;
   top: 2rem;
   border-radius: 3px;
   font-family: "Source Sans Pro", sans-serif;
@@ -75,14 +75,15 @@ hr {
 
 .side-panel-value {
   text-transform: uppercase;
-  color: #353535;
+  color:#0a8672;
   font-size: 15px;
 }
 
 .side-panel-value span {
   text-transform: capitalize;
-  font-weight: 600;
+  font-weight: 400;
   font-size: 17px;
+  color:  #353535;
 }
 
 .side-panel-desc {
@@ -92,12 +93,12 @@ hr {
 }
 
 a {
-  color: #1ba7bd;
+  color: #0065A4;
 }
 
 a:hover {
   text-decoration: none; 
-  color: #0095AB;
+  color: #115175;
 }
 
 .leaflet-left {
@@ -161,4 +162,17 @@ a:hover {
     line-height: 110%;
   }
 
+}
+
+/* Override leaflet default styles */
+.leaflet-top {
+  position: relative !important
+}
+.leaflet-left .leaflet-control {
+  margin-left: 0;
+}
+.leaflet-touch .leaflet-control-layers, .leaflet-touch .leaflet-bar {
+  position: fixed;
+  bottom: 20px;
+  left: 2rem;
 }

@@ -5,7 +5,7 @@ var basemap = L.tileLayer(
 
 var map = L.map("map", {
   center: [40, -98],
-  zoom: 4,
+  zoom: 5,
   maxZoom: 8,
   scrollWheelZoom: false,
   minZoom: 4,
@@ -35,7 +35,20 @@ const mapStyle = new carto.style.CartoCSS(
     marker-line-width: 1;
     marker-line-color: #566377;
     marker-line-opacity: 1;
-  }    
+  }
+  #layer::labels {
+    text-name: [city_name];
+    text-face-name: 'DejaVu Sans Book';
+    text-size: 10;
+    text-fill: #FFFFFF;
+    text-label-position-tolerance: 0;
+    text-halo-radius: 1;
+    text-halo-fill: #6F808D;
+    text-dy: -10;
+    text-allow-overlap: true;
+    text-placement: point;
+    text-placement-type: dummy;
+  }
   `
 );
 
@@ -68,20 +81,19 @@ function createSidePanel(event) {
       ${data.city_name}
     </h2>
     <hr>
-      ${data.african_sister_cities
-          ? `<p class="side-panel-value">African Sister City: <span>${data.african_sister_cities}</span></p>`
-          : ""
-      }
       <p class="side-panel-value">Theme: <span>${data.theme}</span> </p>
       <p class="side-panel-value">SSA Diaspora Population by State: <span>${data.ssa_diaspora_population_by_state}</span> </p>
       <p class="side-panel-value">State Exports to Africa 2018: <span>${data.state_exports_to_africa_2018}</span> </p>
       <p class="side-panel-value">Continental Imports to The United States: <span>${data.continental_imports_to_us_states}</span> </p>
-      ${data.linked_commentary
-          ? `<p class="side-panel-value">Linked Commentary: <a href="${data.linked_commentary}" target="_blank">View Commentary</a> </p>`
-          : ""
+      ${data.african_sister_cities
+        ? `<p class="side-panel-value">African Sister City: <span>${data.african_sister_cities}</span></p>`
+        : ""
       }
       ${data.sidebar
-          ? `<p class="side-panel-desc">${data.sidebar}</p>`
+          ? `<p class="side-panel-desc">${data.sidebar}${data.linked_commentary
+            ? `<a href="${data.linked_commentary}" target="_blank"> ...Read More</a> </p>`
+            : ""
+          }</p>`
           : ""
       }
     `;
