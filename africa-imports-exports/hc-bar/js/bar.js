@@ -1,8 +1,3 @@
-Highcharts.setOptions({
-  lang: {
-      thousandsSep: ','
-  }
-});
 Highcharts.chart('hcContainer', {
     // Load Data in from Google Sheets
     data: {
@@ -11,7 +6,6 @@ Highcharts.chart('hcContainer', {
     },
     // General Chart Options
     chart: {
-      zoomType: 'x',
       type: 'bar'
     },
     // Chart Title and Subtitle
@@ -41,11 +35,11 @@ Highcharts.chart('hcContainer', {
     // Y Axis
     yAxis: {
       title: { 
-        text: "Millions of US$"
+        text: "Billions of US$"
       },
       labels: {
         formatter: function () {
-          return (this.value / 1000000);
+          return (this.value / 1000000000);
         }
       }
     },
@@ -55,7 +49,7 @@ Highcharts.chart('hcContainer', {
       title: "",
       pointFormatter: function () {
         return `<span style="color:${this.color}">\u25CF </span> ${this.series.name}: 
-        <b>$${(this.y / 1000000).toFixed(1)} million</b><br>`;
+        <b>$` + Highcharts.numberFormat(this.y/1000000, 0, ".", ",") + ` million</b><br>`;
       },
     },
     // Additional Plot Options
