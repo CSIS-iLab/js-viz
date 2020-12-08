@@ -13,7 +13,7 @@ Highcharts.chart('hcContainer', {
       text: "Imports and Exports Between Africa and Key U.S. States"
     },
     subtitle: {
-      text: "This bar chart illustrates U.S. state exports to Africa (2018) and Africa's imports to 15 US states (2018). With an average of $3.7 billion in exports and $2.3 billion in imports, Texas's economic engagement with the region remains the among the largest in the United States."
+      text: "This bar chart illustrates U.S. state exports to Africa (2018) and Africa's imports to 15 US states (2018). With an average of $3.7 billion in exports and $2.3 billion in imports, Texas's economic engagement with the region remains among the largest in the United States."
     },
     // Color
     colors: ["#0095AB","#004165"],
@@ -48,9 +48,14 @@ Highcharts.chart('hcContainer', {
       shared: true,
       title: "",
       pointFormatter: function () {
-        return `<span style="color:${this.color}">\u25CF </span> ${this.series.name}: 
-        <b>$` + Highcharts.numberFormat(this.y/1000000, 0, ".", ",") + ` million</b><br>`;
-      },
+        var result = this.y
+              if (result > 999999999.99) {
+        result = (result / 1000000000).toFixed(1) + " Billion"
+              } else if (result > 0) {
+        result = (result / 1000000).toFixed(1) + " Million"
+              }
+              return '<span style="color:' + this.color + '">\u25CF</span> ' + this.series.name + ': <b>$' + result + '</b><br/>'
+            }
     },
     // Additional Plot Options
     plotOptions:
