@@ -30,7 +30,8 @@ Highcharts.chart('hcContainer', {
       },
       align: 'center',
       verticalAlign: 'bottom',
-      layout: 'horizontal'
+      layout: 'horizontal',
+      reversed: true,
     },
     // Y Axis
     yAxis: {
