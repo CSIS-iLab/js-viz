@@ -53,7 +53,7 @@ const mapStyle = new carto.style.CartoCSS(
 );
 
 const mapLayer = new carto.layer.Layer(mapSource, mapStyle, {
-  featureOverColumns: ["city_name", "african_sister_cities" , "theme", "ssa_diaspora_population_by_state", "state_exports_to_africa_2018", "continental_imports_to_us_states", "linked_commentary", "sidebar"],
+  featureOverColumns: ["city_name", "african_sister_cities" , "theme", "ssa_immigrant_population_by_u_s_state", "u_s_state_exports_to_ssa_2018", "u_s_state_imports_from_ssa_2018", "linked_commentary", "sidebar"],
 });
 
 client.addLayer(mapLayer);
@@ -82,22 +82,17 @@ function createSidePanel(event) {
     </h2>
     <hr>
       <p class="side-panel-value">Theme: <span>${data.theme}</span> </p>
-      <p class="side-panel-value">SSA Diaspora Population by State: <span>${data.ssa_diaspora_population_by_state}</span> </p>
-      <p class="side-panel-value">State Exports to Africa 2018: <span>${data.state_exports_to_africa_2018}</span> </p>
-      <p class="side-panel-value">Continental Imports to The United States: <span>${data.continental_imports_to_us_states}</span> </p>
+      <p class="side-panel-value">SSA Diaspora Population by State: <span>${data.ssa_immigrant_population_by_u_s_state}</span> </p>
+      <p class="side-panel-value">State Exports to Africa 2018: <span>${data.u_s_state_exports_to_ssa_2018}</span> </p>
+      <p class="side-panel-value">Continental Imports to The United States: <span>${data.u_s_state_imports_from_ssa_2018}</span> </p>
       ${data.african_sister_cities
         ? `<p class="side-panel-value">African Sister City: <span>${data.african_sister_cities}</span></p>`
         : ""
       }
-      ${data.sidebar
-          ? `<p class="side-panel-desc">${data.sidebar}${data.linked_commentary
+      <p class="side-panel-desc">${data.sidebar}${data.linked_commentary
             ? `<a href="${data.linked_commentary}" target="_blank"> ...Read More</a> </p>`
             : ""
-          }</p>`
-          : ""
-      }
-    `;
-
+          }</p>`;
     panelContent.innerHTML = content;
   }
 }
