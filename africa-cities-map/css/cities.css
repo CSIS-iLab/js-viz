@@ -33,7 +33,7 @@ aside.toolbox {
   right: -30%;
   padding: 1rem 2rem;
   height: 100vh;
-  width: 30%;
+  min-width: 30%;
   background: white;
   box-shadow: 2px 2px 2px 7px rgba(0, 0, 0, 0.1);
   transition: 0.5s all ease;
@@ -58,7 +58,7 @@ aside.toolbox {
 }
 
 .close-btn:hover {
-  color: #66c6cb;
+  color: #0a8672;
 }
 
 

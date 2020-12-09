@@ -33,17 +33,17 @@ const mapStyle = new carto.style.CartoCSS(
     marker-fill-opacity: 0.8;
     marker-allow-overlap: true;
     marker-line-width: 1;
-    marker-line-color: #566377;
+    marker-line-color: #0a8672;
     marker-line-opacity: 1;
   }
   #layer::labels {
     text-name: [city_name];
-    text-face-name: 'DejaVu Sans Book';
+    text-face-name: 'Open Sans Regular';
     text-size: 10;
     text-fill: #FFFFFF;
     text-label-position-tolerance: 0;
     text-halo-radius: 1;
-    text-halo-fill: #6F808D;
+    text-halo-fill: #000;
     text-dy: -10;
     text-allow-overlap: true;
     text-placement: point;
