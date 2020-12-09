@@ -74,13 +74,12 @@ function createSidePanel(event) {
   if (!sidePanel.isOpen()) {
     var data = event.data;
    
-    var content = "<div class=" + "panel-overflow" + ">";
+    var content = "";
 
     content += `
     <h2 class="sidePanelHeaderStyle">
       ${data.city_name}
     </h2>
-    <hr>
       <p class="side-panel-value">Theme: <span>${data.theme}</span> </p>
       <p class="side-panel-value">SSA Diaspora Population by State: <span>${data.ssa_immigrant_population_by_u_s_state}</span> </p>
       <p class="side-panel-value">State Exports to Africa 2018: <span>${data.u_s_state_exports_to_ssa_2018}</span> </p>

@@ -1,16 +1,17 @@
-aside.toolbox {
+.toolbox {
   position: absolute;
   left: 2rem;
   top: 2rem;
   border-radius: 3px;
   font-family: "Source Sans Pro", sans-serif;
+  max-width: 300px;
+  min-width: 300px;
+  z-index: 2;
+  background-color: #fff;
+  padding: 0.5rem 1rem;
 }
 
-.box {
-  border-radius: 3px;
-}
-
-.box header h1{
+.toolbox header h1{
   font-family: "Source Sans Pro", sans-serif;
   line-height: 1.1;
   text-transform: uppercase;
@@ -21,28 +22,25 @@ aside.toolbox {
   text-transform: uppercase;
 }
 
-* {
-  box-sizing: border-box;
-}
-
 .panel {
-  display:table;
+  position: absolute;
   font-family: "Source Sans Pro", sans-serif;
-  position: fixed;
   top: 0;
-  right: -30%;
-  padding: 1rem 2rem;
+  right: -33%;
+  padding: 1rem 2.5rem;
   height: 100vh;
-  width: 30%;
+  width: 33%;
   background: white;
   box-shadow: 2px 2px 2px 7px rgba(0, 0, 0, 0.1);
   transition: 0.5s all ease;
-  overflow: scroll;
+  overflow-y: auto;
   border-radius: 3px;
+  min-width: 400px;
+  z-index: 3;
 }
 
 .panel-content {
-  display:table-cell;
+  max-height: 100%;
 }
 
 .open {
@@ -50,6 +48,9 @@ aside.toolbox {
 }
 
 .close-btn {
+  position: absolute;
+  right: 10px;
+  top: 38px;
   font-family: "Source Sans Pro", sans-serif;
   background-color: white;
   font-size: 20px;
@@ -64,13 +65,10 @@ aside.toolbox {
 
 .sidePanelHeaderStyle {
   text-transform: uppercase;
-  line-height: 3%;
   color: #353535;
-}
-
-hr {
-  color: rgba(0, 0, 0, 0.5);
-  margin-bottom: 40px;
+  border-bottom: 1px solid rgba(0,0,0,0.5);
+  padding-bottom: 16px;
+  margin-bottom: 32px;
 }
 
 .side-panel-value {
@@ -106,7 +104,7 @@ a:hover {
   border-radius: 3px;
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 478px) {
   .panel {
     width: 80%;
     right: -80%
@@ -127,7 +125,7 @@ a:hover {
 
 }
 
-@media screen and (width: 768px) {
+@media screen and (max-width: 790px) {
   .panel {
     width: 40%;
     right: -40%
