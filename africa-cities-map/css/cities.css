@@ -33,7 +33,7 @@ aside.toolbox {
   right: -30%;
   padding: 1rem 2rem;
   height: 100vh;
-  min-width: 30%;
+  width: 30%;
   background: white;
   box-shadow: 2px 2px 2px 7px rgba(0, 0, 0, 0.1);
   transition: 0.5s all ease;
