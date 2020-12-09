@@ -13,7 +13,7 @@ Highcharts.chart('hcContainer', {
       text: "Imports and Exports Between Africa and Key U.S. States"
     },
     subtitle: {
-      text: "This bar chart illustrates U.S. state exports to Africa (2018) and Africa's imports to 15 US states (2018). With an average of $3.7 billion in exports and $2.3 billion in imports, Texas's economic engagement with the region remains among the largest in the United States."
+      text: "This bar chart illustrates U.S. state exports to Africa (2018) and Africa's imports to 15 U.S. states (2018). With an average of $3.7 billion in exports and $2.3 billion in imports, Texas's economic engagement with the region remains among the largest in the United States."
     },
     // Color
     colors: ["#0095AB","#004165"],
