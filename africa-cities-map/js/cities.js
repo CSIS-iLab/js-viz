@@ -39,7 +39,7 @@ const mapStyle = new carto.style.CartoCSS(
   #layer::labels {
     text-name: [city_name];
     text-face-name: 'Open Sans Regular';
-    text-size: 10;
+    text-size: 14;
     text-fill: #FFFFFF;
     text-label-position-tolerance: 0;
     text-halo-radius: 1;
