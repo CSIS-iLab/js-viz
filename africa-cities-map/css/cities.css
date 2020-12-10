@@ -39,8 +39,8 @@ body {
   transition: 0.5s all ease;
   overflow-y: auto;
   border-radius: 3px;
-  min-width: 400px;
-  max-width: 400px;
+  min-width: 350px;
+  /* max-width: 400px; */
   z-index: 3;
 }
 
@@ -109,7 +109,7 @@ a:hover {
   border-radius: 3px;
 }
 
-@media screen and (max-width: 478px) {
+@media screen and (max-width: 480px) {
   .panel {
     width: 80%;
     right: -80%
@@ -119,18 +119,9 @@ a:hover {
     right: 0%
   }
 
-  .panel-overflow {
-    height: 100%;
-    overflow-y:scroll;
-  }
-
-  .sidePanelHeaderStyle {
-    line-height: 110%;
-  }
-
 }
 
-@media screen and (max-width: 790px) {
+@media all and (min-width: 480px) and (max-width: 768px) {
   .panel {
     width: 40%;
     right: -40%
@@ -140,18 +131,9 @@ a:hover {
     right: 0%
   }
 
-  .panel-overflow {
-    height: 100%;
-    overflow-y:scroll;
-  }
-
-  .sidePanelHeaderStyle {
-    line-height: 110%;
-  }
-
 }
 
-@media screen and (width: 1024px) {
+@media all and (min-width: 768px) and (max-width: 1024px) {
   .panel {
     width: 40%;
     right: -40%
@@ -159,10 +141,6 @@ a:hover {
 
   .open {
     right: 0%
-  }
-
-  .sidePanelHeaderStyle {
-    line-height: 110%;
   }
 
 }
