@@ -39,7 +39,7 @@ body {
   transition: 0.5s all ease;
   overflow-y: auto;
   border-radius: 3px;
-  min-width: 350px;
+  /* min-width: 350px; */
   /* max-width: 400px; */
   z-index: 3;
 }
