@@ -91,6 +91,7 @@ body {
 
 .side-panel-desc {
   margin-top: 40px;
+  padding-bottom: 40px;
   color: #353535;
   font-size: 17px;
 }
@@ -109,22 +110,10 @@ a:hover {
   border-radius: 3px;
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 768px) {
   .panel {
     width: 80%;
     right: -80%
-  }
-
-  .open {
-    right: 0%
-  }
-
-}
-
-@media all and (min-width: 480px) and (max-width: 768px) {
-  .panel {
-    width: 40%;
-    right: -40%
   }
 
   .open {
