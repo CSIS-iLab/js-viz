@@ -8,22 +8,36 @@ body {
   top: 2rem;
   border-radius: 3px;
   font-family: "Source Sans Pro", sans-serif;
-  max-width: 300px;
-  min-width: 300px;
+  max-width: 380px;
+  min-width: 350px;
   z-index: 2;
   background-color: #fff;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 1.5rem;
 }
 
 .toolbox header h1{
   font-family: "Source Sans Pro", sans-serif;
   line-height: 1.1;
   text-transform: uppercase;
+  color: #353535;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(0,0,0,0.5);
+  padding-bottom: 12px;
 }
 
 .box-header {
   line-height: 1.1;
   text-transform: uppercase;
+}
+
+.description {
+  color: #353535;
+}
+
+.description > span {
+  margin: 20px;
+  display: block;
+  color: #51746d;
 }
 
 .panel {
@@ -39,8 +53,6 @@ body {
   transition: 0.5s all ease;
   overflow-y: auto;
   border-radius: 3px;
-  /* min-width: 350px; */
-  /* max-width: 400px; */
   z-index: 3;
 }
 

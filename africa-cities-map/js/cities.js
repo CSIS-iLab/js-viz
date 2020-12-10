@@ -41,13 +41,14 @@ const mapStyle = new carto.style.CartoCSS(
     text-face-name: 'Open Sans Regular';
     text-size: 14;
     text-fill: #FFFFFF;
-    text-label-position-tolerance: 0;
+    text-label-position-tolerance: 10;
     text-halo-radius: 1;
     text-halo-fill: #000;
     text-dy: -10;
-    text-allow-overlap: true;
+    text-allow-overlap: false;
     text-placement: point;
-    text-placement-type: dummy;
+    text-placements: 'N,E,S,W';
+    text-placement-type: simple;
   }
   `
 );
