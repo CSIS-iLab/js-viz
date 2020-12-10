@@ -44,6 +44,14 @@ Highcharts.chart('hcContainer', {
         }
       }
     },
+    // X Axis
+    xAxis: {
+      type: 'category',
+      allowDecimals: false,
+      labels: {
+        step: 1
+      }
+    },
     // Tooltip
     tooltip: {
       shared: true,
