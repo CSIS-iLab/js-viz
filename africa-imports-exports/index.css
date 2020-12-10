@@ -1,0 +1,5 @@
+@media only screen and (max-width: 600px) {
+  .highcharts-xaxis-labels > text {
+    font-size: 10px !important;
+  }
+}
