@@ -1,5 +1,5 @@
 // Create Leaflet Map
-const map = L.map("map").setView([46.14, 15.67], 4.4);
+const map = L.map("map").setView([43.14, 22.67], 4.4);
 map.scrollWheelZoom.disable();
 
 // Create separate pane in Leaflet and set zIndex to bring it to
@@ -99,8 +99,8 @@ function setLayerStyle(activeDataset) {
       text-size: 14;
       text-fill: #000;
       text-label-position-tolerance: 0;
-      text-halo-radius: 0.8;
-      text-halo-fill: #ffffff;
+      text-halo-radius: 1;
+      text-halo-fill: #fff;
       text-dy: -2;
       text-allow-overlap: false;
       text-placement: point;

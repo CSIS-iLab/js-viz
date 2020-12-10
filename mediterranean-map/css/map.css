@@ -21,7 +21,6 @@ hr {
 
 .menu-translate {
   position: relative;
-  /* top: 10px; */
   padding-left: 10px;
   color: #2e3c43;
   font-weight: 800;
@@ -37,6 +36,10 @@ aside.toolbox {
   position: relative;
   -webkit-user-select: none;
   user-select: none;
+}
+
+.box {
+  border-radius: 3px !important;
 }
 
 .description {
@@ -183,7 +186,6 @@ aside.toolbox {
 }
 
 .leaflet-popup {
-  /* position: relative; */
   z-index: 10000;
 }
 
@@ -196,14 +198,13 @@ aside.toolbox {
   border-radius: 3px !important;
 }
 
-.leaflet-control-zoom {
-  top: 20px;
-  left: 20px;
+.leaflet-left .leaflet-control {
+  margin: 0;
 }
 
-.leaflet-top {
-  top: 11px;
-  left: -20px;
+.leaflet-bar {
+  left: 2rem;
+  top: 24px;
 }
 
 .hamburger {
