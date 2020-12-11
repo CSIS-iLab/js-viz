@@ -1,0 +1,160 @@
+body {
+  overflow: hidden;
+}
+
+.toolbox {
+  position: absolute;
+  left: 2rem;
+  top: 2rem;
+  border-radius: 3px;
+  font-family: "Source Sans Pro", sans-serif;
+  max-width: 380px;
+  min-width: 350px;
+  z-index: 2;
+  background-color: #fff;
+  padding: 0.5rem 1.5rem;
+}
+
+.toolbox header h1{
+  font-family: "Source Sans Pro", sans-serif;
+  line-height: 1.1;
+  text-transform: uppercase;
+  color: #353535;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(0,0,0,0.5);
+  padding-bottom: 12px;
+}
+
+.box-header {
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.description {
+  color: #353535;
+}
+
+.description > span {
+  margin: 20px;
+  display: block;
+  color: #51746d;
+}
+
+.panel {
+  position: absolute;
+  font-family: "Source Sans Pro", sans-serif;
+  top: 0;
+  right: -33%;
+  padding: 1rem 2.5rem;
+  height: 100vh;
+  width: 33%;
+  background: white;
+  box-shadow: 2px 2px 2px 7px rgba(0, 0, 0, 0.1);
+  transition: 0.5s all ease;
+  overflow-y: auto;
+  border-radius: 3px;
+  z-index: 3;
+}
+
+.panel-content {
+  max-height: 100%;
+}
+
+.open {
+  right: 0%;
+}
+
+.close-btn {
+  position: absolute;
+  right: 10px;
+  top: 38px;
+  font-family: "Source Sans Pro", sans-serif;
+  background-color: white;
+  font-size: 20px;
+  transition: 0.3s all ease;
+  border: none;
+}
+
+.close-btn:hover {
+  color: #0a8672;
+}
+
+
+.sidePanelHeaderStyle {
+  text-transform: uppercase;
+  color: #353535;
+  border-bottom: 1px solid rgba(0,0,0,0.5);
+  padding-bottom: 16px;
+  margin-bottom: 32px;
+}
+
+.side-panel-value {
+  text-transform: uppercase;
+  color:#0a8672;
+  font-size: 15px;
+}
+
+.side-panel-value span {
+  text-transform: capitalize;
+  font-weight: 400;
+  font-size: 17px;
+  color:  #353535;
+}
+
+.side-panel-desc {
+  margin-top: 40px;
+  padding-bottom: 40px;
+  color: #353535;
+  font-size: 17px;
+}
+
+a {
+  color: #0065A4;
+}
+
+a:hover {
+  text-decoration: none; 
+  color: #115175;
+}
+
+.leaflet-left {
+  margin-top: 1.5rem;
+  border-radius: 3px;
+}
+
+@media screen and (max-width: 768px) {
+  .panel {
+    width: 80%;
+    right: -80%
+  }
+
+  .open {
+    right: 0%
+  }
+
+}
+
+@media all and (min-width: 768px) and (max-width: 1024px) {
+  .panel {
+    width: 40%;
+    right: -40%
+  }
+
+  .open {
+    right: 0%
+  }
+
+}
+
+/* Override leaflet default styles */
+.leaflet-top {
+  position: relative !important
+}
+.leaflet-left .leaflet-control {
+  margin-left: 0;
+}
+.leaflet-touch .leaflet-control-layers, .leaflet-touch .leaflet-bar {
+  position: fixed;
+  bottom: 20px;
+  left: 2rem;
+}
