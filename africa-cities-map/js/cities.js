@@ -82,9 +82,9 @@ function createSidePanel(event) {
       ${data.city_name}
     </h2>
       <p class="side-panel-value">Theme: <span>${data.theme}</span> </p>
-      <p class="side-panel-value">SSA Diaspora Population by State: <span>${data.ssa_immigrant_population_by_u_s_state}</span> </p>
-      <p class="side-panel-value">State Exports to Africa 2018: <span>${data.u_s_state_exports_to_ssa_2018}</span> </p>
-      <p class="side-panel-value">Continental Imports to The United States: <span>${data.u_s_state_imports_from_ssa_2018}</span> </p>
+      <p class="side-panel-value">SSA Immigrant Population by U.S. State: <span>${data.ssa_immigrant_population_by_u_s_state}</span> </p>
+      <p class="side-panel-value">U.S. State Exports to SSA (2018): <span>${data.u_s_state_exports_to_ssa_2018}</span> </p>
+      <p class="side-panel-value">U.S. State Imports from SSA (2018): <span>${data.u_s_state_imports_from_ssa_2018}</span> </p>
       ${data.african_sister_cities
         ? `<p class="side-panel-value">African Sister City: <span>${data.african_sister_cities}</span></p>`
         : ""
