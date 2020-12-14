@@ -89,7 +89,7 @@ function createSidePanel(event) {
         ? `<p class="side-panel-value">African Sister City: <span>${data.african_sister_cities}</span></p>`
         : ""
       }
-      <p class="side-panel-desc">${data.sidebar}${data.linked_commentary
+      <p class="side-panel-desc">${data.sidebar} ${data.linked_commentary
             ? `<a href="${data.linked_commentary}" target="_blank"> Read More</a> </p>`
             : ""
           }</p>`;
