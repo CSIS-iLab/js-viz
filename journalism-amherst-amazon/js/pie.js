@@ -16,8 +16,7 @@ Highcharts.setOptions({
 });
 Highcharts.chart("hcContainer", {
   credits: {
-    text: "Terra-i: Land use Status and Trends",
-    href: "https://www.terra-i.org/terra-i/publications.html",
+    text: "Terra-I Land use Status and Trends: http://www.terra-i.org/terra-i/publications.html"
   },
   chart: {
     plotBackgroundColor: null,
