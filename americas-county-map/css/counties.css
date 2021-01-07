@@ -121,6 +121,9 @@ div#results {
 .legend li::before {
   content: "";
   position: relative;
+  padding: 0;
+  margin: 0;
+  display: inline-block;
   width: 25px;
   height: 5px;
   background: var(--bg);
@@ -157,7 +160,7 @@ div#results {
 }
 
 #ramp6 > span {
-  right: 18px;
+  /* right: 18px; */
 }
 
 .legend__value {
