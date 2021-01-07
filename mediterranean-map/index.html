@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Map of the Greater Mediterranean | CSIS Europe Program</title>
+    <meta name="viewport" content="initial-scale=1.0" />
+    <meta charset="utf-8" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700"
+      rel="stylesheet"
+    />
+
+    <!-- Share meta -->
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:type" content="article" />
+    <meta
+      property="og:title"
+      content="Indian Strategic Maritime Investments - Asia Maritime Transparency Initiative"
+    />
+
+    <script src="https://unpkg.com/babel-polyfill@6.26.0/dist/polyfill.js"></script>
+    <!-- Include Leaflet -->
+    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
+    <link
+      href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+      rel="stylesheet"
+    />
+    <!-- Include CARTO.js -->
+    <script src="https://libs.cartocdn.com/carto.js/v4.1.11/carto.min.js"></script>
+    <link
+      href="https://carto.com/developers/carto-js/examples/maps/public/style.css"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="preconnect stylesheet"
+      href="https://use.typekit.net/ats0hoc.css"
+    />
+
+    <link href="css/makeMap.css" rel="stylesheet" />
+
+    <link href="css/map.css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <nav id='menu-ui' class='menu-ui'></nav>
+    <div id="map" class="map" tabindex="0"></div>
+
+    <aside class="toolbox">
+      <input type="checkbox" checked class="ui mobile-only" />
+
+      <div class="hamburger mobile-only">
+        <div class="icon">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <h1 class="menu-translate">
+          Map of the Greater Mediterranean
+        </h1>
+      </div>
+
+      <section class="box">
+        <header class="mobile-toggle">
+          <h1 class="translate">Map of the Greater Mediterranean</h1>
+        </header>
+        <section>
+        <p class="description open-sans mobile-toggle">
+          Click on the interactive map to learn more about the littoral countries of the Mediterranean
+        </p>
+        <hr />
+        <div class="button-container">
+          <button class="btn active" id="risk-button">Instability <span id="risk"></span></button>
+          <button class="btn" id="influence-button">Influence <span id="influence"></span></button>
+        </div>
+        <hr/>
+        <div class="button-container">
+          <div class="button__title">Risk Level</div>
+        </div>
+        <ul id="legend" class="legend" data-type="risk-type">
+          <li id="ramp5" class="legend__value"><span>5</span></li>
+          <li id="ramp4" class="legend__value"><span>4</span></li>
+          <li id="ramp3" class="legend__value"><span>3</span></li>
+          <li id="ramp2" class="legend__value"><span>2</span></li>
+          <li id="ramp1" class="legend__value"><span>1</span></li>
+        </ul>
+      </section>
+      <footer class="js-footer"></footer>
+    </aside>
+
+    <script src="js/map.js"></script>
+  </body>
+</html>
