@@ -1,0 +1,134 @@
+table.dataTable thead th {
+  background: #252D3A;
+  color: #fff;
+  padding: 0.6em 0.9em;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  line-height: 1.2;
+}
+
+table.dataTable tbody td {
+  vertical-align: top;
+}
+
+.odd + .child { 
+  background-color: #f9f9f9;
+
+}
+/* #wrapper{
+  max-width: 800px;
+} */
+
+th,
+td,
+#title,
+#table_filter {
+  min-width: 50px;
+  font-family: source-sans-pro, sans-serif;
+}
+
+#title {
+text-align: center;
+}
+
+tbody td:first-child{
+  font-weight: bold;
+}
+
+.dtr-details {
+  width: 100%;
+}
+
+.dtr-details li {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap
+}
+
+td.child {
+  border-top: 0 !important;
+}
+
+.child .dtr-data {
+  font-weight: normal;
+}
+
+table.dataTable tfoot tr {
+  padding: 0.5rem 0.25rem 0.5rem 0;
+  font-size: 14px;
+  color: #666;
+}
+
+a {
+  color: #56C1AC;
+  text-decoration: none;
+  transition: color 0.3s ease-in-out;
+}
+
+a:hover {
+  color: #0a8672;
+  text-decoration: underline;
+}
+
+#table_filter {
+  width: 100%;
+  margin: 0.5rem auto;
+  text-align: center;
+  padding-bottom: 1rem;
+}
+
+/*
+ * Sort styling
+ */
+table.dataTable thead th {
+  position: relative;
+  background-image: none !important; /* Remove the DataTables bootstrap integration styling */
+}
+
+table.dataTable thead th.sorting:after,
+table.dataTable thead th.sorting_asc:after,
+table.dataTable thead th.sorting_desc:after {
+  position: absolute;
+  top: 33%;
+  right: 5px;
+  display: block;
+  font-family: FontAwesome;
+}
+
+table.dataTable thead th.sorting:after {
+  content: "\f0dc";
+  color: #ddd;
+  font-size: 0.8em;
+  padding-top: 0.12em;
+}
+table.dataTable thead th.sorting_asc:after {
+  content: "\f0de";
+}
+table.dataTable thead th.sorting_desc:after {
+  content: "\f0dd";
+}
+
+div.dataTables_scrollBody table.dataTable thead th.sorting:after,
+div.dataTables_scrollBody table.dataTable thead th.sorting_asc:after,
+div.dataTables_scrollBody table.dataTable thead th.sorting_desc:after {
+  content: "";
+}
+
+table.dataTable.dtr-inline.collapsed
+  > tbody
+  > tr[role="row"]
+  > td:first-child:before,
+table.dataTable.dtr-inline.collapsed
+  > tbody
+  > tr[role="row"]
+  > th:first-child:before {
+  top: 11px;
+  color:#252D3A;
+  background-color: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
