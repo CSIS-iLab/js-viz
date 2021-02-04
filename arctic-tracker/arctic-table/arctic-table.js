@@ -42,15 +42,11 @@ function displayInfo(dataset) {
       },
       {
         title: "Source",
-        data: "Source",
-        className: "dt-body-right",
-      },
-      {
-        title: "Hyperlink",
         data: "Hyperlink",
-        render: function (data, type) {
+        render: function (data, type, columns) {
           if (type === "display") {
-            data = '<a href="' + data + '">' + data + "</a>";
+            console.log(columns)
+            data = '<a href="' + data + '">' + columns.Source + "</a>";
           }
 
           return data;
@@ -60,7 +56,7 @@ function displayInfo(dataset) {
       {
         title: "Additional Information",
         data: "Additional Information",
-        className: "dt-body-right", 
+        className: "dt-body-right",
       },
     ],
     paging: false,
@@ -69,17 +65,12 @@ function displayInfo(dataset) {
     order: [],
     columnDefs: [
       {
-        targets: [1, 2, 3, 4, 5, 6],
+        targets: [1, 2, 3, 4, 5],
         orderable: false,
       },
     ],
   });
 
-  
-  $("#table tfoot th").each(function () {
-    var title = $("#table thead th").eq($(this).index()).text();
-    $(this).html('<input type="text" placeholder="Search ' + title + '" />');
-  });
   // DataTable
   var table = $("#table").DataTable();
   // Apply the search
