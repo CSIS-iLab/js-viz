@@ -45,7 +45,6 @@ function displayInfo(dataset) {
         data: "Hyperlink",
         render: function (data, type, columns) {
           if (type === "display") {
-            console.log(columns)
             data = '<a href="' + data + '">' + columns.Source + "</a>";
           }
 
