@@ -1,0 +1,17 @@
+table {
+  max-width: 800px;
+}
+
+table.dataTable thead th {
+  background: #0065a4;
+  color: #fff;
+  padding: 0.6em 0.9em;
+}
+
+th,
+td,
+#title,
+#table_filter {
+  min-width: 50px;
+  font-family: source-sans-pro, sans-serif;
+}
