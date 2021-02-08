@@ -25,16 +25,16 @@ function displayInfo(dataset) {
     responsive: true,
     data: dataset,
     columns: [
-      { title: "Bill", data: "Bill"},
-      {
-        title: "URL",
-        data: "URL",
+      { 
+        width: "20%",
+        title: "Bill",
+        data: null,
         render: function (data, type) {
-          if (type === "display") {
-            data = '<a href="' + data + '">' + data + "</a>";
+          if ( type === "display") {
+            data = '<a href="' + data.URL + '">' + data.Bill + "</a>";
           }
           return data;
-        }, 
+        }
       },
       {
         title: "Date Introduced",
@@ -56,13 +56,7 @@ function displayInfo(dataset) {
     paging: false,
     searching: true,
     info: false,
-    order: [],
-    columnDefs: [
-      {
-        targets: [0, 1, 2, 3, 4, 5],
-        orderable: false,
-      },
-    ],
+    order: []
   });
 
 

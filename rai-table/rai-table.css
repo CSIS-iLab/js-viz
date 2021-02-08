@@ -1,11 +1,11 @@
 table {
   max-width: 800px;
 }
-
+ 
 table.dataTable thead th {
   background: #0065a4;
   color: #fff;
-  padding: 0.6em 0.9em;
+  padding: .6em .9em;
 }
 
 th,
@@ -14,4 +14,29 @@ td,
 #table_filter {
   min-width: 50px;
   font-family: source-sans-pro, sans-serif;
+}
+
+#table_filter {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin: .5rem auto;
+  padding-bottom: 1rem;
+}
+
+a {
+  color: #0065a4;
+  text-decoration: none;
+  transition: color .3s ease-in-out;
+}
+
+a:hover,
+a:visited {
+  color: #0a8672;
+  text-decoration: underline;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
 }
