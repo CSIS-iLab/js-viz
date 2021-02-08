@@ -45,3 +45,16 @@ a:visited {
   display: flex;
   justify-content: center;
 }
+
+.right {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.credits {
+  cursor: pointer;
+  color: #999999;
+  font-size: 9px;
+  fill: #999999;
+  text-align: end;
+}

@@ -1,21 +1,19 @@
-/*Use Tabletop and Datatables to read Google Spreadsheet*/
+/*Use Papa parse and Datatables to read Google Spreadsheet*/
 
-var publicSpreadsheetUrl =
-  "https://docs.google.com/spreadsheets/d/1WEjSLfF19_OX4GtskW6rjb_e2PYzidcEZAz6tx_pcvg/edit#gid=0";
+let publicSpreadsheetUrl =
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vS4crrNyYOywjtF4L4QqO9Zlr1YUs16jowFE5EDI-YqhNF06VskZiIWNI9KKtmVAh9ZGbSulXiZyFSv/pub?output=csv";
   
-
-/*init() and showInfo() are from Tabletop, with the addition of displayInfo to use Datatables*/
+/* Papa parse */
 function init() {
-  Tabletop.init({
-    key: publicSpreadsheetUrl,
-    callback: showInfo,
-    parseNumbers: true,
-    simpleSheet: true,
-  });
+  Papa.parse(publicSpreadsheetUrl, {
+      download: true,
+      header: true,
+      complete: showInfo
+    })
 }
 
-function showInfo(data, tabletop) {
-  // console.log(data, tabletop);
+function showInfo(results) {
+  let data = results.data
   displayInfo(data);
 }
 
