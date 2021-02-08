@@ -6,7 +6,7 @@ table {
 table.dataTable thead th {
   background: #0065a4;
   color: #fff;
-  padding: .6em .9em;
+  padding: .6em 1.5em;
 }
 
 table.dataTable tfoot th, table.dataTable tfoot td {
