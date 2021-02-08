@@ -11,6 +11,10 @@ table {
   line-height: 1.2;
 }
 
+.dataTables_paginate, .dataTables_length {
+  max-width: 800px;
+}
+
 th,
 td {
   min-width: 50px;

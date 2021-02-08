@@ -21,10 +21,14 @@ function showInfo(data, tabletop) {
 /*function to use Datatables to display data */
 function displayInfo(dataset) {
   $("#table").DataTable({
+    dom:
+      "<'row'<'col-md-12'Bf>>" +
+      "<'row'<'col-md-12't>>" +
+      "<'row table-footer'<'col-md-6'l><'col-md-6'ip>>",
     responsive: true,
     data: dataset,
     columns: [
-      { title: "Date", data: "Date"},
+      { title: "Date", data: "Date" },
       {
         title: "Location",
         data: "Location",
@@ -45,11 +49,16 @@ function displayInfo(dataset) {
         data: "Hyperlink",
         render: function (data, type, columns) {
           if (type === "display") {
-            data = '<a href="' + data + '">' + columns.Source + "</a>";
+            data =
+              '<a href="' +
+              data +
+              ' "target="_blank">' +
+              columns.Source +
+              "</a>";
           }
 
           return data;
-        }, 
+        },
         className: "dt-body-right",
       },
       {
@@ -58,7 +67,8 @@ function displayInfo(dataset) {
         className: "dt-body-right",
       },
     ],
-    paging: false,
+    paging: true,
+    responsive: true,
     searching: true,
     info: false,
     order: [],

@@ -8,6 +8,7 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
   line-height: 1.2;
+  max-width: 800px;
 }
 
 table.dataTable tbody td {
@@ -24,6 +25,8 @@ table.dataTable tbody td {
 
 th,
 td,
+label,
+a,
 #title,
 #table_filter {
   min-width: 50px;
@@ -78,6 +81,11 @@ a:hover {
   margin: 0.5rem auto;
   text-align: center;
   padding-bottom: 1rem;
+}
+
+.table-footer {
+  max-width: 800px;
+  margin: auto;
 }
 
 /*
