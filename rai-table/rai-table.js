@@ -15,7 +15,7 @@ function init() {
 }
 
 function showInfo(data, tabletop) {
-  console.log(data, tabletop);
+  // console.log(data, tabletop);
   displayInfo(data);
 }
 
@@ -25,8 +25,7 @@ function displayInfo(dataset) {
     responsive: true,
     data: dataset,
     columns: [
-      { 
-        width: "20%",
+      {
         title: "Bill",
         data: null,
         render: function (data, type) {
@@ -56,7 +55,10 @@ function displayInfo(dataset) {
     paging: false,
     searching: true,
     info: false,
-    order: []
+    order: [],
+    columnDefs: [
+      { width: "10%", targets: [1, 2, 3, 4] }
+    ]
   });
 
 
