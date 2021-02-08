@@ -25,6 +25,7 @@ function displayInfo(dataset) {
       "<'row'<'col-md-12'Bf>>" +
       "<'row'<'col-md-12't>>" +
       "<'row table-footer'<'col-md-6'l><'col-md-6'ip>>",
+    lengthMenu: [[5,10, 25, 50, -1], [5,10, 25, 50, "All"]],
     responsive: true,
     data: dataset,
     columns: [
