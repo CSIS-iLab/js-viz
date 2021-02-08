@@ -61,10 +61,10 @@ function displayInfo(dataset) {
 
 
   // DataTable
-  var table = $("#table").DataTable();
+  let table = $("#table").DataTable();
   // Apply the search
   table.columns().every(function () {
-    var that = this;
+    let that = this;
       $("input", this.footer()).on("keyup change", function () {
       that.search(this.value).draw();
       });
