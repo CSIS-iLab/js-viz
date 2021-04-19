@@ -14,7 +14,6 @@ function init() {
 }
 
 function showInfo(data, tabletop) {
-  console.log(data, tabletop);
   let lastUpdatedEl = document.getElementById("lastUpdated");
   lastUpdatedEl.innerHTML = tabletop.modelNames[0];
   displayInfo(data);
@@ -46,14 +45,14 @@ function displayInfo(dataset) {
         render: $.fn.dataTable.render.number(",", ".", 0),
       },
       {
-        title: "Tests",
-        data: "# Tests",
+        title: "Total Fully Vaccinated",
+        data: "# Fully Vaccinated",
         className: "dt-body-right",
         render: $.fn.dataTable.render.number(",", ".", 0),
       },
       {
-        title: "Recovered",
-        data: "# Recovered",
+        title: "Percent Fully Vaccinated",
+        data: "% Fully Vaccinated",
         className: "dt-body-right",
         render: $.fn.dataTable.render.number(",", ".", 0),
       },
