@@ -21,6 +21,11 @@ tbody td:first-child {
   font-weight: bold;
 }
 
+
+tbody tr:last-child {
+  display: none;
+}
+
 .dtr-details {
   width: 100%;
 }
