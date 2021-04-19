@@ -54,7 +54,7 @@ function displayInfo(dataset) {
         title: "Percent Fully Vaccinated",
         data: "% Fully Vaccinated",
         className: "dt-body-right",
-        render: $.fn.dataTable.render.number(",", ".", 0),
+        render: $.fn.dataTable.render.number(",", ".", 1, '', '%'),
       },
       {
         title: "Cases per Million",
