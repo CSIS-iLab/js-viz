@@ -123,11 +123,11 @@ Highcharts.chart("hcContainer", {
     tickInterval: 10,
     lineColor: "#bfbbbb",
     lineWidth: 1,
-    max: 110,
+    max: 120,
     breaks: [
       {
         from: 55,
-        to: 85,
+        to: 95,
         breakSize: 1,
       },
     ],
