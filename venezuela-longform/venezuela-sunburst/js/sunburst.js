@@ -107,7 +107,9 @@ Highcharts.chart("hcContainer", {
   tooltip: {
     useHTML: true,
     headerFormat: "",
-    pointFormat: "{point.blurb}",
+    formatter: function () {
+      return `<b>${this.key}:</b> ${this.point.blurb}`;
+    }
   },
   // Chart Legend
   legend: {
