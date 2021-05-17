@@ -15,7 +15,7 @@ const users = [
     group: "representation",
     title: "Authentic Representation of Venezuelan society",
     desc:
-      "Venezuelan women are disproportionally affected by the crisis but have not been adequately involved in past negotiations. This should be rectified as peace negotiation outcomes improve when women are actively involved.",
+      "The negotiation process should represent a more complete spectrum of Venezuelan citizens, including civil society, smaller political parties, indigenous groups, trade unions, and Venezuelan migrants, among others.",
   },
   {
     group: "comb-int-pressure",
