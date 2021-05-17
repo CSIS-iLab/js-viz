@@ -26,7 +26,7 @@ var data = [
     parent: "1.1",
     name: "Humanitarian Relief",
     blurb:
-      "Specialized delegations from the opposition and the regime negotiate potential short-term trust-building partial agreements aimed at opening channels for humanitarian aid. Mediated by an international organizatio or an impartial country.",
+      "Specialized delegations from the opposition and the regime negotiate potential short-term trust-building partial agreements aimed at opening channels for humanitarian aid. Mediated by an international organization or an impartial country.",
     value: 25,
   },
   {
