@@ -13,7 +13,7 @@ const users = [
   },
   {
     group: "representation",
-    title: "Authentic Representation of Venezuelan society",
+    title: "Authentic Representation of Venezuelan Society",
     desc:
       "The negotiation process should represent a more complete spectrum of Venezuelan citizens, including civil society, smaller political parties, indigenous groups, trade unions, and Venezuelan migrants, among others.",
   },
