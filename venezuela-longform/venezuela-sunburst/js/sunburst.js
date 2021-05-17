@@ -55,39 +55,9 @@ var data = [
   },
 ];
 
-// Highcharts.chart('hcContainer', {
-//   chart: {
-//       height: '50%'
-//   },
-
-//   title: {
-//       text: 'World population 2017'
-//   },
-//   subtitle: {
-//       text: 'Source <a href="https://en.wikipedia.org/wiki/List_of_countries_by_population_(United_Nations)">Wikipedia</a>'
-//   },
-//   series: [{
-//       type: 'sunburst',
-//       data: data,
-//       cursor: 'pointer',
-//       dataLabels: {
-//         rotationMode: 'circular'
-//       }
-//   }],
-//   color: {
-//     rotation: 360
-//   },
-//   tooltip: {
-//       headerFormat: '',
-//       pointFormat: '{point.blurb}'
-//   }
-// });
-
 Highcharts.chart("hcContainer", {
-  // Load Data in from Google Sheets
   series: [
     {
-      // type: 'sunburst',
       data: data,
       cursor: 'pointer',
       dataLabels: {
@@ -141,16 +111,6 @@ Highcharts.chart("hcContainer", {
   },
   // Chart Legend
   legend: {
-    title: {
-      text:
-        'Legend Title<br/><span style="font-size: 12px; color: #808080; font-weight: normal">(Click to hide)</span>',
-    },
-    align: "center",
-    verticalAlign: "bottom",
-    layout: "horizontal",
+    enabled: false,
   },
-  // Additional Plot Options
-  // plotOptions:
-  // {
-  // }
 });
