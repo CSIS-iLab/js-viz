@@ -1,7 +1,7 @@
 const users = [
   {
     group: "ven-led-int-secured",
-    title: "Venezuelan-led and Internationally Secured",
+    title: "Venezuelan-Led and Internationally Secured",
     desc:
       "Venezuelans should play the leading role in resolving their own crisis, while international actors must have strong support roles that are clearly defined from the beginning.",
   },
@@ -19,7 +19,7 @@ const users = [
   },
   {
     group: "comb-int-pressure",
-    title: "United Opposition With a Fresh Narrative",
+    title: "United Opposition with a Fresh Narrative",
     desc:
       "Before arriving at the negotiating table, Venezuelan opposition leaders should be united and collaborate with each other and any other pertinent players to develop a clear strategy that reframes negotiation as a sign of strength.",
   },
