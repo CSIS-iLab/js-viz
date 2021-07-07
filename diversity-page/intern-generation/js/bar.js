@@ -45,10 +45,6 @@ Highcharts.chart('hcContainer', {
     labels: {
       enabled: false
     }
-    // categories: ['Male', 'Female'],
-    // title: {
-    //     text: null
-    // }
   },
   // Y Axis
   yAxis: {

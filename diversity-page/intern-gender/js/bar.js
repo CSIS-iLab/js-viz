@@ -41,9 +41,13 @@ Highcharts.chart('hcContainer', {
   // },
   // X Axis
   xAxis: {
-    type: 'category',
-    labels: {
-      enabled: false    
+    // type: 'category',
+    // labels: {
+    //   enabled: false
+    // }
+    categories: ['Male', 'Female'],
+    title: {
+        text: null
     }
   },
   // Y Axis
