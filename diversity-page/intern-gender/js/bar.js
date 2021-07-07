@@ -11,7 +11,7 @@ Highcharts.chart('hcContainer', {
   },
   // Colors
   colors: [
-    '#66C6CB', '#0092A8', '#013446'
+    '#0065A4'
   ],
   // Chart Title and Subtitle
   title: {
@@ -26,11 +26,14 @@ Highcharts.chart('hcContainer', {
   // Chart Legend
   legend: {
     title: {
-      text: '<br/><span style="font-size: 12px; color: #808080; font-weight: normal">(Click to hide)</span>'
+      text: '<br/><span style="font-size: 12px; color: #808080; font-weight: normal">(Click to hide)</span>',
     },
     align: 'center',
     verticalAlign: 'bottom',
     layout: 'horizontal',
+    symbolHeight: .001, // to hide the symbol on the legend
+    symbolWidth: .001, // to hide the symbol on the legend
+    symbolRadius: .001 // to hide the symbol on the legend
   },
   //  Tooltip 
   // tooltip: {
@@ -40,7 +43,7 @@ Highcharts.chart('hcContainer', {
   xAxis: {
     type: 'category',
     labels: {
-      enabled: false
+      enabled: false    
     }
   },
   // Y Axis
@@ -50,8 +53,7 @@ Highcharts.chart('hcContainer', {
     },
   },
   // Additional Plot Options
-  plotOptions:
-  {
+  plotOptions: {
     column: {
       stacking: null, // Normal bar graph
       // stacking: "normal", // Stacked bar graph

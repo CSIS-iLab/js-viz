@@ -11,7 +11,7 @@ Highcharts.chart('hcContainer', {
   },
   // Colors
   colors: [
-    '#66C6CB', '#0092A8', '#013446'
+    '#0065A4'
   ],
   // Chart Title and Subtitle
   title: {
@@ -31,6 +31,9 @@ Highcharts.chart('hcContainer', {
     align: 'center',
     verticalAlign: 'bottom',
     layout: 'horizontal',
+    symbolHeight: .001, // to hide the symbol on the legend
+    symbolWidth: .001, // to hide the symbol on the legend
+    symbolRadius: .001 // to hide the symbol on the legend
   },
   //  Tooltip 
   // tooltip: {
@@ -42,6 +45,10 @@ Highcharts.chart('hcContainer', {
     labels: {
       enabled: false
     }
+    // categories: ['Male', 'Female'],
+    // title: {
+    //     text: null
+    // }
   },
   // Y Axis
   yAxis: {
