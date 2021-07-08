@@ -10,11 +10,14 @@ Highcharts.chart('hcContainer', {
   },
   // Colors
   colors: [
-    '#66C6CB', '#0092A8', '#013446'
+    '#247877', // senior research staff
+    '#0FAA91', // junior research staff
+    '#004165', // senior admin staff
+    '#4CC7E6', // junior admin staff
   ],
   // Chart Title and Subtitle
   title: {
-    text: "Generation, Dec 2019"
+    text: "Generation, December 2020"
   },
   // Credits
   credits: {
