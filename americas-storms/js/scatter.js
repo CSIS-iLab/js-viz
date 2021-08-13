@@ -1,17 +1,13 @@
 var inObject = [];
-var Deaths = [];
-var Damage = [];
-var hurricanesByYear = [];
 
-function evaluateHurricanes(previous, next) {
-  if (Array.isArray(previous)) {
-    console.log("this is an array");
-    previous.push(next);
-  } else {
-    console.log("this is not an array, should be changing", previous);
-    previous = [previous, next]
-    console.log("this should be the new item", previous);
-  }
+function percentage(inputNum) {
+  var xMax = 500;
+  var xMin = 5;
+  var yMax = 11374;
+  var yMin = 0;
+  var percent = (inputNum - yMin) / (yMax - yMin);
+  var outputX = percent * (xMax - xMin) + xMin;
+  return outputX;
 }
 
 Highcharts.data({
@@ -19,9 +15,13 @@ Highcharts.data({
   googleSpreadsheetKey: '1RA7238ksArtZZyta89GIo5uWyYBQZaVT19ZA_G_1lvQ',
   googleSpreadsheetWorksheet: 3,
   parsed: function (columns){
+    var counter = 1;
     for(var j=1; j<columns[0].length; j++){
+      (columns[0][j] == columns[0][j-1]) ? counter++ : counter=1;
       inObject.push({
-        "Year": columns[0][j],
+        "x": columns[0][j],
+        "y": counter,
+        "z": percentage(columns[1][j]),
         "Deaths": columns[1][j],
         "Category": columns[2][j],
         "Damage": columns[3][j],
@@ -29,31 +29,13 @@ Highcharts.data({
         "Countries": columns[5][j],
         "Source": columns[6][j]
       });
-      var newHurricane = (inObject[inObject.length - 1]);
-      var prev = hurricanesByYear[hurricanesByYear.length - 1];
-      // hurricanesByYear.push([columns[0][j], newHurricane]);
-      if(j == 1){
-        hurricanesByYear.push([columns[0][j], inObject[inObject.length - 1]]);
-        console.log(hurricanesByYear, "if");
-      } else {
-        if(prev[0] == columns[0][j]){
-          // console.log(newHurricane);
-          evaluateHurricanes(prev[1], newHurricane);
-        } else {
-          hurricanesByYear.push([columns[0][j], newHurricane]);
-        }
-        console.log(hurricanesByYear, "else");
-      }
-      // ––––– ignore this –––––
-      // Deaths.push([columns[0][j], columns[1][j]]);
-      // Damage.push([columns[0][j], columns[3][j]]);
     }
-    data = Object.values(inObject);
-    renderChart(hurricanesByYear, Damage, inObject);
+    console.log(inObject);
+    renderChart(inObject);
   }
 });
 
-function renderChart(data1, data2, allData) {
+function renderChart(data) {
   Highcharts.chart("hcContainer", {
     // Chart Title and Subtitle
     title: {
@@ -61,6 +43,9 @@ function renderChart(data1, data2, allData) {
     },
     subtitle: {
       text: "Click and drag to zoom in"
+    },
+    chart: {
+      height: 600
     },
     // Credits
     credits: {
@@ -71,14 +56,37 @@ function renderChart(data1, data2, allData) {
     // Chart Legend
     legend: {
       title: {
-        text: 'Legend<br/><span style="font-size: 12px; color: #808080; font-weight: normal">(Click to select data)</span>'
+        text: 'Legend<br/><span style="font-size: 12px; color: #808080; font-weight: normal">Damage in USD</span>'
       },
       align: 'center',
       verticalAlign: 'bottom',
       layout: 'horizontal'
     },
+    yAxis: {
+      min: 0,
+      max: 6.5,
+      tickInterval: 1,
+      endOnTick: false,
+      title: {
+        text: "Number of Hurricanes Per Year"
+      }
+    },
+    xAxis: {
+      title: {
+        text: "Year"
+      }
+    },
+    colorAxis: {
+      min: 0,
+      max: 55000000000,
+      stops: [
+            [0, '#e9e9e9'],
+            [0.00001, '#fcb045'],
+            [0.4, '#fd1d1d'],
+            [1, '#833ab4']
+        ]
+    },
     tooltip: {
-        stickOnContact: true,
         style: {
           pointerEvents: 'auto',
           fontFamily: "Roboto, Arial, sans-serif"
@@ -86,13 +94,15 @@ function renderChart(data1, data2, allData) {
         useHTML: true,
         formatter: function () {
             var index = this.point.index;
+            var deaths = (data[index].Deaths >= 1) ? data[index].Deaths : 0;
+            var damage = (data[index].Damage >= 1) ? `$${data[index].Damage}` : "Minimal";
             return (
             `<div class="tooltip">
-            <h4>Hurricane <a href="${allData[index].Source}">${allData[index].Name}</a></h4>
+            <h4>Hurricane <a href="${data[index].Source}">${data[index].Name}</a></h4>
             <ul>
-              <li>Category: ${allData[index].Category}</li>
-              <li>Deaths: ${allData[index].Deaths}</li>
-              <li>Damage: $${allData[index].Damage}</li>
+              <li>Category: ${data[index].Category}</li>
+              <li>Deaths: ${deaths}</li>
+              <li>Damage: ${damage}</li>
             </ul>
             </div>
             `
@@ -100,43 +110,18 @@ function renderChart(data1, data2, allData) {
         }
     },
     plotOptions: {
-      column: {
-        stacking: 'normal',
-        // dataLabels: {
-        //   enabled: true
-        // }
-      },
-      series: {
-        events: {
-          legendItemClick: function(event) {
-            if (this.visible) {
-                return false;
-            }else{
-                let series = this.chart.series,
-                    i = series.length,
-                    otherSeries;
-                while(i--) {
-                    otherSeries = series[i]
-                    if (otherSeries != this && otherSeries.visible) {
-                        otherSeries.hide();
-                    }
-                }
-            }
-          }
-        }
+      bubble: {
+          minSize: 5,
+          maxSize: 100
       }
     },
     series: [
       {
-        type: "scatter",
-        data: data1,
-        name: "Number of Hurricanes",
-      },
-      {
-        type: "scatter",
-        name: "Damage",
-        data: data2,
-        visible: false
+        type: "bubble",
+        colorKey: "Damage",
+        nullColor: "#fff",
+        data: data,
+        name: "Number of Hurricanes"
       }
     ]
   })
