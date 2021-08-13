@@ -1,6 +1,18 @@
 var inObject = [];
 var Deaths = [];
 var Damage = [];
+var hurricanesByYear = [];
+
+function evaluateHurricanes(previous, next) {
+  if (Array.isArray(previous)) {
+    console.log("this is an array");
+    previous.push(next);
+  } else {
+    console.log("this is not an array, should be changing", previous);
+    previous = [previous, next]
+    console.log("this should be the new item", previous);
+  }
+}
 
 Highcharts.data({
     // Load Data in from Google Sheets
@@ -17,11 +29,27 @@ Highcharts.data({
         "Countries": columns[5][j],
         "Source": columns[6][j]
       });
-      Deaths.push([columns[0][j], columns[1][j]]);
-      Damage.push([columns[0][j], columns[3][j]]);
+      var newHurricane = (inObject[inObject.length - 1]);
+      var prev = hurricanesByYear[hurricanesByYear.length - 1];
+      // hurricanesByYear.push([columns[0][j], newHurricane]);
+      if(j == 1){
+        hurricanesByYear.push([columns[0][j], inObject[inObject.length - 1]]);
+        console.log(hurricanesByYear, "if");
+      } else {
+        if(prev[0] == columns[0][j]){
+          // console.log(newHurricane);
+          evaluateHurricanes(prev[1], newHurricane);
+        } else {
+          hurricanesByYear.push([columns[0][j], newHurricane]);
+        }
+        console.log(hurricanesByYear, "else");
+      }
+      // ––––– ignore this –––––
+      // Deaths.push([columns[0][j], columns[1][j]]);
+      // Damage.push([columns[0][j], columns[3][j]]);
     }
     data = Object.values(inObject);
-    renderChart(Deaths, Damage, inObject);
+    renderChart(hurricanesByYear, Damage, inObject);
   }
 });
 
@@ -50,6 +78,7 @@ function renderChart(data1, data2, allData) {
       layout: 'horizontal'
     },
     tooltip: {
+        stickOnContact: true,
         style: {
           pointerEvents: 'auto',
           fontFamily: "Roboto, Arial, sans-serif"
@@ -64,18 +93,44 @@ function renderChart(data1, data2, allData) {
               <li>Category: ${allData[index].Category}</li>
               <li>Deaths: ${allData[index].Deaths}</li>
               <li>Damage: $${allData[index].Damage}</li>
-              <li>Countries Affected: ${allData[index].Countries}</li>
             </ul>
             </div>
             `
             );
         }
     },
+    plotOptions: {
+      column: {
+        stacking: 'normal',
+        // dataLabels: {
+        //   enabled: true
+        // }
+      },
+      series: {
+        events: {
+          legendItemClick: function(event) {
+            if (this.visible) {
+                return false;
+            }else{
+                let series = this.chart.series,
+                    i = series.length,
+                    otherSeries;
+                while(i--) {
+                    otherSeries = series[i]
+                    if (otherSeries != this && otherSeries.visible) {
+                        otherSeries.hide();
+                    }
+                }
+            }
+          }
+        }
+      }
+    },
     series: [
       {
         type: "scatter",
         data: data1,
-        name: "Deaths"
+        name: "Number of Hurricanes",
       },
       {
         type: "scatter",
