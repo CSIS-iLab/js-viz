@@ -41,9 +41,6 @@ function renderChart(data) {
     title: {
       text: "Hurricanes 1992-Present"
     },
-    subtitle: {
-      text: "Click and drag to zoom in"
-    },
     chart: {
       height: 600
     },
@@ -56,7 +53,22 @@ function renderChart(data) {
     // Chart Legend
     legend: {
       title: {
-        text: 'Legend<br/><span style="font-size: 12px; color: #808080; font-weight: normal">Damage in USD</span>'
+        text: 'Damage in USD'
+      },
+      bubbleLegend: {
+        enabled: true,
+        minSize: 5,
+        maxSize: 100,
+        labels: {
+          format: '{value:f} deaths'
+        },
+        ranges: [{
+            value: 0
+        }, {
+          value: 500
+        }, {
+            value: 11374
+        }]
       },
       align: 'center',
       verticalAlign: 'bottom',
@@ -84,7 +96,10 @@ function renderChart(data) {
             [0.00001, '#fcb045'],
             [0.4, '#fd1d1d'],
             [1, '#833ab4']
-        ]
+        ],
+      title: {
+        text: "Damage in USD"
+      }
     },
     tooltip: {
         style: {
