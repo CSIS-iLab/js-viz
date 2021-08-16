@@ -10,6 +10,21 @@ function percentage(inputNum) {
   return outputX;
 }
 
+function numFormatter(num) {
+  if(num < 1000000){
+    console.log("thousand")
+    return (num/1000).toFixed(1) + 'K'; // convert to K for number from > 1000 < 1 million 
+  }else if(num > 1000000000){
+    console.log("Billion")
+    return (num/1000000000).toFixed(1) + 'B'; // convert to B for number from > 1 billion
+  }else if(num > 1000000){
+    console.log("Million")
+    return (num/1000000).toFixed(1) + 'M'; // convert to M for number from > 1 million
+  }else if(num < 900){
+    return num; // if value < 1000, nothing to do
+  }
+}
+
 Highcharts.data({
     // Load Data in from Google Sheets
   googleSpreadsheetKey: '1RA7238ksArtZZyta89GIo5uWyYBQZaVT19ZA_G_1lvQ',
@@ -35,11 +50,20 @@ Highcharts.data({
   }
 });
 
+Highcharts.setOptions({
+    lang: {
+        numericSymbols: [' K', ' M', ' B']
+    }
+});
+
 function renderChart(data) {
   Highcharts.chart("hcContainer", {
     // Chart Title and Subtitle
     title: {
       text: "Hurricanes 1992-Present"
+    },
+    subtitle: {
+      text: "Size of Bubbles: Deaths<br>Color of Bubbles: Damage in USD"
     },
     chart: {
       height: 600
@@ -110,7 +134,7 @@ function renderChart(data) {
         formatter: function () {
             var index = this.point.index;
             var deaths = (data[index].Deaths >= 1) ? data[index].Deaths : 0;
-            var damage = (data[index].Damage >= 1) ? `$${data[index].Damage}` : "Minimal";
+            var damage = (data[index].Damage >= 1) ? `$${numFormatter(data[index].Damage)}` : "Minimal";
             return (
             `<div class="tooltip">
             <h4>Hurricane <a href="${data[index].Source}">${data[index].Name}</a></h4>
