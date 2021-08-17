@@ -1,6 +1,7 @@
 var inObject = [];
-var datas = [['Year'
-,1992,1992,1992
+
+// ------------------currently using this variable and function because google sheets integration not working----------
+var datas = [['Year',1992,1992,1992
 ,1992
 ,1993
 ,1995
@@ -90,7 +91,7 @@ var datas = [['Year'
 ,2020
 ,2020
 ,2020
-,2020,2020], ['Deaths',,3,65,1,3,7,9,19,13,63,29,12,39,1,22,3,2,0,6,400,4,5,604,2,11374,7,85,17,18,68,12,36,48,0,22,15,4,51,35,50,124,3037,88,17,125,52
+,2020,2020], ['Deaths',3,65,1,3,7,9,19,13,63,29,12,39,1,22,3,2,0,6,400,4,5,604,2,11374,7,85,17,18,68,12,36,48,0,22,15,4,51,35,50,124,3037,88,17,125,52
 ,9
 ,4
 ,5
@@ -140,7 +141,7 @@ var datas = [['Year'
 ,175
 ,84
 ,9], ["Category",
-,3
+3
 ,5
 ,4
 ,3
@@ -330,6 +331,27 @@ var datas = [['Year'
 ,4600000000], ["Storm Name",
 "DARBY","ANDREW","VIRGIL","WINIFRED","LIDIA","FELIX","LUIS","MARILYN","OPAL","ROXANNE","BERTHA","HORTENSE","FAUSTO","LILI","GUILLERMO","ERIKA","LINDA","NORA","PAULINE","BLAS","BONNIE","GEORGES","LESTER","MITCH","BRET","FLOYD","LENNY","CARLOTTA","KEITH","JULIETTE","IRIS","MICHELLE","HERNAN","ISIDORE","LILI","KENNA","ISABEL","CHARLEY","FRANCES","IVAN","JEANNE","DENNIS","EMILY","RITA","WILMA","BETA","LANE","JOHN","DEAN","FELIX","NORBERT","IKE","GUSTAV","OMAR","PALOMA","BILL","JIMENA","RICK","EARL","KARL","IRENE","JOVA","RINA","PAUL","SANDY","RAYMOND","AMANDA","MARIE","NORBERT","ODILE","GONZALO","BLANCA","DOLORES","LINDA","JOAQUIN","PATRICIA","SANDRA","MATTHEW","OTTO","IRMA","JOSE","MARIA","BUD","ROSA","SERGIO","MICHAEL","WILLA","DORIAN","GENEVIEVE","LAURA","DELTA","ETA","IOTA","ZETA"],
 ["Source","https://en.wikipedia.org/wiki/Hurricane_Darby_(1992)","https://en.wikipedia.org/wiki/Hurricane_Andrew","https://en.wikipedia.org/wiki/Hurricane_Virgil_(1992)","https://en.wikipedia.org/wiki/Hurricane_Winifred_(1992)","https://en.wikipedia.org/wiki/Hurricane_Lidia_(1993)","https://en.wikipedia.org/wiki/Hurricane_Felix_(1995)","https://en.wikipedia.org/wiki/Hurricane_Luis","https://en.wikipedia.org/wiki/Hurricane_Marilyn","https://en.wikipedia.org/wiki/Hurricane_Opal","https://en.wikipedia.org/wiki/Hurricane_Roxanne","https://en.wikipedia.org/wiki/Hurricane_Bertha_(1996)","https://en.wikipedia.org/wiki/Hurricane_Hortense","https://en.wikipedia.org/wiki/Hurricane_Fausto_(1996)","https://en.wikipedia.org/wiki/Hurricane_Lili_(1996)","https://en.wikipedia.org/wiki/Hurricane_Guillermo_(1997)","https://en.wikipedia.org/wiki/Hurricane_Erika_(1997)","https://en.wikipedia.org/wiki/Hurricane_Linda_(1997)","https://en.wikipedia.org/wiki/Hurricane_Nora_(1997)","https://en.wikipedia.org/wiki/Hurricane_Pauline","https://en.wikipedia.org/wiki/1998_Pacific_hurricane_season","https://en.wikipedia.org/wiki/Hurricane_Bonnie_(1998)#Impact","https://en.wikipedia.org/wiki/Hurricane_Georges#Impact_on_the_Leeward_Islands","https://en.wikipedia.org/wiki/Hurricane_Lester_(1998)","https://en.wikipedia.org/wiki/Hurricane_Mitch","https://en.wikipedia.org/wiki/Hurricane_Bret","https://en.wikipedia.org/wiki/Hurricane_Floyd","https://en.wikipedia.org/wiki/Hurricane_Lenny","https://en.wikipedia.org/wiki/Hurricane_Carlotta_(2000)","","https://en.wikipedia.org/wiki/Hurricane_Juliette_(2001)","https://en.wikipedia.org/wiki/Hurricane_Iris","https://en.wikipedia.org/wiki/Hurricane_Michelle","https://en.wikipedia.org/wiki/Hurricane_Hernan_(2002)","https://en.wikipedia.org/wiki/Hurricane_Isidore","https://en.wikipedia.org/wiki/Hurricane_Lili","https://en.wikipedia.org/wiki/Hurricane_Kenna","https://en.wikipedia.org/wiki/Hurricane_Isabel","https://en.wikipedia.org/wiki/Hurricane_Charley#Impact","https://en.wikipedia.org/wiki/Hurricane_Frances","https://en.wikipedia.org/wiki/Hurricane_Ivan","","https://en.wikipedia.org/wiki/Hurricane_Dennis#Impact","https://en.wikipedia.org/wiki/Hurricane_Emily_(2005)","https://en.wikipedia.org/wiki/Hurricane_Rita","https://en.wikipedia.org/wiki/Hurricane_Wilma","https://en.wikipedia.org/wiki/Hurricane_Beta","https://en.wikipedia.org/wiki/Hurricane_Lane_(2006)","https://en.wikipedia.org/wiki/Hurricane_John_(2006)","https://en.wikipedia.org/wiki/Hurricane_Dean","","https://en.wikipedia.org/wiki/Hurricane_Norbert_(2008)#Impact","https://en.wikipedia.org/wiki/Hurricane_Ike#Impact","https://en.wikipedia.org/wiki/Hurricane_Gustav#Jamaica_and_Cayman_Islands","https://en.wikipedia.org/wiki/Hurricane_Omar#Impact","https://en.wikipedia.org/wiki/Hurricane_Paloma#Impact","https://en.wikipedia.org/wiki/Hurricane_Bill_(2009)#Impact","https://en.wikipedia.org/wiki/Hurricane_Jimena_(2009)","https://en.wikipedia.org/wiki/Hurricane_Rick_(2009)","https://en.wikipedia.org/wiki/Hurricane_Earl_(2010)#Impact","https://en.wikipedia.org/wiki/Hurricane_Karl#Impact","https://en.wikipedia.org/wiki/Hurricane_Irene","https://en.wikipedia.org/wiki/Hurricane_Jova_(2011)","https://en.wikipedia.org/wiki/Hurricane_Rina","https://en.wikipedia.org/wiki/Hurricane_Paul_(2012)","https://en.wikipedia.org/wiki/Hurricane_Sandy","https://en.wikipedia.org/wiki/Hurricane_Raymond_(2013)","https://en.wikipedia.org/wiki/Hurricane_Amanda","https://en.wikipedia.org/wiki/Hurricane_Marie_(2014)","https://en.wikipedia.org/wiki/Hurricane_Norbert_(2014)","https://en.wikipedia.org/wiki/Hurricane_Odile","https://en.wikipedia.org/wiki/Hurricane_Gonzalo","https://en.wikipedia.org/wiki/Hurricane_Blanca_(2015)","https://en.wikipedia.org/wiki/Hurricane_Dolores_(2015)","https://en.wikipedia.org/wiki/Hurricane_Linda_(2015)","https://en.wikipedia.org/wiki/Hurricane_Joaquin#Impact_and_aftermath","https://en.wikipedia.org/wiki/Hurricane_Patricia","https://en.wikipedia.org/wiki/Hurricane_Sandra_(2015)#Preparations_and_impact","https://en.wikipedia.org/wiki/Hurricane_Matthew","https://en.wikipedia.org/wiki/Hurricane_Otto#Impact","https://en.wikipedia.org/wiki/Hurricane_Irma","https://en.wikipedia.org/wiki/Hurricane_Jose_(2017)#Preparations_and_impact","https://en.wikipedia.org/wiki/Hurricane_Maria#Impact_in_the_Lesser_Antilles","https://en.wikipedia.org/wiki/Hurricane_Bud_(2018)","https://en.wikipedia.org/wiki/Hurricane_Rosa_(2018)","https://en.wikipedia.org/wiki/Hurricane_Sergio_(2018)","https://en.wikipedia.org/wiki/Hurricane_Michael#Impact","https://en.wikipedia.org/wiki/Hurricane_Willa","https://en.wikipedia.org/wiki/Hurricane_Dorian","https://en.wikipedia.org/wiki/Hurricane_Genevieve_(2020)","https://en.wikipedia.org/wiki/Hurricane_Laura","https://en.wikipedia.org/wiki/Hurricane_Delta#Preparations","","https://en.wikipedia.org/wiki/Hurricane_Iota#Impact","https://en.wikipedia.org/wiki/Hurricane_Zeta"]]
+function getData(columns){
+  console.log(columns);
+  var counter = 1;
+  for(var j=1; j<columns[0].length; j++){
+    (columns[0][j] == columns[0][j-1]) ? counter++ : counter=1;
+    inObject.push({
+      "x": columns[0][j],
+      "y": counter,
+      "z": percentage(columns[1][j]),
+      "Deaths": columns[1][j],
+      "Category": columns[2][j],
+      "Damage": columns[3][j],
+      "Name": columns[4][j],
+      "Source": columns[5][j]
+    });
+  }
+  console.log(inObject)
+  renderChart(inObject)
+}; 
+// end edit
+
 function percentage(inputNum) {
   var xMax = 500;
   var xMin = 5;
@@ -355,38 +377,41 @@ function numFormatter(num) {
   }
 }
 
-Highcharts.data({
-    // Load Data in from Google Sheets
-  // googleSpreadsheetKey: '1RA7238ksArtZZyta89GIo5uWyYBQZaVT19ZA_G_1lvQ',
-  // googleSpreadsheetWorksheet: 3,
-  csvURL: window.location.origin + 'data.csv',
-  parsed: function (columns){
-    console.log(columns);
-    var counter = 1;
-    for(var j=1; j<columns[0].length; j++){
-      (columns[0][j] == columns[0][j-1]) ? counter++ : counter=1;
-      inObject.push({
-        "x": columns[0][j],
-        "y": counter,
-        "z": percentage(columns[1][j]),
-        "Deaths": columns[1][j],
-        "Category": columns[2][j],
-        "Damage": columns[3][j],
-        "Name": columns[4][j],
-        "Countries": columns[5][j],
-        "Source": columns[6][j]
-      });
-    }
-    console.log(inObject);
-    renderChart(inObject);
-  }
-});
+// ------------when google starts working again, we can switch to this-----------
+// Highcharts.data({
+//     // Load Data in from Google Sheets
+//   // googleSpreadsheetKey: '1RA7238ksArtZZyta89GIo5uWyYBQZaVT19ZA_G_1lvQ',
+//   // googleSpreadsheetWorksheet: 3,
+//   csvURL: window.location.origin + '/data.csv', 
+//   parsed: function (columns){
+//     console.log(columns);
+//     var counter = 1;
+//     for(var j=1; j<columns[0].length; j++){
+//       (columns[0][j] == columns[0][j-1]) ? counter++ : counter=1;
+//       inObject.push({
+//         "x": columns[0][j],
+//         "y": counter,
+//         "z": percentage(columns[1][j]),
+//         "Deaths": columns[1][j],
+//         "Category": columns[2][j],
+//         "Damage": columns[3][j],
+//         "Name": columns[4][j],
+//         "Countries": columns[5][j],
+//         "Source": columns[6][j]
+//       });
+//     }
+//     console.log(inObject);
+//     renderChart(inObject);
+//   }
+// });
 
 Highcharts.setOptions({
     lang: {
         numericSymbols: [' K', ' M', ' B']
     }
 });
+
+getData(datas);
 
 function renderChart(data) {
   Highcharts.chart("hcContainer", {
