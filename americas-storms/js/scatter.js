@@ -353,7 +353,7 @@ function getData(columns){
 // end edit
 
 function percentage(inputNum) {
-  var xMax = 500;
+  var xMax = 50;
   var xMin = 5;
   var yMax = 11374;
   var yMin = 0;
@@ -439,7 +439,7 @@ function renderChart(data) {
       bubbleLegend: {
         enabled: true,
         minSize: 5,
-        maxSize: 100,
+        maxSize: 50,
         labels: {
           format: '{value:f} deaths'
         },
@@ -456,10 +456,12 @@ function renderChart(data) {
       layout: 'horizontal'
     },
     yAxis: {
-      min: 0,
+      // min: 0,
       max: 6.5,
-      tickInterval: 1,
+      softThreshold: false,
+      minPadding: .05,
       endOnTick: false,
+      startOnTick: false,
       title: {
         text: "Number of Hurricanes Per Year"
       }
@@ -473,7 +475,7 @@ function renderChart(data) {
       min: 0,
       max: 55000000000,
       stops: [
-            [0, '#e9e9e9'],
+            [0, '#9c9c9c'],
             [0.00001, '#fcb045'],
             [0.4, '#fd1d1d'],
             [1, '#833ab4']
@@ -508,7 +510,7 @@ function renderChart(data) {
     plotOptions: {
       bubble: {
           minSize: 5,
-          maxSize: 100
+          maxSize: 50
       }
     },
     series: [
