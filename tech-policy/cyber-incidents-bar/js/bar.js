@@ -5,7 +5,7 @@ $(function() {
   Highcharts.data({
     googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
     googleSpreadsheetKey: "1fdRF457KDaedi5pTe852vJD1RCEfWJryhOfz8HAa4ww",
-    googleSpreadsheetWorksheet: 1,
+    googleSpreadsheetRange: "Sheet1",
     switchRowsAndColumns: false,
     parsed: function(columns) {
       columns[0].slice(1).forEach((column, i) => {

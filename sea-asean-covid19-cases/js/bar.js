@@ -3,7 +3,7 @@ let optionSelect = [];
 Highcharts.data({
   googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
     googleSpreadsheetKey: "1XbH8PkA4L8WlBoY-cLH4bLRO-a_L48YsHn9huKq2dHY",
-  googleSpreadsheetWorksheet: 1,
+  googleSpreadsheetRange: "countries",
   switchRowsAndColumns: true,
   parsed: function (columns) {
     let dataset = {};

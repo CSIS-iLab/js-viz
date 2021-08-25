@@ -3,7 +3,7 @@ Highcharts.chart("container", {
   data: {
     googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
     googleSpreadsheetKey: "1X9GQiF8JBY81xmD8OY58HPyjCXyDNYiRiT6DXH_zJ6Y",
-    googleSpreadsheetWorksheet: 1,
+    googleSpreadsheetRange: "Sheet1",
     complete: function(data) {
       data.series[0].marker = {
         fillColor: "#e45527",

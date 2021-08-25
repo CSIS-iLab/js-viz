@@ -2,7 +2,7 @@ Highcharts.chart('hcContainer', {
   data: {
     googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
     googleSpreadsheetKey: "1uf6yWzyUSU_-oQ85lK3695iQbWL_YbcmWB00PnZvxlA",
-    googleSpreadsheetWorksheet: 6
+    googleSpreadsheetRange: "Russia/China - Favorable - 2013",
   },
   chart: {
       type: 'column',

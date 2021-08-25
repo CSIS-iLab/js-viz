@@ -3,7 +3,7 @@ Highcharts.chart("hcContainer", {
   data: {
     googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
     googleSpreadsheetKey: "16poMVWLNa7B8oTs6zcM1pj4Pmr6Smbmwxt7dg4Xwz-o",
-    googleSpreadsheetWorksheet: 2,
+    googleSpreadsheetRange: "Race/Ethnicity",
   },
   // General Chart Options
   chart: {

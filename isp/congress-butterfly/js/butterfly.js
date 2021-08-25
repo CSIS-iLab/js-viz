@@ -5,7 +5,7 @@ $(function() {
   Highcharts.data({
     googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
     googleSpreadsheetKey: "16ZwPbeZX5gM7Ejz6sbH0Lr9ukqocqhNQM4DuaRE1T24",
-    googleSpreadsheetWorksheet: 1,
+    googleSpreadsheetRange: "Alliance Ratings by Party",
     switchRowsAndColumns: false,
     parsed: function(columns) {
       columns[0].slice(1).forEach((column, i) => {

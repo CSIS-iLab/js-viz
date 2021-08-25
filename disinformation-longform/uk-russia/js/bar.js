@@ -2,7 +2,7 @@ Highcharts.chart('hcContainer', {
     data: {
         googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
     googleSpreadsheetKey: "1uf6yWzyUSU_-oQ85lK3695iQbWL_YbcmWB00PnZvxlA",
-        googleSpreadsheetWorksheet: 2
+        googleSpreadsheetRange: "UK",
     },
     chart: {
         type: 'bar',

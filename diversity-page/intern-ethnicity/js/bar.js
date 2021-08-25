@@ -3,7 +3,7 @@ Highcharts.chart('hcContainer', {
   data: {
     googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
     googleSpreadsheetKey: '1susmb2O7l-sRkILnlxZyatXmtebTrGjQk_K-qPqjzgs',
-    googleSpreadsheetWorksheet: 5,
+    googleSpreadsheetRange: "Intern Ethnicity",
     switchRowsAndColumns: true
   },
   // General Chart Options
