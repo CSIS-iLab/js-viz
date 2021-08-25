@@ -1,16 +1,4 @@
-/*Use Tabletop and Datatables to read Google Spreadsheet*/
-
-var publicSpreadsheetUrl =
-  "https://docs.google.com/spreadsheets/d/1FaJQvGn-DjUNyFPyAkurQrBlVULRJ2GHFDEJ0cjolHw/edit?usp=sharing";
-
-/*init() and showInfo() are from Tabletop, with the addition of displayInfo to use Datatables*/
 function init() {
-  // Tabletop.init({
-  //   key: publicSpreadsheetUrl,
-  //   callback: showInfo,
-  //   parseNumbers: true,
-  //   simpleSheet: true,
-  // });
   Papa.parse(
     "https://docs.google.com/spreadsheets/d/e/2PACX-1vSZFRhr0NZxBCN9BGqjOYhQCrK7Ke6LM4SbI_vQPFITRpVNtuVAHmJmwhqU91lsq0i5HEYgM2iArpF3/pub?output=csv",
     {
