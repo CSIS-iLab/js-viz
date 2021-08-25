@@ -57,7 +57,7 @@ Highcharts.data({
   // Load Data in from Google Sheets
   googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
     googleSpreadsheetKey: '1sLlKirSAEv5QYBQa2LJlzWMNmF3HkNFnjBHbUAJ5RFU',
-  googleSpreadsheetWorksheet: 1,
+  googleSpreadsheetRange: "Tanzania Map",
   switchRowsAndColumns: true,
   parsed: function parsed(columns) {
     // Remove header row (first element in columns array)

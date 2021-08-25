@@ -9,7 +9,7 @@ var drilldownData = []
 Highcharts.data({
     googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
     googleSpreadsheetKey: '10q0ygaHPEL53tAr8Nu3I4bh-PykxOYRIyDpa0RXE3jg',
-    googleSpreadsheetWorksheet: 1,
+    googleSpreadsheetRange: "Gavi Support",
     switchRowsAndColumns: true,
     parsed: function parsed(columns) {
         var group = ""

@@ -4,7 +4,7 @@ var chart2 = void 0,
 Highcharts.data({
   googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
     googleSpreadsheetKey: "12_yhWuslrui9_kW57-HwySPk9kv1Mp2VlAYHUo5QWO8",
-  googleSpreadsheetWorksheet: 2,
+  googleSpreadsheetRange: "Scores",
   switchRowsAndColumns: true,
   parsed: function parsed(columns) {
     var endemic = columns.filter(c => c[9] === "x");

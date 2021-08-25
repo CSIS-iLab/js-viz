@@ -18,7 +18,7 @@ Highcharts.chart("hcContainer", {
   data: {
     googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
     googleSpreadsheetKey: "10q0ygaHPEL53tAr8Nu3I4bh-PykxOYRIyDpa0RXE3jg",
-    googleSpreadsheetWorksheet: 2,
+    googleSpreadsheetRange: "Kenyan Immunization Coverage",
     switchRowsAndColumns: true,
   },
   // General Chart Options

@@ -7,7 +7,7 @@ var geoData, chart, max, isVisible;
 Highcharts.data({
   googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
     googleSpreadsheetKey: "12_yhWuslrui9_kW57-HwySPk9kv1Mp2VlAYHUo5QWO8",
-  googleSpreadsheetWorksheet: 2,
+  googleSpreadsheetRange: "Scores",
   switchRowsAndColumns: true,
   parsed: function parsed(col) {
     var endemic = col.filter(function(c) {

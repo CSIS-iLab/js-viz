@@ -520,7 +520,7 @@ $(function() {
   Highcharts.data({
     googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
     googleSpreadsheetKey: "1dq0elY4kkqXbjhpwDB5u43sAjm-wDiZixlvgmoKK4TM",
-    googleSpreadsheetWorksheet: 1,
+    googleSpreadsheetRange: "Sheet1",
     switchRowsAndColumns: true,
     parsed: function(columns) {
       columns.forEach((column, i) => {

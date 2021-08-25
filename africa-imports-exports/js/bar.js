@@ -3,7 +3,7 @@ Highcharts.chart('hcContainer', {
     data: {
       googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
     googleSpreadsheetKey: '1foLHWPEeGAYkC1O0CdyO-6fpBMUSUpy7kEdyZD4w0jQ',
-      googleSpreadsheetWorksheet: 1
+      googleSpreadsheetRange: "Sheet1",
     },
     // General Chart Options
     chart: {
