@@ -19,7 +19,7 @@ fetch(
     Highcharts.data({
       googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
     googleSpreadsheetKey: '19oi9wuSR4O9Blr7p6LArWLCVcxAGBUyld0HtGNVqqyU',
-      googleSpreadsheetWorksheet: 1,
+      googleSpreadsheetRange: " HIV prevalence by province in the 15–49 age group",
       switchRowsAndColumns: true,
       parsed: function parsed(columns) {
         columns.forEach(function(a, i) {

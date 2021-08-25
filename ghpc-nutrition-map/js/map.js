@@ -24,7 +24,7 @@ fetch("https://code.highcharts.com/mapdata/custom/world-eckert3.geo.json")
     Highcharts.data({
       googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
     googleSpreadsheetKey: "1RXsxwg_tns3CICc1ZyYX3PEucq_RVMPDihn2y1Xs5jk",
-      googleSpreadsheetWorksheet: 6,
+      googleSpreadsheetRange: "funding",
       switchRowsAndColumns: true,
       parsed: function parsed(columns) {
         columns.forEach(function(code, i) {

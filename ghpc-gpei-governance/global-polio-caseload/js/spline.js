@@ -15,7 +15,7 @@ Highcharts.chart('hcContainer', {
   data: {
     googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
     googleSpreadsheetKey: '1VCCDXp4Cj4htKWrSbVM7pZ20k7_Yj9clOYHt60_CH68',
-    googleSpreadsheetWorksheet: 1
+    googleSpreadsheetRange: "Global Polio Caseload",
   },
   // General Chart Options
   chart: {

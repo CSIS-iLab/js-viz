@@ -7,7 +7,7 @@ var chart = Highcharts.chart(
     data: {
       googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
     googleSpreadsheetKey: '1PQSu9p46YSpVFu_8WP3k8JaBzBrgpTvnJcfN3V5-QiQ',
-      googleSpreadsheetWorksheet: 1,
+      googleSpreadsheetRange: "Sheet1",
       complete: parseData,
       dateFormat: 'mm/dd/YYYY'
     },

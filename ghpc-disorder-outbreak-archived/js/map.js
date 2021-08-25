@@ -17,7 +17,7 @@ fetch("https://code.highcharts.com/mapdata/custom/world-palestine.geo.json")
     Highcharts.data({
       googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
     googleSpreadsheetKey: "1lss8rBHn7TmYaXbw1S6AAyb0ZOAlaTB1LeeP87D4Zsw",
-      googleSpreadsheetWorksheet: 1,
+      googleSpreadsheetRange: "Fragile States Index",
       switchRowsAndColumns: true,
       parsed: function parsed(columns) {
         columns.forEach(function(a, i) {
@@ -53,7 +53,7 @@ fetch("https://code.highcharts.com/mapdata/custom/world-palestine.geo.json")
         Highcharts.data({
           googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
     googleSpreadsheetKey: "144508dI92hTtIm5wp4OcQMeRP5ViuUpPv2ufvOOLaS0",
-          googleSpreadsheetWorksheet: 1,
+          googleSpreadsheetRange: "Global Outbreak Data",
           switchRowsAndColumns: true,
           parsed: function parsed(columns) {
             columns.forEach(function(b, i) {

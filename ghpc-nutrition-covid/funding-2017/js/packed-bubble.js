@@ -10,7 +10,7 @@ Highcharts.setOptions({
 Highcharts.data({
   googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
     googleSpreadsheetKey: "1YcIOXbY6seINOUcFqlvBDFsQ9iT7TUcmiHiY6u7dTSs",
-  googleSpreadsheetWorksheet: 3,
+  googleSpreadsheetRange: "Sheet3",
   switchRowsAndColumns: true,
   parsed: function (columns) {
     let dataset = {};

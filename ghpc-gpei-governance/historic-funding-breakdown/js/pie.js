@@ -32,7 +32,7 @@ Highcharts.data({
     // Load Data in from Google Sheets
     googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
     googleSpreadsheetKey: '1VCCDXp4Cj4htKWrSbVM7pZ20k7_Yj9clOYHt60_CH68',
-    googleSpreadsheetWorksheet: 2,
+    googleSpreadsheetRange: "Historic Funding Breakdown - By Donor",
     switchRowsAndColumns: true,
     parsed: function parsed(columns) {
         // create default variables
