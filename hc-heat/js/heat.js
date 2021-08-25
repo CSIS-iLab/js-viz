@@ -2,6 +2,7 @@ $(function() {
   var data = {};
 
   Highcharts.data({
+    googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
     googleSpreadsheetKey: "1yAEX-ptYcBwUokVACVgmrKc-NV0ngGa0dFDgy9T5qbU",
     googleSpreadsheetWorksheet: 1,
     switchRowsAndColumns: true,

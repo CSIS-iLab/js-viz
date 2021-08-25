@@ -21,7 +21,8 @@ function drawChart(index, id, name, sheet) {
   Highcharts.chart(`hc-${id}`, {
     // Load Data in from Google Sheets
     data: {
-      googleSpreadsheetKey: "1JFh3wyAtvmWmglO-wGaRhlJm6iM9z6f88r-7nrzoSXg",
+      googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
+    googleSpreadsheetKey: "1JFh3wyAtvmWmglO-wGaRhlJm6iM9z6f88r-7nrzoSXg",
       googleSpreadsheetWorksheet: sheet,
       dateFormat: "mm/dd/YYYY",
     },

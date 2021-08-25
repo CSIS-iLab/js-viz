@@ -13,7 +13,8 @@ fetch("https://code.highcharts.com/mapdata/custom/world-eckert3.geo.json")
     geoData = json;
 
     Highcharts.data({
-      googleSpreadsheetKey: "1RXsxwg_tns3CICc1ZyYX3PEucq_RVMPDihn2y1Xs5jk",
+      googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
+    googleSpreadsheetKey: "1RXsxwg_tns3CICc1ZyYX3PEucq_RVMPDihn2y1Xs5jk",
       googleSpreadsheetWorksheet: 8,
       switchRowsAndColumns: true,
       parsed: function parsed(columns) {

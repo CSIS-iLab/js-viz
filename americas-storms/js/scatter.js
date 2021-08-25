@@ -380,7 +380,8 @@ function numFormatter(num) {
 // ------------when google starts working again, we can switch to this-----------
 // Highcharts.data({
 //     // Load Data in from Google Sheets
-//   // googleSpreadsheetKey: '1RA7238ksArtZZyta89GIo5uWyYBQZaVT19ZA_G_1lvQ',
+//   // googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
+    googleSpreadsheetKey: '1RA7238ksArtZZyta89GIo5uWyYBQZaVT19ZA_G_1lvQ',
 //   // googleSpreadsheetWorksheet: 3,
 //   csvURL: window.location.origin + '/data.csv', 
 //   parsed: function (columns){

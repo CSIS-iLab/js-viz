@@ -1,6 +1,7 @@
 Highcharts.chart("container", {
   // Load Data in from Google Sheets
   data: {
+    googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
     googleSpreadsheetKey: "1X9GQiF8JBY81xmD8OY58HPyjCXyDNYiRiT6DXH_zJ6Y",
     googleSpreadsheetWorksheet: 1,
     complete: function(data) {

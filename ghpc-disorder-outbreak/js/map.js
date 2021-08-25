@@ -16,7 +16,8 @@ fetch("https://code.highcharts.com/mapdata/custom/world-palestine.geo.json")
     geoData = json;
 
     Highcharts.data({
-      googleSpreadsheetKey: "1lss8rBHn7TmYaXbw1S6AAyb0ZOAlaTB1LeeP87D4Zsw",
+      googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
+    googleSpreadsheetKey: "1lss8rBHn7TmYaXbw1S6AAyb0ZOAlaTB1LeeP87D4Zsw",
       googleSpreadsheetWorksheet: 1,
       switchRowsAndColumns: true,
       parsed: function parsed(columns) {
@@ -51,7 +52,8 @@ fetch("https://code.highcharts.com/mapdata/custom/world-palestine.geo.json")
         });
 
         Highcharts.data({
-          googleSpreadsheetKey: "144508dI92hTtIm5wp4OcQMeRP5ViuUpPv2ufvOOLaS0",
+          googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
+    googleSpreadsheetKey: "144508dI92hTtIm5wp4OcQMeRP5ViuUpPv2ufvOOLaS0",
           googleSpreadsheetWorksheet: 1,
           switchRowsAndColumns: true,
           parsed: function parsed(columns) {

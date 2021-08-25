@@ -16,6 +16,7 @@ Highcharts.seriesTypes.line.prototype.drawLegendSymbol =
 Highcharts.chart("hcContainer", {
   // Load Data in from Google Sheets
   data: {
+    googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
     googleSpreadsheetKey: "10q0ygaHPEL53tAr8Nu3I4bh-PykxOYRIyDpa0RXE3jg",
     googleSpreadsheetWorksheet: 2,
     switchRowsAndColumns: true,

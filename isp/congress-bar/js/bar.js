@@ -519,6 +519,7 @@ $(function() {
 
   let mapData = [];
   Highcharts.data({
+    googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
     googleSpreadsheetKey: "1dq0elY4kkqXbjhpwDB5u43sAjm-wDiZixlvgmoKK4TM",
     googleSpreadsheetWorksheet: 1,
     switchRowsAndColumns: true,
@@ -776,7 +777,8 @@ $(function() {
     $(`#hcContainer-${x + 1}`).highcharts({
       // Load Data in from Google Sheets
       data: {
-        googleSpreadsheetKey: "16ZwPbeZX5gM7Ejz6sbH0Lr9ukqocqhNQM4DuaRE1T24",
+        googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
+    googleSpreadsheetKey: "16ZwPbeZX5gM7Ejz6sbH0Lr9ukqocqhNQM4DuaRE1T24",
         googleSpreadsheetWorksheet: x + 1
       },
       // General Chart Options
@@ -852,7 +854,8 @@ $(function() {
     $(`#hcContainer-foreign-aid`).highcharts({
       // Load Data in from Google Sheets
       data: {
-        googleSpreadsheetKey: "16ZwPbeZX5gM7Ejz6sbH0Lr9ukqocqhNQM4DuaRE1T24",
+        googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
+    googleSpreadsheetKey: "16ZwPbeZX5gM7Ejz6sbH0Lr9ukqocqhNQM4DuaRE1T24",
         googleSpreadsheetWorksheet: 4
       },
       // General Chart Options
@@ -926,7 +929,8 @@ $(function() {
     $(`#hcContainer-iran-policy`).highcharts({
       // Load Data in from Google Sheets
       data: {
-        googleSpreadsheetKey: "16ZwPbeZX5gM7Ejz6sbH0Lr9ukqocqhNQM4DuaRE1T24",
+        googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
+    googleSpreadsheetKey: "16ZwPbeZX5gM7Ejz6sbH0Lr9ukqocqhNQM4DuaRE1T24",
         googleSpreadsheetWorksheet: 8
       },
       // General Chart Options

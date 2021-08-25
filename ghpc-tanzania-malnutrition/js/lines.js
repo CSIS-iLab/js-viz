@@ -55,7 +55,8 @@ const dropdownOptions = [
 
 Highcharts.data({
   // Load Data in from Google Sheets
-  googleSpreadsheetKey: '1sLlKirSAEv5QYBQa2LJlzWMNmF3HkNFnjBHbUAJ5RFU',
+  googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
+    googleSpreadsheetKey: '1sLlKirSAEv5QYBQa2LJlzWMNmF3HkNFnjBHbUAJ5RFU',
   googleSpreadsheetWorksheet: 1,
   switchRowsAndColumns: true,
   parsed: function parsed(columns) {

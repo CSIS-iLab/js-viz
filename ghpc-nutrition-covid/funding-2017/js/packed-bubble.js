@@ -8,7 +8,8 @@ Highcharts.setOptions({
 });
 
 Highcharts.data({
-  googleSpreadsheetKey: "1YcIOXbY6seINOUcFqlvBDFsQ9iT7TUcmiHiY6u7dTSs",
+  googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
+    googleSpreadsheetKey: "1YcIOXbY6seINOUcFqlvBDFsQ9iT7TUcmiHiY6u7dTSs",
   googleSpreadsheetWorksheet: 3,
   switchRowsAndColumns: true,
   parsed: function (columns) {

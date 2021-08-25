@@ -17,7 +17,8 @@ fetch(
     geoData = json
 
     Highcharts.data({
-      googleSpreadsheetKey: '19oi9wuSR4O9Blr7p6LArWLCVcxAGBUyld0HtGNVqqyU',
+      googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
+    googleSpreadsheetKey: '19oi9wuSR4O9Blr7p6LArWLCVcxAGBUyld0HtGNVqqyU',
       googleSpreadsheetWorksheet: 1,
       switchRowsAndColumns: true,
       parsed: function parsed(columns) {

@@ -518,6 +518,7 @@ $(function() {
 
   let mapData = [];
   Highcharts.data({
+    googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
     googleSpreadsheetKey: "1dq0elY4kkqXbjhpwDB5u43sAjm-wDiZixlvgmoKK4TM",
     googleSpreadsheetWorksheet: 1,
     switchRowsAndColumns: true,

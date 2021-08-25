@@ -8,7 +8,8 @@ Highcharts.setOptions({
 Highcharts.chart('hcContainer', {
     // Load Data in from Google Sheets
     data: {
-        googleSpreadsheetKey: '1NYtxVWJrXj2P21BlYw2oGJUDQDhXo39HCnDZdG4C-Q0',
+        googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
+    googleSpreadsheetKey: '1NYtxVWJrXj2P21BlYw2oGJUDQDhXo39HCnDZdG4C-Q0',
         googleSpreadsheetWorksheet: 1,
         startColumn: 0,
         endColumn: 2,
