@@ -1,67 +1,66 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>| CSIS Global Health Policy</title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="css/highcharts.css" rel="stylesheet" type="text/css" />
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <title> | CSIS Global Health Policy</title>
-  <meta name="description" content="">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href='css/highcharts.css' rel='stylesheet' type='text/css'>
-  <link href='css/style.css' rel='stylesheet' type='text/css'>
-
-</head>
-
-<body>
-
-  <div id="intro" class="heading highcharts-container ">
-    <div class="header">
-
-      <div class="heading title">
-        Ipsum Lorem Dolor Health Security in the Disordered World
+  <body>
+    <div id="intro" class="heading highcharts-container">
+      <div class="header">
+        <div class="heading title">
+          Ipsum Lorem Dolor Health Security in the Disordered World
+        </div>
+        <p class="subtitle">
+          Lorem ipsum dolor As access to critical health services degrades, the
+          risk of dangerous outbreaks rises, and basic preventive health
+          measures such as childhood immunizations and reproductive and maternal
+          health care decline or cease altogether.<br /><em
+            >Instructions are to do this thing.</em
+          >
+        </p>
       </div>
-      <p class="subtitle">
-        Lorem ipsum dolor As access to critical health services degrades, the risk of dangerous outbreaks rises, and basic preventive health measures such as childhood immunizations and reproductive and maternal health care decline or cease altogether.<br /><em>Instructions are to do this thing.</em>
-      </p>
+
+      <ul class="legends">
+        <ul class="outbreak-legend">
+          <li><strong>Outbreak Cases:&nbsp;</strong></li>
+          <li></li>
+        </ul>
+
+        <ul class="fragility-legend">
+          <li><strong>Fragility Index:&nbsp;</strong>60</li>
+          <li>
+            <ul class="fragility-legend__colors">
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+            </ul>
+          </li>
+          <li>120</li>
+        </ul>
+      </ul>
     </div>
 
-    <ul class="legends">
-      <ul class="outbreak-legend">
-        <li><strong>Outbreak Cases:&nbsp;</strong></li>
-        <li></li>
-      </ul>
+    <div id="container"></div>
 
-      <ul class="fragility-legend">
-        <li><strong>Fragility Index:&nbsp;</strong>60</li>
-        <li>
-          <ul class="fragility-legend__colors">
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-          </ul>
-        </li>
-        <li>120</li>
-      </ul>
-    </ul>
-  </div>
+    <script src="https://code.highcharts.com/maps/highmaps.js"></script>
+    <script src="https://code.highcharts.com/mapdata/custom/world-palestine.js"></script>
 
-  <div id="container"></div>
+    <script src="https://code.highcharts.com/modules/data.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.3.6/proj4.js"></script>
+    <script src="https://code.highcharts.com/mapdata/custom/world-continents.js"></script>
 
-  <script src="https://code.highcharts.com/maps/highmaps.js"></script>
-  <script src="https://code.highcharts.com/mapdata/custom/world-palestine.js"></script>
+    <script src="js/motion.js"></script>
 
-  <script src="https://code.highcharts.com/6.0.7/modules/data.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.3.6/proj4.js"></script>
-  <script src="https://code.highcharts.com/mapdata/custom/world-continents.js"></script>
+    <!-- Include iFrame Resizer -->
+    <script src="https://csis-ilab.github.io/cpower-viz/globaljs/iframeSizer.contentWindow.min.js"></script>
 
-
-  <script src="js/motion.js"></script>
-
-  <!-- Include iFrame Resizer -->
-  <script src="https://csis-ilab.github.io/cpower-viz/globaljs/iframeSizer.contentWindow.min.js"></script>
-
-  <script src="js/map.js"></script>
-</body>
-
+    <script src="js/map.js"></script>
+  </body>
 </html>

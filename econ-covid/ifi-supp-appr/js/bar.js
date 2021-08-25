@@ -3,7 +3,7 @@ Highcharts.chart("hcContainer", {
   data: {
     googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
     googleSpreadsheetKey: "1a0wC2PhRyHJ8HKz3BB1nCTcV1KUbR2DjnqWpPom6jDM",
-    googleSpreadsheetRange: "IFI Supp/App",
+    googleSpreadsheetRange: "IFI Supp-App",
   },
   // General Chart Options
   chart: {
@@ -24,8 +24,7 @@ Highcharts.chart("hcContainer", {
   // Chart Legend
   legend: {
     title: {
-      text:
-        '<br/><span style="font-size: 12px; color: #808080; font-weight: normal">(Click to hide)</span>',
+      text: '<br/><span style="font-size: 12px; color: #808080; font-weight: normal">(Click to hide)</span>',
     },
     align: "center",
     verticalAlign: "bottom",
