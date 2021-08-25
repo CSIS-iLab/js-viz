@@ -2,8 +2,9 @@ $(function() {
   var data = {};
 
   Highcharts.data({
+    googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
     googleSpreadsheetKey: "1yAEX-ptYcBwUokVACVgmrKc-NV0ngGa0dFDgy9T5qbU",
-    googleSpreadsheetWorksheet: 1,
+    googleSpreadsheetRange: "Sheet1",
     switchRowsAndColumns: true,
     parsed: function(columns) {
       columns.forEach((country, y) => {

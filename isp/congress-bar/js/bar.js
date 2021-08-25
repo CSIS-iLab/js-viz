@@ -519,8 +519,9 @@ $(function() {
 
   let mapData = [];
   Highcharts.data({
+    googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
     googleSpreadsheetKey: "1dq0elY4kkqXbjhpwDB5u43sAjm-wDiZixlvgmoKK4TM",
-    googleSpreadsheetWorksheet: 1,
+    googleSpreadsheetRange: "Sheet1",
     switchRowsAndColumns: true,
     parsed: function(columns) {
       columns.forEach((column, i) => {
@@ -776,8 +777,9 @@ $(function() {
     $(`#hcContainer-${x + 1}`).highcharts({
       // Load Data in from Google Sheets
       data: {
-        googleSpreadsheetKey: "16ZwPbeZX5gM7Ejz6sbH0Lr9ukqocqhNQM4DuaRE1T24",
-        googleSpreadsheetWorksheet: x + 1
+        googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
+    googleSpreadsheetKey: "16ZwPbeZX5gM7Ejz6sbH0Lr9ukqocqhNQM4DuaRE1T24",
+        googleSpreadsheetRange: "Average Foreign Aid Ratings by Party",
       },
       // General Chart Options
       chart: {
@@ -852,8 +854,9 @@ $(function() {
     $(`#hcContainer-foreign-aid`).highcharts({
       // Load Data in from Google Sheets
       data: {
-        googleSpreadsheetKey: "16ZwPbeZX5gM7Ejz6sbH0Lr9ukqocqhNQM4DuaRE1T24",
-        googleSpreadsheetWorksheet: 4
+        googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
+    googleSpreadsheetKey: "16ZwPbeZX5gM7Ejz6sbH0Lr9ukqocqhNQM4DuaRE1T24",
+        googleSpreadsheetRange: "Iran Policy Response",
       },
       // General Chart Options
       chart: {
@@ -926,8 +929,9 @@ $(function() {
     $(`#hcContainer-iran-policy`).highcharts({
       // Load Data in from Google Sheets
       data: {
-        googleSpreadsheetKey: "16ZwPbeZX5gM7Ejz6sbH0Lr9ukqocqhNQM4DuaRE1T24",
-        googleSpreadsheetWorksheet: 8
+        googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
+    googleSpreadsheetKey: "16ZwPbeZX5gM7Ejz6sbH0Lr9ukqocqhNQM4DuaRE1T24",
+        googleSpreadsheetRange: "Iran Policy Response",
       },
       // General Chart Options
       chart: {

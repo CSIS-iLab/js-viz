@@ -15,6 +15,7 @@ Highcharts.setOptions({
 Highcharts.chart("hcContainer", {
   // Load Data in from Google Sheets
   data: {
+    googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
     googleSpreadsheetKey: "14m3yFJqWpdo-SecoFTIetBVBnhzTgMf131VbxBFsrxY"
   },
   // General Chart Options

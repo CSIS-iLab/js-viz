@@ -8,8 +8,9 @@ Highcharts.setOptions({
 Highcharts.chart('hcContainer', {
   // Load Data in from Google Sheets
   data: {
+    googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
     googleSpreadsheetKey: '1hvUG-GDb9fWX1GO-xm26R5lsWnLTmWPKoFY-0Y6BAWA',
-    googleSpreadsheetWorksheet: 2
+    googleSpreadsheetRange: "Mortality Rate Calculated",
   },
   // General Chart Options
   chart: {

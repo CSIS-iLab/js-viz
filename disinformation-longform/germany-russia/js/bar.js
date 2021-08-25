@@ -1,7 +1,8 @@
 Highcharts.chart('hcContainer', {
     data: {
-        googleSpreadsheetKey: "1uf6yWzyUSU_-oQ85lK3695iQbWL_YbcmWB00PnZvxlA",
-        googleSpreadsheetWorksheet: 1
+        googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
+    googleSpreadsheetKey: "1uf6yWzyUSU_-oQ85lK3695iQbWL_YbcmWB00PnZvxlA",
+        googleSpreadsheetRange: "Germany",
     },
     chart: {
         type: 'bar',

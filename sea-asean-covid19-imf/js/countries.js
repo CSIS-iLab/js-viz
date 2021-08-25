@@ -1,14 +1,14 @@
 const countries = [
-  { id: "brun", name: "Brunei", sheet: 2 },
-  { id: "cam", name: "Cambodia", sheet: 3 },
-  { id: "indo", name: "Indonesia", sheet: 4 },
-  { id: "laos", name: "Laos", sheet: 5 },
-  { id: "malay", name: "Malaysia", sheet: 6 },
-  { id: "myan", name: "Myanmar", sheet: 7 },
-  { id: "phil", name: "Philippines", sheet: 8 },
-  { id: "sing", name: "Singapore", sheet: 9 },
-  { id: "thai", name: "Thailand", sheet: 10 },
-  { id: "viet", name: "Vietnam", sheet: 11 },
+  { id: "brun", name: "Brunei", sheet: "Brunei" },
+  { id: "cam", name: "Cambodia", sheet: "Cambodia" },
+  { id: "indo", name: "Indonesia", sheet: "Indonesia" },
+  { id: "laos", name: "Laos", sheet: "Laos" },
+  { id: "malay", name: "Malaysia", sheet: "Malaysia" },
+  { id: "myan", name: "Myanmar", sheet: "Myanmar" },
+  { id: "phil", name: "Philippines", sheet: "Philippines" },
+  { id: "sing", name: "Singapore", sheet: "Singapore" },
+  { id: "thai", name: "Thailand", sheet: "Thailand" },
+  { id: "viet", name: "Vietnam", sheet: "Vietnam" },
 ];
 
 for (let i = 0; i < countries.length; i++) {
@@ -21,8 +21,9 @@ function drawChart(index, id, name, sheet) {
   Highcharts.chart(`hc-${id}`, {
     // Load Data in from Google Sheets
     data: {
+      googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
       googleSpreadsheetKey: "1JFh3wyAtvmWmglO-wGaRhlJm6iM9z6f88r-7nrzoSXg",
-      googleSpreadsheetWorksheet: sheet,
+      googleSpreadsheetRange: sheet,
       dateFormat: "mm/dd/YYYY",
     },
 

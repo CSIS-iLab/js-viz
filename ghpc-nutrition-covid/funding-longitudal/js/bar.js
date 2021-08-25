@@ -9,8 +9,9 @@ Highcharts.setOptions({
 Highcharts.chart("hcContainer", {
   // Load Data in from Google Sheets
   data: {
+    googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
     googleSpreadsheetKey: "1YcIOXbY6seINOUcFqlvBDFsQ9iT7TUcmiHiY6u7dTSs",
-    googleSpreadsheetWorksheet: 1,
+    googleSpreadsheetRange: "Sheet1",
   },
   // General Chart Options
   chart: {

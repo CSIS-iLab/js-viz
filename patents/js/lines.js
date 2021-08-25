@@ -7,7 +7,8 @@ $(function() {
 });
   $('#hcContainer').highcharts({
     data: {
-      googleSpreadsheetKey: '1kBnEawzDO8PXQr0MRjHvm-RfVb8CezN3TZXO13uDja0',
+      googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
+    googleSpreadsheetKey: '1kBnEawzDO8PXQr0MRjHvm-RfVb8CezN3TZXO13uDja0',
     },
     chart: {
       type: 'line',

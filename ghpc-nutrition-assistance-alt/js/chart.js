@@ -30,8 +30,9 @@ var allSeries = {},
   ];
 
 Highcharts.data({
-  googleSpreadsheetKey: "1RXsxwg_tns3CICc1ZyYX3PEucq_RVMPDihn2y1Xs5jk",
-  googleSpreadsheetWorksheet: 8,
+  googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
+    googleSpreadsheetKey: "1RXsxwg_tns3CICc1ZyYX3PEucq_RVMPDihn2y1Xs5jk",
+  googleSpreadsheetRange: "map",
   complete: function(data) {
     var countrySeries = data.series.find(function(series) {
       return series.name === "country";

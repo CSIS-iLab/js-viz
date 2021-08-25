@@ -33,8 +33,9 @@ fetch(
         geoData.district = json
 
         Highcharts.data({
-          googleSpreadsheetKey: '19oi9wuSR4O9Blr7p6LArWLCVcxAGBUyld0HtGNVqqyU',
-          googleSpreadsheetWorksheet: 2,
+          googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
+    googleSpreadsheetKey: '19oi9wuSR4O9Blr7p6LArWLCVcxAGBUyld0HtGNVqqyU',
+          googleSpreadsheetRange: "II",
           switchRowsAndColumns: true,
           parsed: function parsed(columns) {
             columns.forEach(function(a, i) {

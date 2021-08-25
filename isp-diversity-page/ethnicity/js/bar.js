@@ -1,8 +1,9 @@
 Highcharts.chart("hcContainer", {
   // Load Data in from Google Sheets
   data: {
+    googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
     googleSpreadsheetKey: "16poMVWLNa7B8oTs6zcM1pj4Pmr6Smbmwxt7dg4Xwz-o",
-    googleSpreadsheetWorksheet: 2,
+    googleSpreadsheetRange: "Race-Ethnicity",
   },
   // General Chart Options
   chart: {
@@ -23,8 +24,7 @@ Highcharts.chart("hcContainer", {
   // Chart Legend
   legend: {
     title: {
-      text:
-        '<br/><span style="font-size: 12px; color: #808080; font-weight: normal">(Click to hide)</span>',
+      text: '<br/><span style="font-size: 12px; color: #808080; font-weight: normal">(Click to hide)</span>',
     },
     align: "center",
     verticalAlign: "bottom",

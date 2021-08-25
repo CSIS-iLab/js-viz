@@ -1,8 +1,9 @@
 
 Highcharts.chart("hcContainer", {
     data: {
-        googleSpreadsheetKey: "1uf6yWzyUSU_-oQ85lK3695iQbWL_YbcmWB00PnZvxlA",
-        googleSpreadsheetWorksheet: 3
+        googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
+    googleSpreadsheetKey: "1uf6yWzyUSU_-oQ85lK3695iQbWL_YbcmWB00PnZvxlA",
+        googleSpreadsheetRange: "Australia",
     },
     chart: {
         type: "bar",

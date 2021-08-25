@@ -1,81 +1,95 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>
+      Outcomes in the Top 10 Countries Funded by U.S. Nutrition Assistance |
+      CSIS Global Health Policy
+    </title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
 
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <title>Outcomes in the Top 10 Countries Funded by U.S. Nutrition Assistance | CSIS Global Health Policy</title>
-  <meta name="description" content="">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href='css/style.css' rel='stylesheet' type='text/css'>
-
-  <!-- <script src="js/jquery.js"></script>
+    <!-- <script src="js/jquery.js"></script>
   <script src="js/polyfiller.js"></script> -->
-  <!--  Polyfills -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.6.15/browser-polyfill.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/whatwg-fetch@3.0.0/dist/fetch.umd.min.js"></script>
+    <!--  Polyfills -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.6.15/browser-polyfill.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/whatwg-fetch@3.0.0/dist/fetch.umd.min.js"></script>
+  </head>
 
-</head>
-
-<body>
-
-  <header id="intro" dir="ltr" class="heading highcharts-container " style="position: relative; overflow: hidden; text-align: left; line-height: normal; z-index: 0; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
-    <div class="heading title">
-      Outcomes in Top 10 USAID Nutrition Recipient Countries
-    </div>
-    <p class="subtitle">
-      Select a country from the drop-down menu to track its USAID funding in relation to latest stunting statistics; the number of children under 5 who received vitamin A supplements; and the number of children under 5 who were reached by nutrition programs
-      or interventions. Hover over the outcome bars to see exact figures.
-    </p>
-    <div class="citation">
-      Source: USAID Dollars to Results and USAID Demographic and Health Surveys 2011-17
-    </div>
-  </header>
-
-
-  <section id="container" data-country="Bangladesh">
-    <header>
-      <label for="countries">Select Country:
-
-    <!-- <input for="countries" type="search" data-list-filter="^" data-list-focus="true" list="countries" placeholder="Select Country" value="Bangladesh"> -->
-      <select class="countries">
-        <option class="option" value="Bangladesh" selected>Bangladesh</option>
-        <option class="option" value="Ethiopia">Ethiopia</option>
-        <option class="option" value="Ghana">Ghana</option>
-        <option class="option" value="Mali">Mali</option>
-        <option class="option" value="Malawi">Malawi</option>
-        <option class="option" value="Mozambique">Mozambique</option>
-        <option class="option" value="Nepal">Nepal</option>
-        <option class="option" value="Senegal">Senegal</option>
-        <option class="option" value="Tanzania">Tanzania</option>
-        <option class="option" value="Uganda">Uganda</option>
-      </select>
-    </label>
-      <div class="statistic">
-        <figure data-metric="stunting">
-          <h5>
-          <span class="stat"></span>
-          <span></span>
-        </h5>
-        </figure>
+  <body>
+    <header
+      id="intro"
+      dir="ltr"
+      class="heading highcharts-container"
+      style="
+        position: relative;
+        overflow: hidden;
+        text-align: left;
+        line-height: normal;
+        z-index: 0;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+      "
+    >
+      <div class="heading title">
+        Outcomes in Top 10 USAID Nutrition Recipient Countries
+      </div>
+      <p class="subtitle">
+        Select a country from the drop-down menu to track its USAID funding in
+        relation to latest stunting statistics; the number of children under 5
+        who received vitamin A supplements; and the number of children under 5
+        who were reached by nutrition programs or interventions. Hover over the
+        outcome bars to see exact figures.
+      </p>
+      <div class="citation">
+        Source: USAID Dollars to Results and USAID Demographic and Health
+        Surveys 2011-17
       </div>
     </header>
 
-    <figure class="chart" data-metric="splinebar"></figure>
-  </section>
+    <section id="container" data-country="Bangladesh">
+      <header>
+        <label for="countries"
+          >Select Country:
 
+          <!-- <input for="countries" type="search" data-list-filter="^" data-list-focus="true" list="countries" placeholder="Select Country" value="Bangladesh"> -->
+          <select class="countries">
+            <option class="option" value="Bangladesh" selected>
+              Bangladesh
+            </option>
+            <option class="option" value="Ethiopia">Ethiopia</option>
+            <option class="option" value="Ghana">Ghana</option>
+            <option class="option" value="Mali">Mali</option>
+            <option class="option" value="Malawi">Malawi</option>
+            <option class="option" value="Mozambique">Mozambique</option>
+            <option class="option" value="Nepal">Nepal</option>
+            <option class="option" value="Senegal">Senegal</option>
+            <option class="option" value="Tanzania">Tanzania</option>
+            <option class="option" value="Uganda">Uganda</option>
+          </select>
+        </label>
+        <div class="statistic">
+          <figure data-metric="stunting">
+            <h5>
+              <span class="stat"></span>
+              <span></span>
+            </h5>
+          </figure>
+        </div>
+      </header>
 
+      <figure class="chart" data-metric="splinebar"></figure>
+    </section>
 
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/data.js"></script>
+    <script src="https://code.highcharts.com/maps/modules/pattern-fill.js"></script>
 
-  <script src="https://code.highcharts.com/highcharts.js"></script>
-  <script src="https://code.highcharts.com/6.0.7/modules/data.js"></script>
-  <script src="https://code.highcharts.com/maps/modules/pattern-fill.js"></script>
+    <!-- Include iFrame Resizer -->
+    <script src="https://csis-ilab.github.io/cpower-viz/globaljs/iframeSizer.contentWindow.min.js"></script>
 
-  <!-- Include iFrame Resizer -->
-  <script src="https://csis-ilab.github.io/cpower-viz/globaljs/iframeSizer.contentWindow.min.js"></script>
-
-  <script src="js/chart.js"></script>
-</body>
-
+    <script src="js/chart.js"></script>
+  </body>
 </html>

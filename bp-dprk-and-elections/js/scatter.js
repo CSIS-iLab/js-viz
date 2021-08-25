@@ -12,8 +12,9 @@ let maxes = [];
 
 Highcharts.data({
   // Load Data in from Google Sheets
-  googleSpreadsheetKey: "11nBD55d0t4QE1h-OeymUg897azDIC6CHME2UenQ8WSw",
-  googleSpreadsheetWorksheet: 2,
+  googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
+    googleSpreadsheetKey: "11nBD55d0t4QE1h-OeymUg897azDIC6CHME2UenQ8WSw",
+  googleSpreadsheetRange: "Analysis",
   switchRowsAndColumns: true,
   parsed: function parsed(columns) {
     columns.shift();

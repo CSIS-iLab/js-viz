@@ -1,163 +1,164 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Highmaps Example</title>
 
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<title>Highmaps Example</title>
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto+Slab"
+      rel="stylesheet"
+      type="text/css"
+    />
 
-		<link href='https://fonts.googleapis.com/css?family=Roboto+Slab' rel='stylesheet' type='text/css'>
+    <script
+      type="text/javascript"
+      src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"
+    ></script>
+    <script src="https://code.highcharts.com/maps/highmaps.js"></script>
+    <script src="https://code.highcharts.com/modules/data.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="cn-all.js"></script>
 
-		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-		  <script src="https://code.highcharts.com/maps/highmaps.js"></script>
-		<script src="https://code.highcharts.com/maps/modules/data.js"></script>
-		<script src="https://code.highcharts.com/maps/modules/exporting.js"></script>
-		<script src="cn-all.js"></script>
+    <style type="text/css">
+      #container {
+        height: 500px;
+        min-width: 310px;
+        max-width: 800px;
+        margin: 0 auto;
+      }
+      .loading {
+        margin-top: 10em;
+        text-align: center;
+        color: gray;
+      }
+    </style>
+  </head>
 
+  <body>
+    <script>
+      $(function () {
+        // Load the data from a Google Spreadsheet
+        // https://docs.google.com/spreadsheets/d/19IWtQWtDA5TJ5-m1yM8JCOD9_bi5DMHadmXYe-r9VVc/pubhtml
 
+        Highcharts.data({
+          googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
+          googleSpreadsheetKey: "13sFJdE4MF83AL0G1EdRKzHwJLGq8Oej3BLBFymtOLfo",
+          googleSpreadsheetRange: "Sheet1",
 
-		<style type="text/css">
+          // custom handler when the spreadsheet is parsed
+          parsed: function (columns) {
+            // Read the columns into the data array
+            var data = [];
+            $.each(columns[0], function (i, code) {
+              data.push({
+                code: code.toUpperCase(),
+                value: parseFloat(columns[2][i]),
+                name: columns[1][i],
+              });
+            });
 
-#container {
-	height: 500px;
-	min-width: 310px;
-	max-width: 800px;
-	margin: 0 auto;
-}
-.loading {
-	margin-top: 10em;
-	text-align: center;
-	color: gray;
-}
-		</style>
+            // Initiate the chart
+            $("#container").highcharts("Map", {
+              //frame style
+              chart: {
+                borderWidth: 1,
+              },
 
-	</head>
+              colors: [
+                "rgba(19,64,117,0.05)",
+                "rgba(19,64,117,0.2)",
+                "rgba(19,64,117,0.4)",
+                "rgba(19,64,117,0.5)",
+                "rgba(19,64,117,0.6)",
+                "rgba(19,64,117,0.8)",
+                "rgba(19,64,117,1)",
+              ],
+              //title of map
+              title: {
+                text: "GDP Growth Targets of the 12th Five-Year Plan",
+              },
 
-<body>
+              // +/- zoom
+              mapNavigation: {
+                enabled: true,
+              },
 
-	<script>
+              credits: {
+                enabled: true,
+                href: "http://csis.org",
+                text: "Perfecting China Inc. | Geodata",
+              },
 
+              legend: {
+                title: {
+                  text: 'GDP Targets<br/><span style="font-size: 9px; color: #666; font-weight: normal">(Click to hide)</span>',
+                  style: {
+                    fontStyle: "italic",
+                  },
+                },
+                align: "left",
+                verticalAlign: "bottom",
+                floating: true,
+                layout: "vertical",
+                valueDecimals: 0,
+              },
 
-	$(function () {
+              colorAxis: {
+                dataClasses: [
+                  {
+                    from: 8,
+                    to: 9,
+                    color: "#8388e6",
+                    name: "Low | 8 - 9 percent",
+                  },
+                  {
+                    from: 10,
+                    to: 11,
+                    color: "#6568ac",
+                    name: "Medium | 10 - 11 percent",
+                  },
+                  {
+                    from: 12,
+                    to: 13,
+                    color: "#3b3d64",
+                    name: "High | 12 - 13 percent",
+                  },
+                ],
+              },
 
-	    // Load the data from a Google Spreadsheet
-	    // https://docs.google.com/spreadsheets/d/19IWtQWtDA5TJ5-m1yM8JCOD9_bi5DMHadmXYe-r9VVc/pubhtml
-
-	    Highcharts.data({
-
-	        googleSpreadsheetKey: '13sFJdE4MF83AL0G1EdRKzHwJLGq8Oej3BLBFymtOLfo',
-
-	        // custom handler when the spreadsheet is parsed
-	        parsed: function (columns) {
-
-	            // Read the columns into the data array
-	            var data = [];
-	            $.each(columns[0], function (i, code) {
-	                data.push({
-	                    code: code.toUpperCase(),
-	                    value: parseFloat(columns[2][i]),
-	                    name: columns[1][i]
-	                });
-	            });
-
-	            // Initiate the chart
-	            $('#container').highcharts('Map', {
-
-
-			//frame style
-	                chart : {
-	                    borderWidth : 1
-	                },
-
-	                colors: ['rgba(19,64,117,0.05)', 'rgba(19,64,117,0.2)', 'rgba(19,64,117,0.4)',
-	                    'rgba(19,64,117,0.5)', 'rgba(19,64,117,0.6)', 'rgba(19,64,117,0.8)', 'rgba(19,64,117,1)'],
-			//title of map
-	                title : {
-	                    text : 'GDP Growth Targets of the 12th Five-Year Plan'
-	                },
-
-			// +/- zoom
-	                mapNavigation: {
-	                    enabled: true
-	                },
-
-			credits: {
-				enabled: true,
-				href: "http://csis.org",
-				text: 'Perfecting China Inc. | Geodata'
-			},
-
-	                legend: {
-	                    title: {
-												text: 'GDP Targets<br/><span style="font-size: 9px; color: #666; font-weight: normal">(Click to hide)</span>',
-							style: {
-									fontStyle: 'italic'
-							}
-
-	                    },
-	                    align: 'left',
-	                    verticalAlign: 'bottom',
-	                    floating: true,
-	                    layout: 'vertical',
-	                    valueDecimals: 0,
-	                },
-
-									colorAxis: {
-
-                        dataClasses: [{
-                            from: 8,
-                            to: 9,
-                            color: '#8388e6',
-                            name: 'Low | 8 - 9 percent'
-                        }, {
-                            from: 10,
-                            to: 11,
-                            color: '#6568ac',
-                            name: 'Medium | 10 - 11 percent'
-                        }, {
-													from: 12,
-													to: 13,
-													color: '#3b3d64',
-													name: 'High | 12 - 13 percent'
-												}]
+              series: [
+                {
+                  data: data,
+                  mapData: Highcharts.maps["countries/cn/cn-all"],
+                  joinBy: ["hc-a2", "code"],
+                  animation: true,
+                  nullColor: "#4E6D78",
+                  name: "GDP Growth Targets",
+                  states: {
+                    hover: {
+                      color: "#5a66a3",
                     },
+                  },
+                  tooltip: {
+                    valueDecimals: 2,
+                    valueSuffix: "%",
+                  },
+                },
+              ],
+            });
+          },
+          error: function () {
+            $("#container").html(
+              '<div class="loading">' +
+                '<i class="icon-frown icon-large"></i> ' +
+                "Error loading data from Google Spreadsheets" +
+                "</div>"
+            );
+          },
+        });
+      });
+    </script>
 
-
-
-	                series : [{
-	                    data : data,
-	                    mapData: Highcharts.maps['countries/cn/cn-all'],
-	                    joinBy: ['hc-a2', 'code'],
-	                    animation: true,
-			    nullColor: '#4E6D78',
-	                    name: 'GDP Growth Targets',
-	                    states: {
-	                        hover: {
-	                            color: '#5a66a3'
-	                        }
-	                    },
-	                    tooltip: {
-	                    	valueDecimals: 2,
-	                        valueSuffix: '%'
-	                    }
-	                }]
-	            });
-	        },
-	        error: function () {
-	            $('#container').html('<div class="loading">' +
-	                '<i class="icon-frown icon-large"></i> ' +
-	                'Error loading data from Google Spreadsheets' +
-	                '</div>');
-	        }
-	    });
-	});
-
-	</script>
-
-
-	  <div id="container" style="max-width: 1000px"></div>
-
-
-
-</body>
-
+    <div id="container" style="max-width: 1000px"></div>
+  </body>
 </html>
