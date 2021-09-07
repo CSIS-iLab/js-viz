@@ -89,6 +89,7 @@ function createSidePanel(event) {
         ? `<p class="side-panel-value">African Sister City: <span>${data.african_sister_cities}</span></p>`
         : ""
       }
+      <iframe width="560" height="315" src="https://www.youtube.com/embed/K3oMN1a_pdg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
       <p class="side-panel-desc">${data.sidebar} ${data.linked_commentary
             ? `<a href="${data.linked_commentary}" target="_blank"> Read More</a> </p>`
             : ""
