@@ -1,0 +1,79 @@
+@use 'sass:color';
+@use 'abstracts' as *;
+
+/*================================
+=            Tooltips            =
+================================*/
+.tippy-content,
+.interactive__tooltip {
+  margin: 0 1.5rem;
+  max-width: 350px;
+  max-height: 150px;
+  padding: 0.75rem 1rem;
+  color: $color__gray-900;
+  @include font-size(14px);
+  line-height: 1.2;
+  text-align: left;
+  transition: 0.5s all ease-in;
+  background: $color__gray-100;
+  // background: #e6e9ec;
+  // border: 1px solid $color__blue-gray-200;
+
+  @include breakpoint(medium) {
+    margin: unset;
+    max-width: 200px;
+    // top: -1.5rem;
+  }
+}
+
+.tooltip {
+  &__heading {
+    margin: 0 0 rem(12px);
+    padding: 0 0 rem(4px);
+    font-family: $font__roboto;
+    color: $color__primary;
+    @include font-size(16px);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    
+    &::after {
+      content: '';
+      display: block;
+      position: relative;
+      top: 3px;
+      width: rem(32px);
+      border-bottom: 2px solid $color__gray-300;
+    }
+  }
+}
+
+.country-values {
+  display: flex;
+  margin-right: rem(-132px);
+  margin: 0;
+  padding: 0;
+  color: $color__black;
+  @include font-size(14px);
+  list-style: none;
+
+  @include breakpoint(medium) {
+    margin: 0;
+    display: block;
+  }
+
+  li {
+    position: relative;
+    margin-bottom: 0.5rem;
+    margin-right: 1.5rem;
+
+    @include breakpoint(medium) {
+      margin-right: 1.5rem;
+    }
+  }
+
+  div {
+    color: $color__item-labels;
+    @include font-size(12px);
+    text-transform: uppercase;
+  }
+}
