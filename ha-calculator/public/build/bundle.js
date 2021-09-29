@@ -3051,7 +3051,7 @@ var app = (function () {
     			p = element("p");
     			t = text$1(t_value);
     			set_style(p, "color", "red");
-    			add_location(p, file, 126, 4, 2999);
+    			add_location(p, file, 126, 4, 3011);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
@@ -3142,14 +3142,14 @@ var app = (function () {
     				each_blocks[i].c();
     			}
 
-    			add_location(div0, file, 94, 4, 2443);
-    			add_location(br0, file, 99, 0, 2537);
-    			add_location(input, file, 102, 9, 2580);
-    			add_location(div1, file, 100, 4, 2546);
-    			add_location(br1, file, 106, 0, 2656);
-    			add_location(div2, file, 108, 0, 2662);
-    			attr_dev(svg, "class", "svelte-1ua1vyy");
-    			add_location(svg, file, 111, 0, 2701);
+    			add_location(div0, file, 94, 4, 2455);
+    			add_location(br0, file, 99, 0, 2549);
+    			add_location(input, file, 102, 9, 2592);
+    			add_location(div1, file, 100, 4, 2558);
+    			add_location(br1, file, 106, 0, 2668);
+    			add_location(div2, file, 108, 0, 2674);
+    			attr_dev(svg, "class", "svelte-mdrynp");
+    			add_location(svg, file, 111, 0, 2713);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div0, anchor);
@@ -3265,7 +3265,7 @@ var app = (function () {
     			attr_dev(rect, "height", "16px");
     			attr_dev(rect, "x", rect_x_value = /*i*/ ctx[23] * 20);
     			attr_dev(rect, "y", /*j*/ ctx[26] * 20);
-    			add_location(rect, file, 116, 2, 2844);
+    			add_location(rect, file, 116, 2, 2856);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, rect, anchor);
@@ -3318,7 +3318,7 @@ var app = (function () {
     			attr_dev(rect, "x", rect_x_value = /*i*/ ctx[23] * 20);
     			attr_dev(rect, "y", 0);
     			attr_dev(rect, "fill", "cornflowerblue");
-    			add_location(rect, file, 113, 2, 2734);
+    			add_location(rect, file, 113, 2, 2746);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, rect, anchor);
@@ -3384,9 +3384,9 @@ var app = (function () {
     			div1 = element("div");
     			div0 = element("div");
     			attr_dev(div0, "class", "loading");
-    			add_location(div0, file, 90, 6, 2381);
+    			add_location(div0, file, 90, 6, 2393);
     			attr_dev(div1, "class", "loading-container");
-    			add_location(div1, file, 89, 4, 2343);
+    			add_location(div1, file, 89, 4, 2355);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div1, anchor);
@@ -3436,17 +3436,19 @@ var app = (function () {
     			main = element("main");
     			header = element("header");
     			h1 = element("h1");
-    			h1.textContent = "Charting China’s Covid-19 Diplomacy";
+    			h1.textContent = "HA Calculator";
     			t1 = space();
     			p = element("p");
-    			p.textContent = "This interactive plots countries’ scores in both the Medical Diplomacy Index and Vaccine Diplomacy Index. Countries in the upper right quadrant scored highly in both indices, indicating greater Chinese influence through Covid-19 diplomacy. Bubbles are sized according to GDP. Hover over a bubble or search a country’s name to reveal details. Toggle between coloring bubbles based on geographic region or income level and use the filters to highlight various country groupings. Click here to access the data, methodology, and source information behind the indices.";
+    			p.textContent = "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis";
     			t3 = space();
     			info.block.c();
+    			attr_dev(h1, "class", "svelte-mdrynp");
     			add_location(h1, file, 82, 4, 1677);
-    			add_location(p, file, 83, 4, 1726);
-    			attr_dev(header, "class", "interactive__header");
+    			attr_dev(p, "class", "svelte-mdrynp");
+    			add_location(p, file, 83, 4, 1704);
+    			attr_dev(header, "class", "interactive__header svelte-mdrynp");
     			add_location(header, file, 81, 2, 1636);
-    			attr_dev(main, "class", "interactive");
+    			attr_dev(main, "class", "interactive svelte-mdrynp");
     			add_location(main, file, 80, 0, 1607);
     		},
     		l: function claim(nodes) {

@@ -1,6 +1,6 @@
 {
-  "name": "covid-19-health-index",
-  "description": "A Svelte powered visualization showing Covid-19's impact on China's international image and diplomacy.",
+  "name": "ha-calculator",
+  "description": "A Svelte powered visualization",
   "version": "1.0.0",
   "private": true,
   "repository": {

@@ -1,6 +1,6 @@
 # China's Diplomatic Activity
 
-A Svelte powered visualization showing Covid-19's impact on China's international image and diplomacy.
+A Svelte powered visualization
 
 ## To Run
 
