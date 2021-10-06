@@ -1,33 +1,18 @@
 <script>
   import parseData from './data.js'
-  import {range} from 'd3-array'
+
   import Chart from './components/Chart.svelte'
   import Options from './components/Options.svelte'
 
   $: totalReq = 38536692263
   $: remaining = 0
-  $: total = 0 
-  $: activeCountry = "US"
+  $: total = 0
+  $: activeCountry = 'US'
 
-  $: gdp_us = 20936600000000
-  $: gdp_ger = 3806060140000
-  $: gdp_uk = 2707743780000
-  $: gdp_eu = 15192652400000
-  $: gdp_jap = 5064872880000
-
-  $: per_us = .037
-  $: per_ger = .059
-  $: per_uk = .053
-  $: per_eu = .009
-  $: per_jap = .011
-
-  $: testRange = range(1, 39, 1)
-
-
+  let contributed = 0
 
   const dataSrc = {
-    calc:
-      'https://docs.google.com/spreadsheets/d/e/2PACX-1vR2PkoQkmfyDDsUEpwiAoPwIHruCE8bucMMaHcYUstGyZehCS_5uDPPTh5wnDEp2Tsy8ZtDdwm4y0X0/pub?output=csv',
+    calc: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR2PkoQkmfyDDsUEpwiAoPwIHruCE8bucMMaHcYUstGyZehCS_5uDPPTh5wnDEp2Tsy8ZtDdwm4y0X0/pub?output=csv',
   }
 
   const data = loadData()
@@ -39,13 +24,12 @@
 
     console.log(res)
     total = res.reduce((acc, i) => {
-      return acc += i.funding 
+      return (acc += i.funding)
     }, 0)
     remaining = totalReq - total
     console.log(total + 5815512166, '------------')
     return res
   }
-  
 
   const init = () => {
     resize(mq)
@@ -82,10 +66,19 @@
 </script>
 
 <main class="interactive">
+  <div>{contributed}</div>
   <header class="interactive__header">
     <h1>HA Calculator</h1>
     <p>
-      Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis
+      Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium
+      doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo
+      inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+      Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut
+      fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem
+      sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit
+      amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora
+      incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad
+      minima veniam, quis
     </p>
   </header>
 
@@ -94,58 +87,24 @@
       <div class="loading"></div>
     </div>
   {:then allData}
-
-  <Options
-  {allData}
-  bind:activeCountry
-  {totalReq}
-
-/>
-
-    <Chart 
-      {allData}
-      {activeCountry}
+    <Options
+      allData="{allData}"
+      bind:activeCountry
+      totalReq="{totalReq}"
+      bind:contributed
     />
 
-    <!-- <div>
-      totalReg: {totalReq}
-      total: {total}
-      remaining: {remaining}
-    </div>
-
-    <div id="slider"></div>
-<br>
-    <div>
-      US: {gdp_us}
-      %: <input  bind:value="{per_us}"/>
-      Amount: {gdp_us * per_us}
-    </div>
-
-<br>
-
-<div>{per_us}</div> -->
-
-<!-- {#each } -->
-<svg>
-  {#each testRange as i}
-  <rect width="16px" height="16px" x={i * 20} y={0} fill="cornflowerblue">
-  </rect>
-  {#each [1,2,3,4] as j}
-  <rect width="16px" height="16px" x={i * 20} y={j*20}></rect>
-  {/each}
-  {/each}
-</svg>
-<!-- {/each} -->
-
-    <!-- <Chart
-    /> -->
-
+    <Chart
+      allData="{allData}"
+      activeCountry="{activeCountry}"
+      contributed="{contributed}"
+    />
   {:catch error}
     <p style="color: red">{error.message}</p>
   {/await}
 </main>
 
-<style type="text/scss" >
+<style type="text/scss">
   svg {
     width: 1500px;
   }
