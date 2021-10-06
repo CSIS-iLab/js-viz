@@ -38,11 +38,13 @@
     "d3-selection": "^2.0.0",
     "d3-shape": "^2.1.0",
     "install": "^0.13.0",
+    "nouislider": "^15.4.0",
     "npm": "^7.23.0",
     "sirv-cli": "^1.0.0",
     "slim-select": "^1.27.0",
     "svelecte": "^1.3.7",
     "svelte-accessible-dialog": "^2.1.3",
+    "svelte-range-slider-pips": "^1.8.0",
     "svelte-simple-modal": "^1.0.3",
     "sveltejs-tippy": "^3.0.0"
   }

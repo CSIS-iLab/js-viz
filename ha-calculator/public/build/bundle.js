@@ -57,7 +57,7 @@ var app = (function () {
     function space() {
         return text$1(' ');
     }
-    function empty$1() {
+    function empty() {
         return text$1('');
     }
     function listen(node, event, handler, options) {
@@ -70,7 +70,10 @@ var app = (function () {
         else if (node.getAttribute(attribute) !== value)
             node.setAttribute(attribute, value);
     }
-    function children$1(element) {
+    function to_number(value) {
+        return value === '' ? null : +value;
+    }
+    function children(element) {
         return Array.from(element.childNodes);
     }
     function set_input_value(input, value) {
@@ -78,6 +81,20 @@ var app = (function () {
     }
     function set_style(node, key, value, important) {
         node.style.setProperty(key, value, important ? 'important' : '');
+    }
+    function select_option(select, value) {
+        for (let i = 0; i < select.options.length; i += 1) {
+            const option = select.options[i];
+            if (option.__value === value) {
+                option.selected = true;
+                return;
+            }
+        }
+        select.selectedIndex = -1; // no option should be selected
+    }
+    function select_value(select) {
+        const selected_option = select.querySelector(':checked') || select.options[0];
+        return selected_option && selected_option.__value;
     }
     function custom_event(type, detail, bubbles = false) {
         const e = document.createEvent('CustomEvent');
@@ -109,6 +126,9 @@ var app = (function () {
     }
     function add_render_callback(fn) {
         render_callbacks.push(fn);
+    }
+    function add_flush_callback(fn) {
+        flush_callbacks.push(fn);
     }
     let flushing = false;
     const seen_callbacks = new Set();
@@ -283,6 +303,17 @@ var app = (function () {
         : typeof globalThis !== 'undefined'
             ? globalThis
             : global);
+
+    function bind(component, name, callback) {
+        const index = component.$$.props[name];
+        if (index !== undefined) {
+            component.$$.bound[index] = callback;
+            callback(component.$$.ctx[index]);
+        }
+    }
+    function create_component(block) {
+        block && block.c();
+    }
     function mount_component(component, target, anchor, customElement) {
         const { fragment, on_mount, on_destroy, after_update } = component.$$;
         fragment && fragment.m(target, anchor);
@@ -367,7 +398,7 @@ var app = (function () {
         $$.fragment = create_fragment ? create_fragment($$.ctx) : false;
         if (options.target) {
             if (options.hydrate) {
-                const nodes = children$1(options.target);
+                const nodes = children(options.target);
                 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                 $$.fragment && $$.fragment.l(nodes);
                 nodes.forEach(detach);
@@ -410,7 +441,7 @@ var app = (function () {
     }
 
     function dispatch_dev(type, detail) {
-        document.dispatchEvent(custom_event(type, Object.assign({ version: '3.43.0' }, detail), true));
+        document.dispatchEvent(custom_event(type, Object.assign({ version: '3.43.1' }, detail), true));
     }
     function append_dev(target, node) {
         dispatch_dev('SvelteDOMInsert', { target, node });
@@ -678,8 +709,6 @@ var app = (function () {
 
     const stringFields = [
       'country',
-      'actual_hrp',
-      'adjustable_gdp'
     ];
 
     const stringify = d => {
@@ -703,909 +732,6 @@ var app = (function () {
       });
       
       return data
-    }
-
-    var xhtml = "http://www.w3.org/1999/xhtml";
-
-    var namespaces = {
-      svg: "http://www.w3.org/2000/svg",
-      xhtml: xhtml,
-      xlink: "http://www.w3.org/1999/xlink",
-      xml: "http://www.w3.org/XML/1998/namespace",
-      xmlns: "http://www.w3.org/2000/xmlns/"
-    };
-
-    function namespace(name) {
-      var prefix = name += "", i = prefix.indexOf(":");
-      if (i >= 0 && (prefix = name.slice(0, i)) !== "xmlns") name = name.slice(i + 1);
-      return namespaces.hasOwnProperty(prefix) ? {space: namespaces[prefix], local: name} : name; // eslint-disable-line no-prototype-builtins
-    }
-
-    function creatorInherit(name) {
-      return function() {
-        var document = this.ownerDocument,
-            uri = this.namespaceURI;
-        return uri === xhtml && document.documentElement.namespaceURI === xhtml
-            ? document.createElement(name)
-            : document.createElementNS(uri, name);
-      };
-    }
-
-    function creatorFixed(fullname) {
-      return function() {
-        return this.ownerDocument.createElementNS(fullname.space, fullname.local);
-      };
-    }
-
-    function creator(name) {
-      var fullname = namespace(name);
-      return (fullname.local
-          ? creatorFixed
-          : creatorInherit)(fullname);
-    }
-
-    function none() {}
-
-    function selector(selector) {
-      return selector == null ? none : function() {
-        return this.querySelector(selector);
-      };
-    }
-
-    function selection_select(select) {
-      if (typeof select !== "function") select = selector(select);
-
-      for (var groups = this._groups, m = groups.length, subgroups = new Array(m), j = 0; j < m; ++j) {
-        for (var group = groups[j], n = group.length, subgroup = subgroups[j] = new Array(n), node, subnode, i = 0; i < n; ++i) {
-          if ((node = group[i]) && (subnode = select.call(node, node.__data__, i, group))) {
-            if ("__data__" in node) subnode.__data__ = node.__data__;
-            subgroup[i] = subnode;
-          }
-        }
-      }
-
-      return new Selection(subgroups, this._parents);
-    }
-
-    function array(x) {
-      return typeof x === "object" && "length" in x
-        ? x // Array, TypedArray, NodeList, array-like
-        : Array.from(x); // Map, Set, iterable, string, or anything else
-    }
-
-    function empty() {
-      return [];
-    }
-
-    function selectorAll(selector) {
-      return selector == null ? empty : function() {
-        return this.querySelectorAll(selector);
-      };
-    }
-
-    function arrayAll(select) {
-      return function() {
-        var group = select.apply(this, arguments);
-        return group == null ? [] : array(group);
-      };
-    }
-
-    function selection_selectAll(select) {
-      if (typeof select === "function") select = arrayAll(select);
-      else select = selectorAll(select);
-
-      for (var groups = this._groups, m = groups.length, subgroups = [], parents = [], j = 0; j < m; ++j) {
-        for (var group = groups[j], n = group.length, node, i = 0; i < n; ++i) {
-          if (node = group[i]) {
-            subgroups.push(select.call(node, node.__data__, i, group));
-            parents.push(node);
-          }
-        }
-      }
-
-      return new Selection(subgroups, parents);
-    }
-
-    function matcher(selector) {
-      return function() {
-        return this.matches(selector);
-      };
-    }
-
-    function childMatcher(selector) {
-      return function(node) {
-        return node.matches(selector);
-      };
-    }
-
-    var find = Array.prototype.find;
-
-    function childFind(match) {
-      return function() {
-        return find.call(this.children, match);
-      };
-    }
-
-    function childFirst() {
-      return this.firstElementChild;
-    }
-
-    function selection_selectChild(match) {
-      return this.select(match == null ? childFirst
-          : childFind(typeof match === "function" ? match : childMatcher(match)));
-    }
-
-    var filter = Array.prototype.filter;
-
-    function children() {
-      return this.children;
-    }
-
-    function childrenFilter(match) {
-      return function() {
-        return filter.call(this.children, match);
-      };
-    }
-
-    function selection_selectChildren(match) {
-      return this.selectAll(match == null ? children
-          : childrenFilter(typeof match === "function" ? match : childMatcher(match)));
-    }
-
-    function selection_filter(match) {
-      if (typeof match !== "function") match = matcher(match);
-
-      for (var groups = this._groups, m = groups.length, subgroups = new Array(m), j = 0; j < m; ++j) {
-        for (var group = groups[j], n = group.length, subgroup = subgroups[j] = [], node, i = 0; i < n; ++i) {
-          if ((node = group[i]) && match.call(node, node.__data__, i, group)) {
-            subgroup.push(node);
-          }
-        }
-      }
-
-      return new Selection(subgroups, this._parents);
-    }
-
-    function sparse(update) {
-      return new Array(update.length);
-    }
-
-    function selection_enter() {
-      return new Selection(this._enter || this._groups.map(sparse), this._parents);
-    }
-
-    function EnterNode(parent, datum) {
-      this.ownerDocument = parent.ownerDocument;
-      this.namespaceURI = parent.namespaceURI;
-      this._next = null;
-      this._parent = parent;
-      this.__data__ = datum;
-    }
-
-    EnterNode.prototype = {
-      constructor: EnterNode,
-      appendChild: function(child) { return this._parent.insertBefore(child, this._next); },
-      insertBefore: function(child, next) { return this._parent.insertBefore(child, next); },
-      querySelector: function(selector) { return this._parent.querySelector(selector); },
-      querySelectorAll: function(selector) { return this._parent.querySelectorAll(selector); }
-    };
-
-    function constant$1(x) {
-      return function() {
-        return x;
-      };
-    }
-
-    function bindIndex(parent, group, enter, update, exit, data) {
-      var i = 0,
-          node,
-          groupLength = group.length,
-          dataLength = data.length;
-
-      // Put any non-null nodes that fit into update.
-      // Put any null nodes into enter.
-      // Put any remaining data into enter.
-      for (; i < dataLength; ++i) {
-        if (node = group[i]) {
-          node.__data__ = data[i];
-          update[i] = node;
-        } else {
-          enter[i] = new EnterNode(parent, data[i]);
-        }
-      }
-
-      // Put any non-null nodes that don’t fit into exit.
-      for (; i < groupLength; ++i) {
-        if (node = group[i]) {
-          exit[i] = node;
-        }
-      }
-    }
-
-    function bindKey(parent, group, enter, update, exit, data, key) {
-      var i,
-          node,
-          nodeByKeyValue = new Map,
-          groupLength = group.length,
-          dataLength = data.length,
-          keyValues = new Array(groupLength),
-          keyValue;
-
-      // Compute the key for each node.
-      // If multiple nodes have the same key, the duplicates are added to exit.
-      for (i = 0; i < groupLength; ++i) {
-        if (node = group[i]) {
-          keyValues[i] = keyValue = key.call(node, node.__data__, i, group) + "";
-          if (nodeByKeyValue.has(keyValue)) {
-            exit[i] = node;
-          } else {
-            nodeByKeyValue.set(keyValue, node);
-          }
-        }
-      }
-
-      // Compute the key for each datum.
-      // If there a node associated with this key, join and add it to update.
-      // If there is not (or the key is a duplicate), add it to enter.
-      for (i = 0; i < dataLength; ++i) {
-        keyValue = key.call(parent, data[i], i, data) + "";
-        if (node = nodeByKeyValue.get(keyValue)) {
-          update[i] = node;
-          node.__data__ = data[i];
-          nodeByKeyValue.delete(keyValue);
-        } else {
-          enter[i] = new EnterNode(parent, data[i]);
-        }
-      }
-
-      // Add any remaining nodes that were not bound to data to exit.
-      for (i = 0; i < groupLength; ++i) {
-        if ((node = group[i]) && (nodeByKeyValue.get(keyValues[i]) === node)) {
-          exit[i] = node;
-        }
-      }
-    }
-
-    function datum(node) {
-      return node.__data__;
-    }
-
-    function selection_data(value, key) {
-      if (!arguments.length) return Array.from(this, datum);
-
-      var bind = key ? bindKey : bindIndex,
-          parents = this._parents,
-          groups = this._groups;
-
-      if (typeof value !== "function") value = constant$1(value);
-
-      for (var m = groups.length, update = new Array(m), enter = new Array(m), exit = new Array(m), j = 0; j < m; ++j) {
-        var parent = parents[j],
-            group = groups[j],
-            groupLength = group.length,
-            data = array(value.call(parent, parent && parent.__data__, j, parents)),
-            dataLength = data.length,
-            enterGroup = enter[j] = new Array(dataLength),
-            updateGroup = update[j] = new Array(dataLength),
-            exitGroup = exit[j] = new Array(groupLength);
-
-        bind(parent, group, enterGroup, updateGroup, exitGroup, data, key);
-
-        // Now connect the enter nodes to their following update node, such that
-        // appendChild can insert the materialized enter node before this node,
-        // rather than at the end of the parent node.
-        for (var i0 = 0, i1 = 0, previous, next; i0 < dataLength; ++i0) {
-          if (previous = enterGroup[i0]) {
-            if (i0 >= i1) i1 = i0 + 1;
-            while (!(next = updateGroup[i1]) && ++i1 < dataLength);
-            previous._next = next || null;
-          }
-        }
-      }
-
-      update = new Selection(update, parents);
-      update._enter = enter;
-      update._exit = exit;
-      return update;
-    }
-
-    function selection_exit() {
-      return new Selection(this._exit || this._groups.map(sparse), this._parents);
-    }
-
-    function selection_join(onenter, onupdate, onexit) {
-      var enter = this.enter(), update = this, exit = this.exit();
-      enter = typeof onenter === "function" ? onenter(enter) : enter.append(onenter + "");
-      if (onupdate != null) update = onupdate(update);
-      if (onexit == null) exit.remove(); else onexit(exit);
-      return enter && update ? enter.merge(update).order() : update;
-    }
-
-    function selection_merge(selection) {
-      if (!(selection instanceof Selection)) throw new Error("invalid merge");
-
-      for (var groups0 = this._groups, groups1 = selection._groups, m0 = groups0.length, m1 = groups1.length, m = Math.min(m0, m1), merges = new Array(m0), j = 0; j < m; ++j) {
-        for (var group0 = groups0[j], group1 = groups1[j], n = group0.length, merge = merges[j] = new Array(n), node, i = 0; i < n; ++i) {
-          if (node = group0[i] || group1[i]) {
-            merge[i] = node;
-          }
-        }
-      }
-
-      for (; j < m0; ++j) {
-        merges[j] = groups0[j];
-      }
-
-      return new Selection(merges, this._parents);
-    }
-
-    function selection_order() {
-
-      for (var groups = this._groups, j = -1, m = groups.length; ++j < m;) {
-        for (var group = groups[j], i = group.length - 1, next = group[i], node; --i >= 0;) {
-          if (node = group[i]) {
-            if (next && node.compareDocumentPosition(next) ^ 4) next.parentNode.insertBefore(node, next);
-            next = node;
-          }
-        }
-      }
-
-      return this;
-    }
-
-    function selection_sort(compare) {
-      if (!compare) compare = ascending$1;
-
-      function compareNode(a, b) {
-        return a && b ? compare(a.__data__, b.__data__) : !a - !b;
-      }
-
-      for (var groups = this._groups, m = groups.length, sortgroups = new Array(m), j = 0; j < m; ++j) {
-        for (var group = groups[j], n = group.length, sortgroup = sortgroups[j] = new Array(n), node, i = 0; i < n; ++i) {
-          if (node = group[i]) {
-            sortgroup[i] = node;
-          }
-        }
-        sortgroup.sort(compareNode);
-      }
-
-      return new Selection(sortgroups, this._parents).order();
-    }
-
-    function ascending$1(a, b) {
-      return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
-    }
-
-    function selection_call() {
-      var callback = arguments[0];
-      arguments[0] = this;
-      callback.apply(null, arguments);
-      return this;
-    }
-
-    function selection_nodes() {
-      return Array.from(this);
-    }
-
-    function selection_node() {
-
-      for (var groups = this._groups, j = 0, m = groups.length; j < m; ++j) {
-        for (var group = groups[j], i = 0, n = group.length; i < n; ++i) {
-          var node = group[i];
-          if (node) return node;
-        }
-      }
-
-      return null;
-    }
-
-    function selection_size() {
-      let size = 0;
-      for (const node of this) ++size; // eslint-disable-line no-unused-vars
-      return size;
-    }
-
-    function selection_empty() {
-      return !this.node();
-    }
-
-    function selection_each(callback) {
-
-      for (var groups = this._groups, j = 0, m = groups.length; j < m; ++j) {
-        for (var group = groups[j], i = 0, n = group.length, node; i < n; ++i) {
-          if (node = group[i]) callback.call(node, node.__data__, i, group);
-        }
-      }
-
-      return this;
-    }
-
-    function attrRemove(name) {
-      return function() {
-        this.removeAttribute(name);
-      };
-    }
-
-    function attrRemoveNS(fullname) {
-      return function() {
-        this.removeAttributeNS(fullname.space, fullname.local);
-      };
-    }
-
-    function attrConstant(name, value) {
-      return function() {
-        this.setAttribute(name, value);
-      };
-    }
-
-    function attrConstantNS(fullname, value) {
-      return function() {
-        this.setAttributeNS(fullname.space, fullname.local, value);
-      };
-    }
-
-    function attrFunction(name, value) {
-      return function() {
-        var v = value.apply(this, arguments);
-        if (v == null) this.removeAttribute(name);
-        else this.setAttribute(name, v);
-      };
-    }
-
-    function attrFunctionNS(fullname, value) {
-      return function() {
-        var v = value.apply(this, arguments);
-        if (v == null) this.removeAttributeNS(fullname.space, fullname.local);
-        else this.setAttributeNS(fullname.space, fullname.local, v);
-      };
-    }
-
-    function selection_attr(name, value) {
-      var fullname = namespace(name);
-
-      if (arguments.length < 2) {
-        var node = this.node();
-        return fullname.local
-            ? node.getAttributeNS(fullname.space, fullname.local)
-            : node.getAttribute(fullname);
-      }
-
-      return this.each((value == null
-          ? (fullname.local ? attrRemoveNS : attrRemove) : (typeof value === "function"
-          ? (fullname.local ? attrFunctionNS : attrFunction)
-          : (fullname.local ? attrConstantNS : attrConstant)))(fullname, value));
-    }
-
-    function defaultView(node) {
-      return (node.ownerDocument && node.ownerDocument.defaultView) // node is a Node
-          || (node.document && node) // node is a Window
-          || node.defaultView; // node is a Document
-    }
-
-    function styleRemove(name) {
-      return function() {
-        this.style.removeProperty(name);
-      };
-    }
-
-    function styleConstant(name, value, priority) {
-      return function() {
-        this.style.setProperty(name, value, priority);
-      };
-    }
-
-    function styleFunction(name, value, priority) {
-      return function() {
-        var v = value.apply(this, arguments);
-        if (v == null) this.style.removeProperty(name);
-        else this.style.setProperty(name, v, priority);
-      };
-    }
-
-    function selection_style(name, value, priority) {
-      return arguments.length > 1
-          ? this.each((value == null
-                ? styleRemove : typeof value === "function"
-                ? styleFunction
-                : styleConstant)(name, value, priority == null ? "" : priority))
-          : styleValue(this.node(), name);
-    }
-
-    function styleValue(node, name) {
-      return node.style.getPropertyValue(name)
-          || defaultView(node).getComputedStyle(node, null).getPropertyValue(name);
-    }
-
-    function propertyRemove(name) {
-      return function() {
-        delete this[name];
-      };
-    }
-
-    function propertyConstant(name, value) {
-      return function() {
-        this[name] = value;
-      };
-    }
-
-    function propertyFunction(name, value) {
-      return function() {
-        var v = value.apply(this, arguments);
-        if (v == null) delete this[name];
-        else this[name] = v;
-      };
-    }
-
-    function selection_property(name, value) {
-      return arguments.length > 1
-          ? this.each((value == null
-              ? propertyRemove : typeof value === "function"
-              ? propertyFunction
-              : propertyConstant)(name, value))
-          : this.node()[name];
-    }
-
-    function classArray(string) {
-      return string.trim().split(/^|\s+/);
-    }
-
-    function classList(node) {
-      return node.classList || new ClassList(node);
-    }
-
-    function ClassList(node) {
-      this._node = node;
-      this._names = classArray(node.getAttribute("class") || "");
-    }
-
-    ClassList.prototype = {
-      add: function(name) {
-        var i = this._names.indexOf(name);
-        if (i < 0) {
-          this._names.push(name);
-          this._node.setAttribute("class", this._names.join(" "));
-        }
-      },
-      remove: function(name) {
-        var i = this._names.indexOf(name);
-        if (i >= 0) {
-          this._names.splice(i, 1);
-          this._node.setAttribute("class", this._names.join(" "));
-        }
-      },
-      contains: function(name) {
-        return this._names.indexOf(name) >= 0;
-      }
-    };
-
-    function classedAdd(node, names) {
-      var list = classList(node), i = -1, n = names.length;
-      while (++i < n) list.add(names[i]);
-    }
-
-    function classedRemove(node, names) {
-      var list = classList(node), i = -1, n = names.length;
-      while (++i < n) list.remove(names[i]);
-    }
-
-    function classedTrue(names) {
-      return function() {
-        classedAdd(this, names);
-      };
-    }
-
-    function classedFalse(names) {
-      return function() {
-        classedRemove(this, names);
-      };
-    }
-
-    function classedFunction(names, value) {
-      return function() {
-        (value.apply(this, arguments) ? classedAdd : classedRemove)(this, names);
-      };
-    }
-
-    function selection_classed(name, value) {
-      var names = classArray(name + "");
-
-      if (arguments.length < 2) {
-        var list = classList(this.node()), i = -1, n = names.length;
-        while (++i < n) if (!list.contains(names[i])) return false;
-        return true;
-      }
-
-      return this.each((typeof value === "function"
-          ? classedFunction : value
-          ? classedTrue
-          : classedFalse)(names, value));
-    }
-
-    function textRemove() {
-      this.textContent = "";
-    }
-
-    function textConstant(value) {
-      return function() {
-        this.textContent = value;
-      };
-    }
-
-    function textFunction(value) {
-      return function() {
-        var v = value.apply(this, arguments);
-        this.textContent = v == null ? "" : v;
-      };
-    }
-
-    function selection_text(value) {
-      return arguments.length
-          ? this.each(value == null
-              ? textRemove : (typeof value === "function"
-              ? textFunction
-              : textConstant)(value))
-          : this.node().textContent;
-    }
-
-    function htmlRemove() {
-      this.innerHTML = "";
-    }
-
-    function htmlConstant(value) {
-      return function() {
-        this.innerHTML = value;
-      };
-    }
-
-    function htmlFunction(value) {
-      return function() {
-        var v = value.apply(this, arguments);
-        this.innerHTML = v == null ? "" : v;
-      };
-    }
-
-    function selection_html(value) {
-      return arguments.length
-          ? this.each(value == null
-              ? htmlRemove : (typeof value === "function"
-              ? htmlFunction
-              : htmlConstant)(value))
-          : this.node().innerHTML;
-    }
-
-    function raise() {
-      if (this.nextSibling) this.parentNode.appendChild(this);
-    }
-
-    function selection_raise() {
-      return this.each(raise);
-    }
-
-    function lower() {
-      if (this.previousSibling) this.parentNode.insertBefore(this, this.parentNode.firstChild);
-    }
-
-    function selection_lower() {
-      return this.each(lower);
-    }
-
-    function selection_append(name) {
-      var create = typeof name === "function" ? name : creator(name);
-      return this.select(function() {
-        return this.appendChild(create.apply(this, arguments));
-      });
-    }
-
-    function constantNull() {
-      return null;
-    }
-
-    function selection_insert(name, before) {
-      var create = typeof name === "function" ? name : creator(name),
-          select = before == null ? constantNull : typeof before === "function" ? before : selector(before);
-      return this.select(function() {
-        return this.insertBefore(create.apply(this, arguments), select.apply(this, arguments) || null);
-      });
-    }
-
-    function remove() {
-      var parent = this.parentNode;
-      if (parent) parent.removeChild(this);
-    }
-
-    function selection_remove() {
-      return this.each(remove);
-    }
-
-    function selection_cloneShallow() {
-      var clone = this.cloneNode(false), parent = this.parentNode;
-      return parent ? parent.insertBefore(clone, this.nextSibling) : clone;
-    }
-
-    function selection_cloneDeep() {
-      var clone = this.cloneNode(true), parent = this.parentNode;
-      return parent ? parent.insertBefore(clone, this.nextSibling) : clone;
-    }
-
-    function selection_clone(deep) {
-      return this.select(deep ? selection_cloneDeep : selection_cloneShallow);
-    }
-
-    function selection_datum(value) {
-      return arguments.length
-          ? this.property("__data__", value)
-          : this.node().__data__;
-    }
-
-    function contextListener(listener) {
-      return function(event) {
-        listener.call(this, event, this.__data__);
-      };
-    }
-
-    function parseTypenames(typenames) {
-      return typenames.trim().split(/^|\s+/).map(function(t) {
-        var name = "", i = t.indexOf(".");
-        if (i >= 0) name = t.slice(i + 1), t = t.slice(0, i);
-        return {type: t, name: name};
-      });
-    }
-
-    function onRemove(typename) {
-      return function() {
-        var on = this.__on;
-        if (!on) return;
-        for (var j = 0, i = -1, m = on.length, o; j < m; ++j) {
-          if (o = on[j], (!typename.type || o.type === typename.type) && o.name === typename.name) {
-            this.removeEventListener(o.type, o.listener, o.options);
-          } else {
-            on[++i] = o;
-          }
-        }
-        if (++i) on.length = i;
-        else delete this.__on;
-      };
-    }
-
-    function onAdd(typename, value, options) {
-      return function() {
-        var on = this.__on, o, listener = contextListener(value);
-        if (on) for (var j = 0, m = on.length; j < m; ++j) {
-          if ((o = on[j]).type === typename.type && o.name === typename.name) {
-            this.removeEventListener(o.type, o.listener, o.options);
-            this.addEventListener(o.type, o.listener = listener, o.options = options);
-            o.value = value;
-            return;
-          }
-        }
-        this.addEventListener(typename.type, listener, options);
-        o = {type: typename.type, name: typename.name, value: value, listener: listener, options: options};
-        if (!on) this.__on = [o];
-        else on.push(o);
-      };
-    }
-
-    function selection_on(typename, value, options) {
-      var typenames = parseTypenames(typename + ""), i, n = typenames.length, t;
-
-      if (arguments.length < 2) {
-        var on = this.node().__on;
-        if (on) for (var j = 0, m = on.length, o; j < m; ++j) {
-          for (i = 0, o = on[j]; i < n; ++i) {
-            if ((t = typenames[i]).type === o.type && t.name === o.name) {
-              return o.value;
-            }
-          }
-        }
-        return;
-      }
-
-      on = value ? onAdd : onRemove;
-      for (i = 0; i < n; ++i) this.each(on(typenames[i], value, options));
-      return this;
-    }
-
-    function dispatchEvent(node, type, params) {
-      var window = defaultView(node),
-          event = window.CustomEvent;
-
-      if (typeof event === "function") {
-        event = new event(type, params);
-      } else {
-        event = window.document.createEvent("Event");
-        if (params) event.initEvent(type, params.bubbles, params.cancelable), event.detail = params.detail;
-        else event.initEvent(type, false, false);
-      }
-
-      node.dispatchEvent(event);
-    }
-
-    function dispatchConstant(type, params) {
-      return function() {
-        return dispatchEvent(this, type, params);
-      };
-    }
-
-    function dispatchFunction(type, params) {
-      return function() {
-        return dispatchEvent(this, type, params.apply(this, arguments));
-      };
-    }
-
-    function selection_dispatch(type, params) {
-      return this.each((typeof params === "function"
-          ? dispatchFunction
-          : dispatchConstant)(type, params));
-    }
-
-    function* selection_iterator() {
-      for (var groups = this._groups, j = 0, m = groups.length; j < m; ++j) {
-        for (var group = groups[j], i = 0, n = group.length, node; i < n; ++i) {
-          if (node = group[i]) yield node;
-        }
-      }
-    }
-
-    var root = [null];
-
-    function Selection(groups, parents) {
-      this._groups = groups;
-      this._parents = parents;
-    }
-
-    function selection_selection() {
-      return this;
-    }
-
-    Selection.prototype = {
-      constructor: Selection,
-      select: selection_select,
-      selectAll: selection_selectAll,
-      selectChild: selection_selectChild,
-      selectChildren: selection_selectChildren,
-      filter: selection_filter,
-      data: selection_data,
-      enter: selection_enter,
-      exit: selection_exit,
-      join: selection_join,
-      merge: selection_merge,
-      selection: selection_selection,
-      order: selection_order,
-      sort: selection_sort,
-      call: selection_call,
-      nodes: selection_nodes,
-      node: selection_node,
-      size: selection_size,
-      empty: selection_empty,
-      each: selection_each,
-      attr: selection_attr,
-      style: selection_style,
-      property: selection_property,
-      classed: selection_classed,
-      text: selection_text,
-      html: selection_html,
-      raise: selection_raise,
-      lower: selection_lower,
-      append: selection_append,
-      insert: selection_insert,
-      remove: selection_remove,
-      clone: selection_clone,
-      datum: selection_datum,
-      on: selection_on,
-      dispatch: selection_dispatch,
-      [Symbol.iterator]: selection_iterator
-    };
-
-    function select(selector) {
-      return typeof selector === "string"
-          ? new Selection([[document.querySelector(selector)]], [document.documentElement])
-          : new Selection([[selector]], root);
-    }
-
-    function selectAll(selector) {
-      return typeof selector === "string"
-          ? new Selection([document.querySelectorAll(selector)], [document.documentElement])
-          : new Selection([selector == null ? [] : array(selector)], root);
     }
 
     function ascending(a, b) {
@@ -2963,19 +2089,376 @@ var app = (function () {
       return pow.apply(null, arguments).exponent(0.5);
     }
 
-    /* src/components/Chart.svelte generated by Svelte v3.43.0 */
+    /* src/components/Chart.svelte generated by Svelte v3.43.1 */
+    const file$2 = "src/components/Chart.svelte";
 
-    function create_fragment$1(ctx) {
+    function create_fragment$2(ctx) {
+    	let div;
+    	let t0;
+    	let t1;
+
     	const block = {
-    		c: noop,
+    		c: function create() {
+    			div = element("div");
+    			t0 = text$1("Active Country: ");
+    			t1 = text$1(/*activeCountry*/ ctx[0]);
+    			add_location(div, file$2, 9, 2, 141);
+    		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     		},
-    		m: noop,
-    		p: noop,
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			append_dev(div, t0);
+    			append_dev(div, t1);
+    		},
+    		p: function update(ctx, [dirty]) {
+    			if (dirty & /*activeCountry*/ 1) set_data_dev(t1, /*activeCountry*/ ctx[0]);
+    		},
     		i: noop,
     		o: noop,
-    		d: noop
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_fragment$2.name,
+    		type: "component",
+    		source: "",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function instance$2($$self, $$props, $$invalidate) {
+    	let { $$slots: slots = {}, $$scope } = $$props;
+    	validate_slots('Chart', slots, []);
+    	let { activeCountry } = $$props;
+    	let { allData } = $$props;
+    	const writable_props = ['activeCountry', 'allData'];
+
+    	Object.keys($$props).forEach(key => {
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console.warn(`<Chart> was created with unknown prop '${key}'`);
+    	});
+
+    	$$self.$$set = $$props => {
+    		if ('activeCountry' in $$props) $$invalidate(0, activeCountry = $$props.activeCountry);
+    		if ('allData' in $$props) $$invalidate(1, allData = $$props.allData);
+    	};
+
+    	$$self.$capture_state = () => ({
+    		scaleLinear: linear,
+    		scaleSqrt: sqrt,
+    		scaleOrdinal: ordinal,
+    		activeCountry,
+    		allData
+    	});
+
+    	$$self.$inject_state = $$props => {
+    		if ('activeCountry' in $$props) $$invalidate(0, activeCountry = $$props.activeCountry);
+    		if ('allData' in $$props) $$invalidate(1, allData = $$props.allData);
+    	};
+
+    	if ($$props && "$$inject" in $$props) {
+    		$$self.$inject_state($$props.$$inject);
+    	}
+
+    	return [activeCountry, allData];
+    }
+
+    class Chart extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$2, create_fragment$2, safe_not_equal, { activeCountry: 0, allData: 1 });
+
+    		dispatch_dev("SvelteRegisterComponent", {
+    			component: this,
+    			tagName: "Chart",
+    			options,
+    			id: create_fragment$2.name
+    		});
+
+    		const { ctx } = this.$$;
+    		const props = options.props || {};
+
+    		if (/*activeCountry*/ ctx[0] === undefined && !('activeCountry' in props)) {
+    			console.warn("<Chart> was created without expected prop 'activeCountry'");
+    		}
+
+    		if (/*allData*/ ctx[1] === undefined && !('allData' in props)) {
+    			console.warn("<Chart> was created without expected prop 'allData'");
+    		}
+    	}
+
+    	get activeCountry() {
+    		throw new Error("<Chart>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set activeCountry(value) {
+    		throw new Error("<Chart>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get allData() {
+    		throw new Error("<Chart>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set allData(value) {
+    		throw new Error("<Chart>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+    }
+
+    /* src/components/Options.svelte generated by Svelte v3.43.1 */
+
+    const { console: console_1$1 } = globals;
+    const file$1 = "src/components/Options.svelte";
+
+    function get_each_context$1(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[15] = list[i];
+    	return child_ctx;
+    }
+
+    // (60:6) {#each getDropdownOptions() as option}
+    function create_each_block$1(ctx) {
+    	let option;
+    	let t_value = /*option*/ ctx[15] + "";
+    	let t;
+
+    	const block = {
+    		c: function create() {
+    			option = element("option");
+    			t = text$1(t_value);
+    			option.__value = /*option*/ ctx[15];
+    			option.value = option.__value;
+    			add_location(option, file$1, 60, 8, 1795);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, option, anchor);
+    			append_dev(option, t);
+    		},
+    		p: noop,
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(option);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_each_block$1.name,
+    		type: "each",
+    		source: "(60:6) {#each getDropdownOptions() as option}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function create_fragment$1(ctx) {
+    	let div2;
+    	let div0;
+    	let t0;
+    	let t1_value = /*activePercentage*/ ctx[1] * .00001 + "";
+    	let t1;
+    	let t2;
+    	let div1;
+    	let select;
+    	let t3;
+    	let div3;
+    	let t4;
+    	let t5;
+    	let t6;
+    	let t7_value = /*getAttr*/ ctx[6]('gdp') + "";
+    	let t7;
+    	let t8;
+    	let input;
+    	let t9;
+    	let br0;
+    	let t10;
+    	let div4;
+    	let t11;
+    	let t12;
+    	let t13;
+    	let br1;
+    	let t14;
+    	let div5;
+    	let t15;
+    	let t16;
+    	let mounted;
+    	let dispose;
+    	let each_value = /*getDropdownOptions*/ ctx[5]();
+    	validate_each_argument(each_value);
+    	let each_blocks = [];
+
+    	for (let i = 0; i < each_value.length; i += 1) {
+    		each_blocks[i] = create_each_block$1(get_each_context$1(ctx, each_value, i));
+    	}
+
+    	const block = {
+    		c: function create() {
+    			div2 = element("div");
+    			div0 = element("div");
+    			t0 = text$1("activeP: ");
+    			t1 = text$1(t1_value);
+    			t2 = space();
+    			div1 = element("div");
+    			select = element("select");
+
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].c();
+    			}
+
+    			t3 = space();
+    			div3 = element("div");
+    			t4 = text$1("Total: ");
+    			t5 = text$1(/*total*/ ctx[3]);
+    			t6 = text$1("\n  GDP: ");
+    			t7 = text$1(t7_value);
+    			t8 = space();
+    			input = element("input");
+    			t9 = space();
+    			br0 = element("br");
+    			t10 = space();
+    			div4 = element("div");
+    			t11 = text$1("Contributed:");
+    			t12 = text$1(/*contributed*/ ctx[2]);
+    			t13 = space();
+    			br1 = element("br");
+    			t14 = space();
+    			div5 = element("div");
+    			t15 = text$1("Remaining: ");
+    			t16 = text$1(/*remaining*/ ctx[4]);
+    			add_location(div0, file$1, 51, 2, 1528);
+    			attr_dev(select, "class", "input__select svelte-1wnvzx2");
+    			if (/*activeCountry*/ ctx[0] === void 0) add_render_callback(() => /*select_change_handler*/ ctx[11].call(select));
+    			add_location(select, file$1, 54, 4, 1619);
+    			attr_dev(div1, "class", "interactive__dropdown");
+    			add_location(div1, file$1, 53, 2, 1579);
+    			attr_dev(div2, "class", "interactive__options svelte-1wnvzx2");
+    			add_location(div2, file$1, 50, 0, 1491);
+    			add_location(div3, file$1, 67, 0, 1886);
+    			attr_dev(input, "type", "range");
+    			attr_dev(input, "min", "0");
+    			attr_dev(input, "max", "100");
+    			add_location(input, file$1, 72, 0, 1943);
+    			add_location(br0, file$1, 73, 0, 2042);
+    			add_location(div4, file$1, 74, 0, 2047);
+    			add_location(br1, file$1, 75, 0, 2084);
+    			add_location(div5, file$1, 76, 0, 2089);
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div2, anchor);
+    			append_dev(div2, div0);
+    			append_dev(div0, t0);
+    			append_dev(div0, t1);
+    			append_dev(div2, t2);
+    			append_dev(div2, div1);
+    			append_dev(div1, select);
+
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].m(select, null);
+    			}
+
+    			select_option(select, /*activeCountry*/ ctx[0]);
+    			insert_dev(target, t3, anchor);
+    			insert_dev(target, div3, anchor);
+    			append_dev(div3, t4);
+    			append_dev(div3, t5);
+    			append_dev(div3, t6);
+    			append_dev(div3, t7);
+    			insert_dev(target, t8, anchor);
+    			insert_dev(target, input, anchor);
+    			set_input_value(input, /*activePercentage*/ ctx[1]);
+    			insert_dev(target, t9, anchor);
+    			insert_dev(target, br0, anchor);
+    			insert_dev(target, t10, anchor);
+    			insert_dev(target, div4, anchor);
+    			append_dev(div4, t11);
+    			append_dev(div4, t12);
+    			insert_dev(target, t13, anchor);
+    			insert_dev(target, br1, anchor);
+    			insert_dev(target, t14, anchor);
+    			insert_dev(target, div5, anchor);
+    			append_dev(div5, t15);
+    			append_dev(div5, t16);
+
+    			if (!mounted) {
+    				dispose = [
+    					listen_dev(select, "change", /*select_change_handler*/ ctx[11]),
+    					listen_dev(select, "change", /*change_handler*/ ctx[12], false, false, false),
+    					listen_dev(input, "change", /*input_change_input_handler*/ ctx[13]),
+    					listen_dev(input, "input", /*input_change_input_handler*/ ctx[13]),
+    					listen_dev(input, "change", /*change_handler_1*/ ctx[14], false, false, false)
+    				];
+
+    				mounted = true;
+    			}
+    		},
+    		p: function update(ctx, [dirty]) {
+    			if (dirty & /*activePercentage*/ 2 && t1_value !== (t1_value = /*activePercentage*/ ctx[1] * .00001 + "")) set_data_dev(t1, t1_value);
+
+    			if (dirty & /*getDropdownOptions*/ 32) {
+    				each_value = /*getDropdownOptions*/ ctx[5]();
+    				validate_each_argument(each_value);
+    				let i;
+
+    				for (i = 0; i < each_value.length; i += 1) {
+    					const child_ctx = get_each_context$1(ctx, each_value, i);
+
+    					if (each_blocks[i]) {
+    						each_blocks[i].p(child_ctx, dirty);
+    					} else {
+    						each_blocks[i] = create_each_block$1(child_ctx);
+    						each_blocks[i].c();
+    						each_blocks[i].m(select, null);
+    					}
+    				}
+
+    				for (; i < each_blocks.length; i += 1) {
+    					each_blocks[i].d(1);
+    				}
+
+    				each_blocks.length = each_value.length;
+    			}
+
+    			if (dirty & /*activeCountry, getDropdownOptions*/ 33) {
+    				select_option(select, /*activeCountry*/ ctx[0]);
+    			}
+
+    			if (dirty & /*total*/ 8) set_data_dev(t5, /*total*/ ctx[3]);
+
+    			if (dirty & /*activePercentage*/ 2) {
+    				set_input_value(input, /*activePercentage*/ ctx[1]);
+    			}
+
+    			if (dirty & /*contributed*/ 4) set_data_dev(t12, /*contributed*/ ctx[2]);
+    			if (dirty & /*remaining*/ 16) set_data_dev(t16, /*remaining*/ ctx[4]);
+    		},
+    		i: noop,
+    		o: noop,
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div2);
+    			destroy_each(each_blocks, detaching);
+    			if (detaching) detach_dev(t3);
+    			if (detaching) detach_dev(div3);
+    			if (detaching) detach_dev(t8);
+    			if (detaching) detach_dev(input);
+    			if (detaching) detach_dev(t9);
+    			if (detaching) detach_dev(br0);
+    			if (detaching) detach_dev(t10);
+    			if (detaching) detach_dev(div4);
+    			if (detaching) detach_dev(t13);
+    			if (detaching) detach_dev(br1);
+    			if (detaching) detach_dev(t14);
+    			if (detaching) detach_dev(div5);
+    			mounted = false;
+    			run_all(dispose);
+    		}
     	};
 
     	dispatch_dev("SvelteRegisterBlock", {
@@ -2990,60 +2473,219 @@ var app = (function () {
     }
 
     function instance$1($$self, $$props, $$invalidate) {
+    	let contributed;
+    	let remaining;
+    	let total;
     	let { $$slots: slots = {}, $$scope } = $$props;
-    	validate_slots('Chart', slots, []);
-    	const writable_props = [];
+    	validate_slots('Options', slots, []);
+    	let { activeCountry } = $$props;
+    	let { allData } = $$props;
+    	let { totalReq } = $$props;
+
+    	const getDropdownOptions = () => {
+    		return allData.sort((a, b) => a.country.localeCompare(b.country)).map(c => c.country);
+    	};
+
+    	const getAttr = attr => {
+    		return allData.find(d => d.country === activeCountry)[attr];
+    	};
+
+    	let activePercentage = allData.find(d => d.country === activeCountry).adjustable_gdp * 100000;
+    	console.log(activePercentage);
+
+    	const handleChange = () => {
+    		const country = allData.find(d => d.country == activeCountry);
+    		const convertedPercentage = activePercentage * .00001;
+    		country.adjustable_gdp = convertedPercentage;
+    		country.funding = contributed;
+    		console.log(allData);
+    	};
+
+    	const handleActiveCountry = () => {
+    		$$invalidate(1, activePercentage = allData.find(d => d.country === activeCountry).adjustable_gdp * 100000);
+    		console.log(allData);
+    	};
+
+    	const writable_props = ['activeCountry', 'allData', 'totalReq'];
 
     	Object.keys($$props).forEach(key => {
-    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console.warn(`<Chart> was created with unknown prop '${key}'`);
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console_1$1.warn(`<Options> was created with unknown prop '${key}'`);
     	});
+
+    	function select_change_handler() {
+    		activeCountry = select_value(this);
+    		$$invalidate(0, activeCountry);
+    		$$invalidate(5, getDropdownOptions);
+    	}
+
+    	const change_handler = () => handleActiveCountry();
+
+    	function input_change_input_handler() {
+    		activePercentage = to_number(this.value);
+    		$$invalidate(1, activePercentage);
+    	}
+
+    	const change_handler_1 = () => handleChange();
+
+    	$$self.$$set = $$props => {
+    		if ('activeCountry' in $$props) $$invalidate(0, activeCountry = $$props.activeCountry);
+    		if ('allData' in $$props) $$invalidate(9, allData = $$props.allData);
+    		if ('totalReq' in $$props) $$invalidate(10, totalReq = $$props.totalReq);
+    	};
 
     	$$self.$capture_state = () => ({
-    		select,
-    		selectAll,
-    		scaleLinear: linear,
-    		scaleSqrt: sqrt,
-    		scaleOrdinal: ordinal
+    		activeCountry,
+    		allData,
+    		totalReq,
+    		getDropdownOptions,
+    		getAttr,
+    		activePercentage,
+    		handleChange,
+    		handleActiveCountry,
+    		contributed,
+    		total,
+    		remaining
     	});
 
-    	return [];
+    	$$self.$inject_state = $$props => {
+    		if ('activeCountry' in $$props) $$invalidate(0, activeCountry = $$props.activeCountry);
+    		if ('allData' in $$props) $$invalidate(9, allData = $$props.allData);
+    		if ('totalReq' in $$props) $$invalidate(10, totalReq = $$props.totalReq);
+    		if ('activePercentage' in $$props) $$invalidate(1, activePercentage = $$props.activePercentage);
+    		if ('contributed' in $$props) $$invalidate(2, contributed = $$props.contributed);
+    		if ('total' in $$props) $$invalidate(3, total = $$props.total);
+    		if ('remaining' in $$props) $$invalidate(4, remaining = $$props.remaining);
+    	};
+
+    	if ($$props && "$$inject" in $$props) {
+    		$$self.$inject_state($$props.$$inject);
+    	}
+
+    	$$self.$$.update = () => {
+    		if ($$self.$$.dirty & /*activePercentage*/ 2) {
+    			$$invalidate(2, contributed = parseInt(getAttr('gdp') * (activePercentage * .00001)));
+    		}
+
+    		if ($$self.$$.dirty & /*totalReq, contributed*/ 1028) {
+    			$$invalidate(4, remaining = totalReq - contributed);
+    		}
+
+    		if ($$self.$$.dirty & /*allData, activeCountry, contributed*/ 517) {
+    			// $: total = allData.filter(d => d.country !== activeCountry).reduce((acc, i) => {
+    			//   console.log(acc, i.funding)
+    			//     return acc += i.funding 
+    			//   }, 0) + contributed
+    			$$invalidate(3, total = allData.filter(d => d.country !== activeCountry).reduce(
+    				(acc, i) => {
+    					return acc + i.gdp * i.adjustable_gdp;
+    				},
+    				0
+    			) + contributed);
+    		}
+
+    		if ($$self.$$.dirty & /*total*/ 8) {
+    			console.log(total, 'total');
+    		}
+    	};
+
+    	return [
+    		activeCountry,
+    		activePercentage,
+    		contributed,
+    		total,
+    		remaining,
+    		getDropdownOptions,
+    		getAttr,
+    		handleChange,
+    		handleActiveCountry,
+    		allData,
+    		totalReq,
+    		select_change_handler,
+    		change_handler,
+    		input_change_input_handler,
+    		change_handler_1
+    	];
     }
 
-    class Chart extends SvelteComponentDev {
+    class Options extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$1, create_fragment$1, safe_not_equal, {});
+
+    		init(this, options, instance$1, create_fragment$1, safe_not_equal, {
+    			activeCountry: 0,
+    			allData: 9,
+    			totalReq: 10
+    		});
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
-    			tagName: "Chart",
+    			tagName: "Options",
     			options,
     			id: create_fragment$1.name
     		});
+
+    		const { ctx } = this.$$;
+    		const props = options.props || {};
+
+    		if (/*activeCountry*/ ctx[0] === undefined && !('activeCountry' in props)) {
+    			console_1$1.warn("<Options> was created without expected prop 'activeCountry'");
+    		}
+
+    		if (/*allData*/ ctx[9] === undefined && !('allData' in props)) {
+    			console_1$1.warn("<Options> was created without expected prop 'allData'");
+    		}
+
+    		if (/*totalReq*/ ctx[10] === undefined && !('totalReq' in props)) {
+    			console_1$1.warn("<Options> was created without expected prop 'totalReq'");
+    		}
+    	}
+
+    	get activeCountry() {
+    		throw new Error("<Options>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set activeCountry(value) {
+    		throw new Error("<Options>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get allData() {
+    		throw new Error("<Options>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set allData(value) {
+    		throw new Error("<Options>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get totalReq() {
+    		throw new Error("<Options>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set totalReq(value) {
+    		throw new Error("<Options>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
     }
 
-    /* src/App.svelte generated by Svelte v3.43.0 */
+    /* src/App.svelte generated by Svelte v3.43.1 */
 
     const { console: console_1 } = globals;
     const file = "src/App.svelte";
 
     function get_each_context(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[23] = list[i];
+    	child_ctx[24] = list[i];
     	return child_ctx;
     }
 
     function get_each_context_1(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[26] = list[i];
+    	child_ctx[27] = list[i];
     	return child_ctx;
     }
 
-    // (126:2) {:catch error}
+    // (143:2) {:catch error}
     function create_catch_block(ctx) {
     	let p;
-    	let t_value = /*error*/ ctx[29].message + "";
+    	let t_value = /*error*/ ctx[30].message + "";
     	let t;
 
     	const block = {
@@ -3051,13 +2693,15 @@ var app = (function () {
     			p = element("p");
     			t = text$1(t_value);
     			set_style(p, "color", "red");
-    			add_location(p, file, 126, 4, 3011);
+    			add_location(p, file, 143, 4, 3240);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
     			append_dev(p, t);
     		},
     		p: noop,
+    		i: noop,
+    		o: noop,
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(p);
     		}
@@ -3067,43 +2711,48 @@ var app = (function () {
     		block,
     		id: create_catch_block.name,
     		type: "catch",
-    		source: "(126:2) {:catch error}",
+    		source: "(143:2) {:catch error}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (93:2) {:then allData}
+    // (96:2) {:then allData}
     function create_then_block(ctx) {
-    	let div0;
+    	let options;
+    	let updating_activeCountry;
     	let t0;
+    	let chart;
     	let t1;
-    	let t2;
-    	let t3;
-    	let t4;
-    	let t5;
-    	let t6;
-    	let br0;
-    	let t7;
-    	let div1;
-    	let t8;
-    	let t9;
-    	let t10;
-    	let input;
-    	let t11;
-    	let t12_value = /*gdp_us*/ ctx[5] * /*per_us*/ ctx[4] + "";
-    	let t12;
-    	let t13;
-    	let br1;
-    	let t14;
-    	let div2;
-    	let t15;
-    	let t16;
     	let svg;
-    	let mounted;
-    	let dispose;
-    	let each_value = /*testRange*/ ctx[3];
+    	let current;
+
+    	function options_activeCountry_binding(value) {
+    		/*options_activeCountry_binding*/ ctx[4](value);
+    	}
+
+    	let options_props = {
+    		allData: /*allData*/ ctx[23],
+    		totalReq: /*totalReq*/ ctx[0]
+    	};
+
+    	if (/*activeCountry*/ ctx[2] !== void 0) {
+    		options_props.activeCountry = /*activeCountry*/ ctx[2];
+    	}
+
+    	options = new Options({ props: options_props, $$inline: true });
+    	binding_callbacks.push(() => bind(options, 'activeCountry', options_activeCountry_binding));
+
+    	chart = new Chart({
+    			props: {
+    				allData: /*allData*/ ctx[23],
+    				activeCountry: /*activeCountry*/ ctx[2]
+    			},
+    			$$inline: true
+    		});
+
+    	let each_value = /*testRange*/ ctx[1];
     	validate_each_argument(each_value);
     	let each_blocks = [];
 
@@ -3113,95 +2762,49 @@ var app = (function () {
 
     	const block = {
     		c: function create() {
-    			div0 = element("div");
-    			t0 = text$1("totalReg: ");
-    			t1 = text$1(/*totalReq*/ ctx[1]);
-    			t2 = text$1("\n      total: ");
-    			t3 = text$1(/*total*/ ctx[0]);
-    			t4 = text$1("\n      remaining: ");
-    			t5 = text$1(/*remaining*/ ctx[2]);
-    			t6 = space();
-    			br0 = element("br");
-    			t7 = space();
-    			div1 = element("div");
-    			t8 = text$1("US: ");
-    			t9 = text$1(/*gdp_us*/ ctx[5]);
-    			t10 = text$1("\n      %: ");
-    			input = element("input");
-    			t11 = text$1("\n      Amount: ");
-    			t12 = text$1(t12_value);
-    			t13 = space();
-    			br1 = element("br");
-    			t14 = space();
-    			div2 = element("div");
-    			t15 = text$1(/*per_us*/ ctx[4]);
-    			t16 = space();
+    			create_component(options.$$.fragment);
+    			t0 = space();
+    			create_component(chart.$$.fragment);
+    			t1 = space();
     			svg = svg_element("svg");
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
     				each_blocks[i].c();
     			}
 
-    			add_location(div0, file, 94, 4, 2455);
-    			add_location(br0, file, 99, 0, 2549);
-    			add_location(input, file, 102, 9, 2592);
-    			add_location(div1, file, 100, 4, 2558);
-    			add_location(br1, file, 106, 0, 2668);
-    			add_location(div2, file, 108, 0, 2674);
-    			attr_dev(svg, "class", "svelte-mdrynp");
-    			add_location(svg, file, 111, 0, 2713);
+    			attr_dev(svg, "class", "svelte-1r9pwwp");
+    			add_location(svg, file, 128, 0, 2942);
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, div0, anchor);
-    			append_dev(div0, t0);
-    			append_dev(div0, t1);
-    			append_dev(div0, t2);
-    			append_dev(div0, t3);
-    			append_dev(div0, t4);
-    			append_dev(div0, t5);
-    			insert_dev(target, t6, anchor);
-    			insert_dev(target, br0, anchor);
-    			insert_dev(target, t7, anchor);
-    			insert_dev(target, div1, anchor);
-    			append_dev(div1, t8);
-    			append_dev(div1, t9);
-    			append_dev(div1, t10);
-    			append_dev(div1, input);
-    			set_input_value(input, /*per_us*/ ctx[4]);
-    			append_dev(div1, t11);
-    			append_dev(div1, t12);
-    			insert_dev(target, t13, anchor);
-    			insert_dev(target, br1, anchor);
-    			insert_dev(target, t14, anchor);
-    			insert_dev(target, div2, anchor);
-    			append_dev(div2, t15);
-    			insert_dev(target, t16, anchor);
+    			mount_component(options, target, anchor);
+    			insert_dev(target, t0, anchor);
+    			mount_component(chart, target, anchor);
+    			insert_dev(target, t1, anchor);
     			insert_dev(target, svg, anchor);
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
     				each_blocks[i].m(svg, null);
     			}
 
-    			if (!mounted) {
-    				dispose = listen_dev(input, "input", /*input_input_handler*/ ctx[7]);
-    				mounted = true;
-    			}
+    			current = true;
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*totalReq*/ 2) set_data_dev(t1, /*totalReq*/ ctx[1]);
-    			if (dirty & /*total*/ 1) set_data_dev(t3, /*total*/ ctx[0]);
-    			if (dirty & /*remaining*/ 4) set_data_dev(t5, /*remaining*/ ctx[2]);
-    			if (dirty & /*gdp_us*/ 32) set_data_dev(t9, /*gdp_us*/ ctx[5]);
+    			const options_changes = {};
+    			if (dirty & /*totalReq*/ 1) options_changes.totalReq = /*totalReq*/ ctx[0];
 
-    			if (dirty & /*per_us*/ 16 && input.value !== /*per_us*/ ctx[4]) {
-    				set_input_value(input, /*per_us*/ ctx[4]);
+    			if (!updating_activeCountry && dirty & /*activeCountry*/ 4) {
+    				updating_activeCountry = true;
+    				options_changes.activeCountry = /*activeCountry*/ ctx[2];
+    				add_flush_callback(() => updating_activeCountry = false);
     			}
 
-    			if (dirty & /*gdp_us, per_us*/ 48 && t12_value !== (t12_value = /*gdp_us*/ ctx[5] * /*per_us*/ ctx[4] + "")) set_data_dev(t12, t12_value);
-    			if (dirty & /*per_us*/ 16) set_data_dev(t15, /*per_us*/ ctx[4]);
+    			options.$set(options_changes);
+    			const chart_changes = {};
+    			if (dirty & /*activeCountry*/ 4) chart_changes.activeCountry = /*activeCountry*/ ctx[2];
+    			chart.$set(chart_changes);
 
-    			if (dirty & /*testRange*/ 8) {
-    				each_value = /*testRange*/ ctx[3];
+    			if (dirty & /*testRange*/ 2) {
+    				each_value = /*testRange*/ ctx[1];
     				validate_each_argument(each_value);
     				let i;
 
@@ -3224,21 +2827,24 @@ var app = (function () {
     				each_blocks.length = each_value.length;
     			}
     		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(options.$$.fragment, local);
+    			transition_in(chart.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(options.$$.fragment, local);
+    			transition_out(chart.$$.fragment, local);
+    			current = false;
+    		},
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div0);
-    			if (detaching) detach_dev(t6);
-    			if (detaching) detach_dev(br0);
-    			if (detaching) detach_dev(t7);
-    			if (detaching) detach_dev(div1);
-    			if (detaching) detach_dev(t13);
-    			if (detaching) detach_dev(br1);
-    			if (detaching) detach_dev(t14);
-    			if (detaching) detach_dev(div2);
-    			if (detaching) detach_dev(t16);
+    			destroy_component(options, detaching);
+    			if (detaching) detach_dev(t0);
+    			destroy_component(chart, detaching);
+    			if (detaching) detach_dev(t1);
     			if (detaching) detach_dev(svg);
     			destroy_each(each_blocks, detaching);
-    			mounted = false;
-    			dispose();
     		}
     	};
 
@@ -3246,14 +2852,14 @@ var app = (function () {
     		block,
     		id: create_then_block.name,
     		type: "then",
-    		source: "(93:2) {:then allData}",
+    		source: "(96:2) {:then allData}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (116:2) {#each [1,2,3,4] as j}
+    // (133:2) {#each [1,2,3,4] as j}
     function create_each_block_1(ctx) {
     	let rect;
     	let rect_x_value;
@@ -3263,15 +2869,15 @@ var app = (function () {
     			rect = svg_element("rect");
     			attr_dev(rect, "width", "16px");
     			attr_dev(rect, "height", "16px");
-    			attr_dev(rect, "x", rect_x_value = /*i*/ ctx[23] * 20);
-    			attr_dev(rect, "y", /*j*/ ctx[26] * 20);
-    			add_location(rect, file, 116, 2, 2856);
+    			attr_dev(rect, "x", rect_x_value = /*i*/ ctx[24] * 20);
+    			attr_dev(rect, "y", /*j*/ ctx[27] * 20);
+    			add_location(rect, file, 133, 2, 3085);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, rect, anchor);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*testRange*/ 8 && rect_x_value !== (rect_x_value = /*i*/ ctx[23] * 20)) {
+    			if (dirty & /*testRange*/ 2 && rect_x_value !== (rect_x_value = /*i*/ ctx[24] * 20)) {
     				attr_dev(rect, "x", rect_x_value);
     			}
     		},
@@ -3284,14 +2890,14 @@ var app = (function () {
     		block,
     		id: create_each_block_1.name,
     		type: "each",
-    		source: "(116:2) {#each [1,2,3,4] as j}",
+    		source: "(133:2) {#each [1,2,3,4] as j}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (113:2) {#each testRange as i}
+    // (130:2) {#each testRange as i}
     function create_each_block(ctx) {
     	let rect;
     	let rect_x_value;
@@ -3312,13 +2918,13 @@ var app = (function () {
     				each_blocks[i].c();
     			}
 
-    			each_1_anchor = empty$1();
+    			each_1_anchor = empty();
     			attr_dev(rect, "width", "16px");
     			attr_dev(rect, "height", "16px");
-    			attr_dev(rect, "x", rect_x_value = /*i*/ ctx[23] * 20);
+    			attr_dev(rect, "x", rect_x_value = /*i*/ ctx[24] * 20);
     			attr_dev(rect, "y", 0);
     			attr_dev(rect, "fill", "cornflowerblue");
-    			add_location(rect, file, 113, 2, 2746);
+    			add_location(rect, file, 130, 2, 2975);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, rect, anchor);
@@ -3330,11 +2936,11 @@ var app = (function () {
     			insert_dev(target, each_1_anchor, anchor);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*testRange*/ 8 && rect_x_value !== (rect_x_value = /*i*/ ctx[23] * 20)) {
+    			if (dirty & /*testRange*/ 2 && rect_x_value !== (rect_x_value = /*i*/ ctx[24] * 20)) {
     				attr_dev(rect, "x", rect_x_value);
     			}
 
-    			if (dirty & /*testRange*/ 8) {
+    			if (dirty & /*testRange*/ 2) {
     				each_value_1 = [1, 2, 3, 4];
     				validate_each_argument(each_value_1);
     				let i;
@@ -3367,14 +2973,14 @@ var app = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(113:2) {#each testRange as i}",
+    		source: "(130:2) {#each testRange as i}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (89:15)      <div class="loading-container">       <div class="loading"></div>     </div>   {:then allData}
+    // (92:15)      <div class="loading-container">       <div class="loading"></div>     </div>   {:then allData}
     function create_pending_block(ctx) {
     	let div1;
     	let div0;
@@ -3384,15 +2990,17 @@ var app = (function () {
     			div1 = element("div");
     			div0 = element("div");
     			attr_dev(div0, "class", "loading");
-    			add_location(div0, file, 90, 6, 2393);
+    			add_location(div0, file, 93, 6, 2464);
     			attr_dev(div1, "class", "loading-container");
-    			add_location(div1, file, 89, 4, 2355);
+    			add_location(div1, file, 92, 4, 2426);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div1, anchor);
     			append_dev(div1, div0);
     		},
     		p: noop,
+    		i: noop,
+    		o: noop,
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(div1);
     		}
@@ -3402,7 +3010,7 @@ var app = (function () {
     		block,
     		id: create_pending_block.name,
     		type: "pending",
-    		source: "(89:15)      <div class=\\\"loading-container\\\">       <div class=\\\"loading\\\"></div>     </div>   {:then allData}",
+    		source: "(92:15)      <div class=\\\"loading-container\\\">       <div class=\\\"loading\\\"></div>     </div>   {:then allData}",
     		ctx
     	});
 
@@ -3416,6 +3024,7 @@ var app = (function () {
     	let t1;
     	let p;
     	let t3;
+    	let current;
 
     	let info = {
     		ctx,
@@ -3425,11 +3034,12 @@ var app = (function () {
     		pending: create_pending_block,
     		then: create_then_block,
     		catch: create_catch_block,
-    		value: 22,
-    		error: 29
+    		value: 23,
+    		error: 30,
+    		blocks: [,,,]
     	};
 
-    	handle_promise(/*data*/ ctx[6], info);
+    	handle_promise(/*data*/ ctx[3], info);
 
     	const block = {
     		c: function create() {
@@ -3442,14 +3052,14 @@ var app = (function () {
     			p.textContent = "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis";
     			t3 = space();
     			info.block.c();
-    			attr_dev(h1, "class", "svelte-mdrynp");
-    			add_location(h1, file, 82, 4, 1677);
-    			attr_dev(p, "class", "svelte-mdrynp");
-    			add_location(p, file, 83, 4, 1704);
-    			attr_dev(header, "class", "interactive__header svelte-mdrynp");
-    			add_location(header, file, 81, 2, 1636);
-    			attr_dev(main, "class", "interactive svelte-mdrynp");
-    			add_location(main, file, 80, 0, 1607);
+    			attr_dev(h1, "class", "svelte-1r9pwwp");
+    			add_location(h1, file, 85, 4, 1748);
+    			attr_dev(p, "class", "svelte-1r9pwwp");
+    			add_location(p, file, 86, 4, 1775);
+    			attr_dev(header, "class", "interactive__header svelte-1r9pwwp");
+    			add_location(header, file, 84, 2, 1707);
+    			attr_dev(main, "class", "interactive");
+    			add_location(main, file, 83, 0, 1678);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -3464,13 +3074,25 @@ var app = (function () {
     			info.block.m(main, info.anchor = null);
     			info.mount = () => main;
     			info.anchor = null;
+    			current = true;
     		},
     		p: function update(new_ctx, [dirty]) {
     			ctx = new_ctx;
     			update_await_block_branch(info, ctx, dirty);
     		},
-    		i: noop,
-    		o: noop,
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(info.block);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			for (let i = 0; i < 3; i += 1) {
+    				const block = info.blocks[i];
+    				transition_out(block);
+    			}
+
+    			current = false;
+    		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(main);
     			info.block.d();
@@ -3494,6 +3116,7 @@ var app = (function () {
     	let totalReq;
     	let remaining;
     	let total;
+    	let activeCountry;
     	let gdp_us;
     	let gdp_ger;
     	let gdp_uk;
@@ -3518,14 +3141,15 @@ var app = (function () {
     		let res = await parseData({ src: dataSrc });
     		console.log(res);
 
-    		$$invalidate(0, total = res.reduce(
+    		total = res.reduce(
     			(acc, i) => {
-    				return acc += i.actual_hrp_funding;
+    				return acc += i.funding;
     			},
     			0
-    		));
+    		);
 
-    		$$invalidate(2, remaining = totalReq - total);
+    		remaining = totalReq - total;
+    		console.log(total + 5815512166, '------------');
     		return res;
     	}
 
@@ -3567,17 +3191,16 @@ var app = (function () {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console_1.warn(`<App> was created with unknown prop '${key}'`);
     	});
 
-    	function input_input_handler() {
-    		per_us = this.value;
-    		$$invalidate(4, per_us);
+    	function options_activeCountry_binding(value) {
+    		activeCountry = value;
+    		$$invalidate(2, activeCountry);
     	}
 
     	$$self.$capture_state = () => ({
     		parseData,
-    		select,
-    		selectAll,
     		range,
     		Chart,
+    		Options,
     		dataSrc,
     		data,
     		loadData,
@@ -3598,57 +3221,50 @@ var app = (function () {
     		gdp_eu,
     		gdp_uk,
     		gdp_ger,
-    		gdp_us
+    		gdp_us,
+    		activeCountry
     	});
 
     	$$self.$inject_state = $$props => {
     		if ('isMobile' in $$props) isMobile = $$props.isMobile;
     		if ('mq' in $$props) mq = $$props.mq;
-    		if ('total' in $$props) $$invalidate(0, total = $$props.total);
-    		if ('totalReq' in $$props) $$invalidate(1, totalReq = $$props.totalReq);
-    		if ('remaining' in $$props) $$invalidate(2, remaining = $$props.remaining);
-    		if ('testRange' in $$props) $$invalidate(3, testRange = $$props.testRange);
+    		if ('total' in $$props) total = $$props.total;
+    		if ('totalReq' in $$props) $$invalidate(0, totalReq = $$props.totalReq);
+    		if ('remaining' in $$props) remaining = $$props.remaining;
+    		if ('testRange' in $$props) $$invalidate(1, testRange = $$props.testRange);
     		if ('per_jap' in $$props) per_jap = $$props.per_jap;
     		if ('per_eu' in $$props) per_eu = $$props.per_eu;
     		if ('per_uk' in $$props) per_uk = $$props.per_uk;
     		if ('per_ger' in $$props) per_ger = $$props.per_ger;
-    		if ('per_us' in $$props) $$invalidate(4, per_us = $$props.per_us);
+    		if ('per_us' in $$props) per_us = $$props.per_us;
     		if ('gdp_jap' in $$props) gdp_jap = $$props.gdp_jap;
     		if ('gdp_eu' in $$props) gdp_eu = $$props.gdp_eu;
     		if ('gdp_uk' in $$props) gdp_uk = $$props.gdp_uk;
     		if ('gdp_ger' in $$props) gdp_ger = $$props.gdp_ger;
-    		if ('gdp_us' in $$props) $$invalidate(5, gdp_us = $$props.gdp_us);
+    		if ('gdp_us' in $$props) gdp_us = $$props.gdp_us;
+    		if ('activeCountry' in $$props) $$invalidate(2, activeCountry = $$props.activeCountry);
     	};
 
     	if ($$props && "$$inject" in $$props) {
     		$$self.$inject_state($$props.$$inject);
     	}
 
-    	$$invalidate(1, totalReq = 38536692263);
-    	$$invalidate(2, remaining = 0);
-    	$$invalidate(0, total = 0);
-    	$$invalidate(5, gdp_us = 20936600000000);
+    	$$invalidate(0, totalReq = 38536692263);
+    	remaining = 0;
+    	total = 0;
+    	$$invalidate(2, activeCountry = "US");
+    	gdp_us = 20936600000000;
     	gdp_ger = 3806060140000;
     	gdp_uk = 2707743780000;
     	gdp_eu = 15192652400000;
     	gdp_jap = 5064872880000;
-    	$$invalidate(4, per_us = .037);
+    	per_us = .037;
     	per_ger = .059;
     	per_uk = .053;
     	per_eu = .009;
     	per_jap = .011;
-    	$$invalidate(3, testRange = range(1, 39, 1));
-
-    	return [
-    		total,
-    		totalReq,
-    		remaining,
-    		testRange,
-    		per_us,
-    		gdp_us,
-    		data,
-    		input_input_handler
-    	];
+    	$$invalidate(1, testRange = range(1, 39, 1));
+    	return [totalReq, testRange, activeCountry, data, options_activeCountry_binding];
     }
 
     class App extends SvelteComponentDev {

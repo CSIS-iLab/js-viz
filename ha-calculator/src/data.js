@@ -2,8 +2,6 @@ import * as d3Fetch from 'd3-fetch'
 
 const stringFields = [
   'country',
-  'actual_hrp',
-  'adjustable_gdp'
 ]
 
 const stringify = d => {

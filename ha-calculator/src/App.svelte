@@ -1,12 +1,13 @@
 <script>
   import parseData from './data.js'
-  import { select, selectAll } from 'd3-selection'
   import {range} from 'd3-array'
   import Chart from './components/Chart.svelte'
+  import Options from './components/Options.svelte'
 
   $: totalReq = 38536692263
   $: remaining = 0
   $: total = 0 
+  $: activeCountry = "US"
 
   $: gdp_us = 20936600000000
   $: gdp_ger = 3806060140000
@@ -38,11 +39,13 @@
 
     console.log(res)
     total = res.reduce((acc, i) => {
-      return acc += i.actual_hrp_funding 
+      return acc += i.funding 
     }, 0)
     remaining = totalReq - total
+    console.log(total + 5815512166, '------------')
     return res
   }
+  
 
   const init = () => {
     resize(mq)
@@ -92,11 +95,25 @@
     </div>
   {:then allData}
 
-    <div>
+  <Options
+  {allData}
+  bind:activeCountry
+  {totalReq}
+
+/>
+
+    <Chart 
+      {allData}
+      {activeCountry}
+    />
+
+    <!-- <div>
       totalReg: {totalReq}
       total: {total}
       remaining: {remaining}
     </div>
+
+    <div id="slider"></div>
 <br>
     <div>
       US: {gdp_us}
@@ -106,7 +123,7 @@
 
 <br>
 
-<div>{per_us}</div>
+<div>{per_us}</div> -->
 
 <!-- {#each } -->
 <svg>
@@ -134,5 +151,5 @@
   }
 
   @import './scss/components/_header.scss';
-  @import './scss/layout/_layout.scss';
+  // @import './scss/layout/_layout.scss';
 </style>
