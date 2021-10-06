@@ -5,14 +5,12 @@
 ==============================*/
 .interactive__source {
   position: relative;
-  // max-width: $size__content-max-width;
-  // max-width: $size__max-width;
-  max-width: 800;
+  max-width: $size__content-max-width;
   text-align: right;
   margin: 0.5rem auto;
 
   a:not(.source-holder) {
-    color: $color__red;
+    color: $color__blue;
     text-decoration: none;
     transition: color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 

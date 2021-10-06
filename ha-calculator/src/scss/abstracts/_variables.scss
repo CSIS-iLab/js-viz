@@ -48,22 +48,7 @@ $breakpoints: (
   "xlarge": 90em,
 );
 
-$size__chart-width: 550px;
-$size__max-width: 900px;
-$size__content-max-width: 1200px;
+$size__max-width: 800px;
+$size__content-max-width: 1000px;
 
 /*----------  Custom  ----------*/
-
-$indicators: (
-  "Europe & North America": $color__dark-purple,
-  "East Asia & Pacific": $color__green,
-  "Latin America & Caribbean": $color__light-blue,
-  "Sub-Saharan Africa": $color__yellow,
-  "Middle East & North Africa": $color__dk-blue,
-  "Central & South Asia": $color__bright-green,
-  "High": $color__dark-purple,
-  "Upper Middle": $color__green,
-  "Lower Middle": $color__light-blue,
-  "Low": $color__yellow,
-);
-

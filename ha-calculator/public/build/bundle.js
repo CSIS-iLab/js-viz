@@ -30,6 +30,48 @@ var app = (function () {
     function is_empty(obj) {
         return Object.keys(obj).length === 0;
     }
+    function subscribe(store, ...callbacks) {
+        if (store == null) {
+            return noop;
+        }
+        const unsub = store.subscribe(...callbacks);
+        return unsub.unsubscribe ? () => unsub.unsubscribe() : unsub;
+    }
+
+    const is_client = typeof window !== 'undefined';
+    let now = is_client
+        ? () => window.performance.now()
+        : () => Date.now();
+    let raf = is_client ? cb => requestAnimationFrame(cb) : noop;
+
+    const tasks = new Set();
+    function run_tasks(now) {
+        tasks.forEach(task => {
+            if (!task.c(now)) {
+                tasks.delete(task);
+                task.f();
+            }
+        });
+        if (tasks.size !== 0)
+            raf(run_tasks);
+    }
+    /**
+     * Creates a new task that runs on each raf frame
+     * until it returns a falsy value or is aborted
+     */
+    function loop(callback) {
+        let task;
+        if (tasks.size === 0)
+            raf(run_tasks);
+        return {
+            promise: new Promise(fulfill => {
+                tasks.add(task = { c: callback, f: fulfill });
+            }),
+            abort() {
+                tasks.delete(task);
+            }
+        };
+    }
     function append(target, node) {
         target.appendChild(node);
     }
@@ -64,20 +106,21 @@ var app = (function () {
         node.addEventListener(event, handler, options);
         return () => node.removeEventListener(event, handler, options);
     }
+    function prevent_default(fn) {
+        return function (event) {
+            event.preventDefault();
+            // @ts-ignore
+            return fn.call(this, event);
+        };
+    }
     function attr(node, attribute, value) {
         if (value == null)
             node.removeAttribute(attribute);
         else if (node.getAttribute(attribute) !== value)
             node.setAttribute(attribute, value);
     }
-    function to_number(value) {
-        return value === '' ? null : +value;
-    }
     function children(element) {
         return Array.from(element.childNodes);
-    }
-    function set_input_value(input, value) {
-        input.value = value == null ? '' : value;
     }
     function set_style(node, key, value, important) {
         node.style.setProperty(key, value, important ? 'important' : '');
@@ -96,6 +139,9 @@ var app = (function () {
         const selected_option = select.querySelector(':checked') || select.options[0];
         return selected_option && selected_option.__value;
     }
+    function toggle_class(element, name, toggle) {
+        element.classList[toggle ? 'add' : 'remove'](name);
+    }
     function custom_event(type, detail, bubbles = false) {
         const e = document.createEvent('CustomEvent');
         e.initCustomEvent(type, bubbles, false, detail);
@@ -110,6 +156,20 @@ var app = (function () {
         if (!current_component)
             throw new Error('Function called outside component initialization');
         return current_component;
+    }
+    function createEventDispatcher() {
+        const component = get_current_component();
+        return (type, detail) => {
+            const callbacks = component.$$.callbacks[type];
+            if (callbacks) {
+                // TODO are there situations where events could be dispatched
+                // in a server (non-DOM) environment?
+                const event = custom_event(type, detail);
+                callbacks.slice().forEach(fn => {
+                    fn.call(component, event);
+                });
+            }
+        };
     }
 
     const dirty_components = [];
@@ -441,7 +501,7 @@ var app = (function () {
     }
 
     function dispatch_dev(type, detail) {
-        document.dispatchEvent(custom_event(type, Object.assign({ version: '3.43.0' }, detail), true));
+        document.dispatchEvent(custom_event(type, Object.assign({ version: '3.43.1' }, detail), true));
     }
     function append_dev(target, node) {
         dispatch_dev('SvelteDOMInsert', { target, node });
@@ -735,52 +795,50 @@ var app = (function () {
     }
 
     function ascending(a, b) {
-      return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
+      return a == null || b == null ? NaN : a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
     }
 
     function bisector(f) {
       let delta = f;
-      let compare = f;
+      let compare1 = f;
+      let compare2 = f;
 
-      if (f.length === 1) {
+      if (f.length !== 2) {
         delta = (d, x) => f(d) - x;
-        compare = ascendingComparator(f);
+        compare1 = ascending;
+        compare2 = (d, x) => ascending(f(d), x);
       }
 
-      function left(a, x, lo, hi) {
-        if (lo == null) lo = 0;
-        if (hi == null) hi = a.length;
-        while (lo < hi) {
-          const mid = (lo + hi) >>> 1;
-          if (compare(a[mid], x) < 0) lo = mid + 1;
-          else hi = mid;
+      function left(a, x, lo = 0, hi = a.length) {
+        if (lo < hi) {
+          if (compare1(x, x) !== 0) return hi;
+          do {
+            const mid = (lo + hi) >>> 1;
+            if (compare2(a[mid], x) < 0) lo = mid + 1;
+            else hi = mid;
+          } while (lo < hi);
         }
         return lo;
       }
 
-      function right(a, x, lo, hi) {
-        if (lo == null) lo = 0;
-        if (hi == null) hi = a.length;
-        while (lo < hi) {
-          const mid = (lo + hi) >>> 1;
-          if (compare(a[mid], x) > 0) hi = mid;
-          else lo = mid + 1;
+      function right(a, x, lo = 0, hi = a.length) {
+        if (lo < hi) {
+          if (compare1(x, x) !== 0) return hi;
+          do {
+            const mid = (lo + hi) >>> 1;
+            if (compare2(a[mid], x) <= 0) lo = mid + 1;
+            else hi = mid;
+          } while (lo < hi);
         }
         return lo;
       }
 
-      function center(a, x, lo, hi) {
-        if (lo == null) lo = 0;
-        if (hi == null) hi = a.length;
+      function center(a, x, lo = 0, hi = a.length) {
         const i = left(a, x, lo, hi - 1);
         return i > lo && delta(a[i - 1], x) > -delta(a[i], x) ? i - 1 : i;
       }
 
       return {left, center, right};
-    }
-
-    function ascendingComparator(f) {
-      return (d, x) => ascending(f(d), x);
     }
 
     function number$1(x) {
@@ -791,6 +849,51 @@ var app = (function () {
     const bisectRight = ascendingBisect.right;
     bisector(number$1).center;
     var bisect = bisectRight;
+
+    class InternMap extends Map {
+      constructor(entries, key = keyof) {
+        super();
+        Object.defineProperties(this, {_intern: {value: new Map()}, _key: {value: key}});
+        if (entries != null) for (const [key, value] of entries) this.set(key, value);
+      }
+      get(key) {
+        return super.get(intern_get(this, key));
+      }
+      has(key) {
+        return super.has(intern_get(this, key));
+      }
+      set(key, value) {
+        return super.set(intern_set(this, key), value);
+      }
+      delete(key) {
+        return super.delete(intern_delete(this, key));
+      }
+    }
+
+    function intern_get({_intern, _key}, value) {
+      const key = _key(value);
+      return _intern.has(key) ? _intern.get(key) : value;
+    }
+
+    function intern_set({_intern, _key}, value) {
+      const key = _key(value);
+      if (_intern.has(key)) return _intern.get(key);
+      _intern.set(key, value);
+      return value;
+    }
+
+    function intern_delete({_intern, _key}, value) {
+      const key = _key(value);
+      if (_intern.has(key)) {
+        value = _intern.get(key);
+        _intern.delete(key);
+      }
+      return value;
+    }
+
+    function keyof(value) {
+      return value !== null && typeof value === "object" ? value.valueOf() : value;
+    }
 
     var e10 = Math.sqrt(50),
         e5 = Math.sqrt(10),
@@ -873,27 +976,26 @@ var app = (function () {
     const implicit = Symbol("implicit");
 
     function ordinal() {
-      var index = new Map(),
+      var index = new InternMap(),
           domain = [],
           range = [],
           unknown = implicit;
 
       function scale(d) {
-        var key = d + "", i = index.get(key);
-        if (!i) {
+        let i = index.get(d);
+        if (i === undefined) {
           if (unknown !== implicit) return unknown;
-          index.set(key, i = domain.push(d));
+          index.set(d, i = domain.push(d) - 1);
         }
-        return range[(i - 1) % range.length];
+        return range[i % range.length];
       }
 
       scale.domain = function(_) {
         if (!arguments.length) return domain.slice();
-        domain = [], index = new Map();
+        domain = [], index = new InternMap();
         for (const value of _) {
-          const key = value + "";
-          if (index.has(key)) continue;
-          index.set(key, domain.push(value));
+          if (index.has(value)) continue;
+          index.set(value, domain.push(value) - 1);
         }
         return scale;
       };
@@ -2089,12 +2191,12 @@ var app = (function () {
       return pow.apply(null, arguments).exponent(0.5);
     }
 
-    /* src/components/Chart.svelte generated by Svelte v3.43.0 */
+    /* src/components/Chart.svelte generated by Svelte v3.43.1 */
 
-    const { console: console_1$2 } = globals;
-    const file$2 = "src/components/Chart.svelte";
+    const { console: console_1$3 } = globals;
+    const file$4 = "src/components/Chart.svelte";
 
-    function get_each_context$1(ctx, list, i) {
+    function get_each_context$3(ctx, list, i) {
     	const child_ctx = ctx.slice();
     	child_ctx[5] = list[i];
     	return child_ctx;
@@ -2119,7 +2221,7 @@ var app = (function () {
     			attr_dev(rect, "height", "16px");
     			attr_dev(rect, "x", rect_x_value = /*i*/ ctx[5] * 20);
     			attr_dev(rect, "y", rect_y_value = /*j*/ ctx[8] * 20);
-    			add_location(rect, file$2, 36, 6, 931);
+    			add_location(rect, file$4, 36, 6, 931);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, rect, anchor);
@@ -2150,7 +2252,7 @@ var app = (function () {
     }
 
     // (35:2) {#each testRange as i}
-    function create_each_block$1(ctx) {
+    function create_each_block$3(ctx) {
     	let each_1_anchor;
     	let each_value_1 = /*getChartRange*/ ctx[2](/*i*/ ctx[5]);
     	validate_each_argument(each_value_1);
@@ -2208,7 +2310,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_each_block$1.name,
+    		id: create_each_block$3.name,
     		type: "each",
     		source: "(35:2) {#each testRange as i}",
     		ctx
@@ -2217,7 +2319,7 @@ var app = (function () {
     	return block;
     }
 
-    function create_fragment$2(ctx) {
+    function create_fragment$4(ctx) {
     	let div;
     	let t0;
     	let t1;
@@ -2228,7 +2330,7 @@ var app = (function () {
     	let each_blocks = [];
 
     	for (let i = 0; i < each_value.length; i += 1) {
-    		each_blocks[i] = create_each_block$1(get_each_context$1(ctx, each_value, i));
+    		each_blocks[i] = create_each_block$3(get_each_context$3(ctx, each_value, i));
     	}
 
     	const block = {
@@ -2243,9 +2345,9 @@ var app = (function () {
     				each_blocks[i].c();
     			}
 
-    			add_location(div, file$2, 31, 0, 799);
+    			add_location(div, file$4, 31, 0, 799);
     			attr_dev(svg, "class", "svelte-1ua1vyy");
-    			add_location(svg, file$2, 33, 0, 860);
+    			add_location(svg, file$4, 33, 0, 860);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -2270,12 +2372,12 @@ var app = (function () {
     				let i;
 
     				for (i = 0; i < each_value.length; i += 1) {
-    					const child_ctx = get_each_context$1(ctx, each_value, i);
+    					const child_ctx = get_each_context$3(ctx, each_value, i);
 
     					if (each_blocks[i]) {
     						each_blocks[i].p(child_ctx, dirty);
     					} else {
-    						each_blocks[i] = create_each_block$1(child_ctx);
+    						each_blocks[i] = create_each_block$3(child_ctx);
     						each_blocks[i].c();
     						each_blocks[i].m(svg, null);
     					}
@@ -2300,7 +2402,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_fragment$2.name,
+    		id: create_fragment$4.name,
     		type: "component",
     		source: "",
     		ctx
@@ -2311,7 +2413,7 @@ var app = (function () {
 
     const b = 1000000000;
 
-    function instance$2($$self, $$props, $$invalidate) {
+    function instance$4($$self, $$props, $$invalidate) {
     	let testRange;
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('Chart', slots, []);
@@ -2344,7 +2446,7 @@ var app = (function () {
     	const writable_props = ['activeCountry', 'allData', 'contributed'];
 
     	Object.keys($$props).forEach(key => {
-    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console_1$2.warn(`<Chart> was created with unknown prop '${key}'`);
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console_1$3.warn(`<Chart> was created with unknown prop '${key}'`);
     	});
 
     	$$self.$$set = $$props => {
@@ -2390,7 +2492,7 @@ var app = (function () {
     	constructor(options) {
     		super(options);
 
-    		init(this, options, instance$2, create_fragment$2, safe_not_equal, {
+    		init(this, options, instance$4, create_fragment$4, safe_not_equal, {
     			activeCountry: 0,
     			allData: 3,
     			contributed: 4
@@ -2400,22 +2502,22 @@ var app = (function () {
     			component: this,
     			tagName: "Chart",
     			options,
-    			id: create_fragment$2.name
+    			id: create_fragment$4.name
     		});
 
     		const { ctx } = this.$$;
     		const props = options.props || {};
 
     		if (/*activeCountry*/ ctx[0] === undefined && !('activeCountry' in props)) {
-    			console_1$2.warn("<Chart> was created without expected prop 'activeCountry'");
+    			console_1$3.warn("<Chart> was created without expected prop 'activeCountry'");
     		}
 
     		if (/*allData*/ ctx[3] === undefined && !('allData' in props)) {
-    			console_1$2.warn("<Chart> was created without expected prop 'allData'");
+    			console_1$3.warn("<Chart> was created without expected prop 'allData'");
     		}
 
     		if (/*contributed*/ ctx[4] === undefined && !('contributed' in props)) {
-    			console_1$2.warn("<Chart> was created without expected prop 'contributed'");
+    			console_1$3.warn("<Chart> was created without expected prop 'contributed'");
     		}
     	}
 
@@ -2444,10 +2546,3016 @@ var app = (function () {
     	}
     }
 
-    /* src/components/Options.svelte generated by Svelte v3.43.0 */
+    const subscriber_queue = [];
+    /**
+     * Create a `Writable` store that allows both updating and reading by subscription.
+     * @param {*=}value initial value
+     * @param {StartStopNotifier=}start start and stop notifications for subscriptions
+     */
+    function writable(value, start = noop) {
+        let stop;
+        const subscribers = new Set();
+        function set(new_value) {
+            if (safe_not_equal(value, new_value)) {
+                value = new_value;
+                if (stop) { // store is ready
+                    const run_queue = !subscriber_queue.length;
+                    for (const subscriber of subscribers) {
+                        subscriber[1]();
+                        subscriber_queue.push(subscriber, value);
+                    }
+                    if (run_queue) {
+                        for (let i = 0; i < subscriber_queue.length; i += 2) {
+                            subscriber_queue[i][0](subscriber_queue[i + 1]);
+                        }
+                        subscriber_queue.length = 0;
+                    }
+                }
+            }
+        }
+        function update(fn) {
+            set(fn(value));
+        }
+        function subscribe(run, invalidate = noop) {
+            const subscriber = [run, invalidate];
+            subscribers.add(subscriber);
+            if (subscribers.size === 1) {
+                stop = start(set) || noop;
+            }
+            run(value);
+            return () => {
+                subscribers.delete(subscriber);
+                if (subscribers.size === 0) {
+                    stop();
+                    stop = null;
+                }
+            };
+        }
+        return { set, update, subscribe };
+    }
+
+    function is_date(obj) {
+        return Object.prototype.toString.call(obj) === '[object Date]';
+    }
+
+    function tick_spring(ctx, last_value, current_value, target_value) {
+        if (typeof current_value === 'number' || is_date(current_value)) {
+            // @ts-ignore
+            const delta = target_value - current_value;
+            // @ts-ignore
+            const velocity = (current_value - last_value) / (ctx.dt || 1 / 60); // guard div by 0
+            const spring = ctx.opts.stiffness * delta;
+            const damper = ctx.opts.damping * velocity;
+            const acceleration = (spring - damper) * ctx.inv_mass;
+            const d = (velocity + acceleration) * ctx.dt;
+            if (Math.abs(d) < ctx.opts.precision && Math.abs(delta) < ctx.opts.precision) {
+                return target_value; // settled
+            }
+            else {
+                ctx.settled = false; // signal loop to keep ticking
+                // @ts-ignore
+                return is_date(current_value) ?
+                    new Date(current_value.getTime() + d) : current_value + d;
+            }
+        }
+        else if (Array.isArray(current_value)) {
+            // @ts-ignore
+            return current_value.map((_, i) => tick_spring(ctx, last_value[i], current_value[i], target_value[i]));
+        }
+        else if (typeof current_value === 'object') {
+            const next_value = {};
+            for (const k in current_value) {
+                // @ts-ignore
+                next_value[k] = tick_spring(ctx, last_value[k], current_value[k], target_value[k]);
+            }
+            // @ts-ignore
+            return next_value;
+        }
+        else {
+            throw new Error(`Cannot spring ${typeof current_value} values`);
+        }
+    }
+    function spring(value, opts = {}) {
+        const store = writable(value);
+        const { stiffness = 0.15, damping = 0.8, precision = 0.01 } = opts;
+        let last_time;
+        let task;
+        let current_token;
+        let last_value = value;
+        let target_value = value;
+        let inv_mass = 1;
+        let inv_mass_recovery_rate = 0;
+        let cancel_task = false;
+        function set(new_value, opts = {}) {
+            target_value = new_value;
+            const token = current_token = {};
+            if (value == null || opts.hard || (spring.stiffness >= 1 && spring.damping >= 1)) {
+                cancel_task = true; // cancel any running animation
+                last_time = now();
+                last_value = new_value;
+                store.set(value = target_value);
+                return Promise.resolve();
+            }
+            else if (opts.soft) {
+                const rate = opts.soft === true ? .5 : +opts.soft;
+                inv_mass_recovery_rate = 1 / (rate * 60);
+                inv_mass = 0; // infinite mass, unaffected by spring forces
+            }
+            if (!task) {
+                last_time = now();
+                cancel_task = false;
+                task = loop(now => {
+                    if (cancel_task) {
+                        cancel_task = false;
+                        task = null;
+                        return false;
+                    }
+                    inv_mass = Math.min(inv_mass + inv_mass_recovery_rate, 1);
+                    const ctx = {
+                        inv_mass,
+                        opts: spring,
+                        settled: true,
+                        dt: (now - last_time) * 60 / 1000
+                    };
+                    const next_value = tick_spring(ctx, last_value, value, target_value);
+                    last_time = now;
+                    last_value = value;
+                    store.set(value = next_value);
+                    if (ctx.settled) {
+                        task = null;
+                    }
+                    return !ctx.settled;
+                });
+            }
+            return new Promise(fulfil => {
+                task.promise.then(() => {
+                    if (token === current_token)
+                        fulfil();
+                });
+            });
+        }
+        const spring = {
+            set,
+            update: (fn, opts) => set(fn(target_value, value), opts),
+            subscribe: store.subscribe,
+            stiffness,
+            damping,
+            precision
+        };
+        return spring;
+    }
+
+    /* node_modules/svelte-range-slider-pips/src/RangePips.svelte generated by Svelte v3.43.1 */
+
+    const file$3 = "node_modules/svelte-range-slider-pips/src/RangePips.svelte";
+
+    function get_each_context$2(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[21] = list[i];
+    	child_ctx[23] = i;
+    	return child_ctx;
+    }
+
+    // (139:2) {#if ( all && first !== false ) || first }
+    function create_if_block_9(ctx) {
+    	let span;
+    	let span_style_value;
+    	let if_block = (/*all*/ ctx[3] === 'label' || /*first*/ ctx[4] === 'label') && create_if_block_10(ctx);
+
+    	const block = {
+    		c: function create() {
+    			span = element("span");
+    			if (if_block) if_block.c();
+    			attr_dev(span, "class", "pip first");
+    			attr_dev(span, "style", span_style_value = "" + ((/*vertical*/ ctx[2] ? 'top' : 'left') + ": 0%;"));
+    			toggle_class(span, "selected", /*isSelected*/ ctx[13](/*min*/ ctx[0]));
+    			toggle_class(span, "in-range", /*inRange*/ ctx[12](/*min*/ ctx[0]));
+    			add_location(span, file$3, 139, 4, 3416);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, span, anchor);
+    			if (if_block) if_block.m(span, null);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (/*all*/ ctx[3] === 'label' || /*first*/ ctx[4] === 'label') {
+    				if (if_block) {
+    					if_block.p(ctx, dirty);
+    				} else {
+    					if_block = create_if_block_10(ctx);
+    					if_block.c();
+    					if_block.m(span, null);
+    				}
+    			} else if (if_block) {
+    				if_block.d(1);
+    				if_block = null;
+    			}
+
+    			if (dirty & /*vertical*/ 4 && span_style_value !== (span_style_value = "" + ((/*vertical*/ ctx[2] ? 'top' : 'left') + ": 0%;"))) {
+    				attr_dev(span, "style", span_style_value);
+    			}
+
+    			if (dirty & /*isSelected, min*/ 8193) {
+    				toggle_class(span, "selected", /*isSelected*/ ctx[13](/*min*/ ctx[0]));
+    			}
+
+    			if (dirty & /*inRange, min*/ 4097) {
+    				toggle_class(span, "in-range", /*inRange*/ ctx[12](/*min*/ ctx[0]));
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(span);
+    			if (if_block) if_block.d();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_9.name,
+    		type: "if",
+    		source: "(139:2) {#if ( all && first !== false ) || first }",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (145:6) {#if all === 'label' || first === 'label'}
+    function create_if_block_10(ctx) {
+    	let span;
+    	let t_value = /*formatter*/ ctx[9](/*min*/ ctx[0], 0) + "";
+    	let t;
+    	let if_block0 = /*prefix*/ ctx[7] && create_if_block_12(ctx);
+    	let if_block1 = /*suffix*/ ctx[8] && create_if_block_11(ctx);
+
+    	const block = {
+    		c: function create() {
+    			span = element("span");
+    			if (if_block0) if_block0.c();
+    			t = text$1(t_value);
+    			if (if_block1) if_block1.c();
+    			attr_dev(span, "class", "pipVal");
+    			add_location(span, file$3, 145, 8, 3626);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, span, anchor);
+    			if (if_block0) if_block0.m(span, null);
+    			append_dev(span, t);
+    			if (if_block1) if_block1.m(span, null);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (/*prefix*/ ctx[7]) {
+    				if (if_block0) {
+    					if_block0.p(ctx, dirty);
+    				} else {
+    					if_block0 = create_if_block_12(ctx);
+    					if_block0.c();
+    					if_block0.m(span, t);
+    				}
+    			} else if (if_block0) {
+    				if_block0.d(1);
+    				if_block0 = null;
+    			}
+
+    			if (dirty & /*formatter, min*/ 513 && t_value !== (t_value = /*formatter*/ ctx[9](/*min*/ ctx[0], 0) + "")) set_data_dev(t, t_value);
+
+    			if (/*suffix*/ ctx[8]) {
+    				if (if_block1) {
+    					if_block1.p(ctx, dirty);
+    				} else {
+    					if_block1 = create_if_block_11(ctx);
+    					if_block1.c();
+    					if_block1.m(span, null);
+    				}
+    			} else if (if_block1) {
+    				if_block1.d(1);
+    				if_block1 = null;
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(span);
+    			if (if_block0) if_block0.d();
+    			if (if_block1) if_block1.d();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_10.name,
+    		type: "if",
+    		source: "(145:6) {#if all === 'label' || first === 'label'}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (147:10) {#if prefix}
+    function create_if_block_12(ctx) {
+    	let span;
+    	let t;
+
+    	const block = {
+    		c: function create() {
+    			span = element("span");
+    			t = text$1(/*prefix*/ ctx[7]);
+    			attr_dev(span, "class", "pipVal-prefix");
+    			add_location(span, file$3, 146, 22, 3670);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, span, anchor);
+    			append_dev(span, t);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*prefix*/ 128) set_data_dev(t, /*prefix*/ ctx[7]);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(span);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_12.name,
+    		type: "if",
+    		source: "(147:10) {#if prefix}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (147:88) {#if suffix}
+    function create_if_block_11(ctx) {
+    	let span;
+    	let t;
+
+    	const block = {
+    		c: function create() {
+    			span = element("span");
+    			t = text$1(/*suffix*/ ctx[8]);
+    			attr_dev(span, "class", "pipVal-suffix");
+    			add_location(span, file$3, 146, 100, 3748);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, span, anchor);
+    			append_dev(span, t);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*suffix*/ 256) set_data_dev(t, /*suffix*/ ctx[8]);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(span);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_11.name,
+    		type: "if",
+    		source: "(147:88) {#if suffix}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (152:2) {#if ( all && rest !== false ) || rest}
+    function create_if_block_4$1(ctx) {
+    	let each_1_anchor;
+    	let each_value = Array(/*pipCount*/ ctx[15] + 1);
+    	validate_each_argument(each_value);
+    	let each_blocks = [];
+
+    	for (let i = 0; i < each_value.length; i += 1) {
+    		each_blocks[i] = create_each_block$2(get_each_context$2(ctx, each_value, i));
+    	}
+
+    	const block = {
+    		c: function create() {
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].c();
+    			}
+
+    			each_1_anchor = empty();
+    		},
+    		m: function mount(target, anchor) {
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].m(target, anchor);
+    			}
+
+    			insert_dev(target, each_1_anchor, anchor);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*vertical, percentOf, pipVal, isSelected, inRange, suffix, formatter, prefix, all, rest, min, max, pipCount*/ 64463) {
+    				each_value = Array(/*pipCount*/ ctx[15] + 1);
+    				validate_each_argument(each_value);
+    				let i;
+
+    				for (i = 0; i < each_value.length; i += 1) {
+    					const child_ctx = get_each_context$2(ctx, each_value, i);
+
+    					if (each_blocks[i]) {
+    						each_blocks[i].p(child_ctx, dirty);
+    					} else {
+    						each_blocks[i] = create_each_block$2(child_ctx);
+    						each_blocks[i].c();
+    						each_blocks[i].m(each_1_anchor.parentNode, each_1_anchor);
+    					}
+    				}
+
+    				for (; i < each_blocks.length; i += 1) {
+    					each_blocks[i].d(1);
+    				}
+
+    				each_blocks.length = each_value.length;
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			destroy_each(each_blocks, detaching);
+    			if (detaching) detach_dev(each_1_anchor);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_4$1.name,
+    		type: "if",
+    		source: "(152:2) {#if ( all && rest !== false ) || rest}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (154:6) {#if pipVal(i) !== min && pipVal(i) !== max}
+    function create_if_block_5(ctx) {
+    	let span;
+    	let t;
+    	let span_style_value;
+    	let if_block = (/*all*/ ctx[3] === 'label' || /*rest*/ ctx[6] === 'label') && create_if_block_6(ctx);
+
+    	const block = {
+    		c: function create() {
+    			span = element("span");
+    			if (if_block) if_block.c();
+    			t = space();
+    			attr_dev(span, "class", "pip");
+    			attr_dev(span, "style", span_style_value = "" + ((/*vertical*/ ctx[2] ? 'top' : 'left') + ": " + /*percentOf*/ ctx[11](/*pipVal*/ ctx[14](/*i*/ ctx[23])) + "%;"));
+    			toggle_class(span, "selected", /*isSelected*/ ctx[13](/*pipVal*/ ctx[14](/*i*/ ctx[23])));
+    			toggle_class(span, "in-range", /*inRange*/ ctx[12](/*pipVal*/ ctx[14](/*i*/ ctx[23])));
+    			add_location(span, file$3, 154, 8, 3986);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, span, anchor);
+    			if (if_block) if_block.m(span, null);
+    			append_dev(span, t);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (/*all*/ ctx[3] === 'label' || /*rest*/ ctx[6] === 'label') {
+    				if (if_block) {
+    					if_block.p(ctx, dirty);
+    				} else {
+    					if_block = create_if_block_6(ctx);
+    					if_block.c();
+    					if_block.m(span, t);
+    				}
+    			} else if (if_block) {
+    				if_block.d(1);
+    				if_block = null;
+    			}
+
+    			if (dirty & /*vertical, percentOf, pipVal*/ 18436 && span_style_value !== (span_style_value = "" + ((/*vertical*/ ctx[2] ? 'top' : 'left') + ": " + /*percentOf*/ ctx[11](/*pipVal*/ ctx[14](/*i*/ ctx[23])) + "%;"))) {
+    				attr_dev(span, "style", span_style_value);
+    			}
+
+    			if (dirty & /*isSelected, pipVal*/ 24576) {
+    				toggle_class(span, "selected", /*isSelected*/ ctx[13](/*pipVal*/ ctx[14](/*i*/ ctx[23])));
+    			}
+
+    			if (dirty & /*inRange, pipVal*/ 20480) {
+    				toggle_class(span, "in-range", /*inRange*/ ctx[12](/*pipVal*/ ctx[14](/*i*/ ctx[23])));
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(span);
+    			if (if_block) if_block.d();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_5.name,
+    		type: "if",
+    		source: "(154:6) {#if pipVal(i) !== min && pipVal(i) !== max}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (160:10) {#if all === 'label' || rest === 'label'}
+    function create_if_block_6(ctx) {
+    	let span;
+    	let t_value = /*formatter*/ ctx[9](/*pipVal*/ ctx[14](/*i*/ ctx[23]), /*i*/ ctx[23]) + "";
+    	let t;
+    	let if_block0 = /*prefix*/ ctx[7] && create_if_block_8(ctx);
+    	let if_block1 = /*suffix*/ ctx[8] && create_if_block_7(ctx);
+
+    	const block = {
+    		c: function create() {
+    			span = element("span");
+    			if (if_block0) if_block0.c();
+    			t = text$1(t_value);
+    			if (if_block1) if_block1.c();
+    			attr_dev(span, "class", "pipVal");
+    			add_location(span, file$3, 160, 12, 4246);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, span, anchor);
+    			if (if_block0) if_block0.m(span, null);
+    			append_dev(span, t);
+    			if (if_block1) if_block1.m(span, null);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (/*prefix*/ ctx[7]) {
+    				if (if_block0) {
+    					if_block0.p(ctx, dirty);
+    				} else {
+    					if_block0 = create_if_block_8(ctx);
+    					if_block0.c();
+    					if_block0.m(span, t);
+    				}
+    			} else if (if_block0) {
+    				if_block0.d(1);
+    				if_block0 = null;
+    			}
+
+    			if (dirty & /*formatter, pipVal*/ 16896 && t_value !== (t_value = /*formatter*/ ctx[9](/*pipVal*/ ctx[14](/*i*/ ctx[23]), /*i*/ ctx[23]) + "")) set_data_dev(t, t_value);
+
+    			if (/*suffix*/ ctx[8]) {
+    				if (if_block1) {
+    					if_block1.p(ctx, dirty);
+    				} else {
+    					if_block1 = create_if_block_7(ctx);
+    					if_block1.c();
+    					if_block1.m(span, null);
+    				}
+    			} else if (if_block1) {
+    				if_block1.d(1);
+    				if_block1 = null;
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(span);
+    			if (if_block0) if_block0.d();
+    			if (if_block1) if_block1.d();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_6.name,
+    		type: "if",
+    		source: "(160:10) {#if all === 'label' || rest === 'label'}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (162:14) {#if prefix}
+    function create_if_block_8(ctx) {
+    	let span;
+    	let t;
+
+    	const block = {
+    		c: function create() {
+    			span = element("span");
+    			t = text$1(/*prefix*/ ctx[7]);
+    			attr_dev(span, "class", "pipVal-prefix");
+    			add_location(span, file$3, 161, 26, 4294);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, span, anchor);
+    			append_dev(span, t);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*prefix*/ 128) set_data_dev(t, /*prefix*/ ctx[7]);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(span);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_8.name,
+    		type: "if",
+    		source: "(162:14) {#if prefix}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (162:98) {#if suffix}
+    function create_if_block_7(ctx) {
+    	let span;
+    	let t;
+
+    	const block = {
+    		c: function create() {
+    			span = element("span");
+    			t = text$1(/*suffix*/ ctx[8]);
+    			attr_dev(span, "class", "pipVal-suffix");
+    			add_location(span, file$3, 161, 110, 4378);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, span, anchor);
+    			append_dev(span, t);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*suffix*/ 256) set_data_dev(t, /*suffix*/ ctx[8]);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(span);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_7.name,
+    		type: "if",
+    		source: "(162:98) {#if suffix}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (153:4) {#each Array(pipCount + 1) as _, i}
+    function create_each_block$2(ctx) {
+    	let show_if = /*pipVal*/ ctx[14](/*i*/ ctx[23]) !== /*min*/ ctx[0] && /*pipVal*/ ctx[14](/*i*/ ctx[23]) !== /*max*/ ctx[1];
+    	let if_block_anchor;
+    	let if_block = show_if && create_if_block_5(ctx);
+
+    	const block = {
+    		c: function create() {
+    			if (if_block) if_block.c();
+    			if_block_anchor = empty();
+    		},
+    		m: function mount(target, anchor) {
+    			if (if_block) if_block.m(target, anchor);
+    			insert_dev(target, if_block_anchor, anchor);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*pipVal, min, max*/ 16387) show_if = /*pipVal*/ ctx[14](/*i*/ ctx[23]) !== /*min*/ ctx[0] && /*pipVal*/ ctx[14](/*i*/ ctx[23]) !== /*max*/ ctx[1];
+
+    			if (show_if) {
+    				if (if_block) {
+    					if_block.p(ctx, dirty);
+    				} else {
+    					if_block = create_if_block_5(ctx);
+    					if_block.c();
+    					if_block.m(if_block_anchor.parentNode, if_block_anchor);
+    				}
+    			} else if (if_block) {
+    				if_block.d(1);
+    				if_block = null;
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			if (if_block) if_block.d(detaching);
+    			if (detaching) detach_dev(if_block_anchor);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_each_block$2.name,
+    		type: "each",
+    		source: "(153:4) {#each Array(pipCount + 1) as _, i}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (169:2) {#if ( all && last !== false ) || last}
+    function create_if_block$1(ctx) {
+    	let span;
+    	let span_style_value;
+    	let if_block = (/*all*/ ctx[3] === 'label' || /*last*/ ctx[5] === 'label') && create_if_block_1$1(ctx);
+
+    	const block = {
+    		c: function create() {
+    			span = element("span");
+    			if (if_block) if_block.c();
+    			attr_dev(span, "class", "pip last");
+    			attr_dev(span, "style", span_style_value = "" + ((/*vertical*/ ctx[2] ? 'top' : 'left') + ": 100%;"));
+    			toggle_class(span, "selected", /*isSelected*/ ctx[13](/*max*/ ctx[1]));
+    			toggle_class(span, "in-range", /*inRange*/ ctx[12](/*max*/ ctx[1]));
+    			add_location(span, file$3, 169, 4, 4557);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, span, anchor);
+    			if (if_block) if_block.m(span, null);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (/*all*/ ctx[3] === 'label' || /*last*/ ctx[5] === 'label') {
+    				if (if_block) {
+    					if_block.p(ctx, dirty);
+    				} else {
+    					if_block = create_if_block_1$1(ctx);
+    					if_block.c();
+    					if_block.m(span, null);
+    				}
+    			} else if (if_block) {
+    				if_block.d(1);
+    				if_block = null;
+    			}
+
+    			if (dirty & /*vertical*/ 4 && span_style_value !== (span_style_value = "" + ((/*vertical*/ ctx[2] ? 'top' : 'left') + ": 100%;"))) {
+    				attr_dev(span, "style", span_style_value);
+    			}
+
+    			if (dirty & /*isSelected, max*/ 8194) {
+    				toggle_class(span, "selected", /*isSelected*/ ctx[13](/*max*/ ctx[1]));
+    			}
+
+    			if (dirty & /*inRange, max*/ 4098) {
+    				toggle_class(span, "in-range", /*inRange*/ ctx[12](/*max*/ ctx[1]));
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(span);
+    			if (if_block) if_block.d();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block$1.name,
+    		type: "if",
+    		source: "(169:2) {#if ( all && last !== false ) || last}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (175:6) {#if all === 'label' || last === 'label'}
+    function create_if_block_1$1(ctx) {
+    	let span;
+    	let t_value = /*formatter*/ ctx[9](/*max*/ ctx[1], /*pipCount*/ ctx[15]) + "";
+    	let t;
+    	let if_block0 = /*prefix*/ ctx[7] && create_if_block_3$1(ctx);
+    	let if_block1 = /*suffix*/ ctx[8] && create_if_block_2$1(ctx);
+
+    	const block = {
+    		c: function create() {
+    			span = element("span");
+    			if (if_block0) if_block0.c();
+    			t = text$1(t_value);
+    			if (if_block1) if_block1.c();
+    			attr_dev(span, "class", "pipVal");
+    			add_location(span, file$3, 175, 8, 4767);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, span, anchor);
+    			if (if_block0) if_block0.m(span, null);
+    			append_dev(span, t);
+    			if (if_block1) if_block1.m(span, null);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (/*prefix*/ ctx[7]) {
+    				if (if_block0) {
+    					if_block0.p(ctx, dirty);
+    				} else {
+    					if_block0 = create_if_block_3$1(ctx);
+    					if_block0.c();
+    					if_block0.m(span, t);
+    				}
+    			} else if (if_block0) {
+    				if_block0.d(1);
+    				if_block0 = null;
+    			}
+
+    			if (dirty & /*formatter, max, pipCount*/ 33282 && t_value !== (t_value = /*formatter*/ ctx[9](/*max*/ ctx[1], /*pipCount*/ ctx[15]) + "")) set_data_dev(t, t_value);
+
+    			if (/*suffix*/ ctx[8]) {
+    				if (if_block1) {
+    					if_block1.p(ctx, dirty);
+    				} else {
+    					if_block1 = create_if_block_2$1(ctx);
+    					if_block1.c();
+    					if_block1.m(span, null);
+    				}
+    			} else if (if_block1) {
+    				if_block1.d(1);
+    				if_block1 = null;
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(span);
+    			if (if_block0) if_block0.d();
+    			if (if_block1) if_block1.d();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_1$1.name,
+    		type: "if",
+    		source: "(175:6) {#if all === 'label' || last === 'label'}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (177:10) {#if prefix}
+    function create_if_block_3$1(ctx) {
+    	let span;
+    	let t;
+
+    	const block = {
+    		c: function create() {
+    			span = element("span");
+    			t = text$1(/*prefix*/ ctx[7]);
+    			attr_dev(span, "class", "pipVal-prefix");
+    			add_location(span, file$3, 176, 22, 4811);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, span, anchor);
+    			append_dev(span, t);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*prefix*/ 128) set_data_dev(t, /*prefix*/ ctx[7]);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(span);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_3$1.name,
+    		type: "if",
+    		source: "(177:10) {#if prefix}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (177:95) {#if suffix}
+    function create_if_block_2$1(ctx) {
+    	let span;
+    	let t;
+
+    	const block = {
+    		c: function create() {
+    			span = element("span");
+    			t = text$1(/*suffix*/ ctx[8]);
+    			attr_dev(span, "class", "pipVal-suffix");
+    			add_location(span, file$3, 176, 107, 4896);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, span, anchor);
+    			append_dev(span, t);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*suffix*/ 256) set_data_dev(t, /*suffix*/ ctx[8]);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(span);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_2$1.name,
+    		type: "if",
+    		source: "(177:95) {#if suffix}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function create_fragment$3(ctx) {
+    	let div;
+    	let t0;
+    	let t1;
+    	let if_block0 = (/*all*/ ctx[3] && /*first*/ ctx[4] !== false || /*first*/ ctx[4]) && create_if_block_9(ctx);
+    	let if_block1 = (/*all*/ ctx[3] && /*rest*/ ctx[6] !== false || /*rest*/ ctx[6]) && create_if_block_4$1(ctx);
+    	let if_block2 = (/*all*/ ctx[3] && /*last*/ ctx[5] !== false || /*last*/ ctx[5]) && create_if_block$1(ctx);
+
+    	const block = {
+    		c: function create() {
+    			div = element("div");
+    			if (if_block0) if_block0.c();
+    			t0 = space();
+    			if (if_block1) if_block1.c();
+    			t1 = space();
+    			if (if_block2) if_block2.c();
+    			attr_dev(div, "class", "rangePips");
+    			toggle_class(div, "focus", /*focus*/ ctx[10]);
+    			toggle_class(div, "vertical", /*vertical*/ ctx[2]);
+    			add_location(div, file$3, 137, 0, 3316);
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			if (if_block0) if_block0.m(div, null);
+    			append_dev(div, t0);
+    			if (if_block1) if_block1.m(div, null);
+    			append_dev(div, t1);
+    			if (if_block2) if_block2.m(div, null);
+    		},
+    		p: function update(ctx, [dirty]) {
+    			if (/*all*/ ctx[3] && /*first*/ ctx[4] !== false || /*first*/ ctx[4]) {
+    				if (if_block0) {
+    					if_block0.p(ctx, dirty);
+    				} else {
+    					if_block0 = create_if_block_9(ctx);
+    					if_block0.c();
+    					if_block0.m(div, t0);
+    				}
+    			} else if (if_block0) {
+    				if_block0.d(1);
+    				if_block0 = null;
+    			}
+
+    			if (/*all*/ ctx[3] && /*rest*/ ctx[6] !== false || /*rest*/ ctx[6]) {
+    				if (if_block1) {
+    					if_block1.p(ctx, dirty);
+    				} else {
+    					if_block1 = create_if_block_4$1(ctx);
+    					if_block1.c();
+    					if_block1.m(div, t1);
+    				}
+    			} else if (if_block1) {
+    				if_block1.d(1);
+    				if_block1 = null;
+    			}
+
+    			if (/*all*/ ctx[3] && /*last*/ ctx[5] !== false || /*last*/ ctx[5]) {
+    				if (if_block2) {
+    					if_block2.p(ctx, dirty);
+    				} else {
+    					if_block2 = create_if_block$1(ctx);
+    					if_block2.c();
+    					if_block2.m(div, null);
+    				}
+    			} else if (if_block2) {
+    				if_block2.d(1);
+    				if_block2 = null;
+    			}
+
+    			if (dirty & /*focus*/ 1024) {
+    				toggle_class(div, "focus", /*focus*/ ctx[10]);
+    			}
+
+    			if (dirty & /*vertical*/ 4) {
+    				toggle_class(div, "vertical", /*vertical*/ ctx[2]);
+    			}
+    		},
+    		i: noop,
+    		o: noop,
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    			if (if_block0) if_block0.d();
+    			if (if_block1) if_block1.d();
+    			if (if_block2) if_block2.d();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_fragment$3.name,
+    		type: "component",
+    		source: "",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function instance$3($$self, $$props, $$invalidate) {
+    	let pipStep;
+    	let pipCount;
+    	let pipVal;
+    	let isSelected;
+    	let inRange;
+    	let { $$slots: slots = {}, $$scope } = $$props;
+    	validate_slots('RangePips', slots, []);
+    	let { range = false } = $$props;
+    	let { min = 0 } = $$props;
+    	let { max = 100 } = $$props;
+    	let { step = 1 } = $$props;
+    	let { values = [(max + min) / 2] } = $$props;
+    	let { vertical = false } = $$props;
+    	let { pipstep = undefined } = $$props;
+    	let { all = true } = $$props;
+    	let { first = undefined } = $$props;
+    	let { last = undefined } = $$props;
+    	let { rest = undefined } = $$props;
+    	let { prefix = "" } = $$props;
+    	let { suffix = "" } = $$props;
+    	let { formatter = (v, i) => v } = $$props;
+    	let { focus = undefined } = $$props;
+    	let { percentOf = undefined } = $$props;
+
+    	const writable_props = [
+    		'range',
+    		'min',
+    		'max',
+    		'step',
+    		'values',
+    		'vertical',
+    		'pipstep',
+    		'all',
+    		'first',
+    		'last',
+    		'rest',
+    		'prefix',
+    		'suffix',
+    		'formatter',
+    		'focus',
+    		'percentOf'
+    	];
+
+    	Object.keys($$props).forEach(key => {
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console.warn(`<RangePips> was created with unknown prop '${key}'`);
+    	});
+
+    	$$self.$$set = $$props => {
+    		if ('range' in $$props) $$invalidate(16, range = $$props.range);
+    		if ('min' in $$props) $$invalidate(0, min = $$props.min);
+    		if ('max' in $$props) $$invalidate(1, max = $$props.max);
+    		if ('step' in $$props) $$invalidate(17, step = $$props.step);
+    		if ('values' in $$props) $$invalidate(18, values = $$props.values);
+    		if ('vertical' in $$props) $$invalidate(2, vertical = $$props.vertical);
+    		if ('pipstep' in $$props) $$invalidate(19, pipstep = $$props.pipstep);
+    		if ('all' in $$props) $$invalidate(3, all = $$props.all);
+    		if ('first' in $$props) $$invalidate(4, first = $$props.first);
+    		if ('last' in $$props) $$invalidate(5, last = $$props.last);
+    		if ('rest' in $$props) $$invalidate(6, rest = $$props.rest);
+    		if ('prefix' in $$props) $$invalidate(7, prefix = $$props.prefix);
+    		if ('suffix' in $$props) $$invalidate(8, suffix = $$props.suffix);
+    		if ('formatter' in $$props) $$invalidate(9, formatter = $$props.formatter);
+    		if ('focus' in $$props) $$invalidate(10, focus = $$props.focus);
+    		if ('percentOf' in $$props) $$invalidate(11, percentOf = $$props.percentOf);
+    	};
+
+    	$$self.$capture_state = () => ({
+    		range,
+    		min,
+    		max,
+    		step,
+    		values,
+    		vertical,
+    		pipstep,
+    		all,
+    		first,
+    		last,
+    		rest,
+    		prefix,
+    		suffix,
+    		formatter,
+    		focus,
+    		percentOf,
+    		inRange,
+    		isSelected,
+    		pipStep,
+    		pipVal,
+    		pipCount
+    	});
+
+    	$$self.$inject_state = $$props => {
+    		if ('range' in $$props) $$invalidate(16, range = $$props.range);
+    		if ('min' in $$props) $$invalidate(0, min = $$props.min);
+    		if ('max' in $$props) $$invalidate(1, max = $$props.max);
+    		if ('step' in $$props) $$invalidate(17, step = $$props.step);
+    		if ('values' in $$props) $$invalidate(18, values = $$props.values);
+    		if ('vertical' in $$props) $$invalidate(2, vertical = $$props.vertical);
+    		if ('pipstep' in $$props) $$invalidate(19, pipstep = $$props.pipstep);
+    		if ('all' in $$props) $$invalidate(3, all = $$props.all);
+    		if ('first' in $$props) $$invalidate(4, first = $$props.first);
+    		if ('last' in $$props) $$invalidate(5, last = $$props.last);
+    		if ('rest' in $$props) $$invalidate(6, rest = $$props.rest);
+    		if ('prefix' in $$props) $$invalidate(7, prefix = $$props.prefix);
+    		if ('suffix' in $$props) $$invalidate(8, suffix = $$props.suffix);
+    		if ('formatter' in $$props) $$invalidate(9, formatter = $$props.formatter);
+    		if ('focus' in $$props) $$invalidate(10, focus = $$props.focus);
+    		if ('percentOf' in $$props) $$invalidate(11, percentOf = $$props.percentOf);
+    		if ('inRange' in $$props) $$invalidate(12, inRange = $$props.inRange);
+    		if ('isSelected' in $$props) $$invalidate(13, isSelected = $$props.isSelected);
+    		if ('pipStep' in $$props) $$invalidate(20, pipStep = $$props.pipStep);
+    		if ('pipVal' in $$props) $$invalidate(14, pipVal = $$props.pipVal);
+    		if ('pipCount' in $$props) $$invalidate(15, pipCount = $$props.pipCount);
+    	};
+
+    	if ($$props && "$$inject" in $$props) {
+    		$$self.$inject_state($$props.$$inject);
+    	}
+
+    	$$self.$$.update = () => {
+    		if ($$self.$$.dirty & /*pipstep, max, min, step, vertical*/ 655367) {
+    			$$invalidate(20, pipStep = pipstep || ((max - min) / step >= (vertical ? 50 : 100)
+    			? (max - min) / (vertical ? 10 : 20)
+    			: 1));
+    		}
+
+    		if ($$self.$$.dirty & /*max, min, step, pipStep*/ 1179651) {
+    			$$invalidate(15, pipCount = parseInt((max - min) / (step * pipStep), 10));
+    		}
+
+    		if ($$self.$$.dirty & /*min, step, pipStep*/ 1179649) {
+    			$$invalidate(14, pipVal = function (val) {
+    				return min + val * step * pipStep;
+    			});
+    		}
+
+    		if ($$self.$$.dirty & /*values*/ 262144) {
+    			$$invalidate(13, isSelected = function (val) {
+    				return values.some(v => v === val);
+    			});
+    		}
+
+    		if ($$self.$$.dirty & /*range, values*/ 327680) {
+    			$$invalidate(12, inRange = function (val) {
+    				if (range === "min") {
+    					return values[0] > val;
+    				} else if (range === "max") {
+    					return values[0] < val;
+    				} else if (range) {
+    					return values[0] < val && values[1] > val;
+    				}
+    			});
+    		}
+    	};
+
+    	return [
+    		min,
+    		max,
+    		vertical,
+    		all,
+    		first,
+    		last,
+    		rest,
+    		prefix,
+    		suffix,
+    		formatter,
+    		focus,
+    		percentOf,
+    		inRange,
+    		isSelected,
+    		pipVal,
+    		pipCount,
+    		range,
+    		step,
+    		values,
+    		pipstep,
+    		pipStep
+    	];
+    }
+
+    class RangePips extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+
+    		init(this, options, instance$3, create_fragment$3, safe_not_equal, {
+    			range: 16,
+    			min: 0,
+    			max: 1,
+    			step: 17,
+    			values: 18,
+    			vertical: 2,
+    			pipstep: 19,
+    			all: 3,
+    			first: 4,
+    			last: 5,
+    			rest: 6,
+    			prefix: 7,
+    			suffix: 8,
+    			formatter: 9,
+    			focus: 10,
+    			percentOf: 11
+    		});
+
+    		dispatch_dev("SvelteRegisterComponent", {
+    			component: this,
+    			tagName: "RangePips",
+    			options,
+    			id: create_fragment$3.name
+    		});
+    	}
+
+    	get range() {
+    		throw new Error("<RangePips>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set range(value) {
+    		throw new Error("<RangePips>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get min() {
+    		throw new Error("<RangePips>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set min(value) {
+    		throw new Error("<RangePips>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get max() {
+    		throw new Error("<RangePips>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set max(value) {
+    		throw new Error("<RangePips>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get step() {
+    		throw new Error("<RangePips>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set step(value) {
+    		throw new Error("<RangePips>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get values() {
+    		throw new Error("<RangePips>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set values(value) {
+    		throw new Error("<RangePips>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get vertical() {
+    		throw new Error("<RangePips>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set vertical(value) {
+    		throw new Error("<RangePips>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get pipstep() {
+    		throw new Error("<RangePips>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set pipstep(value) {
+    		throw new Error("<RangePips>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get all() {
+    		throw new Error("<RangePips>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set all(value) {
+    		throw new Error("<RangePips>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get first() {
+    		throw new Error("<RangePips>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set first(value) {
+    		throw new Error("<RangePips>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get last() {
+    		throw new Error("<RangePips>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set last(value) {
+    		throw new Error("<RangePips>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get rest() {
+    		throw new Error("<RangePips>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set rest(value) {
+    		throw new Error("<RangePips>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get prefix() {
+    		throw new Error("<RangePips>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set prefix(value) {
+    		throw new Error("<RangePips>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get suffix() {
+    		throw new Error("<RangePips>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set suffix(value) {
+    		throw new Error("<RangePips>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get formatter() {
+    		throw new Error("<RangePips>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set formatter(value) {
+    		throw new Error("<RangePips>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get focus() {
+    		throw new Error("<RangePips>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set focus(value) {
+    		throw new Error("<RangePips>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get percentOf() {
+    		throw new Error("<RangePips>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set percentOf(value) {
+    		throw new Error("<RangePips>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+    }
+
+    /* node_modules/svelte-range-slider-pips/src/RangeSlider.svelte generated by Svelte v3.43.1 */
+
+    const { console: console_1$2 } = globals;
+    const file$2 = "node_modules/svelte-range-slider-pips/src/RangeSlider.svelte";
+
+    function get_each_context$1(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[60] = list[i];
+    	child_ctx[62] = i;
+    	return child_ctx;
+    }
+
+    // (787:6) {#if float}
+    function create_if_block_2(ctx) {
+    	let span;
+    	let t_value = /*handleFormatter*/ ctx[19](/*value*/ ctx[60], /*index*/ ctx[62]) + "";
+    	let t;
+    	let if_block0 = /*prefix*/ ctx[16] && create_if_block_4(ctx);
+    	let if_block1 = /*suffix*/ ctx[17] && create_if_block_3(ctx);
+
+    	const block = {
+    		c: function create() {
+    			span = element("span");
+    			if (if_block0) if_block0.c();
+    			t = text$1(t_value);
+    			if (if_block1) if_block1.c();
+    			attr_dev(span, "class", "rangeFloat");
+    			add_location(span, file$2, 787, 8, 22776);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, span, anchor);
+    			if (if_block0) if_block0.m(span, null);
+    			append_dev(span, t);
+    			if (if_block1) if_block1.m(span, null);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (/*prefix*/ ctx[16]) {
+    				if (if_block0) {
+    					if_block0.p(ctx, dirty);
+    				} else {
+    					if_block0 = create_if_block_4(ctx);
+    					if_block0.c();
+    					if_block0.m(span, t);
+    				}
+    			} else if (if_block0) {
+    				if_block0.d(1);
+    				if_block0 = null;
+    			}
+
+    			if (dirty[0] & /*handleFormatter, values*/ 524289 && t_value !== (t_value = /*handleFormatter*/ ctx[19](/*value*/ ctx[60], /*index*/ ctx[62]) + "")) set_data_dev(t, t_value);
+
+    			if (/*suffix*/ ctx[17]) {
+    				if (if_block1) {
+    					if_block1.p(ctx, dirty);
+    				} else {
+    					if_block1 = create_if_block_3(ctx);
+    					if_block1.c();
+    					if_block1.m(span, null);
+    				}
+    			} else if (if_block1) {
+    				if_block1.d(1);
+    				if_block1 = null;
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(span);
+    			if (if_block0) if_block0.d();
+    			if (if_block1) if_block1.d();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_2.name,
+    		type: "if",
+    		source: "(787:6) {#if float}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (789:10) {#if prefix}
+    function create_if_block_4(ctx) {
+    	let span;
+    	let t;
+
+    	const block = {
+    		c: function create() {
+    			span = element("span");
+    			t = text$1(/*prefix*/ ctx[16]);
+    			attr_dev(span, "class", "rangeFloat-prefix");
+    			add_location(span, file$2, 788, 22, 22824);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, span, anchor);
+    			append_dev(span, t);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty[0] & /*prefix*/ 65536) set_data_dev(t, /*prefix*/ ctx[16]);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(span);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_4.name,
+    		type: "if",
+    		source: "(789:10) {#if prefix}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (789:104) {#if suffix}
+    function create_if_block_3(ctx) {
+    	let span;
+    	let t;
+
+    	const block = {
+    		c: function create() {
+    			span = element("span");
+    			t = text$1(/*suffix*/ ctx[17]);
+    			attr_dev(span, "class", "rangeFloat-suffix");
+    			add_location(span, file$2, 788, 116, 22918);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, span, anchor);
+    			append_dev(span, t);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty[0] & /*suffix*/ 131072) set_data_dev(t, /*suffix*/ ctx[17]);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(span);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_3.name,
+    		type: "if",
+    		source: "(789:104) {#if suffix}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (765:2) {#each values as value, index}
+    function create_each_block$1(ctx) {
+    	let span1;
+    	let span0;
+    	let t;
+    	let span1_style_value;
+    	let span1_aria_valuemin_value;
+    	let span1_aria_valuemax_value;
+    	let span1_aria_valuenow_value;
+    	let span1_aria_valuetext_value;
+    	let span1_aria_orientation_value;
+    	let span1_tabindex_value;
+    	let mounted;
+    	let dispose;
+    	let if_block = /*float*/ ctx[6] && create_if_block_2(ctx);
+
+    	const block = {
+    		c: function create() {
+    			span1 = element("span");
+    			span0 = element("span");
+    			t = space();
+    			if (if_block) if_block.c();
+    			attr_dev(span0, "class", "rangeNub");
+    			add_location(span0, file$2, 785, 6, 22724);
+    			attr_dev(span1, "role", "slider");
+    			attr_dev(span1, "class", "rangeHandle");
+    			attr_dev(span1, "data-handle", /*index*/ ctx[62]);
+    			attr_dev(span1, "style", span1_style_value = "" + ((/*vertical*/ ctx[5] ? 'top' : 'left') + ": " + /*$springPositions*/ ctx[26][/*index*/ ctx[62]] + "%; z-index: " + (/*activeHandle*/ ctx[25] === /*index*/ ctx[62] ? 3 : 2) + ";"));
+
+    			attr_dev(span1, "aria-valuemin", span1_aria_valuemin_value = /*range*/ ctx[1] === true && /*index*/ ctx[62] === 1
+    			? /*values*/ ctx[0][0]
+    			: /*min*/ ctx[2]);
+
+    			attr_dev(span1, "aria-valuemax", span1_aria_valuemax_value = /*range*/ ctx[1] === true && /*index*/ ctx[62] === 0
+    			? /*values*/ ctx[0][1]
+    			: /*max*/ ctx[3]);
+
+    			attr_dev(span1, "aria-valuenow", span1_aria_valuenow_value = /*value*/ ctx[60]);
+    			attr_dev(span1, "aria-valuetext", span1_aria_valuetext_value = "" + (/*prefix*/ ctx[16] + /*handleFormatter*/ ctx[19](/*value*/ ctx[60], /*index*/ ctx[62]) + /*suffix*/ ctx[17]));
+    			attr_dev(span1, "aria-orientation", span1_aria_orientation_value = /*vertical*/ ctx[5] ? 'vertical' : 'horizontal');
+    			attr_dev(span1, "aria-disabled", /*disabled*/ ctx[8]);
+    			attr_dev(span1, "disabled", /*disabled*/ ctx[8]);
+    			attr_dev(span1, "tabindex", span1_tabindex_value = /*disabled*/ ctx[8] ? -1 : 0);
+    			toggle_class(span1, "hoverable", /*hover*/ ctx[7] && !/*disabled*/ ctx[8]);
+    			toggle_class(span1, "active", /*focus*/ ctx[23] && /*activeHandle*/ ctx[25] === /*index*/ ctx[62]);
+    			toggle_class(span1, "press", /*handlePressed*/ ctx[24] && /*activeHandle*/ ctx[25] === /*index*/ ctx[62]);
+    			add_location(span1, file$2, 765, 4, 21876);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, span1, anchor);
+    			append_dev(span1, span0);
+    			append_dev(span1, t);
+    			if (if_block) if_block.m(span1, null);
+
+    			if (!mounted) {
+    				dispose = [
+    					listen_dev(span1, "blur", /*sliderBlurHandle*/ ctx[29], false, false, false),
+    					listen_dev(span1, "focus", /*sliderFocusHandle*/ ctx[30], false, false, false),
+    					listen_dev(span1, "keydown", /*sliderKeydown*/ ctx[31], false, false, false)
+    				];
+
+    				mounted = true;
+    			}
+    		},
+    		p: function update(ctx, dirty) {
+    			if (/*float*/ ctx[6]) {
+    				if (if_block) {
+    					if_block.p(ctx, dirty);
+    				} else {
+    					if_block = create_if_block_2(ctx);
+    					if_block.c();
+    					if_block.m(span1, null);
+    				}
+    			} else if (if_block) {
+    				if_block.d(1);
+    				if_block = null;
+    			}
+
+    			if (dirty[0] & /*vertical, $springPositions, activeHandle*/ 100663328 && span1_style_value !== (span1_style_value = "" + ((/*vertical*/ ctx[5] ? 'top' : 'left') + ": " + /*$springPositions*/ ctx[26][/*index*/ ctx[62]] + "%; z-index: " + (/*activeHandle*/ ctx[25] === /*index*/ ctx[62] ? 3 : 2) + ";"))) {
+    				attr_dev(span1, "style", span1_style_value);
+    			}
+
+    			if (dirty[0] & /*range, values, min*/ 7 && span1_aria_valuemin_value !== (span1_aria_valuemin_value = /*range*/ ctx[1] === true && /*index*/ ctx[62] === 1
+    			? /*values*/ ctx[0][0]
+    			: /*min*/ ctx[2])) {
+    				attr_dev(span1, "aria-valuemin", span1_aria_valuemin_value);
+    			}
+
+    			if (dirty[0] & /*range, values, max*/ 11 && span1_aria_valuemax_value !== (span1_aria_valuemax_value = /*range*/ ctx[1] === true && /*index*/ ctx[62] === 0
+    			? /*values*/ ctx[0][1]
+    			: /*max*/ ctx[3])) {
+    				attr_dev(span1, "aria-valuemax", span1_aria_valuemax_value);
+    			}
+
+    			if (dirty[0] & /*values*/ 1 && span1_aria_valuenow_value !== (span1_aria_valuenow_value = /*value*/ ctx[60])) {
+    				attr_dev(span1, "aria-valuenow", span1_aria_valuenow_value);
+    			}
+
+    			if (dirty[0] & /*prefix, handleFormatter, values, suffix*/ 720897 && span1_aria_valuetext_value !== (span1_aria_valuetext_value = "" + (/*prefix*/ ctx[16] + /*handleFormatter*/ ctx[19](/*value*/ ctx[60], /*index*/ ctx[62]) + /*suffix*/ ctx[17]))) {
+    				attr_dev(span1, "aria-valuetext", span1_aria_valuetext_value);
+    			}
+
+    			if (dirty[0] & /*vertical*/ 32 && span1_aria_orientation_value !== (span1_aria_orientation_value = /*vertical*/ ctx[5] ? 'vertical' : 'horizontal')) {
+    				attr_dev(span1, "aria-orientation", span1_aria_orientation_value);
+    			}
+
+    			if (dirty[0] & /*disabled*/ 256) {
+    				attr_dev(span1, "aria-disabled", /*disabled*/ ctx[8]);
+    			}
+
+    			if (dirty[0] & /*disabled*/ 256) {
+    				attr_dev(span1, "disabled", /*disabled*/ ctx[8]);
+    			}
+
+    			if (dirty[0] & /*disabled*/ 256 && span1_tabindex_value !== (span1_tabindex_value = /*disabled*/ ctx[8] ? -1 : 0)) {
+    				attr_dev(span1, "tabindex", span1_tabindex_value);
+    			}
+
+    			if (dirty[0] & /*hover, disabled*/ 384) {
+    				toggle_class(span1, "hoverable", /*hover*/ ctx[7] && !/*disabled*/ ctx[8]);
+    			}
+
+    			if (dirty[0] & /*focus, activeHandle*/ 41943040) {
+    				toggle_class(span1, "active", /*focus*/ ctx[23] && /*activeHandle*/ ctx[25] === /*index*/ ctx[62]);
+    			}
+
+    			if (dirty[0] & /*handlePressed, activeHandle*/ 50331648) {
+    				toggle_class(span1, "press", /*handlePressed*/ ctx[24] && /*activeHandle*/ ctx[25] === /*index*/ ctx[62]);
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(span1);
+    			if (if_block) if_block.d();
+    			mounted = false;
+    			run_all(dispose);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_each_block$1.name,
+    		type: "each",
+    		source: "(765:2) {#each values as value, index}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (794:2) {#if range}
+    function create_if_block_1(ctx) {
+    	let span;
+    	let span_style_value;
+
+    	const block = {
+    		c: function create() {
+    			span = element("span");
+    			attr_dev(span, "class", "rangeBar");
+    			attr_dev(span, "style", span_style_value = "" + ((/*vertical*/ ctx[5] ? 'top' : 'left') + ": " + /*rangeStart*/ ctx[27](/*$springPositions*/ ctx[26]) + "%; " + (/*vertical*/ ctx[5] ? 'bottom' : 'right') + ": " + /*rangeEnd*/ ctx[28](/*$springPositions*/ ctx[26]) + "%;"));
+    			add_location(span, file$2, 794, 4, 23039);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, span, anchor);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty[0] & /*vertical, $springPositions*/ 67108896 && span_style_value !== (span_style_value = "" + ((/*vertical*/ ctx[5] ? 'top' : 'left') + ": " + /*rangeStart*/ ctx[27](/*$springPositions*/ ctx[26]) + "%; " + (/*vertical*/ ctx[5] ? 'bottom' : 'right') + ": " + /*rangeEnd*/ ctx[28](/*$springPositions*/ ctx[26]) + "%;"))) {
+    				attr_dev(span, "style", span_style_value);
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(span);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_1.name,
+    		type: "if",
+    		source: "(794:2) {#if range}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (800:2) {#if pips}
+    function create_if_block(ctx) {
+    	let rangepips;
+    	let current;
+
+    	rangepips = new RangePips({
+    			props: {
+    				values: /*values*/ ctx[0],
+    				min: /*min*/ ctx[2],
+    				max: /*max*/ ctx[3],
+    				step: /*step*/ ctx[4],
+    				range: /*range*/ ctx[1],
+    				vertical: /*vertical*/ ctx[5],
+    				all: /*all*/ ctx[11],
+    				first: /*first*/ ctx[12],
+    				last: /*last*/ ctx[13],
+    				rest: /*rest*/ ctx[14],
+    				pipstep: /*pipstep*/ ctx[10],
+    				prefix: /*prefix*/ ctx[16],
+    				suffix: /*suffix*/ ctx[17],
+    				formatter: /*formatter*/ ctx[18],
+    				focus: /*focus*/ ctx[23],
+    				percentOf: /*percentOf*/ ctx[21]
+    			},
+    			$$inline: true
+    		});
+
+    	const block = {
+    		c: function create() {
+    			create_component(rangepips.$$.fragment);
+    		},
+    		m: function mount(target, anchor) {
+    			mount_component(rangepips, target, anchor);
+    			current = true;
+    		},
+    		p: function update(ctx, dirty) {
+    			const rangepips_changes = {};
+    			if (dirty[0] & /*values*/ 1) rangepips_changes.values = /*values*/ ctx[0];
+    			if (dirty[0] & /*min*/ 4) rangepips_changes.min = /*min*/ ctx[2];
+    			if (dirty[0] & /*max*/ 8) rangepips_changes.max = /*max*/ ctx[3];
+    			if (dirty[0] & /*step*/ 16) rangepips_changes.step = /*step*/ ctx[4];
+    			if (dirty[0] & /*range*/ 2) rangepips_changes.range = /*range*/ ctx[1];
+    			if (dirty[0] & /*vertical*/ 32) rangepips_changes.vertical = /*vertical*/ ctx[5];
+    			if (dirty[0] & /*all*/ 2048) rangepips_changes.all = /*all*/ ctx[11];
+    			if (dirty[0] & /*first*/ 4096) rangepips_changes.first = /*first*/ ctx[12];
+    			if (dirty[0] & /*last*/ 8192) rangepips_changes.last = /*last*/ ctx[13];
+    			if (dirty[0] & /*rest*/ 16384) rangepips_changes.rest = /*rest*/ ctx[14];
+    			if (dirty[0] & /*pipstep*/ 1024) rangepips_changes.pipstep = /*pipstep*/ ctx[10];
+    			if (dirty[0] & /*prefix*/ 65536) rangepips_changes.prefix = /*prefix*/ ctx[16];
+    			if (dirty[0] & /*suffix*/ 131072) rangepips_changes.suffix = /*suffix*/ ctx[17];
+    			if (dirty[0] & /*formatter*/ 262144) rangepips_changes.formatter = /*formatter*/ ctx[18];
+    			if (dirty[0] & /*focus*/ 8388608) rangepips_changes.focus = /*focus*/ ctx[23];
+    			if (dirty[0] & /*percentOf*/ 2097152) rangepips_changes.percentOf = /*percentOf*/ ctx[21];
+    			rangepips.$set(rangepips_changes);
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(rangepips.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(rangepips.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			destroy_component(rangepips, detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block.name,
+    		type: "if",
+    		source: "(800:2) {#if pips}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function create_fragment$2(ctx) {
+    	let div;
+    	let t0;
+    	let t1;
+    	let current;
+    	let mounted;
+    	let dispose;
+    	let each_value = /*values*/ ctx[0];
+    	validate_each_argument(each_value);
+    	let each_blocks = [];
+
+    	for (let i = 0; i < each_value.length; i += 1) {
+    		each_blocks[i] = create_each_block$1(get_each_context$1(ctx, each_value, i));
+    	}
+
+    	let if_block0 = /*range*/ ctx[1] && create_if_block_1(ctx);
+    	let if_block1 = /*pips*/ ctx[9] && create_if_block(ctx);
+
+    	const block = {
+    		c: function create() {
+    			div = element("div");
+
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].c();
+    			}
+
+    			t0 = space();
+    			if (if_block0) if_block0.c();
+    			t1 = space();
+    			if (if_block1) if_block1.c();
+    			attr_dev(div, "id", /*id*/ ctx[15]);
+    			attr_dev(div, "class", "rangeSlider");
+    			toggle_class(div, "range", /*range*/ ctx[1]);
+    			toggle_class(div, "disabled", /*disabled*/ ctx[8]);
+    			toggle_class(div, "vertical", /*vertical*/ ctx[5]);
+    			toggle_class(div, "focus", /*focus*/ ctx[23]);
+    			toggle_class(div, "min", /*range*/ ctx[1] === 'min');
+    			toggle_class(div, "max", /*range*/ ctx[1] === 'max');
+    			toggle_class(div, "pips", /*pips*/ ctx[9]);
+    			toggle_class(div, "pip-labels", /*all*/ ctx[11] === 'label' || /*first*/ ctx[12] === 'label' || /*last*/ ctx[13] === 'label' || /*rest*/ ctx[14] === 'label');
+    			add_location(div, file$2, 747, 0, 21377);
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].m(div, null);
+    			}
+
+    			append_dev(div, t0);
+    			if (if_block0) if_block0.m(div, null);
+    			append_dev(div, t1);
+    			if (if_block1) if_block1.m(div, null);
+    			/*div_binding*/ ctx[45](div);
+    			current = true;
+
+    			if (!mounted) {
+    				dispose = [
+    					listen_dev(window, "mousedown", /*bodyInteractStart*/ ctx[34], false, false, false),
+    					listen_dev(window, "touchstart", /*bodyInteractStart*/ ctx[34], false, false, false),
+    					listen_dev(window, "mousemove", /*bodyInteract*/ ctx[35], false, false, false),
+    					listen_dev(window, "touchmove", /*bodyInteract*/ ctx[35], false, false, false),
+    					listen_dev(window, "mouseup", /*bodyMouseUp*/ ctx[36], false, false, false),
+    					listen_dev(window, "touchend", /*bodyTouchEnd*/ ctx[37], false, false, false),
+    					listen_dev(window, "keydown", /*bodyKeyDown*/ ctx[38], false, false, false),
+    					listen_dev(div, "mousedown", /*sliderInteractStart*/ ctx[32], false, false, false),
+    					listen_dev(div, "mouseup", /*sliderInteractEnd*/ ctx[33], false, false, false),
+    					listen_dev(div, "touchstart", prevent_default(/*sliderInteractStart*/ ctx[32]), false, true, false),
+    					listen_dev(div, "touchend", prevent_default(/*sliderInteractEnd*/ ctx[33]), false, true, false)
+    				];
+
+    				mounted = true;
+    			}
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty[0] & /*vertical, $springPositions, activeHandle, range, values, min, max, prefix, handleFormatter, suffix, disabled, hover, focus, handlePressed, sliderBlurHandle, sliderFocusHandle, float*/ 1737163247 | dirty[1] & /*sliderKeydown*/ 1) {
+    				each_value = /*values*/ ctx[0];
+    				validate_each_argument(each_value);
+    				let i;
+
+    				for (i = 0; i < each_value.length; i += 1) {
+    					const child_ctx = get_each_context$1(ctx, each_value, i);
+
+    					if (each_blocks[i]) {
+    						each_blocks[i].p(child_ctx, dirty);
+    					} else {
+    						each_blocks[i] = create_each_block$1(child_ctx);
+    						each_blocks[i].c();
+    						each_blocks[i].m(div, t0);
+    					}
+    				}
+
+    				for (; i < each_blocks.length; i += 1) {
+    					each_blocks[i].d(1);
+    				}
+
+    				each_blocks.length = each_value.length;
+    			}
+
+    			if (/*range*/ ctx[1]) {
+    				if (if_block0) {
+    					if_block0.p(ctx, dirty);
+    				} else {
+    					if_block0 = create_if_block_1(ctx);
+    					if_block0.c();
+    					if_block0.m(div, t1);
+    				}
+    			} else if (if_block0) {
+    				if_block0.d(1);
+    				if_block0 = null;
+    			}
+
+    			if (/*pips*/ ctx[9]) {
+    				if (if_block1) {
+    					if_block1.p(ctx, dirty);
+
+    					if (dirty[0] & /*pips*/ 512) {
+    						transition_in(if_block1, 1);
+    					}
+    				} else {
+    					if_block1 = create_if_block(ctx);
+    					if_block1.c();
+    					transition_in(if_block1, 1);
+    					if_block1.m(div, null);
+    				}
+    			} else if (if_block1) {
+    				group_outros();
+
+    				transition_out(if_block1, 1, 1, () => {
+    					if_block1 = null;
+    				});
+
+    				check_outros();
+    			}
+
+    			if (!current || dirty[0] & /*id*/ 32768) {
+    				attr_dev(div, "id", /*id*/ ctx[15]);
+    			}
+
+    			if (dirty[0] & /*range*/ 2) {
+    				toggle_class(div, "range", /*range*/ ctx[1]);
+    			}
+
+    			if (dirty[0] & /*disabled*/ 256) {
+    				toggle_class(div, "disabled", /*disabled*/ ctx[8]);
+    			}
+
+    			if (dirty[0] & /*vertical*/ 32) {
+    				toggle_class(div, "vertical", /*vertical*/ ctx[5]);
+    			}
+
+    			if (dirty[0] & /*focus*/ 8388608) {
+    				toggle_class(div, "focus", /*focus*/ ctx[23]);
+    			}
+
+    			if (dirty[0] & /*range*/ 2) {
+    				toggle_class(div, "min", /*range*/ ctx[1] === 'min');
+    			}
+
+    			if (dirty[0] & /*range*/ 2) {
+    				toggle_class(div, "max", /*range*/ ctx[1] === 'max');
+    			}
+
+    			if (dirty[0] & /*pips*/ 512) {
+    				toggle_class(div, "pips", /*pips*/ ctx[9]);
+    			}
+
+    			if (dirty[0] & /*all, first, last, rest*/ 30720) {
+    				toggle_class(div, "pip-labels", /*all*/ ctx[11] === 'label' || /*first*/ ctx[12] === 'label' || /*last*/ ctx[13] === 'label' || /*rest*/ ctx[14] === 'label');
+    			}
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(if_block1);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(if_block1);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    			destroy_each(each_blocks, detaching);
+    			if (if_block0) if_block0.d();
+    			if (if_block1) if_block1.d();
+    			/*div_binding*/ ctx[45](null);
+    			mounted = false;
+    			run_all(dispose);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_fragment$2.name,
+    		type: "component",
+    		source: "",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function index(el) {
+    	if (!el) return -1;
+    	var i = 0;
+
+    	while (el = el.previousElementSibling) {
+    		i++;
+    	}
+
+    	return i;
+    }
+
+    /**
+     * noramlise a mouse or touch event to return the
+     * client (x/y) object for that event
+     * @param {event} e a mouse/touch event to normalise
+     * @returns {object} normalised event client object (x,y)
+     **/
+    function normalisedClient(e) {
+    	if (e.type.includes("touch")) {
+    		return e.touches[0];
+    	} else {
+    		return e;
+    	}
+    }
+
+    function instance$2($$self, $$props, $$invalidate) {
+    	let percentOf;
+    	let clampValue;
+    	let alignValueToStep;
+
+    	let $springPositions,
+    		$$unsubscribe_springPositions = noop,
+    		$$subscribe_springPositions = () => ($$unsubscribe_springPositions(), $$unsubscribe_springPositions = subscribe(springPositions, $$value => $$invalidate(26, $springPositions = $$value)), springPositions);
+
+    	$$self.$$.on_destroy.push(() => $$unsubscribe_springPositions());
+    	let { $$slots: slots = {}, $$scope } = $$props;
+    	validate_slots('RangeSlider', slots, []);
+    	let { range = false } = $$props;
+    	let { pushy = false } = $$props;
+    	let { min = 0 } = $$props;
+    	let { max = 100 } = $$props;
+    	let { step = 1 } = $$props;
+    	let { values = [(max + min) / 2] } = $$props;
+    	let { vertical = false } = $$props;
+    	let { float = false } = $$props;
+    	let { hover = true } = $$props;
+    	let { disabled = false } = $$props;
+    	let { pips = false } = $$props;
+    	let { pipstep = undefined } = $$props;
+    	let { all = undefined } = $$props;
+    	let { first = undefined } = $$props;
+    	let { last = undefined } = $$props;
+    	let { rest = undefined } = $$props;
+    	let { id = undefined } = $$props;
+    	let { prefix = "" } = $$props;
+    	let { suffix = "" } = $$props;
+    	let { formatter = (v, i) => v } = $$props;
+    	let { handleFormatter = formatter } = $$props;
+    	let { precision = 2 } = $$props;
+    	let { springValues = { stiffness: 0.15, damping: 0.4 } } = $$props;
+
+    	// prepare dispatched events
+    	const dispatch = createEventDispatcher();
+
+    	// dom references
+    	let slider;
+
+    	// state management
+    	let valueLength = 0;
+
+    	let focus = false;
+    	let handleActivated = false;
+    	let handlePressed = false;
+    	let keyboardActive = false;
+    	let activeHandle = values.length - 1;
+    	let startValue;
+    	let previousValue;
+
+    	// copy the initial values in to a spring function which
+    	// will update every time the values array is modified
+    	let springPositions;
+
+    	
+
+    	/**
+     * check if an element is a handle on the slider
+     * @param {object} el dom object reference we want to check
+     * @returns {boolean}
+     **/
+    	function targetIsHandle(el) {
+    		const handles = slider.querySelectorAll(".handle");
+    		const isHandle = Array.prototype.includes.call(handles, el);
+    		const isChild = Array.prototype.some.call(handles, e => e.contains(el));
+    		return isHandle || isChild;
+    	}
+
+    	/**
+     * trim the values array based on whether the property
+     * for 'range' is 'min', 'max', or truthy. This is because we
+     * do not want more than one handle for a min/max range, and we do
+     * not want more than two handles for a true range.
+     * @param {array} values the input values for the rangeSlider
+     * @return {array} the range array for creating a rangeSlider
+     **/
+    	function trimRange(values) {
+    		if (range === "min" || range === "max") {
+    			return values.slice(0, 1);
+    		} else if (range) {
+    			return values.slice(0, 2);
+    		} else {
+    			return values;
+    		}
+    	}
+
+    	/**
+     * helper to return the slider dimensions for finding
+     * the closest handle to user interaction
+     * @return {object} the range slider DOM client rect
+     **/
+    	function getSliderDimensions() {
+    		return slider.getBoundingClientRect();
+    	}
+
+    	/**
+     * helper to return closest handle to user interaction
+     * @param {object} clientPos the client{x,y} positions to check against
+     * @return {number} the index of the closest handle to clientPos
+     **/
+    	function getClosestHandle(clientPos) {
+    		// first make sure we have the latest dimensions
+    		// of the slider, as it may have changed size
+    		const dims = getSliderDimensions();
+
+    		// calculate the interaction position, percent and value
+    		let hPos = 0;
+
+    		let hPercent = 0;
+    		let hVal = 0;
+
+    		if (vertical) {
+    			hPos = clientPos.clientY - dims.top;
+    			hPercent = hPos / dims.height * 100;
+    			hVal = (max - min) / 100 * hPercent + min;
+    		} else {
+    			hPos = clientPos.clientX - dims.left;
+    			hPercent = hPos / dims.width * 100;
+    			hVal = (max - min) / 100 * hPercent + min;
+    		}
+
+    		let closest;
+
+    		// if we have a range, and the handles are at the same
+    		// position, we want a simple check if the interaction
+    		// value is greater than return the second handle
+    		if (range === true && values[0] === values[1]) {
+    			if (hVal > values[1]) {
+    				return 1;
+    			} else {
+    				return 0;
+    			}
+    		} else // we sort the handles values, and return the first one closest
+    		// to the interaction value
+    		{
+    			closest = values.indexOf([...values].sort((a, b) => Math.abs(hVal - a) - Math.abs(hVal - b))[0]); // if there are multiple handles, and not a range, then
+    		}
+
+    		return closest;
+    	}
+
+    	/**
+     * take the interaction position on the slider, convert
+     * it to a value on the range, and then send that value
+     * through to the moveHandle() method to set the active
+     * handle's position
+     * @param {object} clientPos the client{x,y} of the interaction
+     **/
+    	function handleInteract(clientPos) {
+    		// first make sure we have the latest dimensions
+    		// of the slider, as it may have changed size
+    		const dims = getSliderDimensions();
+
+    		// calculate the interaction position, percent and value
+    		let hPos = 0;
+
+    		let hPercent = 0;
+    		let hVal = 0;
+
+    		if (vertical) {
+    			hPos = clientPos.clientY - dims.top;
+    			hPercent = hPos / dims.height * 100;
+    			hVal = (max - min) / 100 * hPercent + min;
+    		} else {
+    			hPos = clientPos.clientX - dims.left;
+    			hPercent = hPos / dims.width * 100;
+    			hVal = (max - min) / 100 * hPercent + min;
+    		}
+
+    		// move handle to the value
+    		moveHandle(activeHandle, hVal);
+    	}
+
+    	/**
+     * move a handle to a specific value, respecting the clamp/align rules
+     * @param {number} index the index of the handle we want to move
+     * @param {number} value the value to move the handle to
+     * @return {number} the value that was moved to (after alignment/clamping)
+     **/
+    	function moveHandle(index, value) {
+    		// align & clamp the value so we're not doing extra
+    		// calculation on an out-of-range value down below
+    		value = alignValueToStep(value);
+
+    		// if this is a range slider
+    		if (range) {
+    			// restrict the handles of a range-slider from
+    			// going past one-another unless "pushy" is true
+    			if (index === 0 && value > values[1]) {
+    				if (pushy) {
+    					$$invalidate(0, values[1] = value, values);
+    				} else {
+    					value = values[1];
+    				}
+    			} else if (index === 1 && value < values[0]) {
+    				if (pushy) {
+    					$$invalidate(0, values[0] = value, values);
+    				} else {
+    					value = values[0];
+    				}
+    			}
+    		}
+
+    		// if the value has changed, update it
+    		if (values[index] !== value) {
+    			$$invalidate(0, values[index] = value, values);
+    		}
+
+    		// fire the change event when the handle moves,
+    		// and store the previous value for the next time
+    		if (previousValue !== value) {
+    			eChange();
+    			previousValue = value;
+    		}
+    	}
+
+    	/**
+     * helper to find the beginning range value for use with css style
+     * @param {array} values the input values for the rangeSlider
+     * @return {number} the beginning of the range
+     **/
+    	function rangeStart(values) {
+    		if (range === "min") {
+    			return 0;
+    		} else {
+    			return values[0];
+    		}
+    	}
+
+    	/**
+     * helper to find the ending range value for use with css style
+     * @param {array} values the input values for the rangeSlider
+     * @return {number} the end of the range
+     **/
+    	function rangeEnd(values) {
+    		if (range === "max") {
+    			return 0;
+    		} else if (range === "min") {
+    			return 100 - values[0];
+    		} else {
+    			return 100 - values[1];
+    		}
+    	}
+
+    	/**
+     * when the user has unfocussed (blurred) from the
+     * slider, deactivated all handles
+     * @param {event} e the event from browser
+     **/
+    	function sliderBlurHandle(e) {
+    		if (keyboardActive) {
+    			$$invalidate(23, focus = false);
+    			handleActivated = false;
+    			$$invalidate(24, handlePressed = false);
+    		}
+    	}
+
+    	/**
+     * when the user focusses the handle of a slider
+     * set it to be active
+     * @param {event} e the event from browser
+     **/
+    	function sliderFocusHandle(e) {
+    		if (!disabled) {
+    			$$invalidate(25, activeHandle = index(e.target));
+    			$$invalidate(23, focus = true);
+    		}
+    	}
+
+    	/**
+     * handle the keyboard accessible features by checking the
+     * input type, and modfier key then moving handle by appropriate amount
+     * @param {event} e the event from browser
+     **/
+    	function sliderKeydown(e) {
+    		if (!disabled) {
+    			const handle = index(e.target);
+    			let jump = e.ctrlKey || e.metaKey || e.shiftKey ? step * 10 : step;
+    			let prevent = false;
+
+    			switch (e.key) {
+    				case "PageDown":
+    					jump *= 10;
+    				case "ArrowRight":
+    				case "ArrowUp":
+    					moveHandle(handle, values[handle] + jump);
+    					prevent = true;
+    					break;
+    				case "PageUp":
+    					jump *= 10;
+    				case "ArrowLeft":
+    				case "ArrowDown":
+    					moveHandle(handle, values[handle] - jump);
+    					prevent = true;
+    					break;
+    				case "Home":
+    					moveHandle(handle, min);
+    					prevent = true;
+    					break;
+    				case "End":
+    					moveHandle(handle, max);
+    					prevent = true;
+    					break;
+    			}
+
+    			if (prevent) {
+    				e.preventDefault();
+    				e.stopPropagation();
+    			}
+    		}
+    	}
+
+    	/**
+     * function to run when the user touches
+     * down on the slider element anywhere
+     * @param {event} e the event from browser
+     **/
+    	function sliderInteractStart(e) {
+    		if (!disabled) {
+    			const clientPos = normalisedClient(e);
+
+    			// set the closest handle as active
+    			$$invalidate(23, focus = true);
+
+    			handleActivated = true;
+    			$$invalidate(24, handlePressed = true);
+    			$$invalidate(25, activeHandle = getClosestHandle(clientPos));
+
+    			// fire the start event
+    			startValue = previousValue = alignValueToStep(values[activeHandle]);
+
+    			eStart();
+
+    			// for touch devices we want the handle to instantly
+    			// move to the position touched for more responsive feeling
+    			if (e.type === "touchstart") {
+    				handleInteract(clientPos);
+    			}
+    		}
+    	}
+
+    	/**
+     * function to run when the user stops touching
+     * down on the slider element anywhere
+     * @param {event} e the event from browser
+     **/
+    	function sliderInteractEnd(e) {
+    		// fire the stop event for touch devices
+    		if (e.type === "touchend") {
+    			eStop();
+    		}
+
+    		$$invalidate(24, handlePressed = false);
+    	}
+
+    	/**
+     * unfocus the slider if the user clicked off of
+     * it, somewhere else on the screen
+     * @param {event} e the event from browser
+     **/
+    	function bodyInteractStart(e) {
+    		keyboardActive = false;
+
+    		if (focus && e.target !== slider && !slider.contains(e.target)) {
+    			$$invalidate(23, focus = false);
+    		}
+    	}
+
+    	/**
+     * send the clientX through to handle the interaction
+     * whenever the user moves acros screen while active
+     * @param {event} e the event from browser
+     **/
+    	function bodyInteract(e) {
+    		if (!disabled) {
+    			if (handleActivated) {
+    				handleInteract(normalisedClient(e));
+    			}
+    		}
+    	}
+
+    	/**
+     * if user triggers mouseup on the body while
+     * a handle is active (without moving) then we
+     * trigger an interact event there
+     * @param {event} e the event from browser
+     **/
+    	function bodyMouseUp(e) {
+    		if (!disabled) {
+    			const el = e.target;
+
+    			// this only works if a handle is active, which can
+    			// only happen if there was sliderInteractStart triggered
+    			// on the slider, already
+    			if (handleActivated) {
+    				if (el === slider || slider.contains(el)) {
+    					$$invalidate(23, focus = true);
+
+    					if (!targetIsHandle(el)) {
+    						handleInteract(normalisedClient(e));
+    					}
+    				}
+
+    				// fire the stop event for mouse device
+    				// when the body is triggered with an active handle
+    				eStop();
+    			}
+    		}
+
+    		handleActivated = false;
+    		$$invalidate(24, handlePressed = false);
+    	}
+
+    	/**
+     * if user triggers touchend on the body then we
+     * defocus the slider completely
+     * @param {event} e the event from browser
+     **/
+    	function bodyTouchEnd(e) {
+    		handleActivated = false;
+    		$$invalidate(24, handlePressed = false);
+    	}
+
+    	function bodyKeyDown(e) {
+    		if (!disabled) {
+    			if (e.target === slider || slider.contains(e.target)) {
+    				keyboardActive = true;
+    			}
+    		}
+    	}
+
+    	function eStart() {
+    		!disabled && dispatch("start", {
+    			activeHandle,
+    			value: startValue,
+    			values: values.map(v => alignValueToStep(v))
+    		});
+    	}
+
+    	function eStop() {
+    		!disabled && dispatch("stop", {
+    			activeHandle,
+    			startValue,
+    			value: values[activeHandle],
+    			values: values.map(v => alignValueToStep(v))
+    		});
+    	}
+
+    	function eChange() {
+    		!disabled && dispatch("change", {
+    			activeHandle,
+    			startValue,
+    			previousValue: typeof previousValue === "undefined"
+    			? startValue
+    			: previousValue,
+    			value: values[activeHandle],
+    			values: values.map(v => alignValueToStep(v))
+    		});
+    	}
+
+    	const writable_props = [
+    		'range',
+    		'pushy',
+    		'min',
+    		'max',
+    		'step',
+    		'values',
+    		'vertical',
+    		'float',
+    		'hover',
+    		'disabled',
+    		'pips',
+    		'pipstep',
+    		'all',
+    		'first',
+    		'last',
+    		'rest',
+    		'id',
+    		'prefix',
+    		'suffix',
+    		'formatter',
+    		'handleFormatter',
+    		'precision',
+    		'springValues'
+    	];
+
+    	Object.keys($$props).forEach(key => {
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console_1$2.warn(`<RangeSlider> was created with unknown prop '${key}'`);
+    	});
+
+    	function div_binding($$value) {
+    		binding_callbacks[$$value ? 'unshift' : 'push'](() => {
+    			slider = $$value;
+    			$$invalidate(22, slider);
+    		});
+    	}
+
+    	$$self.$$set = $$props => {
+    		if ('range' in $$props) $$invalidate(1, range = $$props.range);
+    		if ('pushy' in $$props) $$invalidate(39, pushy = $$props.pushy);
+    		if ('min' in $$props) $$invalidate(2, min = $$props.min);
+    		if ('max' in $$props) $$invalidate(3, max = $$props.max);
+    		if ('step' in $$props) $$invalidate(4, step = $$props.step);
+    		if ('values' in $$props) $$invalidate(0, values = $$props.values);
+    		if ('vertical' in $$props) $$invalidate(5, vertical = $$props.vertical);
+    		if ('float' in $$props) $$invalidate(6, float = $$props.float);
+    		if ('hover' in $$props) $$invalidate(7, hover = $$props.hover);
+    		if ('disabled' in $$props) $$invalidate(8, disabled = $$props.disabled);
+    		if ('pips' in $$props) $$invalidate(9, pips = $$props.pips);
+    		if ('pipstep' in $$props) $$invalidate(10, pipstep = $$props.pipstep);
+    		if ('all' in $$props) $$invalidate(11, all = $$props.all);
+    		if ('first' in $$props) $$invalidate(12, first = $$props.first);
+    		if ('last' in $$props) $$invalidate(13, last = $$props.last);
+    		if ('rest' in $$props) $$invalidate(14, rest = $$props.rest);
+    		if ('id' in $$props) $$invalidate(15, id = $$props.id);
+    		if ('prefix' in $$props) $$invalidate(16, prefix = $$props.prefix);
+    		if ('suffix' in $$props) $$invalidate(17, suffix = $$props.suffix);
+    		if ('formatter' in $$props) $$invalidate(18, formatter = $$props.formatter);
+    		if ('handleFormatter' in $$props) $$invalidate(19, handleFormatter = $$props.handleFormatter);
+    		if ('precision' in $$props) $$invalidate(40, precision = $$props.precision);
+    		if ('springValues' in $$props) $$invalidate(41, springValues = $$props.springValues);
+    	};
+
+    	$$self.$capture_state = () => ({
+    		spring,
+    		createEventDispatcher,
+    		RangePips,
+    		range,
+    		pushy,
+    		min,
+    		max,
+    		step,
+    		values,
+    		vertical,
+    		float,
+    		hover,
+    		disabled,
+    		pips,
+    		pipstep,
+    		all,
+    		first,
+    		last,
+    		rest,
+    		id,
+    		prefix,
+    		suffix,
+    		formatter,
+    		handleFormatter,
+    		precision,
+    		springValues,
+    		dispatch,
+    		slider,
+    		valueLength,
+    		focus,
+    		handleActivated,
+    		handlePressed,
+    		keyboardActive,
+    		activeHandle,
+    		startValue,
+    		previousValue,
+    		springPositions,
+    		index,
+    		normalisedClient,
+    		targetIsHandle,
+    		trimRange,
+    		getSliderDimensions,
+    		getClosestHandle,
+    		handleInteract,
+    		moveHandle,
+    		rangeStart,
+    		rangeEnd,
+    		sliderBlurHandle,
+    		sliderFocusHandle,
+    		sliderKeydown,
+    		sliderInteractStart,
+    		sliderInteractEnd,
+    		bodyInteractStart,
+    		bodyInteract,
+    		bodyMouseUp,
+    		bodyTouchEnd,
+    		bodyKeyDown,
+    		eStart,
+    		eStop,
+    		eChange,
+    		alignValueToStep,
+    		clampValue,
+    		percentOf,
+    		$springPositions
+    	});
+
+    	$$self.$inject_state = $$props => {
+    		if ('range' in $$props) $$invalidate(1, range = $$props.range);
+    		if ('pushy' in $$props) $$invalidate(39, pushy = $$props.pushy);
+    		if ('min' in $$props) $$invalidate(2, min = $$props.min);
+    		if ('max' in $$props) $$invalidate(3, max = $$props.max);
+    		if ('step' in $$props) $$invalidate(4, step = $$props.step);
+    		if ('values' in $$props) $$invalidate(0, values = $$props.values);
+    		if ('vertical' in $$props) $$invalidate(5, vertical = $$props.vertical);
+    		if ('float' in $$props) $$invalidate(6, float = $$props.float);
+    		if ('hover' in $$props) $$invalidate(7, hover = $$props.hover);
+    		if ('disabled' in $$props) $$invalidate(8, disabled = $$props.disabled);
+    		if ('pips' in $$props) $$invalidate(9, pips = $$props.pips);
+    		if ('pipstep' in $$props) $$invalidate(10, pipstep = $$props.pipstep);
+    		if ('all' in $$props) $$invalidate(11, all = $$props.all);
+    		if ('first' in $$props) $$invalidate(12, first = $$props.first);
+    		if ('last' in $$props) $$invalidate(13, last = $$props.last);
+    		if ('rest' in $$props) $$invalidate(14, rest = $$props.rest);
+    		if ('id' in $$props) $$invalidate(15, id = $$props.id);
+    		if ('prefix' in $$props) $$invalidate(16, prefix = $$props.prefix);
+    		if ('suffix' in $$props) $$invalidate(17, suffix = $$props.suffix);
+    		if ('formatter' in $$props) $$invalidate(18, formatter = $$props.formatter);
+    		if ('handleFormatter' in $$props) $$invalidate(19, handleFormatter = $$props.handleFormatter);
+    		if ('precision' in $$props) $$invalidate(40, precision = $$props.precision);
+    		if ('springValues' in $$props) $$invalidate(41, springValues = $$props.springValues);
+    		if ('slider' in $$props) $$invalidate(22, slider = $$props.slider);
+    		if ('valueLength' in $$props) $$invalidate(42, valueLength = $$props.valueLength);
+    		if ('focus' in $$props) $$invalidate(23, focus = $$props.focus);
+    		if ('handleActivated' in $$props) handleActivated = $$props.handleActivated;
+    		if ('handlePressed' in $$props) $$invalidate(24, handlePressed = $$props.handlePressed);
+    		if ('keyboardActive' in $$props) keyboardActive = $$props.keyboardActive;
+    		if ('activeHandle' in $$props) $$invalidate(25, activeHandle = $$props.activeHandle);
+    		if ('startValue' in $$props) startValue = $$props.startValue;
+    		if ('previousValue' in $$props) previousValue = $$props.previousValue;
+    		if ('springPositions' in $$props) $$subscribe_springPositions($$invalidate(20, springPositions = $$props.springPositions));
+    		if ('alignValueToStep' in $$props) $$invalidate(43, alignValueToStep = $$props.alignValueToStep);
+    		if ('clampValue' in $$props) $$invalidate(44, clampValue = $$props.clampValue);
+    		if ('percentOf' in $$props) $$invalidate(21, percentOf = $$props.percentOf);
+    	};
+
+    	if ($$props && "$$inject" in $$props) {
+    		$$self.$inject_state($$props.$$inject);
+    	}
+
+    	$$self.$$.update = () => {
+    		if ($$self.$$.dirty[0] & /*min, max*/ 12) {
+    			/**
+     * clamp a value from the range so that it always
+     * falls within the min/max values
+     * @param {number} val the value to clamp
+     * @return {number} the value after it's been clamped
+     **/
+    			$$invalidate(44, clampValue = function (val) {
+    				// return the min/max if outside of that range
+    				return val <= min ? min : val >= max ? max : val;
+    			});
+    		}
+
+    		if ($$self.$$.dirty[0] & /*min, max, step*/ 28 | $$self.$$.dirty[1] & /*clampValue, precision*/ 8704) {
+    			/**
+     * align the value with the steps so that it
+     * always sits on the closest (above/below) step
+     * @param {number} val the value to align
+     * @return {number} the value after it's been aligned
+     **/
+    			$$invalidate(43, alignValueToStep = function (val) {
+    				// sanity check for performance
+    				if (val <= min) {
+    					return min;
+    				} else if (val >= max) {
+    					return max;
+    				}
+
+    				// find the middle-point between steps
+    				// and see if the value is closer to the
+    				// next step, or previous step
+    				let remainder = (val - min) % step;
+
+    				let aligned = val - remainder;
+
+    				if (Math.abs(remainder) * 2 >= step) {
+    					aligned += remainder > 0 ? step : -step;
+    				}
+
+    				// make sure the value is within acceptable limits
+    				aligned = clampValue(aligned);
+
+    				// make sure the returned value is set to the precision desired
+    				// this is also because javascript often returns weird floats
+    				// when dealing with odd numbers and percentages
+    				return parseFloat(aligned.toFixed(precision));
+    			});
+    		}
+
+    		if ($$self.$$.dirty[0] & /*min, max*/ 12 | $$self.$$.dirty[1] & /*precision*/ 512) {
+    			/**
+     * take in a value, and then calculate that value's percentage
+     * of the overall range (min-max);
+     * @param {number} val the value we're getting percent for
+     * @return {number} the percentage value
+     **/
+    			$$invalidate(21, percentOf = function (val) {
+    				let perc = (val - min) / (max - min) * 100;
+
+    				if (isNaN(perc) || perc <= 0) {
+    					return 0;
+    				} else if (perc >= 100) {
+    					return 100;
+    				} else {
+    					return parseFloat(perc.toFixed(precision));
+    				}
+    			});
+    		}
+
+    		if ($$self.$$.dirty[0] & /*values, max, min, percentOf, springPositions*/ 3145741 | $$self.$$.dirty[1] & /*alignValueToStep, valueLength, springValues*/ 7168) {
+    			{
+    				// check that "values" is an array, or set it as array
+    				// to prevent any errors in springs, or range trimming
+    				if (!Array.isArray(values)) {
+    					$$invalidate(0, values = [(max + min) / 2]);
+    					console.error("'values' prop should be an Array (https://github.com/simeydotme/svelte-range-slider-pips#slider-props)");
+    				}
+
+    				// trim the range so it remains as a min/max (only 2 handles)
+    				// and also align the handles to the steps
+    				$$invalidate(0, values = trimRange(values.map(v => alignValueToStep(v))));
+
+    				// check if the valueLength (length of values[]) has changed,
+    				// because if so we need to re-seed the spring function with the
+    				// new values array.
+    				if (valueLength !== values.length) {
+    					// set the initial spring values when the slider initialises,
+    					// or when values array length has changed
+    					$$subscribe_springPositions($$invalidate(20, springPositions = spring(values.map(v => percentOf(v)), springValues)));
+    				} else {
+    					// update the value of the spring function for animated handles
+    					// whenever the values has updated
+    					springPositions.set(values.map(v => percentOf(v)));
+    				}
+
+    				// set the valueLength for the next check
+    				$$invalidate(42, valueLength = values.length);
+    			}
+    		}
+    	};
+
+    	return [
+    		values,
+    		range,
+    		min,
+    		max,
+    		step,
+    		vertical,
+    		float,
+    		hover,
+    		disabled,
+    		pips,
+    		pipstep,
+    		all,
+    		first,
+    		last,
+    		rest,
+    		id,
+    		prefix,
+    		suffix,
+    		formatter,
+    		handleFormatter,
+    		springPositions,
+    		percentOf,
+    		slider,
+    		focus,
+    		handlePressed,
+    		activeHandle,
+    		$springPositions,
+    		rangeStart,
+    		rangeEnd,
+    		sliderBlurHandle,
+    		sliderFocusHandle,
+    		sliderKeydown,
+    		sliderInteractStart,
+    		sliderInteractEnd,
+    		bodyInteractStart,
+    		bodyInteract,
+    		bodyMouseUp,
+    		bodyTouchEnd,
+    		bodyKeyDown,
+    		pushy,
+    		precision,
+    		springValues,
+    		valueLength,
+    		alignValueToStep,
+    		clampValue,
+    		div_binding
+    	];
+    }
+
+    class RangeSlider extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+
+    		init(
+    			this,
+    			options,
+    			instance$2,
+    			create_fragment$2,
+    			safe_not_equal,
+    			{
+    				range: 1,
+    				pushy: 39,
+    				min: 2,
+    				max: 3,
+    				step: 4,
+    				values: 0,
+    				vertical: 5,
+    				float: 6,
+    				hover: 7,
+    				disabled: 8,
+    				pips: 9,
+    				pipstep: 10,
+    				all: 11,
+    				first: 12,
+    				last: 13,
+    				rest: 14,
+    				id: 15,
+    				prefix: 16,
+    				suffix: 17,
+    				formatter: 18,
+    				handleFormatter: 19,
+    				precision: 40,
+    				springValues: 41
+    			},
+    			null,
+    			[-1, -1, -1]
+    		);
+
+    		dispatch_dev("SvelteRegisterComponent", {
+    			component: this,
+    			tagName: "RangeSlider",
+    			options,
+    			id: create_fragment$2.name
+    		});
+    	}
+
+    	get range() {
+    		throw new Error("<RangeSlider>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set range(value) {
+    		throw new Error("<RangeSlider>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get pushy() {
+    		throw new Error("<RangeSlider>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set pushy(value) {
+    		throw new Error("<RangeSlider>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get min() {
+    		throw new Error("<RangeSlider>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set min(value) {
+    		throw new Error("<RangeSlider>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get max() {
+    		throw new Error("<RangeSlider>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set max(value) {
+    		throw new Error("<RangeSlider>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get step() {
+    		throw new Error("<RangeSlider>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set step(value) {
+    		throw new Error("<RangeSlider>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get values() {
+    		throw new Error("<RangeSlider>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set values(value) {
+    		throw new Error("<RangeSlider>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get vertical() {
+    		throw new Error("<RangeSlider>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set vertical(value) {
+    		throw new Error("<RangeSlider>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get float() {
+    		throw new Error("<RangeSlider>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set float(value) {
+    		throw new Error("<RangeSlider>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get hover() {
+    		throw new Error("<RangeSlider>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set hover(value) {
+    		throw new Error("<RangeSlider>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get disabled() {
+    		throw new Error("<RangeSlider>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set disabled(value) {
+    		throw new Error("<RangeSlider>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get pips() {
+    		throw new Error("<RangeSlider>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set pips(value) {
+    		throw new Error("<RangeSlider>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get pipstep() {
+    		throw new Error("<RangeSlider>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set pipstep(value) {
+    		throw new Error("<RangeSlider>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get all() {
+    		throw new Error("<RangeSlider>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set all(value) {
+    		throw new Error("<RangeSlider>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get first() {
+    		throw new Error("<RangeSlider>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set first(value) {
+    		throw new Error("<RangeSlider>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get last() {
+    		throw new Error("<RangeSlider>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set last(value) {
+    		throw new Error("<RangeSlider>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get rest() {
+    		throw new Error("<RangeSlider>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set rest(value) {
+    		throw new Error("<RangeSlider>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get id() {
+    		throw new Error("<RangeSlider>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set id(value) {
+    		throw new Error("<RangeSlider>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get prefix() {
+    		throw new Error("<RangeSlider>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set prefix(value) {
+    		throw new Error("<RangeSlider>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get suffix() {
+    		throw new Error("<RangeSlider>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set suffix(value) {
+    		throw new Error("<RangeSlider>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get formatter() {
+    		throw new Error("<RangeSlider>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set formatter(value) {
+    		throw new Error("<RangeSlider>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get handleFormatter() {
+    		throw new Error("<RangeSlider>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set handleFormatter(value) {
+    		throw new Error("<RangeSlider>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get precision() {
+    		throw new Error("<RangeSlider>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set precision(value) {
+    		throw new Error("<RangeSlider>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get springValues() {
+    		throw new Error("<RangeSlider>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set springValues(value) {
+    		throw new Error("<RangeSlider>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+    }
+
+    /* src/components/Table.svelte generated by Svelte v3.43.1 */
 
     const { console: console_1$1 } = globals;
-    const file$1 = "src/components/Options.svelte";
+    const file$1 = "src/components/Table.svelte";
 
     function get_each_context(ctx, list, i) {
     	const child_ctx = ctx.slice();
@@ -2455,7 +5563,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (66:6) {#each getDropdownOptions() as option}
+    // (77:12) {#each getDropdownOptions() as option}
     function create_each_block(ctx) {
     	let option;
     	let t_value = /*option*/ ctx[16] + "";
@@ -2467,7 +5575,7 @@ var app = (function () {
     			t = text$1(t_value);
     			option.__value = /*option*/ ctx[16];
     			option.value = option.__value;
-    			add_location(option, file$1, 66, 8, 1798);
+    			add_location(option, file$1, 77, 14, 2158);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, option, anchor);
@@ -2483,7 +5591,7 @@ var app = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(66:6) {#each getDropdownOptions() as option}",
+    		source: "(77:12) {#each getDropdownOptions() as option}",
     		ctx
     	});
 
@@ -2491,35 +5599,49 @@ var app = (function () {
     }
 
     function create_fragment$1(ctx) {
-    	let div2;
-    	let div0;
+    	let table;
+    	let thead;
+    	let tr0;
+    	let th0;
     	let t0;
-    	let t1_value = /*activePercentage*/ ctx[2] * 0.00001 + "";
-    	let t1;
+    	let th1;
     	let t2;
-    	let div1;
-    	let select;
-    	let t3;
-    	let div3;
+    	let th2;
     	let t4;
-    	let t5;
+    	let th3;
     	let t6;
-    	let t7_value = /*getAttr*/ ctx[6]('gdp') + "";
-    	let t7;
+    	let th4;
     	let t8;
-    	let input;
+    	let tbody;
+    	let tr1;
+    	let th5;
+    	let div0;
+    	let select;
     	let t9;
-    	let br0;
-    	let t10;
-    	let div4;
-    	let t11;
+    	let td0;
     	let t12;
+    	let td1;
+    	let rangeslider;
+    	let updating_values;
     	let t13;
-    	let br1;
+    	let td2;
     	let t14;
-    	let div5;
     	let t15;
     	let t16;
+    	let td3;
+    	let t17;
+    	let t18;
+    	let t19;
+    	let div2;
+    	let div1;
+    	let t20;
+    	let t21_value = /*activePercentage*/ ctx[2] * 0.00001 + "";
+    	let t21;
+    	let t22;
+    	let div3;
+    	let t23;
+    	let t24;
+    	let current;
     	let mounted;
     	let dispose;
     	let each_value = /*getDropdownOptions*/ ctx[5]();
@@ -2530,112 +5652,164 @@ var app = (function () {
     		each_blocks[i] = create_each_block(get_each_context(ctx, each_value, i));
     	}
 
+    	function rangeslider_values_binding(value) {
+    		/*rangeslider_values_binding*/ ctx[13](value);
+    	}
+
+    	let rangeslider_props = { id: "slider" };
+
+    	if (/*activePercentage*/ ctx[2] !== void 0) {
+    		rangeslider_props.values = /*activePercentage*/ ctx[2];
+    	}
+
+    	rangeslider = new RangeSlider({ props: rangeslider_props, $$inline: true });
+    	binding_callbacks.push(() => bind(rangeslider, 'values', rangeslider_values_binding));
+    	rangeslider.$on("change", /*change_handler_1*/ ctx[14]);
+
     	const block = {
     		c: function create() {
-    			div2 = element("div");
-    			div0 = element("div");
-    			t0 = text$1("activeP: ");
-    			t1 = text$1(t1_value);
+    			table = element("table");
+    			thead = element("thead");
+    			tr0 = element("tr");
+    			th0 = element("th");
+    			t0 = space();
+    			th1 = element("th");
+    			th1.textContent = "GDP";
     			t2 = space();
-    			div1 = element("div");
+    			th2 = element("th");
+    			th2.textContent = "% Contributed";
+    			t4 = space();
+    			th3 = element("th");
+    			th3.textContent = "$ Contributed";
+    			t6 = space();
+    			th4 = element("th");
+    			th4.textContent = "Remaining";
+    			t8 = space();
+    			tbody = element("tbody");
+    			tr1 = element("tr");
+    			th5 = element("th");
+    			div0 = element("div");
     			select = element("select");
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
     				each_blocks[i].c();
     			}
 
-    			t3 = space();
-    			div3 = element("div");
-    			t4 = text$1("Total: ");
-    			t5 = text$1(/*total*/ ctx[3]);
-    			t6 = text$1("\n  GDP: ");
-    			t7 = text$1(t7_value);
-    			t8 = space();
-    			input = element("input");
     			t9 = space();
-    			br0 = element("br");
-    			t10 = space();
-    			div4 = element("div");
-    			t11 = text$1("Contributed:");
-    			t12 = text$1(/*contributed*/ ctx[1]);
+    			td0 = element("td");
+    			td0.textContent = `GDP:${/*getAttr*/ ctx[6]('gdp')}`;
+    			t12 = space();
+    			td1 = element("td");
+    			create_component(rangeslider.$$.fragment);
     			t13 = space();
-    			br1 = element("br");
-    			t14 = space();
-    			div5 = element("div");
-    			t15 = text$1("Remaining: ");
-    			t16 = text$1(/*remaining*/ ctx[4]);
-    			add_location(div0, file$1, 57, 2, 1528);
-    			attr_dev(select, "class", "input__select svelte-1wnvzx2");
+    			td2 = element("td");
+    			t14 = text$1("Contributed:");
+    			t15 = text$1(/*contributed*/ ctx[1]);
+    			t16 = space();
+    			td3 = element("td");
+    			t17 = text$1("Remaining: ");
+    			t18 = text$1(/*remaining*/ ctx[4]);
+    			t19 = space();
+    			div2 = element("div");
+    			div1 = element("div");
+    			t20 = text$1("activeP: ");
+    			t21 = text$1(t21_value);
+    			t22 = space();
+    			div3 = element("div");
+    			t23 = text$1("Total: ");
+    			t24 = text$1(/*total*/ ctx[3]);
+    			add_location(th0, file$1, 60, 6, 1695);
+    			add_location(th1, file$1, 61, 6, 1711);
+    			add_location(th2, file$1, 62, 6, 1730);
+    			add_location(th3, file$1, 63, 6, 1759);
+    			add_location(th4, file$1, 64, 6, 1788);
+    			attr_dev(tr0, "class", "interactive__subheading");
+    			add_location(tr0, file$1, 59, 4, 1652);
+    			add_location(thead, file$1, 58, 2, 1640);
+    			attr_dev(select, "class", "input__select");
     			if (/*activeCountry*/ ctx[0] === void 0) add_render_callback(() => /*select_change_handler*/ ctx[11].call(select));
-    			add_location(select, file$1, 60, 4, 1620);
-    			attr_dev(div1, "class", "interactive__dropdown");
-    			add_location(div1, file$1, 59, 2, 1580);
-    			attr_dev(div2, "class", "interactive__options svelte-1wnvzx2");
-    			add_location(div2, file$1, 56, 0, 1491);
-    			add_location(div3, file$1, 71, 0, 1885);
-    			attr_dev(input, "type", "range");
-    			attr_dev(input, "min", "0");
-    			attr_dev(input, "max", "100");
-    			add_location(input, file$1, 76, 0, 1940);
-    			add_location(br0, file$1, 83, 0, 2058);
-    			add_location(div4, file$1, 84, 0, 2065);
-    			add_location(br1, file$1, 85, 0, 2102);
-    			add_location(div5, file$1, 86, 0, 2109);
+    			add_location(select, file$1, 71, 10, 1944);
+    			attr_dev(div0, "class", "interactive__dropdown");
+    			add_location(div0, file$1, 70, 8, 1898);
+    			attr_dev(th5, "class", "interactive__subheading");
+    			add_location(th5, file$1, 69, 6, 1853);
+    			add_location(td0, file$1, 82, 6, 2274);
+    			add_location(td1, file$1, 83, 6, 2310);
+    			add_location(td2, file$1, 93, 6, 2620);
+    			add_location(td3, file$1, 96, 6, 2677);
+    			add_location(tr1, file$1, 68, 4, 1842);
+    			add_location(tbody, file$1, 67, 2, 1830);
+    			attr_dev(table, "class", "interactive__table interactive__table--large");
+    			attr_dev(table, "cellpadding", "0");
+    			attr_dev(table, "cellspacing", "0");
+    			add_location(table, file$1, 57, 0, 1545);
+    			add_location(div1, file$1, 101, 2, 2777);
+    			attr_dev(div2, "class", "interactive__options");
+    			add_location(div2, file$1, 100, 0, 2740);
+    			add_location(div3, file$1, 105, 0, 2837);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, div2, anchor);
-    			append_dev(div2, div0);
-    			append_dev(div0, t0);
-    			append_dev(div0, t1);
-    			append_dev(div2, t2);
-    			append_dev(div2, div1);
-    			append_dev(div1, select);
+    			insert_dev(target, table, anchor);
+    			append_dev(table, thead);
+    			append_dev(thead, tr0);
+    			append_dev(tr0, th0);
+    			append_dev(tr0, t0);
+    			append_dev(tr0, th1);
+    			append_dev(tr0, t2);
+    			append_dev(tr0, th2);
+    			append_dev(tr0, t4);
+    			append_dev(tr0, th3);
+    			append_dev(tr0, t6);
+    			append_dev(tr0, th4);
+    			append_dev(table, t8);
+    			append_dev(table, tbody);
+    			append_dev(tbody, tr1);
+    			append_dev(tr1, th5);
+    			append_dev(th5, div0);
+    			append_dev(div0, select);
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
     				each_blocks[i].m(select, null);
     			}
 
     			select_option(select, /*activeCountry*/ ctx[0]);
-    			insert_dev(target, t3, anchor);
+    			append_dev(tr1, t9);
+    			append_dev(tr1, td0);
+    			append_dev(tr1, t12);
+    			append_dev(tr1, td1);
+    			mount_component(rangeslider, td1, null);
+    			append_dev(tr1, t13);
+    			append_dev(tr1, td2);
+    			append_dev(td2, t14);
+    			append_dev(td2, t15);
+    			append_dev(tr1, t16);
+    			append_dev(tr1, td3);
+    			append_dev(td3, t17);
+    			append_dev(td3, t18);
+    			insert_dev(target, t19, anchor);
+    			insert_dev(target, div2, anchor);
+    			append_dev(div2, div1);
+    			append_dev(div1, t20);
+    			append_dev(div1, t21);
+    			insert_dev(target, t22, anchor);
     			insert_dev(target, div3, anchor);
-    			append_dev(div3, t4);
-    			append_dev(div3, t5);
-    			append_dev(div3, t6);
-    			append_dev(div3, t7);
-    			insert_dev(target, t8, anchor);
-    			insert_dev(target, input, anchor);
-    			set_input_value(input, /*activePercentage*/ ctx[2]);
-    			insert_dev(target, t9, anchor);
-    			insert_dev(target, br0, anchor);
-    			insert_dev(target, t10, anchor);
-    			insert_dev(target, div4, anchor);
-    			append_dev(div4, t11);
-    			append_dev(div4, t12);
-    			insert_dev(target, t13, anchor);
-    			insert_dev(target, br1, anchor);
-    			insert_dev(target, t14, anchor);
-    			insert_dev(target, div5, anchor);
-    			append_dev(div5, t15);
-    			append_dev(div5, t16);
+    			append_dev(div3, t23);
+    			append_dev(div3, t24);
+    			current = true;
 
     			if (!mounted) {
     				dispose = [
     					listen_dev(select, "change", /*select_change_handler*/ ctx[11]),
-    					listen_dev(select, "change", /*change_handler*/ ctx[12], false, false, false),
-    					listen_dev(input, "change", /*input_change_input_handler*/ ctx[13]),
-    					listen_dev(input, "input", /*input_change_input_handler*/ ctx[13]),
-    					listen_dev(input, "change", /*change_handler_1*/ ctx[14], false, false, false)
+    					listen_dev(select, "change", /*change_handler*/ ctx[12], false, false, false)
     				];
 
     				mounted = true;
     			}
     		},
     		p: function update(ctx, [dirty]) {
-    			if (dirty & /*activePercentage*/ 4 && t1_value !== (t1_value = /*activePercentage*/ ctx[2] * 0.00001 + "")) set_data_dev(t1, t1_value);
-
     			if (dirty & /*getDropdownOptions*/ 32) {
     				each_value = /*getDropdownOptions*/ ctx[5]();
     				validate_each_argument(each_value);
@@ -2664,32 +5838,37 @@ var app = (function () {
     				select_option(select, /*activeCountry*/ ctx[0]);
     			}
 
-    			if (dirty & /*total*/ 8) set_data_dev(t5, /*total*/ ctx[3]);
+    			const rangeslider_changes = {};
 
-    			if (dirty & /*activePercentage*/ 4) {
-    				set_input_value(input, /*activePercentage*/ ctx[2]);
+    			if (!updating_values && dirty & /*activePercentage*/ 4) {
+    				updating_values = true;
+    				rangeslider_changes.values = /*activePercentage*/ ctx[2];
+    				add_flush_callback(() => updating_values = false);
     			}
 
-    			if (dirty & /*contributed*/ 2) set_data_dev(t12, /*contributed*/ ctx[1]);
-    			if (dirty & /*remaining*/ 16) set_data_dev(t16, /*remaining*/ ctx[4]);
+    			rangeslider.$set(rangeslider_changes);
+    			if (!current || dirty & /*contributed*/ 2) set_data_dev(t15, /*contributed*/ ctx[1]);
+    			if (!current || dirty & /*remaining*/ 16) set_data_dev(t18, /*remaining*/ ctx[4]);
+    			if ((!current || dirty & /*activePercentage*/ 4) && t21_value !== (t21_value = /*activePercentage*/ ctx[2] * 0.00001 + "")) set_data_dev(t21, t21_value);
+    			if (!current || dirty & /*total*/ 8) set_data_dev(t24, /*total*/ ctx[3]);
     		},
-    		i: noop,
-    		o: noop,
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(rangeslider.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(rangeslider.$$.fragment, local);
+    			current = false;
+    		},
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div2);
+    			if (detaching) detach_dev(table);
     			destroy_each(each_blocks, detaching);
-    			if (detaching) detach_dev(t3);
+    			destroy_component(rangeslider);
+    			if (detaching) detach_dev(t19);
+    			if (detaching) detach_dev(div2);
+    			if (detaching) detach_dev(t22);
     			if (detaching) detach_dev(div3);
-    			if (detaching) detach_dev(t8);
-    			if (detaching) detach_dev(input);
-    			if (detaching) detach_dev(t9);
-    			if (detaching) detach_dev(br0);
-    			if (detaching) detach_dev(t10);
-    			if (detaching) detach_dev(div4);
-    			if (detaching) detach_dev(t13);
-    			if (detaching) detach_dev(br1);
-    			if (detaching) detach_dev(t14);
-    			if (detaching) detach_dev(div5);
     			mounted = false;
     			run_all(dispose);
     		}
@@ -2710,7 +5889,7 @@ var app = (function () {
     	let remaining;
     	let total;
     	let { $$slots: slots = {}, $$scope } = $$props;
-    	validate_slots('Options', slots, []);
+    	validate_slots('Table', slots, []);
     	let { activeCountry } = $$props;
     	let { allData } = $$props;
     	let { totalReq } = $$props;
@@ -2744,7 +5923,7 @@ var app = (function () {
     	const writable_props = ['activeCountry', 'allData', 'totalReq', 'contributed'];
 
     	Object.keys($$props).forEach(key => {
-    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console_1$1.warn(`<Options> was created with unknown prop '${key}'`);
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console_1$1.warn(`<Table> was created with unknown prop '${key}'`);
     	});
 
     	function select_change_handler() {
@@ -2755,8 +5934,8 @@ var app = (function () {
 
     	const change_handler = () => handleActiveCountry();
 
-    	function input_change_input_handler() {
-    		activePercentage = to_number(this.value);
+    	function rangeslider_values_binding(value) {
+    		activePercentage = value;
     		$$invalidate(2, activePercentage);
     	}
 
@@ -2770,6 +5949,7 @@ var app = (function () {
     	};
 
     	$$self.$capture_state = () => ({
+    		RangeSlider,
     		activeCountry,
     		allData,
     		totalReq,
@@ -2835,12 +6015,12 @@ var app = (function () {
     		totalReq,
     		select_change_handler,
     		change_handler,
-    		input_change_input_handler,
+    		rangeslider_values_binding,
     		change_handler_1
     	];
     }
 
-    class Options extends SvelteComponentDev {
+    class Table extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
 
@@ -2853,7 +6033,7 @@ var app = (function () {
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
-    			tagName: "Options",
+    			tagName: "Table",
     			options,
     			id: create_fragment$1.name
     		});
@@ -2862,61 +6042,61 @@ var app = (function () {
     		const props = options.props || {};
 
     		if (/*activeCountry*/ ctx[0] === undefined && !('activeCountry' in props)) {
-    			console_1$1.warn("<Options> was created without expected prop 'activeCountry'");
+    			console_1$1.warn("<Table> was created without expected prop 'activeCountry'");
     		}
 
     		if (/*allData*/ ctx[9] === undefined && !('allData' in props)) {
-    			console_1$1.warn("<Options> was created without expected prop 'allData'");
+    			console_1$1.warn("<Table> was created without expected prop 'allData'");
     		}
 
     		if (/*totalReq*/ ctx[10] === undefined && !('totalReq' in props)) {
-    			console_1$1.warn("<Options> was created without expected prop 'totalReq'");
+    			console_1$1.warn("<Table> was created without expected prop 'totalReq'");
     		}
 
     		if (/*contributed*/ ctx[1] === undefined && !('contributed' in props)) {
-    			console_1$1.warn("<Options> was created without expected prop 'contributed'");
+    			console_1$1.warn("<Table> was created without expected prop 'contributed'");
     		}
     	}
 
     	get activeCountry() {
-    		throw new Error("<Options>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    		throw new Error("<Table>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
 
     	set activeCountry(value) {
-    		throw new Error("<Options>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    		throw new Error("<Table>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
 
     	get allData() {
-    		throw new Error("<Options>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    		throw new Error("<Table>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
 
     	set allData(value) {
-    		throw new Error("<Options>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    		throw new Error("<Table>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
 
     	get totalReq() {
-    		throw new Error("<Options>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    		throw new Error("<Table>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
 
     	set totalReq(value) {
-    		throw new Error("<Options>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    		throw new Error("<Table>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
 
     	get contributed() {
-    		throw new Error("<Options>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    		throw new Error("<Table>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
 
     	set contributed(value) {
-    		throw new Error("<Options>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    		throw new Error("<Table>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
     }
 
-    /* src/App.svelte generated by Svelte v3.43.0 */
+    /* src/App.svelte generated by Svelte v3.43.1 */
 
     const { console: console_1 } = globals;
     const file = "src/App.svelte";
 
-    // (102:2) {:catch error}
+    // (101:2) {:catch error}
     function create_catch_block(ctx) {
     	let p;
     	let t_value = /*error*/ ctx[15].message + "";
@@ -2927,7 +6107,7 @@ var app = (function () {
     			p = element("p");
     			t = text$1(t_value);
     			set_style(p, "color", "red");
-    			add_location(p, file, 102, 4, 2559);
+    			add_location(p, file, 101, 4, 2561);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
@@ -2945,46 +6125,46 @@ var app = (function () {
     		block,
     		id: create_catch_block.name,
     		type: "catch",
-    		source: "(102:2) {:catch error}",
+    		source: "(101:2) {:catch error}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (89:2) {:then allData}
+    // (88:2) {:then allData}
     function create_then_block(ctx) {
-    	let options;
+    	let table;
     	let updating_activeCountry;
     	let updating_contributed;
     	let t;
     	let chart;
     	let current;
 
-    	function options_activeCountry_binding(value) {
-    		/*options_activeCountry_binding*/ ctx[4](value);
+    	function table_activeCountry_binding(value) {
+    		/*table_activeCountry_binding*/ ctx[4](value);
     	}
 
-    	function options_contributed_binding(value) {
-    		/*options_contributed_binding*/ ctx[5](value);
+    	function table_contributed_binding(value) {
+    		/*table_contributed_binding*/ ctx[5](value);
     	}
 
-    	let options_props = {
+    	let table_props = {
     		allData: /*allData*/ ctx[14],
     		totalReq: /*totalReq*/ ctx[1]
     	};
 
     	if (/*activeCountry*/ ctx[2] !== void 0) {
-    		options_props.activeCountry = /*activeCountry*/ ctx[2];
+    		table_props.activeCountry = /*activeCountry*/ ctx[2];
     	}
 
     	if (/*contributed*/ ctx[0] !== void 0) {
-    		options_props.contributed = /*contributed*/ ctx[0];
+    		table_props.contributed = /*contributed*/ ctx[0];
     	}
 
-    	options = new Options({ props: options_props, $$inline: true });
-    	binding_callbacks.push(() => bind(options, 'activeCountry', options_activeCountry_binding));
-    	binding_callbacks.push(() => bind(options, 'contributed', options_contributed_binding));
+    	table = new Table({ props: table_props, $$inline: true });
+    	binding_callbacks.push(() => bind(table, 'activeCountry', table_activeCountry_binding));
+    	binding_callbacks.push(() => bind(table, 'contributed', table_contributed_binding));
 
     	chart = new Chart({
     			props: {
@@ -2997,33 +6177,33 @@ var app = (function () {
 
     	const block = {
     		c: function create() {
-    			create_component(options.$$.fragment);
+    			create_component(table.$$.fragment);
     			t = space();
     			create_component(chart.$$.fragment);
     		},
     		m: function mount(target, anchor) {
-    			mount_component(options, target, anchor);
+    			mount_component(table, target, anchor);
     			insert_dev(target, t, anchor);
     			mount_component(chart, target, anchor);
     			current = true;
     		},
     		p: function update(ctx, dirty) {
-    			const options_changes = {};
-    			if (dirty & /*totalReq*/ 2) options_changes.totalReq = /*totalReq*/ ctx[1];
+    			const table_changes = {};
+    			if (dirty & /*totalReq*/ 2) table_changes.totalReq = /*totalReq*/ ctx[1];
 
     			if (!updating_activeCountry && dirty & /*activeCountry*/ 4) {
     				updating_activeCountry = true;
-    				options_changes.activeCountry = /*activeCountry*/ ctx[2];
+    				table_changes.activeCountry = /*activeCountry*/ ctx[2];
     				add_flush_callback(() => updating_activeCountry = false);
     			}
 
     			if (!updating_contributed && dirty & /*contributed*/ 1) {
     				updating_contributed = true;
-    				options_changes.contributed = /*contributed*/ ctx[0];
+    				table_changes.contributed = /*contributed*/ ctx[0];
     				add_flush_callback(() => updating_contributed = false);
     			}
 
-    			options.$set(options_changes);
+    			table.$set(table_changes);
     			const chart_changes = {};
     			if (dirty & /*activeCountry*/ 4) chart_changes.activeCountry = /*activeCountry*/ ctx[2];
     			if (dirty & /*contributed*/ 1) chart_changes.contributed = /*contributed*/ ctx[0];
@@ -3031,17 +6211,17 @@ var app = (function () {
     		},
     		i: function intro(local) {
     			if (current) return;
-    			transition_in(options.$$.fragment, local);
+    			transition_in(table.$$.fragment, local);
     			transition_in(chart.$$.fragment, local);
     			current = true;
     		},
     		o: function outro(local) {
-    			transition_out(options.$$.fragment, local);
+    			transition_out(table.$$.fragment, local);
     			transition_out(chart.$$.fragment, local);
     			current = false;
     		},
     		d: function destroy(detaching) {
-    			destroy_component(options, detaching);
+    			destroy_component(table, detaching);
     			if (detaching) detach_dev(t);
     			destroy_component(chart, detaching);
     		}
@@ -3051,14 +6231,14 @@ var app = (function () {
     		block,
     		id: create_then_block.name,
     		type: "then",
-    		source: "(89:2) {:then allData}",
+    		source: "(88:2) {:then allData}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (85:15)      <div class="loading-container">       <div class="loading"></div>     </div>   {:then allData}
+    // (84:15)      <div class="loading-container">       <div class="loading"></div>     </div>   {:then allData}
     function create_pending_block(ctx) {
     	let div1;
     	let div0;
@@ -3068,9 +6248,9 @@ var app = (function () {
     			div1 = element("div");
     			div0 = element("div");
     			attr_dev(div0, "class", "loading");
-    			add_location(div0, file, 86, 6, 2242);
+    			add_location(div0, file, 85, 6, 2246);
     			attr_dev(div1, "class", "loading-container");
-    			add_location(div1, file, 85, 4, 2204);
+    			add_location(div1, file, 84, 4, 2208);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div1, anchor);
@@ -3088,7 +6268,7 @@ var app = (function () {
     		block,
     		id: create_pending_block.name,
     		type: "pending",
-    		source: "(85:15)      <div class=\\\"loading-container\\\">       <div class=\\\"loading\\\"></div>     </div>   {:then allData}",
+    		source: "(84:15)      <div class=\\\"loading-container\\\">       <div class=\\\"loading\\\"></div>     </div>   {:then allData}",
     		ctx
     	});
 
@@ -3097,14 +6277,11 @@ var app = (function () {
 
     function create_fragment(ctx) {
     	let main;
-    	let div;
-    	let t0;
-    	let t1;
     	let header;
     	let h1;
-    	let t3;
+    	let t1;
     	let p;
-    	let t5;
+    	let t3;
     	let current;
 
     	let info = {
@@ -3125,40 +6302,33 @@ var app = (function () {
     	const block = {
     		c: function create() {
     			main = element("main");
-    			div = element("div");
-    			t0 = text$1(/*contributed*/ ctx[0]);
-    			t1 = space();
     			header = element("header");
     			h1 = element("h1");
     			h1.textContent = "HA Calculator";
-    			t3 = space();
+    			t1 = space();
     			p = element("p");
     			p.textContent = "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium\n      doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo\n      inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.\n      Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut\n      fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem\n      sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit\n      amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora\n      incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad\n      minima veniam, quis";
-    			t5 = space();
+    			t3 = space();
     			info.block.c();
-    			add_location(div, file, 68, 2, 1410);
-    			attr_dev(h1, "class", "svelte-1r9pwwp");
-    			add_location(h1, file, 70, 4, 1478);
-    			attr_dev(p, "class", "svelte-1r9pwwp");
-    			add_location(p, file, 71, 4, 1505);
-    			attr_dev(header, "class", "interactive__header svelte-1r9pwwp");
-    			add_location(header, file, 69, 2, 1437);
-    			attr_dev(main, "class", "interactive");
-    			add_location(main, file, 67, 0, 1381);
+    			attr_dev(h1, "class", "svelte-5nqg1g");
+    			add_location(h1, file, 69, 4, 1482);
+    			attr_dev(p, "class", "svelte-5nqg1g");
+    			add_location(p, file, 70, 4, 1509);
+    			attr_dev(header, "class", "interactive__header svelte-5nqg1g");
+    			add_location(header, file, 68, 2, 1441);
+    			attr_dev(main, "class", "interactive svelte-5nqg1g");
+    			add_location(main, file, 66, 0, 1376);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, main, anchor);
-    			append_dev(main, div);
-    			append_dev(div, t0);
-    			append_dev(main, t1);
     			append_dev(main, header);
     			append_dev(header, h1);
-    			append_dev(header, t3);
+    			append_dev(header, t1);
     			append_dev(header, p);
-    			append_dev(main, t5);
+    			append_dev(main, t3);
     			info.block.m(main, info.anchor = null);
     			info.mount = () => main;
     			info.anchor = null;
@@ -3166,7 +6336,6 @@ var app = (function () {
     		},
     		p: function update(new_ctx, [dirty]) {
     			ctx = new_ctx;
-    			if (!current || dirty & /*contributed*/ 1) set_data_dev(t0, /*contributed*/ ctx[0]);
     			update_await_block_branch(info, ctx, dirty);
     		},
     		i: function intro(local) {
@@ -3270,12 +6439,12 @@ var app = (function () {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console_1.warn(`<App> was created with unknown prop '${key}'`);
     	});
 
-    	function options_activeCountry_binding(value) {
+    	function table_activeCountry_binding(value) {
     		activeCountry = value;
     		$$invalidate(2, activeCountry);
     	}
 
-    	function options_contributed_binding(value) {
+    	function table_contributed_binding(value) {
     		contributed = value;
     		$$invalidate(0, contributed);
     	}
@@ -3283,7 +6452,7 @@ var app = (function () {
     	$$self.$capture_state = () => ({
     		parseData,
     		Chart,
-    		Options,
+    		Table,
     		contributed,
     		dataSrc,
     		data,
@@ -3322,8 +6491,8 @@ var app = (function () {
     		totalReq,
     		activeCountry,
     		data,
-    		options_activeCountry_binding,
-    		options_contributed_binding
+    		table_activeCountry_binding,
+    		table_contributed_binding
     	];
     }
 

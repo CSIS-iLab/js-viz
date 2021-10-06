@@ -1,8 +1,7 @@
 <script>
   import parseData from './data.js'
-
   import Chart from './components/Chart.svelte'
-  import Options from './components/Options.svelte'
+  import Table from './components/Table.svelte'
 
   $: totalReq = 38536692263
   $: remaining = 0
@@ -66,7 +65,7 @@
 </script>
 
 <main class="interactive">
-  <div>{contributed}</div>
+  <!-- <div>{contributed}</div> -->
   <header class="interactive__header">
     <h1>HA Calculator</h1>
     <p>
@@ -87,7 +86,7 @@
       <div class="loading"></div>
     </div>
   {:then allData}
-    <Options
+    <Table
       allData="{allData}"
       bind:activeCountry
       totalReq="{totalReq}"
@@ -105,10 +104,7 @@
 </main>
 
 <style type="text/scss">
-  svg {
-    width: 1500px;
-  }
 
   @import './scss/components/_header.scss';
-  // @import './scss/layout/_layout.scss';
+  @import './scss/layout/_layout.scss';
 </style>

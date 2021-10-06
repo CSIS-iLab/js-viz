@@ -6,24 +6,16 @@
 ================================*/
 .tippy-content,
 .interactive__tooltip {
-  margin: 0 1.5rem;
-  max-width: 350px;
-  max-height: 150px;
-  padding: 0.75rem 1rem;
+  max-width: 175px;
+  padding: 0.75rem !important;
   color: $color__gray-900;
   @include font-size(14px);
   line-height: 1.2;
-  text-align: left;
-  transition: 0.5s all ease-in;
-  background: $color__gray-100;
-  // background: #e6e9ec;
-  // border: 1px solid $color__blue-gray-200;
-
-  @include breakpoint(medium) {
-    margin: unset;
-    max-width: 200px;
-    // top: -1.5rem;
-  }
+  text-align: center;
+  background-color: $color__white;
+  border: 1px solid $color__primary;
+  border-radius: 3px;
+  opacity: 0.95;
 }
 
 .tooltip {

@@ -1,0 +1,68 @@
+@use 'abstracts' as *;
+@use 'sass:color';
+
+/*============================
+=            Table           =
+============================*/
+
+.interactive__table {
+  max-width: $size__max-width;
+  margin: 1.5rem auto;
+  @include font-size(16px);
+  line-height: 1.2;
+
+  &--small {
+    @include breakpoint('medium') {
+      display: none;
+    }
+  }
+
+  &--large {
+    display: none;
+
+    @include breakpoint('medium') {
+      display: table;
+    }
+  }
+
+  thead {
+    th {
+      padding: rem(4px) rem(12px);
+      border-bottom: 2px solid $color__black;
+    }
+  }
+
+  tbody {
+    tr:not(:first-child) > * {
+      @include breakpoint('medium') {
+        border-top: 1px solid $color__gray-500;
+      }
+    }
+
+    tr:first-of-type th {
+      border-top: 0;
+    }
+
+    th,
+    td {
+      padding: rem(8px);
+    }
+
+    th {
+      padding-bottom: 0;
+      text-align: center;
+      border-top: 1px solid $color__gray-500;
+
+      @include breakpoint('medium') {
+        padding-bottom: rem(8px);
+        text-align: right;
+        border-top: 0;
+      }
+    }
+
+    td {
+      color: $color__black;
+      text-align: center;
+    }
+  }
+}

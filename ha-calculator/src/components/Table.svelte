@@ -1,4 +1,6 @@
 <script>
+  import RangeSlider from "svelte-range-slider-pips";
+
   export let activeCountry
   export let allData
   export let totalReq
@@ -53,49 +55,61 @@
 
 <!-- <input bind:value={activePercentage} on:change="{() => handleChange()}" /> -->
 <!-- <div id="slider"></div> -->
-
+<table class="interactive__table interactive__table--large" cellpadding="0" cellspacing="0">
+  <thead>
+    <tr class="interactive__subheading">
+      <th></th>
+      <th>GDP</th>
+      <th>% Contributed</th>
+      <th>$ Contributed</th>
+      <th>Remaining</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th class="interactive__subheading">
+        <div class="interactive__dropdown">
+          <select
+            class="input__select"
+            bind:value="{activeCountry}"
+            on:change="{() => handleActiveCountry()}"
+          >
+            {#each getDropdownOptions() as option}
+              <option value="{option}">{option}</option>
+            {/each}
+          </select>
+        </div>
+      </th>
+      <td>GDP:{getAttr('gdp')}</td>
+      <td>
+        <RangeSlider  id="slider" on:change="{() => handleChange()}" bind:values="{activePercentage}"/>
+        <!-- <input
+          type="range"
+          bind:value="{activePercentage}"
+          min="0"
+          max="100"
+          on:change="{() => handleChange()}"
+        /> -->
+      </td>
+      <td>
+        Contributed:{contributed}
+      </td>
+      <td>Remaining: {remaining} </td>
+    </tr>
+  </tbody>
+</table>
 <div class="interactive__options">
   <div>activeP: {activePercentage * 0.00001}</div>
 
-  <div class="interactive__dropdown">
-    <select
-      class="input__select"
-      bind:value="{activeCountry}"
-      on:change="{() => handleActiveCountry()}"
-    >
-      {#each getDropdownOptions() as option}
-        <option value="{option}">{option}</option>
-      {/each}
-    </select>
-  </div>
+  
 </div>
 <div>
   Total: {total}
-  GDP: {getAttr('gdp')}
 </div>
 
-<input
-  type="range"
-  bind:value="{activePercentage}"
-  min="0"
-  max="100"
-  on:change="{() => handleChange()}"
-/>
-<br />
-<div>Contributed:{contributed}</div>
-<br />
-<div>Remaining: {remaining}</div>
 
-<style type="text/scss">
-  @import '../scss/components/_buttons.scss';
+<style type="text/scss" global>
   @import '../scss/components/_form-elements.scss';
-  @import '../scss/custom/_options.scss';
-
-  .rangeslider {
-    width: 100%;
-  }
-
-  .ypo {
-    width: 400px;
-  }
+  @import "../scss/custom/_table.scss";
+  @import "../scss/custom/_slider.scss";
 </style>

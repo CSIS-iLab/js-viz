@@ -1,0 +1,37 @@
+@use 'abstracts' as *;
+@use 'sass:color';
+
+/*============================
+=            Slider          =
+============================*/
+
+#slider {.rangeSlider {
+  width: 300px;
+}
+
+--range-handle-focus { color: $color__blue !important;}
+
+.rangeSlider .rangeHandle.active .rangeNub:focus {
+  background-color: $color__blue !important;
+}
+
+.rangeSlider .rangeHandle:before {
+  display: none;
+}
+}
+
+#slider {
+  min-width: 300px;
+}
+
+#slider .rangeSlider {
+  width: 300px;
+}
+
+#slider { 
+  
+  --range-handle-inactive: #004E80; 
+  --range-handle-focus: #004165;
+
+}
+
