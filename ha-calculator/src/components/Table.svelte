@@ -3,10 +3,9 @@
 
   export let activeCountry
   export let allData
+  export let row
   export let totalReq
   export let contributed
-
-  const row = allData.find((d) => d.country === 'ROW').funding
 
   const getDropdownOptions = () => {
     return allData
@@ -20,7 +19,7 @@
 
   let activePercentage =
     allData.find((d) => d.country === activeCountry).adjustable_gdp * 100000
-  console.log(activePercentage)
+  // console.log(activePercentage)
 
   $: contributed = Math.floor(getAttr('gdp') * (activePercentage * 0.00001))
 
@@ -36,20 +35,20 @@
       row
   )
 
-  $: console.log(total, 'total')
+  // $: console.log(total, 'total')
 
   const handleChange = () => {
     const country = allData.find((d) => d.country == activeCountry)
     const convertedPercentage = activePercentage * 0.00001
     country.adjustable_gdp = convertedPercentage
     country.funding = contributed
-    console.log(allData)
+    // console.log(allData)
   }
 
   const handleActiveCountry = () => {
     activePercentage =
       allData.find((d) => d.country === activeCountry).adjustable_gdp * 100000
-    console.log(allData)
+    // console.log(allData)
   }
 </script>
 
@@ -82,14 +81,14 @@
       </th>
       <td>GDP:{getAttr('gdp')}</td>
       <td>
-        <RangeSlider  id="slider" on:change="{() => handleChange()}" bind:values="{activePercentage}"/>
-        <!-- <input
+        <!-- <RangeSlider  id="slider" on:change="{() => handleChange()}" bind:values="{activePercentage}"/> -->
+        <input
           type="range"
           bind:value="{activePercentage}"
           min="0"
           max="100"
           on:change="{() => handleChange()}"
-        /> -->
+        />
       </td>
       <td>
         Contributed:{contributed}

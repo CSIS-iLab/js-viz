@@ -22,7 +22,7 @@
     })
 
     console.log(res)
-    total = res.reduce((acc, i) => {
+    total = res.data.reduce((acc, i) => {
       return (acc += i.funding)
     }, 0)
     remaining = totalReq - total
@@ -87,14 +87,15 @@
     </div>
   {:then allData}
     <Table
-      allData="{allData}"
+      allData="{allData.data}"
+      row={allData.row.funding}
       bind:activeCountry
       totalReq="{totalReq}"
       bind:contributed
     />
 
     <Chart
-      allData="{allData}"
+      allData="{allData.data}"
       activeCountry="{activeCountry}"
       contributed="{contributed}"
     />

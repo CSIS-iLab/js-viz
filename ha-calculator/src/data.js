@@ -21,7 +21,10 @@ function parseData({ src }) {
     let [dataset] = res
 
     console.log(dataset)
-    return dataset
+    return {
+      data: dataset.filter(d => d.country !== 'ROW'),
+      row: dataset.find(d => d.country === 'ROW')
+    } 
   })
   
   return data
