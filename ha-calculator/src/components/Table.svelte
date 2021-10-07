@@ -128,14 +128,14 @@ function formatDecimalPlaces(value) {
     </tr>
   </tbody>
 </table>
-<div class="interactive__options">
+<!-- <div class="interactive__options">
   <div>activeP: {activePercentage * 0.00001}</div>
 
   
 </div>
 <div>
   Total: {total}
-</div>
+</div> -->
 
 
 

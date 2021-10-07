@@ -6,38 +6,64 @@
 ============================*/
 
 .yo {
+  position: relative;
+  width: 100%;
+  max-width: $size__max-width;
+  margin: 0 auto;
   display: grid;
-  grid-template-areas: 'active active' 'inactive-0 inactive-1' 'inactive-2 inactive-3';
+  grid-template-areas: 'active active active' 'inactive-0 inactive-1 inactive-2' 'inactive-3 inactive-4 .';
 
   .active {
     grid-area: active;
+    // fill: $color__highlight;
+    stroke: unset;
+   fill: linear-gradient(180deg, rgba(0,78,128,1) 6%, rgba(15,170,145,1) 100%);
+    // fill:  linear-gradient(
+    //   220.16deg,
+    //   rgba(6, 166, 217, 0.75) 0%,
+    //   rgba(21, 167, 217, 0.1) 52.99%
+    // ),
+    // linear-gradient(
+    //   270.67deg,
+    //   #0ba4b9 0.35%,
+    //   #2cbfd3 28.54%,
+    //   rgba(13, 194, 204, 0.74) 61.5%,
+    //   rgba(17, 135, 152, 0.71) 99.22%
+    // );
+    margin-bottom: 4rem;
+    margin-top: 2rem;
   }
 
-  .inactive-0 {
+  [data-attr='EU'] {
     grid-area: inactive-0;
   }
 
-  .inactive-1 {
+  [data-attr='Germany'] {
     grid-area: inactive-1;
   }
 
-  .inactive-2 {
+  [data-attr='Japan'] {
     grid-area: inactive-2;
   }
 
-  .inactive-3 {
+  [data-attr='UK'] {
     grid-area: inactive-3;
+  }
+
+  [data-attr='US'] {
+    grid-area: inactive-4;
   }
 }
 
 .interactive__charts {
   position: relative;
   width: 100%;
-  max-width: $size__content-max-width;
+  // max-width: $size__content-max-width;
   margin: 0 auto;
   fill: $color__blue;
   stroke: $color__dkblue;
   stroke-width: 1.5px;
+  // border: 1px solid cornflowerblue;
 
   &:hover {
     fill: $color__dkblue;
@@ -50,6 +76,10 @@
   svg {
     width: 100%;
     height: 100%;
+  }
+
+  text {
+    border-top: 1px solid red;
   }
 
 }

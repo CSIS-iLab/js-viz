@@ -72,35 +72,46 @@
   };
 </script>
 
-<div>Active Country: {activeCountry}</div>
+<!-- <div>Active Country: {activeCountry}</div> -->
 {#key activeCountry}
 <div class="yo">
   
   <figure class="interactive__charts active" bind:clientWidth={width} bind:clientHeight={height} >
-    <svg>
+    <svg class="green">
+      <linearGradient id="gradient">
+        <stop class="main-stop" offset="0%" />
+        <stop class="alt-stop" offset="100%" />
+      </linearGradient>
         <g data-attr={activeCountry}>
         {#each activeChartRange as i}
           {#each getActiveRemainingRow(i) as j}
-            <rect width="16px" height="16px" x="{i * 20}" y="{j * 20}"></rect>
+            <rect width="20px" height="20px" x="{i * 24}" y="{j * 24}" fill="url(#gradient)"></rect>
           {/each}
         {/each}
         </g>
+        <rect fill="none" stroke="#c5c5c5" stroke-width="1.5" x="0" y="{height - 24}" width="15px" height="1" id="svg_2"></rect>
+        <text x="0" y="{height-5}" >{activeCountry}</text>
     </svg>
   </figure>
  
 
-  {#each allData.filter(d => d.country !== activeCountry) as country, countryIndex}
-    <figure class="interactive__charts {'inactive-' + countryIndex}" bind:clientWidth={width} bind:clientHeight={height} >
+  <!-- {#each allData.filter(d => d.country !== activeCountry) as country, countryIndex} -->
+  {#each allData as country, countryIndex}
+    <figure class="interactive__charts {'inactive-' + countryIndex}" bind:clientWidth={width} bind:clientHeight={height} data-attr={country.country} >
       <svg >
+        {#if country.country !== activeCountry}
           <g data-attr={country.country} >
             {#each chartRange(country) as i}
               {#each getRemainingRow(i, country) as j}
-                <rect width="16px" height="16px" x="{i * 20}" y="{j * 20}" use:tippy={formatTooltip(country, `tooltip-node-${countryIndex}`)}></rect>
-                <!-- <text>{country.country}</text> -->
+                <rect width="12px" height="12px" x="{i * 16}" y="{j * 16}" use:tippy={formatTooltip(country, `tooltip-node-${countryIndex}`)}></rect>
               {/each}
             {/each}
           </g>
-  
+          <rect fill="none" stroke="#c5c5c5" stroke-width="1.5" x="0" y="{height-60}" width="15px" height="1" id="svg_2"></rect>
+          <text x="0" y="{height-40}" >{country.country}</text>
+          {/if}
+          
+         
       </svg>
     </figure>
   {/each}
@@ -110,4 +121,11 @@
   @import "../scss/custom/_chart.scss";
   // @import './scss/components/_header.scss';
   // @import './scss/layout/_layout.scss';
+
+  .main-stop {
+  stop-color: #0064A3;
+}
+.alt-stop {
+  stop-color:#004165;
+}
 </style>
