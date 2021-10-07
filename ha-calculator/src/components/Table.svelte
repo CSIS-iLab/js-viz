@@ -1,11 +1,37 @@
 <script>
-  import RangeSlider from "svelte-range-slider-pips";
+  // import RangeSlider from "svelte-range-slider-pips";
+  import Slider from '@bulatdashiev/svelte-slider';
+  import { format } from 'd3-format'
+
 
   export let activeCountry
   export let allData
   export let row
   export let totalReq
   export let contributed
+
+// Helper f(n) for formatDecimalPlaces
+function formatAmount(value) {
+  if (window.innerWidth < 768) {
+    return value.replace(/G/, 'B').slice(-1)[0]
+  }
+
+  if (value.includes('T')) {
+    return 'T'
+  } else if (value.includes('G')) {
+    return 'B'
+  } else {
+    return 'M'
+  }
+}
+
+/* formats values up to two decimal places while maintaining 1-3 digits left of the first comma (eg 500.00B or 1.00T) */
+function formatDecimalPlaces(value) {
+  let amt = formatAmount(format('.5s')(value))
+  let numOne = format('$.5s')(value).split('.')[0]
+  let numTwo = format('.5s')(value).split('.')[1].slice(0, 1)
+  return numOne + '.' + numTwo + amt
+}
 
   const getDropdownOptions = () => {
     return allData
@@ -79,9 +105,12 @@
           </select>
         </div>
       </th>
-      <td>GDP:{getAttr('gdp')}</td>
+      <td>
+        {formatDecimalPlaces(getAttr('gdp'))}
+      </td>
       <td>
         <!-- <RangeSlider  id="slider" on:change="{() => handleChange()}" bind:values="{activePercentage}"/> -->
+          <!-- <Slider bind:value={activePercentage} on:change="{() => handleChange()}" range/>/> -->
         <input
           type="range"
           bind:value="{activePercentage}"
@@ -90,10 +119,12 @@
           on:change="{() => handleChange()}"
         />
       </td>
-      <td>
-        Contributed:{contributed}
+      <td class="calc-values">
+        {formatDecimalPlaces(contributed)}
       </td>
-      <td>Remaining: {remaining} </td>
+      <td class="calc-values">
+        {formatDecimalPlaces(remaining)} 
+      </td>
     </tr>
   </tbody>
 </table>
@@ -105,6 +136,8 @@
 <div>
   Total: {total}
 </div>
+
+
 
 
 <style type="text/scss" global>

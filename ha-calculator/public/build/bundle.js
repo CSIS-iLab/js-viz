@@ -4,6 +4,12 @@ var app = (function () {
     'use strict';
 
     function noop() { }
+    function assign(tar, src) {
+        // @ts-ignore
+        for (const k in src)
+            tar[k] = src[k];
+        return tar;
+    }
     function is_promise(value) {
         return value && typeof value === 'object' && typeof value.then === 'function';
     }
@@ -30,47 +36,54 @@ var app = (function () {
     function is_empty(obj) {
         return Object.keys(obj).length === 0;
     }
-    function subscribe(store, ...callbacks) {
-        if (store == null) {
-            return noop;
+    function create_slot(definition, ctx, $$scope, fn) {
+        if (definition) {
+            const slot_ctx = get_slot_context(definition, ctx, $$scope, fn);
+            return definition[0](slot_ctx);
         }
-        const unsub = store.subscribe(...callbacks);
-        return unsub.unsubscribe ? () => unsub.unsubscribe() : unsub;
     }
-
-    const is_client = typeof window !== 'undefined';
-    let now = is_client
-        ? () => window.performance.now()
-        : () => Date.now();
-    let raf = is_client ? cb => requestAnimationFrame(cb) : noop;
-
-    const tasks = new Set();
-    function run_tasks(now) {
-        tasks.forEach(task => {
-            if (!task.c(now)) {
-                tasks.delete(task);
-                task.f();
-            }
-        });
-        if (tasks.size !== 0)
-            raf(run_tasks);
+    function get_slot_context(definition, ctx, $$scope, fn) {
+        return definition[1] && fn
+            ? assign($$scope.ctx.slice(), definition[1](fn(ctx)))
+            : $$scope.ctx;
     }
-    /**
-     * Creates a new task that runs on each raf frame
-     * until it returns a falsy value or is aborted
-     */
-    function loop(callback) {
-        let task;
-        if (tasks.size === 0)
-            raf(run_tasks);
-        return {
-            promise: new Promise(fulfill => {
-                tasks.add(task = { c: callback, f: fulfill });
-            }),
-            abort() {
-                tasks.delete(task);
+    function get_slot_changes(definition, $$scope, dirty, fn) {
+        if (definition[2] && fn) {
+            const lets = definition[2](fn(dirty));
+            if ($$scope.dirty === undefined) {
+                return lets;
             }
-        };
+            if (typeof lets === 'object') {
+                const merged = [];
+                const len = Math.max($$scope.dirty.length, lets.length);
+                for (let i = 0; i < len; i += 1) {
+                    merged[i] = $$scope.dirty[i] | lets[i];
+                }
+                return merged;
+            }
+            return $$scope.dirty | lets;
+        }
+        return $$scope.dirty;
+    }
+    function update_slot_base(slot, slot_definition, ctx, $$scope, slot_changes, get_slot_context_fn) {
+        if (slot_changes) {
+            const slot_context = get_slot_context(slot_definition, ctx, $$scope, get_slot_context_fn);
+            slot.p(slot_context, slot_changes);
+        }
+    }
+    function get_all_dirty_from_scope($$scope) {
+        if ($$scope.ctx.length > 32) {
+            const dirty = [];
+            const length = $$scope.ctx.length / 32;
+            for (let i = 0; i < length; i++) {
+                dirty[i] = -1;
+            }
+            return dirty;
+        }
+        return -1;
+    }
+    function action_destroyer(action_result) {
+        return action_result && is_function(action_result.destroy) ? action_result.destroy : noop;
     }
     function append(target, node) {
         target.appendChild(node);
@@ -105,13 +118,6 @@ var app = (function () {
     function listen(node, event, handler, options) {
         node.addEventListener(event, handler, options);
         return () => node.removeEventListener(event, handler, options);
-    }
-    function prevent_default(fn) {
-        return function (event) {
-            event.preventDefault();
-            // @ts-ignore
-            return fn.call(this, event);
-        };
     }
     function attr(node, attribute, value) {
         if (value == null)
@@ -594,6 +600,10 @@ var app = (function () {
         else
             dispatch_dev('SvelteDOMSetAttribute', { node, attribute, value });
     }
+    function prop_dev(node, property, value) {
+        node[property] = value;
+        dispatch_dev('SvelteDOMSetProperty', { node, property, value });
+    }
     function set_data_dev(text, data) {
         data = '' + data;
         if (text.wholeText === data)
@@ -856,162 +866,6 @@ var app = (function () {
       return data
     }
 
-    function ascending(a, b) {
-      return a == null || b == null ? NaN : a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
-    }
-
-    function bisector(f) {
-      let delta = f;
-      let compare1 = f;
-      let compare2 = f;
-
-      if (f.length !== 2) {
-        delta = (d, x) => f(d) - x;
-        compare1 = ascending;
-        compare2 = (d, x) => ascending(f(d), x);
-      }
-
-      function left(a, x, lo = 0, hi = a.length) {
-        if (lo < hi) {
-          if (compare1(x, x) !== 0) return hi;
-          do {
-            const mid = (lo + hi) >>> 1;
-            if (compare2(a[mid], x) < 0) lo = mid + 1;
-            else hi = mid;
-          } while (lo < hi);
-        }
-        return lo;
-      }
-
-      function right(a, x, lo = 0, hi = a.length) {
-        if (lo < hi) {
-          if (compare1(x, x) !== 0) return hi;
-          do {
-            const mid = (lo + hi) >>> 1;
-            if (compare2(a[mid], x) <= 0) lo = mid + 1;
-            else hi = mid;
-          } while (lo < hi);
-        }
-        return lo;
-      }
-
-      function center(a, x, lo = 0, hi = a.length) {
-        const i = left(a, x, lo, hi - 1);
-        return i > lo && delta(a[i - 1], x) > -delta(a[i], x) ? i - 1 : i;
-      }
-
-      return {left, center, right};
-    }
-
-    function number$1(x) {
-      return x === null ? NaN : +x;
-    }
-
-    const ascendingBisect = bisector(ascending);
-    const bisectRight = ascendingBisect.right;
-    bisector(number$1).center;
-    var bisect = bisectRight;
-
-    class InternMap extends Map {
-      constructor(entries, key = keyof) {
-        super();
-        Object.defineProperties(this, {_intern: {value: new Map()}, _key: {value: key}});
-        if (entries != null) for (const [key, value] of entries) this.set(key, value);
-      }
-      get(key) {
-        return super.get(intern_get(this, key));
-      }
-      has(key) {
-        return super.has(intern_get(this, key));
-      }
-      set(key, value) {
-        return super.set(intern_set(this, key), value);
-      }
-      delete(key) {
-        return super.delete(intern_delete(this, key));
-      }
-    }
-
-    function intern_get({_intern, _key}, value) {
-      const key = _key(value);
-      return _intern.has(key) ? _intern.get(key) : value;
-    }
-
-    function intern_set({_intern, _key}, value) {
-      const key = _key(value);
-      if (_intern.has(key)) return _intern.get(key);
-      _intern.set(key, value);
-      return value;
-    }
-
-    function intern_delete({_intern, _key}, value) {
-      const key = _key(value);
-      if (_intern.has(key)) {
-        value = _intern.get(key);
-        _intern.delete(key);
-      }
-      return value;
-    }
-
-    function keyof(value) {
-      return value !== null && typeof value === "object" ? value.valueOf() : value;
-    }
-
-    var e10 = Math.sqrt(50),
-        e5 = Math.sqrt(10),
-        e2 = Math.sqrt(2);
-
-    function ticks(start, stop, count) {
-      var reverse,
-          i = -1,
-          n,
-          ticks,
-          step;
-
-      stop = +stop, start = +start, count = +count;
-      if (start === stop && count > 0) return [start];
-      if (reverse = stop < start) n = start, start = stop, stop = n;
-      if ((step = tickIncrement(start, stop, count)) === 0 || !isFinite(step)) return [];
-
-      if (step > 0) {
-        let r0 = Math.round(start / step), r1 = Math.round(stop / step);
-        if (r0 * step < start) ++r0;
-        if (r1 * step > stop) --r1;
-        ticks = new Array(n = r1 - r0 + 1);
-        while (++i < n) ticks[i] = (r0 + i) * step;
-      } else {
-        step = -step;
-        let r0 = Math.round(start * step), r1 = Math.round(stop * step);
-        if (r0 / step < start) ++r0;
-        if (r1 / step > stop) --r1;
-        ticks = new Array(n = r1 - r0 + 1);
-        while (++i < n) ticks[i] = (r0 + i) / step;
-      }
-
-      if (reverse) ticks.reverse();
-
-      return ticks;
-    }
-
-    function tickIncrement(start, stop, count) {
-      var step = (stop - start) / Math.max(0, count),
-          power = Math.floor(Math.log(step) / Math.LN10),
-          error = step / Math.pow(10, power);
-      return power >= 0
-          ? (error >= e10 ? 10 : error >= e5 ? 5 : error >= e2 ? 2 : 1) * Math.pow(10, power)
-          : -Math.pow(10, -power) / (error >= e10 ? 10 : error >= e5 ? 5 : error >= e2 ? 2 : 1);
-    }
-
-    function tickStep(start, stop, count) {
-      var step0 = Math.abs(stop - start) / Math.max(0, count),
-          step1 = Math.pow(10, Math.floor(Math.log(step0) / Math.LN10)),
-          error = step0 / step1;
-      if (error >= e10) step1 *= 10;
-      else if (error >= e5) step1 *= 5;
-      else if (error >= e2) step1 *= 2;
-      return stop < start ? -step1 : step1;
-    }
-
     function range(start, stop, step) {
       start = +start, stop = +stop, step = (n = arguments.length) < 2 ? (stop = start, start = 0, 1) : n < 3 ? 1 : +step;
 
@@ -1038,764 +892,4978 @@ var app = (function () {
       return array;
     }
 
-    function initRange(domain, range) {
-      switch (arguments.length) {
-        case 0: break;
-        case 1: this.range(domain); break;
-        default: this.range(range).domain(domain); break;
+    var top = 'top';
+    var bottom = 'bottom';
+    var right = 'right';
+    var left = 'left';
+    var auto = 'auto';
+    var basePlacements = [top, bottom, right, left];
+    var start = 'start';
+    var end = 'end';
+    var clippingParents = 'clippingParents';
+    var viewport = 'viewport';
+    var popper = 'popper';
+    var reference = 'reference';
+    var variationPlacements = /*#__PURE__*/basePlacements.reduce(function (acc, placement) {
+      return acc.concat([placement + "-" + start, placement + "-" + end]);
+    }, []);
+    var placements = /*#__PURE__*/[].concat(basePlacements, [auto]).reduce(function (acc, placement) {
+      return acc.concat([placement, placement + "-" + start, placement + "-" + end]);
+    }, []); // modifiers that need to read the DOM
+
+    var beforeRead = 'beforeRead';
+    var read = 'read';
+    var afterRead = 'afterRead'; // pure-logic modifiers
+
+    var beforeMain = 'beforeMain';
+    var main = 'main';
+    var afterMain = 'afterMain'; // modifier with the purpose to write to the DOM (or write into a framework state)
+
+    var beforeWrite = 'beforeWrite';
+    var write = 'write';
+    var afterWrite = 'afterWrite';
+    var modifierPhases = [beforeRead, read, afterRead, beforeMain, main, afterMain, beforeWrite, write, afterWrite];
+
+    function getNodeName(element) {
+      return element ? (element.nodeName || '').toLowerCase() : null;
+    }
+
+    function getWindow(node) {
+      if (node == null) {
+        return window;
       }
-      return this;
-    }
 
-    const implicit = Symbol("implicit");
-
-    function ordinal() {
-      var index = new InternMap(),
-          domain = [],
-          range = [],
-          unknown = implicit;
-
-      function scale(d) {
-        let i = index.get(d);
-        if (i === undefined) {
-          if (unknown !== implicit) return unknown;
-          index.set(d, i = domain.push(d) - 1);
-        }
-        return range[i % range.length];
+      if (node.toString() !== '[object Window]') {
+        var ownerDocument = node.ownerDocument;
+        return ownerDocument ? ownerDocument.defaultView || window : window;
       }
 
-      scale.domain = function(_) {
-        if (!arguments.length) return domain.slice();
-        domain = [], index = new InternMap();
-        for (const value of _) {
-          if (index.has(value)) continue;
-          index.set(value, domain.push(value) - 1);
-        }
-        return scale;
-      };
-
-      scale.range = function(_) {
-        return arguments.length ? (range = Array.from(_), scale) : range.slice();
-      };
-
-      scale.unknown = function(_) {
-        return arguments.length ? (unknown = _, scale) : unknown;
-      };
-
-      scale.copy = function() {
-        return ordinal(domain, range).unknown(unknown);
-      };
-
-      initRange.apply(scale, arguments);
-
-      return scale;
+      return node;
     }
 
-    function define(constructor, factory, prototype) {
-      constructor.prototype = factory.prototype = prototype;
-      prototype.constructor = constructor;
+    function isElement$1(node) {
+      var OwnElement = getWindow(node).Element;
+      return node instanceof OwnElement || node instanceof Element;
     }
 
-    function extend(parent, definition) {
-      var prototype = Object.create(parent.prototype);
-      for (var key in definition) prototype[key] = definition[key];
-      return prototype;
+    function isHTMLElement(node) {
+      var OwnElement = getWindow(node).HTMLElement;
+      return node instanceof OwnElement || node instanceof HTMLElement;
     }
 
-    function Color() {}
+    function isShadowRoot(node) {
+      // IE 11 has no ShadowRoot
+      if (typeof ShadowRoot === 'undefined') {
+        return false;
+      }
 
-    var darker = 0.7;
-    var brighter = 1 / darker;
+      var OwnElement = getWindow(node).ShadowRoot;
+      return node instanceof OwnElement || node instanceof ShadowRoot;
+    }
 
-    var reI = "\\s*([+-]?\\d+)\\s*",
-        reN = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)\\s*",
-        reP = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)%\\s*",
-        reHex = /^#([0-9a-f]{3,8})$/,
-        reRgbInteger = new RegExp("^rgb\\(" + [reI, reI, reI] + "\\)$"),
-        reRgbPercent = new RegExp("^rgb\\(" + [reP, reP, reP] + "\\)$"),
-        reRgbaInteger = new RegExp("^rgba\\(" + [reI, reI, reI, reN] + "\\)$"),
-        reRgbaPercent = new RegExp("^rgba\\(" + [reP, reP, reP, reN] + "\\)$"),
-        reHslPercent = new RegExp("^hsl\\(" + [reN, reP, reP] + "\\)$"),
-        reHslaPercent = new RegExp("^hsla\\(" + [reN, reP, reP, reN] + "\\)$");
+    // and applies them to the HTMLElements such as popper and arrow
 
-    var named = {
-      aliceblue: 0xf0f8ff,
-      antiquewhite: 0xfaebd7,
-      aqua: 0x00ffff,
-      aquamarine: 0x7fffd4,
-      azure: 0xf0ffff,
-      beige: 0xf5f5dc,
-      bisque: 0xffe4c4,
-      black: 0x000000,
-      blanchedalmond: 0xffebcd,
-      blue: 0x0000ff,
-      blueviolet: 0x8a2be2,
-      brown: 0xa52a2a,
-      burlywood: 0xdeb887,
-      cadetblue: 0x5f9ea0,
-      chartreuse: 0x7fff00,
-      chocolate: 0xd2691e,
-      coral: 0xff7f50,
-      cornflowerblue: 0x6495ed,
-      cornsilk: 0xfff8dc,
-      crimson: 0xdc143c,
-      cyan: 0x00ffff,
-      darkblue: 0x00008b,
-      darkcyan: 0x008b8b,
-      darkgoldenrod: 0xb8860b,
-      darkgray: 0xa9a9a9,
-      darkgreen: 0x006400,
-      darkgrey: 0xa9a9a9,
-      darkkhaki: 0xbdb76b,
-      darkmagenta: 0x8b008b,
-      darkolivegreen: 0x556b2f,
-      darkorange: 0xff8c00,
-      darkorchid: 0x9932cc,
-      darkred: 0x8b0000,
-      darksalmon: 0xe9967a,
-      darkseagreen: 0x8fbc8f,
-      darkslateblue: 0x483d8b,
-      darkslategray: 0x2f4f4f,
-      darkslategrey: 0x2f4f4f,
-      darkturquoise: 0x00ced1,
-      darkviolet: 0x9400d3,
-      deeppink: 0xff1493,
-      deepskyblue: 0x00bfff,
-      dimgray: 0x696969,
-      dimgrey: 0x696969,
-      dodgerblue: 0x1e90ff,
-      firebrick: 0xb22222,
-      floralwhite: 0xfffaf0,
-      forestgreen: 0x228b22,
-      fuchsia: 0xff00ff,
-      gainsboro: 0xdcdcdc,
-      ghostwhite: 0xf8f8ff,
-      gold: 0xffd700,
-      goldenrod: 0xdaa520,
-      gray: 0x808080,
-      green: 0x008000,
-      greenyellow: 0xadff2f,
-      grey: 0x808080,
-      honeydew: 0xf0fff0,
-      hotpink: 0xff69b4,
-      indianred: 0xcd5c5c,
-      indigo: 0x4b0082,
-      ivory: 0xfffff0,
-      khaki: 0xf0e68c,
-      lavender: 0xe6e6fa,
-      lavenderblush: 0xfff0f5,
-      lawngreen: 0x7cfc00,
-      lemonchiffon: 0xfffacd,
-      lightblue: 0xadd8e6,
-      lightcoral: 0xf08080,
-      lightcyan: 0xe0ffff,
-      lightgoldenrodyellow: 0xfafad2,
-      lightgray: 0xd3d3d3,
-      lightgreen: 0x90ee90,
-      lightgrey: 0xd3d3d3,
-      lightpink: 0xffb6c1,
-      lightsalmon: 0xffa07a,
-      lightseagreen: 0x20b2aa,
-      lightskyblue: 0x87cefa,
-      lightslategray: 0x778899,
-      lightslategrey: 0x778899,
-      lightsteelblue: 0xb0c4de,
-      lightyellow: 0xffffe0,
-      lime: 0x00ff00,
-      limegreen: 0x32cd32,
-      linen: 0xfaf0e6,
-      magenta: 0xff00ff,
-      maroon: 0x800000,
-      mediumaquamarine: 0x66cdaa,
-      mediumblue: 0x0000cd,
-      mediumorchid: 0xba55d3,
-      mediumpurple: 0x9370db,
-      mediumseagreen: 0x3cb371,
-      mediumslateblue: 0x7b68ee,
-      mediumspringgreen: 0x00fa9a,
-      mediumturquoise: 0x48d1cc,
-      mediumvioletred: 0xc71585,
-      midnightblue: 0x191970,
-      mintcream: 0xf5fffa,
-      mistyrose: 0xffe4e1,
-      moccasin: 0xffe4b5,
-      navajowhite: 0xffdead,
-      navy: 0x000080,
-      oldlace: 0xfdf5e6,
-      olive: 0x808000,
-      olivedrab: 0x6b8e23,
-      orange: 0xffa500,
-      orangered: 0xff4500,
-      orchid: 0xda70d6,
-      palegoldenrod: 0xeee8aa,
-      palegreen: 0x98fb98,
-      paleturquoise: 0xafeeee,
-      palevioletred: 0xdb7093,
-      papayawhip: 0xffefd5,
-      peachpuff: 0xffdab9,
-      peru: 0xcd853f,
-      pink: 0xffc0cb,
-      plum: 0xdda0dd,
-      powderblue: 0xb0e0e6,
-      purple: 0x800080,
-      rebeccapurple: 0x663399,
-      red: 0xff0000,
-      rosybrown: 0xbc8f8f,
-      royalblue: 0x4169e1,
-      saddlebrown: 0x8b4513,
-      salmon: 0xfa8072,
-      sandybrown: 0xf4a460,
-      seagreen: 0x2e8b57,
-      seashell: 0xfff5ee,
-      sienna: 0xa0522d,
-      silver: 0xc0c0c0,
-      skyblue: 0x87ceeb,
-      slateblue: 0x6a5acd,
-      slategray: 0x708090,
-      slategrey: 0x708090,
-      snow: 0xfffafa,
-      springgreen: 0x00ff7f,
-      steelblue: 0x4682b4,
-      tan: 0xd2b48c,
-      teal: 0x008080,
-      thistle: 0xd8bfd8,
-      tomato: 0xff6347,
-      turquoise: 0x40e0d0,
-      violet: 0xee82ee,
-      wheat: 0xf5deb3,
-      white: 0xffffff,
-      whitesmoke: 0xf5f5f5,
-      yellow: 0xffff00,
-      yellowgreen: 0x9acd32
+    function applyStyles(_ref) {
+      var state = _ref.state;
+      Object.keys(state.elements).forEach(function (name) {
+        var style = state.styles[name] || {};
+        var attributes = state.attributes[name] || {};
+        var element = state.elements[name]; // arrow is optional + virtual elements
+
+        if (!isHTMLElement(element) || !getNodeName(element)) {
+          return;
+        } // Flow doesn't support to extend this property, but it's the most
+        // effective way to apply styles to an HTMLElement
+        // $FlowFixMe[cannot-write]
+
+
+        Object.assign(element.style, style);
+        Object.keys(attributes).forEach(function (name) {
+          var value = attributes[name];
+
+          if (value === false) {
+            element.removeAttribute(name);
+          } else {
+            element.setAttribute(name, value === true ? '' : value);
+          }
+        });
+      });
+    }
+
+    function effect$2(_ref2) {
+      var state = _ref2.state;
+      var initialStyles = {
+        popper: {
+          position: state.options.strategy,
+          left: '0',
+          top: '0',
+          margin: '0'
+        },
+        arrow: {
+          position: 'absolute'
+        },
+        reference: {}
+      };
+      Object.assign(state.elements.popper.style, initialStyles.popper);
+      state.styles = initialStyles;
+
+      if (state.elements.arrow) {
+        Object.assign(state.elements.arrow.style, initialStyles.arrow);
+      }
+
+      return function () {
+        Object.keys(state.elements).forEach(function (name) {
+          var element = state.elements[name];
+          var attributes = state.attributes[name] || {};
+          var styleProperties = Object.keys(state.styles.hasOwnProperty(name) ? state.styles[name] : initialStyles[name]); // Set all values to an empty string to unset them
+
+          var style = styleProperties.reduce(function (style, property) {
+            style[property] = '';
+            return style;
+          }, {}); // arrow is optional + virtual elements
+
+          if (!isHTMLElement(element) || !getNodeName(element)) {
+            return;
+          }
+
+          Object.assign(element.style, style);
+          Object.keys(attributes).forEach(function (attribute) {
+            element.removeAttribute(attribute);
+          });
+        });
+      };
+    } // eslint-disable-next-line import/no-unused-modules
+
+
+    var applyStyles$1 = {
+      name: 'applyStyles',
+      enabled: true,
+      phase: 'write',
+      fn: applyStyles,
+      effect: effect$2,
+      requires: ['computeStyles']
     };
 
-    define(Color, color, {
-      copy: function(channels) {
-        return Object.assign(new this.constructor, this, channels);
-      },
-      displayable: function() {
-        return this.rgb().displayable();
-      },
-      hex: color_formatHex, // Deprecated! Use color.formatHex.
-      formatHex: color_formatHex,
-      formatHsl: color_formatHsl,
-      formatRgb: color_formatRgb,
-      toString: color_formatRgb
-    });
-
-    function color_formatHex() {
-      return this.rgb().formatHex();
+    function getBasePlacement$1(placement) {
+      return placement.split('-')[0];
     }
 
-    function color_formatHsl() {
-      return hslConvert(this).formatHsl();
+    // import { isHTMLElement } from './instanceOf';
+    function getBoundingClientRect(element, // eslint-disable-next-line unused-imports/no-unused-vars
+    includeScale) {
+
+      var rect = element.getBoundingClientRect();
+      var scaleX = 1;
+      var scaleY = 1; // FIXME:
+      // `offsetWidth` returns an integer while `getBoundingClientRect`
+      // returns a float. This results in `scaleX` or `scaleY` being
+      // non-1 when it should be for elements that aren't a full pixel in
+      // width or height.
+      // if (isHTMLElement(element) && includeScale) {
+      //   const offsetHeight = element.offsetHeight;
+      //   const offsetWidth = element.offsetWidth;
+      //   // Do not attempt to divide by 0, otherwise we get `Infinity` as scale
+      //   // Fallback to 1 in case both values are `0`
+      //   if (offsetWidth > 0) {
+      //     scaleX = rect.width / offsetWidth || 1;
+      //   }
+      //   if (offsetHeight > 0) {
+      //     scaleY = rect.height / offsetHeight || 1;
+      //   }
+      // }
+
+      return {
+        width: rect.width / scaleX,
+        height: rect.height / scaleY,
+        top: rect.top / scaleY,
+        right: rect.right / scaleX,
+        bottom: rect.bottom / scaleY,
+        left: rect.left / scaleX,
+        x: rect.left / scaleX,
+        y: rect.top / scaleY
+      };
     }
 
-    function color_formatRgb() {
-      return this.rgb().formatRgb();
-    }
+    // means it doesn't take into account transforms.
 
-    function color(format) {
-      var m, l;
-      format = (format + "").trim().toLowerCase();
-      return (m = reHex.exec(format)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? rgbn(m) // #ff0000
-          : l === 3 ? new Rgb((m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), ((m & 0xf) << 4) | (m & 0xf), 1) // #f00
-          : l === 8 ? rgba(m >> 24 & 0xff, m >> 16 & 0xff, m >> 8 & 0xff, (m & 0xff) / 0xff) // #ff000000
-          : l === 4 ? rgba((m >> 12 & 0xf) | (m >> 8 & 0xf0), (m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), (((m & 0xf) << 4) | (m & 0xf)) / 0xff) // #f000
-          : null) // invalid hex
-          : (m = reRgbInteger.exec(format)) ? new Rgb(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
-          : (m = reRgbPercent.exec(format)) ? new Rgb(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
-          : (m = reRgbaInteger.exec(format)) ? rgba(m[1], m[2], m[3], m[4]) // rgba(255, 0, 0, 1)
-          : (m = reRgbaPercent.exec(format)) ? rgba(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) // rgb(100%, 0%, 0%, 1)
-          : (m = reHslPercent.exec(format)) ? hsla(m[1], m[2] / 100, m[3] / 100, 1) // hsl(120, 50%, 50%)
-          : (m = reHslaPercent.exec(format)) ? hsla(m[1], m[2] / 100, m[3] / 100, m[4]) // hsla(120, 50%, 50%, 1)
-          : named.hasOwnProperty(format) ? rgbn(named[format]) // eslint-disable-line no-prototype-builtins
-          : format === "transparent" ? new Rgb(NaN, NaN, NaN, 0)
-          : null;
-    }
+    function getLayoutRect(element) {
+      var clientRect = getBoundingClientRect(element); // Use the clientRect sizes if it's not been transformed.
+      // Fixes https://github.com/popperjs/popper-core/issues/1223
 
-    function rgbn(n) {
-      return new Rgb(n >> 16 & 0xff, n >> 8 & 0xff, n & 0xff, 1);
-    }
+      var width = element.offsetWidth;
+      var height = element.offsetHeight;
 
-    function rgba(r, g, b, a) {
-      if (a <= 0) r = g = b = NaN;
-      return new Rgb(r, g, b, a);
-    }
-
-    function rgbConvert(o) {
-      if (!(o instanceof Color)) o = color(o);
-      if (!o) return new Rgb;
-      o = o.rgb();
-      return new Rgb(o.r, o.g, o.b, o.opacity);
-    }
-
-    function rgb$1(r, g, b, opacity) {
-      return arguments.length === 1 ? rgbConvert(r) : new Rgb(r, g, b, opacity == null ? 1 : opacity);
-    }
-
-    function Rgb(r, g, b, opacity) {
-      this.r = +r;
-      this.g = +g;
-      this.b = +b;
-      this.opacity = +opacity;
-    }
-
-    define(Rgb, rgb$1, extend(Color, {
-      brighter: function(k) {
-        k = k == null ? brighter : Math.pow(brighter, k);
-        return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
-      },
-      darker: function(k) {
-        k = k == null ? darker : Math.pow(darker, k);
-        return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
-      },
-      rgb: function() {
-        return this;
-      },
-      displayable: function() {
-        return (-0.5 <= this.r && this.r < 255.5)
-            && (-0.5 <= this.g && this.g < 255.5)
-            && (-0.5 <= this.b && this.b < 255.5)
-            && (0 <= this.opacity && this.opacity <= 1);
-      },
-      hex: rgb_formatHex, // Deprecated! Use color.formatHex.
-      formatHex: rgb_formatHex,
-      formatRgb: rgb_formatRgb,
-      toString: rgb_formatRgb
-    }));
-
-    function rgb_formatHex() {
-      return "#" + hex(this.r) + hex(this.g) + hex(this.b);
-    }
-
-    function rgb_formatRgb() {
-      var a = this.opacity; a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
-      return (a === 1 ? "rgb(" : "rgba(")
-          + Math.max(0, Math.min(255, Math.round(this.r) || 0)) + ", "
-          + Math.max(0, Math.min(255, Math.round(this.g) || 0)) + ", "
-          + Math.max(0, Math.min(255, Math.round(this.b) || 0))
-          + (a === 1 ? ")" : ", " + a + ")");
-    }
-
-    function hex(value) {
-      value = Math.max(0, Math.min(255, Math.round(value) || 0));
-      return (value < 16 ? "0" : "") + value.toString(16);
-    }
-
-    function hsla(h, s, l, a) {
-      if (a <= 0) h = s = l = NaN;
-      else if (l <= 0 || l >= 1) h = s = NaN;
-      else if (s <= 0) h = NaN;
-      return new Hsl(h, s, l, a);
-    }
-
-    function hslConvert(o) {
-      if (o instanceof Hsl) return new Hsl(o.h, o.s, o.l, o.opacity);
-      if (!(o instanceof Color)) o = color(o);
-      if (!o) return new Hsl;
-      if (o instanceof Hsl) return o;
-      o = o.rgb();
-      var r = o.r / 255,
-          g = o.g / 255,
-          b = o.b / 255,
-          min = Math.min(r, g, b),
-          max = Math.max(r, g, b),
-          h = NaN,
-          s = max - min,
-          l = (max + min) / 2;
-      if (s) {
-        if (r === max) h = (g - b) / s + (g < b) * 6;
-        else if (g === max) h = (b - r) / s + 2;
-        else h = (r - g) / s + 4;
-        s /= l < 0.5 ? max + min : 2 - max - min;
-        h *= 60;
-      } else {
-        s = l > 0 && l < 1 ? 0 : h;
+      if (Math.abs(clientRect.width - width) <= 1) {
+        width = clientRect.width;
       }
-      return new Hsl(h, s, l, o.opacity);
-    }
 
-    function hsl(h, s, l, opacity) {
-      return arguments.length === 1 ? hslConvert(h) : new Hsl(h, s, l, opacity == null ? 1 : opacity);
-    }
-
-    function Hsl(h, s, l, opacity) {
-      this.h = +h;
-      this.s = +s;
-      this.l = +l;
-      this.opacity = +opacity;
-    }
-
-    define(Hsl, hsl, extend(Color, {
-      brighter: function(k) {
-        k = k == null ? brighter : Math.pow(brighter, k);
-        return new Hsl(this.h, this.s, this.l * k, this.opacity);
-      },
-      darker: function(k) {
-        k = k == null ? darker : Math.pow(darker, k);
-        return new Hsl(this.h, this.s, this.l * k, this.opacity);
-      },
-      rgb: function() {
-        var h = this.h % 360 + (this.h < 0) * 360,
-            s = isNaN(h) || isNaN(this.s) ? 0 : this.s,
-            l = this.l,
-            m2 = l + (l < 0.5 ? l : 1 - l) * s,
-            m1 = 2 * l - m2;
-        return new Rgb(
-          hsl2rgb(h >= 240 ? h - 240 : h + 120, m1, m2),
-          hsl2rgb(h, m1, m2),
-          hsl2rgb(h < 120 ? h + 240 : h - 120, m1, m2),
-          this.opacity
-        );
-      },
-      displayable: function() {
-        return (0 <= this.s && this.s <= 1 || isNaN(this.s))
-            && (0 <= this.l && this.l <= 1)
-            && (0 <= this.opacity && this.opacity <= 1);
-      },
-      formatHsl: function() {
-        var a = this.opacity; a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
-        return (a === 1 ? "hsl(" : "hsla(")
-            + (this.h || 0) + ", "
-            + (this.s || 0) * 100 + "%, "
-            + (this.l || 0) * 100 + "%"
-            + (a === 1 ? ")" : ", " + a + ")");
+      if (Math.abs(clientRect.height - height) <= 1) {
+        height = clientRect.height;
       }
-    }));
 
-    /* From FvD 13.37, CSS Color Module Level 3 */
-    function hsl2rgb(h, m1, m2) {
-      return (h < 60 ? m1 + (m2 - m1) * h / 60
-          : h < 180 ? m2
-          : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60
-          : m1) * 255;
-    }
-
-    var constant = x => () => x;
-
-    function linear$1(a, d) {
-      return function(t) {
-        return a + t * d;
+      return {
+        x: element.offsetLeft,
+        y: element.offsetTop,
+        width: width,
+        height: height
       };
     }
 
-    function exponential(a, b, y) {
-      return a = Math.pow(a, y), b = Math.pow(b, y) - a, y = 1 / y, function(t) {
-        return Math.pow(a + t * b, y);
+    function contains(parent, child) {
+      var rootNode = child.getRootNode && child.getRootNode(); // First, attempt with faster native method
+
+      if (parent.contains(child)) {
+        return true;
+      } // then fallback to custom implementation with Shadow DOM support
+      else if (rootNode && isShadowRoot(rootNode)) {
+          var next = child;
+
+          do {
+            if (next && parent.isSameNode(next)) {
+              return true;
+            } // $FlowFixMe[prop-missing]: need a better way to handle this...
+
+
+            next = next.parentNode || next.host;
+          } while (next);
+        } // Give up, the result is false
+
+
+      return false;
+    }
+
+    function getComputedStyle$1(element) {
+      return getWindow(element).getComputedStyle(element);
+    }
+
+    function isTableElement(element) {
+      return ['table', 'td', 'th'].indexOf(getNodeName(element)) >= 0;
+    }
+
+    function getDocumentElement(element) {
+      // $FlowFixMe[incompatible-return]: assume body is always available
+      return ((isElement$1(element) ? element.ownerDocument : // $FlowFixMe[prop-missing]
+      element.document) || window.document).documentElement;
+    }
+
+    function getParentNode(element) {
+      if (getNodeName(element) === 'html') {
+        return element;
+      }
+
+      return (// this is a quicker (but less type safe) way to save quite some bytes from the bundle
+        // $FlowFixMe[incompatible-return]
+        // $FlowFixMe[prop-missing]
+        element.assignedSlot || // step into the shadow DOM of the parent of a slotted node
+        element.parentNode || ( // DOM Element detected
+        isShadowRoot(element) ? element.host : null) || // ShadowRoot detected
+        // $FlowFixMe[incompatible-call]: HTMLElement is a Node
+        getDocumentElement(element) // fallback
+
+      );
+    }
+
+    function getTrueOffsetParent(element) {
+      if (!isHTMLElement(element) || // https://github.com/popperjs/popper-core/issues/837
+      getComputedStyle$1(element).position === 'fixed') {
+        return null;
+      }
+
+      return element.offsetParent;
+    } // `.offsetParent` reports `null` for fixed elements, while absolute elements
+    // return the containing block
+
+
+    function getContainingBlock(element) {
+      var isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') !== -1;
+      var isIE = navigator.userAgent.indexOf('Trident') !== -1;
+
+      if (isIE && isHTMLElement(element)) {
+        // In IE 9, 10 and 11 fixed elements containing block is always established by the viewport
+        var elementCss = getComputedStyle$1(element);
+
+        if (elementCss.position === 'fixed') {
+          return null;
+        }
+      }
+
+      var currentNode = getParentNode(element);
+
+      while (isHTMLElement(currentNode) && ['html', 'body'].indexOf(getNodeName(currentNode)) < 0) {
+        var css = getComputedStyle$1(currentNode); // This is non-exhaustive but covers the most common CSS properties that
+        // create a containing block.
+        // https://developer.mozilla.org/en-US/docs/Web/CSS/Containing_block#identifying_the_containing_block
+
+        if (css.transform !== 'none' || css.perspective !== 'none' || css.contain === 'paint' || ['transform', 'perspective'].indexOf(css.willChange) !== -1 || isFirefox && css.willChange === 'filter' || isFirefox && css.filter && css.filter !== 'none') {
+          return currentNode;
+        } else {
+          currentNode = currentNode.parentNode;
+        }
+      }
+
+      return null;
+    } // Gets the closest ancestor positioned element. Handles some edge cases,
+    // such as table ancestors and cross browser bugs.
+
+
+    function getOffsetParent(element) {
+      var window = getWindow(element);
+      var offsetParent = getTrueOffsetParent(element);
+
+      while (offsetParent && isTableElement(offsetParent) && getComputedStyle$1(offsetParent).position === 'static') {
+        offsetParent = getTrueOffsetParent(offsetParent);
+      }
+
+      if (offsetParent && (getNodeName(offsetParent) === 'html' || getNodeName(offsetParent) === 'body' && getComputedStyle$1(offsetParent).position === 'static')) {
+        return window;
+      }
+
+      return offsetParent || getContainingBlock(element) || window;
+    }
+
+    function getMainAxisFromPlacement(placement) {
+      return ['top', 'bottom'].indexOf(placement) >= 0 ? 'x' : 'y';
+    }
+
+    var max = Math.max;
+    var min = Math.min;
+    var round = Math.round;
+
+    function within(min$1, value, max$1) {
+      return max(min$1, min(value, max$1));
+    }
+
+    function getFreshSideObject() {
+      return {
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0
       };
     }
 
-    function gamma(y) {
-      return (y = +y) === 1 ? nogamma : function(a, b) {
-        return b - a ? exponential(a, b, y) : constant(isNaN(a) ? b : a);
+    function mergePaddingObject(paddingObject) {
+      return Object.assign({}, getFreshSideObject(), paddingObject);
+    }
+
+    function expandToHashMap(value, keys) {
+      return keys.reduce(function (hashMap, key) {
+        hashMap[key] = value;
+        return hashMap;
+      }, {});
+    }
+
+    var toPaddingObject = function toPaddingObject(padding, state) {
+      padding = typeof padding === 'function' ? padding(Object.assign({}, state.rects, {
+        placement: state.placement
+      })) : padding;
+      return mergePaddingObject(typeof padding !== 'number' ? padding : expandToHashMap(padding, basePlacements));
+    };
+
+    function arrow(_ref) {
+      var _state$modifiersData$;
+
+      var state = _ref.state,
+          name = _ref.name,
+          options = _ref.options;
+      var arrowElement = state.elements.arrow;
+      var popperOffsets = state.modifiersData.popperOffsets;
+      var basePlacement = getBasePlacement$1(state.placement);
+      var axis = getMainAxisFromPlacement(basePlacement);
+      var isVertical = [left, right].indexOf(basePlacement) >= 0;
+      var len = isVertical ? 'height' : 'width';
+
+      if (!arrowElement || !popperOffsets) {
+        return;
+      }
+
+      var paddingObject = toPaddingObject(options.padding, state);
+      var arrowRect = getLayoutRect(arrowElement);
+      var minProp = axis === 'y' ? top : left;
+      var maxProp = axis === 'y' ? bottom : right;
+      var endDiff = state.rects.reference[len] + state.rects.reference[axis] - popperOffsets[axis] - state.rects.popper[len];
+      var startDiff = popperOffsets[axis] - state.rects.reference[axis];
+      var arrowOffsetParent = getOffsetParent(arrowElement);
+      var clientSize = arrowOffsetParent ? axis === 'y' ? arrowOffsetParent.clientHeight || 0 : arrowOffsetParent.clientWidth || 0 : 0;
+      var centerToReference = endDiff / 2 - startDiff / 2; // Make sure the arrow doesn't overflow the popper if the center point is
+      // outside of the popper bounds
+
+      var min = paddingObject[minProp];
+      var max = clientSize - arrowRect[len] - paddingObject[maxProp];
+      var center = clientSize / 2 - arrowRect[len] / 2 + centerToReference;
+      var offset = within(min, center, max); // Prevents breaking syntax highlighting...
+
+      var axisProp = axis;
+      state.modifiersData[name] = (_state$modifiersData$ = {}, _state$modifiersData$[axisProp] = offset, _state$modifiersData$.centerOffset = offset - center, _state$modifiersData$);
+    }
+
+    function effect$1(_ref2) {
+      var state = _ref2.state,
+          options = _ref2.options;
+      var _options$element = options.element,
+          arrowElement = _options$element === void 0 ? '[data-popper-arrow]' : _options$element;
+
+      if (arrowElement == null) {
+        return;
+      } // CSS selector
+
+
+      if (typeof arrowElement === 'string') {
+        arrowElement = state.elements.popper.querySelector(arrowElement);
+
+        if (!arrowElement) {
+          return;
+        }
+      }
+
+      if (!contains(state.elements.popper, arrowElement)) {
+
+        return;
+      }
+
+      state.elements.arrow = arrowElement;
+    } // eslint-disable-next-line import/no-unused-modules
+
+
+    var arrow$1 = {
+      name: 'arrow',
+      enabled: true,
+      phase: 'main',
+      fn: arrow,
+      effect: effect$1,
+      requires: ['popperOffsets'],
+      requiresIfExists: ['preventOverflow']
+    };
+
+    function getVariation(placement) {
+      return placement.split('-')[1];
+    }
+
+    var unsetSides = {
+      top: 'auto',
+      right: 'auto',
+      bottom: 'auto',
+      left: 'auto'
+    }; // Round the offsets to the nearest suitable subpixel based on the DPR.
+    // Zooming can change the DPR, but it seems to report a value that will
+    // cleanly divide the values into the appropriate subpixels.
+
+    function roundOffsetsByDPR(_ref) {
+      var x = _ref.x,
+          y = _ref.y;
+      var win = window;
+      var dpr = win.devicePixelRatio || 1;
+      return {
+        x: round(round(x * dpr) / dpr) || 0,
+        y: round(round(y * dpr) / dpr) || 0
       };
     }
 
-    function nogamma(a, b) {
-      var d = b - a;
-      return d ? linear$1(a, d) : constant(isNaN(a) ? b : a);
+    function mapToStyles(_ref2) {
+      var _Object$assign2;
+
+      var popper = _ref2.popper,
+          popperRect = _ref2.popperRect,
+          placement = _ref2.placement,
+          variation = _ref2.variation,
+          offsets = _ref2.offsets,
+          position = _ref2.position,
+          gpuAcceleration = _ref2.gpuAcceleration,
+          adaptive = _ref2.adaptive,
+          roundOffsets = _ref2.roundOffsets;
+
+      var _ref3 = roundOffsets === true ? roundOffsetsByDPR(offsets) : typeof roundOffsets === 'function' ? roundOffsets(offsets) : offsets,
+          _ref3$x = _ref3.x,
+          x = _ref3$x === void 0 ? 0 : _ref3$x,
+          _ref3$y = _ref3.y,
+          y = _ref3$y === void 0 ? 0 : _ref3$y;
+
+      var hasX = offsets.hasOwnProperty('x');
+      var hasY = offsets.hasOwnProperty('y');
+      var sideX = left;
+      var sideY = top;
+      var win = window;
+
+      if (adaptive) {
+        var offsetParent = getOffsetParent(popper);
+        var heightProp = 'clientHeight';
+        var widthProp = 'clientWidth';
+
+        if (offsetParent === getWindow(popper)) {
+          offsetParent = getDocumentElement(popper);
+
+          if (getComputedStyle$1(offsetParent).position !== 'static' && position === 'absolute') {
+            heightProp = 'scrollHeight';
+            widthProp = 'scrollWidth';
+          }
+        } // $FlowFixMe[incompatible-cast]: force type refinement, we compare offsetParent with window above, but Flow doesn't detect it
+
+
+        offsetParent = offsetParent;
+
+        if (placement === top || (placement === left || placement === right) && variation === end) {
+          sideY = bottom; // $FlowFixMe[prop-missing]
+
+          y -= offsetParent[heightProp] - popperRect.height;
+          y *= gpuAcceleration ? 1 : -1;
+        }
+
+        if (placement === left || (placement === top || placement === bottom) && variation === end) {
+          sideX = right; // $FlowFixMe[prop-missing]
+
+          x -= offsetParent[widthProp] - popperRect.width;
+          x *= gpuAcceleration ? 1 : -1;
+        }
+      }
+
+      var commonStyles = Object.assign({
+        position: position
+      }, adaptive && unsetSides);
+
+      if (gpuAcceleration) {
+        var _Object$assign;
+
+        return Object.assign({}, commonStyles, (_Object$assign = {}, _Object$assign[sideY] = hasY ? '0' : '', _Object$assign[sideX] = hasX ? '0' : '', _Object$assign.transform = (win.devicePixelRatio || 1) <= 1 ? "translate(" + x + "px, " + y + "px)" : "translate3d(" + x + "px, " + y + "px, 0)", _Object$assign));
+      }
+
+      return Object.assign({}, commonStyles, (_Object$assign2 = {}, _Object$assign2[sideY] = hasY ? y + "px" : '', _Object$assign2[sideX] = hasX ? x + "px" : '', _Object$assign2.transform = '', _Object$assign2));
     }
 
-    var rgb = (function rgbGamma(y) {
-      var color = gamma(y);
+    function computeStyles(_ref4) {
+      var state = _ref4.state,
+          options = _ref4.options;
+      var _options$gpuAccelerat = options.gpuAcceleration,
+          gpuAcceleration = _options$gpuAccelerat === void 0 ? true : _options$gpuAccelerat,
+          _options$adaptive = options.adaptive,
+          adaptive = _options$adaptive === void 0 ? true : _options$adaptive,
+          _options$roundOffsets = options.roundOffsets,
+          roundOffsets = _options$roundOffsets === void 0 ? true : _options$roundOffsets;
 
-      function rgb(start, end) {
-        var r = color((start = rgb$1(start)).r, (end = rgb$1(end)).r),
-            g = color(start.g, end.g),
-            b = color(start.b, end.b),
-            opacity = nogamma(start.opacity, end.opacity);
-        return function(t) {
-          start.r = r(t);
-          start.g = g(t);
-          start.b = b(t);
-          start.opacity = opacity(t);
-          return start + "";
+      var commonStyles = {
+        placement: getBasePlacement$1(state.placement),
+        variation: getVariation(state.placement),
+        popper: state.elements.popper,
+        popperRect: state.rects.popper,
+        gpuAcceleration: gpuAcceleration
+      };
+
+      if (state.modifiersData.popperOffsets != null) {
+        state.styles.popper = Object.assign({}, state.styles.popper, mapToStyles(Object.assign({}, commonStyles, {
+          offsets: state.modifiersData.popperOffsets,
+          position: state.options.strategy,
+          adaptive: adaptive,
+          roundOffsets: roundOffsets
+        })));
+      }
+
+      if (state.modifiersData.arrow != null) {
+        state.styles.arrow = Object.assign({}, state.styles.arrow, mapToStyles(Object.assign({}, commonStyles, {
+          offsets: state.modifiersData.arrow,
+          position: 'absolute',
+          adaptive: false,
+          roundOffsets: roundOffsets
+        })));
+      }
+
+      state.attributes.popper = Object.assign({}, state.attributes.popper, {
+        'data-popper-placement': state.placement
+      });
+    } // eslint-disable-next-line import/no-unused-modules
+
+
+    var computeStyles$1 = {
+      name: 'computeStyles',
+      enabled: true,
+      phase: 'beforeWrite',
+      fn: computeStyles,
+      data: {}
+    };
+
+    var passive = {
+      passive: true
+    };
+
+    function effect(_ref) {
+      var state = _ref.state,
+          instance = _ref.instance,
+          options = _ref.options;
+      var _options$scroll = options.scroll,
+          scroll = _options$scroll === void 0 ? true : _options$scroll,
+          _options$resize = options.resize,
+          resize = _options$resize === void 0 ? true : _options$resize;
+      var window = getWindow(state.elements.popper);
+      var scrollParents = [].concat(state.scrollParents.reference, state.scrollParents.popper);
+
+      if (scroll) {
+        scrollParents.forEach(function (scrollParent) {
+          scrollParent.addEventListener('scroll', instance.update, passive);
+        });
+      }
+
+      if (resize) {
+        window.addEventListener('resize', instance.update, passive);
+      }
+
+      return function () {
+        if (scroll) {
+          scrollParents.forEach(function (scrollParent) {
+            scrollParent.removeEventListener('scroll', instance.update, passive);
+          });
+        }
+
+        if (resize) {
+          window.removeEventListener('resize', instance.update, passive);
+        }
+      };
+    } // eslint-disable-next-line import/no-unused-modules
+
+
+    var eventListeners = {
+      name: 'eventListeners',
+      enabled: true,
+      phase: 'write',
+      fn: function fn() {},
+      effect: effect,
+      data: {}
+    };
+
+    var hash$1 = {
+      left: 'right',
+      right: 'left',
+      bottom: 'top',
+      top: 'bottom'
+    };
+    function getOppositePlacement(placement) {
+      return placement.replace(/left|right|bottom|top/g, function (matched) {
+        return hash$1[matched];
+      });
+    }
+
+    var hash = {
+      start: 'end',
+      end: 'start'
+    };
+    function getOppositeVariationPlacement(placement) {
+      return placement.replace(/start|end/g, function (matched) {
+        return hash[matched];
+      });
+    }
+
+    function getWindowScroll(node) {
+      var win = getWindow(node);
+      var scrollLeft = win.pageXOffset;
+      var scrollTop = win.pageYOffset;
+      return {
+        scrollLeft: scrollLeft,
+        scrollTop: scrollTop
+      };
+    }
+
+    function getWindowScrollBarX(element) {
+      // If <html> has a CSS width greater than the viewport, then this will be
+      // incorrect for RTL.
+      // Popper 1 is broken in this case and never had a bug report so let's assume
+      // it's not an issue. I don't think anyone ever specifies width on <html>
+      // anyway.
+      // Browsers where the left scrollbar doesn't cause an issue report `0` for
+      // this (e.g. Edge 2019, IE11, Safari)
+      return getBoundingClientRect(getDocumentElement(element)).left + getWindowScroll(element).scrollLeft;
+    }
+
+    function getViewportRect(element) {
+      var win = getWindow(element);
+      var html = getDocumentElement(element);
+      var visualViewport = win.visualViewport;
+      var width = html.clientWidth;
+      var height = html.clientHeight;
+      var x = 0;
+      var y = 0; // NB: This isn't supported on iOS <= 12. If the keyboard is open, the popper
+      // can be obscured underneath it.
+      // Also, `html.clientHeight` adds the bottom bar height in Safari iOS, even
+      // if it isn't open, so if this isn't available, the popper will be detected
+      // to overflow the bottom of the screen too early.
+
+      if (visualViewport) {
+        width = visualViewport.width;
+        height = visualViewport.height; // Uses Layout Viewport (like Chrome; Safari does not currently)
+        // In Chrome, it returns a value very close to 0 (+/-) but contains rounding
+        // errors due to floating point numbers, so we need to check precision.
+        // Safari returns a number <= 0, usually < -1 when pinch-zoomed
+        // Feature detection fails in mobile emulation mode in Chrome.
+        // Math.abs(win.innerWidth / visualViewport.scale - visualViewport.width) <
+        // 0.001
+        // Fallback here: "Not Safari" userAgent
+
+        if (!/^((?!chrome|android).)*safari/i.test(navigator.userAgent)) {
+          x = visualViewport.offsetLeft;
+          y = visualViewport.offsetTop;
+        }
+      }
+
+      return {
+        width: width,
+        height: height,
+        x: x + getWindowScrollBarX(element),
+        y: y
+      };
+    }
+
+    // of the `<html>` and `<body>` rect bounds if horizontally scrollable
+
+    function getDocumentRect(element) {
+      var _element$ownerDocumen;
+
+      var html = getDocumentElement(element);
+      var winScroll = getWindowScroll(element);
+      var body = (_element$ownerDocumen = element.ownerDocument) == null ? void 0 : _element$ownerDocumen.body;
+      var width = max(html.scrollWidth, html.clientWidth, body ? body.scrollWidth : 0, body ? body.clientWidth : 0);
+      var height = max(html.scrollHeight, html.clientHeight, body ? body.scrollHeight : 0, body ? body.clientHeight : 0);
+      var x = -winScroll.scrollLeft + getWindowScrollBarX(element);
+      var y = -winScroll.scrollTop;
+
+      if (getComputedStyle$1(body || html).direction === 'rtl') {
+        x += max(html.clientWidth, body ? body.clientWidth : 0) - width;
+      }
+
+      return {
+        width: width,
+        height: height,
+        x: x,
+        y: y
+      };
+    }
+
+    function isScrollParent(element) {
+      // Firefox wants us to check `-x` and `-y` variations as well
+      var _getComputedStyle = getComputedStyle$1(element),
+          overflow = _getComputedStyle.overflow,
+          overflowX = _getComputedStyle.overflowX,
+          overflowY = _getComputedStyle.overflowY;
+
+      return /auto|scroll|overlay|hidden/.test(overflow + overflowY + overflowX);
+    }
+
+    function getScrollParent(node) {
+      if (['html', 'body', '#document'].indexOf(getNodeName(node)) >= 0) {
+        // $FlowFixMe[incompatible-return]: assume body is always available
+        return node.ownerDocument.body;
+      }
+
+      if (isHTMLElement(node) && isScrollParent(node)) {
+        return node;
+      }
+
+      return getScrollParent(getParentNode(node));
+    }
+
+    /*
+    given a DOM element, return the list of all scroll parents, up the list of ancesors
+    until we get to the top window object. This list is what we attach scroll listeners
+    to, because if any of these parent elements scroll, we'll need to re-calculate the
+    reference element's position.
+    */
+
+    function listScrollParents(element, list) {
+      var _element$ownerDocumen;
+
+      if (list === void 0) {
+        list = [];
+      }
+
+      var scrollParent = getScrollParent(element);
+      var isBody = scrollParent === ((_element$ownerDocumen = element.ownerDocument) == null ? void 0 : _element$ownerDocumen.body);
+      var win = getWindow(scrollParent);
+      var target = isBody ? [win].concat(win.visualViewport || [], isScrollParent(scrollParent) ? scrollParent : []) : scrollParent;
+      var updatedList = list.concat(target);
+      return isBody ? updatedList : // $FlowFixMe[incompatible-call]: isBody tells us target will be an HTMLElement here
+      updatedList.concat(listScrollParents(getParentNode(target)));
+    }
+
+    function rectToClientRect(rect) {
+      return Object.assign({}, rect, {
+        left: rect.x,
+        top: rect.y,
+        right: rect.x + rect.width,
+        bottom: rect.y + rect.height
+      });
+    }
+
+    function getInnerBoundingClientRect(element) {
+      var rect = getBoundingClientRect(element);
+      rect.top = rect.top + element.clientTop;
+      rect.left = rect.left + element.clientLeft;
+      rect.bottom = rect.top + element.clientHeight;
+      rect.right = rect.left + element.clientWidth;
+      rect.width = element.clientWidth;
+      rect.height = element.clientHeight;
+      rect.x = rect.left;
+      rect.y = rect.top;
+      return rect;
+    }
+
+    function getClientRectFromMixedType(element, clippingParent) {
+      return clippingParent === viewport ? rectToClientRect(getViewportRect(element)) : isHTMLElement(clippingParent) ? getInnerBoundingClientRect(clippingParent) : rectToClientRect(getDocumentRect(getDocumentElement(element)));
+    } // A "clipping parent" is an overflowable container with the characteristic of
+    // clipping (or hiding) overflowing elements with a position different from
+    // `initial`
+
+
+    function getClippingParents(element) {
+      var clippingParents = listScrollParents(getParentNode(element));
+      var canEscapeClipping = ['absolute', 'fixed'].indexOf(getComputedStyle$1(element).position) >= 0;
+      var clipperElement = canEscapeClipping && isHTMLElement(element) ? getOffsetParent(element) : element;
+
+      if (!isElement$1(clipperElement)) {
+        return [];
+      } // $FlowFixMe[incompatible-return]: https://github.com/facebook/flow/issues/1414
+
+
+      return clippingParents.filter(function (clippingParent) {
+        return isElement$1(clippingParent) && contains(clippingParent, clipperElement) && getNodeName(clippingParent) !== 'body';
+      });
+    } // Gets the maximum area that the element is visible in due to any number of
+    // clipping parents
+
+
+    function getClippingRect(element, boundary, rootBoundary) {
+      var mainClippingParents = boundary === 'clippingParents' ? getClippingParents(element) : [].concat(boundary);
+      var clippingParents = [].concat(mainClippingParents, [rootBoundary]);
+      var firstClippingParent = clippingParents[0];
+      var clippingRect = clippingParents.reduce(function (accRect, clippingParent) {
+        var rect = getClientRectFromMixedType(element, clippingParent);
+        accRect.top = max(rect.top, accRect.top);
+        accRect.right = min(rect.right, accRect.right);
+        accRect.bottom = min(rect.bottom, accRect.bottom);
+        accRect.left = max(rect.left, accRect.left);
+        return accRect;
+      }, getClientRectFromMixedType(element, firstClippingParent));
+      clippingRect.width = clippingRect.right - clippingRect.left;
+      clippingRect.height = clippingRect.bottom - clippingRect.top;
+      clippingRect.x = clippingRect.left;
+      clippingRect.y = clippingRect.top;
+      return clippingRect;
+    }
+
+    function computeOffsets(_ref) {
+      var reference = _ref.reference,
+          element = _ref.element,
+          placement = _ref.placement;
+      var basePlacement = placement ? getBasePlacement$1(placement) : null;
+      var variation = placement ? getVariation(placement) : null;
+      var commonX = reference.x + reference.width / 2 - element.width / 2;
+      var commonY = reference.y + reference.height / 2 - element.height / 2;
+      var offsets;
+
+      switch (basePlacement) {
+        case top:
+          offsets = {
+            x: commonX,
+            y: reference.y - element.height
+          };
+          break;
+
+        case bottom:
+          offsets = {
+            x: commonX,
+            y: reference.y + reference.height
+          };
+          break;
+
+        case right:
+          offsets = {
+            x: reference.x + reference.width,
+            y: commonY
+          };
+          break;
+
+        case left:
+          offsets = {
+            x: reference.x - element.width,
+            y: commonY
+          };
+          break;
+
+        default:
+          offsets = {
+            x: reference.x,
+            y: reference.y
+          };
+      }
+
+      var mainAxis = basePlacement ? getMainAxisFromPlacement(basePlacement) : null;
+
+      if (mainAxis != null) {
+        var len = mainAxis === 'y' ? 'height' : 'width';
+
+        switch (variation) {
+          case start:
+            offsets[mainAxis] = offsets[mainAxis] - (reference[len] / 2 - element[len] / 2);
+            break;
+
+          case end:
+            offsets[mainAxis] = offsets[mainAxis] + (reference[len] / 2 - element[len] / 2);
+            break;
+        }
+      }
+
+      return offsets;
+    }
+
+    function detectOverflow(state, options) {
+      if (options === void 0) {
+        options = {};
+      }
+
+      var _options = options,
+          _options$placement = _options.placement,
+          placement = _options$placement === void 0 ? state.placement : _options$placement,
+          _options$boundary = _options.boundary,
+          boundary = _options$boundary === void 0 ? clippingParents : _options$boundary,
+          _options$rootBoundary = _options.rootBoundary,
+          rootBoundary = _options$rootBoundary === void 0 ? viewport : _options$rootBoundary,
+          _options$elementConte = _options.elementContext,
+          elementContext = _options$elementConte === void 0 ? popper : _options$elementConte,
+          _options$altBoundary = _options.altBoundary,
+          altBoundary = _options$altBoundary === void 0 ? false : _options$altBoundary,
+          _options$padding = _options.padding,
+          padding = _options$padding === void 0 ? 0 : _options$padding;
+      var paddingObject = mergePaddingObject(typeof padding !== 'number' ? padding : expandToHashMap(padding, basePlacements));
+      var altContext = elementContext === popper ? reference : popper;
+      var popperRect = state.rects.popper;
+      var element = state.elements[altBoundary ? altContext : elementContext];
+      var clippingClientRect = getClippingRect(isElement$1(element) ? element : element.contextElement || getDocumentElement(state.elements.popper), boundary, rootBoundary);
+      var referenceClientRect = getBoundingClientRect(state.elements.reference);
+      var popperOffsets = computeOffsets({
+        reference: referenceClientRect,
+        element: popperRect,
+        strategy: 'absolute',
+        placement: placement
+      });
+      var popperClientRect = rectToClientRect(Object.assign({}, popperRect, popperOffsets));
+      var elementClientRect = elementContext === popper ? popperClientRect : referenceClientRect; // positive = overflowing the clipping rect
+      // 0 or negative = within the clipping rect
+
+      var overflowOffsets = {
+        top: clippingClientRect.top - elementClientRect.top + paddingObject.top,
+        bottom: elementClientRect.bottom - clippingClientRect.bottom + paddingObject.bottom,
+        left: clippingClientRect.left - elementClientRect.left + paddingObject.left,
+        right: elementClientRect.right - clippingClientRect.right + paddingObject.right
+      };
+      var offsetData = state.modifiersData.offset; // Offsets can be applied only to the popper element
+
+      if (elementContext === popper && offsetData) {
+        var offset = offsetData[placement];
+        Object.keys(overflowOffsets).forEach(function (key) {
+          var multiply = [right, bottom].indexOf(key) >= 0 ? 1 : -1;
+          var axis = [top, bottom].indexOf(key) >= 0 ? 'y' : 'x';
+          overflowOffsets[key] += offset[axis] * multiply;
+        });
+      }
+
+      return overflowOffsets;
+    }
+
+    function computeAutoPlacement(state, options) {
+      if (options === void 0) {
+        options = {};
+      }
+
+      var _options = options,
+          placement = _options.placement,
+          boundary = _options.boundary,
+          rootBoundary = _options.rootBoundary,
+          padding = _options.padding,
+          flipVariations = _options.flipVariations,
+          _options$allowedAutoP = _options.allowedAutoPlacements,
+          allowedAutoPlacements = _options$allowedAutoP === void 0 ? placements : _options$allowedAutoP;
+      var variation = getVariation(placement);
+      var placements$1 = variation ? flipVariations ? variationPlacements : variationPlacements.filter(function (placement) {
+        return getVariation(placement) === variation;
+      }) : basePlacements;
+      var allowedPlacements = placements$1.filter(function (placement) {
+        return allowedAutoPlacements.indexOf(placement) >= 0;
+      });
+
+      if (allowedPlacements.length === 0) {
+        allowedPlacements = placements$1;
+      } // $FlowFixMe[incompatible-type]: Flow seems to have problems with two array unions...
+
+
+      var overflows = allowedPlacements.reduce(function (acc, placement) {
+        acc[placement] = detectOverflow(state, {
+          placement: placement,
+          boundary: boundary,
+          rootBoundary: rootBoundary,
+          padding: padding
+        })[getBasePlacement$1(placement)];
+        return acc;
+      }, {});
+      return Object.keys(overflows).sort(function (a, b) {
+        return overflows[a] - overflows[b];
+      });
+    }
+
+    function getExpandedFallbackPlacements(placement) {
+      if (getBasePlacement$1(placement) === auto) {
+        return [];
+      }
+
+      var oppositePlacement = getOppositePlacement(placement);
+      return [getOppositeVariationPlacement(placement), oppositePlacement, getOppositeVariationPlacement(oppositePlacement)];
+    }
+
+    function flip(_ref) {
+      var state = _ref.state,
+          options = _ref.options,
+          name = _ref.name;
+
+      if (state.modifiersData[name]._skip) {
+        return;
+      }
+
+      var _options$mainAxis = options.mainAxis,
+          checkMainAxis = _options$mainAxis === void 0 ? true : _options$mainAxis,
+          _options$altAxis = options.altAxis,
+          checkAltAxis = _options$altAxis === void 0 ? true : _options$altAxis,
+          specifiedFallbackPlacements = options.fallbackPlacements,
+          padding = options.padding,
+          boundary = options.boundary,
+          rootBoundary = options.rootBoundary,
+          altBoundary = options.altBoundary,
+          _options$flipVariatio = options.flipVariations,
+          flipVariations = _options$flipVariatio === void 0 ? true : _options$flipVariatio,
+          allowedAutoPlacements = options.allowedAutoPlacements;
+      var preferredPlacement = state.options.placement;
+      var basePlacement = getBasePlacement$1(preferredPlacement);
+      var isBasePlacement = basePlacement === preferredPlacement;
+      var fallbackPlacements = specifiedFallbackPlacements || (isBasePlacement || !flipVariations ? [getOppositePlacement(preferredPlacement)] : getExpandedFallbackPlacements(preferredPlacement));
+      var placements = [preferredPlacement].concat(fallbackPlacements).reduce(function (acc, placement) {
+        return acc.concat(getBasePlacement$1(placement) === auto ? computeAutoPlacement(state, {
+          placement: placement,
+          boundary: boundary,
+          rootBoundary: rootBoundary,
+          padding: padding,
+          flipVariations: flipVariations,
+          allowedAutoPlacements: allowedAutoPlacements
+        }) : placement);
+      }, []);
+      var referenceRect = state.rects.reference;
+      var popperRect = state.rects.popper;
+      var checksMap = new Map();
+      var makeFallbackChecks = true;
+      var firstFittingPlacement = placements[0];
+
+      for (var i = 0; i < placements.length; i++) {
+        var placement = placements[i];
+
+        var _basePlacement = getBasePlacement$1(placement);
+
+        var isStartVariation = getVariation(placement) === start;
+        var isVertical = [top, bottom].indexOf(_basePlacement) >= 0;
+        var len = isVertical ? 'width' : 'height';
+        var overflow = detectOverflow(state, {
+          placement: placement,
+          boundary: boundary,
+          rootBoundary: rootBoundary,
+          altBoundary: altBoundary,
+          padding: padding
+        });
+        var mainVariationSide = isVertical ? isStartVariation ? right : left : isStartVariation ? bottom : top;
+
+        if (referenceRect[len] > popperRect[len]) {
+          mainVariationSide = getOppositePlacement(mainVariationSide);
+        }
+
+        var altVariationSide = getOppositePlacement(mainVariationSide);
+        var checks = [];
+
+        if (checkMainAxis) {
+          checks.push(overflow[_basePlacement] <= 0);
+        }
+
+        if (checkAltAxis) {
+          checks.push(overflow[mainVariationSide] <= 0, overflow[altVariationSide] <= 0);
+        }
+
+        if (checks.every(function (check) {
+          return check;
+        })) {
+          firstFittingPlacement = placement;
+          makeFallbackChecks = false;
+          break;
+        }
+
+        checksMap.set(placement, checks);
+      }
+
+      if (makeFallbackChecks) {
+        // `2` may be desired in some cases – research later
+        var numberOfChecks = flipVariations ? 3 : 1;
+
+        var _loop = function _loop(_i) {
+          var fittingPlacement = placements.find(function (placement) {
+            var checks = checksMap.get(placement);
+
+            if (checks) {
+              return checks.slice(0, _i).every(function (check) {
+                return check;
+              });
+            }
+          });
+
+          if (fittingPlacement) {
+            firstFittingPlacement = fittingPlacement;
+            return "break";
+          }
+        };
+
+        for (var _i = numberOfChecks; _i > 0; _i--) {
+          var _ret = _loop(_i);
+
+          if (_ret === "break") break;
+        }
+      }
+
+      if (state.placement !== firstFittingPlacement) {
+        state.modifiersData[name]._skip = true;
+        state.placement = firstFittingPlacement;
+        state.reset = true;
+      }
+    } // eslint-disable-next-line import/no-unused-modules
+
+
+    var flip$1 = {
+      name: 'flip',
+      enabled: true,
+      phase: 'main',
+      fn: flip,
+      requiresIfExists: ['offset'],
+      data: {
+        _skip: false
+      }
+    };
+
+    function getSideOffsets(overflow, rect, preventedOffsets) {
+      if (preventedOffsets === void 0) {
+        preventedOffsets = {
+          x: 0,
+          y: 0
         };
       }
 
-      rgb.gamma = rgbGamma;
-
-      return rgb;
-    })(1);
-
-    function numberArray(a, b) {
-      if (!b) b = [];
-      var n = a ? Math.min(b.length, a.length) : 0,
-          c = b.slice(),
-          i;
-      return function(t) {
-        for (i = 0; i < n; ++i) c[i] = a[i] * (1 - t) + b[i] * t;
-        return c;
+      return {
+        top: overflow.top - rect.height - preventedOffsets.y,
+        right: overflow.right - rect.width + preventedOffsets.x,
+        bottom: overflow.bottom - rect.height + preventedOffsets.y,
+        left: overflow.left - rect.width - preventedOffsets.x
       };
     }
 
-    function isNumberArray(x) {
-      return ArrayBuffer.isView(x) && !(x instanceof DataView);
+    function isAnySideFullyClipped(overflow) {
+      return [top, right, bottom, left].some(function (side) {
+        return overflow[side] >= 0;
+      });
     }
 
-    function genericArray(a, b) {
-      var nb = b ? b.length : 0,
-          na = a ? Math.min(nb, a.length) : 0,
-          x = new Array(na),
-          c = new Array(nb),
-          i;
+    function hide(_ref) {
+      var state = _ref.state,
+          name = _ref.name;
+      var referenceRect = state.rects.reference;
+      var popperRect = state.rects.popper;
+      var preventedOffsets = state.modifiersData.preventOverflow;
+      var referenceOverflow = detectOverflow(state, {
+        elementContext: 'reference'
+      });
+      var popperAltOverflow = detectOverflow(state, {
+        altBoundary: true
+      });
+      var referenceClippingOffsets = getSideOffsets(referenceOverflow, referenceRect);
+      var popperEscapeOffsets = getSideOffsets(popperAltOverflow, popperRect, preventedOffsets);
+      var isReferenceHidden = isAnySideFullyClipped(referenceClippingOffsets);
+      var hasPopperEscaped = isAnySideFullyClipped(popperEscapeOffsets);
+      state.modifiersData[name] = {
+        referenceClippingOffsets: referenceClippingOffsets,
+        popperEscapeOffsets: popperEscapeOffsets,
+        isReferenceHidden: isReferenceHidden,
+        hasPopperEscaped: hasPopperEscaped
+      };
+      state.attributes.popper = Object.assign({}, state.attributes.popper, {
+        'data-popper-reference-hidden': isReferenceHidden,
+        'data-popper-escaped': hasPopperEscaped
+      });
+    } // eslint-disable-next-line import/no-unused-modules
 
-      for (i = 0; i < na; ++i) x[i] = interpolate(a[i], b[i]);
-      for (; i < nb; ++i) c[i] = b[i];
 
-      return function(t) {
-        for (i = 0; i < na; ++i) c[i] = x[i](t);
-        return c;
+    var hide$1 = {
+      name: 'hide',
+      enabled: true,
+      phase: 'main',
+      requiresIfExists: ['preventOverflow'],
+      fn: hide
+    };
+
+    function distanceAndSkiddingToXY(placement, rects, offset) {
+      var basePlacement = getBasePlacement$1(placement);
+      var invertDistance = [left, top].indexOf(basePlacement) >= 0 ? -1 : 1;
+
+      var _ref = typeof offset === 'function' ? offset(Object.assign({}, rects, {
+        placement: placement
+      })) : offset,
+          skidding = _ref[0],
+          distance = _ref[1];
+
+      skidding = skidding || 0;
+      distance = (distance || 0) * invertDistance;
+      return [left, right].indexOf(basePlacement) >= 0 ? {
+        x: distance,
+        y: skidding
+      } : {
+        x: skidding,
+        y: distance
       };
     }
 
-    function date(a, b) {
-      var d = new Date;
-      return a = +a, b = +b, function(t) {
-        return d.setTime(a * (1 - t) + b * t), d;
-      };
+    function offset(_ref2) {
+      var state = _ref2.state,
+          options = _ref2.options,
+          name = _ref2.name;
+      var _options$offset = options.offset,
+          offset = _options$offset === void 0 ? [0, 0] : _options$offset;
+      var data = placements.reduce(function (acc, placement) {
+        acc[placement] = distanceAndSkiddingToXY(placement, state.rects, offset);
+        return acc;
+      }, {});
+      var _data$state$placement = data[state.placement],
+          x = _data$state$placement.x,
+          y = _data$state$placement.y;
+
+      if (state.modifiersData.popperOffsets != null) {
+        state.modifiersData.popperOffsets.x += x;
+        state.modifiersData.popperOffsets.y += y;
+      }
+
+      state.modifiersData[name] = data;
+    } // eslint-disable-next-line import/no-unused-modules
+
+
+    var offset$1 = {
+      name: 'offset',
+      enabled: true,
+      phase: 'main',
+      requires: ['popperOffsets'],
+      fn: offset
+    };
+
+    function popperOffsets(_ref) {
+      var state = _ref.state,
+          name = _ref.name;
+      // Offsets are the actual position the popper needs to have to be
+      // properly positioned near its reference element
+      // This is the most basic placement, and will be adjusted by
+      // the modifiers in the next step
+      state.modifiersData[name] = computeOffsets({
+        reference: state.rects.reference,
+        element: state.rects.popper,
+        strategy: 'absolute',
+        placement: state.placement
+      });
+    } // eslint-disable-next-line import/no-unused-modules
+
+
+    var popperOffsets$1 = {
+      name: 'popperOffsets',
+      enabled: true,
+      phase: 'read',
+      fn: popperOffsets,
+      data: {}
+    };
+
+    function getAltAxis(axis) {
+      return axis === 'x' ? 'y' : 'x';
     }
 
-    function interpolateNumber(a, b) {
-      return a = +a, b = +b, function(t) {
-        return a * (1 - t) + b * t;
+    function preventOverflow(_ref) {
+      var state = _ref.state,
+          options = _ref.options,
+          name = _ref.name;
+      var _options$mainAxis = options.mainAxis,
+          checkMainAxis = _options$mainAxis === void 0 ? true : _options$mainAxis,
+          _options$altAxis = options.altAxis,
+          checkAltAxis = _options$altAxis === void 0 ? false : _options$altAxis,
+          boundary = options.boundary,
+          rootBoundary = options.rootBoundary,
+          altBoundary = options.altBoundary,
+          padding = options.padding,
+          _options$tether = options.tether,
+          tether = _options$tether === void 0 ? true : _options$tether,
+          _options$tetherOffset = options.tetherOffset,
+          tetherOffset = _options$tetherOffset === void 0 ? 0 : _options$tetherOffset;
+      var overflow = detectOverflow(state, {
+        boundary: boundary,
+        rootBoundary: rootBoundary,
+        padding: padding,
+        altBoundary: altBoundary
+      });
+      var basePlacement = getBasePlacement$1(state.placement);
+      var variation = getVariation(state.placement);
+      var isBasePlacement = !variation;
+      var mainAxis = getMainAxisFromPlacement(basePlacement);
+      var altAxis = getAltAxis(mainAxis);
+      var popperOffsets = state.modifiersData.popperOffsets;
+      var referenceRect = state.rects.reference;
+      var popperRect = state.rects.popper;
+      var tetherOffsetValue = typeof tetherOffset === 'function' ? tetherOffset(Object.assign({}, state.rects, {
+        placement: state.placement
+      })) : tetherOffset;
+      var data = {
+        x: 0,
+        y: 0
       };
-    }
 
-    function object(a, b) {
-      var i = {},
-          c = {},
-          k;
+      if (!popperOffsets) {
+        return;
+      }
 
-      if (a === null || typeof a !== "object") a = {};
-      if (b === null || typeof b !== "object") b = {};
+      if (checkMainAxis || checkAltAxis) {
+        var mainSide = mainAxis === 'y' ? top : left;
+        var altSide = mainAxis === 'y' ? bottom : right;
+        var len = mainAxis === 'y' ? 'height' : 'width';
+        var offset = popperOffsets[mainAxis];
+        var min$1 = popperOffsets[mainAxis] + overflow[mainSide];
+        var max$1 = popperOffsets[mainAxis] - overflow[altSide];
+        var additive = tether ? -popperRect[len] / 2 : 0;
+        var minLen = variation === start ? referenceRect[len] : popperRect[len];
+        var maxLen = variation === start ? -popperRect[len] : -referenceRect[len]; // We need to include the arrow in the calculation so the arrow doesn't go
+        // outside the reference bounds
 
-      for (k in b) {
-        if (k in a) {
-          i[k] = interpolate(a[k], b[k]);
-        } else {
-          c[k] = b[k];
+        var arrowElement = state.elements.arrow;
+        var arrowRect = tether && arrowElement ? getLayoutRect(arrowElement) : {
+          width: 0,
+          height: 0
+        };
+        var arrowPaddingObject = state.modifiersData['arrow#persistent'] ? state.modifiersData['arrow#persistent'].padding : getFreshSideObject();
+        var arrowPaddingMin = arrowPaddingObject[mainSide];
+        var arrowPaddingMax = arrowPaddingObject[altSide]; // If the reference length is smaller than the arrow length, we don't want
+        // to include its full size in the calculation. If the reference is small
+        // and near the edge of a boundary, the popper can overflow even if the
+        // reference is not overflowing as well (e.g. virtual elements with no
+        // width or height)
+
+        var arrowLen = within(0, referenceRect[len], arrowRect[len]);
+        var minOffset = isBasePlacement ? referenceRect[len] / 2 - additive - arrowLen - arrowPaddingMin - tetherOffsetValue : minLen - arrowLen - arrowPaddingMin - tetherOffsetValue;
+        var maxOffset = isBasePlacement ? -referenceRect[len] / 2 + additive + arrowLen + arrowPaddingMax + tetherOffsetValue : maxLen + arrowLen + arrowPaddingMax + tetherOffsetValue;
+        var arrowOffsetParent = state.elements.arrow && getOffsetParent(state.elements.arrow);
+        var clientOffset = arrowOffsetParent ? mainAxis === 'y' ? arrowOffsetParent.clientTop || 0 : arrowOffsetParent.clientLeft || 0 : 0;
+        var offsetModifierValue = state.modifiersData.offset ? state.modifiersData.offset[state.placement][mainAxis] : 0;
+        var tetherMin = popperOffsets[mainAxis] + minOffset - offsetModifierValue - clientOffset;
+        var tetherMax = popperOffsets[mainAxis] + maxOffset - offsetModifierValue;
+
+        if (checkMainAxis) {
+          var preventedOffset = within(tether ? min(min$1, tetherMin) : min$1, offset, tether ? max(max$1, tetherMax) : max$1);
+          popperOffsets[mainAxis] = preventedOffset;
+          data[mainAxis] = preventedOffset - offset;
+        }
+
+        if (checkAltAxis) {
+          var _mainSide = mainAxis === 'x' ? top : left;
+
+          var _altSide = mainAxis === 'x' ? bottom : right;
+
+          var _offset = popperOffsets[altAxis];
+
+          var _min = _offset + overflow[_mainSide];
+
+          var _max = _offset - overflow[_altSide];
+
+          var _preventedOffset = within(tether ? min(_min, tetherMin) : _min, _offset, tether ? max(_max, tetherMax) : _max);
+
+          popperOffsets[altAxis] = _preventedOffset;
+          data[altAxis] = _preventedOffset - _offset;
         }
       }
 
-      return function(t) {
-        for (k in i) c[k] = i[k](t);
-        return c;
+      state.modifiersData[name] = data;
+    } // eslint-disable-next-line import/no-unused-modules
+
+
+    var preventOverflow$1 = {
+      name: 'preventOverflow',
+      enabled: true,
+      phase: 'main',
+      fn: preventOverflow,
+      requiresIfExists: ['offset']
+    };
+
+    function getHTMLElementScroll(element) {
+      return {
+        scrollLeft: element.scrollLeft,
+        scrollTop: element.scrollTop
       };
     }
 
-    var reA = /[-+]?(?:\d+\.?\d*|\.?\d+)(?:[eE][-+]?\d+)?/g,
-        reB = new RegExp(reA.source, "g");
-
-    function zero(b) {
-      return function() {
-        return b;
-      };
+    function getNodeScroll(node) {
+      if (node === getWindow(node) || !isHTMLElement(node)) {
+        return getWindowScroll(node);
+      } else {
+        return getHTMLElementScroll(node);
+      }
     }
 
-    function one(b) {
-      return function(t) {
-        return b(t) + "";
-      };
-    }
+    function isElementScaled(element) {
+      var rect = element.getBoundingClientRect();
+      var scaleX = rect.width / element.offsetWidth || 1;
+      var scaleY = rect.height / element.offsetHeight || 1;
+      return scaleX !== 1 || scaleY !== 1;
+    } // Returns the composite rect of an element relative to its offsetParent.
+    // Composite means it takes into account transforms as well as layout.
 
-    function string(a, b) {
-      var bi = reA.lastIndex = reB.lastIndex = 0, // scan index for next number in b
-          am, // current match in a
-          bm, // current match in b
-          bs, // string preceding current number in b, if any
-          i = -1, // index in s
-          s = [], // string constants and placeholders
-          q = []; // number interpolators
 
-      // Coerce inputs to strings.
-      a = a + "", b = b + "";
-
-      // Interpolate pairs of numbers in a & b.
-      while ((am = reA.exec(a))
-          && (bm = reB.exec(b))) {
-        if ((bs = bm.index) > bi) { // a string precedes the next number in b
-          bs = b.slice(bi, bs);
-          if (s[i]) s[i] += bs; // coalesce with previous string
-          else s[++i] = bs;
-        }
-        if ((am = am[0]) === (bm = bm[0])) { // numbers in a & b match
-          if (s[i]) s[i] += bm; // coalesce with previous string
-          else s[++i] = bm;
-        } else { // interpolate non-matching numbers
-          s[++i] = null;
-          q.push({i: i, x: interpolateNumber(am, bm)});
-        }
-        bi = reB.lastIndex;
+    function getCompositeRect(elementOrVirtualElement, offsetParent, isFixed) {
+      if (isFixed === void 0) {
+        isFixed = false;
       }
 
-      // Add remains of b.
-      if (bi < b.length) {
-        bs = b.slice(bi);
-        if (s[i]) s[i] += bs; // coalesce with previous string
-        else s[++i] = bs;
+      var isOffsetParentAnElement = isHTMLElement(offsetParent);
+      isHTMLElement(offsetParent) && isElementScaled(offsetParent);
+      var documentElement = getDocumentElement(offsetParent);
+      var rect = getBoundingClientRect(elementOrVirtualElement);
+      var scroll = {
+        scrollLeft: 0,
+        scrollTop: 0
+      };
+      var offsets = {
+        x: 0,
+        y: 0
+      };
+
+      if (isOffsetParentAnElement || !isOffsetParentAnElement && !isFixed) {
+        if (getNodeName(offsetParent) !== 'body' || // https://github.com/popperjs/popper-core/issues/1078
+        isScrollParent(documentElement)) {
+          scroll = getNodeScroll(offsetParent);
+        }
+
+        if (isHTMLElement(offsetParent)) {
+          offsets = getBoundingClientRect(offsetParent);
+          offsets.x += offsetParent.clientLeft;
+          offsets.y += offsetParent.clientTop;
+        } else if (documentElement) {
+          offsets.x = getWindowScrollBarX(documentElement);
+        }
       }
 
-      // Special optimization for only a single match.
-      // Otherwise, interpolate each of the numbers and rejoin the string.
-      return s.length < 2 ? (q[0]
-          ? one(q[0].x)
-          : zero(b))
-          : (b = q.length, function(t) {
-              for (var i = 0, o; i < b; ++i) s[(o = q[i]).i] = o.x(t);
-              return s.join("");
+      return {
+        x: rect.left + scroll.scrollLeft - offsets.x,
+        y: rect.top + scroll.scrollTop - offsets.y,
+        width: rect.width,
+        height: rect.height
+      };
+    }
+
+    function order(modifiers) {
+      var map = new Map();
+      var visited = new Set();
+      var result = [];
+      modifiers.forEach(function (modifier) {
+        map.set(modifier.name, modifier);
+      }); // On visiting object, check for its dependencies and visit them recursively
+
+      function sort(modifier) {
+        visited.add(modifier.name);
+        var requires = [].concat(modifier.requires || [], modifier.requiresIfExists || []);
+        requires.forEach(function (dep) {
+          if (!visited.has(dep)) {
+            var depModifier = map.get(dep);
+
+            if (depModifier) {
+              sort(depModifier);
+            }
+          }
+        });
+        result.push(modifier);
+      }
+
+      modifiers.forEach(function (modifier) {
+        if (!visited.has(modifier.name)) {
+          // check for visited object
+          sort(modifier);
+        }
+      });
+      return result;
+    }
+
+    function orderModifiers(modifiers) {
+      // order based on dependencies
+      var orderedModifiers = order(modifiers); // order based on phase
+
+      return modifierPhases.reduce(function (acc, phase) {
+        return acc.concat(orderedModifiers.filter(function (modifier) {
+          return modifier.phase === phase;
+        }));
+      }, []);
+    }
+
+    function debounce$1(fn) {
+      var pending;
+      return function () {
+        if (!pending) {
+          pending = new Promise(function (resolve) {
+            Promise.resolve().then(function () {
+              pending = undefined;
+              resolve(fn());
             });
-    }
+          });
+        }
 
-    function interpolate(a, b) {
-      var t = typeof b, c;
-      return b == null || t === "boolean" ? constant(b)
-          : (t === "number" ? interpolateNumber
-          : t === "string" ? ((c = color(b)) ? (b = c, rgb) : string)
-          : b instanceof color ? rgb
-          : b instanceof Date ? date
-          : isNumberArray(b) ? numberArray
-          : Array.isArray(b) ? genericArray
-          : typeof b.valueOf !== "function" && typeof b.toString !== "function" || isNaN(b) ? object
-          : interpolateNumber)(a, b);
-    }
-
-    function interpolateRound(a, b) {
-      return a = +a, b = +b, function(t) {
-        return Math.round(a * (1 - t) + b * t);
+        return pending;
       };
     }
 
-    function constants(x) {
-      return function() {
-        return x;
-      };
+    function mergeByName(modifiers) {
+      var merged = modifiers.reduce(function (merged, current) {
+        var existing = merged[current.name];
+        merged[current.name] = existing ? Object.assign({}, existing, current, {
+          options: Object.assign({}, existing.options, current.options),
+          data: Object.assign({}, existing.data, current.data)
+        }) : current;
+        return merged;
+      }, {}); // IE11 does not support Object.values
+
+      return Object.keys(merged).map(function (key) {
+        return merged[key];
+      });
     }
 
-    function number(x) {
-      return +x;
-    }
+    var DEFAULT_OPTIONS = {
+      placement: 'bottom',
+      modifiers: [],
+      strategy: 'absolute'
+    };
 
-    var unit = [0, 1];
-
-    function identity$1(x) {
-      return x;
-    }
-
-    function normalize(a, b) {
-      return (b -= (a = +a))
-          ? function(x) { return (x - a) / b; }
-          : constants(isNaN(b) ? NaN : 0.5);
-    }
-
-    function clamper(a, b) {
-      var t;
-      if (a > b) t = a, a = b, b = t;
-      return function(x) { return Math.max(a, Math.min(b, x)); };
-    }
-
-    // normalize(a, b)(x) takes a domain value x in [a,b] and returns the corresponding parameter t in [0,1].
-    // interpolate(a, b)(t) takes a parameter t in [0,1] and returns the corresponding range value x in [a,b].
-    function bimap(domain, range, interpolate) {
-      var d0 = domain[0], d1 = domain[1], r0 = range[0], r1 = range[1];
-      if (d1 < d0) d0 = normalize(d1, d0), r0 = interpolate(r1, r0);
-      else d0 = normalize(d0, d1), r0 = interpolate(r0, r1);
-      return function(x) { return r0(d0(x)); };
-    }
-
-    function polymap(domain, range, interpolate) {
-      var j = Math.min(domain.length, range.length) - 1,
-          d = new Array(j),
-          r = new Array(j),
-          i = -1;
-
-      // Reverse descending domains.
-      if (domain[j] < domain[0]) {
-        domain = domain.slice().reverse();
-        range = range.slice().reverse();
+    function areValidElements() {
+      for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
       }
 
-      while (++i < j) {
-        d[i] = normalize(domain[i], domain[i + 1]);
-        r[i] = interpolate(range[i], range[i + 1]);
+      return !args.some(function (element) {
+        return !(element && typeof element.getBoundingClientRect === 'function');
+      });
+    }
+
+    function popperGenerator(generatorOptions) {
+      if (generatorOptions === void 0) {
+        generatorOptions = {};
       }
 
-      return function(x) {
-        var i = bisect(domain, x, 1, j) - 1;
-        return r[i](d[i](x));
+      var _generatorOptions = generatorOptions,
+          _generatorOptions$def = _generatorOptions.defaultModifiers,
+          defaultModifiers = _generatorOptions$def === void 0 ? [] : _generatorOptions$def,
+          _generatorOptions$def2 = _generatorOptions.defaultOptions,
+          defaultOptions = _generatorOptions$def2 === void 0 ? DEFAULT_OPTIONS : _generatorOptions$def2;
+      return function createPopper(reference, popper, options) {
+        if (options === void 0) {
+          options = defaultOptions;
+        }
+
+        var state = {
+          placement: 'bottom',
+          orderedModifiers: [],
+          options: Object.assign({}, DEFAULT_OPTIONS, defaultOptions),
+          modifiersData: {},
+          elements: {
+            reference: reference,
+            popper: popper
+          },
+          attributes: {},
+          styles: {}
+        };
+        var effectCleanupFns = [];
+        var isDestroyed = false;
+        var instance = {
+          state: state,
+          setOptions: function setOptions(setOptionsAction) {
+            var options = typeof setOptionsAction === 'function' ? setOptionsAction(state.options) : setOptionsAction;
+            cleanupModifierEffects();
+            state.options = Object.assign({}, defaultOptions, state.options, options);
+            state.scrollParents = {
+              reference: isElement$1(reference) ? listScrollParents(reference) : reference.contextElement ? listScrollParents(reference.contextElement) : [],
+              popper: listScrollParents(popper)
+            }; // Orders the modifiers based on their dependencies and `phase`
+            // properties
+
+            var orderedModifiers = orderModifiers(mergeByName([].concat(defaultModifiers, state.options.modifiers))); // Strip out disabled modifiers
+
+            state.orderedModifiers = orderedModifiers.filter(function (m) {
+              return m.enabled;
+            }); // Validate the provided modifiers so that the consumer will get warned
+
+            runModifierEffects();
+            return instance.update();
+          },
+          // Sync update – it will always be executed, even if not necessary. This
+          // is useful for low frequency updates where sync behavior simplifies the
+          // logic.
+          // For high frequency updates (e.g. `resize` and `scroll` events), always
+          // prefer the async Popper#update method
+          forceUpdate: function forceUpdate() {
+            if (isDestroyed) {
+              return;
+            }
+
+            var _state$elements = state.elements,
+                reference = _state$elements.reference,
+                popper = _state$elements.popper; // Don't proceed if `reference` or `popper` are not valid elements
+            // anymore
+
+            if (!areValidElements(reference, popper)) {
+
+              return;
+            } // Store the reference and popper rects to be read by modifiers
+
+
+            state.rects = {
+              reference: getCompositeRect(reference, getOffsetParent(popper), state.options.strategy === 'fixed'),
+              popper: getLayoutRect(popper)
+            }; // Modifiers have the ability to reset the current update cycle. The
+            // most common use case for this is the `flip` modifier changing the
+            // placement, which then needs to re-run all the modifiers, because the
+            // logic was previously ran for the previous placement and is therefore
+            // stale/incorrect
+
+            state.reset = false;
+            state.placement = state.options.placement; // On each update cycle, the `modifiersData` property for each modifier
+            // is filled with the initial data specified by the modifier. This means
+            // it doesn't persist and is fresh on each update.
+            // To ensure persistent data, use `${name}#persistent`
+
+            state.orderedModifiers.forEach(function (modifier) {
+              return state.modifiersData[modifier.name] = Object.assign({}, modifier.data);
+            });
+
+            for (var index = 0; index < state.orderedModifiers.length; index++) {
+
+              if (state.reset === true) {
+                state.reset = false;
+                index = -1;
+                continue;
+              }
+
+              var _state$orderedModifie = state.orderedModifiers[index],
+                  fn = _state$orderedModifie.fn,
+                  _state$orderedModifie2 = _state$orderedModifie.options,
+                  _options = _state$orderedModifie2 === void 0 ? {} : _state$orderedModifie2,
+                  name = _state$orderedModifie.name;
+
+              if (typeof fn === 'function') {
+                state = fn({
+                  state: state,
+                  options: _options,
+                  name: name,
+                  instance: instance
+                }) || state;
+              }
+            }
+          },
+          // Async and optimistically optimized update – it will not be executed if
+          // not necessary (debounced to run at most once-per-tick)
+          update: debounce$1(function () {
+            return new Promise(function (resolve) {
+              instance.forceUpdate();
+              resolve(state);
+            });
+          }),
+          destroy: function destroy() {
+            cleanupModifierEffects();
+            isDestroyed = true;
+          }
+        };
+
+        if (!areValidElements(reference, popper)) {
+
+          return instance;
+        }
+
+        instance.setOptions(options).then(function (state) {
+          if (!isDestroyed && options.onFirstUpdate) {
+            options.onFirstUpdate(state);
+          }
+        }); // Modifiers have the ability to execute arbitrary code before the first
+        // update cycle runs. They will be executed in the same order as the update
+        // cycle. This is useful when a modifier adds some persistent data that
+        // other modifiers need to use, but the modifier is run after the dependent
+        // one.
+
+        function runModifierEffects() {
+          state.orderedModifiers.forEach(function (_ref3) {
+            var name = _ref3.name,
+                _ref3$options = _ref3.options,
+                options = _ref3$options === void 0 ? {} : _ref3$options,
+                effect = _ref3.effect;
+
+            if (typeof effect === 'function') {
+              var cleanupFn = effect({
+                state: state,
+                name: name,
+                instance: instance,
+                options: options
+              });
+
+              var noopFn = function noopFn() {};
+
+              effectCleanupFns.push(cleanupFn || noopFn);
+            }
+          });
+        }
+
+        function cleanupModifierEffects() {
+          effectCleanupFns.forEach(function (fn) {
+            return fn();
+          });
+          effectCleanupFns = [];
+        }
+
+        return instance;
       };
     }
 
-    function copy(source, target) {
-      return target
-          .domain(source.domain())
-          .range(source.range())
-          .interpolate(source.interpolate())
-          .clamp(source.clamp())
-          .unknown(source.unknown());
-    }
+    var defaultModifiers = [eventListeners, popperOffsets$1, computeStyles$1, applyStyles$1, offset$1, flip$1, preventOverflow$1, arrow$1, hide$1];
+    var createPopper = /*#__PURE__*/popperGenerator({
+      defaultModifiers: defaultModifiers
+    }); // eslint-disable-next-line import/no-unused-modules
 
-    function transformer() {
-      var domain = unit,
-          range = unit,
-          interpolate$1 = interpolate,
-          transform,
-          untransform,
-          unknown,
-          clamp = identity$1,
-          piecewise,
-          output,
-          input;
+    /**!
+    * tippy.js v6.0.3
+    * (c) 2017-2020 atomiks
+    * MIT License
+    */
 
-      function rescale() {
-        var n = Math.min(domain.length, range.length);
-        if (clamp !== identity$1) clamp = clamper(domain[0], domain[n - 1]);
-        piecewise = n > 2 ? polymap : bimap;
-        output = input = null;
-        return scale;
+    var PASSIVE = {
+      passive: true
+    };
+    var IOS_CLASS = "tippy-iOS";
+    var BOX_CLASS = "tippy-box";
+    var CONTENT_CLASS = "tippy-content";
+    var BACKDROP_CLASS = "tippy-backdrop";
+    var ARROW_CLASS = "tippy-arrow";
+    var SVG_ARROW_CLASS = "tippy-svg-arrow";
+    function getValueAtIndexOrReturn(value, index, defaultValue) {
+      if (Array.isArray(value)) {
+        var v = value[index];
+        return v == null ? Array.isArray(defaultValue) ? defaultValue[index] : defaultValue : v;
       }
 
-      function scale(x) {
-        return x == null || isNaN(x = +x) ? unknown : (output || (output = piecewise(domain.map(transform), range, interpolate$1)))(transform(clamp(x)));
+      return value;
+    }
+    function isType(value, type) {
+      var str = {}.toString.call(value);
+      return str.indexOf('[object') === 0 && str.indexOf(type + "]") > -1;
+    }
+    function invokeWithArgsOrReturn(value, args) {
+      return typeof value === 'function' ? value.apply(void 0, args) : value;
+    }
+    function debounce(fn, ms) {
+      // Avoid wrapping in `setTimeout` if ms is 0 anyway
+      if (ms === 0) {
+        return fn;
       }
 
-      scale.invert = function(y) {
-        return clamp(untransform((input || (input = piecewise(range, domain.map(transform), interpolateNumber)))(y)));
+      var timeout;
+      return function (arg) {
+        clearTimeout(timeout);
+        timeout = setTimeout(function () {
+          fn(arg);
+        }, ms);
       };
+    }
+    function splitBySpaces(value) {
+      return value.split(/\s+/).filter(Boolean);
+    }
+    function normalizeToArray(value) {
+      return [].concat(value);
+    }
+    function pushIfUnique(arr, value) {
+      if (arr.indexOf(value) === -1) {
+        arr.push(value);
+      }
+    }
+    function unique(arr) {
+      return arr.filter(function (item, index) {
+        return arr.indexOf(item) === index;
+      });
+    }
+    function getBasePlacement(placement) {
+      return placement.split('-')[0];
+    }
+    function arrayFrom(value) {
+      return [].slice.call(value);
+    }
 
-      scale.domain = function(_) {
-        return arguments.length ? (domain = Array.from(_, number), rescale()) : domain.slice();
+    function div() {
+      return document.createElement('div');
+    }
+    function isElement(value) {
+      return isType(value, 'Element');
+    }
+    function isNodeList(value) {
+      return isType(value, 'NodeList');
+    }
+    function isMouseEvent(value) {
+      return isType(value, 'MouseEvent');
+    }
+    function isReferenceElement(value) {
+      return !!(value && value._tippy && value._tippy.reference === value);
+    }
+    function getArrayOfElements(value) {
+      if (isElement(value)) {
+        return [value];
+      }
+
+      if (isNodeList(value)) {
+        return arrayFrom(value);
+      }
+
+      if (Array.isArray(value)) {
+        return value;
+      }
+
+      return arrayFrom(document.querySelectorAll(value));
+    }
+    function setTransitionDuration(els, value) {
+      els.forEach(function (el) {
+        if (el) {
+          el.style.transitionDuration = value + "ms";
+        }
+      });
+    }
+    function setVisibilityState(els, state) {
+      els.forEach(function (el) {
+        if (el) {
+          el.setAttribute('data-state', state);
+        }
+      });
+    }
+    function getOwnerDocument(elementOrElements) {
+      var _normalizeToArray = normalizeToArray(elementOrElements),
+          element = _normalizeToArray[0];
+
+      return element ? element.ownerDocument || document : document;
+    }
+    function isCursorOutsideInteractiveBorder(popperTreeData, event) {
+      var clientX = event.clientX,
+          clientY = event.clientY;
+      return popperTreeData.every(function (_ref) {
+        var popperRect = _ref.popperRect,
+            popperState = _ref.popperState,
+            props = _ref.props;
+        var interactiveBorder = props.interactiveBorder;
+        var basePlacement = getBasePlacement(popperState.placement);
+        var offsetData = popperState.modifiersData.offset;
+
+        if (!offsetData) {
+          return true;
+        }
+
+        var topDistance = basePlacement === 'bottom' ? offsetData.top.y : 0;
+        var bottomDistance = basePlacement === 'top' ? offsetData.bottom.y : 0;
+        var leftDistance = basePlacement === 'right' ? offsetData.left.x : 0;
+        var rightDistance = basePlacement === 'left' ? offsetData.right.x : 0;
+        var exceedsTop = popperRect.top - clientY + topDistance > interactiveBorder;
+        var exceedsBottom = clientY - popperRect.bottom - bottomDistance > interactiveBorder;
+        var exceedsLeft = popperRect.left - clientX + leftDistance > interactiveBorder;
+        var exceedsRight = clientX - popperRect.right - rightDistance > interactiveBorder;
+        return exceedsTop || exceedsBottom || exceedsLeft || exceedsRight;
+      });
+    }
+    function updateTransitionEndListener(box, action, listener) {
+      var method = action + "EventListener"; // some browsers apparently support `transition` (unprefixed) but only fire
+      // `webkitTransitionEnd`...
+
+      ['transitionend', 'webkitTransitionEnd'].forEach(function (event) {
+        box[method](event, listener);
+      });
+    }
+
+    var currentInput = {
+      isTouch: false
+    };
+    var lastMouseMoveTime = 0;
+    /**
+     * When a `touchstart` event is fired, it's assumed the user is using touch
+     * input. We'll bind a `mousemove` event listener to listen for mouse input in
+     * the future. This way, the `isTouch` property is fully dynamic and will handle
+     * hybrid devices that use a mix of touch + mouse input.
+     */
+
+    function onDocumentTouchStart() {
+      if (currentInput.isTouch) {
+        return;
+      }
+
+      currentInput.isTouch = true;
+
+      if (window.performance) {
+        document.addEventListener('mousemove', onDocumentMouseMove);
+      }
+    }
+    /**
+     * When two `mousemove` event are fired consecutively within 20ms, it's assumed
+     * the user is using mouse input again. `mousemove` can fire on touch devices as
+     * well, but very rarely that quickly.
+     */
+
+    function onDocumentMouseMove() {
+      var now = performance.now();
+
+      if (now - lastMouseMoveTime < 20) {
+        currentInput.isTouch = false;
+        document.removeEventListener('mousemove', onDocumentMouseMove);
+      }
+
+      lastMouseMoveTime = now;
+    }
+    /**
+     * When an element is in focus and has a tippy, leaving the tab/window and
+     * returning causes it to show again. For mouse users this is unexpected, but
+     * for keyboard use it makes sense.
+     * TODO: find a better technique to solve this problem
+     */
+
+    function onWindowBlur() {
+      var activeElement = document.activeElement;
+
+      if (isReferenceElement(activeElement)) {
+        var instance = activeElement._tippy;
+
+        if (activeElement.blur && !instance.state.isVisible) {
+          activeElement.blur();
+        }
+      }
+    }
+    function bindGlobalEventListeners() {
+      document.addEventListener('touchstart', onDocumentTouchStart, Object.assign({}, PASSIVE, {
+        capture: true
+      }));
+      window.addEventListener('blur', onWindowBlur);
+    }
+
+    var isBrowser = typeof window !== 'undefined' && typeof document !== 'undefined';
+    var ua = isBrowser ? navigator.userAgent : '';
+    var isIE = /MSIE |Trident\//.test(ua);
+    var isIOS = isBrowser && /iPhone|iPad|iPod/.test(navigator.platform);
+
+    var pluginProps = {
+      animateFill: false,
+      followCursor: false,
+      inlinePositioning: false,
+      sticky: false
+    };
+    var renderProps = {
+      allowHTML: false,
+      animation: 'fade',
+      arrow: true,
+      content: '',
+      inertia: false,
+      maxWidth: 350,
+      role: 'tooltip',
+      theme: '',
+      zIndex: 9999
+    };
+    var defaultProps = Object.assign({
+      appendTo: function appendTo() {
+        return document.body;
+      },
+      aria: {
+        content: 'auto',
+        expanded: 'auto'
+      },
+      content: '',
+      delay: 0,
+      duration: [300, 250],
+      getReferenceClientRect: null,
+      hideOnClick: true,
+      ignoreAttributes: false,
+      interactive: false,
+      interactiveBorder: 2,
+      interactiveDebounce: 0,
+      moveTransition: '',
+      offset: [0, 10],
+      onAfterUpdate: function onAfterUpdate() {},
+      onBeforeUpdate: function onBeforeUpdate() {},
+      onCreate: function onCreate() {},
+      onDestroy: function onDestroy() {},
+      onHidden: function onHidden() {},
+      onHide: function onHide() {},
+      onMount: function onMount() {},
+      onShow: function onShow() {},
+      onShown: function onShown() {},
+      onTrigger: function onTrigger() {},
+      onUntrigger: function onUntrigger() {},
+      placement: 'top',
+      plugins: [],
+      popperOptions: {},
+      render: null,
+      showOnCreate: false,
+      touch: true,
+      trigger: 'mouseenter focus',
+      triggerTarget: null
+    }, pluginProps, {}, renderProps);
+    var defaultKeys = Object.keys(defaultProps);
+    var setDefaultProps = function setDefaultProps(partialProps) {
+
+      var keys = Object.keys(partialProps);
+      keys.forEach(function (key) {
+        defaultProps[key] = partialProps[key];
+      });
+    };
+    function getExtendedPassedProps(passedProps) {
+      var plugins = passedProps.plugins || [];
+      var pluginProps = plugins.reduce(function (acc, plugin) {
+        var name = plugin.name,
+            defaultValue = plugin.defaultValue;
+
+        if (name) {
+          acc[name] = passedProps[name] !== undefined ? passedProps[name] : defaultValue;
+        }
+
+        return acc;
+      }, {});
+      return Object.assign({}, passedProps, {}, pluginProps);
+    }
+    function getDataAttributeProps(reference, plugins) {
+      var propKeys = plugins ? Object.keys(getExtendedPassedProps(Object.assign({}, defaultProps, {
+        plugins: plugins
+      }))) : defaultKeys;
+      var props = propKeys.reduce(function (acc, key) {
+        var valueAsString = (reference.getAttribute("data-tippy-" + key) || '').trim();
+
+        if (!valueAsString) {
+          return acc;
+        }
+
+        if (key === 'content') {
+          acc[key] = valueAsString;
+        } else {
+          try {
+            acc[key] = JSON.parse(valueAsString);
+          } catch (e) {
+            acc[key] = valueAsString;
+          }
+        }
+
+        return acc;
+      }, {});
+      return props;
+    }
+    function evaluateProps(reference, props) {
+      var out = Object.assign({}, props, {
+        content: invokeWithArgsOrReturn(props.content, [reference])
+      }, props.ignoreAttributes ? {} : getDataAttributeProps(reference, props.plugins));
+      out.aria = Object.assign({}, defaultProps.aria, {}, out.aria);
+      out.aria = {
+        expanded: out.aria.expanded === 'auto' ? props.interactive : out.aria.expanded,
+        content: out.aria.content === 'auto' ? props.interactive ? null : 'describedby' : out.aria.content
       };
+      return out;
+    }
 
-      scale.range = function(_) {
-        return arguments.length ? (range = Array.from(_), rescale()) : range.slice();
+    var innerHTML = function innerHTML() {
+      return 'innerHTML';
+    };
+
+    function dangerouslySetInnerHTML(element, html) {
+      element[innerHTML()] = html;
+    }
+
+    function createArrowElement(value) {
+      var arrow = div();
+
+      if (value === true) {
+        arrow.className = ARROW_CLASS;
+      } else {
+        arrow.className = SVG_ARROW_CLASS;
+
+        if (isElement(value)) {
+          arrow.appendChild(value);
+        } else {
+          dangerouslySetInnerHTML(arrow, value);
+        }
+      }
+
+      return arrow;
+    }
+
+    function setContent(content, props) {
+      if (isElement(props.content)) {
+        dangerouslySetInnerHTML(content, '');
+        content.appendChild(props.content);
+      } else if (typeof props.content !== 'function') {
+        if (props.allowHTML) {
+          dangerouslySetInnerHTML(content, props.content);
+        } else {
+          content.textContent = props.content;
+        }
+      }
+    }
+    function getChildren(popper) {
+      var box = popper.firstElementChild;
+      var boxChildren = arrayFrom(box.children);
+      return {
+        box: box,
+        content: boxChildren.find(function (node) {
+          return node.classList.contains(CONTENT_CLASS);
+        }),
+        arrow: boxChildren.find(function (node) {
+          return node.classList.contains(ARROW_CLASS) || node.classList.contains(SVG_ARROW_CLASS);
+        }),
+        backdrop: boxChildren.find(function (node) {
+          return node.classList.contains(BACKDROP_CLASS);
+        })
       };
+    }
+    function render(instance) {
+      var popper = div();
+      var box = div();
+      box.className = BOX_CLASS;
+      box.setAttribute('data-state', 'hidden');
+      box.setAttribute('tabindex', '-1');
+      var content = div();
+      content.className = CONTENT_CLASS;
+      content.setAttribute('data-state', 'hidden');
+      setContent(content, instance.props);
+      popper.appendChild(box);
+      box.appendChild(content);
+      onUpdate(instance.props, instance.props);
 
-      scale.rangeRound = function(_) {
-        return range = Array.from(_), interpolate$1 = interpolateRound, rescale();
+      function onUpdate(prevProps, nextProps) {
+        var _getChildren = getChildren(popper),
+            box = _getChildren.box,
+            content = _getChildren.content,
+            arrow = _getChildren.arrow;
+
+        if (nextProps.theme) {
+          box.setAttribute('data-theme', nextProps.theme);
+        } else {
+          box.removeAttribute('data-theme');
+        }
+
+        if (typeof nextProps.animation === 'string') {
+          box.setAttribute('data-animation', nextProps.animation);
+        } else {
+          box.removeAttribute('data-animation');
+        }
+
+        if (nextProps.inertia) {
+          box.setAttribute('data-inertia', '');
+        } else {
+          box.removeAttribute('data-inertia');
+        }
+
+        box.style.maxWidth = typeof nextProps.maxWidth === 'number' ? nextProps.maxWidth + "px" : nextProps.maxWidth;
+
+        if (nextProps.role) {
+          box.setAttribute('role', nextProps.role);
+        } else {
+          box.removeAttribute('role');
+        }
+
+        if (prevProps.content !== nextProps.content) {
+          setContent(content, instance.props);
+        }
+
+        if (nextProps.arrow) {
+          if (!arrow) {
+            box.appendChild(createArrowElement(nextProps.arrow));
+          } else if (prevProps.arrow !== nextProps.arrow) {
+            box.removeChild(arrow);
+            box.appendChild(createArrowElement(nextProps.arrow));
+          }
+        } else if (arrow) {
+          box.removeChild(arrow);
+        }
+      }
+
+      return {
+        popper: popper,
+        onUpdate: onUpdate
       };
+    } // Runtime check to identify if the render function is the default one; this
+    // way we can apply default CSS transitions logic and it can be tree-shaken away
 
-      scale.clamp = function(_) {
-        return arguments.length ? (clamp = _ ? true : identity$1, rescale()) : clamp !== identity$1;
+    render.$$tippy = true;
+
+    var idCounter = 1;
+    var mouseMoveListeners = []; // Used by `hideAll()`
+
+    var mountedInstances = [];
+    function createTippy(reference, passedProps) {
+      var props = evaluateProps(reference, Object.assign({}, defaultProps, {}, getExtendedPassedProps(passedProps))); // ===========================================================================
+      // 🔒 Private members
+      // ===========================================================================
+
+      var showTimeout;
+      var hideTimeout;
+      var scheduleHideAnimationFrame;
+      var isVisibleFromClick = false;
+      var didHideDueToDocumentMouseDown = false;
+      var ignoreOnFirstUpdate = false;
+      var lastTriggerEvent;
+      var currentTransitionEndListener;
+      var onFirstUpdate;
+      var listeners = [];
+      var debouncedOnMouseMove = debounce(onMouseMove, props.interactiveDebounce);
+      var currentTarget;
+      var doc = getOwnerDocument(props.triggerTarget || reference); // ===========================================================================
+      // 🔑 Public members
+      // ===========================================================================
+
+      var id = idCounter++;
+      var popperInstance = null;
+      var plugins = unique(props.plugins);
+      var state = {
+        // Is the instance currently enabled?
+        isEnabled: true,
+        // Is the tippy currently showing and not transitioning out?
+        isVisible: false,
+        // Has the instance been destroyed?
+        isDestroyed: false,
+        // Is the tippy currently mounted to the DOM?
+        isMounted: false,
+        // Has the tippy finished transitioning in?
+        isShown: false
       };
+      var instance = {
+        // properties
+        id: id,
+        reference: reference,
+        popper: div(),
+        popperInstance: popperInstance,
+        props: props,
+        state: state,
+        plugins: plugins,
+        // methods
+        clearDelayTimeouts: clearDelayTimeouts,
+        setProps: setProps,
+        setContent: setContent,
+        show: show,
+        hide: hide,
+        enable: enable,
+        disable: disable,
+        unmount: unmount,
+        destroy: destroy
+      }; // TODO: Investigate why this early return causes a TDZ error in the tests —
+      // it doesn't seem to happen in the browser
 
-      scale.interpolate = function(_) {
-        return arguments.length ? (interpolate$1 = _, rescale()) : interpolate$1;
-      };
+      /* istanbul ignore if */
 
-      scale.unknown = function(_) {
-        return arguments.length ? (unknown = _, scale) : unknown;
-      };
+      if (!props.render) {
 
-      return function(t, u) {
-        transform = t, untransform = u;
-        return rescale();
+        return instance;
+      } // ===========================================================================
+      // Initial mutations
+      // ===========================================================================
+
+
+      var _props$render = props.render(instance),
+          popper = _props$render.popper,
+          onUpdate = _props$render.onUpdate;
+
+      popper.setAttribute('data-tippy-root', '');
+      popper.id = "tippy-" + instance.id;
+      instance.popper = popper;
+      reference._tippy = instance;
+      popper._tippy = instance;
+      var pluginsHooks = plugins.map(function (plugin) {
+        return plugin.fn(instance);
+      });
+      var hasAriaExpanded = reference.hasAttribute('aria-expanded');
+      addListeners();
+      handleAriaExpandedAttribute();
+      handleStyles();
+      invokeHook('onCreate', [instance]);
+
+      if (props.showOnCreate) {
+        scheduleShow();
+      } // Prevent a tippy with a delay from hiding if the cursor left then returned
+      // before it started hiding
+
+
+      popper.addEventListener('mouseenter', function () {
+        if (instance.props.interactive && instance.state.isVisible) {
+          instance.clearDelayTimeouts();
+        }
+      });
+      popper.addEventListener('mouseleave', function (event) {
+        if (instance.props.interactive && instance.props.trigger.indexOf('mouseenter') >= 0) {
+          doc.addEventListener('mousemove', debouncedOnMouseMove);
+          debouncedOnMouseMove(event);
+        }
+      });
+      return instance; // ===========================================================================
+      // 🔒 Private methods
+      // ===========================================================================
+
+      function getNormalizedTouchSettings() {
+        var touch = instance.props.touch;
+        return Array.isArray(touch) ? touch : [touch, 0];
+      }
+
+      function getIsCustomTouchBehavior() {
+        return getNormalizedTouchSettings()[0] === 'hold';
+      }
+
+      function getIsDefaultRenderFn() {
+        var _instance$props$rende;
+
+        // @ts-ignore
+        return !!((_instance$props$rende = instance.props.render) == null ? void 0 : _instance$props$rende.$$tippy);
+      }
+
+      function getCurrentTarget() {
+        return currentTarget || reference;
+      }
+
+      function getDefaultTemplateChildren() {
+        return getChildren(popper);
+      }
+
+      function getDelay(isShow) {
+        // For touch or keyboard input, force `0` delay for UX reasons
+        // Also if the instance is mounted but not visible (transitioning out),
+        // ignore delay
+        if (instance.state.isMounted && !instance.state.isVisible || currentInput.isTouch || lastTriggerEvent && lastTriggerEvent.type === 'focus') {
+          return 0;
+        }
+
+        return getValueAtIndexOrReturn(instance.props.delay, isShow ? 0 : 1, defaultProps.delay);
+      }
+
+      function handleStyles() {
+        popper.style.pointerEvents = instance.props.interactive && instance.state.isVisible ? '' : 'none';
+        popper.style.zIndex = "" + instance.props.zIndex;
+      }
+
+      function updateIOSClass(isAdd) {
+        var shouldAdd = isAdd && isIOS && currentInput.isTouch;
+        doc.body.classList[shouldAdd ? 'add' : 'remove'](IOS_CLASS);
+      }
+
+      function invokeHook(hook, args, shouldInvokePropsHook) {
+        if (shouldInvokePropsHook === void 0) {
+          shouldInvokePropsHook = true;
+        }
+
+        pluginsHooks.forEach(function (pluginHooks) {
+          if (pluginHooks[hook]) {
+            pluginHooks[hook].apply(void 0, args);
+          }
+        });
+
+        if (shouldInvokePropsHook) {
+          var _instance$props;
+
+          (_instance$props = instance.props)[hook].apply(_instance$props, args);
+        }
+      }
+
+      function handleAriaContentAttribute() {
+        var aria = instance.props.aria;
+
+        if (!aria.content) {
+          return;
+        }
+
+        var attr = "aria-" + aria.content;
+        var id = popper.id;
+        var nodes = normalizeToArray(instance.props.triggerTarget || reference);
+        nodes.forEach(function (node) {
+          var currentValue = node.getAttribute(attr);
+
+          if (instance.state.isVisible) {
+            node.setAttribute(attr, currentValue ? currentValue + " " + id : id);
+          } else {
+            var nextValue = currentValue && currentValue.replace(id, '').trim();
+
+            if (nextValue) {
+              node.setAttribute(attr, nextValue);
+            } else {
+              node.removeAttribute(attr);
+            }
+          }
+        });
+      }
+
+      function handleAriaExpandedAttribute() {
+        if (hasAriaExpanded || !instance.props.aria.expanded) {
+          return;
+        }
+
+        var nodes = normalizeToArray(instance.props.triggerTarget || reference);
+        nodes.forEach(function (node) {
+          if (instance.props.interactive) {
+            node.setAttribute('aria-expanded', instance.state.isVisible && node === getCurrentTarget() ? 'true' : 'false');
+          } else {
+            node.removeAttribute('aria-expanded');
+          }
+        });
+      }
+
+      function cleanupInteractiveMouseListeners() {
+        doc.body.removeEventListener('mouseleave', scheduleHide);
+        doc.removeEventListener('mousemove', debouncedOnMouseMove);
+        mouseMoveListeners = mouseMoveListeners.filter(function (listener) {
+          return listener !== debouncedOnMouseMove;
+        });
+      }
+
+      function onDocumentMouseDown(event) {
+        // Clicked on interactive popper
+        if (instance.props.interactive && popper.contains(event.target)) {
+          return;
+        } // Clicked on the event listeners target
+
+
+        if (getCurrentTarget().contains(event.target)) {
+          if (currentInput.isTouch) {
+            return;
+          }
+
+          if (instance.state.isVisible && instance.props.trigger.indexOf('click') >= 0) {
+            return;
+          }
+        }
+
+        if (instance.props.hideOnClick === true) {
+          isVisibleFromClick = false;
+          instance.clearDelayTimeouts();
+          instance.hide(); // `mousedown` event is fired right before `focus` if pressing the
+          // currentTarget. This lets a tippy with `focus` trigger know that it
+          // should not show
+
+          didHideDueToDocumentMouseDown = true;
+          setTimeout(function () {
+            didHideDueToDocumentMouseDown = false;
+          }); // The listener gets added in `scheduleShow()`, but this may be hiding it
+          // before it shows, and hide()'s early bail-out behavior can prevent it
+          // from being cleaned up
+
+          if (!instance.state.isMounted) {
+            removeDocumentMouseDownListener();
+          }
+        }
+      }
+
+      function addDocumentMouseDownListener() {
+        doc.addEventListener('mousedown', onDocumentMouseDown, true);
+      }
+
+      function removeDocumentMouseDownListener() {
+        doc.removeEventListener('mousedown', onDocumentMouseDown, true);
+      }
+
+      function onTransitionedOut(duration, callback) {
+        onTransitionEnd(duration, function () {
+          if (!instance.state.isVisible && popper.parentNode && popper.parentNode.contains(popper)) {
+            callback();
+          }
+        });
+      }
+
+      function onTransitionedIn(duration, callback) {
+        onTransitionEnd(duration, callback);
+      }
+
+      function onTransitionEnd(duration, callback) {
+        var box = getDefaultTemplateChildren().box;
+
+        function listener(event) {
+          if (event.target === box) {
+            updateTransitionEndListener(box, 'remove', listener);
+            callback();
+          }
+        } // Make callback synchronous if duration is 0
+        // `transitionend` won't fire otherwise
+
+
+        if (duration === 0) {
+          return callback();
+        }
+
+        updateTransitionEndListener(box, 'remove', currentTransitionEndListener);
+        updateTransitionEndListener(box, 'add', listener);
+        currentTransitionEndListener = listener;
+      }
+
+      function on(eventType, handler, options) {
+        if (options === void 0) {
+          options = false;
+        }
+
+        var nodes = normalizeToArray(instance.props.triggerTarget || reference);
+        nodes.forEach(function (node) {
+          node.addEventListener(eventType, handler, options);
+          listeners.push({
+            node: node,
+            eventType: eventType,
+            handler: handler,
+            options: options
+          });
+        });
+      }
+
+      function addListeners() {
+        if (getIsCustomTouchBehavior()) {
+          on('touchstart', onTrigger, PASSIVE);
+          on('touchend', onMouseLeave, PASSIVE);
+        }
+
+        splitBySpaces(instance.props.trigger).forEach(function (eventType) {
+          if (eventType === 'manual') {
+            return;
+          }
+
+          on(eventType, onTrigger);
+
+          switch (eventType) {
+            case 'mouseenter':
+              on('mouseleave', onMouseLeave);
+              break;
+
+            case 'focus':
+              on(isIE ? 'focusout' : 'blur', onBlurOrFocusOut);
+              break;
+
+            case 'focusin':
+              on('focusout', onBlurOrFocusOut);
+              break;
+          }
+        });
+      }
+
+      function removeListeners() {
+        listeners.forEach(function (_ref) {
+          var node = _ref.node,
+              eventType = _ref.eventType,
+              handler = _ref.handler,
+              options = _ref.options;
+          node.removeEventListener(eventType, handler, options);
+        });
+        listeners = [];
+      }
+
+      function onTrigger(event) {
+        var shouldScheduleClickHide = false;
+
+        if (!instance.state.isEnabled || isEventListenerStopped(event) || didHideDueToDocumentMouseDown) {
+          return;
+        }
+
+        lastTriggerEvent = event;
+        currentTarget = event.currentTarget;
+        handleAriaExpandedAttribute();
+
+        if (!instance.state.isVisible && isMouseEvent(event)) {
+          // If scrolling, `mouseenter` events can be fired if the cursor lands
+          // over a new target, but `mousemove` events don't get fired. This
+          // causes interactive tooltips to get stuck open until the cursor is
+          // moved
+          mouseMoveListeners.forEach(function (listener) {
+            return listener(event);
+          });
+        } // Toggle show/hide when clicking click-triggered tooltips
+
+
+        if (event.type === 'click' && (instance.props.trigger.indexOf('mouseenter') < 0 || isVisibleFromClick) && instance.props.hideOnClick !== false && instance.state.isVisible) {
+          shouldScheduleClickHide = true;
+        } else {
+          var _getNormalizedTouchSe = getNormalizedTouchSettings(),
+              value = _getNormalizedTouchSe[0],
+              duration = _getNormalizedTouchSe[1];
+
+          if (currentInput.isTouch && value === 'hold' && duration) {
+            // We can hijack the show timeout here, it will be cleared by
+            // `scheduleHide()` when necessary
+            showTimeout = setTimeout(function () {
+              scheduleShow(event);
+            }, duration);
+          } else {
+            scheduleShow(event);
+          }
+        }
+
+        if (event.type === 'click') {
+          isVisibleFromClick = !shouldScheduleClickHide;
+        }
+
+        if (shouldScheduleClickHide) {
+          scheduleHide(event);
+        }
+      }
+
+      function onMouseMove(event) {
+        var target = event.target;
+        var isCursorOverReferenceOrPopper = reference.contains(target) || popper.contains(target);
+
+        if (event.type === 'mousemove' && isCursorOverReferenceOrPopper) {
+          return;
+        }
+
+        var popperTreeData = getNestedPopperTree().concat(popper).map(function (popper) {
+          var _instance$popperInsta;
+
+          var instance = popper._tippy;
+          var state = (_instance$popperInsta = instance.popperInstance) == null ? void 0 : _instance$popperInsta.state;
+
+          if (state) {
+            return {
+              popperRect: popper.getBoundingClientRect(),
+              popperState: state,
+              props: props
+            };
+          }
+
+          return null;
+        }).filter(Boolean);
+
+        if (isCursorOutsideInteractiveBorder(popperTreeData, event)) {
+          cleanupInteractiveMouseListeners();
+          scheduleHide(event);
+        }
+      }
+
+      function onMouseLeave(event) {
+        var shouldBail = isEventListenerStopped(event) || instance.props.trigger.indexOf('click') >= 0 && isVisibleFromClick;
+
+        if (shouldBail) {
+          return;
+        }
+
+        if (instance.props.interactive) {
+          doc.body.addEventListener('mouseleave', scheduleHide);
+          doc.addEventListener('mousemove', debouncedOnMouseMove);
+          pushIfUnique(mouseMoveListeners, debouncedOnMouseMove);
+          debouncedOnMouseMove(event);
+          return;
+        }
+
+        scheduleHide(event);
+      }
+
+      function onBlurOrFocusOut(event) {
+        if (instance.props.trigger.indexOf('focusin') < 0 && event.target !== getCurrentTarget()) {
+          return;
+        } // If focus was moved to within the popper
+
+
+        if (instance.props.interactive && event.relatedTarget && popper.contains(event.relatedTarget)) {
+          return;
+        }
+
+        scheduleHide(event);
+      }
+
+      function isEventListenerStopped(event) {
+        return currentInput.isTouch ? getIsCustomTouchBehavior() !== event.type.indexOf('touch') >= 0 : false;
+      }
+
+      function createPopperInstance() {
+        destroyPopperInstance();
+        var _instance$props2 = instance.props,
+            popperOptions = _instance$props2.popperOptions,
+            placement = _instance$props2.placement,
+            offset = _instance$props2.offset,
+            getReferenceClientRect = _instance$props2.getReferenceClientRect,
+            moveTransition = _instance$props2.moveTransition;
+        var arrow = getIsDefaultRenderFn() ? getChildren(popper).arrow : null;
+        var computedReference = getReferenceClientRect ? {
+          getBoundingClientRect: getReferenceClientRect
+        } : reference;
+        var tippyModifier = {
+          name: '$$tippy',
+          enabled: true,
+          phase: 'beforeWrite',
+          requires: ['computeStyles'],
+          fn: function fn(_ref2) {
+            var state = _ref2.state;
+
+            if (getIsDefaultRenderFn()) {
+              var _getDefaultTemplateCh = getDefaultTemplateChildren(),
+                  box = _getDefaultTemplateCh.box;
+
+              ['placement', 'reference-hidden', 'escaped'].forEach(function (attr) {
+                if (attr === 'placement') {
+                  box.setAttribute('data-placement', state.placement);
+                } else {
+                  if (state.attributes.popper["data-popper-" + attr]) {
+                    box.setAttribute("data-" + attr, '');
+                  } else {
+                    box.removeAttribute("data-" + attr);
+                  }
+                }
+              });
+              state.attributes.popper = {};
+            }
+          }
+        };
+        var arrowModifier = {
+          name: 'arrow',
+          enabled: !!arrow,
+          options: {
+            element: arrow,
+            padding: 3
+          }
+        };
+        var modifiers = [{
+          name: 'offset',
+          options: {
+            offset: offset
+          }
+        }, {
+          name: 'preventOverflow',
+          options: {
+            padding: {
+              top: 2,
+              bottom: 2,
+              left: 5,
+              right: 5
+            }
+          }
+        }, {
+          name: 'flip',
+          options: {
+            padding: 5
+          }
+        }, {
+          name: 'computeStyles',
+          options: {
+            adaptive: !moveTransition
+          }
+        }].concat(getIsDefaultRenderFn() ? [arrowModifier] : [], (popperOptions == null ? void 0 : popperOptions.modifiers) || [], [tippyModifier]);
+        instance.popperInstance = createPopper(computedReference, popper, Object.assign({}, popperOptions, {
+          placement: placement,
+          onFirstUpdate: onFirstUpdate,
+          modifiers: modifiers
+        }));
+      }
+
+      function destroyPopperInstance() {
+        if (instance.popperInstance) {
+          instance.popperInstance.destroy();
+          instance.popperInstance = null;
+        }
+      }
+
+      function mount() {
+        var appendTo = instance.props.appendTo;
+        var parentNode; // By default, we'll append the popper to the triggerTargets's parentNode so
+        // it's directly after the reference element so the elements inside the
+        // tippy can be tabbed to
+        // If there are clipping issues, the user can specify a different appendTo
+        // and ensure focus management is handled correctly manually
+
+        var node = getCurrentTarget();
+
+        if (instance.props.interactive && appendTo === defaultProps.appendTo || appendTo === 'parent') {
+          parentNode = node.parentNode;
+        } else {
+          parentNode = invokeWithArgsOrReturn(appendTo, [node]);
+        } // The popper element needs to exist on the DOM before its position can be
+        // updated as Popper needs to read its dimensions
+
+
+        if (!parentNode.contains(popper)) {
+          parentNode.appendChild(popper);
+        }
+
+        createPopperInstance();
+      }
+
+      function getNestedPopperTree() {
+        return arrayFrom(popper.querySelectorAll('[data-tippy-root]'));
+      }
+
+      function scheduleShow(event) {
+        instance.clearDelayTimeouts();
+
+        if (event) {
+          invokeHook('onTrigger', [instance, event]);
+        }
+
+        addDocumentMouseDownListener();
+        var delay = getDelay(true);
+
+        if (delay) {
+          showTimeout = setTimeout(function () {
+            instance.show();
+          }, delay);
+        } else {
+          instance.show();
+        }
+      }
+
+      function scheduleHide(event) {
+        instance.clearDelayTimeouts();
+        invokeHook('onUntrigger', [instance, event]);
+
+        if (!instance.state.isVisible) {
+          removeDocumentMouseDownListener();
+          return;
+        } // For interactive tippies, scheduleHide is added to a document.body handler
+        // from onMouseLeave so must intercept scheduled hides from mousemove/leave
+        // events when trigger contains mouseenter and click, and the tip is
+        // currently shown as a result of a click.
+
+
+        if (instance.props.trigger.indexOf('mouseenter') >= 0 && instance.props.trigger.indexOf('click') >= 0 && ['mouseleave', 'mousemove'].indexOf(event.type) >= 0 && isVisibleFromClick) {
+          return;
+        }
+
+        var delay = getDelay(false);
+
+        if (delay) {
+          hideTimeout = setTimeout(function () {
+            if (instance.state.isVisible) {
+              instance.hide();
+            }
+          }, delay);
+        } else {
+          // Fixes a `transitionend` problem when it fires 1 frame too
+          // late sometimes, we don't want hide() to be called.
+          scheduleHideAnimationFrame = requestAnimationFrame(function () {
+            instance.hide();
+          });
+        }
+      } // ===========================================================================
+      // 🔑 Public methods
+      // ===========================================================================
+
+
+      function enable() {
+        instance.state.isEnabled = true;
+      }
+
+      function disable() {
+        // Disabling the instance should also hide it
+        // https://github.com/atomiks/tippy.js-react/issues/106
+        instance.hide();
+        instance.state.isEnabled = false;
+      }
+
+      function clearDelayTimeouts() {
+        clearTimeout(showTimeout);
+        clearTimeout(hideTimeout);
+        cancelAnimationFrame(scheduleHideAnimationFrame);
+      }
+
+      function setProps(partialProps) {
+
+        if (instance.state.isDestroyed) {
+          return;
+        }
+
+        invokeHook('onBeforeUpdate', [instance, partialProps]);
+        removeListeners();
+        var prevProps = instance.props;
+        var nextProps = evaluateProps(reference, Object.assign({}, instance.props, {}, partialProps, {
+          ignoreAttributes: true
+        }));
+        instance.props = nextProps;
+        addListeners();
+
+        if (prevProps.interactiveDebounce !== nextProps.interactiveDebounce) {
+          cleanupInteractiveMouseListeners();
+          debouncedOnMouseMove = debounce(onMouseMove, nextProps.interactiveDebounce);
+        } // Ensure stale aria-expanded attributes are removed
+
+
+        if (prevProps.triggerTarget && !nextProps.triggerTarget) {
+          normalizeToArray(prevProps.triggerTarget).forEach(function (node) {
+            node.removeAttribute('aria-expanded');
+          });
+        } else if (nextProps.triggerTarget) {
+          reference.removeAttribute('aria-expanded');
+        }
+
+        handleAriaExpandedAttribute();
+        handleStyles();
+
+        if (onUpdate) {
+          onUpdate(prevProps, nextProps);
+        }
+
+        if (instance.popperInstance) {
+          createPopperInstance(); // Fixes an issue with nested tippies if they are all getting re-rendered,
+          // and the nested ones get re-rendered first.
+          // https://github.com/atomiks/tippyjs-react/issues/177
+          // TODO: find a cleaner / more efficient solution(!)
+
+          getNestedPopperTree().forEach(function (nestedPopper) {
+            // React (and other UI libs likely) requires a rAF wrapper as it flushes
+            // its work in one
+            requestAnimationFrame(nestedPopper._tippy.popperInstance.forceUpdate);
+          });
+        }
+
+        invokeHook('onAfterUpdate', [instance, partialProps]);
+      }
+
+      function setContent(content) {
+        instance.setProps({
+          content: content
+        });
+      }
+
+      function show() {
+
+
+        var isAlreadyVisible = instance.state.isVisible;
+        var isDestroyed = instance.state.isDestroyed;
+        var isDisabled = !instance.state.isEnabled;
+        var isTouchAndTouchDisabled = currentInput.isTouch && !instance.props.touch;
+        var duration = getValueAtIndexOrReturn(instance.props.duration, 0, defaultProps.duration);
+
+        if (isAlreadyVisible || isDestroyed || isDisabled || isTouchAndTouchDisabled) {
+          return;
+        } // Normalize `disabled` behavior across browsers.
+        // Firefox allows events on disabled elements, but Chrome doesn't.
+        // Using a wrapper element (i.e. <span>) is recommended.
+
+
+        if (getCurrentTarget().hasAttribute('disabled')) {
+          return;
+        }
+
+        invokeHook('onShow', [instance], false);
+
+        if (instance.props.onShow(instance) === false) {
+          return;
+        }
+
+        instance.state.isVisible = true;
+
+        if (getIsDefaultRenderFn()) {
+          popper.style.visibility = 'visible';
+        }
+
+        handleStyles();
+        addDocumentMouseDownListener();
+
+        if (!instance.state.isMounted) {
+          popper.style.transition = 'none';
+        } // If flipping to the opposite side after hiding at least once, the
+        // animation will use the wrong placement without resetting the duration
+
+
+        if (getIsDefaultRenderFn()) {
+          var _getDefaultTemplateCh2 = getDefaultTemplateChildren(),
+              box = _getDefaultTemplateCh2.box,
+              content = _getDefaultTemplateCh2.content;
+
+          setTransitionDuration([box, content], 0);
+        }
+
+        onFirstUpdate = function onFirstUpdate() {
+          if (!instance.state.isVisible || ignoreOnFirstUpdate) {
+            return;
+          }
+
+          ignoreOnFirstUpdate = true; // reflow
+
+          void popper.offsetHeight;
+          popper.style.transition = instance.props.moveTransition;
+
+          if (getIsDefaultRenderFn() && instance.props.animation) {
+            var _getDefaultTemplateCh3 = getDefaultTemplateChildren(),
+                _box = _getDefaultTemplateCh3.box,
+                _content = _getDefaultTemplateCh3.content;
+
+            setTransitionDuration([_box, _content], duration);
+            setVisibilityState([_box, _content], 'visible');
+          }
+
+          handleAriaContentAttribute();
+          handleAriaExpandedAttribute();
+          pushIfUnique(mountedInstances, instance);
+          updateIOSClass(true);
+          instance.state.isMounted = true;
+          invokeHook('onMount', [instance]);
+
+          if (instance.props.animation && getIsDefaultRenderFn()) {
+            onTransitionedIn(duration, function () {
+              instance.state.isShown = true;
+              invokeHook('onShown', [instance]);
+            });
+          }
+        };
+
+        mount();
+      }
+
+      function hide() {
+
+
+        var isAlreadyHidden = !instance.state.isVisible;
+        var isDestroyed = instance.state.isDestroyed;
+        var isDisabled = !instance.state.isEnabled;
+        var duration = getValueAtIndexOrReturn(instance.props.duration, 1, defaultProps.duration);
+
+        if (isAlreadyHidden || isDestroyed || isDisabled) {
+          return;
+        }
+
+        invokeHook('onHide', [instance], false);
+
+        if (instance.props.onHide(instance) === false) {
+          return;
+        }
+
+        instance.state.isVisible = false;
+        instance.state.isShown = false;
+        ignoreOnFirstUpdate = false;
+
+        if (getIsDefaultRenderFn()) {
+          popper.style.visibility = 'hidden';
+        }
+
+        cleanupInteractiveMouseListeners();
+        removeDocumentMouseDownListener();
+        handleStyles();
+
+        if (getIsDefaultRenderFn()) {
+          var _getDefaultTemplateCh4 = getDefaultTemplateChildren(),
+              box = _getDefaultTemplateCh4.box,
+              content = _getDefaultTemplateCh4.content;
+
+          if (instance.props.animation) {
+            setTransitionDuration([box, content], duration);
+            setVisibilityState([box, content], 'hidden');
+          }
+        }
+
+        handleAriaContentAttribute();
+        handleAriaExpandedAttribute();
+
+        if (instance.props.animation) {
+          if (getIsDefaultRenderFn()) {
+            onTransitionedOut(duration, instance.unmount);
+          }
+        } else {
+          instance.unmount();
+        }
+      }
+
+      function unmount() {
+        if (instance.state.isVisible) {
+          instance.hide();
+        }
+
+        if (!instance.state.isMounted) {
+          return;
+        }
+
+        destroyPopperInstance(); // If a popper is not interactive, it will be appended outside the popper
+        // tree by default. This seems mainly for interactive tippies, but we should
+        // find a workaround if possible
+
+        getNestedPopperTree().forEach(function (nestedPopper) {
+          nestedPopper._tippy.unmount();
+        });
+
+        if (popper.parentNode) {
+          popper.parentNode.removeChild(popper);
+        }
+
+        mountedInstances = mountedInstances.filter(function (i) {
+          return i !== instance;
+        });
+
+        if (mountedInstances.length === 0) {
+          updateIOSClass(false);
+        }
+
+        instance.state.isMounted = false;
+        invokeHook('onHidden', [instance]);
+      }
+
+      function destroy() {
+
+        if (instance.state.isDestroyed) {
+          return;
+        }
+
+        instance.clearDelayTimeouts();
+        instance.unmount();
+        removeListeners();
+        delete reference._tippy;
+        instance.state.isDestroyed = true;
+        invokeHook('onDestroy', [instance]);
+      }
+    }
+
+    function tippy$1(targets, optionalProps) {
+      if (optionalProps === void 0) {
+        optionalProps = {};
+      }
+
+      var plugins = defaultProps.plugins.concat(optionalProps.plugins || []);
+
+      bindGlobalEventListeners();
+      var passedProps = Object.assign({}, optionalProps, {
+        plugins: plugins
+      });
+      var elements = getArrayOfElements(targets);
+
+      var instances = elements.reduce(function (acc, reference) {
+        var instance = reference && createTippy(reference, passedProps);
+
+        if (instance) {
+          acc.push(instance);
+        }
+
+        return acc;
+      }, []);
+      return isElement(targets) ? instances[0] : instances;
+    }
+
+    tippy$1.defaultProps = defaultProps;
+    tippy$1.setDefaultProps = setDefaultProps;
+    tippy$1.currentInput = currentInput;
+
+    tippy$1.setDefaultProps({
+      render: render
+    });
+
+    function tippy(node, props) {
+      tippy$1(node, props);
+    }
+
+    /* src/components/Chart.svelte generated by Svelte v3.43.1 */
+    const file$4 = "src/components/Chart.svelte";
+
+    function get_each_context$1(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[15] = list[i];
+    	child_ctx[17] = i;
+    	return child_ctx;
+    }
+
+    function get_each_context_1(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[18] = list[i];
+    	return child_ctx;
+    }
+
+    function get_each_context_2(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[21] = list[i];
+    	return child_ctx;
+    }
+
+    function get_each_context_3(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[18] = list[i];
+    	return child_ctx;
+    }
+
+    function get_each_context_4(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[21] = list[i];
+    	return child_ctx;
+    }
+
+    // (83:10) {#each getActiveRemainingRow(i) as j}
+    function create_each_block_4(ctx) {
+    	let rect;
+    	let rect_x_value;
+    	let rect_y_value;
+
+    	const block = {
+    		c: function create() {
+    			rect = svg_element("rect");
+    			attr_dev(rect, "width", "16px");
+    			attr_dev(rect, "height", "16px");
+    			attr_dev(rect, "x", rect_x_value = /*i*/ ctx[18] * 20);
+    			attr_dev(rect, "y", rect_y_value = /*j*/ ctx[21] * 20);
+    			add_location(rect, file$4, 83, 12, 2146);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, rect, anchor);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*activeChartRange*/ 16 && rect_x_value !== (rect_x_value = /*i*/ ctx[18] * 20)) {
+    				attr_dev(rect, "x", rect_x_value);
+    			}
+
+    			if (dirty & /*activeChartRange*/ 16 && rect_y_value !== (rect_y_value = /*j*/ ctx[21] * 20)) {
+    				attr_dev(rect, "y", rect_y_value);
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(rect);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_each_block_4.name,
+    		type: "each",
+    		source: "(83:10) {#each getActiveRemainingRow(i) as j}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (82:8) {#each activeChartRange as i}
+    function create_each_block_3(ctx) {
+    	let each_1_anchor;
+    	let each_value_4 = /*getActiveRemainingRow*/ ctx[6](/*i*/ ctx[18]);
+    	validate_each_argument(each_value_4);
+    	let each_blocks = [];
+
+    	for (let i = 0; i < each_value_4.length; i += 1) {
+    		each_blocks[i] = create_each_block_4(get_each_context_4(ctx, each_value_4, i));
+    	}
+
+    	const block = {
+    		c: function create() {
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].c();
+    			}
+
+    			each_1_anchor = empty();
+    		},
+    		m: function mount(target, anchor) {
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].m(target, anchor);
+    			}
+
+    			insert_dev(target, each_1_anchor, anchor);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*activeChartRange, getActiveRemainingRow*/ 80) {
+    				each_value_4 = /*getActiveRemainingRow*/ ctx[6](/*i*/ ctx[18]);
+    				validate_each_argument(each_value_4);
+    				let i;
+
+    				for (i = 0; i < each_value_4.length; i += 1) {
+    					const child_ctx = get_each_context_4(ctx, each_value_4, i);
+
+    					if (each_blocks[i]) {
+    						each_blocks[i].p(child_ctx, dirty);
+    					} else {
+    						each_blocks[i] = create_each_block_4(child_ctx);
+    						each_blocks[i].c();
+    						each_blocks[i].m(each_1_anchor.parentNode, each_1_anchor);
+    					}
+    				}
+
+    				for (; i < each_blocks.length; i += 1) {
+    					each_blocks[i].d(1);
+    				}
+
+    				each_blocks.length = each_value_4.length;
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			destroy_each(each_blocks, detaching);
+    			if (detaching) detach_dev(each_1_anchor);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_each_block_3.name,
+    		type: "each",
+    		source: "(82:8) {#each activeChartRange as i}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (97:14) {#each getRemainingRow(i, country) as j}
+    function create_each_block_2(ctx) {
+    	let rect;
+    	let rect_x_value;
+    	let rect_y_value;
+    	let tippy_action;
+    	let mounted;
+    	let dispose;
+
+    	const block = {
+    		c: function create() {
+    			rect = svg_element("rect");
+    			attr_dev(rect, "width", "16px");
+    			attr_dev(rect, "height", "16px");
+    			attr_dev(rect, "x", rect_x_value = /*i*/ ctx[18] * 20);
+    			attr_dev(rect, "y", rect_y_value = /*j*/ ctx[21] * 20);
+    			add_location(rect, file$4, 97, 16, 2665);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, rect, anchor);
+
+    			if (!mounted) {
+    				dispose = action_destroyer(tippy_action = tippy.call(null, rect, /*formatTooltip*/ ctx[8](/*country*/ ctx[15], `tooltip-node-${/*countryIndex*/ ctx[17]}`)));
+    				mounted = true;
+    			}
+    		},
+    		p: function update(new_ctx, dirty) {
+    			ctx = new_ctx;
+
+    			if (dirty & /*allData, activeCountry*/ 3 && rect_x_value !== (rect_x_value = /*i*/ ctx[18] * 20)) {
+    				attr_dev(rect, "x", rect_x_value);
+    			}
+
+    			if (dirty & /*allData, activeCountry*/ 3 && rect_y_value !== (rect_y_value = /*j*/ ctx[21] * 20)) {
+    				attr_dev(rect, "y", rect_y_value);
+    			}
+
+    			if (tippy_action && is_function(tippy_action.update) && dirty & /*allData, activeCountry*/ 3) tippy_action.update.call(null, /*formatTooltip*/ ctx[8](/*country*/ ctx[15], `tooltip-node-${/*countryIndex*/ ctx[17]}`));
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(rect);
+    			mounted = false;
+    			dispose();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_each_block_2.name,
+    		type: "each",
+    		source: "(97:14) {#each getRemainingRow(i, country) as j}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (96:12) {#each chartRange(country) as i}
+    function create_each_block_1(ctx) {
+    	let each_1_anchor;
+    	let each_value_2 = /*getRemainingRow*/ ctx[7](/*i*/ ctx[18], /*country*/ ctx[15]);
+    	validate_each_argument(each_value_2);
+    	let each_blocks = [];
+
+    	for (let i = 0; i < each_value_2.length; i += 1) {
+    		each_blocks[i] = create_each_block_2(get_each_context_2(ctx, each_value_2, i));
+    	}
+
+    	const block = {
+    		c: function create() {
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].c();
+    			}
+
+    			each_1_anchor = empty();
+    		},
+    		m: function mount(target, anchor) {
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].m(target, anchor);
+    			}
+
+    			insert_dev(target, each_1_anchor, anchor);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*chartRange, allData, activeCountry, getRemainingRow, formatTooltip*/ 419) {
+    				each_value_2 = /*getRemainingRow*/ ctx[7](/*i*/ ctx[18], /*country*/ ctx[15]);
+    				validate_each_argument(each_value_2);
+    				let i;
+
+    				for (i = 0; i < each_value_2.length; i += 1) {
+    					const child_ctx = get_each_context_2(ctx, each_value_2, i);
+
+    					if (each_blocks[i]) {
+    						each_blocks[i].p(child_ctx, dirty);
+    					} else {
+    						each_blocks[i] = create_each_block_2(child_ctx);
+    						each_blocks[i].c();
+    						each_blocks[i].m(each_1_anchor.parentNode, each_1_anchor);
+    					}
+    				}
+
+    				for (; i < each_blocks.length; i += 1) {
+    					each_blocks[i].d(1);
+    				}
+
+    				each_blocks.length = each_value_2.length;
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			destroy_each(each_blocks, detaching);
+    			if (detaching) detach_dev(each_1_anchor);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_each_block_1.name,
+    		type: "each",
+    		source: "(96:12) {#each chartRange(country) as i}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (92:2) {#each allData.filter(d => d.country !== activeCountry) as country, countryIndex}
+    function create_each_block$1(ctx) {
+    	let figure;
+    	let svg_1;
+    	let g;
+    	let g_data_attr_value;
+    	let t;
+    	let figure_resize_listener;
+    	let each_value_1 = /*chartRange*/ ctx[5](/*country*/ ctx[15]);
+    	validate_each_argument(each_value_1);
+    	let each_blocks = [];
+
+    	for (let i = 0; i < each_value_1.length; i += 1) {
+    		each_blocks[i] = create_each_block_1(get_each_context_1(ctx, each_value_1, i));
+    	}
+
+    	const block = {
+    		c: function create() {
+    			figure = element("figure");
+    			svg_1 = svg_element("svg");
+    			g = svg_element("g");
+
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].c();
+    			}
+
+    			t = space();
+    			attr_dev(g, "data-attr", g_data_attr_value = /*country*/ ctx[15].country);
+    			add_location(g, file$4, 94, 10, 2516);
+    			add_location(svg_1, file$4, 93, 6, 2499);
+    			attr_dev(figure, "class", "interactive__charts " + ('inactive-' + /*countryIndex*/ ctx[17]));
+    			add_render_callback(() => /*figure_elementresize_handler_1*/ ctx[12].call(figure));
+    			add_location(figure, file$4, 92, 4, 2374);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, figure, anchor);
+    			append_dev(figure, svg_1);
+    			append_dev(svg_1, g);
+
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].m(g, null);
+    			}
+
+    			append_dev(figure, t);
+    			figure_resize_listener = add_resize_listener(figure, /*figure_elementresize_handler_1*/ ctx[12].bind(figure));
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*getRemainingRow, chartRange, allData, activeCountry, formatTooltip*/ 419) {
+    				each_value_1 = /*chartRange*/ ctx[5](/*country*/ ctx[15]);
+    				validate_each_argument(each_value_1);
+    				let i;
+
+    				for (i = 0; i < each_value_1.length; i += 1) {
+    					const child_ctx = get_each_context_1(ctx, each_value_1, i);
+
+    					if (each_blocks[i]) {
+    						each_blocks[i].p(child_ctx, dirty);
+    					} else {
+    						each_blocks[i] = create_each_block_1(child_ctx);
+    						each_blocks[i].c();
+    						each_blocks[i].m(g, null);
+    					}
+    				}
+
+    				for (; i < each_blocks.length; i += 1) {
+    					each_blocks[i].d(1);
+    				}
+
+    				each_blocks.length = each_value_1.length;
+    			}
+
+    			if (dirty & /*allData, activeCountry*/ 3 && g_data_attr_value !== (g_data_attr_value = /*country*/ ctx[15].country)) {
+    				attr_dev(g, "data-attr", g_data_attr_value);
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(figure);
+    			destroy_each(each_blocks, detaching);
+    			figure_resize_listener();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_each_block$1.name,
+    		type: "each",
+    		source: "(92:2) {#each allData.filter(d => d.country !== activeCountry) as country, countryIndex}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (76:0) {#key activeCountry}
+    function create_key_block(ctx) {
+    	let div;
+    	let figure;
+    	let svg_1;
+    	let g;
+    	let figure_resize_listener;
+    	let t;
+    	let each_value_3 = /*activeChartRange*/ ctx[4];
+    	validate_each_argument(each_value_3);
+    	let each_blocks_1 = [];
+
+    	for (let i = 0; i < each_value_3.length; i += 1) {
+    		each_blocks_1[i] = create_each_block_3(get_each_context_3(ctx, each_value_3, i));
+    	}
+
+    	let each_value = /*allData*/ ctx[1].filter(/*func*/ ctx[11]);
+    	validate_each_argument(each_value);
+    	let each_blocks = [];
+
+    	for (let i = 0; i < each_value.length; i += 1) {
+    		each_blocks[i] = create_each_block$1(get_each_context$1(ctx, each_value, i));
+    	}
+
+    	const block = {
+    		c: function create() {
+    			div = element("div");
+    			figure = element("figure");
+    			svg_1 = svg_element("svg");
+    			g = svg_element("g");
+
+    			for (let i = 0; i < each_blocks_1.length; i += 1) {
+    				each_blocks_1[i].c();
+    			}
+
+    			t = space();
+
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].c();
+    			}
+
+    			attr_dev(g, "data-attr", /*activeCountry*/ ctx[0]);
+    			add_location(g, file$4, 80, 8, 2018);
+    			add_location(svg_1, file$4, 79, 4, 2004);
+    			attr_dev(figure, "class", "interactive__charts active");
+    			add_render_callback(() => /*figure_elementresize_handler*/ ctx[10].call(figure));
+    			add_location(figure, file$4, 78, 2, 1903);
+    			attr_dev(div, "class", "yo");
+    			add_location(div, file$4, 76, 0, 1881);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			append_dev(div, figure);
+    			append_dev(figure, svg_1);
+    			append_dev(svg_1, g);
+
+    			for (let i = 0; i < each_blocks_1.length; i += 1) {
+    				each_blocks_1[i].m(g, null);
+    			}
+
+    			figure_resize_listener = add_resize_listener(figure, /*figure_elementresize_handler*/ ctx[10].bind(figure));
+    			append_dev(div, t);
+
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].m(div, null);
+    			}
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*getActiveRemainingRow, activeChartRange*/ 80) {
+    				each_value_3 = /*activeChartRange*/ ctx[4];
+    				validate_each_argument(each_value_3);
+    				let i;
+
+    				for (i = 0; i < each_value_3.length; i += 1) {
+    					const child_ctx = get_each_context_3(ctx, each_value_3, i);
+
+    					if (each_blocks_1[i]) {
+    						each_blocks_1[i].p(child_ctx, dirty);
+    					} else {
+    						each_blocks_1[i] = create_each_block_3(child_ctx);
+    						each_blocks_1[i].c();
+    						each_blocks_1[i].m(g, null);
+    					}
+    				}
+
+    				for (; i < each_blocks_1.length; i += 1) {
+    					each_blocks_1[i].d(1);
+    				}
+
+    				each_blocks_1.length = each_value_3.length;
+    			}
+
+    			if (dirty & /*activeCountry*/ 1) {
+    				attr_dev(g, "data-attr", /*activeCountry*/ ctx[0]);
+    			}
+
+    			if (dirty & /*width, height, allData, activeCountry, chartRange, getRemainingRow, formatTooltip*/ 431) {
+    				each_value = /*allData*/ ctx[1].filter(/*func*/ ctx[11]);
+    				validate_each_argument(each_value);
+    				let i;
+
+    				for (i = 0; i < each_value.length; i += 1) {
+    					const child_ctx = get_each_context$1(ctx, each_value, i);
+
+    					if (each_blocks[i]) {
+    						each_blocks[i].p(child_ctx, dirty);
+    					} else {
+    						each_blocks[i] = create_each_block$1(child_ctx);
+    						each_blocks[i].c();
+    						each_blocks[i].m(div, null);
+    					}
+    				}
+
+    				for (; i < each_blocks.length; i += 1) {
+    					each_blocks[i].d(1);
+    				}
+
+    				each_blocks.length = each_value.length;
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    			destroy_each(each_blocks_1, detaching);
+    			figure_resize_listener();
+    			destroy_each(each_blocks, detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_key_block.name,
+    		type: "key",
+    		source: "(76:0) {#key activeCountry}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function create_fragment$4(ctx) {
+    	let div;
+    	let t0;
+    	let t1;
+    	let t2;
+    	let previous_key = /*activeCountry*/ ctx[0];
+    	let key_block_anchor;
+    	let key_block = create_key_block(ctx);
+
+    	const block = {
+    		c: function create() {
+    			div = element("div");
+    			t0 = text$1("Active Country: ");
+    			t1 = text$1(/*activeCountry*/ ctx[0]);
+    			t2 = space();
+    			key_block.c();
+    			key_block_anchor = empty();
+    			add_location(div, file$4, 74, 0, 1817);
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			append_dev(div, t0);
+    			append_dev(div, t1);
+    			insert_dev(target, t2, anchor);
+    			key_block.m(target, anchor);
+    			insert_dev(target, key_block_anchor, anchor);
+    		},
+    		p: function update(ctx, [dirty]) {
+    			if (dirty & /*activeCountry*/ 1) set_data_dev(t1, /*activeCountry*/ ctx[0]);
+
+    			if (dirty & /*activeCountry*/ 1 && safe_not_equal(previous_key, previous_key = /*activeCountry*/ ctx[0])) {
+    				key_block.d(1);
+    				key_block = create_key_block(ctx);
+    				key_block.c();
+    				key_block.m(key_block_anchor.parentNode, key_block_anchor);
+    			} else {
+    				key_block.p(ctx, dirty);
+    			}
+    		},
+    		i: noop,
+    		o: noop,
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    			if (detaching) detach_dev(t2);
+    			if (detaching) detach_dev(key_block_anchor);
+    			key_block.d(detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_fragment$4.name,
+    		type: "component",
+    		source: "",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    const b = 1000000000;
+
+    function instance$4($$self, $$props, $$invalidate) {
+    	let activeChartRange;
+    	let { $$slots: slots = {}, $$scope } = $$props;
+    	validate_slots('Chart', slots, []);
+    	let { activeCountry } = $$props;
+    	let { allData } = $$props;
+    	let { contributed } = $$props;
+    	let svg;
+    	let width = 300;
+    	let height = 300;
+    	const margin = { top: 5, right: 10, bottom: 10, left: 10 };
+
+    	const chartRange = country => {
+    		const val = allData.find(d => d.country === country.country).funding;
+    		return range(0, Math.ceil(val / b), 1);
+    	};
+
+    	const getActiveRemainingRow = num => {
+    		const step = 200000000;
+
+    		if (num + 1 === Math.ceil(contributed / b)) {
+    			let arr = [];
+
+    			for (let i of range(0, b, step)) {
+    				if (contributed % b > i) {
+    					arr.push(arr.length);
+    				}
+    			}
+
+    			return arr;
+    		} else {
+    			return [0, 1, 2, 3, 4];
+    		}
+    	};
+
+    	const getRemainingRow = (num, country) => {
+    		const val = allData.find(d => d.country === country.country).funding;
+    		const step = 200000000;
+
+    		if (num + 1 === Math.ceil(val / b)) {
+    			let arr = [];
+
+    			for (let i of range(0, b, step)) {
+    				if (val % b > i) {
+    					arr.push(arr.length);
+    				}
+    			}
+
+    			return arr;
+    		} else {
+    			return [0, 1, 2, 3, 4];
+    		}
+    	};
+
+    	const formatTooltip = (data, selector) => {
+    		const template = `
+      <h2 class="tooltip__heading">${data.country}</h2>
+      <ul class="port-values" role="list">
+        <li><div>GDP:${data.gdp}</div> </li>
+        <li><div>Contributed: ${data.funding}</div> </li>
+      </ul>
+    `;
+
+    		return {
+    			content: template,
+    			allowHTML: true,
+    			placement: "top",
+    			maxWidth: 175,
+    			triggerTarget: document.getElementById(selector),
+    			touch: false
+    		};
+    	};
+
+    	const writable_props = ['activeCountry', 'allData', 'contributed'];
+
+    	Object.keys($$props).forEach(key => {
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console.warn(`<Chart> was created with unknown prop '${key}'`);
+    	});
+
+    	function figure_elementresize_handler() {
+    		width = this.clientWidth;
+    		height = this.clientHeight;
+    		$$invalidate(2, width);
+    		$$invalidate(3, height);
+    	}
+
+    	const func = d => d.country !== activeCountry;
+
+    	function figure_elementresize_handler_1() {
+    		width = this.clientWidth;
+    		height = this.clientHeight;
+    		$$invalidate(2, width);
+    		$$invalidate(3, height);
+    	}
+
+    	$$self.$$set = $$props => {
+    		if ('activeCountry' in $$props) $$invalidate(0, activeCountry = $$props.activeCountry);
+    		if ('allData' in $$props) $$invalidate(1, allData = $$props.allData);
+    		if ('contributed' in $$props) $$invalidate(9, contributed = $$props.contributed);
+    	};
+
+    	$$self.$capture_state = () => ({
+    		filter,
+    		range,
+    		tippy,
+    		activeCountry,
+    		allData,
+    		contributed,
+    		svg,
+    		width,
+    		height,
+    		margin,
+    		b,
+    		chartRange,
+    		getActiveRemainingRow,
+    		getRemainingRow,
+    		formatTooltip,
+    		activeChartRange
+    	});
+
+    	$$self.$inject_state = $$props => {
+    		if ('activeCountry' in $$props) $$invalidate(0, activeCountry = $$props.activeCountry);
+    		if ('allData' in $$props) $$invalidate(1, allData = $$props.allData);
+    		if ('contributed' in $$props) $$invalidate(9, contributed = $$props.contributed);
+    		if ('svg' in $$props) svg = $$props.svg;
+    		if ('width' in $$props) $$invalidate(2, width = $$props.width);
+    		if ('height' in $$props) $$invalidate(3, height = $$props.height);
+    		if ('activeChartRange' in $$props) $$invalidate(4, activeChartRange = $$props.activeChartRange);
+    	};
+
+    	if ($$props && "$$inject" in $$props) {
+    		$$self.$inject_state($$props.$$inject);
+    	}
+
+    	$$self.$$.update = () => {
+    		if ($$self.$$.dirty & /*contributed*/ 512) {
+    			$$invalidate(4, activeChartRange = range(0, Math.ceil(contributed / b), 1));
+    		}
+    	};
+
+    	return [
+    		activeCountry,
+    		allData,
+    		width,
+    		height,
+    		activeChartRange,
+    		chartRange,
+    		getActiveRemainingRow,
+    		getRemainingRow,
+    		formatTooltip,
+    		contributed,
+    		figure_elementresize_handler,
+    		func,
+    		figure_elementresize_handler_1
+    	];
+    }
+
+    class Chart extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+
+    		init(this, options, instance$4, create_fragment$4, safe_not_equal, {
+    			activeCountry: 0,
+    			allData: 1,
+    			contributed: 9
+    		});
+
+    		dispatch_dev("SvelteRegisterComponent", {
+    			component: this,
+    			tagName: "Chart",
+    			options,
+    			id: create_fragment$4.name
+    		});
+
+    		const { ctx } = this.$$;
+    		const props = options.props || {};
+
+    		if (/*activeCountry*/ ctx[0] === undefined && !('activeCountry' in props)) {
+    			console.warn("<Chart> was created without expected prop 'activeCountry'");
+    		}
+
+    		if (/*allData*/ ctx[1] === undefined && !('allData' in props)) {
+    			console.warn("<Chart> was created without expected prop 'allData'");
+    		}
+
+    		if (/*contributed*/ ctx[9] === undefined && !('contributed' in props)) {
+    			console.warn("<Chart> was created without expected prop 'contributed'");
+    		}
+    	}
+
+    	get activeCountry() {
+    		throw new Error("<Chart>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set activeCountry(value) {
+    		throw new Error("<Chart>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get allData() {
+    		throw new Error("<Chart>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set allData(value) {
+    		throw new Error("<Chart>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get contributed() {
+    		throw new Error("<Chart>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set contributed(value) {
+    		throw new Error("<Chart>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+    }
+
+    function handle(node) {
+      const onDown = getOnDown(node);
+
+      node.addEventListener("touchstart", onDown);
+      node.addEventListener("mousedown", onDown);
+      return {
+        destroy() {
+          node.removeEventListener("touchstart", onDown);
+          node.removeEventListener("mousedown", onDown);
+        }
       };
     }
 
-    function continuous() {
-      return transformer()(identity$1, identity$1);
+    function getOnDown(node) {
+      const onMove = getOnMove(node);
+
+      return function (e) {
+        e.preventDefault();
+        node.dispatchEvent(new CustomEvent("dragstart"));
+
+        const moveevent = "touches" in e ? "touchmove" : "mousemove";
+        const upevent = "touches" in e ? "touchend" : "mouseup";
+
+        document.addEventListener(moveevent, onMove);
+        document.addEventListener(upevent, onUp);
+
+        function onUp(e) {
+          e.stopPropagation();
+
+          document.removeEventListener(moveevent, onMove);
+          document.removeEventListener(upevent, onUp);
+
+          node.dispatchEvent(new CustomEvent("dragend"));
+        }  };
+    }
+
+    function getOnMove(node) {
+      const track = node.parentNode;
+
+      return function (e) {
+        const { left, width } = track.getBoundingClientRect();
+        const clickOffset = "touches" in e ? e.touches[0].clientX : e.clientX;
+        const clickPos = Math.min(Math.max((clickOffset - left) / width, 0), 1) || 0;
+        node.dispatchEvent(new CustomEvent("drag", { detail: clickPos }));
+      };
+    }
+
+    /* node_modules/@bulatdashiev/svelte-slider/src/Thumb.svelte generated by Svelte v3.43.1 */
+    const file$3 = "node_modules/@bulatdashiev/svelte-slider/src/Thumb.svelte";
+
+    function create_fragment$3(ctx) {
+    	let div1;
+    	let div0;
+    	let div1_style_value;
+    	let current;
+    	let mounted;
+    	let dispose;
+    	const default_slot_template = /*#slots*/ ctx[4].default;
+    	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[3], null);
+
+    	const block = {
+    		c: function create() {
+    			div1 = element("div");
+    			div0 = element("div");
+    			if (default_slot) default_slot.c();
+    			attr_dev(div0, "class", "thumb-content svelte-1bmu3uq");
+    			toggle_class(div0, "active", /*active*/ ctx[1]);
+    			add_location(div0, file$3, 7, 2, 252);
+    			attr_dev(div1, "class", "thumb svelte-1bmu3uq");
+    			attr_dev(div1, "style", div1_style_value = `left: ${/*pos*/ ctx[0] * 100}%;`);
+    			add_location(div1, file$3, 0, 0, 0);
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div1, anchor);
+    			append_dev(div1, div0);
+
+    			if (default_slot) {
+    				default_slot.m(div0, null);
+    			}
+
+    			current = true;
+
+    			if (!mounted) {
+    				dispose = [
+    					action_destroyer(handle.call(null, div1)),
+    					listen_dev(div1, "dragstart", /*dragstart_handler*/ ctx[5], false, false, false),
+    					listen_dev(div1, "drag", /*drag_handler*/ ctx[6], false, false, false),
+    					listen_dev(div1, "dragend", /*dragend_handler*/ ctx[7], false, false, false)
+    				];
+
+    				mounted = true;
+    			}
+    		},
+    		p: function update(ctx, [dirty]) {
+    			if (default_slot) {
+    				if (default_slot.p && (!current || dirty & /*$$scope*/ 8)) {
+    					update_slot_base(
+    						default_slot,
+    						default_slot_template,
+    						ctx,
+    						/*$$scope*/ ctx[3],
+    						!current
+    						? get_all_dirty_from_scope(/*$$scope*/ ctx[3])
+    						: get_slot_changes(default_slot_template, /*$$scope*/ ctx[3], dirty, null),
+    						null
+    					);
+    				}
+    			}
+
+    			if (dirty & /*active*/ 2) {
+    				toggle_class(div0, "active", /*active*/ ctx[1]);
+    			}
+
+    			if (!current || dirty & /*pos*/ 1 && div1_style_value !== (div1_style_value = `left: ${/*pos*/ ctx[0] * 100}%;`)) {
+    				attr_dev(div1, "style", div1_style_value);
+    			}
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(default_slot, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(default_slot, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div1);
+    			if (default_slot) default_slot.d(detaching);
+    			mounted = false;
+    			run_all(dispose);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_fragment$3.name,
+    		type: "component",
+    		source: "",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function instance$3($$self, $$props, $$invalidate) {
+    	let { $$slots: slots = {}, $$scope } = $$props;
+    	validate_slots('Thumb', slots, ['default']);
+    	const dispatch = createEventDispatcher();
+    	let active;
+    	let { pos } = $$props;
+    	const writable_props = ['pos'];
+
+    	Object.keys($$props).forEach(key => {
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console.warn(`<Thumb> was created with unknown prop '${key}'`);
+    	});
+
+    	const dragstart_handler = () => ($$invalidate(1, active = true), dispatch('active', true));
+    	const drag_handler = ({ detail: v }) => $$invalidate(0, pos = v);
+    	const dragend_handler = () => ($$invalidate(1, active = false), dispatch('active', false));
+
+    	$$self.$$set = $$props => {
+    		if ('pos' in $$props) $$invalidate(0, pos = $$props.pos);
+    		if ('$$scope' in $$props) $$invalidate(3, $$scope = $$props.$$scope);
+    	};
+
+    	$$self.$capture_state = () => ({
+    		createEventDispatcher,
+    		handle,
+    		dispatch,
+    		pos,
+    		active
+    	});
+
+    	$$self.$inject_state = $$props => {
+    		if ('pos' in $$props) $$invalidate(0, pos = $$props.pos);
+    		if ('active' in $$props) $$invalidate(1, active = $$props.active);
+    	};
+
+    	if ($$props && "$$inject" in $$props) {
+    		$$self.$inject_state($$props.$$inject);
+    	}
+
+    	return [
+    		pos,
+    		active,
+    		dispatch,
+    		$$scope,
+    		slots,
+    		dragstart_handler,
+    		drag_handler,
+    		dragend_handler
+    	];
+    }
+
+    class Thumb extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$3, create_fragment$3, safe_not_equal, { pos: 0 });
+
+    		dispatch_dev("SvelteRegisterComponent", {
+    			component: this,
+    			tagName: "Thumb",
+    			options,
+    			id: create_fragment$3.name
+    		});
+
+    		const { ctx } = this.$$;
+    		const props = options.props || {};
+
+    		if (/*pos*/ ctx[0] === undefined && !('pos' in props)) {
+    			console.warn("<Thumb> was created without expected prop 'pos'");
+    		}
+    	}
+
+    	get pos() {
+    		throw new Error("<Thumb>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set pos(value) {
+    		throw new Error("<Thumb>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+    }
+
+    /* node_modules/@bulatdashiev/svelte-slider/src/Slider.svelte generated by Svelte v3.43.1 */
+    const file$2 = "node_modules/@bulatdashiev/svelte-slider/src/Slider.svelte";
+    const get_right_slot_changes = dirty => ({});
+    const get_right_slot_context = ctx => ({});
+    const get_left_slot_changes = dirty => ({});
+    const get_left_slot_context = ctx => ({});
+
+    // (2:0) {#if range}
+    function create_if_block_1(ctx) {
+    	let input;
+    	let input_value_value;
+    	let input_name_value;
+
+    	const block = {
+    		c: function create() {
+    			input = element("input");
+    			attr_dev(input, "type", "number");
+    			input.value = input_value_value = /*value*/ ctx[0][1];
+    			attr_dev(input, "name", input_name_value = /*name*/ ctx[1][1]);
+    			attr_dev(input, "class", "svelte-1uq4fbt");
+    			add_location(input, file$2, 2, 2, 72);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, input, anchor);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*value*/ 1 && input_value_value !== (input_value_value = /*value*/ ctx[0][1])) {
+    				prop_dev(input, "value", input_value_value);
+    			}
+
+    			if (dirty & /*name*/ 2 && input_name_value !== (input_name_value = /*name*/ ctx[1][1])) {
+    				attr_dev(input, "name", input_name_value);
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(input);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_1.name,
+    		type: "if",
+    		source: "(2:0) {#if range}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (11:12)           
+    function fallback_block_3(ctx) {
+    	let div;
+
+    	const block = {
+    		c: function create() {
+    			div = element("div");
+    			attr_dev(div, "class", "thumb svelte-1uq4fbt");
+    			add_location(div, file$2, 11, 8, 329);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: fallback_block_3.name,
+    		type: "fallback",
+    		source: "(11:12)           ",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (10:22)         
+    function fallback_block_2(ctx) {
+    	let current;
+    	const default_slot_template = /*#slots*/ ctx[10].default;
+    	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[15], null);
+    	const default_slot_or_fallback = default_slot || fallback_block_3(ctx);
+
+    	const block = {
+    		c: function create() {
+    			if (default_slot_or_fallback) default_slot_or_fallback.c();
+    		},
+    		m: function mount(target, anchor) {
+    			if (default_slot_or_fallback) {
+    				default_slot_or_fallback.m(target, anchor);
+    			}
+
+    			current = true;
+    		},
+    		p: function update(ctx, dirty) {
+    			if (default_slot) {
+    				if (default_slot.p && (!current || dirty & /*$$scope*/ 32768)) {
+    					update_slot_base(
+    						default_slot,
+    						default_slot_template,
+    						ctx,
+    						/*$$scope*/ ctx[15],
+    						!current
+    						? get_all_dirty_from_scope(/*$$scope*/ ctx[15])
+    						: get_slot_changes(default_slot_template, /*$$scope*/ ctx[15], dirty, null),
+    						null
+    					);
+    				}
+    			}
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(default_slot_or_fallback, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(default_slot_or_fallback, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (default_slot_or_fallback) default_slot_or_fallback.d(detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: fallback_block_2.name,
+    		type: "fallback",
+    		source: "(10:22)         ",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (9:2) <Thumb bind:pos={pos[0]} on:active={({ detail: v }) => active = v}>
+    function create_default_slot_1(ctx) {
+    	let current;
+    	const left_slot_template = /*#slots*/ ctx[10].left;
+    	const left_slot = create_slot(left_slot_template, ctx, /*$$scope*/ ctx[15], get_left_slot_context);
+    	const left_slot_or_fallback = left_slot || fallback_block_2(ctx);
+
+    	const block = {
+    		c: function create() {
+    			if (left_slot_or_fallback) left_slot_or_fallback.c();
+    		},
+    		m: function mount(target, anchor) {
+    			if (left_slot_or_fallback) {
+    				left_slot_or_fallback.m(target, anchor);
+    			}
+
+    			current = true;
+    		},
+    		p: function update(ctx, dirty) {
+    			if (left_slot) {
+    				if (left_slot.p && (!current || dirty & /*$$scope*/ 32768)) {
+    					update_slot_base(
+    						left_slot,
+    						left_slot_template,
+    						ctx,
+    						/*$$scope*/ ctx[15],
+    						!current
+    						? get_all_dirty_from_scope(/*$$scope*/ ctx[15])
+    						: get_slot_changes(left_slot_template, /*$$scope*/ ctx[15], dirty, get_left_slot_changes),
+    						get_left_slot_context
+    					);
+    				}
+    			} else {
+    				if (left_slot_or_fallback && left_slot_or_fallback.p && (!current || dirty & /*$$scope*/ 32768)) {
+    					left_slot_or_fallback.p(ctx, !current ? -1 : dirty);
+    				}
+    			}
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(left_slot_or_fallback, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(left_slot_or_fallback, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (left_slot_or_fallback) left_slot_or_fallback.d(detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_default_slot_1.name,
+    		type: "slot",
+    		source: "(9:2) <Thumb bind:pos={pos[0]} on:active={({ detail: v }) => active = v}>",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (16:2) {#if range}
+    function create_if_block(ctx) {
+    	let thumb;
+    	let updating_pos;
+    	let current;
+
+    	function thumb_pos_binding_1(value) {
+    		/*thumb_pos_binding_1*/ ctx[13](value);
+    	}
+
+    	let thumb_props = {
+    		$$slots: { default: [create_default_slot] },
+    		$$scope: { ctx }
+    	};
+
+    	if (/*pos*/ ctx[3][1] !== void 0) {
+    		thumb_props.pos = /*pos*/ ctx[3][1];
+    	}
+
+    	thumb = new Thumb({ props: thumb_props, $$inline: true });
+    	binding_callbacks.push(() => bind(thumb, 'pos', thumb_pos_binding_1));
+    	thumb.$on("active", /*active_handler_1*/ ctx[14]);
+
+    	const block = {
+    		c: function create() {
+    			create_component(thumb.$$.fragment);
+    		},
+    		m: function mount(target, anchor) {
+    			mount_component(thumb, target, anchor);
+    			current = true;
+    		},
+    		p: function update(ctx, dirty) {
+    			const thumb_changes = {};
+
+    			if (dirty & /*$$scope*/ 32768) {
+    				thumb_changes.$$scope = { dirty, ctx };
+    			}
+
+    			if (!updating_pos && dirty & /*pos*/ 8) {
+    				updating_pos = true;
+    				thumb_changes.pos = /*pos*/ ctx[3][1];
+    				add_flush_callback(() => updating_pos = false);
+    			}
+
+    			thumb.$set(thumb_changes);
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(thumb.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(thumb.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			destroy_component(thumb, detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block.name,
+    		type: "if",
+    		source: "(16:2) {#if range}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (19:14)             
+    function fallback_block_1(ctx) {
+    	let div;
+
+    	const block = {
+    		c: function create() {
+    			div = element("div");
+    			attr_dev(div, "class", "thumb svelte-1uq4fbt");
+    			add_location(div, file$2, 19, 10, 533);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: fallback_block_1.name,
+    		type: "fallback",
+    		source: "(19:14)             ",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (18:25)           
+    function fallback_block(ctx) {
+    	let current;
+    	const default_slot_template = /*#slots*/ ctx[10].default;
+    	const default_slot = create_slot(default_slot_template, ctx, /*$$scope*/ ctx[15], null);
+    	const default_slot_or_fallback = default_slot || fallback_block_1(ctx);
+
+    	const block = {
+    		c: function create() {
+    			if (default_slot_or_fallback) default_slot_or_fallback.c();
+    		},
+    		m: function mount(target, anchor) {
+    			if (default_slot_or_fallback) {
+    				default_slot_or_fallback.m(target, anchor);
+    			}
+
+    			current = true;
+    		},
+    		p: function update(ctx, dirty) {
+    			if (default_slot) {
+    				if (default_slot.p && (!current || dirty & /*$$scope*/ 32768)) {
+    					update_slot_base(
+    						default_slot,
+    						default_slot_template,
+    						ctx,
+    						/*$$scope*/ ctx[15],
+    						!current
+    						? get_all_dirty_from_scope(/*$$scope*/ ctx[15])
+    						: get_slot_changes(default_slot_template, /*$$scope*/ ctx[15], dirty, null),
+    						null
+    					);
+    				}
+    			}
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(default_slot_or_fallback, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(default_slot_or_fallback, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (default_slot_or_fallback) default_slot_or_fallback.d(detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: fallback_block.name,
+    		type: "fallback",
+    		source: "(18:25)           ",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (17:4) <Thumb bind:pos={pos[1]} on:active={({ detail: v }) => active = v}>
+    function create_default_slot(ctx) {
+    	let current;
+    	const right_slot_template = /*#slots*/ ctx[10].right;
+    	const right_slot = create_slot(right_slot_template, ctx, /*$$scope*/ ctx[15], get_right_slot_context);
+    	const right_slot_or_fallback = right_slot || fallback_block(ctx);
+
+    	const block = {
+    		c: function create() {
+    			if (right_slot_or_fallback) right_slot_or_fallback.c();
+    		},
+    		m: function mount(target, anchor) {
+    			if (right_slot_or_fallback) {
+    				right_slot_or_fallback.m(target, anchor);
+    			}
+
+    			current = true;
+    		},
+    		p: function update(ctx, dirty) {
+    			if (right_slot) {
+    				if (right_slot.p && (!current || dirty & /*$$scope*/ 32768)) {
+    					update_slot_base(
+    						right_slot,
+    						right_slot_template,
+    						ctx,
+    						/*$$scope*/ ctx[15],
+    						!current
+    						? get_all_dirty_from_scope(/*$$scope*/ ctx[15])
+    						: get_slot_changes(right_slot_template, /*$$scope*/ ctx[15], dirty, get_right_slot_changes),
+    						get_right_slot_context
+    					);
+    				}
+    			} else {
+    				if (right_slot_or_fallback && right_slot_or_fallback.p && (!current || dirty & /*$$scope*/ 32768)) {
+    					right_slot_or_fallback.p(ctx, !current ? -1 : dirty);
+    				}
+    			}
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(right_slot_or_fallback, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(right_slot_or_fallback, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (right_slot_or_fallback) right_slot_or_fallback.d(detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_default_slot.name,
+    		type: "slot",
+    		source: "(17:4) <Thumb bind:pos={pos[1]} on:active={({ detail: v }) => active = v}>",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function create_fragment$2(ctx) {
+    	let input;
+    	let input_value_value;
+    	let input_name_value;
+    	let t0;
+    	let t1;
+    	let div1;
+    	let div0;
+    	let t2;
+    	let thumb;
+    	let updating_pos;
+    	let t3;
+    	let current;
+    	let if_block0 = /*range*/ ctx[2] && create_if_block_1(ctx);
+
+    	function thumb_pos_binding(value) {
+    		/*thumb_pos_binding*/ ctx[11](value);
+    	}
+
+    	let thumb_props = {
+    		$$slots: { default: [create_default_slot_1] },
+    		$$scope: { ctx }
+    	};
+
+    	if (/*pos*/ ctx[3][0] !== void 0) {
+    		thumb_props.pos = /*pos*/ ctx[3][0];
+    	}
+
+    	thumb = new Thumb({ props: thumb_props, $$inline: true });
+    	binding_callbacks.push(() => bind(thumb, 'pos', thumb_pos_binding));
+    	thumb.$on("active", /*active_handler*/ ctx[12]);
+    	let if_block1 = /*range*/ ctx[2] && create_if_block(ctx);
+
+    	const block = {
+    		c: function create() {
+    			input = element("input");
+    			t0 = space();
+    			if (if_block0) if_block0.c();
+    			t1 = space();
+    			div1 = element("div");
+    			div0 = element("div");
+    			t2 = space();
+    			create_component(thumb.$$.fragment);
+    			t3 = space();
+    			if (if_block1) if_block1.c();
+    			attr_dev(input, "type", "number");
+    			input.value = input_value_value = /*value*/ ctx[0][0];
+    			attr_dev(input, "name", input_name_value = /*name*/ ctx[1][0]);
+    			attr_dev(input, "class", "svelte-1uq4fbt");
+    			add_location(input, file$2, 0, 0, 0);
+    			attr_dev(div0, "class", "progress svelte-1uq4fbt");
+    			attr_dev(div0, "style", /*progress*/ ctx[5]);
+    			add_location(div0, file$2, 5, 2, 159);
+    			attr_dev(div1, "class", "track svelte-1uq4fbt");
+    			add_location(div1, file$2, 4, 0, 136);
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, input, anchor);
+    			insert_dev(target, t0, anchor);
+    			if (if_block0) if_block0.m(target, anchor);
+    			insert_dev(target, t1, anchor);
+    			insert_dev(target, div1, anchor);
+    			append_dev(div1, div0);
+    			append_dev(div1, t2);
+    			mount_component(thumb, div1, null);
+    			append_dev(div1, t3);
+    			if (if_block1) if_block1.m(div1, null);
+    			current = true;
+    		},
+    		p: function update(ctx, [dirty]) {
+    			if (!current || dirty & /*value*/ 1 && input_value_value !== (input_value_value = /*value*/ ctx[0][0])) {
+    				prop_dev(input, "value", input_value_value);
+    			}
+
+    			if (!current || dirty & /*name*/ 2 && input_name_value !== (input_name_value = /*name*/ ctx[1][0])) {
+    				attr_dev(input, "name", input_name_value);
+    			}
+
+    			if (/*range*/ ctx[2]) {
+    				if (if_block0) {
+    					if_block0.p(ctx, dirty);
+    				} else {
+    					if_block0 = create_if_block_1(ctx);
+    					if_block0.c();
+    					if_block0.m(t1.parentNode, t1);
+    				}
+    			} else if (if_block0) {
+    				if_block0.d(1);
+    				if_block0 = null;
+    			}
+
+    			if (!current || dirty & /*progress*/ 32) {
+    				attr_dev(div0, "style", /*progress*/ ctx[5]);
+    			}
+
+    			const thumb_changes = {};
+
+    			if (dirty & /*$$scope*/ 32768) {
+    				thumb_changes.$$scope = { dirty, ctx };
+    			}
+
+    			if (!updating_pos && dirty & /*pos*/ 8) {
+    				updating_pos = true;
+    				thumb_changes.pos = /*pos*/ ctx[3][0];
+    				add_flush_callback(() => updating_pos = false);
+    			}
+
+    			thumb.$set(thumb_changes);
+
+    			if (/*range*/ ctx[2]) {
+    				if (if_block1) {
+    					if_block1.p(ctx, dirty);
+
+    					if (dirty & /*range*/ 4) {
+    						transition_in(if_block1, 1);
+    					}
+    				} else {
+    					if_block1 = create_if_block(ctx);
+    					if_block1.c();
+    					transition_in(if_block1, 1);
+    					if_block1.m(div1, null);
+    				}
+    			} else if (if_block1) {
+    				group_outros();
+
+    				transition_out(if_block1, 1, 1, () => {
+    					if_block1 = null;
+    				});
+
+    				check_outros();
+    			}
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(thumb.$$.fragment, local);
+    			transition_in(if_block1);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(thumb.$$.fragment, local);
+    			transition_out(if_block1);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(input);
+    			if (detaching) detach_dev(t0);
+    			if (if_block0) if_block0.d(detaching);
+    			if (detaching) detach_dev(t1);
+    			if (detaching) detach_dev(div1);
+    			destroy_component(thumb);
+    			if (if_block1) if_block1.d();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_fragment$2.name,
+    		type: "component",
+    		source: "",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function checkPos(pos) {
+    	return [Math.min(...pos), Math.max(...pos)];
+    }
+
+    function instance$2($$self, $$props, $$invalidate) {
+    	let progress;
+    	let { $$slots: slots = {}, $$scope } = $$props;
+    	validate_slots('Slider', slots, ['default','left','right']);
+    	const dispatch = createEventDispatcher();
+    	let { name = [] } = $$props;
+    	let { range = false } = $$props;
+    	let { min = 0 } = $$props;
+    	let { max = 100 } = $$props;
+    	let { step = 1 } = $$props;
+    	let { value = [min, max] } = $$props;
+    	let pos;
+    	let active = false;
+    	let { order = false } = $$props;
+
+    	function setValue(pos) {
+    		const offset = min % step;
+    		const width = max - min;
+    		$$invalidate(0, value = pos.map(v => min + v * width).map(v => Math.round((v - offset) / step) * step + offset));
+    		dispatch("input", value);
+    	}
+
+    	function setPos(value) {
+    		$$invalidate(3, pos = value.map(v => Math.min(Math.max(v, min), max)).map(v => (v - min) / (max - min)));
+    	}
+
+    	function clamp() {
+    		setPos(value);
+    		setValue(pos);
+    	}
+
+    	const writable_props = ['name', 'range', 'min', 'max', 'step', 'value', 'order'];
+
+    	Object.keys($$props).forEach(key => {
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console.warn(`<Slider> was created with unknown prop '${key}'`);
+    	});
+
+    	function thumb_pos_binding(value) {
+    		if ($$self.$$.not_equal(pos[0], value)) {
+    			pos[0] = value;
+    			((($$invalidate(3, pos), $$invalidate(2, range)), $$invalidate(9, order)), $$invalidate(4, active));
+    		}
+    	}
+
+    	const active_handler = ({ detail: v }) => $$invalidate(4, active = v);
+
+    	function thumb_pos_binding_1(value) {
+    		if ($$self.$$.not_equal(pos[1], value)) {
+    			pos[1] = value;
+    			((($$invalidate(3, pos), $$invalidate(2, range)), $$invalidate(9, order)), $$invalidate(4, active));
+    		}
+    	}
+
+    	const active_handler_1 = ({ detail: v }) => $$invalidate(4, active = v);
+
+    	$$self.$$set = $$props => {
+    		if ('name' in $$props) $$invalidate(1, name = $$props.name);
+    		if ('range' in $$props) $$invalidate(2, range = $$props.range);
+    		if ('min' in $$props) $$invalidate(6, min = $$props.min);
+    		if ('max' in $$props) $$invalidate(7, max = $$props.max);
+    		if ('step' in $$props) $$invalidate(8, step = $$props.step);
+    		if ('value' in $$props) $$invalidate(0, value = $$props.value);
+    		if ('order' in $$props) $$invalidate(9, order = $$props.order);
+    		if ('$$scope' in $$props) $$invalidate(15, $$scope = $$props.$$scope);
+    	};
+
+    	$$self.$capture_state = () => ({
+    		createEventDispatcher,
+    		Thumb,
+    		dispatch,
+    		name,
+    		range,
+    		min,
+    		max,
+    		step,
+    		value,
+    		pos,
+    		active,
+    		order,
+    		setValue,
+    		setPos,
+    		checkPos,
+    		clamp,
+    		progress
+    	});
+
+    	$$self.$inject_state = $$props => {
+    		if ('name' in $$props) $$invalidate(1, name = $$props.name);
+    		if ('range' in $$props) $$invalidate(2, range = $$props.range);
+    		if ('min' in $$props) $$invalidate(6, min = $$props.min);
+    		if ('max' in $$props) $$invalidate(7, max = $$props.max);
+    		if ('step' in $$props) $$invalidate(8, step = $$props.step);
+    		if ('value' in $$props) $$invalidate(0, value = $$props.value);
+    		if ('pos' in $$props) $$invalidate(3, pos = $$props.pos);
+    		if ('active' in $$props) $$invalidate(4, active = $$props.active);
+    		if ('order' in $$props) $$invalidate(9, order = $$props.order);
+    		if ('progress' in $$props) $$invalidate(5, progress = $$props.progress);
+    	};
+
+    	if ($$props && "$$inject" in $$props) {
+    		$$self.$inject_state($$props.$$inject);
+    	}
+
+    	$$self.$$.update = () => {
+    		if ($$self.$$.dirty & /*range, order, active, pos*/ 540) {
+    			if (range && order && active) $$invalidate(3, pos = checkPos(pos));
+    		}
+
+    		if ($$self.$$.dirty & /*active, pos*/ 24) {
+    			if (active) setValue(pos);
+    		}
+
+    		if ($$self.$$.dirty & /*active, value*/ 17) {
+    			if (!active) setPos(value);
+    		}
+
+    		if ($$self.$$.dirty & /*min, max*/ 192) {
+    			(clamp());
+    		}
+
+    		if ($$self.$$.dirty & /*range, pos*/ 12) {
+    			$$invalidate(5, progress = `
+    left: ${range ? Math.min(pos[0], pos[1]) * 100 : 0}%;
+    right: ${100 - Math.max(pos[0], range ? pos[1] : pos[0]) * 100}%;
+  `);
+    		}
+    	};
+
+    	return [
+    		value,
+    		name,
+    		range,
+    		pos,
+    		active,
+    		progress,
+    		min,
+    		max,
+    		step,
+    		order,
+    		slots,
+    		thumb_pos_binding,
+    		active_handler,
+    		thumb_pos_binding_1,
+    		active_handler_1,
+    		$$scope
+    	];
+    }
+
+    class Slider extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+
+    		init(this, options, instance$2, create_fragment$2, safe_not_equal, {
+    			name: 1,
+    			range: 2,
+    			min: 6,
+    			max: 7,
+    			step: 8,
+    			value: 0,
+    			order: 9
+    		});
+
+    		dispatch_dev("SvelteRegisterComponent", {
+    			component: this,
+    			tagName: "Slider",
+    			options,
+    			id: create_fragment$2.name
+    		});
+    	}
+
+    	get name() {
+    		throw new Error("<Slider>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set name(value) {
+    		throw new Error("<Slider>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get range() {
+    		throw new Error("<Slider>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set range(value) {
+    		throw new Error("<Slider>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get min() {
+    		throw new Error("<Slider>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set min(value) {
+    		throw new Error("<Slider>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get max() {
+    		throw new Error("<Slider>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set max(value) {
+    		throw new Error("<Slider>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get step() {
+    		throw new Error("<Slider>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set step(value) {
+    		throw new Error("<Slider>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get value() {
+    		throw new Error("<Slider>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set value(value) {
+    		throw new Error("<Slider>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get order() {
+    		throw new Error("<Slider>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set order(value) {
+    		throw new Error("<Slider>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
     }
 
     function formatDecimal(x) {
@@ -2097,7 +6165,6 @@ var app = (function () {
 
     var locale;
     var format;
-    var formatPrefix;
 
     defaultLocale({
       thousands: ",",
@@ -2108,3916 +6175,7 @@ var app = (function () {
     function defaultLocale(definition) {
       locale = formatLocale(definition);
       format = locale.format;
-      formatPrefix = locale.formatPrefix;
       return locale;
-    }
-
-    function precisionFixed(step) {
-      return Math.max(0, -exponent(Math.abs(step)));
-    }
-
-    function precisionPrefix(step, value) {
-      return Math.max(0, Math.max(-8, Math.min(8, Math.floor(exponent(value) / 3))) * 3 - exponent(Math.abs(step)));
-    }
-
-    function precisionRound(step, max) {
-      step = Math.abs(step), max = Math.abs(max) - step;
-      return Math.max(0, exponent(max) - exponent(step)) + 1;
-    }
-
-    function tickFormat(start, stop, count, specifier) {
-      var step = tickStep(start, stop, count),
-          precision;
-      specifier = formatSpecifier(specifier == null ? ",f" : specifier);
-      switch (specifier.type) {
-        case "s": {
-          var value = Math.max(Math.abs(start), Math.abs(stop));
-          if (specifier.precision == null && !isNaN(precision = precisionPrefix(step, value))) specifier.precision = precision;
-          return formatPrefix(specifier, value);
-        }
-        case "":
-        case "e":
-        case "g":
-        case "p":
-        case "r": {
-          if (specifier.precision == null && !isNaN(precision = precisionRound(step, Math.max(Math.abs(start), Math.abs(stop))))) specifier.precision = precision - (specifier.type === "e");
-          break;
-        }
-        case "f":
-        case "%": {
-          if (specifier.precision == null && !isNaN(precision = precisionFixed(step))) specifier.precision = precision - (specifier.type === "%") * 2;
-          break;
-        }
-      }
-      return format(specifier);
-    }
-
-    function linearish(scale) {
-      var domain = scale.domain;
-
-      scale.ticks = function(count) {
-        var d = domain();
-        return ticks(d[0], d[d.length - 1], count == null ? 10 : count);
-      };
-
-      scale.tickFormat = function(count, specifier) {
-        var d = domain();
-        return tickFormat(d[0], d[d.length - 1], count == null ? 10 : count, specifier);
-      };
-
-      scale.nice = function(count) {
-        if (count == null) count = 10;
-
-        var d = domain();
-        var i0 = 0;
-        var i1 = d.length - 1;
-        var start = d[i0];
-        var stop = d[i1];
-        var prestep;
-        var step;
-        var maxIter = 10;
-
-        if (stop < start) {
-          step = start, start = stop, stop = step;
-          step = i0, i0 = i1, i1 = step;
-        }
-        
-        while (maxIter-- > 0) {
-          step = tickIncrement(start, stop, count);
-          if (step === prestep) {
-            d[i0] = start;
-            d[i1] = stop;
-            return domain(d);
-          } else if (step > 0) {
-            start = Math.floor(start / step) * step;
-            stop = Math.ceil(stop / step) * step;
-          } else if (step < 0) {
-            start = Math.ceil(start * step) / step;
-            stop = Math.floor(stop * step) / step;
-          } else {
-            break;
-          }
-          prestep = step;
-        }
-
-        return scale;
-      };
-
-      return scale;
-    }
-
-    function linear() {
-      var scale = continuous();
-
-      scale.copy = function() {
-        return copy(scale, linear());
-      };
-
-      initRange.apply(scale, arguments);
-
-      return linearish(scale);
-    }
-
-    function transformPow(exponent) {
-      return function(x) {
-        return x < 0 ? -Math.pow(-x, exponent) : Math.pow(x, exponent);
-      };
-    }
-
-    function transformSqrt(x) {
-      return x < 0 ? -Math.sqrt(-x) : Math.sqrt(x);
-    }
-
-    function transformSquare(x) {
-      return x < 0 ? -x * x : x * x;
-    }
-
-    function powish(transform) {
-      var scale = transform(identity$1, identity$1),
-          exponent = 1;
-
-      function rescale() {
-        return exponent === 1 ? transform(identity$1, identity$1)
-            : exponent === 0.5 ? transform(transformSqrt, transformSquare)
-            : transform(transformPow(exponent), transformPow(1 / exponent));
-      }
-
-      scale.exponent = function(_) {
-        return arguments.length ? (exponent = +_, rescale()) : exponent;
-      };
-
-      return linearish(scale);
-    }
-
-    function pow() {
-      var scale = powish(transformer());
-
-      scale.copy = function() {
-        return copy(scale, pow()).exponent(scale.exponent());
-      };
-
-      initRange.apply(scale, arguments);
-
-      return scale;
-    }
-
-    function sqrt() {
-      return pow.apply(null, arguments).exponent(0.5);
-    }
-
-    /* src/components/Chart.svelte generated by Svelte v3.43.1 */
-    const file$4 = "src/components/Chart.svelte";
-
-    function get_each_context$3(ctx, list, i) {
-    	const child_ctx = ctx.slice();
-    	child_ctx[14] = list[i];
-    	child_ctx[16] = i;
-    	return child_ctx;
-    }
-
-    function get_each_context_1(ctx, list, i) {
-    	const child_ctx = ctx.slice();
-    	child_ctx[17] = list[i];
-    	return child_ctx;
-    }
-
-    function get_each_context_2(ctx, list, i) {
-    	const child_ctx = ctx.slice();
-    	child_ctx[20] = list[i];
-    	return child_ctx;
-    }
-
-    function get_each_context_3(ctx, list, i) {
-    	const child_ctx = ctx.slice();
-    	child_ctx[17] = list[i];
-    	return child_ctx;
-    }
-
-    function get_each_context_4(ctx, list, i) {
-    	const child_ctx = ctx.slice();
-    	child_ctx[20] = list[i];
-    	return child_ctx;
-    }
-
-    // (64:10) {#each getActiveRemainingRow(i) as j}
-    function create_each_block_4(ctx) {
-    	let rect;
-    	let rect_x_value;
-    	let rect_y_value;
-
-    	const block = {
-    		c: function create() {
-    			rect = svg_element("rect");
-    			attr_dev(rect, "width", "16px");
-    			attr_dev(rect, "height", "16px");
-    			attr_dev(rect, "x", rect_x_value = /*i*/ ctx[17] * 20);
-    			attr_dev(rect, "y", rect_y_value = /*j*/ ctx[20] * 20);
-    			add_location(rect, file$4, 64, 12, 1688);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, rect, anchor);
-    		},
-    		p: function update(ctx, dirty) {
-    			if (dirty & /*activeChartRange*/ 16 && rect_x_value !== (rect_x_value = /*i*/ ctx[17] * 20)) {
-    				attr_dev(rect, "x", rect_x_value);
-    			}
-
-    			if (dirty & /*activeChartRange*/ 16 && rect_y_value !== (rect_y_value = /*j*/ ctx[20] * 20)) {
-    				attr_dev(rect, "y", rect_y_value);
-    			}
-    		},
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(rect);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_each_block_4.name,
-    		type: "each",
-    		source: "(64:10) {#each getActiveRemainingRow(i) as j}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (63:8) {#each activeChartRange as i}
-    function create_each_block_3(ctx) {
-    	let each_1_anchor;
-    	let each_value_4 = /*getActiveRemainingRow*/ ctx[6](/*i*/ ctx[17]);
-    	validate_each_argument(each_value_4);
-    	let each_blocks = [];
-
-    	for (let i = 0; i < each_value_4.length; i += 1) {
-    		each_blocks[i] = create_each_block_4(get_each_context_4(ctx, each_value_4, i));
-    	}
-
-    	const block = {
-    		c: function create() {
-    			for (let i = 0; i < each_blocks.length; i += 1) {
-    				each_blocks[i].c();
-    			}
-
-    			each_1_anchor = empty();
-    		},
-    		m: function mount(target, anchor) {
-    			for (let i = 0; i < each_blocks.length; i += 1) {
-    				each_blocks[i].m(target, anchor);
-    			}
-
-    			insert_dev(target, each_1_anchor, anchor);
-    		},
-    		p: function update(ctx, dirty) {
-    			if (dirty & /*activeChartRange, getActiveRemainingRow*/ 80) {
-    				each_value_4 = /*getActiveRemainingRow*/ ctx[6](/*i*/ ctx[17]);
-    				validate_each_argument(each_value_4);
-    				let i;
-
-    				for (i = 0; i < each_value_4.length; i += 1) {
-    					const child_ctx = get_each_context_4(ctx, each_value_4, i);
-
-    					if (each_blocks[i]) {
-    						each_blocks[i].p(child_ctx, dirty);
-    					} else {
-    						each_blocks[i] = create_each_block_4(child_ctx);
-    						each_blocks[i].c();
-    						each_blocks[i].m(each_1_anchor.parentNode, each_1_anchor);
-    					}
-    				}
-
-    				for (; i < each_blocks.length; i += 1) {
-    					each_blocks[i].d(1);
-    				}
-
-    				each_blocks.length = each_value_4.length;
-    			}
-    		},
-    		d: function destroy(detaching) {
-    			destroy_each(each_blocks, detaching);
-    			if (detaching) detach_dev(each_1_anchor);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_each_block_3.name,
-    		type: "each",
-    		source: "(63:8) {#each activeChartRange as i}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (78:14) {#each getRemainingRow(i, country) as j}
-    function create_each_block_2(ctx) {
-    	let rect;
-    	let rect_x_value;
-    	let rect_y_value;
-
-    	const block = {
-    		c: function create() {
-    			rect = svg_element("rect");
-    			attr_dev(rect, "width", "16px");
-    			attr_dev(rect, "height", "16px");
-    			attr_dev(rect, "x", rect_x_value = /*i*/ ctx[17] * 20);
-    			attr_dev(rect, "y", rect_y_value = /*j*/ ctx[20] * 20);
-    			add_location(rect, file$4, 78, 16, 2205);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, rect, anchor);
-    		},
-    		p: function update(ctx, dirty) {
-    			if (dirty & /*allData, activeCountry*/ 3 && rect_x_value !== (rect_x_value = /*i*/ ctx[17] * 20)) {
-    				attr_dev(rect, "x", rect_x_value);
-    			}
-
-    			if (dirty & /*allData, activeCountry*/ 3 && rect_y_value !== (rect_y_value = /*j*/ ctx[20] * 20)) {
-    				attr_dev(rect, "y", rect_y_value);
-    			}
-    		},
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(rect);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_each_block_2.name,
-    		type: "each",
-    		source: "(78:14) {#each getRemainingRow(i, country) as j}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (77:12) {#each chartRange(country) as i}
-    function create_each_block_1(ctx) {
-    	let each_1_anchor;
-    	let each_value_2 = /*getRemainingRow*/ ctx[7](/*i*/ ctx[17], /*country*/ ctx[14]);
-    	validate_each_argument(each_value_2);
-    	let each_blocks = [];
-
-    	for (let i = 0; i < each_value_2.length; i += 1) {
-    		each_blocks[i] = create_each_block_2(get_each_context_2(ctx, each_value_2, i));
-    	}
-
-    	const block = {
-    		c: function create() {
-    			for (let i = 0; i < each_blocks.length; i += 1) {
-    				each_blocks[i].c();
-    			}
-
-    			each_1_anchor = empty();
-    		},
-    		m: function mount(target, anchor) {
-    			for (let i = 0; i < each_blocks.length; i += 1) {
-    				each_blocks[i].m(target, anchor);
-    			}
-
-    			insert_dev(target, each_1_anchor, anchor);
-    		},
-    		p: function update(ctx, dirty) {
-    			if (dirty & /*chartRange, allData, activeCountry, getRemainingRow*/ 163) {
-    				each_value_2 = /*getRemainingRow*/ ctx[7](/*i*/ ctx[17], /*country*/ ctx[14]);
-    				validate_each_argument(each_value_2);
-    				let i;
-
-    				for (i = 0; i < each_value_2.length; i += 1) {
-    					const child_ctx = get_each_context_2(ctx, each_value_2, i);
-
-    					if (each_blocks[i]) {
-    						each_blocks[i].p(child_ctx, dirty);
-    					} else {
-    						each_blocks[i] = create_each_block_2(child_ctx);
-    						each_blocks[i].c();
-    						each_blocks[i].m(each_1_anchor.parentNode, each_1_anchor);
-    					}
-    				}
-
-    				for (; i < each_blocks.length; i += 1) {
-    					each_blocks[i].d(1);
-    				}
-
-    				each_blocks.length = each_value_2.length;
-    			}
-    		},
-    		d: function destroy(detaching) {
-    			destroy_each(each_blocks, detaching);
-    			if (detaching) detach_dev(each_1_anchor);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_each_block_1.name,
-    		type: "each",
-    		source: "(77:12) {#each chartRange(country) as i}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (73:2) {#each allData.filter(d => d.country !== activeCountry) as country, countryIndex}
-    function create_each_block$3(ctx) {
-    	let figure;
-    	let svg_1;
-    	let g;
-    	let g_data_attr_value;
-    	let t;
-    	let figure_resize_listener;
-    	let each_value_1 = /*chartRange*/ ctx[5](/*country*/ ctx[14]);
-    	validate_each_argument(each_value_1);
-    	let each_blocks = [];
-
-    	for (let i = 0; i < each_value_1.length; i += 1) {
-    		each_blocks[i] = create_each_block_1(get_each_context_1(ctx, each_value_1, i));
-    	}
-
-    	const block = {
-    		c: function create() {
-    			figure = element("figure");
-    			svg_1 = svg_element("svg");
-    			g = svg_element("g");
-
-    			for (let i = 0; i < each_blocks.length; i += 1) {
-    				each_blocks[i].c();
-    			}
-
-    			t = space();
-    			attr_dev(g, "data-attr", g_data_attr_value = /*country*/ ctx[14].country);
-    			add_location(g, file$4, 75, 10, 2057);
-    			add_location(svg_1, file$4, 74, 6, 2041);
-    			attr_dev(figure, "class", "interactive__charts " + ('inactive-' + /*countryIndex*/ ctx[16]));
-    			add_render_callback(() => /*figure_elementresize_handler_1*/ ctx[11].call(figure));
-    			add_location(figure, file$4, 73, 4, 1916);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, figure, anchor);
-    			append_dev(figure, svg_1);
-    			append_dev(svg_1, g);
-
-    			for (let i = 0; i < each_blocks.length; i += 1) {
-    				each_blocks[i].m(g, null);
-    			}
-
-    			append_dev(figure, t);
-    			figure_resize_listener = add_resize_listener(figure, /*figure_elementresize_handler_1*/ ctx[11].bind(figure));
-    		},
-    		p: function update(ctx, dirty) {
-    			if (dirty & /*getRemainingRow, chartRange, allData, activeCountry*/ 163) {
-    				each_value_1 = /*chartRange*/ ctx[5](/*country*/ ctx[14]);
-    				validate_each_argument(each_value_1);
-    				let i;
-
-    				for (i = 0; i < each_value_1.length; i += 1) {
-    					const child_ctx = get_each_context_1(ctx, each_value_1, i);
-
-    					if (each_blocks[i]) {
-    						each_blocks[i].p(child_ctx, dirty);
-    					} else {
-    						each_blocks[i] = create_each_block_1(child_ctx);
-    						each_blocks[i].c();
-    						each_blocks[i].m(g, null);
-    					}
-    				}
-
-    				for (; i < each_blocks.length; i += 1) {
-    					each_blocks[i].d(1);
-    				}
-
-    				each_blocks.length = each_value_1.length;
-    			}
-
-    			if (dirty & /*allData, activeCountry*/ 3 && g_data_attr_value !== (g_data_attr_value = /*country*/ ctx[14].country)) {
-    				attr_dev(g, "data-attr", g_data_attr_value);
-    			}
-    		},
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(figure);
-    			destroy_each(each_blocks, detaching);
-    			figure_resize_listener();
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_each_block$3.name,
-    		type: "each",
-    		source: "(73:2) {#each allData.filter(d => d.country !== activeCountry) as country, countryIndex}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (57:0) {#key activeCountry}
-    function create_key_block(ctx) {
-    	let div;
-    	let figure;
-    	let svg_1;
-    	let g;
-    	let figure_resize_listener;
-    	let t;
-    	let each_value_3 = /*activeChartRange*/ ctx[4];
-    	validate_each_argument(each_value_3);
-    	let each_blocks_1 = [];
-
-    	for (let i = 0; i < each_value_3.length; i += 1) {
-    		each_blocks_1[i] = create_each_block_3(get_each_context_3(ctx, each_value_3, i));
-    	}
-
-    	let each_value = /*allData*/ ctx[1].filter(/*func*/ ctx[10]);
-    	validate_each_argument(each_value);
-    	let each_blocks = [];
-
-    	for (let i = 0; i < each_value.length; i += 1) {
-    		each_blocks[i] = create_each_block$3(get_each_context$3(ctx, each_value, i));
-    	}
-
-    	const block = {
-    		c: function create() {
-    			div = element("div");
-    			figure = element("figure");
-    			svg_1 = svg_element("svg");
-    			g = svg_element("g");
-
-    			for (let i = 0; i < each_blocks_1.length; i += 1) {
-    				each_blocks_1[i].c();
-    			}
-
-    			t = space();
-
-    			for (let i = 0; i < each_blocks.length; i += 1) {
-    				each_blocks[i].c();
-    			}
-
-    			attr_dev(g, "data-attr", /*activeCountry*/ ctx[0]);
-    			add_location(g, file$4, 61, 8, 1560);
-    			add_location(svg_1, file$4, 60, 4, 1546);
-    			attr_dev(figure, "class", "interactive__charts active");
-    			add_render_callback(() => /*figure_elementresize_handler*/ ctx[9].call(figure));
-    			add_location(figure, file$4, 59, 2, 1445);
-    			attr_dev(div, "class", "yo");
-    			add_location(div, file$4, 57, 0, 1423);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, div, anchor);
-    			append_dev(div, figure);
-    			append_dev(figure, svg_1);
-    			append_dev(svg_1, g);
-
-    			for (let i = 0; i < each_blocks_1.length; i += 1) {
-    				each_blocks_1[i].m(g, null);
-    			}
-
-    			figure_resize_listener = add_resize_listener(figure, /*figure_elementresize_handler*/ ctx[9].bind(figure));
-    			append_dev(div, t);
-
-    			for (let i = 0; i < each_blocks.length; i += 1) {
-    				each_blocks[i].m(div, null);
-    			}
-    		},
-    		p: function update(ctx, dirty) {
-    			if (dirty & /*getActiveRemainingRow, activeChartRange*/ 80) {
-    				each_value_3 = /*activeChartRange*/ ctx[4];
-    				validate_each_argument(each_value_3);
-    				let i;
-
-    				for (i = 0; i < each_value_3.length; i += 1) {
-    					const child_ctx = get_each_context_3(ctx, each_value_3, i);
-
-    					if (each_blocks_1[i]) {
-    						each_blocks_1[i].p(child_ctx, dirty);
-    					} else {
-    						each_blocks_1[i] = create_each_block_3(child_ctx);
-    						each_blocks_1[i].c();
-    						each_blocks_1[i].m(g, null);
-    					}
-    				}
-
-    				for (; i < each_blocks_1.length; i += 1) {
-    					each_blocks_1[i].d(1);
-    				}
-
-    				each_blocks_1.length = each_value_3.length;
-    			}
-
-    			if (dirty & /*activeCountry*/ 1) {
-    				attr_dev(g, "data-attr", /*activeCountry*/ ctx[0]);
-    			}
-
-    			if (dirty & /*width, height, allData, activeCountry, chartRange, getRemainingRow*/ 175) {
-    				each_value = /*allData*/ ctx[1].filter(/*func*/ ctx[10]);
-    				validate_each_argument(each_value);
-    				let i;
-
-    				for (i = 0; i < each_value.length; i += 1) {
-    					const child_ctx = get_each_context$3(ctx, each_value, i);
-
-    					if (each_blocks[i]) {
-    						each_blocks[i].p(child_ctx, dirty);
-    					} else {
-    						each_blocks[i] = create_each_block$3(child_ctx);
-    						each_blocks[i].c();
-    						each_blocks[i].m(div, null);
-    					}
-    				}
-
-    				for (; i < each_blocks.length; i += 1) {
-    					each_blocks[i].d(1);
-    				}
-
-    				each_blocks.length = each_value.length;
-    			}
-    		},
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div);
-    			destroy_each(each_blocks_1, detaching);
-    			figure_resize_listener();
-    			destroy_each(each_blocks, detaching);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_key_block.name,
-    		type: "key",
-    		source: "(57:0) {#key activeCountry}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    function create_fragment$4(ctx) {
-    	let div;
-    	let t0;
-    	let t1;
-    	let t2;
-    	let previous_key = /*activeCountry*/ ctx[0];
-    	let key_block_anchor;
-    	let key_block = create_key_block(ctx);
-
-    	const block = {
-    		c: function create() {
-    			div = element("div");
-    			t0 = text$1("Active Country: ");
-    			t1 = text$1(/*activeCountry*/ ctx[0]);
-    			t2 = space();
-    			key_block.c();
-    			key_block_anchor = empty();
-    			add_location(div, file$4, 55, 0, 1359);
-    		},
-    		l: function claim(nodes) {
-    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, div, anchor);
-    			append_dev(div, t0);
-    			append_dev(div, t1);
-    			insert_dev(target, t2, anchor);
-    			key_block.m(target, anchor);
-    			insert_dev(target, key_block_anchor, anchor);
-    		},
-    		p: function update(ctx, [dirty]) {
-    			if (dirty & /*activeCountry*/ 1) set_data_dev(t1, /*activeCountry*/ ctx[0]);
-
-    			if (dirty & /*activeCountry*/ 1 && safe_not_equal(previous_key, previous_key = /*activeCountry*/ ctx[0])) {
-    				key_block.d(1);
-    				key_block = create_key_block(ctx);
-    				key_block.c();
-    				key_block.m(key_block_anchor.parentNode, key_block_anchor);
-    			} else {
-    				key_block.p(ctx, dirty);
-    			}
-    		},
-    		i: noop,
-    		o: noop,
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div);
-    			if (detaching) detach_dev(t2);
-    			if (detaching) detach_dev(key_block_anchor);
-    			key_block.d(detaching);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_fragment$4.name,
-    		type: "component",
-    		source: "",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    const b = 1000000000;
-
-    function instance$4($$self, $$props, $$invalidate) {
-    	let activeChartRange;
-    	let { $$slots: slots = {}, $$scope } = $$props;
-    	validate_slots('Chart', slots, []);
-    	let { activeCountry } = $$props;
-    	let { allData } = $$props;
-    	let { contributed } = $$props;
-    	let svg;
-    	let width = 300;
-    	let height = 300;
-    	const margin = { top: 5, right: 10, bottom: 10, left: 10 };
-
-    	const chartRange = country => {
-    		const val = allData.find(d => d.country === country.country).funding;
-    		return range(0, Math.ceil(val / b), 1);
-    	};
-
-    	const getActiveRemainingRow = num => {
-    		const step = 200000000;
-
-    		if (num + 1 === Math.ceil(contributed / b)) {
-    			let arr = [];
-
-    			for (let i of range(0, b, step)) {
-    				if (contributed % b > i) {
-    					arr.push(arr.length);
-    				}
-    			}
-
-    			return arr;
-    		} else {
-    			return [0, 1, 2, 3, 4];
-    		}
-    	};
-
-    	const getRemainingRow = (num, country) => {
-    		const val = allData.find(d => d.country === country.country).funding;
-    		const step = 200000000;
-
-    		if (num + 1 === Math.ceil(val / b)) {
-    			let arr = [];
-
-    			for (let i of range(0, b, step)) {
-    				if (val % b > i) {
-    					arr.push(arr.length);
-    				}
-    			}
-
-    			return arr;
-    		} else {
-    			return [0, 1, 2, 3, 4];
-    		}
-    	};
-
-    	const writable_props = ['activeCountry', 'allData', 'contributed'];
-
-    	Object.keys($$props).forEach(key => {
-    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console.warn(`<Chart> was created with unknown prop '${key}'`);
-    	});
-
-    	function figure_elementresize_handler() {
-    		width = this.clientWidth;
-    		height = this.clientHeight;
-    		$$invalidate(2, width);
-    		$$invalidate(3, height);
-    	}
-
-    	const func = d => d.country !== activeCountry;
-
-    	function figure_elementresize_handler_1() {
-    		width = this.clientWidth;
-    		height = this.clientHeight;
-    		$$invalidate(2, width);
-    		$$invalidate(3, height);
-    	}
-
-    	$$self.$$set = $$props => {
-    		if ('activeCountry' in $$props) $$invalidate(0, activeCountry = $$props.activeCountry);
-    		if ('allData' in $$props) $$invalidate(1, allData = $$props.allData);
-    		if ('contributed' in $$props) $$invalidate(8, contributed = $$props.contributed);
-    	};
-
-    	$$self.$capture_state = () => ({
-    		scaleLinear: linear,
-    		scaleSqrt: sqrt,
-    		scaleOrdinal: ordinal,
-    		filter,
-    		range,
-    		activeCountry,
-    		allData,
-    		contributed,
-    		svg,
-    		width,
-    		height,
-    		margin,
-    		b,
-    		chartRange,
-    		getActiveRemainingRow,
-    		getRemainingRow,
-    		activeChartRange
-    	});
-
-    	$$self.$inject_state = $$props => {
-    		if ('activeCountry' in $$props) $$invalidate(0, activeCountry = $$props.activeCountry);
-    		if ('allData' in $$props) $$invalidate(1, allData = $$props.allData);
-    		if ('contributed' in $$props) $$invalidate(8, contributed = $$props.contributed);
-    		if ('svg' in $$props) svg = $$props.svg;
-    		if ('width' in $$props) $$invalidate(2, width = $$props.width);
-    		if ('height' in $$props) $$invalidate(3, height = $$props.height);
-    		if ('activeChartRange' in $$props) $$invalidate(4, activeChartRange = $$props.activeChartRange);
-    	};
-
-    	if ($$props && "$$inject" in $$props) {
-    		$$self.$inject_state($$props.$$inject);
-    	}
-
-    	$$self.$$.update = () => {
-    		if ($$self.$$.dirty & /*contributed*/ 256) {
-    			$$invalidate(4, activeChartRange = range(0, Math.ceil(contributed / b), 1));
-    		}
-    	};
-
-    	return [
-    		activeCountry,
-    		allData,
-    		width,
-    		height,
-    		activeChartRange,
-    		chartRange,
-    		getActiveRemainingRow,
-    		getRemainingRow,
-    		contributed,
-    		figure_elementresize_handler,
-    		func,
-    		figure_elementresize_handler_1
-    	];
-    }
-
-    class Chart extends SvelteComponentDev {
-    	constructor(options) {
-    		super(options);
-
-    		init(this, options, instance$4, create_fragment$4, safe_not_equal, {
-    			activeCountry: 0,
-    			allData: 1,
-    			contributed: 8
-    		});
-
-    		dispatch_dev("SvelteRegisterComponent", {
-    			component: this,
-    			tagName: "Chart",
-    			options,
-    			id: create_fragment$4.name
-    		});
-
-    		const { ctx } = this.$$;
-    		const props = options.props || {};
-
-    		if (/*activeCountry*/ ctx[0] === undefined && !('activeCountry' in props)) {
-    			console.warn("<Chart> was created without expected prop 'activeCountry'");
-    		}
-
-    		if (/*allData*/ ctx[1] === undefined && !('allData' in props)) {
-    			console.warn("<Chart> was created without expected prop 'allData'");
-    		}
-
-    		if (/*contributed*/ ctx[8] === undefined && !('contributed' in props)) {
-    			console.warn("<Chart> was created without expected prop 'contributed'");
-    		}
-    	}
-
-    	get activeCountry() {
-    		throw new Error("<Chart>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set activeCountry(value) {
-    		throw new Error("<Chart>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get allData() {
-    		throw new Error("<Chart>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set allData(value) {
-    		throw new Error("<Chart>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get contributed() {
-    		throw new Error("<Chart>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set contributed(value) {
-    		throw new Error("<Chart>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-    }
-
-    const subscriber_queue = [];
-    /**
-     * Create a `Writable` store that allows both updating and reading by subscription.
-     * @param {*=}value initial value
-     * @param {StartStopNotifier=}start start and stop notifications for subscriptions
-     */
-    function writable(value, start = noop) {
-        let stop;
-        const subscribers = new Set();
-        function set(new_value) {
-            if (safe_not_equal(value, new_value)) {
-                value = new_value;
-                if (stop) { // store is ready
-                    const run_queue = !subscriber_queue.length;
-                    for (const subscriber of subscribers) {
-                        subscriber[1]();
-                        subscriber_queue.push(subscriber, value);
-                    }
-                    if (run_queue) {
-                        for (let i = 0; i < subscriber_queue.length; i += 2) {
-                            subscriber_queue[i][0](subscriber_queue[i + 1]);
-                        }
-                        subscriber_queue.length = 0;
-                    }
-                }
-            }
-        }
-        function update(fn) {
-            set(fn(value));
-        }
-        function subscribe(run, invalidate = noop) {
-            const subscriber = [run, invalidate];
-            subscribers.add(subscriber);
-            if (subscribers.size === 1) {
-                stop = start(set) || noop;
-            }
-            run(value);
-            return () => {
-                subscribers.delete(subscriber);
-                if (subscribers.size === 0) {
-                    stop();
-                    stop = null;
-                }
-            };
-        }
-        return { set, update, subscribe };
-    }
-
-    function is_date(obj) {
-        return Object.prototype.toString.call(obj) === '[object Date]';
-    }
-
-    function tick_spring(ctx, last_value, current_value, target_value) {
-        if (typeof current_value === 'number' || is_date(current_value)) {
-            // @ts-ignore
-            const delta = target_value - current_value;
-            // @ts-ignore
-            const velocity = (current_value - last_value) / (ctx.dt || 1 / 60); // guard div by 0
-            const spring = ctx.opts.stiffness * delta;
-            const damper = ctx.opts.damping * velocity;
-            const acceleration = (spring - damper) * ctx.inv_mass;
-            const d = (velocity + acceleration) * ctx.dt;
-            if (Math.abs(d) < ctx.opts.precision && Math.abs(delta) < ctx.opts.precision) {
-                return target_value; // settled
-            }
-            else {
-                ctx.settled = false; // signal loop to keep ticking
-                // @ts-ignore
-                return is_date(current_value) ?
-                    new Date(current_value.getTime() + d) : current_value + d;
-            }
-        }
-        else if (Array.isArray(current_value)) {
-            // @ts-ignore
-            return current_value.map((_, i) => tick_spring(ctx, last_value[i], current_value[i], target_value[i]));
-        }
-        else if (typeof current_value === 'object') {
-            const next_value = {};
-            for (const k in current_value) {
-                // @ts-ignore
-                next_value[k] = tick_spring(ctx, last_value[k], current_value[k], target_value[k]);
-            }
-            // @ts-ignore
-            return next_value;
-        }
-        else {
-            throw new Error(`Cannot spring ${typeof current_value} values`);
-        }
-    }
-    function spring(value, opts = {}) {
-        const store = writable(value);
-        const { stiffness = 0.15, damping = 0.8, precision = 0.01 } = opts;
-        let last_time;
-        let task;
-        let current_token;
-        let last_value = value;
-        let target_value = value;
-        let inv_mass = 1;
-        let inv_mass_recovery_rate = 0;
-        let cancel_task = false;
-        function set(new_value, opts = {}) {
-            target_value = new_value;
-            const token = current_token = {};
-            if (value == null || opts.hard || (spring.stiffness >= 1 && spring.damping >= 1)) {
-                cancel_task = true; // cancel any running animation
-                last_time = now();
-                last_value = new_value;
-                store.set(value = target_value);
-                return Promise.resolve();
-            }
-            else if (opts.soft) {
-                const rate = opts.soft === true ? .5 : +opts.soft;
-                inv_mass_recovery_rate = 1 / (rate * 60);
-                inv_mass = 0; // infinite mass, unaffected by spring forces
-            }
-            if (!task) {
-                last_time = now();
-                cancel_task = false;
-                task = loop(now => {
-                    if (cancel_task) {
-                        cancel_task = false;
-                        task = null;
-                        return false;
-                    }
-                    inv_mass = Math.min(inv_mass + inv_mass_recovery_rate, 1);
-                    const ctx = {
-                        inv_mass,
-                        opts: spring,
-                        settled: true,
-                        dt: (now - last_time) * 60 / 1000
-                    };
-                    const next_value = tick_spring(ctx, last_value, value, target_value);
-                    last_time = now;
-                    last_value = value;
-                    store.set(value = next_value);
-                    if (ctx.settled) {
-                        task = null;
-                    }
-                    return !ctx.settled;
-                });
-            }
-            return new Promise(fulfil => {
-                task.promise.then(() => {
-                    if (token === current_token)
-                        fulfil();
-                });
-            });
-        }
-        const spring = {
-            set,
-            update: (fn, opts) => set(fn(target_value, value), opts),
-            subscribe: store.subscribe,
-            stiffness,
-            damping,
-            precision
-        };
-        return spring;
-    }
-
-    /* node_modules/svelte-range-slider-pips/src/RangePips.svelte generated by Svelte v3.43.1 */
-
-    const file$3 = "node_modules/svelte-range-slider-pips/src/RangePips.svelte";
-
-    function get_each_context$2(ctx, list, i) {
-    	const child_ctx = ctx.slice();
-    	child_ctx[21] = list[i];
-    	child_ctx[23] = i;
-    	return child_ctx;
-    }
-
-    // (139:2) {#if ( all && first !== false ) || first }
-    function create_if_block_9(ctx) {
-    	let span;
-    	let span_style_value;
-    	let if_block = (/*all*/ ctx[3] === 'label' || /*first*/ ctx[4] === 'label') && create_if_block_10(ctx);
-
-    	const block = {
-    		c: function create() {
-    			span = element("span");
-    			if (if_block) if_block.c();
-    			attr_dev(span, "class", "pip first");
-    			attr_dev(span, "style", span_style_value = "" + ((/*vertical*/ ctx[2] ? 'top' : 'left') + ": 0%;"));
-    			toggle_class(span, "selected", /*isSelected*/ ctx[13](/*min*/ ctx[0]));
-    			toggle_class(span, "in-range", /*inRange*/ ctx[12](/*min*/ ctx[0]));
-    			add_location(span, file$3, 139, 4, 3416);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, span, anchor);
-    			if (if_block) if_block.m(span, null);
-    		},
-    		p: function update(ctx, dirty) {
-    			if (/*all*/ ctx[3] === 'label' || /*first*/ ctx[4] === 'label') {
-    				if (if_block) {
-    					if_block.p(ctx, dirty);
-    				} else {
-    					if_block = create_if_block_10(ctx);
-    					if_block.c();
-    					if_block.m(span, null);
-    				}
-    			} else if (if_block) {
-    				if_block.d(1);
-    				if_block = null;
-    			}
-
-    			if (dirty & /*vertical*/ 4 && span_style_value !== (span_style_value = "" + ((/*vertical*/ ctx[2] ? 'top' : 'left') + ": 0%;"))) {
-    				attr_dev(span, "style", span_style_value);
-    			}
-
-    			if (dirty & /*isSelected, min*/ 8193) {
-    				toggle_class(span, "selected", /*isSelected*/ ctx[13](/*min*/ ctx[0]));
-    			}
-
-    			if (dirty & /*inRange, min*/ 4097) {
-    				toggle_class(span, "in-range", /*inRange*/ ctx[12](/*min*/ ctx[0]));
-    			}
-    		},
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(span);
-    			if (if_block) if_block.d();
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block_9.name,
-    		type: "if",
-    		source: "(139:2) {#if ( all && first !== false ) || first }",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (145:6) {#if all === 'label' || first === 'label'}
-    function create_if_block_10(ctx) {
-    	let span;
-    	let t_value = /*formatter*/ ctx[9](/*min*/ ctx[0], 0) + "";
-    	let t;
-    	let if_block0 = /*prefix*/ ctx[7] && create_if_block_12(ctx);
-    	let if_block1 = /*suffix*/ ctx[8] && create_if_block_11(ctx);
-
-    	const block = {
-    		c: function create() {
-    			span = element("span");
-    			if (if_block0) if_block0.c();
-    			t = text$1(t_value);
-    			if (if_block1) if_block1.c();
-    			attr_dev(span, "class", "pipVal");
-    			add_location(span, file$3, 145, 8, 3626);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, span, anchor);
-    			if (if_block0) if_block0.m(span, null);
-    			append_dev(span, t);
-    			if (if_block1) if_block1.m(span, null);
-    		},
-    		p: function update(ctx, dirty) {
-    			if (/*prefix*/ ctx[7]) {
-    				if (if_block0) {
-    					if_block0.p(ctx, dirty);
-    				} else {
-    					if_block0 = create_if_block_12(ctx);
-    					if_block0.c();
-    					if_block0.m(span, t);
-    				}
-    			} else if (if_block0) {
-    				if_block0.d(1);
-    				if_block0 = null;
-    			}
-
-    			if (dirty & /*formatter, min*/ 513 && t_value !== (t_value = /*formatter*/ ctx[9](/*min*/ ctx[0], 0) + "")) set_data_dev(t, t_value);
-
-    			if (/*suffix*/ ctx[8]) {
-    				if (if_block1) {
-    					if_block1.p(ctx, dirty);
-    				} else {
-    					if_block1 = create_if_block_11(ctx);
-    					if_block1.c();
-    					if_block1.m(span, null);
-    				}
-    			} else if (if_block1) {
-    				if_block1.d(1);
-    				if_block1 = null;
-    			}
-    		},
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(span);
-    			if (if_block0) if_block0.d();
-    			if (if_block1) if_block1.d();
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block_10.name,
-    		type: "if",
-    		source: "(145:6) {#if all === 'label' || first === 'label'}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (147:10) {#if prefix}
-    function create_if_block_12(ctx) {
-    	let span;
-    	let t;
-
-    	const block = {
-    		c: function create() {
-    			span = element("span");
-    			t = text$1(/*prefix*/ ctx[7]);
-    			attr_dev(span, "class", "pipVal-prefix");
-    			add_location(span, file$3, 146, 22, 3670);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, span, anchor);
-    			append_dev(span, t);
-    		},
-    		p: function update(ctx, dirty) {
-    			if (dirty & /*prefix*/ 128) set_data_dev(t, /*prefix*/ ctx[7]);
-    		},
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(span);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block_12.name,
-    		type: "if",
-    		source: "(147:10) {#if prefix}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (147:88) {#if suffix}
-    function create_if_block_11(ctx) {
-    	let span;
-    	let t;
-
-    	const block = {
-    		c: function create() {
-    			span = element("span");
-    			t = text$1(/*suffix*/ ctx[8]);
-    			attr_dev(span, "class", "pipVal-suffix");
-    			add_location(span, file$3, 146, 100, 3748);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, span, anchor);
-    			append_dev(span, t);
-    		},
-    		p: function update(ctx, dirty) {
-    			if (dirty & /*suffix*/ 256) set_data_dev(t, /*suffix*/ ctx[8]);
-    		},
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(span);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block_11.name,
-    		type: "if",
-    		source: "(147:88) {#if suffix}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (152:2) {#if ( all && rest !== false ) || rest}
-    function create_if_block_4$1(ctx) {
-    	let each_1_anchor;
-    	let each_value = Array(/*pipCount*/ ctx[15] + 1);
-    	validate_each_argument(each_value);
-    	let each_blocks = [];
-
-    	for (let i = 0; i < each_value.length; i += 1) {
-    		each_blocks[i] = create_each_block$2(get_each_context$2(ctx, each_value, i));
-    	}
-
-    	const block = {
-    		c: function create() {
-    			for (let i = 0; i < each_blocks.length; i += 1) {
-    				each_blocks[i].c();
-    			}
-
-    			each_1_anchor = empty();
-    		},
-    		m: function mount(target, anchor) {
-    			for (let i = 0; i < each_blocks.length; i += 1) {
-    				each_blocks[i].m(target, anchor);
-    			}
-
-    			insert_dev(target, each_1_anchor, anchor);
-    		},
-    		p: function update(ctx, dirty) {
-    			if (dirty & /*vertical, percentOf, pipVal, isSelected, inRange, suffix, formatter, prefix, all, rest, min, max, pipCount*/ 64463) {
-    				each_value = Array(/*pipCount*/ ctx[15] + 1);
-    				validate_each_argument(each_value);
-    				let i;
-
-    				for (i = 0; i < each_value.length; i += 1) {
-    					const child_ctx = get_each_context$2(ctx, each_value, i);
-
-    					if (each_blocks[i]) {
-    						each_blocks[i].p(child_ctx, dirty);
-    					} else {
-    						each_blocks[i] = create_each_block$2(child_ctx);
-    						each_blocks[i].c();
-    						each_blocks[i].m(each_1_anchor.parentNode, each_1_anchor);
-    					}
-    				}
-
-    				for (; i < each_blocks.length; i += 1) {
-    					each_blocks[i].d(1);
-    				}
-
-    				each_blocks.length = each_value.length;
-    			}
-    		},
-    		d: function destroy(detaching) {
-    			destroy_each(each_blocks, detaching);
-    			if (detaching) detach_dev(each_1_anchor);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block_4$1.name,
-    		type: "if",
-    		source: "(152:2) {#if ( all && rest !== false ) || rest}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (154:6) {#if pipVal(i) !== min && pipVal(i) !== max}
-    function create_if_block_5(ctx) {
-    	let span;
-    	let t;
-    	let span_style_value;
-    	let if_block = (/*all*/ ctx[3] === 'label' || /*rest*/ ctx[6] === 'label') && create_if_block_6(ctx);
-
-    	const block = {
-    		c: function create() {
-    			span = element("span");
-    			if (if_block) if_block.c();
-    			t = space();
-    			attr_dev(span, "class", "pip");
-    			attr_dev(span, "style", span_style_value = "" + ((/*vertical*/ ctx[2] ? 'top' : 'left') + ": " + /*percentOf*/ ctx[11](/*pipVal*/ ctx[14](/*i*/ ctx[23])) + "%;"));
-    			toggle_class(span, "selected", /*isSelected*/ ctx[13](/*pipVal*/ ctx[14](/*i*/ ctx[23])));
-    			toggle_class(span, "in-range", /*inRange*/ ctx[12](/*pipVal*/ ctx[14](/*i*/ ctx[23])));
-    			add_location(span, file$3, 154, 8, 3986);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, span, anchor);
-    			if (if_block) if_block.m(span, null);
-    			append_dev(span, t);
-    		},
-    		p: function update(ctx, dirty) {
-    			if (/*all*/ ctx[3] === 'label' || /*rest*/ ctx[6] === 'label') {
-    				if (if_block) {
-    					if_block.p(ctx, dirty);
-    				} else {
-    					if_block = create_if_block_6(ctx);
-    					if_block.c();
-    					if_block.m(span, t);
-    				}
-    			} else if (if_block) {
-    				if_block.d(1);
-    				if_block = null;
-    			}
-
-    			if (dirty & /*vertical, percentOf, pipVal*/ 18436 && span_style_value !== (span_style_value = "" + ((/*vertical*/ ctx[2] ? 'top' : 'left') + ": " + /*percentOf*/ ctx[11](/*pipVal*/ ctx[14](/*i*/ ctx[23])) + "%;"))) {
-    				attr_dev(span, "style", span_style_value);
-    			}
-
-    			if (dirty & /*isSelected, pipVal*/ 24576) {
-    				toggle_class(span, "selected", /*isSelected*/ ctx[13](/*pipVal*/ ctx[14](/*i*/ ctx[23])));
-    			}
-
-    			if (dirty & /*inRange, pipVal*/ 20480) {
-    				toggle_class(span, "in-range", /*inRange*/ ctx[12](/*pipVal*/ ctx[14](/*i*/ ctx[23])));
-    			}
-    		},
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(span);
-    			if (if_block) if_block.d();
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block_5.name,
-    		type: "if",
-    		source: "(154:6) {#if pipVal(i) !== min && pipVal(i) !== max}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (160:10) {#if all === 'label' || rest === 'label'}
-    function create_if_block_6(ctx) {
-    	let span;
-    	let t_value = /*formatter*/ ctx[9](/*pipVal*/ ctx[14](/*i*/ ctx[23]), /*i*/ ctx[23]) + "";
-    	let t;
-    	let if_block0 = /*prefix*/ ctx[7] && create_if_block_8(ctx);
-    	let if_block1 = /*suffix*/ ctx[8] && create_if_block_7(ctx);
-
-    	const block = {
-    		c: function create() {
-    			span = element("span");
-    			if (if_block0) if_block0.c();
-    			t = text$1(t_value);
-    			if (if_block1) if_block1.c();
-    			attr_dev(span, "class", "pipVal");
-    			add_location(span, file$3, 160, 12, 4246);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, span, anchor);
-    			if (if_block0) if_block0.m(span, null);
-    			append_dev(span, t);
-    			if (if_block1) if_block1.m(span, null);
-    		},
-    		p: function update(ctx, dirty) {
-    			if (/*prefix*/ ctx[7]) {
-    				if (if_block0) {
-    					if_block0.p(ctx, dirty);
-    				} else {
-    					if_block0 = create_if_block_8(ctx);
-    					if_block0.c();
-    					if_block0.m(span, t);
-    				}
-    			} else if (if_block0) {
-    				if_block0.d(1);
-    				if_block0 = null;
-    			}
-
-    			if (dirty & /*formatter, pipVal*/ 16896 && t_value !== (t_value = /*formatter*/ ctx[9](/*pipVal*/ ctx[14](/*i*/ ctx[23]), /*i*/ ctx[23]) + "")) set_data_dev(t, t_value);
-
-    			if (/*suffix*/ ctx[8]) {
-    				if (if_block1) {
-    					if_block1.p(ctx, dirty);
-    				} else {
-    					if_block1 = create_if_block_7(ctx);
-    					if_block1.c();
-    					if_block1.m(span, null);
-    				}
-    			} else if (if_block1) {
-    				if_block1.d(1);
-    				if_block1 = null;
-    			}
-    		},
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(span);
-    			if (if_block0) if_block0.d();
-    			if (if_block1) if_block1.d();
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block_6.name,
-    		type: "if",
-    		source: "(160:10) {#if all === 'label' || rest === 'label'}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (162:14) {#if prefix}
-    function create_if_block_8(ctx) {
-    	let span;
-    	let t;
-
-    	const block = {
-    		c: function create() {
-    			span = element("span");
-    			t = text$1(/*prefix*/ ctx[7]);
-    			attr_dev(span, "class", "pipVal-prefix");
-    			add_location(span, file$3, 161, 26, 4294);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, span, anchor);
-    			append_dev(span, t);
-    		},
-    		p: function update(ctx, dirty) {
-    			if (dirty & /*prefix*/ 128) set_data_dev(t, /*prefix*/ ctx[7]);
-    		},
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(span);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block_8.name,
-    		type: "if",
-    		source: "(162:14) {#if prefix}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (162:98) {#if suffix}
-    function create_if_block_7(ctx) {
-    	let span;
-    	let t;
-
-    	const block = {
-    		c: function create() {
-    			span = element("span");
-    			t = text$1(/*suffix*/ ctx[8]);
-    			attr_dev(span, "class", "pipVal-suffix");
-    			add_location(span, file$3, 161, 110, 4378);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, span, anchor);
-    			append_dev(span, t);
-    		},
-    		p: function update(ctx, dirty) {
-    			if (dirty & /*suffix*/ 256) set_data_dev(t, /*suffix*/ ctx[8]);
-    		},
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(span);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block_7.name,
-    		type: "if",
-    		source: "(162:98) {#if suffix}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (153:4) {#each Array(pipCount + 1) as _, i}
-    function create_each_block$2(ctx) {
-    	let show_if = /*pipVal*/ ctx[14](/*i*/ ctx[23]) !== /*min*/ ctx[0] && /*pipVal*/ ctx[14](/*i*/ ctx[23]) !== /*max*/ ctx[1];
-    	let if_block_anchor;
-    	let if_block = show_if && create_if_block_5(ctx);
-
-    	const block = {
-    		c: function create() {
-    			if (if_block) if_block.c();
-    			if_block_anchor = empty();
-    		},
-    		m: function mount(target, anchor) {
-    			if (if_block) if_block.m(target, anchor);
-    			insert_dev(target, if_block_anchor, anchor);
-    		},
-    		p: function update(ctx, dirty) {
-    			if (dirty & /*pipVal, min, max*/ 16387) show_if = /*pipVal*/ ctx[14](/*i*/ ctx[23]) !== /*min*/ ctx[0] && /*pipVal*/ ctx[14](/*i*/ ctx[23]) !== /*max*/ ctx[1];
-
-    			if (show_if) {
-    				if (if_block) {
-    					if_block.p(ctx, dirty);
-    				} else {
-    					if_block = create_if_block_5(ctx);
-    					if_block.c();
-    					if_block.m(if_block_anchor.parentNode, if_block_anchor);
-    				}
-    			} else if (if_block) {
-    				if_block.d(1);
-    				if_block = null;
-    			}
-    		},
-    		d: function destroy(detaching) {
-    			if (if_block) if_block.d(detaching);
-    			if (detaching) detach_dev(if_block_anchor);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_each_block$2.name,
-    		type: "each",
-    		source: "(153:4) {#each Array(pipCount + 1) as _, i}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (169:2) {#if ( all && last !== false ) || last}
-    function create_if_block$1(ctx) {
-    	let span;
-    	let span_style_value;
-    	let if_block = (/*all*/ ctx[3] === 'label' || /*last*/ ctx[5] === 'label') && create_if_block_1$1(ctx);
-
-    	const block = {
-    		c: function create() {
-    			span = element("span");
-    			if (if_block) if_block.c();
-    			attr_dev(span, "class", "pip last");
-    			attr_dev(span, "style", span_style_value = "" + ((/*vertical*/ ctx[2] ? 'top' : 'left') + ": 100%;"));
-    			toggle_class(span, "selected", /*isSelected*/ ctx[13](/*max*/ ctx[1]));
-    			toggle_class(span, "in-range", /*inRange*/ ctx[12](/*max*/ ctx[1]));
-    			add_location(span, file$3, 169, 4, 4557);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, span, anchor);
-    			if (if_block) if_block.m(span, null);
-    		},
-    		p: function update(ctx, dirty) {
-    			if (/*all*/ ctx[3] === 'label' || /*last*/ ctx[5] === 'label') {
-    				if (if_block) {
-    					if_block.p(ctx, dirty);
-    				} else {
-    					if_block = create_if_block_1$1(ctx);
-    					if_block.c();
-    					if_block.m(span, null);
-    				}
-    			} else if (if_block) {
-    				if_block.d(1);
-    				if_block = null;
-    			}
-
-    			if (dirty & /*vertical*/ 4 && span_style_value !== (span_style_value = "" + ((/*vertical*/ ctx[2] ? 'top' : 'left') + ": 100%;"))) {
-    				attr_dev(span, "style", span_style_value);
-    			}
-
-    			if (dirty & /*isSelected, max*/ 8194) {
-    				toggle_class(span, "selected", /*isSelected*/ ctx[13](/*max*/ ctx[1]));
-    			}
-
-    			if (dirty & /*inRange, max*/ 4098) {
-    				toggle_class(span, "in-range", /*inRange*/ ctx[12](/*max*/ ctx[1]));
-    			}
-    		},
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(span);
-    			if (if_block) if_block.d();
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block$1.name,
-    		type: "if",
-    		source: "(169:2) {#if ( all && last !== false ) || last}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (175:6) {#if all === 'label' || last === 'label'}
-    function create_if_block_1$1(ctx) {
-    	let span;
-    	let t_value = /*formatter*/ ctx[9](/*max*/ ctx[1], /*pipCount*/ ctx[15]) + "";
-    	let t;
-    	let if_block0 = /*prefix*/ ctx[7] && create_if_block_3$1(ctx);
-    	let if_block1 = /*suffix*/ ctx[8] && create_if_block_2$1(ctx);
-
-    	const block = {
-    		c: function create() {
-    			span = element("span");
-    			if (if_block0) if_block0.c();
-    			t = text$1(t_value);
-    			if (if_block1) if_block1.c();
-    			attr_dev(span, "class", "pipVal");
-    			add_location(span, file$3, 175, 8, 4767);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, span, anchor);
-    			if (if_block0) if_block0.m(span, null);
-    			append_dev(span, t);
-    			if (if_block1) if_block1.m(span, null);
-    		},
-    		p: function update(ctx, dirty) {
-    			if (/*prefix*/ ctx[7]) {
-    				if (if_block0) {
-    					if_block0.p(ctx, dirty);
-    				} else {
-    					if_block0 = create_if_block_3$1(ctx);
-    					if_block0.c();
-    					if_block0.m(span, t);
-    				}
-    			} else if (if_block0) {
-    				if_block0.d(1);
-    				if_block0 = null;
-    			}
-
-    			if (dirty & /*formatter, max, pipCount*/ 33282 && t_value !== (t_value = /*formatter*/ ctx[9](/*max*/ ctx[1], /*pipCount*/ ctx[15]) + "")) set_data_dev(t, t_value);
-
-    			if (/*suffix*/ ctx[8]) {
-    				if (if_block1) {
-    					if_block1.p(ctx, dirty);
-    				} else {
-    					if_block1 = create_if_block_2$1(ctx);
-    					if_block1.c();
-    					if_block1.m(span, null);
-    				}
-    			} else if (if_block1) {
-    				if_block1.d(1);
-    				if_block1 = null;
-    			}
-    		},
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(span);
-    			if (if_block0) if_block0.d();
-    			if (if_block1) if_block1.d();
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block_1$1.name,
-    		type: "if",
-    		source: "(175:6) {#if all === 'label' || last === 'label'}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (177:10) {#if prefix}
-    function create_if_block_3$1(ctx) {
-    	let span;
-    	let t;
-
-    	const block = {
-    		c: function create() {
-    			span = element("span");
-    			t = text$1(/*prefix*/ ctx[7]);
-    			attr_dev(span, "class", "pipVal-prefix");
-    			add_location(span, file$3, 176, 22, 4811);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, span, anchor);
-    			append_dev(span, t);
-    		},
-    		p: function update(ctx, dirty) {
-    			if (dirty & /*prefix*/ 128) set_data_dev(t, /*prefix*/ ctx[7]);
-    		},
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(span);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block_3$1.name,
-    		type: "if",
-    		source: "(177:10) {#if prefix}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (177:95) {#if suffix}
-    function create_if_block_2$1(ctx) {
-    	let span;
-    	let t;
-
-    	const block = {
-    		c: function create() {
-    			span = element("span");
-    			t = text$1(/*suffix*/ ctx[8]);
-    			attr_dev(span, "class", "pipVal-suffix");
-    			add_location(span, file$3, 176, 107, 4896);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, span, anchor);
-    			append_dev(span, t);
-    		},
-    		p: function update(ctx, dirty) {
-    			if (dirty & /*suffix*/ 256) set_data_dev(t, /*suffix*/ ctx[8]);
-    		},
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(span);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block_2$1.name,
-    		type: "if",
-    		source: "(177:95) {#if suffix}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    function create_fragment$3(ctx) {
-    	let div;
-    	let t0;
-    	let t1;
-    	let if_block0 = (/*all*/ ctx[3] && /*first*/ ctx[4] !== false || /*first*/ ctx[4]) && create_if_block_9(ctx);
-    	let if_block1 = (/*all*/ ctx[3] && /*rest*/ ctx[6] !== false || /*rest*/ ctx[6]) && create_if_block_4$1(ctx);
-    	let if_block2 = (/*all*/ ctx[3] && /*last*/ ctx[5] !== false || /*last*/ ctx[5]) && create_if_block$1(ctx);
-
-    	const block = {
-    		c: function create() {
-    			div = element("div");
-    			if (if_block0) if_block0.c();
-    			t0 = space();
-    			if (if_block1) if_block1.c();
-    			t1 = space();
-    			if (if_block2) if_block2.c();
-    			attr_dev(div, "class", "rangePips");
-    			toggle_class(div, "focus", /*focus*/ ctx[10]);
-    			toggle_class(div, "vertical", /*vertical*/ ctx[2]);
-    			add_location(div, file$3, 137, 0, 3316);
-    		},
-    		l: function claim(nodes) {
-    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, div, anchor);
-    			if (if_block0) if_block0.m(div, null);
-    			append_dev(div, t0);
-    			if (if_block1) if_block1.m(div, null);
-    			append_dev(div, t1);
-    			if (if_block2) if_block2.m(div, null);
-    		},
-    		p: function update(ctx, [dirty]) {
-    			if (/*all*/ ctx[3] && /*first*/ ctx[4] !== false || /*first*/ ctx[4]) {
-    				if (if_block0) {
-    					if_block0.p(ctx, dirty);
-    				} else {
-    					if_block0 = create_if_block_9(ctx);
-    					if_block0.c();
-    					if_block0.m(div, t0);
-    				}
-    			} else if (if_block0) {
-    				if_block0.d(1);
-    				if_block0 = null;
-    			}
-
-    			if (/*all*/ ctx[3] && /*rest*/ ctx[6] !== false || /*rest*/ ctx[6]) {
-    				if (if_block1) {
-    					if_block1.p(ctx, dirty);
-    				} else {
-    					if_block1 = create_if_block_4$1(ctx);
-    					if_block1.c();
-    					if_block1.m(div, t1);
-    				}
-    			} else if (if_block1) {
-    				if_block1.d(1);
-    				if_block1 = null;
-    			}
-
-    			if (/*all*/ ctx[3] && /*last*/ ctx[5] !== false || /*last*/ ctx[5]) {
-    				if (if_block2) {
-    					if_block2.p(ctx, dirty);
-    				} else {
-    					if_block2 = create_if_block$1(ctx);
-    					if_block2.c();
-    					if_block2.m(div, null);
-    				}
-    			} else if (if_block2) {
-    				if_block2.d(1);
-    				if_block2 = null;
-    			}
-
-    			if (dirty & /*focus*/ 1024) {
-    				toggle_class(div, "focus", /*focus*/ ctx[10]);
-    			}
-
-    			if (dirty & /*vertical*/ 4) {
-    				toggle_class(div, "vertical", /*vertical*/ ctx[2]);
-    			}
-    		},
-    		i: noop,
-    		o: noop,
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div);
-    			if (if_block0) if_block0.d();
-    			if (if_block1) if_block1.d();
-    			if (if_block2) if_block2.d();
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_fragment$3.name,
-    		type: "component",
-    		source: "",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    function instance$3($$self, $$props, $$invalidate) {
-    	let pipStep;
-    	let pipCount;
-    	let pipVal;
-    	let isSelected;
-    	let inRange;
-    	let { $$slots: slots = {}, $$scope } = $$props;
-    	validate_slots('RangePips', slots, []);
-    	let { range = false } = $$props;
-    	let { min = 0 } = $$props;
-    	let { max = 100 } = $$props;
-    	let { step = 1 } = $$props;
-    	let { values = [(max + min) / 2] } = $$props;
-    	let { vertical = false } = $$props;
-    	let { pipstep = undefined } = $$props;
-    	let { all = true } = $$props;
-    	let { first = undefined } = $$props;
-    	let { last = undefined } = $$props;
-    	let { rest = undefined } = $$props;
-    	let { prefix = "" } = $$props;
-    	let { suffix = "" } = $$props;
-    	let { formatter = (v, i) => v } = $$props;
-    	let { focus = undefined } = $$props;
-    	let { percentOf = undefined } = $$props;
-
-    	const writable_props = [
-    		'range',
-    		'min',
-    		'max',
-    		'step',
-    		'values',
-    		'vertical',
-    		'pipstep',
-    		'all',
-    		'first',
-    		'last',
-    		'rest',
-    		'prefix',
-    		'suffix',
-    		'formatter',
-    		'focus',
-    		'percentOf'
-    	];
-
-    	Object.keys($$props).forEach(key => {
-    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console.warn(`<RangePips> was created with unknown prop '${key}'`);
-    	});
-
-    	$$self.$$set = $$props => {
-    		if ('range' in $$props) $$invalidate(16, range = $$props.range);
-    		if ('min' in $$props) $$invalidate(0, min = $$props.min);
-    		if ('max' in $$props) $$invalidate(1, max = $$props.max);
-    		if ('step' in $$props) $$invalidate(17, step = $$props.step);
-    		if ('values' in $$props) $$invalidate(18, values = $$props.values);
-    		if ('vertical' in $$props) $$invalidate(2, vertical = $$props.vertical);
-    		if ('pipstep' in $$props) $$invalidate(19, pipstep = $$props.pipstep);
-    		if ('all' in $$props) $$invalidate(3, all = $$props.all);
-    		if ('first' in $$props) $$invalidate(4, first = $$props.first);
-    		if ('last' in $$props) $$invalidate(5, last = $$props.last);
-    		if ('rest' in $$props) $$invalidate(6, rest = $$props.rest);
-    		if ('prefix' in $$props) $$invalidate(7, prefix = $$props.prefix);
-    		if ('suffix' in $$props) $$invalidate(8, suffix = $$props.suffix);
-    		if ('formatter' in $$props) $$invalidate(9, formatter = $$props.formatter);
-    		if ('focus' in $$props) $$invalidate(10, focus = $$props.focus);
-    		if ('percentOf' in $$props) $$invalidate(11, percentOf = $$props.percentOf);
-    	};
-
-    	$$self.$capture_state = () => ({
-    		range,
-    		min,
-    		max,
-    		step,
-    		values,
-    		vertical,
-    		pipstep,
-    		all,
-    		first,
-    		last,
-    		rest,
-    		prefix,
-    		suffix,
-    		formatter,
-    		focus,
-    		percentOf,
-    		inRange,
-    		isSelected,
-    		pipStep,
-    		pipVal,
-    		pipCount
-    	});
-
-    	$$self.$inject_state = $$props => {
-    		if ('range' in $$props) $$invalidate(16, range = $$props.range);
-    		if ('min' in $$props) $$invalidate(0, min = $$props.min);
-    		if ('max' in $$props) $$invalidate(1, max = $$props.max);
-    		if ('step' in $$props) $$invalidate(17, step = $$props.step);
-    		if ('values' in $$props) $$invalidate(18, values = $$props.values);
-    		if ('vertical' in $$props) $$invalidate(2, vertical = $$props.vertical);
-    		if ('pipstep' in $$props) $$invalidate(19, pipstep = $$props.pipstep);
-    		if ('all' in $$props) $$invalidate(3, all = $$props.all);
-    		if ('first' in $$props) $$invalidate(4, first = $$props.first);
-    		if ('last' in $$props) $$invalidate(5, last = $$props.last);
-    		if ('rest' in $$props) $$invalidate(6, rest = $$props.rest);
-    		if ('prefix' in $$props) $$invalidate(7, prefix = $$props.prefix);
-    		if ('suffix' in $$props) $$invalidate(8, suffix = $$props.suffix);
-    		if ('formatter' in $$props) $$invalidate(9, formatter = $$props.formatter);
-    		if ('focus' in $$props) $$invalidate(10, focus = $$props.focus);
-    		if ('percentOf' in $$props) $$invalidate(11, percentOf = $$props.percentOf);
-    		if ('inRange' in $$props) $$invalidate(12, inRange = $$props.inRange);
-    		if ('isSelected' in $$props) $$invalidate(13, isSelected = $$props.isSelected);
-    		if ('pipStep' in $$props) $$invalidate(20, pipStep = $$props.pipStep);
-    		if ('pipVal' in $$props) $$invalidate(14, pipVal = $$props.pipVal);
-    		if ('pipCount' in $$props) $$invalidate(15, pipCount = $$props.pipCount);
-    	};
-
-    	if ($$props && "$$inject" in $$props) {
-    		$$self.$inject_state($$props.$$inject);
-    	}
-
-    	$$self.$$.update = () => {
-    		if ($$self.$$.dirty & /*pipstep, max, min, step, vertical*/ 655367) {
-    			$$invalidate(20, pipStep = pipstep || ((max - min) / step >= (vertical ? 50 : 100)
-    			? (max - min) / (vertical ? 10 : 20)
-    			: 1));
-    		}
-
-    		if ($$self.$$.dirty & /*max, min, step, pipStep*/ 1179651) {
-    			$$invalidate(15, pipCount = parseInt((max - min) / (step * pipStep), 10));
-    		}
-
-    		if ($$self.$$.dirty & /*min, step, pipStep*/ 1179649) {
-    			$$invalidate(14, pipVal = function (val) {
-    				return min + val * step * pipStep;
-    			});
-    		}
-
-    		if ($$self.$$.dirty & /*values*/ 262144) {
-    			$$invalidate(13, isSelected = function (val) {
-    				return values.some(v => v === val);
-    			});
-    		}
-
-    		if ($$self.$$.dirty & /*range, values*/ 327680) {
-    			$$invalidate(12, inRange = function (val) {
-    				if (range === "min") {
-    					return values[0] > val;
-    				} else if (range === "max") {
-    					return values[0] < val;
-    				} else if (range) {
-    					return values[0] < val && values[1] > val;
-    				}
-    			});
-    		}
-    	};
-
-    	return [
-    		min,
-    		max,
-    		vertical,
-    		all,
-    		first,
-    		last,
-    		rest,
-    		prefix,
-    		suffix,
-    		formatter,
-    		focus,
-    		percentOf,
-    		inRange,
-    		isSelected,
-    		pipVal,
-    		pipCount,
-    		range,
-    		step,
-    		values,
-    		pipstep,
-    		pipStep
-    	];
-    }
-
-    class RangePips extends SvelteComponentDev {
-    	constructor(options) {
-    		super(options);
-
-    		init(this, options, instance$3, create_fragment$3, safe_not_equal, {
-    			range: 16,
-    			min: 0,
-    			max: 1,
-    			step: 17,
-    			values: 18,
-    			vertical: 2,
-    			pipstep: 19,
-    			all: 3,
-    			first: 4,
-    			last: 5,
-    			rest: 6,
-    			prefix: 7,
-    			suffix: 8,
-    			formatter: 9,
-    			focus: 10,
-    			percentOf: 11
-    		});
-
-    		dispatch_dev("SvelteRegisterComponent", {
-    			component: this,
-    			tagName: "RangePips",
-    			options,
-    			id: create_fragment$3.name
-    		});
-    	}
-
-    	get range() {
-    		throw new Error("<RangePips>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set range(value) {
-    		throw new Error("<RangePips>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get min() {
-    		throw new Error("<RangePips>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set min(value) {
-    		throw new Error("<RangePips>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get max() {
-    		throw new Error("<RangePips>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set max(value) {
-    		throw new Error("<RangePips>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get step() {
-    		throw new Error("<RangePips>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set step(value) {
-    		throw new Error("<RangePips>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get values() {
-    		throw new Error("<RangePips>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set values(value) {
-    		throw new Error("<RangePips>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get vertical() {
-    		throw new Error("<RangePips>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set vertical(value) {
-    		throw new Error("<RangePips>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get pipstep() {
-    		throw new Error("<RangePips>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set pipstep(value) {
-    		throw new Error("<RangePips>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get all() {
-    		throw new Error("<RangePips>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set all(value) {
-    		throw new Error("<RangePips>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get first() {
-    		throw new Error("<RangePips>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set first(value) {
-    		throw new Error("<RangePips>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get last() {
-    		throw new Error("<RangePips>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set last(value) {
-    		throw new Error("<RangePips>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get rest() {
-    		throw new Error("<RangePips>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set rest(value) {
-    		throw new Error("<RangePips>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get prefix() {
-    		throw new Error("<RangePips>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set prefix(value) {
-    		throw new Error("<RangePips>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get suffix() {
-    		throw new Error("<RangePips>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set suffix(value) {
-    		throw new Error("<RangePips>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get formatter() {
-    		throw new Error("<RangePips>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set formatter(value) {
-    		throw new Error("<RangePips>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get focus() {
-    		throw new Error("<RangePips>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set focus(value) {
-    		throw new Error("<RangePips>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get percentOf() {
-    		throw new Error("<RangePips>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set percentOf(value) {
-    		throw new Error("<RangePips>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-    }
-
-    /* node_modules/svelte-range-slider-pips/src/RangeSlider.svelte generated by Svelte v3.43.1 */
-
-    const { console: console_1$1 } = globals;
-    const file$2 = "node_modules/svelte-range-slider-pips/src/RangeSlider.svelte";
-
-    function get_each_context$1(ctx, list, i) {
-    	const child_ctx = ctx.slice();
-    	child_ctx[60] = list[i];
-    	child_ctx[62] = i;
-    	return child_ctx;
-    }
-
-    // (787:6) {#if float}
-    function create_if_block_2(ctx) {
-    	let span;
-    	let t_value = /*handleFormatter*/ ctx[19](/*value*/ ctx[60], /*index*/ ctx[62]) + "";
-    	let t;
-    	let if_block0 = /*prefix*/ ctx[16] && create_if_block_4(ctx);
-    	let if_block1 = /*suffix*/ ctx[17] && create_if_block_3(ctx);
-
-    	const block = {
-    		c: function create() {
-    			span = element("span");
-    			if (if_block0) if_block0.c();
-    			t = text$1(t_value);
-    			if (if_block1) if_block1.c();
-    			attr_dev(span, "class", "rangeFloat");
-    			add_location(span, file$2, 787, 8, 22776);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, span, anchor);
-    			if (if_block0) if_block0.m(span, null);
-    			append_dev(span, t);
-    			if (if_block1) if_block1.m(span, null);
-    		},
-    		p: function update(ctx, dirty) {
-    			if (/*prefix*/ ctx[16]) {
-    				if (if_block0) {
-    					if_block0.p(ctx, dirty);
-    				} else {
-    					if_block0 = create_if_block_4(ctx);
-    					if_block0.c();
-    					if_block0.m(span, t);
-    				}
-    			} else if (if_block0) {
-    				if_block0.d(1);
-    				if_block0 = null;
-    			}
-
-    			if (dirty[0] & /*handleFormatter, values*/ 524289 && t_value !== (t_value = /*handleFormatter*/ ctx[19](/*value*/ ctx[60], /*index*/ ctx[62]) + "")) set_data_dev(t, t_value);
-
-    			if (/*suffix*/ ctx[17]) {
-    				if (if_block1) {
-    					if_block1.p(ctx, dirty);
-    				} else {
-    					if_block1 = create_if_block_3(ctx);
-    					if_block1.c();
-    					if_block1.m(span, null);
-    				}
-    			} else if (if_block1) {
-    				if_block1.d(1);
-    				if_block1 = null;
-    			}
-    		},
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(span);
-    			if (if_block0) if_block0.d();
-    			if (if_block1) if_block1.d();
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block_2.name,
-    		type: "if",
-    		source: "(787:6) {#if float}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (789:10) {#if prefix}
-    function create_if_block_4(ctx) {
-    	let span;
-    	let t;
-
-    	const block = {
-    		c: function create() {
-    			span = element("span");
-    			t = text$1(/*prefix*/ ctx[16]);
-    			attr_dev(span, "class", "rangeFloat-prefix");
-    			add_location(span, file$2, 788, 22, 22824);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, span, anchor);
-    			append_dev(span, t);
-    		},
-    		p: function update(ctx, dirty) {
-    			if (dirty[0] & /*prefix*/ 65536) set_data_dev(t, /*prefix*/ ctx[16]);
-    		},
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(span);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block_4.name,
-    		type: "if",
-    		source: "(789:10) {#if prefix}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (789:104) {#if suffix}
-    function create_if_block_3(ctx) {
-    	let span;
-    	let t;
-
-    	const block = {
-    		c: function create() {
-    			span = element("span");
-    			t = text$1(/*suffix*/ ctx[17]);
-    			attr_dev(span, "class", "rangeFloat-suffix");
-    			add_location(span, file$2, 788, 116, 22918);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, span, anchor);
-    			append_dev(span, t);
-    		},
-    		p: function update(ctx, dirty) {
-    			if (dirty[0] & /*suffix*/ 131072) set_data_dev(t, /*suffix*/ ctx[17]);
-    		},
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(span);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block_3.name,
-    		type: "if",
-    		source: "(789:104) {#if suffix}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (765:2) {#each values as value, index}
-    function create_each_block$1(ctx) {
-    	let span1;
-    	let span0;
-    	let t;
-    	let span1_style_value;
-    	let span1_aria_valuemin_value;
-    	let span1_aria_valuemax_value;
-    	let span1_aria_valuenow_value;
-    	let span1_aria_valuetext_value;
-    	let span1_aria_orientation_value;
-    	let span1_tabindex_value;
-    	let mounted;
-    	let dispose;
-    	let if_block = /*float*/ ctx[6] && create_if_block_2(ctx);
-
-    	const block = {
-    		c: function create() {
-    			span1 = element("span");
-    			span0 = element("span");
-    			t = space();
-    			if (if_block) if_block.c();
-    			attr_dev(span0, "class", "rangeNub");
-    			add_location(span0, file$2, 785, 6, 22724);
-    			attr_dev(span1, "role", "slider");
-    			attr_dev(span1, "class", "rangeHandle");
-    			attr_dev(span1, "data-handle", /*index*/ ctx[62]);
-    			attr_dev(span1, "style", span1_style_value = "" + ((/*vertical*/ ctx[5] ? 'top' : 'left') + ": " + /*$springPositions*/ ctx[26][/*index*/ ctx[62]] + "%; z-index: " + (/*activeHandle*/ ctx[25] === /*index*/ ctx[62] ? 3 : 2) + ";"));
-
-    			attr_dev(span1, "aria-valuemin", span1_aria_valuemin_value = /*range*/ ctx[1] === true && /*index*/ ctx[62] === 1
-    			? /*values*/ ctx[0][0]
-    			: /*min*/ ctx[2]);
-
-    			attr_dev(span1, "aria-valuemax", span1_aria_valuemax_value = /*range*/ ctx[1] === true && /*index*/ ctx[62] === 0
-    			? /*values*/ ctx[0][1]
-    			: /*max*/ ctx[3]);
-
-    			attr_dev(span1, "aria-valuenow", span1_aria_valuenow_value = /*value*/ ctx[60]);
-    			attr_dev(span1, "aria-valuetext", span1_aria_valuetext_value = "" + (/*prefix*/ ctx[16] + /*handleFormatter*/ ctx[19](/*value*/ ctx[60], /*index*/ ctx[62]) + /*suffix*/ ctx[17]));
-    			attr_dev(span1, "aria-orientation", span1_aria_orientation_value = /*vertical*/ ctx[5] ? 'vertical' : 'horizontal');
-    			attr_dev(span1, "aria-disabled", /*disabled*/ ctx[8]);
-    			attr_dev(span1, "disabled", /*disabled*/ ctx[8]);
-    			attr_dev(span1, "tabindex", span1_tabindex_value = /*disabled*/ ctx[8] ? -1 : 0);
-    			toggle_class(span1, "hoverable", /*hover*/ ctx[7] && !/*disabled*/ ctx[8]);
-    			toggle_class(span1, "active", /*focus*/ ctx[23] && /*activeHandle*/ ctx[25] === /*index*/ ctx[62]);
-    			toggle_class(span1, "press", /*handlePressed*/ ctx[24] && /*activeHandle*/ ctx[25] === /*index*/ ctx[62]);
-    			add_location(span1, file$2, 765, 4, 21876);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, span1, anchor);
-    			append_dev(span1, span0);
-    			append_dev(span1, t);
-    			if (if_block) if_block.m(span1, null);
-
-    			if (!mounted) {
-    				dispose = [
-    					listen_dev(span1, "blur", /*sliderBlurHandle*/ ctx[29], false, false, false),
-    					listen_dev(span1, "focus", /*sliderFocusHandle*/ ctx[30], false, false, false),
-    					listen_dev(span1, "keydown", /*sliderKeydown*/ ctx[31], false, false, false)
-    				];
-
-    				mounted = true;
-    			}
-    		},
-    		p: function update(ctx, dirty) {
-    			if (/*float*/ ctx[6]) {
-    				if (if_block) {
-    					if_block.p(ctx, dirty);
-    				} else {
-    					if_block = create_if_block_2(ctx);
-    					if_block.c();
-    					if_block.m(span1, null);
-    				}
-    			} else if (if_block) {
-    				if_block.d(1);
-    				if_block = null;
-    			}
-
-    			if (dirty[0] & /*vertical, $springPositions, activeHandle*/ 100663328 && span1_style_value !== (span1_style_value = "" + ((/*vertical*/ ctx[5] ? 'top' : 'left') + ": " + /*$springPositions*/ ctx[26][/*index*/ ctx[62]] + "%; z-index: " + (/*activeHandle*/ ctx[25] === /*index*/ ctx[62] ? 3 : 2) + ";"))) {
-    				attr_dev(span1, "style", span1_style_value);
-    			}
-
-    			if (dirty[0] & /*range, values, min*/ 7 && span1_aria_valuemin_value !== (span1_aria_valuemin_value = /*range*/ ctx[1] === true && /*index*/ ctx[62] === 1
-    			? /*values*/ ctx[0][0]
-    			: /*min*/ ctx[2])) {
-    				attr_dev(span1, "aria-valuemin", span1_aria_valuemin_value);
-    			}
-
-    			if (dirty[0] & /*range, values, max*/ 11 && span1_aria_valuemax_value !== (span1_aria_valuemax_value = /*range*/ ctx[1] === true && /*index*/ ctx[62] === 0
-    			? /*values*/ ctx[0][1]
-    			: /*max*/ ctx[3])) {
-    				attr_dev(span1, "aria-valuemax", span1_aria_valuemax_value);
-    			}
-
-    			if (dirty[0] & /*values*/ 1 && span1_aria_valuenow_value !== (span1_aria_valuenow_value = /*value*/ ctx[60])) {
-    				attr_dev(span1, "aria-valuenow", span1_aria_valuenow_value);
-    			}
-
-    			if (dirty[0] & /*prefix, handleFormatter, values, suffix*/ 720897 && span1_aria_valuetext_value !== (span1_aria_valuetext_value = "" + (/*prefix*/ ctx[16] + /*handleFormatter*/ ctx[19](/*value*/ ctx[60], /*index*/ ctx[62]) + /*suffix*/ ctx[17]))) {
-    				attr_dev(span1, "aria-valuetext", span1_aria_valuetext_value);
-    			}
-
-    			if (dirty[0] & /*vertical*/ 32 && span1_aria_orientation_value !== (span1_aria_orientation_value = /*vertical*/ ctx[5] ? 'vertical' : 'horizontal')) {
-    				attr_dev(span1, "aria-orientation", span1_aria_orientation_value);
-    			}
-
-    			if (dirty[0] & /*disabled*/ 256) {
-    				attr_dev(span1, "aria-disabled", /*disabled*/ ctx[8]);
-    			}
-
-    			if (dirty[0] & /*disabled*/ 256) {
-    				attr_dev(span1, "disabled", /*disabled*/ ctx[8]);
-    			}
-
-    			if (dirty[0] & /*disabled*/ 256 && span1_tabindex_value !== (span1_tabindex_value = /*disabled*/ ctx[8] ? -1 : 0)) {
-    				attr_dev(span1, "tabindex", span1_tabindex_value);
-    			}
-
-    			if (dirty[0] & /*hover, disabled*/ 384) {
-    				toggle_class(span1, "hoverable", /*hover*/ ctx[7] && !/*disabled*/ ctx[8]);
-    			}
-
-    			if (dirty[0] & /*focus, activeHandle*/ 41943040) {
-    				toggle_class(span1, "active", /*focus*/ ctx[23] && /*activeHandle*/ ctx[25] === /*index*/ ctx[62]);
-    			}
-
-    			if (dirty[0] & /*handlePressed, activeHandle*/ 50331648) {
-    				toggle_class(span1, "press", /*handlePressed*/ ctx[24] && /*activeHandle*/ ctx[25] === /*index*/ ctx[62]);
-    			}
-    		},
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(span1);
-    			if (if_block) if_block.d();
-    			mounted = false;
-    			run_all(dispose);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_each_block$1.name,
-    		type: "each",
-    		source: "(765:2) {#each values as value, index}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (794:2) {#if range}
-    function create_if_block_1(ctx) {
-    	let span;
-    	let span_style_value;
-
-    	const block = {
-    		c: function create() {
-    			span = element("span");
-    			attr_dev(span, "class", "rangeBar");
-    			attr_dev(span, "style", span_style_value = "" + ((/*vertical*/ ctx[5] ? 'top' : 'left') + ": " + /*rangeStart*/ ctx[27](/*$springPositions*/ ctx[26]) + "%; " + (/*vertical*/ ctx[5] ? 'bottom' : 'right') + ": " + /*rangeEnd*/ ctx[28](/*$springPositions*/ ctx[26]) + "%;"));
-    			add_location(span, file$2, 794, 4, 23039);
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, span, anchor);
-    		},
-    		p: function update(ctx, dirty) {
-    			if (dirty[0] & /*vertical, $springPositions*/ 67108896 && span_style_value !== (span_style_value = "" + ((/*vertical*/ ctx[5] ? 'top' : 'left') + ": " + /*rangeStart*/ ctx[27](/*$springPositions*/ ctx[26]) + "%; " + (/*vertical*/ ctx[5] ? 'bottom' : 'right') + ": " + /*rangeEnd*/ ctx[28](/*$springPositions*/ ctx[26]) + "%;"))) {
-    				attr_dev(span, "style", span_style_value);
-    			}
-    		},
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(span);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block_1.name,
-    		type: "if",
-    		source: "(794:2) {#if range}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    // (800:2) {#if pips}
-    function create_if_block(ctx) {
-    	let rangepips;
-    	let current;
-
-    	rangepips = new RangePips({
-    			props: {
-    				values: /*values*/ ctx[0],
-    				min: /*min*/ ctx[2],
-    				max: /*max*/ ctx[3],
-    				step: /*step*/ ctx[4],
-    				range: /*range*/ ctx[1],
-    				vertical: /*vertical*/ ctx[5],
-    				all: /*all*/ ctx[11],
-    				first: /*first*/ ctx[12],
-    				last: /*last*/ ctx[13],
-    				rest: /*rest*/ ctx[14],
-    				pipstep: /*pipstep*/ ctx[10],
-    				prefix: /*prefix*/ ctx[16],
-    				suffix: /*suffix*/ ctx[17],
-    				formatter: /*formatter*/ ctx[18],
-    				focus: /*focus*/ ctx[23],
-    				percentOf: /*percentOf*/ ctx[21]
-    			},
-    			$$inline: true
-    		});
-
-    	const block = {
-    		c: function create() {
-    			create_component(rangepips.$$.fragment);
-    		},
-    		m: function mount(target, anchor) {
-    			mount_component(rangepips, target, anchor);
-    			current = true;
-    		},
-    		p: function update(ctx, dirty) {
-    			const rangepips_changes = {};
-    			if (dirty[0] & /*values*/ 1) rangepips_changes.values = /*values*/ ctx[0];
-    			if (dirty[0] & /*min*/ 4) rangepips_changes.min = /*min*/ ctx[2];
-    			if (dirty[0] & /*max*/ 8) rangepips_changes.max = /*max*/ ctx[3];
-    			if (dirty[0] & /*step*/ 16) rangepips_changes.step = /*step*/ ctx[4];
-    			if (dirty[0] & /*range*/ 2) rangepips_changes.range = /*range*/ ctx[1];
-    			if (dirty[0] & /*vertical*/ 32) rangepips_changes.vertical = /*vertical*/ ctx[5];
-    			if (dirty[0] & /*all*/ 2048) rangepips_changes.all = /*all*/ ctx[11];
-    			if (dirty[0] & /*first*/ 4096) rangepips_changes.first = /*first*/ ctx[12];
-    			if (dirty[0] & /*last*/ 8192) rangepips_changes.last = /*last*/ ctx[13];
-    			if (dirty[0] & /*rest*/ 16384) rangepips_changes.rest = /*rest*/ ctx[14];
-    			if (dirty[0] & /*pipstep*/ 1024) rangepips_changes.pipstep = /*pipstep*/ ctx[10];
-    			if (dirty[0] & /*prefix*/ 65536) rangepips_changes.prefix = /*prefix*/ ctx[16];
-    			if (dirty[0] & /*suffix*/ 131072) rangepips_changes.suffix = /*suffix*/ ctx[17];
-    			if (dirty[0] & /*formatter*/ 262144) rangepips_changes.formatter = /*formatter*/ ctx[18];
-    			if (dirty[0] & /*focus*/ 8388608) rangepips_changes.focus = /*focus*/ ctx[23];
-    			if (dirty[0] & /*percentOf*/ 2097152) rangepips_changes.percentOf = /*percentOf*/ ctx[21];
-    			rangepips.$set(rangepips_changes);
-    		},
-    		i: function intro(local) {
-    			if (current) return;
-    			transition_in(rangepips.$$.fragment, local);
-    			current = true;
-    		},
-    		o: function outro(local) {
-    			transition_out(rangepips.$$.fragment, local);
-    			current = false;
-    		},
-    		d: function destroy(detaching) {
-    			destroy_component(rangepips, detaching);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_if_block.name,
-    		type: "if",
-    		source: "(800:2) {#if pips}",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    function create_fragment$2(ctx) {
-    	let div;
-    	let t0;
-    	let t1;
-    	let current;
-    	let mounted;
-    	let dispose;
-    	let each_value = /*values*/ ctx[0];
-    	validate_each_argument(each_value);
-    	let each_blocks = [];
-
-    	for (let i = 0; i < each_value.length; i += 1) {
-    		each_blocks[i] = create_each_block$1(get_each_context$1(ctx, each_value, i));
-    	}
-
-    	let if_block0 = /*range*/ ctx[1] && create_if_block_1(ctx);
-    	let if_block1 = /*pips*/ ctx[9] && create_if_block(ctx);
-
-    	const block = {
-    		c: function create() {
-    			div = element("div");
-
-    			for (let i = 0; i < each_blocks.length; i += 1) {
-    				each_blocks[i].c();
-    			}
-
-    			t0 = space();
-    			if (if_block0) if_block0.c();
-    			t1 = space();
-    			if (if_block1) if_block1.c();
-    			attr_dev(div, "id", /*id*/ ctx[15]);
-    			attr_dev(div, "class", "rangeSlider");
-    			toggle_class(div, "range", /*range*/ ctx[1]);
-    			toggle_class(div, "disabled", /*disabled*/ ctx[8]);
-    			toggle_class(div, "vertical", /*vertical*/ ctx[5]);
-    			toggle_class(div, "focus", /*focus*/ ctx[23]);
-    			toggle_class(div, "min", /*range*/ ctx[1] === 'min');
-    			toggle_class(div, "max", /*range*/ ctx[1] === 'max');
-    			toggle_class(div, "pips", /*pips*/ ctx[9]);
-    			toggle_class(div, "pip-labels", /*all*/ ctx[11] === 'label' || /*first*/ ctx[12] === 'label' || /*last*/ ctx[13] === 'label' || /*rest*/ ctx[14] === 'label');
-    			add_location(div, file$2, 747, 0, 21377);
-    		},
-    		l: function claim(nodes) {
-    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
-    		},
-    		m: function mount(target, anchor) {
-    			insert_dev(target, div, anchor);
-
-    			for (let i = 0; i < each_blocks.length; i += 1) {
-    				each_blocks[i].m(div, null);
-    			}
-
-    			append_dev(div, t0);
-    			if (if_block0) if_block0.m(div, null);
-    			append_dev(div, t1);
-    			if (if_block1) if_block1.m(div, null);
-    			/*div_binding*/ ctx[45](div);
-    			current = true;
-
-    			if (!mounted) {
-    				dispose = [
-    					listen_dev(window, "mousedown", /*bodyInteractStart*/ ctx[34], false, false, false),
-    					listen_dev(window, "touchstart", /*bodyInteractStart*/ ctx[34], false, false, false),
-    					listen_dev(window, "mousemove", /*bodyInteract*/ ctx[35], false, false, false),
-    					listen_dev(window, "touchmove", /*bodyInteract*/ ctx[35], false, false, false),
-    					listen_dev(window, "mouseup", /*bodyMouseUp*/ ctx[36], false, false, false),
-    					listen_dev(window, "touchend", /*bodyTouchEnd*/ ctx[37], false, false, false),
-    					listen_dev(window, "keydown", /*bodyKeyDown*/ ctx[38], false, false, false),
-    					listen_dev(div, "mousedown", /*sliderInteractStart*/ ctx[32], false, false, false),
-    					listen_dev(div, "mouseup", /*sliderInteractEnd*/ ctx[33], false, false, false),
-    					listen_dev(div, "touchstart", prevent_default(/*sliderInteractStart*/ ctx[32]), false, true, false),
-    					listen_dev(div, "touchend", prevent_default(/*sliderInteractEnd*/ ctx[33]), false, true, false)
-    				];
-
-    				mounted = true;
-    			}
-    		},
-    		p: function update(ctx, dirty) {
-    			if (dirty[0] & /*vertical, $springPositions, activeHandle, range, values, min, max, prefix, handleFormatter, suffix, disabled, hover, focus, handlePressed, sliderBlurHandle, sliderFocusHandle, float*/ 1737163247 | dirty[1] & /*sliderKeydown*/ 1) {
-    				each_value = /*values*/ ctx[0];
-    				validate_each_argument(each_value);
-    				let i;
-
-    				for (i = 0; i < each_value.length; i += 1) {
-    					const child_ctx = get_each_context$1(ctx, each_value, i);
-
-    					if (each_blocks[i]) {
-    						each_blocks[i].p(child_ctx, dirty);
-    					} else {
-    						each_blocks[i] = create_each_block$1(child_ctx);
-    						each_blocks[i].c();
-    						each_blocks[i].m(div, t0);
-    					}
-    				}
-
-    				for (; i < each_blocks.length; i += 1) {
-    					each_blocks[i].d(1);
-    				}
-
-    				each_blocks.length = each_value.length;
-    			}
-
-    			if (/*range*/ ctx[1]) {
-    				if (if_block0) {
-    					if_block0.p(ctx, dirty);
-    				} else {
-    					if_block0 = create_if_block_1(ctx);
-    					if_block0.c();
-    					if_block0.m(div, t1);
-    				}
-    			} else if (if_block0) {
-    				if_block0.d(1);
-    				if_block0 = null;
-    			}
-
-    			if (/*pips*/ ctx[9]) {
-    				if (if_block1) {
-    					if_block1.p(ctx, dirty);
-
-    					if (dirty[0] & /*pips*/ 512) {
-    						transition_in(if_block1, 1);
-    					}
-    				} else {
-    					if_block1 = create_if_block(ctx);
-    					if_block1.c();
-    					transition_in(if_block1, 1);
-    					if_block1.m(div, null);
-    				}
-    			} else if (if_block1) {
-    				group_outros();
-
-    				transition_out(if_block1, 1, 1, () => {
-    					if_block1 = null;
-    				});
-
-    				check_outros();
-    			}
-
-    			if (!current || dirty[0] & /*id*/ 32768) {
-    				attr_dev(div, "id", /*id*/ ctx[15]);
-    			}
-
-    			if (dirty[0] & /*range*/ 2) {
-    				toggle_class(div, "range", /*range*/ ctx[1]);
-    			}
-
-    			if (dirty[0] & /*disabled*/ 256) {
-    				toggle_class(div, "disabled", /*disabled*/ ctx[8]);
-    			}
-
-    			if (dirty[0] & /*vertical*/ 32) {
-    				toggle_class(div, "vertical", /*vertical*/ ctx[5]);
-    			}
-
-    			if (dirty[0] & /*focus*/ 8388608) {
-    				toggle_class(div, "focus", /*focus*/ ctx[23]);
-    			}
-
-    			if (dirty[0] & /*range*/ 2) {
-    				toggle_class(div, "min", /*range*/ ctx[1] === 'min');
-    			}
-
-    			if (dirty[0] & /*range*/ 2) {
-    				toggle_class(div, "max", /*range*/ ctx[1] === 'max');
-    			}
-
-    			if (dirty[0] & /*pips*/ 512) {
-    				toggle_class(div, "pips", /*pips*/ ctx[9]);
-    			}
-
-    			if (dirty[0] & /*all, first, last, rest*/ 30720) {
-    				toggle_class(div, "pip-labels", /*all*/ ctx[11] === 'label' || /*first*/ ctx[12] === 'label' || /*last*/ ctx[13] === 'label' || /*rest*/ ctx[14] === 'label');
-    			}
-    		},
-    		i: function intro(local) {
-    			if (current) return;
-    			transition_in(if_block1);
-    			current = true;
-    		},
-    		o: function outro(local) {
-    			transition_out(if_block1);
-    			current = false;
-    		},
-    		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div);
-    			destroy_each(each_blocks, detaching);
-    			if (if_block0) if_block0.d();
-    			if (if_block1) if_block1.d();
-    			/*div_binding*/ ctx[45](null);
-    			mounted = false;
-    			run_all(dispose);
-    		}
-    	};
-
-    	dispatch_dev("SvelteRegisterBlock", {
-    		block,
-    		id: create_fragment$2.name,
-    		type: "component",
-    		source: "",
-    		ctx
-    	});
-
-    	return block;
-    }
-
-    function index(el) {
-    	if (!el) return -1;
-    	var i = 0;
-
-    	while (el = el.previousElementSibling) {
-    		i++;
-    	}
-
-    	return i;
-    }
-
-    /**
-     * noramlise a mouse or touch event to return the
-     * client (x/y) object for that event
-     * @param {event} e a mouse/touch event to normalise
-     * @returns {object} normalised event client object (x,y)
-     **/
-    function normalisedClient(e) {
-    	if (e.type.includes("touch")) {
-    		return e.touches[0];
-    	} else {
-    		return e;
-    	}
-    }
-
-    function instance$2($$self, $$props, $$invalidate) {
-    	let percentOf;
-    	let clampValue;
-    	let alignValueToStep;
-
-    	let $springPositions,
-    		$$unsubscribe_springPositions = noop,
-    		$$subscribe_springPositions = () => ($$unsubscribe_springPositions(), $$unsubscribe_springPositions = subscribe(springPositions, $$value => $$invalidate(26, $springPositions = $$value)), springPositions);
-
-    	$$self.$$.on_destroy.push(() => $$unsubscribe_springPositions());
-    	let { $$slots: slots = {}, $$scope } = $$props;
-    	validate_slots('RangeSlider', slots, []);
-    	let { range = false } = $$props;
-    	let { pushy = false } = $$props;
-    	let { min = 0 } = $$props;
-    	let { max = 100 } = $$props;
-    	let { step = 1 } = $$props;
-    	let { values = [(max + min) / 2] } = $$props;
-    	let { vertical = false } = $$props;
-    	let { float = false } = $$props;
-    	let { hover = true } = $$props;
-    	let { disabled = false } = $$props;
-    	let { pips = false } = $$props;
-    	let { pipstep = undefined } = $$props;
-    	let { all = undefined } = $$props;
-    	let { first = undefined } = $$props;
-    	let { last = undefined } = $$props;
-    	let { rest = undefined } = $$props;
-    	let { id = undefined } = $$props;
-    	let { prefix = "" } = $$props;
-    	let { suffix = "" } = $$props;
-    	let { formatter = (v, i) => v } = $$props;
-    	let { handleFormatter = formatter } = $$props;
-    	let { precision = 2 } = $$props;
-    	let { springValues = { stiffness: 0.15, damping: 0.4 } } = $$props;
-
-    	// prepare dispatched events
-    	const dispatch = createEventDispatcher();
-
-    	// dom references
-    	let slider;
-
-    	// state management
-    	let valueLength = 0;
-
-    	let focus = false;
-    	let handleActivated = false;
-    	let handlePressed = false;
-    	let keyboardActive = false;
-    	let activeHandle = values.length - 1;
-    	let startValue;
-    	let previousValue;
-
-    	// copy the initial values in to a spring function which
-    	// will update every time the values array is modified
-    	let springPositions;
-
-    	
-
-    	/**
-     * check if an element is a handle on the slider
-     * @param {object} el dom object reference we want to check
-     * @returns {boolean}
-     **/
-    	function targetIsHandle(el) {
-    		const handles = slider.querySelectorAll(".handle");
-    		const isHandle = Array.prototype.includes.call(handles, el);
-    		const isChild = Array.prototype.some.call(handles, e => e.contains(el));
-    		return isHandle || isChild;
-    	}
-
-    	/**
-     * trim the values array based on whether the property
-     * for 'range' is 'min', 'max', or truthy. This is because we
-     * do not want more than one handle for a min/max range, and we do
-     * not want more than two handles for a true range.
-     * @param {array} values the input values for the rangeSlider
-     * @return {array} the range array for creating a rangeSlider
-     **/
-    	function trimRange(values) {
-    		if (range === "min" || range === "max") {
-    			return values.slice(0, 1);
-    		} else if (range) {
-    			return values.slice(0, 2);
-    		} else {
-    			return values;
-    		}
-    	}
-
-    	/**
-     * helper to return the slider dimensions for finding
-     * the closest handle to user interaction
-     * @return {object} the range slider DOM client rect
-     **/
-    	function getSliderDimensions() {
-    		return slider.getBoundingClientRect();
-    	}
-
-    	/**
-     * helper to return closest handle to user interaction
-     * @param {object} clientPos the client{x,y} positions to check against
-     * @return {number} the index of the closest handle to clientPos
-     **/
-    	function getClosestHandle(clientPos) {
-    		// first make sure we have the latest dimensions
-    		// of the slider, as it may have changed size
-    		const dims = getSliderDimensions();
-
-    		// calculate the interaction position, percent and value
-    		let hPos = 0;
-
-    		let hPercent = 0;
-    		let hVal = 0;
-
-    		if (vertical) {
-    			hPos = clientPos.clientY - dims.top;
-    			hPercent = hPos / dims.height * 100;
-    			hVal = (max - min) / 100 * hPercent + min;
-    		} else {
-    			hPos = clientPos.clientX - dims.left;
-    			hPercent = hPos / dims.width * 100;
-    			hVal = (max - min) / 100 * hPercent + min;
-    		}
-
-    		let closest;
-
-    		// if we have a range, and the handles are at the same
-    		// position, we want a simple check if the interaction
-    		// value is greater than return the second handle
-    		if (range === true && values[0] === values[1]) {
-    			if (hVal > values[1]) {
-    				return 1;
-    			} else {
-    				return 0;
-    			}
-    		} else // we sort the handles values, and return the first one closest
-    		// to the interaction value
-    		{
-    			closest = values.indexOf([...values].sort((a, b) => Math.abs(hVal - a) - Math.abs(hVal - b))[0]); // if there are multiple handles, and not a range, then
-    		}
-
-    		return closest;
-    	}
-
-    	/**
-     * take the interaction position on the slider, convert
-     * it to a value on the range, and then send that value
-     * through to the moveHandle() method to set the active
-     * handle's position
-     * @param {object} clientPos the client{x,y} of the interaction
-     **/
-    	function handleInteract(clientPos) {
-    		// first make sure we have the latest dimensions
-    		// of the slider, as it may have changed size
-    		const dims = getSliderDimensions();
-
-    		// calculate the interaction position, percent and value
-    		let hPos = 0;
-
-    		let hPercent = 0;
-    		let hVal = 0;
-
-    		if (vertical) {
-    			hPos = clientPos.clientY - dims.top;
-    			hPercent = hPos / dims.height * 100;
-    			hVal = (max - min) / 100 * hPercent + min;
-    		} else {
-    			hPos = clientPos.clientX - dims.left;
-    			hPercent = hPos / dims.width * 100;
-    			hVal = (max - min) / 100 * hPercent + min;
-    		}
-
-    		// move handle to the value
-    		moveHandle(activeHandle, hVal);
-    	}
-
-    	/**
-     * move a handle to a specific value, respecting the clamp/align rules
-     * @param {number} index the index of the handle we want to move
-     * @param {number} value the value to move the handle to
-     * @return {number} the value that was moved to (after alignment/clamping)
-     **/
-    	function moveHandle(index, value) {
-    		// align & clamp the value so we're not doing extra
-    		// calculation on an out-of-range value down below
-    		value = alignValueToStep(value);
-
-    		// if this is a range slider
-    		if (range) {
-    			// restrict the handles of a range-slider from
-    			// going past one-another unless "pushy" is true
-    			if (index === 0 && value > values[1]) {
-    				if (pushy) {
-    					$$invalidate(0, values[1] = value, values);
-    				} else {
-    					value = values[1];
-    				}
-    			} else if (index === 1 && value < values[0]) {
-    				if (pushy) {
-    					$$invalidate(0, values[0] = value, values);
-    				} else {
-    					value = values[0];
-    				}
-    			}
-    		}
-
-    		// if the value has changed, update it
-    		if (values[index] !== value) {
-    			$$invalidate(0, values[index] = value, values);
-    		}
-
-    		// fire the change event when the handle moves,
-    		// and store the previous value for the next time
-    		if (previousValue !== value) {
-    			eChange();
-    			previousValue = value;
-    		}
-    	}
-
-    	/**
-     * helper to find the beginning range value for use with css style
-     * @param {array} values the input values for the rangeSlider
-     * @return {number} the beginning of the range
-     **/
-    	function rangeStart(values) {
-    		if (range === "min") {
-    			return 0;
-    		} else {
-    			return values[0];
-    		}
-    	}
-
-    	/**
-     * helper to find the ending range value for use with css style
-     * @param {array} values the input values for the rangeSlider
-     * @return {number} the end of the range
-     **/
-    	function rangeEnd(values) {
-    		if (range === "max") {
-    			return 0;
-    		} else if (range === "min") {
-    			return 100 - values[0];
-    		} else {
-    			return 100 - values[1];
-    		}
-    	}
-
-    	/**
-     * when the user has unfocussed (blurred) from the
-     * slider, deactivated all handles
-     * @param {event} e the event from browser
-     **/
-    	function sliderBlurHandle(e) {
-    		if (keyboardActive) {
-    			$$invalidate(23, focus = false);
-    			handleActivated = false;
-    			$$invalidate(24, handlePressed = false);
-    		}
-    	}
-
-    	/**
-     * when the user focusses the handle of a slider
-     * set it to be active
-     * @param {event} e the event from browser
-     **/
-    	function sliderFocusHandle(e) {
-    		if (!disabled) {
-    			$$invalidate(25, activeHandle = index(e.target));
-    			$$invalidate(23, focus = true);
-    		}
-    	}
-
-    	/**
-     * handle the keyboard accessible features by checking the
-     * input type, and modfier key then moving handle by appropriate amount
-     * @param {event} e the event from browser
-     **/
-    	function sliderKeydown(e) {
-    		if (!disabled) {
-    			const handle = index(e.target);
-    			let jump = e.ctrlKey || e.metaKey || e.shiftKey ? step * 10 : step;
-    			let prevent = false;
-
-    			switch (e.key) {
-    				case "PageDown":
-    					jump *= 10;
-    				case "ArrowRight":
-    				case "ArrowUp":
-    					moveHandle(handle, values[handle] + jump);
-    					prevent = true;
-    					break;
-    				case "PageUp":
-    					jump *= 10;
-    				case "ArrowLeft":
-    				case "ArrowDown":
-    					moveHandle(handle, values[handle] - jump);
-    					prevent = true;
-    					break;
-    				case "Home":
-    					moveHandle(handle, min);
-    					prevent = true;
-    					break;
-    				case "End":
-    					moveHandle(handle, max);
-    					prevent = true;
-    					break;
-    			}
-
-    			if (prevent) {
-    				e.preventDefault();
-    				e.stopPropagation();
-    			}
-    		}
-    	}
-
-    	/**
-     * function to run when the user touches
-     * down on the slider element anywhere
-     * @param {event} e the event from browser
-     **/
-    	function sliderInteractStart(e) {
-    		if (!disabled) {
-    			const clientPos = normalisedClient(e);
-
-    			// set the closest handle as active
-    			$$invalidate(23, focus = true);
-
-    			handleActivated = true;
-    			$$invalidate(24, handlePressed = true);
-    			$$invalidate(25, activeHandle = getClosestHandle(clientPos));
-
-    			// fire the start event
-    			startValue = previousValue = alignValueToStep(values[activeHandle]);
-
-    			eStart();
-
-    			// for touch devices we want the handle to instantly
-    			// move to the position touched for more responsive feeling
-    			if (e.type === "touchstart") {
-    				handleInteract(clientPos);
-    			}
-    		}
-    	}
-
-    	/**
-     * function to run when the user stops touching
-     * down on the slider element anywhere
-     * @param {event} e the event from browser
-     **/
-    	function sliderInteractEnd(e) {
-    		// fire the stop event for touch devices
-    		if (e.type === "touchend") {
-    			eStop();
-    		}
-
-    		$$invalidate(24, handlePressed = false);
-    	}
-
-    	/**
-     * unfocus the slider if the user clicked off of
-     * it, somewhere else on the screen
-     * @param {event} e the event from browser
-     **/
-    	function bodyInteractStart(e) {
-    		keyboardActive = false;
-
-    		if (focus && e.target !== slider && !slider.contains(e.target)) {
-    			$$invalidate(23, focus = false);
-    		}
-    	}
-
-    	/**
-     * send the clientX through to handle the interaction
-     * whenever the user moves acros screen while active
-     * @param {event} e the event from browser
-     **/
-    	function bodyInteract(e) {
-    		if (!disabled) {
-    			if (handleActivated) {
-    				handleInteract(normalisedClient(e));
-    			}
-    		}
-    	}
-
-    	/**
-     * if user triggers mouseup on the body while
-     * a handle is active (without moving) then we
-     * trigger an interact event there
-     * @param {event} e the event from browser
-     **/
-    	function bodyMouseUp(e) {
-    		if (!disabled) {
-    			const el = e.target;
-
-    			// this only works if a handle is active, which can
-    			// only happen if there was sliderInteractStart triggered
-    			// on the slider, already
-    			if (handleActivated) {
-    				if (el === slider || slider.contains(el)) {
-    					$$invalidate(23, focus = true);
-
-    					if (!targetIsHandle(el)) {
-    						handleInteract(normalisedClient(e));
-    					}
-    				}
-
-    				// fire the stop event for mouse device
-    				// when the body is triggered with an active handle
-    				eStop();
-    			}
-    		}
-
-    		handleActivated = false;
-    		$$invalidate(24, handlePressed = false);
-    	}
-
-    	/**
-     * if user triggers touchend on the body then we
-     * defocus the slider completely
-     * @param {event} e the event from browser
-     **/
-    	function bodyTouchEnd(e) {
-    		handleActivated = false;
-    		$$invalidate(24, handlePressed = false);
-    	}
-
-    	function bodyKeyDown(e) {
-    		if (!disabled) {
-    			if (e.target === slider || slider.contains(e.target)) {
-    				keyboardActive = true;
-    			}
-    		}
-    	}
-
-    	function eStart() {
-    		!disabled && dispatch("start", {
-    			activeHandle,
-    			value: startValue,
-    			values: values.map(v => alignValueToStep(v))
-    		});
-    	}
-
-    	function eStop() {
-    		!disabled && dispatch("stop", {
-    			activeHandle,
-    			startValue,
-    			value: values[activeHandle],
-    			values: values.map(v => alignValueToStep(v))
-    		});
-    	}
-
-    	function eChange() {
-    		!disabled && dispatch("change", {
-    			activeHandle,
-    			startValue,
-    			previousValue: typeof previousValue === "undefined"
-    			? startValue
-    			: previousValue,
-    			value: values[activeHandle],
-    			values: values.map(v => alignValueToStep(v))
-    		});
-    	}
-
-    	const writable_props = [
-    		'range',
-    		'pushy',
-    		'min',
-    		'max',
-    		'step',
-    		'values',
-    		'vertical',
-    		'float',
-    		'hover',
-    		'disabled',
-    		'pips',
-    		'pipstep',
-    		'all',
-    		'first',
-    		'last',
-    		'rest',
-    		'id',
-    		'prefix',
-    		'suffix',
-    		'formatter',
-    		'handleFormatter',
-    		'precision',
-    		'springValues'
-    	];
-
-    	Object.keys($$props).forEach(key => {
-    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console_1$1.warn(`<RangeSlider> was created with unknown prop '${key}'`);
-    	});
-
-    	function div_binding($$value) {
-    		binding_callbacks[$$value ? 'unshift' : 'push'](() => {
-    			slider = $$value;
-    			$$invalidate(22, slider);
-    		});
-    	}
-
-    	$$self.$$set = $$props => {
-    		if ('range' in $$props) $$invalidate(1, range = $$props.range);
-    		if ('pushy' in $$props) $$invalidate(39, pushy = $$props.pushy);
-    		if ('min' in $$props) $$invalidate(2, min = $$props.min);
-    		if ('max' in $$props) $$invalidate(3, max = $$props.max);
-    		if ('step' in $$props) $$invalidate(4, step = $$props.step);
-    		if ('values' in $$props) $$invalidate(0, values = $$props.values);
-    		if ('vertical' in $$props) $$invalidate(5, vertical = $$props.vertical);
-    		if ('float' in $$props) $$invalidate(6, float = $$props.float);
-    		if ('hover' in $$props) $$invalidate(7, hover = $$props.hover);
-    		if ('disabled' in $$props) $$invalidate(8, disabled = $$props.disabled);
-    		if ('pips' in $$props) $$invalidate(9, pips = $$props.pips);
-    		if ('pipstep' in $$props) $$invalidate(10, pipstep = $$props.pipstep);
-    		if ('all' in $$props) $$invalidate(11, all = $$props.all);
-    		if ('first' in $$props) $$invalidate(12, first = $$props.first);
-    		if ('last' in $$props) $$invalidate(13, last = $$props.last);
-    		if ('rest' in $$props) $$invalidate(14, rest = $$props.rest);
-    		if ('id' in $$props) $$invalidate(15, id = $$props.id);
-    		if ('prefix' in $$props) $$invalidate(16, prefix = $$props.prefix);
-    		if ('suffix' in $$props) $$invalidate(17, suffix = $$props.suffix);
-    		if ('formatter' in $$props) $$invalidate(18, formatter = $$props.formatter);
-    		if ('handleFormatter' in $$props) $$invalidate(19, handleFormatter = $$props.handleFormatter);
-    		if ('precision' in $$props) $$invalidate(40, precision = $$props.precision);
-    		if ('springValues' in $$props) $$invalidate(41, springValues = $$props.springValues);
-    	};
-
-    	$$self.$capture_state = () => ({
-    		spring,
-    		createEventDispatcher,
-    		RangePips,
-    		range,
-    		pushy,
-    		min,
-    		max,
-    		step,
-    		values,
-    		vertical,
-    		float,
-    		hover,
-    		disabled,
-    		pips,
-    		pipstep,
-    		all,
-    		first,
-    		last,
-    		rest,
-    		id,
-    		prefix,
-    		suffix,
-    		formatter,
-    		handleFormatter,
-    		precision,
-    		springValues,
-    		dispatch,
-    		slider,
-    		valueLength,
-    		focus,
-    		handleActivated,
-    		handlePressed,
-    		keyboardActive,
-    		activeHandle,
-    		startValue,
-    		previousValue,
-    		springPositions,
-    		index,
-    		normalisedClient,
-    		targetIsHandle,
-    		trimRange,
-    		getSliderDimensions,
-    		getClosestHandle,
-    		handleInteract,
-    		moveHandle,
-    		rangeStart,
-    		rangeEnd,
-    		sliderBlurHandle,
-    		sliderFocusHandle,
-    		sliderKeydown,
-    		sliderInteractStart,
-    		sliderInteractEnd,
-    		bodyInteractStart,
-    		bodyInteract,
-    		bodyMouseUp,
-    		bodyTouchEnd,
-    		bodyKeyDown,
-    		eStart,
-    		eStop,
-    		eChange,
-    		alignValueToStep,
-    		clampValue,
-    		percentOf,
-    		$springPositions
-    	});
-
-    	$$self.$inject_state = $$props => {
-    		if ('range' in $$props) $$invalidate(1, range = $$props.range);
-    		if ('pushy' in $$props) $$invalidate(39, pushy = $$props.pushy);
-    		if ('min' in $$props) $$invalidate(2, min = $$props.min);
-    		if ('max' in $$props) $$invalidate(3, max = $$props.max);
-    		if ('step' in $$props) $$invalidate(4, step = $$props.step);
-    		if ('values' in $$props) $$invalidate(0, values = $$props.values);
-    		if ('vertical' in $$props) $$invalidate(5, vertical = $$props.vertical);
-    		if ('float' in $$props) $$invalidate(6, float = $$props.float);
-    		if ('hover' in $$props) $$invalidate(7, hover = $$props.hover);
-    		if ('disabled' in $$props) $$invalidate(8, disabled = $$props.disabled);
-    		if ('pips' in $$props) $$invalidate(9, pips = $$props.pips);
-    		if ('pipstep' in $$props) $$invalidate(10, pipstep = $$props.pipstep);
-    		if ('all' in $$props) $$invalidate(11, all = $$props.all);
-    		if ('first' in $$props) $$invalidate(12, first = $$props.first);
-    		if ('last' in $$props) $$invalidate(13, last = $$props.last);
-    		if ('rest' in $$props) $$invalidate(14, rest = $$props.rest);
-    		if ('id' in $$props) $$invalidate(15, id = $$props.id);
-    		if ('prefix' in $$props) $$invalidate(16, prefix = $$props.prefix);
-    		if ('suffix' in $$props) $$invalidate(17, suffix = $$props.suffix);
-    		if ('formatter' in $$props) $$invalidate(18, formatter = $$props.formatter);
-    		if ('handleFormatter' in $$props) $$invalidate(19, handleFormatter = $$props.handleFormatter);
-    		if ('precision' in $$props) $$invalidate(40, precision = $$props.precision);
-    		if ('springValues' in $$props) $$invalidate(41, springValues = $$props.springValues);
-    		if ('slider' in $$props) $$invalidate(22, slider = $$props.slider);
-    		if ('valueLength' in $$props) $$invalidate(42, valueLength = $$props.valueLength);
-    		if ('focus' in $$props) $$invalidate(23, focus = $$props.focus);
-    		if ('handleActivated' in $$props) handleActivated = $$props.handleActivated;
-    		if ('handlePressed' in $$props) $$invalidate(24, handlePressed = $$props.handlePressed);
-    		if ('keyboardActive' in $$props) keyboardActive = $$props.keyboardActive;
-    		if ('activeHandle' in $$props) $$invalidate(25, activeHandle = $$props.activeHandle);
-    		if ('startValue' in $$props) startValue = $$props.startValue;
-    		if ('previousValue' in $$props) previousValue = $$props.previousValue;
-    		if ('springPositions' in $$props) $$subscribe_springPositions($$invalidate(20, springPositions = $$props.springPositions));
-    		if ('alignValueToStep' in $$props) $$invalidate(43, alignValueToStep = $$props.alignValueToStep);
-    		if ('clampValue' in $$props) $$invalidate(44, clampValue = $$props.clampValue);
-    		if ('percentOf' in $$props) $$invalidate(21, percentOf = $$props.percentOf);
-    	};
-
-    	if ($$props && "$$inject" in $$props) {
-    		$$self.$inject_state($$props.$$inject);
-    	}
-
-    	$$self.$$.update = () => {
-    		if ($$self.$$.dirty[0] & /*min, max*/ 12) {
-    			/**
-     * clamp a value from the range so that it always
-     * falls within the min/max values
-     * @param {number} val the value to clamp
-     * @return {number} the value after it's been clamped
-     **/
-    			$$invalidate(44, clampValue = function (val) {
-    				// return the min/max if outside of that range
-    				return val <= min ? min : val >= max ? max : val;
-    			});
-    		}
-
-    		if ($$self.$$.dirty[0] & /*min, max, step*/ 28 | $$self.$$.dirty[1] & /*clampValue, precision*/ 8704) {
-    			/**
-     * align the value with the steps so that it
-     * always sits on the closest (above/below) step
-     * @param {number} val the value to align
-     * @return {number} the value after it's been aligned
-     **/
-    			$$invalidate(43, alignValueToStep = function (val) {
-    				// sanity check for performance
-    				if (val <= min) {
-    					return min;
-    				} else if (val >= max) {
-    					return max;
-    				}
-
-    				// find the middle-point between steps
-    				// and see if the value is closer to the
-    				// next step, or previous step
-    				let remainder = (val - min) % step;
-
-    				let aligned = val - remainder;
-
-    				if (Math.abs(remainder) * 2 >= step) {
-    					aligned += remainder > 0 ? step : -step;
-    				}
-
-    				// make sure the value is within acceptable limits
-    				aligned = clampValue(aligned);
-
-    				// make sure the returned value is set to the precision desired
-    				// this is also because javascript often returns weird floats
-    				// when dealing with odd numbers and percentages
-    				return parseFloat(aligned.toFixed(precision));
-    			});
-    		}
-
-    		if ($$self.$$.dirty[0] & /*min, max*/ 12 | $$self.$$.dirty[1] & /*precision*/ 512) {
-    			/**
-     * take in a value, and then calculate that value's percentage
-     * of the overall range (min-max);
-     * @param {number} val the value we're getting percent for
-     * @return {number} the percentage value
-     **/
-    			$$invalidate(21, percentOf = function (val) {
-    				let perc = (val - min) / (max - min) * 100;
-
-    				if (isNaN(perc) || perc <= 0) {
-    					return 0;
-    				} else if (perc >= 100) {
-    					return 100;
-    				} else {
-    					return parseFloat(perc.toFixed(precision));
-    				}
-    			});
-    		}
-
-    		if ($$self.$$.dirty[0] & /*values, max, min, percentOf, springPositions*/ 3145741 | $$self.$$.dirty[1] & /*alignValueToStep, valueLength, springValues*/ 7168) {
-    			{
-    				// check that "values" is an array, or set it as array
-    				// to prevent any errors in springs, or range trimming
-    				if (!Array.isArray(values)) {
-    					$$invalidate(0, values = [(max + min) / 2]);
-    					console.error("'values' prop should be an Array (https://github.com/simeydotme/svelte-range-slider-pips#slider-props)");
-    				}
-
-    				// trim the range so it remains as a min/max (only 2 handles)
-    				// and also align the handles to the steps
-    				$$invalidate(0, values = trimRange(values.map(v => alignValueToStep(v))));
-
-    				// check if the valueLength (length of values[]) has changed,
-    				// because if so we need to re-seed the spring function with the
-    				// new values array.
-    				if (valueLength !== values.length) {
-    					// set the initial spring values when the slider initialises,
-    					// or when values array length has changed
-    					$$subscribe_springPositions($$invalidate(20, springPositions = spring(values.map(v => percentOf(v)), springValues)));
-    				} else {
-    					// update the value of the spring function for animated handles
-    					// whenever the values has updated
-    					springPositions.set(values.map(v => percentOf(v)));
-    				}
-
-    				// set the valueLength for the next check
-    				$$invalidate(42, valueLength = values.length);
-    			}
-    		}
-    	};
-
-    	return [
-    		values,
-    		range,
-    		min,
-    		max,
-    		step,
-    		vertical,
-    		float,
-    		hover,
-    		disabled,
-    		pips,
-    		pipstep,
-    		all,
-    		first,
-    		last,
-    		rest,
-    		id,
-    		prefix,
-    		suffix,
-    		formatter,
-    		handleFormatter,
-    		springPositions,
-    		percentOf,
-    		slider,
-    		focus,
-    		handlePressed,
-    		activeHandle,
-    		$springPositions,
-    		rangeStart,
-    		rangeEnd,
-    		sliderBlurHandle,
-    		sliderFocusHandle,
-    		sliderKeydown,
-    		sliderInteractStart,
-    		sliderInteractEnd,
-    		bodyInteractStart,
-    		bodyInteract,
-    		bodyMouseUp,
-    		bodyTouchEnd,
-    		bodyKeyDown,
-    		pushy,
-    		precision,
-    		springValues,
-    		valueLength,
-    		alignValueToStep,
-    		clampValue,
-    		div_binding
-    	];
-    }
-
-    class RangeSlider extends SvelteComponentDev {
-    	constructor(options) {
-    		super(options);
-
-    		init(
-    			this,
-    			options,
-    			instance$2,
-    			create_fragment$2,
-    			safe_not_equal,
-    			{
-    				range: 1,
-    				pushy: 39,
-    				min: 2,
-    				max: 3,
-    				step: 4,
-    				values: 0,
-    				vertical: 5,
-    				float: 6,
-    				hover: 7,
-    				disabled: 8,
-    				pips: 9,
-    				pipstep: 10,
-    				all: 11,
-    				first: 12,
-    				last: 13,
-    				rest: 14,
-    				id: 15,
-    				prefix: 16,
-    				suffix: 17,
-    				formatter: 18,
-    				handleFormatter: 19,
-    				precision: 40,
-    				springValues: 41
-    			},
-    			null,
-    			[-1, -1, -1]
-    		);
-
-    		dispatch_dev("SvelteRegisterComponent", {
-    			component: this,
-    			tagName: "RangeSlider",
-    			options,
-    			id: create_fragment$2.name
-    		});
-    	}
-
-    	get range() {
-    		throw new Error("<RangeSlider>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set range(value) {
-    		throw new Error("<RangeSlider>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get pushy() {
-    		throw new Error("<RangeSlider>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set pushy(value) {
-    		throw new Error("<RangeSlider>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get min() {
-    		throw new Error("<RangeSlider>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set min(value) {
-    		throw new Error("<RangeSlider>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get max() {
-    		throw new Error("<RangeSlider>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set max(value) {
-    		throw new Error("<RangeSlider>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get step() {
-    		throw new Error("<RangeSlider>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set step(value) {
-    		throw new Error("<RangeSlider>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get values() {
-    		throw new Error("<RangeSlider>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set values(value) {
-    		throw new Error("<RangeSlider>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get vertical() {
-    		throw new Error("<RangeSlider>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set vertical(value) {
-    		throw new Error("<RangeSlider>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get float() {
-    		throw new Error("<RangeSlider>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set float(value) {
-    		throw new Error("<RangeSlider>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get hover() {
-    		throw new Error("<RangeSlider>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set hover(value) {
-    		throw new Error("<RangeSlider>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get disabled() {
-    		throw new Error("<RangeSlider>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set disabled(value) {
-    		throw new Error("<RangeSlider>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get pips() {
-    		throw new Error("<RangeSlider>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set pips(value) {
-    		throw new Error("<RangeSlider>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get pipstep() {
-    		throw new Error("<RangeSlider>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set pipstep(value) {
-    		throw new Error("<RangeSlider>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get all() {
-    		throw new Error("<RangeSlider>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set all(value) {
-    		throw new Error("<RangeSlider>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get first() {
-    		throw new Error("<RangeSlider>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set first(value) {
-    		throw new Error("<RangeSlider>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get last() {
-    		throw new Error("<RangeSlider>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set last(value) {
-    		throw new Error("<RangeSlider>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get rest() {
-    		throw new Error("<RangeSlider>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set rest(value) {
-    		throw new Error("<RangeSlider>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get id() {
-    		throw new Error("<RangeSlider>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set id(value) {
-    		throw new Error("<RangeSlider>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get prefix() {
-    		throw new Error("<RangeSlider>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set prefix(value) {
-    		throw new Error("<RangeSlider>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get suffix() {
-    		throw new Error("<RangeSlider>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set suffix(value) {
-    		throw new Error("<RangeSlider>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get formatter() {
-    		throw new Error("<RangeSlider>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set formatter(value) {
-    		throw new Error("<RangeSlider>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get handleFormatter() {
-    		throw new Error("<RangeSlider>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set handleFormatter(value) {
-    		throw new Error("<RangeSlider>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get precision() {
-    		throw new Error("<RangeSlider>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set precision(value) {
-    		throw new Error("<RangeSlider>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	get springValues() {
-    		throw new Error("<RangeSlider>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
-
-    	set springValues(value) {
-    		throw new Error("<RangeSlider>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
-    	}
     }
 
     /* src/components/Table.svelte generated by Svelte v3.43.1 */
@@ -6025,23 +6183,23 @@ var app = (function () {
 
     function get_each_context(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[16] = list[i];
+    	child_ctx[17] = list[i];
     	return child_ctx;
     }
 
-    // (76:12) {#each getDropdownOptions() as option}
+    // (102:12) {#each getDropdownOptions() as option}
     function create_each_block(ctx) {
     	let option;
-    	let t_value = /*option*/ ctx[16] + "";
+    	let t_value = /*option*/ ctx[17] + "";
     	let t;
 
     	const block = {
     		c: function create() {
     			option = element("option");
     			t = text$1(t_value);
-    			option.__value = /*option*/ ctx[16];
+    			option.__value = /*option*/ ctx[17];
     			option.value = option.__value;
-    			add_location(option, file$1, 76, 14, 2123);
+    			add_location(option, file$1, 102, 14, 2859);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, option, anchor);
@@ -6057,7 +6215,7 @@ var app = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(76:12) {#each getDropdownOptions() as option}",
+    		source: "(102:12) {#each getDropdownOptions() as option}",
     		ctx
     	});
 
@@ -6085,30 +6243,30 @@ var app = (function () {
     	let select;
     	let t9;
     	let td0;
-    	let t12;
+    	let t11;
     	let td1;
     	let input;
-    	let t13;
+    	let t12;
     	let td2;
+    	let t13_value = /*formatDecimalPlaces*/ ctx[5](/*contributed*/ ctx[1]) + "";
+    	let t13;
     	let t14;
+    	let td3;
+    	let t15_value = /*formatDecimalPlaces*/ ctx[5](/*remaining*/ ctx[4]) + "";
     	let t15;
     	let t16;
-    	let td3;
-    	let t17;
-    	let t18;
-    	let t19;
     	let div2;
     	let div1;
-    	let t20;
-    	let t21_value = /*activePercentage*/ ctx[2] * 0.00001 + "";
-    	let t21;
-    	let t22;
+    	let t17;
+    	let t18_value = /*activePercentage*/ ctx[2] * 0.00001 + "";
+    	let t18;
+    	let t19;
     	let div3;
-    	let t23;
-    	let t24;
+    	let t20;
+    	let t21;
     	let mounted;
     	let dispose;
-    	let each_value = /*getDropdownOptions*/ ctx[5]();
+    	let each_value = /*getDropdownOptions*/ ctx[6]();
     	validate_each_argument(each_value);
     	let each_blocks = [];
 
@@ -6147,60 +6305,60 @@ var app = (function () {
 
     			t9 = space();
     			td0 = element("td");
-    			td0.textContent = `GDP:${/*getAttr*/ ctx[6]('gdp')}`;
-    			t12 = space();
+    			td0.textContent = `${/*formatDecimalPlaces*/ ctx[5](/*getAttr*/ ctx[7]('gdp'))}`;
+    			t11 = space();
     			td1 = element("td");
     			input = element("input");
-    			t13 = space();
+    			t12 = space();
     			td2 = element("td");
-    			t14 = text$1("Contributed:");
-    			t15 = text$1(/*contributed*/ ctx[1]);
-    			t16 = space();
+    			t13 = text$1(t13_value);
+    			t14 = space();
     			td3 = element("td");
-    			t17 = text$1("Remaining: ");
-    			t18 = text$1(/*remaining*/ ctx[4]);
-    			t19 = space();
+    			t15 = text$1(t15_value);
+    			t16 = space();
     			div2 = element("div");
     			div1 = element("div");
-    			t20 = text$1("activeP: ");
-    			t21 = text$1(t21_value);
-    			t22 = space();
+    			t17 = text$1("activeP: ");
+    			t18 = text$1(t18_value);
+    			t19 = space();
     			div3 = element("div");
-    			t23 = text$1("Total: ");
-    			t24 = text$1(/*total*/ ctx[3]);
-    			add_location(th0, file$1, 59, 6, 1660);
-    			add_location(th1, file$1, 60, 6, 1676);
-    			add_location(th2, file$1, 61, 6, 1695);
-    			add_location(th3, file$1, 62, 6, 1724);
-    			add_location(th4, file$1, 63, 6, 1753);
+    			t20 = text$1("Total: ");
+    			t21 = text$1(/*total*/ ctx[3]);
+    			add_location(th0, file$1, 85, 6, 2396);
+    			add_location(th1, file$1, 86, 6, 2412);
+    			add_location(th2, file$1, 87, 6, 2431);
+    			add_location(th3, file$1, 88, 6, 2460);
+    			add_location(th4, file$1, 89, 6, 2489);
     			attr_dev(tr0, "class", "interactive__subheading");
-    			add_location(tr0, file$1, 58, 4, 1617);
-    			add_location(thead, file$1, 57, 2, 1605);
+    			add_location(tr0, file$1, 84, 4, 2353);
+    			add_location(thead, file$1, 83, 2, 2341);
     			attr_dev(select, "class", "input__select");
-    			if (/*activeCountry*/ ctx[0] === void 0) add_render_callback(() => /*select_change_handler*/ ctx[12].call(select));
-    			add_location(select, file$1, 70, 10, 1909);
+    			if (/*activeCountry*/ ctx[0] === void 0) add_render_callback(() => /*select_change_handler*/ ctx[13].call(select));
+    			add_location(select, file$1, 96, 10, 2645);
     			attr_dev(div0, "class", "interactive__dropdown");
-    			add_location(div0, file$1, 69, 8, 1863);
+    			add_location(div0, file$1, 95, 8, 2599);
     			attr_dev(th5, "class", "interactive__subheading");
-    			add_location(th5, file$1, 68, 6, 1818);
-    			add_location(td0, file$1, 81, 6, 2239);
+    			add_location(th5, file$1, 94, 6, 2554);
+    			add_location(td0, file$1, 107, 6, 2975);
     			attr_dev(input, "type", "range");
     			attr_dev(input, "min", "0");
     			attr_dev(input, "max", "100");
-    			add_location(input, file$1, 84, 8, 2401);
-    			add_location(td1, file$1, 82, 6, 2275);
-    			add_location(td2, file$1, 92, 6, 2585);
-    			add_location(td3, file$1, 95, 6, 2642);
-    			add_location(tr1, file$1, 67, 4, 1807);
-    			add_location(tbody, file$1, 66, 2, 1795);
+    			add_location(input, file$1, 113, 8, 3272);
+    			add_location(td1, file$1, 110, 6, 3044);
+    			attr_dev(td2, "class", "calc-values");
+    			add_location(td2, file$1, 121, 6, 3456);
+    			attr_dev(td3, "class", "calc-values");
+    			add_location(td3, file$1, 124, 6, 3542);
+    			add_location(tr1, file$1, 93, 4, 2543);
+    			add_location(tbody, file$1, 92, 2, 2531);
     			attr_dev(table, "class", "interactive__table interactive__table--large");
     			attr_dev(table, "cellpadding", "0");
     			attr_dev(table, "cellspacing", "0");
-    			add_location(table, file$1, 56, 0, 1510);
-    			add_location(div1, file$1, 100, 2, 2742);
+    			add_location(table, file$1, 82, 0, 2246);
+    			add_location(div1, file$1, 131, 2, 3688);
     			attr_dev(div2, "class", "interactive__options");
-    			add_location(div2, file$1, 99, 0, 2705);
-    			add_location(div3, file$1, 104, 0, 2802);
+    			add_location(div2, file$1, 130, 0, 3651);
+    			add_location(div3, file$1, 135, 0, 3748);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -6232,43 +6390,41 @@ var app = (function () {
     			select_option(select, /*activeCountry*/ ctx[0]);
     			append_dev(tr1, t9);
     			append_dev(tr1, td0);
-    			append_dev(tr1, t12);
+    			append_dev(tr1, t11);
     			append_dev(tr1, td1);
     			append_dev(td1, input);
     			set_input_value(input, /*activePercentage*/ ctx[2]);
-    			append_dev(tr1, t13);
+    			append_dev(tr1, t12);
     			append_dev(tr1, td2);
-    			append_dev(td2, t14);
-    			append_dev(td2, t15);
-    			append_dev(tr1, t16);
+    			append_dev(td2, t13);
+    			append_dev(tr1, t14);
     			append_dev(tr1, td3);
-    			append_dev(td3, t17);
-    			append_dev(td3, t18);
-    			insert_dev(target, t19, anchor);
+    			append_dev(td3, t15);
+    			insert_dev(target, t16, anchor);
     			insert_dev(target, div2, anchor);
     			append_dev(div2, div1);
-    			append_dev(div1, t20);
-    			append_dev(div1, t21);
-    			insert_dev(target, t22, anchor);
+    			append_dev(div1, t17);
+    			append_dev(div1, t18);
+    			insert_dev(target, t19, anchor);
     			insert_dev(target, div3, anchor);
-    			append_dev(div3, t23);
-    			append_dev(div3, t24);
+    			append_dev(div3, t20);
+    			append_dev(div3, t21);
 
     			if (!mounted) {
     				dispose = [
-    					listen_dev(select, "change", /*select_change_handler*/ ctx[12]),
-    					listen_dev(select, "change", /*change_handler*/ ctx[13], false, false, false),
-    					listen_dev(input, "change", /*input_change_input_handler*/ ctx[14]),
-    					listen_dev(input, "input", /*input_change_input_handler*/ ctx[14]),
-    					listen_dev(input, "change", /*change_handler_1*/ ctx[15], false, false, false)
+    					listen_dev(select, "change", /*select_change_handler*/ ctx[13]),
+    					listen_dev(select, "change", /*change_handler*/ ctx[14], false, false, false),
+    					listen_dev(input, "change", /*input_change_input_handler*/ ctx[15]),
+    					listen_dev(input, "input", /*input_change_input_handler*/ ctx[15]),
+    					listen_dev(input, "change", /*change_handler_1*/ ctx[16], false, false, false)
     				];
 
     				mounted = true;
     			}
     		},
     		p: function update(ctx, [dirty]) {
-    			if (dirty & /*getDropdownOptions*/ 32) {
-    				each_value = /*getDropdownOptions*/ ctx[5]();
+    			if (dirty & /*getDropdownOptions*/ 64) {
+    				each_value = /*getDropdownOptions*/ ctx[6]();
     				validate_each_argument(each_value);
     				let i;
 
@@ -6291,7 +6447,7 @@ var app = (function () {
     				each_blocks.length = each_value.length;
     			}
 
-    			if (dirty & /*activeCountry, getDropdownOptions*/ 33) {
+    			if (dirty & /*activeCountry, getDropdownOptions*/ 65) {
     				select_option(select, /*activeCountry*/ ctx[0]);
     			}
 
@@ -6299,19 +6455,19 @@ var app = (function () {
     				set_input_value(input, /*activePercentage*/ ctx[2]);
     			}
 
-    			if (dirty & /*contributed*/ 2) set_data_dev(t15, /*contributed*/ ctx[1]);
-    			if (dirty & /*remaining*/ 16) set_data_dev(t18, /*remaining*/ ctx[4]);
-    			if (dirty & /*activePercentage*/ 4 && t21_value !== (t21_value = /*activePercentage*/ ctx[2] * 0.00001 + "")) set_data_dev(t21, t21_value);
-    			if (dirty & /*total*/ 8) set_data_dev(t24, /*total*/ ctx[3]);
+    			if (dirty & /*contributed*/ 2 && t13_value !== (t13_value = /*formatDecimalPlaces*/ ctx[5](/*contributed*/ ctx[1]) + "")) set_data_dev(t13, t13_value);
+    			if (dirty & /*remaining*/ 16 && t15_value !== (t15_value = /*formatDecimalPlaces*/ ctx[5](/*remaining*/ ctx[4]) + "")) set_data_dev(t15, t15_value);
+    			if (dirty & /*activePercentage*/ 4 && t18_value !== (t18_value = /*activePercentage*/ ctx[2] * 0.00001 + "")) set_data_dev(t18, t18_value);
+    			if (dirty & /*total*/ 8) set_data_dev(t21, /*total*/ ctx[3]);
     		},
     		i: noop,
     		o: noop,
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(table);
     			destroy_each(each_blocks, detaching);
-    			if (detaching) detach_dev(t19);
+    			if (detaching) detach_dev(t16);
     			if (detaching) detach_dev(div2);
-    			if (detaching) detach_dev(t22);
+    			if (detaching) detach_dev(t19);
     			if (detaching) detach_dev(div3);
     			mounted = false;
     			run_all(dispose);
@@ -6329,6 +6485,20 @@ var app = (function () {
     	return block;
     }
 
+    function formatAmount(value) {
+    	if (window.innerWidth < 768) {
+    		return value.replace(/G/, 'B').slice(-1)[0];
+    	}
+
+    	if (value.includes('T')) {
+    		return 'T';
+    	} else if (value.includes('G')) {
+    		return 'B';
+    	} else {
+    		return 'M';
+    	}
+    }
+
     function instance$1($$self, $$props, $$invalidate) {
     	let remaining;
     	let total;
@@ -6339,6 +6509,14 @@ var app = (function () {
     	let { row } = $$props;
     	let { totalReq } = $$props;
     	let { contributed } = $$props;
+
+    	/* formats values up to two decimal places while maintaining 1-3 digits left of the first comma (eg 500.00B or 1.00T) */
+    	function formatDecimalPlaces(value) {
+    		let amt = formatAmount(format('.5s')(value));
+    		let numOne = format('$.5s')(value).split('.')[0];
+    		let numTwo = format('.5s')(value).split('.')[1].slice(0, 1);
+    		return numOne + '.' + numTwo + amt;
+    	}
 
     	const getDropdownOptions = () => {
     		return allData.sort((a, b) => a.country.localeCompare(b.country)).map(c => c.country);
@@ -6371,7 +6549,7 @@ var app = (function () {
     	function select_change_handler() {
     		activeCountry = select_value(this);
     		$$invalidate(0, activeCountry);
-    		$$invalidate(5, getDropdownOptions);
+    		$$invalidate(6, getDropdownOptions);
     	}
 
     	const change_handler = () => handleActiveCountry();
@@ -6385,19 +6563,22 @@ var app = (function () {
 
     	$$self.$$set = $$props => {
     		if ('activeCountry' in $$props) $$invalidate(0, activeCountry = $$props.activeCountry);
-    		if ('allData' in $$props) $$invalidate(9, allData = $$props.allData);
-    		if ('row' in $$props) $$invalidate(10, row = $$props.row);
-    		if ('totalReq' in $$props) $$invalidate(11, totalReq = $$props.totalReq);
+    		if ('allData' in $$props) $$invalidate(10, allData = $$props.allData);
+    		if ('row' in $$props) $$invalidate(11, row = $$props.row);
+    		if ('totalReq' in $$props) $$invalidate(12, totalReq = $$props.totalReq);
     		if ('contributed' in $$props) $$invalidate(1, contributed = $$props.contributed);
     	};
 
     	$$self.$capture_state = () => ({
-    		RangeSlider,
+    		Slider,
+    		format,
     		activeCountry,
     		allData,
     		row,
     		totalReq,
     		contributed,
+    		formatAmount,
+    		formatDecimalPlaces,
     		getDropdownOptions,
     		getAttr,
     		activePercentage,
@@ -6409,9 +6590,9 @@ var app = (function () {
 
     	$$self.$inject_state = $$props => {
     		if ('activeCountry' in $$props) $$invalidate(0, activeCountry = $$props.activeCountry);
-    		if ('allData' in $$props) $$invalidate(9, allData = $$props.allData);
-    		if ('row' in $$props) $$invalidate(10, row = $$props.row);
-    		if ('totalReq' in $$props) $$invalidate(11, totalReq = $$props.totalReq);
+    		if ('allData' in $$props) $$invalidate(10, allData = $$props.allData);
+    		if ('row' in $$props) $$invalidate(11, row = $$props.row);
+    		if ('totalReq' in $$props) $$invalidate(12, totalReq = $$props.totalReq);
     		if ('contributed' in $$props) $$invalidate(1, contributed = $$props.contributed);
     		if ('activePercentage' in $$props) $$invalidate(2, activePercentage = $$props.activePercentage);
     		if ('total' in $$props) $$invalidate(3, total = $$props.total);
@@ -6428,7 +6609,7 @@ var app = (function () {
     			$$invalidate(1, contributed = Math.floor(getAttr('gdp') * (activePercentage * 0.00001)));
     		}
 
-    		if ($$self.$$.dirty & /*allData, activeCountry, contributed, row*/ 1539) {
+    		if ($$self.$$.dirty & /*allData, activeCountry, contributed, row*/ 3075) {
     			$$invalidate(3, total = Math.floor(allData.filter(d => d.country !== activeCountry).reduce(
     				(acc, i) => {
     					return acc + i.gdp * i.adjustable_gdp;
@@ -6437,7 +6618,7 @@ var app = (function () {
     			) + contributed + row));
     		}
 
-    		if ($$self.$$.dirty & /*totalReq, total*/ 2056) {
+    		if ($$self.$$.dirty & /*totalReq, total*/ 4104) {
     			$$invalidate(4, remaining = Math.floor(totalReq - total));
     		}
     	};
@@ -6448,6 +6629,7 @@ var app = (function () {
     		activePercentage,
     		total,
     		remaining,
+    		formatDecimalPlaces,
     		getDropdownOptions,
     		getAttr,
     		handleChange,
@@ -6468,9 +6650,9 @@ var app = (function () {
 
     		init(this, options, instance$1, create_fragment$1, safe_not_equal, {
     			activeCountry: 0,
-    			allData: 9,
-    			row: 10,
-    			totalReq: 11,
+    			allData: 10,
+    			row: 11,
+    			totalReq: 12,
     			contributed: 1
     		});
 
@@ -6488,15 +6670,15 @@ var app = (function () {
     			console.warn("<Table> was created without expected prop 'activeCountry'");
     		}
 
-    		if (/*allData*/ ctx[9] === undefined && !('allData' in props)) {
+    		if (/*allData*/ ctx[10] === undefined && !('allData' in props)) {
     			console.warn("<Table> was created without expected prop 'allData'");
     		}
 
-    		if (/*row*/ ctx[10] === undefined && !('row' in props)) {
+    		if (/*row*/ ctx[11] === undefined && !('row' in props)) {
     			console.warn("<Table> was created without expected prop 'row'");
     		}
 
-    		if (/*totalReq*/ ctx[11] === undefined && !('totalReq' in props)) {
+    		if (/*totalReq*/ ctx[12] === undefined && !('totalReq' in props)) {
     			console.warn("<Table> was created without expected prop 'totalReq'");
     		}
 

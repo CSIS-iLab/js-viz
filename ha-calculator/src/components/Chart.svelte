@@ -1,6 +1,6 @@
 <script>
-  import { scaleLinear, scaleSqrt, scaleOrdinal } from 'd3-scale'
   import { filter, range } from 'd3-array'
+  import tippy from "sveltejs-tippy";
   export let activeCountry
   export let allData
   export let contributed
@@ -51,6 +51,25 @@
       return [0, 1, 2, 3, 4]
     }
   }
+
+  const formatTooltip = (data, selector) => {
+    const template = `
+      <h2 class="tooltip__heading">${data.country}</h2>
+      <ul class="port-values" role="list">
+        <li><div>GDP:${data.gdp}</div> </li>
+        <li><div>Contributed: ${data.funding}</div> </li>
+      </ul>
+    `;
+
+    return {
+      content: template,
+      allowHTML: true,
+      placement: "top",
+      maxWidth: 175,
+      triggerTarget: document.getElementById(selector),
+      touch: false,
+    };
+  };
 </script>
 
 <div>Active Country: {activeCountry}</div>
@@ -72,14 +91,16 @@
 
   {#each allData.filter(d => d.country !== activeCountry) as country, countryIndex}
     <figure class="interactive__charts {'inactive-' + countryIndex}" bind:clientWidth={width} bind:clientHeight={height} >
-      <svg>
-          <g data-attr={country.country}>
+      <svg >
+          <g data-attr={country.country} >
             {#each chartRange(country) as i}
               {#each getRemainingRow(i, country) as j}
-                <rect width="16px" height="16px" x="{i * 20}" y="{j * 20}"></rect>
+                <rect width="16px" height="16px" x="{i * 20}" y="{j * 20}" use:tippy={formatTooltip(country, `tooltip-node-${countryIndex}`)}></rect>
+                <!-- <text>{country.country}</text> -->
               {/each}
             {/each}
           </g>
+  
       </svg>
     </figure>
   {/each}

@@ -12,33 +12,22 @@ $color__gray-500: #d4d0cb;
 $color__gray-800: #555;
 $color__gray-900: #333;
 
-$color__red: #ed392a;
-$color__dark-red: #c42d21;
-$color__green: #58a897;
-$color__bright-green: #8cb561;
-$color__light-blue: #83badc;
-$color__blue: #3b75bb;
-$color__dk-blue: #084d7c;
-$color__purple: #a483a8;
-$color__dark-purple: #69518d;
-$color__orange: #f7890e;
-// $color__orange: #8cb561;
-$color__yellow: #e7ae3f;
-$color__blue-gray-100: #728c99;
-$color__blue-gray-200: #455a64;
-$color__blue-gray-900: #303f46;
+$color__blue: #004E80;
+$color__dkblue: #004165;
 
-$color__primary: $color__blue-gray-200;
+$color__highlight: #0FAA91;
+$color__dkhighlight: #0A8672;
+
+
+$color__primary: $color__blue;
 $color__primary-200: color.scale($color__primary, $lightness: -10%);
-$gridlines: #d3d8db;
-$color__gridlines: #ebebeb;
-$color__item-labels: rgba(000, 000, 000, 0.65);
-$color__cat-labels: $color__blue-gray-200;
 
 
 /*----------  Fonts  ----------*/
 $font__hind: "Hind", sans-serif;
 $font__roboto: "Roboto", sans-serif;
+// $font__source:
+$font__museo: "Museo Sans", sans-serif;
 
 /*----------  Structural  ----------*/
 $breakpoints: (

@@ -29,15 +29,19 @@
     grid-area: inactive-3;
   }
 }
+
 .interactive__charts {
   position: relative;
   width: 100%;
   max-width: $size__content-max-width;
   margin: 0 auto;
+  fill: $color__blue;
+  stroke: $color__dkblue;
+  stroke-width: 1.5px;
 
-  // grid-template-columns: ;
-
-
+  &:hover {
+    fill: $color__dkblue;
+  }
 
   @include breakpoint(medium) {
     margin: 0 3rem;
@@ -50,11 +54,3 @@
 
 }
 
-
-.active {
-  grid-area: active
-}
-
-.inactive {
-  grid-area: inactive;
-}

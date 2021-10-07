@@ -15,6 +15,7 @@
     "start": "sirv public"
   },
   "devDependencies": {
+    "@bulatdashiev/svelte-slider": "^1.0.3",
     "@rollup/plugin-commonjs": "^17.0.0",
     "@rollup/plugin-node-resolve": "^11.0.0",
     "autoprefixer": "^10.2.5",

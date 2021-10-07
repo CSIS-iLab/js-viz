@@ -49,8 +49,8 @@
 
     &.btn--active {
       color: $color__white;
-      background-color: $color__blue-gray-200;
-      border: 1px solid darken($color__blue-gray-900, 1) !important;
+      background-color: $color__blue;
+      border: 1px solid darken($color__dkblue, 1) !important;
     }
   }
 
