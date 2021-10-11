@@ -1,13 +1,27 @@
 <script>
   // import RangeSlider from "svelte-range-slider-pips";
   import Slider from '@bulatdashiev/svelte-slider'
+import { range } from 'd3-array';
   import { format } from 'd3-format'
+import tippy from 'sveltejs-tippy'
+import { onMount, afterUpdate } from 'svelte';
 
   export let activeCountry
   export let allData
   export let row
   export let totalReq
   export let contributed
+
+  const formatBubble = (val) => {
+    console.log(val)
+    if (val < 10) {
+      return '.00' + val + '%'
+    } else if ( val === '100') {
+      return '.010%' 
+    } else {
+      return '.0' + val + '%'
+    }
+  }
 
   // Helper f(n) for formatDecimalPlaces
   function formatAmount(value) {
@@ -68,11 +82,34 @@
   const handleActiveCountry = () => {
     activePercentage =
       allData.find((d) => d.country === activeCountry).adjustable_gdp * 100000
+    // setTimeout(() => {setBubble(slider,bubble)},500) 
   }
+
+  let slider
+  let bubble
+
+  onMount(() => {
+    slider.addEventListener("input", () => {
+    setBubble(slider, bubble)
+    });
+  }) 
+
+  afterUpdate(() => {
+    setBubble(slider,bubble)
+  })
+
+function setBubble(range, bubble) {
+  const val = range.value;
+  const min = range.min ? range.min : 0;
+  const max = range.max ? range.max : 100;
+  const newVal = Number(((val - min) * 100) / (max - min));
+  bubble.innerHTML = formatBubble(val);
+
+  // Sorta magic numbers based on size of the native UI thumb
+ bubble.style.left = `calc(${newVal}% + (${8 - newVal * 0.15}px))`;
+}
 </script>
 
-<!-- <input bind:value={activePercentage} on:change="{() => handleChange()}" /> -->
-<!-- <div id="slider"></div> -->
 <table
   class="interactive__table interactive__table--large"
   cellpadding="0"
@@ -106,13 +143,19 @@
         {formatDecimalPlaces(gdp)}
       </td>
       <td>
-        <input
-          type="range"
-          bind:value="{activePercentage}"
-          min="0"
-          max="100"
-          on:change="{() => handleChange()}"
-        />
+        <div class="slider-wrap">
+          <input
+            id="slider"
+            type="range"
+            name="slider"
+            bind:value="{activePercentage}"
+            bind:this={slider}
+            min="0"
+            max="100"
+            on:change="{() => handleChange()}"
+          >
+          <output class="bubble" bind:this={bubble}></output>
+      </div>
       </td>
       <td class="calc-values">
         {formatDecimalPlaces(contributed)}
@@ -123,15 +166,6 @@
     </tr>
   </tbody>
 </table>
-
-<!-- <div class="interactive__options">
-  <div>activeP: {activePercentage * 0.00001}</div>
-
-  
-</div>
-<div>
-  Total: {total}
-</div> -->
 <style type="text/scss" global>
   @import '../scss/components/_form-elements.scss';
   @import '../scss/custom/_table.scss';

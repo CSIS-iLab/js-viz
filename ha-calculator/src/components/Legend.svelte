@@ -7,6 +7,7 @@
     <text x="30" y="40">200 M</text>
     <rect
       fill="url(#diagonalHatch)"
+      stroke="#004E80"
       x="100"
       y="24"
       width="20px"

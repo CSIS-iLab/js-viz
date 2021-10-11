@@ -222,6 +222,12 @@ var app = (function () {
             throw new Error('Function called outside component initialization');
         return current_component;
     }
+    function onMount(fn) {
+        get_current_component().$$.on_mount.push(fn);
+    }
+    function afterUpdate(fn) {
+        get_current_component().$$.after_update.push(fn);
+    }
     function createEventDispatcher() {
         const component = get_current_component();
         return (type, detail) => {
@@ -4395,7 +4401,7 @@ var app = (function () {
     			attr_dev(rect, "x", rect_x_value = /*i*/ ctx[19] * 24);
     			attr_dev(rect, "y", rect_y_value = /*j*/ ctx[22] * 24);
     			attr_dev(rect, "fill", "url(#gradient)");
-    			add_location(rect, file$5, 111, 14, 3125);
+    			add_location(rect, file$5, 111, 14, 3129);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, rect, anchor);
@@ -4523,7 +4529,7 @@ var app = (function () {
     			text_1 = svg_element("text");
     			t = text$1(t_value);
     			attr_dev(g, "data-attr", g_data_attr_value = /*country*/ ctx[16].country);
-    			add_location(g, file$5, 158, 12, 4454);
+    			add_location(g, file$5, 158, 12, 4458);
     			attr_dev(rect, "fill", "none");
     			attr_dev(rect, "stroke", "#c5c5c5");
     			attr_dev(rect, "stroke-width", "1.5");
@@ -4532,10 +4538,10 @@ var app = (function () {
     			attr_dev(rect, "width", "15px");
     			attr_dev(rect, "height", "1");
     			attr_dev(rect, "id", "svg_2");
-    			add_location(rect, file$5, 175, 12, 5025);
+    			add_location(rect, file$5, 175, 12, 5029);
     			attr_dev(text_1, "x", "0");
     			attr_dev(text_1, "y", text_1_y_value = /*height*/ ctx[3] - 40);
-    			add_location(text_1, file$5, 184, 12, 5270);
+    			add_location(text_1, file$5, 184, 12, 5274);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, g, anchor);
@@ -4622,7 +4628,7 @@ var app = (function () {
     			attr_dev(rect, "height", "12px");
     			attr_dev(rect, "x", rect_x_value = /*i*/ ctx[19] * 16);
     			attr_dev(rect, "y", rect_y_value = /*j*/ ctx[22] * 16);
-    			add_location(rect, file$5, 161, 18, 4610);
+    			add_location(rect, file$5, 161, 18, 4614);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, rect, anchor);
@@ -4755,19 +4761,19 @@ var app = (function () {
     			attr_dev(path, "d", "M -1,2 l 6,0");
     			attr_dev(path, "stroke", "#000000");
     			attr_dev(path, "stroke-width", "1");
-    			add_location(path, file$5, 154, 14, 4286);
+    			add_location(path, file$5, 154, 14, 4290);
     			attr_dev(pattern, "id", "diagonalHatch");
     			attr_dev(pattern, "patternUnits", "userSpaceOnUse");
     			attr_dev(pattern, "width", "4");
     			attr_dev(pattern, "height", "4");
     			attr_dev(pattern, "patternTransform", "rotate(-45 2 2)");
-    			add_location(pattern, file$5, 147, 12, 4074);
-    			add_location(defs, file$5, 146, 10, 4055);
-    			add_location(svg_1, file$5, 145, 8, 4039);
+    			add_location(pattern, file$5, 147, 12, 4078);
+    			add_location(defs, file$5, 146, 10, 4059);
+    			add_location(svg_1, file$5, 145, 8, 4043);
     			attr_dev(figure, "class", "interactive__charts " + ('inactive-' + /*countryIndex*/ ctx[18]));
     			attr_dev(figure, "data-attr", figure_data_attr_value = /*country*/ ctx[16].country);
     			add_render_callback(() => /*figure_elementresize_handler_1*/ ctx[12].call(figure));
-    			add_location(figure, file$5, 139, 6, 3840);
+    			add_location(figure, file$5, 139, 6, 3844);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, figure, anchor);
@@ -4872,14 +4878,14 @@ var app = (function () {
 
     			attr_dev(stop0, "class", "main-stop");
     			attr_dev(stop0, "offset", "0%");
-    			add_location(stop0, file$5, 105, 10, 2856);
+    			add_location(stop0, file$5, 105, 10, 2860);
     			attr_dev(stop1, "class", "alt-stop");
     			attr_dev(stop1, "offset", "100%");
-    			add_location(stop1, file$5, 106, 10, 2910);
+    			add_location(stop1, file$5, 106, 10, 2914);
     			attr_dev(linearGradient, "id", "gradient");
-    			add_location(linearGradient, file$5, 104, 8, 2815);
+    			add_location(linearGradient, file$5, 104, 8, 2819);
     			attr_dev(g, "data-attr", /*activeCountry*/ ctx[0]);
-    			add_location(g, file$5, 108, 8, 2989);
+    			add_location(g, file$5, 108, 8, 2993);
     			attr_dev(rect, "fill", "none");
     			attr_dev(rect, "stroke", "#c5c5c5");
     			attr_dev(rect, "stroke-width", "1.5");
@@ -4888,17 +4894,17 @@ var app = (function () {
     			attr_dev(rect, "width", "15px");
     			attr_dev(rect, "height", "1");
     			attr_dev(rect, "id", "svg_2");
-    			add_location(rect, file$5, 122, 8, 3383);
+    			add_location(rect, file$5, 122, 8, 3387);
     			attr_dev(text_1, "x", "0");
     			attr_dev(text_1, "y", text_1_y_value = /*height*/ ctx[3] - 5);
-    			add_location(text_1, file$5, 133, 8, 3610);
+    			add_location(text_1, file$5, 133, 8, 3614);
     			attr_dev(svg_1, "class", "green");
-    			add_location(svg_1, file$5, 103, 6, 2787);
+    			add_location(svg_1, file$5, 103, 6, 2791);
     			attr_dev(figure, "class", "interactive__charts active");
     			add_render_callback(() => /*figure_elementresize_handler*/ ctx[10].call(figure));
-    			add_location(figure, file$5, 98, 4, 2658);
+    			add_location(figure, file$5, 98, 4, 2662);
     			attr_dev(div, "class", "interactive__charts-container");
-    			add_location(div, file$5, 97, 2, 2610);
+    			add_location(div, file$5, 97, 2, 2614);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -5101,7 +5107,7 @@ var app = (function () {
 
     			for (let i of range(0, b, step)) {
     				if (contributed % b > i) {
-    					arr.push(arr.length);
+    					arr.push(4 - arr.length);
     				}
     			}
 
@@ -5120,7 +5126,7 @@ var app = (function () {
 
     			for (let i of range(0, b, step)) {
     				if (val % b > i) {
-    					arr.push(arr.length);
+    					arr.push(4 - arr.length);
     				}
     			}
 
@@ -6344,27 +6350,29 @@ var app = (function () {
     }
 
     /* src/components/Table.svelte generated by Svelte v3.43.1 */
+
+    const { console: console_1$1 } = globals;
     const file$2 = "src/components/Table.svelte";
 
     function get_each_context(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[17] = list[i];
+    	child_ctx[23] = list[i];
     	return child_ctx;
     }
 
-    // (99:12) {#each getDropdownOptions() as option}
+    // (136:12) {#each getDropdownOptions() as option}
     function create_each_block(ctx) {
     	let option;
-    	let t_value = /*option*/ ctx[17] + "";
+    	let t_value = /*option*/ ctx[23] + "";
     	let t;
 
     	const block = {
     		c: function create() {
     			option = element("option");
     			t = text$1(t_value);
-    			option.__value = /*option*/ ctx[17];
+    			option.__value = /*option*/ ctx[23];
     			option.value = option.__value;
-    			add_location(option, file$2, 99, 14, 2757);
+    			add_location(option, file$2, 136, 14, 3601);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, option, anchor);
@@ -6380,7 +6388,7 @@ var app = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(99:12) {#each getDropdownOptions() as option}",
+    		source: "(136:12) {#each getDropdownOptions() as option}",
     		ctx
     	});
 
@@ -6404,26 +6412,29 @@ var app = (function () {
     	let tbody;
     	let tr1;
     	let th5;
-    	let div;
+    	let div0;
     	let select;
     	let t9;
     	let td0;
-    	let t10_value = /*formatDecimalPlaces*/ ctx[5](/*gdp*/ ctx[3]) + "";
+    	let t10_value = /*formatDecimalPlaces*/ ctx[7](/*gdp*/ ctx[3]) + "";
     	let t10;
     	let t11;
     	let td1;
+    	let div1;
     	let input;
     	let t12;
-    	let td2;
-    	let t13_value = /*formatDecimalPlaces*/ ctx[5](/*contributed*/ ctx[1]) + "";
+    	let output;
     	let t13;
+    	let td2;
+    	let t14_value = /*formatDecimalPlaces*/ ctx[7](/*contributed*/ ctx[1]) + "";
     	let t14;
-    	let td3;
-    	let t15_value = /*formatDecimalPlaces*/ ctx[5](/*remaining*/ ctx[4]) + "";
     	let t15;
+    	let td3;
+    	let t16_value = /*formatDecimalPlaces*/ ctx[7](/*remaining*/ ctx[6]) + "";
+    	let t16;
     	let mounted;
     	let dispose;
-    	let each_value = /*getDropdownOptions*/ ctx[6]();
+    	let each_value = /*getDropdownOptions*/ ctx[8]();
     	validate_each_argument(each_value);
     	let each_blocks = [];
 
@@ -6453,7 +6464,7 @@ var app = (function () {
     			tbody = element("tbody");
     			tr1 = element("tr");
     			th5 = element("th");
-    			div = element("div");
+    			div0 = element("div");
     			select = element("select");
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
@@ -6465,44 +6476,53 @@ var app = (function () {
     			t10 = text$1(t10_value);
     			t11 = space();
     			td1 = element("td");
+    			div1 = element("div");
     			input = element("input");
     			t12 = space();
+    			output = element("output");
+    			t13 = space();
     			td2 = element("td");
-    			t13 = text$1(t13_value);
-    			t14 = space();
+    			t14 = text$1(t14_value);
+    			t15 = space();
     			td3 = element("td");
-    			t15 = text$1(t15_value);
-    			add_location(th0, file$2, 82, 6, 2294);
-    			add_location(th1, file$2, 83, 6, 2310);
-    			add_location(th2, file$2, 84, 6, 2329);
-    			add_location(th3, file$2, 85, 6, 2358);
-    			add_location(th4, file$2, 86, 6, 2387);
+    			t16 = text$1(t16_value);
+    			add_location(th0, file$2, 119, 6, 3138);
+    			add_location(th1, file$2, 120, 6, 3154);
+    			add_location(th2, file$2, 121, 6, 3173);
+    			add_location(th3, file$2, 122, 6, 3202);
+    			add_location(th4, file$2, 123, 6, 3231);
     			attr_dev(tr0, "class", "interactive__subheading");
-    			add_location(tr0, file$2, 81, 4, 2251);
-    			add_location(thead, file$2, 80, 2, 2239);
+    			add_location(tr0, file$2, 118, 4, 3095);
+    			add_location(thead, file$2, 117, 2, 3083);
     			attr_dev(select, "class", "input__select");
-    			if (/*activeCountry*/ ctx[0] === void 0) add_render_callback(() => /*select_change_handler*/ ctx[13].call(select));
-    			add_location(select, file$2, 93, 10, 2543);
-    			attr_dev(div, "class", "interactive__dropdown");
-    			add_location(div, file$2, 92, 8, 2497);
+    			if (/*activeCountry*/ ctx[0] === void 0) add_render_callback(() => /*select_change_handler*/ ctx[15].call(select));
+    			add_location(select, file$2, 130, 10, 3387);
+    			attr_dev(div0, "class", "interactive__dropdown");
+    			add_location(div0, file$2, 129, 8, 3341);
     			attr_dev(th5, "class", "interactive__subheading");
-    			add_location(th5, file$2, 91, 6, 2452);
-    			add_location(td0, file$2, 104, 6, 2873);
+    			add_location(th5, file$2, 128, 6, 3296);
+    			add_location(td0, file$2, 141, 6, 3717);
+    			attr_dev(input, "id", "slider");
     			attr_dev(input, "type", "range");
+    			attr_dev(input, "name", "slider");
     			attr_dev(input, "min", "0");
     			attr_dev(input, "max", "100");
-    			add_location(input, file$2, 108, 8, 2944);
-    			add_location(td1, file$2, 107, 6, 2931);
+    			add_location(input, file$2, 146, 10, 3824);
+    			attr_dev(output, "class", "bubble");
+    			add_location(output, file$2, 156, 10, 4092);
+    			attr_dev(div1, "class", "slider-wrap");
+    			add_location(div1, file$2, 145, 8, 3788);
+    			add_location(td1, file$2, 144, 6, 3775);
     			attr_dev(td2, "class", "calc-values");
-    			add_location(td2, file$2, 116, 6, 3128);
+    			add_location(td2, file$2, 159, 6, 4175);
     			attr_dev(td3, "class", "calc-values");
-    			add_location(td3, file$2, 119, 6, 3214);
-    			add_location(tr1, file$2, 90, 4, 2441);
-    			add_location(tbody, file$2, 89, 2, 2429);
+    			add_location(td3, file$2, 162, 6, 4261);
+    			add_location(tr1, file$2, 127, 4, 3285);
+    			add_location(tbody, file$2, 126, 2, 3273);
     			attr_dev(table, "class", "interactive__table interactive__table--large");
     			attr_dev(table, "cellpadding", "0");
     			attr_dev(table, "cellspacing", "0");
-    			add_location(table, file$2, 75, 0, 2137);
+    			add_location(table, file$2, 112, 0, 2981);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -6524,8 +6544,8 @@ var app = (function () {
     			append_dev(table, tbody);
     			append_dev(tbody, tr1);
     			append_dev(tr1, th5);
-    			append_dev(th5, div);
-    			append_dev(div, select);
+    			append_dev(th5, div0);
+    			append_dev(div0, select);
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
     				each_blocks[i].m(select, null);
@@ -6537,30 +6557,35 @@ var app = (function () {
     			append_dev(td0, t10);
     			append_dev(tr1, t11);
     			append_dev(tr1, td1);
-    			append_dev(td1, input);
+    			append_dev(td1, div1);
+    			append_dev(div1, input);
     			set_input_value(input, /*activePercentage*/ ctx[2]);
-    			append_dev(tr1, t12);
+    			/*input_binding*/ ctx[18](input);
+    			append_dev(div1, t12);
+    			append_dev(div1, output);
+    			/*output_binding*/ ctx[20](output);
+    			append_dev(tr1, t13);
     			append_dev(tr1, td2);
-    			append_dev(td2, t13);
-    			append_dev(tr1, t14);
+    			append_dev(td2, t14);
+    			append_dev(tr1, t15);
     			append_dev(tr1, td3);
-    			append_dev(td3, t15);
+    			append_dev(td3, t16);
 
     			if (!mounted) {
     				dispose = [
-    					listen_dev(select, "change", /*select_change_handler*/ ctx[13]),
-    					listen_dev(select, "change", /*change_handler*/ ctx[14], false, false, false),
-    					listen_dev(input, "change", /*input_change_input_handler*/ ctx[15]),
-    					listen_dev(input, "input", /*input_change_input_handler*/ ctx[15]),
-    					listen_dev(input, "change", /*change_handler_1*/ ctx[16], false, false, false)
+    					listen_dev(select, "change", /*select_change_handler*/ ctx[15]),
+    					listen_dev(select, "change", /*change_handler*/ ctx[16], false, false, false),
+    					listen_dev(input, "change", /*input_change_input_handler*/ ctx[17]),
+    					listen_dev(input, "input", /*input_change_input_handler*/ ctx[17]),
+    					listen_dev(input, "change", /*change_handler_1*/ ctx[19], false, false, false)
     				];
 
     				mounted = true;
     			}
     		},
     		p: function update(ctx, [dirty]) {
-    			if (dirty & /*getDropdownOptions*/ 64) {
-    				each_value = /*getDropdownOptions*/ ctx[6]();
+    			if (dirty & /*getDropdownOptions*/ 256) {
+    				each_value = /*getDropdownOptions*/ ctx[8]();
     				validate_each_argument(each_value);
     				let i;
 
@@ -6583,24 +6608,26 @@ var app = (function () {
     				each_blocks.length = each_value.length;
     			}
 
-    			if (dirty & /*activeCountry, getDropdownOptions*/ 65) {
+    			if (dirty & /*activeCountry, getDropdownOptions*/ 257) {
     				select_option(select, /*activeCountry*/ ctx[0]);
     			}
 
-    			if (dirty & /*gdp*/ 8 && t10_value !== (t10_value = /*formatDecimalPlaces*/ ctx[5](/*gdp*/ ctx[3]) + "")) set_data_dev(t10, t10_value);
+    			if (dirty & /*gdp*/ 8 && t10_value !== (t10_value = /*formatDecimalPlaces*/ ctx[7](/*gdp*/ ctx[3]) + "")) set_data_dev(t10, t10_value);
 
     			if (dirty & /*activePercentage*/ 4) {
     				set_input_value(input, /*activePercentage*/ ctx[2]);
     			}
 
-    			if (dirty & /*contributed*/ 2 && t13_value !== (t13_value = /*formatDecimalPlaces*/ ctx[5](/*contributed*/ ctx[1]) + "")) set_data_dev(t13, t13_value);
-    			if (dirty & /*remaining*/ 16 && t15_value !== (t15_value = /*formatDecimalPlaces*/ ctx[5](/*remaining*/ ctx[4]) + "")) set_data_dev(t15, t15_value);
+    			if (dirty & /*contributed*/ 2 && t14_value !== (t14_value = /*formatDecimalPlaces*/ ctx[7](/*contributed*/ ctx[1]) + "")) set_data_dev(t14, t14_value);
+    			if (dirty & /*remaining*/ 64 && t16_value !== (t16_value = /*formatDecimalPlaces*/ ctx[7](/*remaining*/ ctx[6]) + "")) set_data_dev(t16, t16_value);
     		},
     		i: noop,
     		o: noop,
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(table);
     			destroy_each(each_blocks, detaching);
+    			/*input_binding*/ ctx[18](null);
+    			/*output_binding*/ ctx[20](null);
     			mounted = false;
     			run_all(dispose);
     		}
@@ -6643,6 +6670,18 @@ var app = (function () {
     	let { totalReq } = $$props;
     	let { contributed } = $$props;
 
+    	const formatBubble = val => {
+    		console.log(val);
+
+    		if (val < 10) {
+    			return '.00' + val + '%';
+    		} else if (val === '100') {
+    			return '.010%';
+    		} else {
+    			return '.0' + val + '%';
+    		}
+    	};
+
     	/* formats values up to two decimal places while maintaining 1-3 digits left of the first comma (eg 500.00B or 1.00T) */
     	function formatDecimalPlaces(value) {
     		let amt = formatAmount(format('.5s')(value));
@@ -6666,18 +6705,42 @@ var app = (function () {
 
     	const handleActiveCountry = () => {
     		$$invalidate(2, activePercentage = allData.find(d => d.country === activeCountry).adjustable_gdp * 100000);
-    	};
+    	}; // setTimeout(() => {setBubble(slider,bubble)},500) 
+
+    	let slider;
+    	let bubble;
+
+    	onMount(() => {
+    		slider.addEventListener("input", () => {
+    			setBubble(slider, bubble);
+    		});
+    	});
+
+    	afterUpdate(() => {
+    		setBubble(slider, bubble);
+    	});
+
+    	function setBubble(range, bubble) {
+    		const val = range.value;
+    		const min = range.min ? range.min : 0;
+    		const max = range.max ? range.max : 100;
+    		const newVal = Number((val - min) * 100 / (max - min));
+    		bubble.innerHTML = formatBubble(val);
+
+    		// Sorta magic numbers based on size of the native UI thumb
+    		bubble.style.left = `calc(${newVal}% + (${8 - newVal * 0.15}px))`;
+    	}
 
     	const writable_props = ['activeCountry', 'allData', 'row', 'totalReq', 'contributed'];
 
     	Object.keys($$props).forEach(key => {
-    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console.warn(`<Table> was created with unknown prop '${key}'`);
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console_1$1.warn(`<Table> was created with unknown prop '${key}'`);
     	});
 
     	function select_change_handler() {
     		activeCountry = select_value(this);
     		$$invalidate(0, activeCountry);
-    		$$invalidate(6, getDropdownOptions);
+    		$$invalidate(8, getDropdownOptions);
     	}
 
     	const change_handler = () => handleActiveCountry();
@@ -6687,30 +6750,52 @@ var app = (function () {
     		$$invalidate(2, activePercentage);
     	}
 
+    	function input_binding($$value) {
+    		binding_callbacks[$$value ? 'unshift' : 'push'](() => {
+    			slider = $$value;
+    			$$invalidate(4, slider);
+    		});
+    	}
+
     	const change_handler_1 = () => handleChange();
+
+    	function output_binding($$value) {
+    		binding_callbacks[$$value ? 'unshift' : 'push'](() => {
+    			bubble = $$value;
+    			$$invalidate(5, bubble);
+    		});
+    	}
 
     	$$self.$$set = $$props => {
     		if ('activeCountry' in $$props) $$invalidate(0, activeCountry = $$props.activeCountry);
-    		if ('allData' in $$props) $$invalidate(9, allData = $$props.allData);
-    		if ('row' in $$props) $$invalidate(10, row = $$props.row);
-    		if ('totalReq' in $$props) $$invalidate(11, totalReq = $$props.totalReq);
+    		if ('allData' in $$props) $$invalidate(11, allData = $$props.allData);
+    		if ('row' in $$props) $$invalidate(12, row = $$props.row);
+    		if ('totalReq' in $$props) $$invalidate(13, totalReq = $$props.totalReq);
     		if ('contributed' in $$props) $$invalidate(1, contributed = $$props.contributed);
     	};
 
     	$$self.$capture_state = () => ({
     		Slider,
+    		range,
     		format,
+    		tippy,
+    		onMount,
+    		afterUpdate,
     		activeCountry,
     		allData,
     		row,
     		totalReq,
     		contributed,
+    		formatBubble,
     		formatAmount,
     		formatDecimalPlaces,
     		getDropdownOptions,
     		activePercentage,
     		handleChange,
     		handleActiveCountry,
+    		slider,
+    		bubble,
+    		setBubble,
     		total,
     		remaining,
     		gdp
@@ -6718,13 +6803,15 @@ var app = (function () {
 
     	$$self.$inject_state = $$props => {
     		if ('activeCountry' in $$props) $$invalidate(0, activeCountry = $$props.activeCountry);
-    		if ('allData' in $$props) $$invalidate(9, allData = $$props.allData);
-    		if ('row' in $$props) $$invalidate(10, row = $$props.row);
-    		if ('totalReq' in $$props) $$invalidate(11, totalReq = $$props.totalReq);
+    		if ('allData' in $$props) $$invalidate(11, allData = $$props.allData);
+    		if ('row' in $$props) $$invalidate(12, row = $$props.row);
+    		if ('totalReq' in $$props) $$invalidate(13, totalReq = $$props.totalReq);
     		if ('contributed' in $$props) $$invalidate(1, contributed = $$props.contributed);
     		if ('activePercentage' in $$props) $$invalidate(2, activePercentage = $$props.activePercentage);
-    		if ('total' in $$props) $$invalidate(12, total = $$props.total);
-    		if ('remaining' in $$props) $$invalidate(4, remaining = $$props.remaining);
+    		if ('slider' in $$props) $$invalidate(4, slider = $$props.slider);
+    		if ('bubble' in $$props) $$invalidate(5, bubble = $$props.bubble);
+    		if ('total' in $$props) $$invalidate(14, total = $$props.total);
+    		if ('remaining' in $$props) $$invalidate(6, remaining = $$props.remaining);
     		if ('gdp' in $$props) $$invalidate(3, gdp = $$props.gdp);
     	};
 
@@ -6733,7 +6820,7 @@ var app = (function () {
     	}
 
     	$$self.$$.update = () => {
-    		if ($$self.$$.dirty & /*allData, activeCountry*/ 513) {
+    		if ($$self.$$.dirty & /*allData, activeCountry*/ 2049) {
     			$$invalidate(3, gdp = allData.find(d => d.country === activeCountry).gdp);
     		}
 
@@ -6741,8 +6828,8 @@ var app = (function () {
     			$$invalidate(1, contributed = Math.floor(gdp * (activePercentage * 0.00001)));
     		}
 
-    		if ($$self.$$.dirty & /*allData, activeCountry, contributed, row*/ 1539) {
-    			$$invalidate(12, total = Math.floor(allData.filter(d => d.country !== activeCountry).reduce(
+    		if ($$self.$$.dirty & /*allData, activeCountry, contributed, row*/ 6147) {
+    			$$invalidate(14, total = Math.floor(allData.filter(d => d.country !== activeCountry).reduce(
     				(acc, i) => {
     					return acc + i.gdp * i.adjustable_gdp;
     				},
@@ -6750,8 +6837,8 @@ var app = (function () {
     			) + contributed + row));
     		}
 
-    		if ($$self.$$.dirty & /*totalReq, total*/ 6144) {
-    			$$invalidate(4, remaining = Math.floor(totalReq - total));
+    		if ($$self.$$.dirty & /*totalReq, total*/ 24576) {
+    			$$invalidate(6, remaining = Math.floor(totalReq - total));
     		}
     	};
 
@@ -6760,6 +6847,8 @@ var app = (function () {
     		contributed,
     		activePercentage,
     		gdp,
+    		slider,
+    		bubble,
     		remaining,
     		formatDecimalPlaces,
     		getDropdownOptions,
@@ -6772,7 +6861,9 @@ var app = (function () {
     		select_change_handler,
     		change_handler,
     		input_change_input_handler,
-    		change_handler_1
+    		input_binding,
+    		change_handler_1,
+    		output_binding
     	];
     }
 
@@ -6782,9 +6873,9 @@ var app = (function () {
 
     		init(this, options, instance$2, create_fragment$2, safe_not_equal, {
     			activeCountry: 0,
-    			allData: 9,
-    			row: 10,
-    			totalReq: 11,
+    			allData: 11,
+    			row: 12,
+    			totalReq: 13,
     			contributed: 1
     		});
 
@@ -6799,23 +6890,23 @@ var app = (function () {
     		const props = options.props || {};
 
     		if (/*activeCountry*/ ctx[0] === undefined && !('activeCountry' in props)) {
-    			console.warn("<Table> was created without expected prop 'activeCountry'");
+    			console_1$1.warn("<Table> was created without expected prop 'activeCountry'");
     		}
 
-    		if (/*allData*/ ctx[9] === undefined && !('allData' in props)) {
-    			console.warn("<Table> was created without expected prop 'allData'");
+    		if (/*allData*/ ctx[11] === undefined && !('allData' in props)) {
+    			console_1$1.warn("<Table> was created without expected prop 'allData'");
     		}
 
-    		if (/*row*/ ctx[10] === undefined && !('row' in props)) {
-    			console.warn("<Table> was created without expected prop 'row'");
+    		if (/*row*/ ctx[12] === undefined && !('row' in props)) {
+    			console_1$1.warn("<Table> was created without expected prop 'row'");
     		}
 
-    		if (/*totalReq*/ ctx[11] === undefined && !('totalReq' in props)) {
-    			console.warn("<Table> was created without expected prop 'totalReq'");
+    		if (/*totalReq*/ ctx[13] === undefined && !('totalReq' in props)) {
+    			console_1$1.warn("<Table> was created without expected prop 'totalReq'");
     		}
 
     		if (/*contributed*/ ctx[1] === undefined && !('contributed' in props)) {
-    			console.warn("<Table> was created without expected prop 'contributed'");
+    			console_1$1.warn("<Table> was created without expected prop 'contributed'");
     		}
     	}
 
@@ -6894,6 +6985,7 @@ var app = (function () {
     			attr_dev(text0, "y", "40");
     			add_location(text0, file$1, 6, 4, 181);
     			attr_dev(rect1, "fill", "url(#diagonalHatch)");
+    			attr_dev(rect1, "stroke", "#004E80");
     			attr_dev(rect1, "x", "100");
     			attr_dev(rect1, "y", "24");
     			attr_dev(rect1, "width", "20px");
@@ -6902,7 +6994,7 @@ var app = (function () {
     			add_location(rect1, file$1, 7, 4, 218);
     			attr_dev(text1, "x", "130");
     			attr_dev(text1, "y", "40");
-    			add_location(text1, file$1, 16, 4, 362);
+    			add_location(text1, file$1, 17, 4, 385);
     			attr_dev(svg, "class", "legend__squares");
     			add_location(svg, file$1, 4, 2, 66);
     			attr_dev(figure, "class", "interactive__legend legend");

@@ -49,7 +49,7 @@
       let arr = []
       for (let i of range(0, b, step)) {
         if (contributed % b > i) {
-          arr.push(arr.length)
+          arr.push(4-arr.length)
         }
       }
       return arr
@@ -65,7 +65,7 @@
       let arr = []
       for (let i of range(0, b, step)) {
         if (val % b > i) {
-          arr.push(arr.length)
+          arr.push(4-arr.length)
         }
       }
       return arr

@@ -5,41 +5,34 @@
 /*============================
 =            Slider           =
 ============================*/
-// input[type="range"] {
-//   -webkit-appearance: none;
-//  }
- 
-//  input[type="range"]:focus {
-//   outline: none;
-//  }
+.slider-wrap {
+  position: relative;
+  // margin: 0 auto 3rem;
+}
+.slider {
+  width: 100%;
+}
+.bubble {
+  background: cornflowerblue;
+  color: white;
+  padding: 4px 12px;
+  top: 25px;
+  position: absolute;
+  border-radius: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.bubble::after {
+  content: "";
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: green;
+  top: 10px;
+  left: 50%;
+}
 
-//  input[type="range"]::-webkit-slider-runnable-track {
-//   background: tomato;
-//   height: 5px;
-//  }
- 
-//  input[type="range"]::-moz-range-track {
-//   background: tomato;
-//   height: 5px;
-//  }
-
-//  input[type="range"]::-webkit-slider-thumb {
-//   -webkit-appearance: none;
-//   height: 15px;
-//   width: 15px;
-//   background: pink;
-//   margin-top: -5px;
-//   border-radius: 50%;
-//  }
- 
-//  input[type="range"]::-moz-range-thumb {
-//   height: 15px;
-//   width: 15px;
-//   background: pink;
-//   margin-top: -5px;
-//   border-radius: 50%;
-//  }
-
+// Unset default slider styling
 input[type=range]{
   -webkit-appearance: none;
   border: 1px solid white;
