@@ -4035,41 +4035,353 @@ var app = (function () {
       tippy$1(node, props);
     }
 
+    function formatDecimal(x) {
+      return Math.abs(x = Math.round(x)) >= 1e21
+          ? x.toLocaleString("en").replace(/,/g, "")
+          : x.toString(10);
+    }
+
+    // Computes the decimal coefficient and exponent of the specified number x with
+    // significant digits p, where x is positive and p is in [1, 21] or undefined.
+    // For example, formatDecimalParts(1.23) returns ["123", 0].
+    function formatDecimalParts(x, p) {
+      if ((i = (x = p ? x.toExponential(p - 1) : x.toExponential()).indexOf("e")) < 0) return null; // NaN, ±Infinity
+      var i, coefficient = x.slice(0, i);
+
+      // The string returned by toExponential either has the form \d\.\d+e[-+]\d+
+      // (e.g., 1.2e+3) or the form \de[-+]\d+ (e.g., 1e+3).
+      return [
+        coefficient.length > 1 ? coefficient[0] + coefficient.slice(2) : coefficient,
+        +x.slice(i + 1)
+      ];
+    }
+
+    function exponent(x) {
+      return x = formatDecimalParts(Math.abs(x)), x ? x[1] : NaN;
+    }
+
+    function formatGroup(grouping, thousands) {
+      return function(value, width) {
+        var i = value.length,
+            t = [],
+            j = 0,
+            g = grouping[0],
+            length = 0;
+
+        while (i > 0 && g > 0) {
+          if (length + g + 1 > width) g = Math.max(1, width - length);
+          t.push(value.substring(i -= g, i + g));
+          if ((length += g + 1) > width) break;
+          g = grouping[j = (j + 1) % grouping.length];
+        }
+
+        return t.reverse().join(thousands);
+      };
+    }
+
+    function formatNumerals(numerals) {
+      return function(value) {
+        return value.replace(/[0-9]/g, function(i) {
+          return numerals[+i];
+        });
+      };
+    }
+
+    // [[fill]align][sign][symbol][0][width][,][.precision][~][type]
+    var re = /^(?:(.)?([<>=^]))?([+\-( ])?([$#])?(0)?(\d+)?(,)?(\.\d+)?(~)?([a-z%])?$/i;
+
+    function formatSpecifier(specifier) {
+      if (!(match = re.exec(specifier))) throw new Error("invalid format: " + specifier);
+      var match;
+      return new FormatSpecifier({
+        fill: match[1],
+        align: match[2],
+        sign: match[3],
+        symbol: match[4],
+        zero: match[5],
+        width: match[6],
+        comma: match[7],
+        precision: match[8] && match[8].slice(1),
+        trim: match[9],
+        type: match[10]
+      });
+    }
+
+    formatSpecifier.prototype = FormatSpecifier.prototype; // instanceof
+
+    function FormatSpecifier(specifier) {
+      this.fill = specifier.fill === undefined ? " " : specifier.fill + "";
+      this.align = specifier.align === undefined ? ">" : specifier.align + "";
+      this.sign = specifier.sign === undefined ? "-" : specifier.sign + "";
+      this.symbol = specifier.symbol === undefined ? "" : specifier.symbol + "";
+      this.zero = !!specifier.zero;
+      this.width = specifier.width === undefined ? undefined : +specifier.width;
+      this.comma = !!specifier.comma;
+      this.precision = specifier.precision === undefined ? undefined : +specifier.precision;
+      this.trim = !!specifier.trim;
+      this.type = specifier.type === undefined ? "" : specifier.type + "";
+    }
+
+    FormatSpecifier.prototype.toString = function() {
+      return this.fill
+          + this.align
+          + this.sign
+          + this.symbol
+          + (this.zero ? "0" : "")
+          + (this.width === undefined ? "" : Math.max(1, this.width | 0))
+          + (this.comma ? "," : "")
+          + (this.precision === undefined ? "" : "." + Math.max(0, this.precision | 0))
+          + (this.trim ? "~" : "")
+          + this.type;
+    };
+
+    // Trims insignificant zeros, e.g., replaces 1.2000k with 1.2k.
+    function formatTrim(s) {
+      out: for (var n = s.length, i = 1, i0 = -1, i1; i < n; ++i) {
+        switch (s[i]) {
+          case ".": i0 = i1 = i; break;
+          case "0": if (i0 === 0) i0 = i; i1 = i; break;
+          default: if (!+s[i]) break out; if (i0 > 0) i0 = 0; break;
+        }
+      }
+      return i0 > 0 ? s.slice(0, i0) + s.slice(i1 + 1) : s;
+    }
+
+    var prefixExponent;
+
+    function formatPrefixAuto(x, p) {
+      var d = formatDecimalParts(x, p);
+      if (!d) return x + "";
+      var coefficient = d[0],
+          exponent = d[1],
+          i = exponent - (prefixExponent = Math.max(-8, Math.min(8, Math.floor(exponent / 3))) * 3) + 1,
+          n = coefficient.length;
+      return i === n ? coefficient
+          : i > n ? coefficient + new Array(i - n + 1).join("0")
+          : i > 0 ? coefficient.slice(0, i) + "." + coefficient.slice(i)
+          : "0." + new Array(1 - i).join("0") + formatDecimalParts(x, Math.max(0, p + i - 1))[0]; // less than 1y!
+    }
+
+    function formatRounded(x, p) {
+      var d = formatDecimalParts(x, p);
+      if (!d) return x + "";
+      var coefficient = d[0],
+          exponent = d[1];
+      return exponent < 0 ? "0." + new Array(-exponent).join("0") + coefficient
+          : coefficient.length > exponent + 1 ? coefficient.slice(0, exponent + 1) + "." + coefficient.slice(exponent + 1)
+          : coefficient + new Array(exponent - coefficient.length + 2).join("0");
+    }
+
+    var formatTypes = {
+      "%": (x, p) => (x * 100).toFixed(p),
+      "b": (x) => Math.round(x).toString(2),
+      "c": (x) => x + "",
+      "d": formatDecimal,
+      "e": (x, p) => x.toExponential(p),
+      "f": (x, p) => x.toFixed(p),
+      "g": (x, p) => x.toPrecision(p),
+      "o": (x) => Math.round(x).toString(8),
+      "p": (x, p) => formatRounded(x * 100, p),
+      "r": formatRounded,
+      "s": formatPrefixAuto,
+      "X": (x) => Math.round(x).toString(16).toUpperCase(),
+      "x": (x) => Math.round(x).toString(16)
+    };
+
+    function identity(x) {
+      return x;
+    }
+
+    var map = Array.prototype.map,
+        prefixes = ["y","z","a","f","p","n","µ","m","","k","M","G","T","P","E","Z","Y"];
+
+    function formatLocale(locale) {
+      var group = locale.grouping === undefined || locale.thousands === undefined ? identity : formatGroup(map.call(locale.grouping, Number), locale.thousands + ""),
+          currencyPrefix = locale.currency === undefined ? "" : locale.currency[0] + "",
+          currencySuffix = locale.currency === undefined ? "" : locale.currency[1] + "",
+          decimal = locale.decimal === undefined ? "." : locale.decimal + "",
+          numerals = locale.numerals === undefined ? identity : formatNumerals(map.call(locale.numerals, String)),
+          percent = locale.percent === undefined ? "%" : locale.percent + "",
+          minus = locale.minus === undefined ? "−" : locale.minus + "",
+          nan = locale.nan === undefined ? "NaN" : locale.nan + "";
+
+      function newFormat(specifier) {
+        specifier = formatSpecifier(specifier);
+
+        var fill = specifier.fill,
+            align = specifier.align,
+            sign = specifier.sign,
+            symbol = specifier.symbol,
+            zero = specifier.zero,
+            width = specifier.width,
+            comma = specifier.comma,
+            precision = specifier.precision,
+            trim = specifier.trim,
+            type = specifier.type;
+
+        // The "n" type is an alias for ",g".
+        if (type === "n") comma = true, type = "g";
+
+        // The "" type, and any invalid type, is an alias for ".12~g".
+        else if (!formatTypes[type]) precision === undefined && (precision = 12), trim = true, type = "g";
+
+        // If zero fill is specified, padding goes after sign and before digits.
+        if (zero || (fill === "0" && align === "=")) zero = true, fill = "0", align = "=";
+
+        // Compute the prefix and suffix.
+        // For SI-prefix, the suffix is lazily computed.
+        var prefix = symbol === "$" ? currencyPrefix : symbol === "#" && /[boxX]/.test(type) ? "0" + type.toLowerCase() : "",
+            suffix = symbol === "$" ? currencySuffix : /[%p]/.test(type) ? percent : "";
+
+        // What format function should we use?
+        // Is this an integer type?
+        // Can this type generate exponential notation?
+        var formatType = formatTypes[type],
+            maybeSuffix = /[defgprs%]/.test(type);
+
+        // Set the default precision if not specified,
+        // or clamp the specified precision to the supported range.
+        // For significant precision, it must be in [1, 21].
+        // For fixed precision, it must be in [0, 20].
+        precision = precision === undefined ? 6
+            : /[gprs]/.test(type) ? Math.max(1, Math.min(21, precision))
+            : Math.max(0, Math.min(20, precision));
+
+        function format(value) {
+          var valuePrefix = prefix,
+              valueSuffix = suffix,
+              i, n, c;
+
+          if (type === "c") {
+            valueSuffix = formatType(value) + valueSuffix;
+            value = "";
+          } else {
+            value = +value;
+
+            // Determine the sign. -0 is not less than 0, but 1 / -0 is!
+            var valueNegative = value < 0 || 1 / value < 0;
+
+            // Perform the initial formatting.
+            value = isNaN(value) ? nan : formatType(Math.abs(value), precision);
+
+            // Trim insignificant zeros.
+            if (trim) value = formatTrim(value);
+
+            // If a negative value rounds to zero after formatting, and no explicit positive sign is requested, hide the sign.
+            if (valueNegative && +value === 0 && sign !== "+") valueNegative = false;
+
+            // Compute the prefix and suffix.
+            valuePrefix = (valueNegative ? (sign === "(" ? sign : minus) : sign === "-" || sign === "(" ? "" : sign) + valuePrefix;
+            valueSuffix = (type === "s" ? prefixes[8 + prefixExponent / 3] : "") + valueSuffix + (valueNegative && sign === "(" ? ")" : "");
+
+            // Break the formatted value into the integer “value” part that can be
+            // grouped, and fractional or exponential “suffix” part that is not.
+            if (maybeSuffix) {
+              i = -1, n = value.length;
+              while (++i < n) {
+                if (c = value.charCodeAt(i), 48 > c || c > 57) {
+                  valueSuffix = (c === 46 ? decimal + value.slice(i + 1) : value.slice(i)) + valueSuffix;
+                  value = value.slice(0, i);
+                  break;
+                }
+              }
+            }
+          }
+
+          // If the fill character is not "0", grouping is applied before padding.
+          if (comma && !zero) value = group(value, Infinity);
+
+          // Compute the padding.
+          var length = valuePrefix.length + value.length + valueSuffix.length,
+              padding = length < width ? new Array(width - length + 1).join(fill) : "";
+
+          // If the fill character is "0", grouping is applied after padding.
+          if (comma && zero) value = group(padding + value, padding.length ? width - valueSuffix.length : Infinity), padding = "";
+
+          // Reconstruct the final output based on the desired alignment.
+          switch (align) {
+            case "<": value = valuePrefix + value + valueSuffix + padding; break;
+            case "=": value = valuePrefix + padding + value + valueSuffix; break;
+            case "^": value = padding.slice(0, length = padding.length >> 1) + valuePrefix + value + valueSuffix + padding.slice(length); break;
+            default: value = padding + valuePrefix + value + valueSuffix; break;
+          }
+
+          return numerals(value);
+        }
+
+        format.toString = function() {
+          return specifier + "";
+        };
+
+        return format;
+      }
+
+      function formatPrefix(specifier, value) {
+        var f = newFormat((specifier = formatSpecifier(specifier), specifier.type = "f", specifier)),
+            e = Math.max(-8, Math.min(8, Math.floor(exponent(value) / 3))) * 3,
+            k = Math.pow(10, -e),
+            prefix = prefixes[8 + e / 3];
+        return function(value) {
+          return f(k * value) + prefix;
+        };
+      }
+
+      return {
+        format: newFormat,
+        formatPrefix: formatPrefix
+      };
+    }
+
+    var locale;
+    var format;
+
+    defaultLocale({
+      thousands: ",",
+      grouping: [3],
+      currency: ["$", ""]
+    });
+
+    function defaultLocale(definition) {
+      locale = formatLocale(definition);
+      format = locale.format;
+      return locale;
+    }
+
     /* src/components/Chart.svelte generated by Svelte v3.43.1 */
     const file$4 = "src/components/Chart.svelte";
 
     function get_each_context$1(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[14] = list[i];
-    	child_ctx[16] = i;
+    	child_ctx[15] = list[i];
+    	child_ctx[17] = i;
     	return child_ctx;
     }
 
     function get_each_context_1(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[17] = list[i];
+    	child_ctx[18] = list[i];
     	return child_ctx;
     }
 
     function get_each_context_2(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[20] = list[i];
+    	child_ctx[21] = list[i];
     	return child_ctx;
     }
 
     function get_each_context_3(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[17] = list[i];
+    	child_ctx[18] = list[i];
     	return child_ctx;
     }
 
     function get_each_context_4(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[20] = list[i];
+    	child_ctx[21] = list[i];
     	return child_ctx;
     }
 
-    // (87:10) {#each getActiveRemainingRow(i) as j}
+    // (112:12) {#each getActiveRemainingRow(i) as j}
     function create_each_block_4(ctx) {
     	let rect;
     	let rect_x_value;
@@ -4080,20 +4392,20 @@ var app = (function () {
     			rect = svg_element("rect");
     			attr_dev(rect, "width", "20px");
     			attr_dev(rect, "height", "20px");
-    			attr_dev(rect, "x", rect_x_value = /*i*/ ctx[17] * 24);
-    			attr_dev(rect, "y", rect_y_value = /*j*/ ctx[20] * 24);
+    			attr_dev(rect, "x", rect_x_value = /*i*/ ctx[18] * 24);
+    			attr_dev(rect, "y", rect_y_value = /*j*/ ctx[21] * 24);
     			attr_dev(rect, "fill", "url(#gradient)");
-    			add_location(rect, file$4, 87, 12, 2325);
+    			add_location(rect, file$4, 112, 14, 3150);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, rect, anchor);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*activeChartRange*/ 16 && rect_x_value !== (rect_x_value = /*i*/ ctx[17] * 24)) {
+    			if (dirty & /*activeChartRange*/ 16 && rect_x_value !== (rect_x_value = /*i*/ ctx[18] * 24)) {
     				attr_dev(rect, "x", rect_x_value);
     			}
 
-    			if (dirty & /*activeChartRange*/ 16 && rect_y_value !== (rect_y_value = /*j*/ ctx[20] * 24)) {
+    			if (dirty & /*activeChartRange*/ 16 && rect_y_value !== (rect_y_value = /*j*/ ctx[21] * 24)) {
     				attr_dev(rect, "y", rect_y_value);
     			}
     		},
@@ -4106,17 +4418,17 @@ var app = (function () {
     		block,
     		id: create_each_block_4.name,
     		type: "each",
-    		source: "(87:10) {#each getActiveRemainingRow(i) as j}",
+    		source: "(112:12) {#each getActiveRemainingRow(i) as j}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (86:8) {#each activeChartRange as i}
+    // (111:10) {#each activeChartRange as i}
     function create_each_block_3(ctx) {
     	let each_1_anchor;
-    	let each_value_4 = /*getActiveRemainingRow*/ ctx[6](/*i*/ ctx[17]);
+    	let each_value_4 = /*getActiveRemainingRow*/ ctx[6](/*i*/ ctx[18]);
     	validate_each_argument(each_value_4);
     	let each_blocks = [];
 
@@ -4141,7 +4453,7 @@ var app = (function () {
     		},
     		p: function update(ctx, dirty) {
     			if (dirty & /*activeChartRange, getActiveRemainingRow*/ 80) {
-    				each_value_4 = /*getActiveRemainingRow*/ ctx[6](/*i*/ ctx[17]);
+    				each_value_4 = /*getActiveRemainingRow*/ ctx[6](/*i*/ ctx[18]);
     				validate_each_argument(each_value_4);
     				let i;
 
@@ -4174,24 +4486,24 @@ var app = (function () {
     		block,
     		id: create_each_block_3.name,
     		type: "each",
-    		source: "(86:8) {#each activeChartRange as i}",
+    		source: "(111:10) {#each activeChartRange as i}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (102:8) {#if country.country !== activeCountry}
+    // (148:10) {#if country.country !== activeCountry}
     function create_if_block$1(ctx) {
     	let g;
     	let g_data_attr_value;
     	let rect;
     	let rect_y_value;
     	let text_1;
-    	let t_value = /*country*/ ctx[14].country + "";
+    	let t_value = /*country*/ ctx[15].country + "";
     	let t;
     	let text_1_y_value;
-    	let each_value_1 = /*chartRange*/ ctx[5](/*country*/ ctx[14]);
+    	let each_value_1 = /*chartRange*/ ctx[5](/*country*/ ctx[15]);
     	validate_each_argument(each_value_1);
     	let each_blocks = [];
 
@@ -4210,8 +4522,8 @@ var app = (function () {
     			rect = svg_element("rect");
     			text_1 = svg_element("text");
     			t = text$1(t_value);
-    			attr_dev(g, "data-attr", g_data_attr_value = /*country*/ ctx[14].country);
-    			add_location(g, file$4, 102, 10, 3033);
+    			attr_dev(g, "data-attr", g_data_attr_value = /*country*/ ctx[15].country);
+    			add_location(g, file$4, 148, 12, 4128);
     			attr_dev(rect, "fill", "none");
     			attr_dev(rect, "stroke", "#c5c5c5");
     			attr_dev(rect, "stroke-width", "1.5");
@@ -4220,10 +4532,10 @@ var app = (function () {
     			attr_dev(rect, "width", "15px");
     			attr_dev(rect, "height", "1");
     			attr_dev(rect, "id", "svg_2");
-    			add_location(rect, file$4, 109, 10, 3383);
+    			add_location(rect, file$4, 163, 12, 4661);
     			attr_dev(text_1, "x", "0");
     			attr_dev(text_1, "y", text_1_y_value = /*height*/ ctx[3] - 40);
-    			add_location(text_1, file$4, 110, 10, 3512);
+    			add_location(text_1, file$4, 172, 12, 4906);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, g, anchor);
@@ -4238,7 +4550,7 @@ var app = (function () {
     		},
     		p: function update(ctx, dirty) {
     			if (dirty & /*getRemainingRow, chartRange, allData, formatTooltip*/ 418) {
-    				each_value_1 = /*chartRange*/ ctx[5](/*country*/ ctx[14]);
+    				each_value_1 = /*chartRange*/ ctx[5](/*country*/ ctx[15]);
     				validate_each_argument(each_value_1);
     				let i;
 
@@ -4261,7 +4573,7 @@ var app = (function () {
     				each_blocks.length = each_value_1.length;
     			}
 
-    			if (dirty & /*allData*/ 2 && g_data_attr_value !== (g_data_attr_value = /*country*/ ctx[14].country)) {
+    			if (dirty & /*allData*/ 2 && g_data_attr_value !== (g_data_attr_value = /*country*/ ctx[15].country)) {
     				attr_dev(g, "data-attr", g_data_attr_value);
     			}
 
@@ -4269,7 +4581,7 @@ var app = (function () {
     				attr_dev(rect, "y", rect_y_value);
     			}
 
-    			if (dirty & /*allData*/ 2 && t_value !== (t_value = /*country*/ ctx[14].country + "")) set_data_dev(t, t_value);
+    			if (dirty & /*allData*/ 2 && t_value !== (t_value = /*country*/ ctx[15].country + "")) set_data_dev(t, t_value);
 
     			if (dirty & /*height*/ 8 && text_1_y_value !== (text_1_y_value = /*height*/ ctx[3] - 40)) {
     				attr_dev(text_1, "y", text_1_y_value);
@@ -4287,14 +4599,14 @@ var app = (function () {
     		block,
     		id: create_if_block$1.name,
     		type: "if",
-    		source: "(102:8) {#if country.country !== activeCountry}",
+    		source: "(148:10) {#if country.country !== activeCountry}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (105:14) {#each getRemainingRow(i, country) as j}
+    // (151:16) {#each getRemainingRow(i, country) as j}
     function create_each_block_2(ctx) {
     	let rect;
     	let rect_x_value;
@@ -4308,30 +4620,30 @@ var app = (function () {
     			rect = svg_element("rect");
     			attr_dev(rect, "width", "12px");
     			attr_dev(rect, "height", "12px");
-    			attr_dev(rect, "x", rect_x_value = /*i*/ ctx[17] * 16);
-    			attr_dev(rect, "y", rect_y_value = /*j*/ ctx[20] * 16);
-    			add_location(rect, file$4, 105, 16, 3182);
+    			attr_dev(rect, "x", rect_x_value = /*i*/ ctx[18] * 16);
+    			attr_dev(rect, "y", rect_y_value = /*j*/ ctx[21] * 16);
+    			add_location(rect, file$4, 151, 18, 4284);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, rect, anchor);
 
     			if (!mounted) {
-    				dispose = action_destroyer(tippy_action = tippy.call(null, rect, /*formatTooltip*/ ctx[8](/*country*/ ctx[14], `tooltip-node-${/*countryIndex*/ ctx[16]}`)));
+    				dispose = action_destroyer(tippy_action = tippy.call(null, rect, /*formatTooltip*/ ctx[8](/*country*/ ctx[15], `tooltip-node-${/*countryIndex*/ ctx[17]}`)));
     				mounted = true;
     			}
     		},
     		p: function update(new_ctx, dirty) {
     			ctx = new_ctx;
 
-    			if (dirty & /*allData*/ 2 && rect_x_value !== (rect_x_value = /*i*/ ctx[17] * 16)) {
+    			if (dirty & /*allData*/ 2 && rect_x_value !== (rect_x_value = /*i*/ ctx[18] * 16)) {
     				attr_dev(rect, "x", rect_x_value);
     			}
 
-    			if (dirty & /*allData*/ 2 && rect_y_value !== (rect_y_value = /*j*/ ctx[20] * 16)) {
+    			if (dirty & /*allData*/ 2 && rect_y_value !== (rect_y_value = /*j*/ ctx[21] * 16)) {
     				attr_dev(rect, "y", rect_y_value);
     			}
 
-    			if (tippy_action && is_function(tippy_action.update) && dirty & /*allData*/ 2) tippy_action.update.call(null, /*formatTooltip*/ ctx[8](/*country*/ ctx[14], `tooltip-node-${/*countryIndex*/ ctx[16]}`));
+    			if (tippy_action && is_function(tippy_action.update) && dirty & /*allData*/ 2) tippy_action.update.call(null, /*formatTooltip*/ ctx[8](/*country*/ ctx[15], `tooltip-node-${/*countryIndex*/ ctx[17]}`));
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(rect);
@@ -4344,17 +4656,17 @@ var app = (function () {
     		block,
     		id: create_each_block_2.name,
     		type: "each",
-    		source: "(105:14) {#each getRemainingRow(i, country) as j}",
+    		source: "(151:16) {#each getRemainingRow(i, country) as j}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (104:12) {#each chartRange(country) as i}
+    // (150:14) {#each chartRange(country) as i}
     function create_each_block_1(ctx) {
     	let each_1_anchor;
-    	let each_value_2 = /*getRemainingRow*/ ctx[7](/*i*/ ctx[17], /*country*/ ctx[14]);
+    	let each_value_2 = /*getRemainingRow*/ ctx[7](/*i*/ ctx[18], /*country*/ ctx[15]);
     	validate_each_argument(each_value_2);
     	let each_blocks = [];
 
@@ -4379,7 +4691,7 @@ var app = (function () {
     		},
     		p: function update(ctx, dirty) {
     			if (dirty & /*chartRange, allData, getRemainingRow, formatTooltip*/ 418) {
-    				each_value_2 = /*getRemainingRow*/ ctx[7](/*i*/ ctx[17], /*country*/ ctx[14]);
+    				each_value_2 = /*getRemainingRow*/ ctx[7](/*i*/ ctx[18], /*country*/ ctx[15]);
     				validate_each_argument(each_value_2);
     				let i;
 
@@ -4412,21 +4724,21 @@ var app = (function () {
     		block,
     		id: create_each_block_1.name,
     		type: "each",
-    		source: "(104:12) {#each chartRange(country) as i}",
+    		source: "(150:14) {#each chartRange(country) as i}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (99:2) {#each allData as country, countryIndex}
+    // (140:4) {#each allData as country, countryIndex}
     function create_each_block$1(ctx) {
     	let figure;
     	let svg_1;
     	let t;
     	let figure_data_attr_value;
     	let figure_resize_listener;
-    	let if_block = /*country*/ ctx[14].country !== /*activeCountry*/ ctx[0] && create_if_block$1(ctx);
+    	let if_block = /*country*/ ctx[15].country !== /*activeCountry*/ ctx[0] && create_if_block$1(ctx);
 
     	const block = {
     		c: function create() {
@@ -4434,11 +4746,11 @@ var app = (function () {
     			svg_1 = svg_element("svg");
     			if (if_block) if_block.c();
     			t = space();
-    			add_location(svg_1, file$4, 100, 6, 2968);
-    			attr_dev(figure, "class", "interactive__charts " + ('inactive-' + /*countryIndex*/ ctx[16]));
-    			attr_dev(figure, "data-attr", figure_data_attr_value = /*country*/ ctx[14].country);
+    			add_location(svg_1, file$4, 146, 8, 4060);
+    			attr_dev(figure, "class", "interactive__charts " + ('inactive-' + /*countryIndex*/ ctx[17]));
+    			attr_dev(figure, "data-attr", figure_data_attr_value = /*country*/ ctx[15].country);
     			add_render_callback(() => /*figure_elementresize_handler_1*/ ctx[11].call(figure));
-    			add_location(figure, file$4, 99, 4, 2815);
+    			add_location(figure, file$4, 140, 6, 3861);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, figure, anchor);
@@ -4448,7 +4760,7 @@ var app = (function () {
     			figure_resize_listener = add_resize_listener(figure, /*figure_elementresize_handler_1*/ ctx[11].bind(figure));
     		},
     		p: function update(ctx, dirty) {
-    			if (/*country*/ ctx[14].country !== /*activeCountry*/ ctx[0]) {
+    			if (/*country*/ ctx[15].country !== /*activeCountry*/ ctx[0]) {
     				if (if_block) {
     					if_block.p(ctx, dirty);
     				} else {
@@ -4461,7 +4773,7 @@ var app = (function () {
     				if_block = null;
     			}
 
-    			if (dirty & /*allData*/ 2 && figure_data_attr_value !== (figure_data_attr_value = /*country*/ ctx[14].country)) {
+    			if (dirty & /*allData*/ 2 && figure_data_attr_value !== (figure_data_attr_value = /*country*/ ctx[15].country)) {
     				attr_dev(figure, "data-attr", figure_data_attr_value);
     			}
     		},
@@ -4476,14 +4788,14 @@ var app = (function () {
     		block,
     		id: create_each_block$1.name,
     		type: "each",
-    		source: "(99:2) {#each allData as country, countryIndex}",
+    		source: "(140:4) {#each allData as country, countryIndex}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (76:0) {#key activeCountry}
+    // (98:0) {#key activeCountry}
     function create_key_block(ctx) {
     	let div;
     	let figure;
@@ -4540,14 +4852,14 @@ var app = (function () {
 
     			attr_dev(stop0, "class", "main-stop");
     			attr_dev(stop0, "offset", "0%");
-    			add_location(stop0, file$4, 81, 8, 2078);
+    			add_location(stop0, file$4, 106, 10, 2881);
     			attr_dev(stop1, "class", "alt-stop");
     			attr_dev(stop1, "offset", "100%");
-    			add_location(stop1, file$4, 82, 8, 2125);
+    			add_location(stop1, file$4, 107, 10, 2935);
     			attr_dev(linearGradient, "id", "gradient");
-    			add_location(linearGradient, file$4, 80, 6, 2039);
+    			add_location(linearGradient, file$4, 105, 8, 2840);
     			attr_dev(g, "data-attr", /*activeCountry*/ ctx[0]);
-    			add_location(g, file$4, 84, 8, 2197);
+    			add_location(g, file$4, 109, 8, 3014);
     			attr_dev(rect, "fill", "none");
     			attr_dev(rect, "stroke", "#c5c5c5");
     			attr_dev(rect, "stroke-width", "1.5");
@@ -4556,17 +4868,17 @@ var app = (function () {
     			attr_dev(rect, "width", "15px");
     			attr_dev(rect, "height", "1");
     			attr_dev(rect, "id", "svg_2");
-    			add_location(rect, file$4, 91, 8, 2469);
+    			add_location(rect, file$4, 123, 8, 3408);
     			attr_dev(text_1, "x", "0");
     			attr_dev(text_1, "y", text_1_y_value = /*height*/ ctx[3] - 5);
-    			add_location(text_1, file$4, 92, 8, 2598);
+    			add_location(text_1, file$4, 134, 8, 3635);
     			attr_dev(svg_1, "class", "green");
-    			add_location(svg_1, file$4, 79, 4, 2013);
+    			add_location(svg_1, file$4, 104, 6, 2812);
     			attr_dev(figure, "class", "interactive__charts active");
     			add_render_callback(() => /*figure_elementresize_handler*/ ctx[10].call(figure));
-    			add_location(figure, file$4, 78, 2, 1912);
+    			add_location(figure, file$4, 99, 4, 2683);
     			attr_dev(div, "class", "yo");
-    			add_location(div, file$4, 76, 0, 1890);
+    			add_location(div, file$4, 98, 2, 2662);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -4666,7 +4978,7 @@ var app = (function () {
     		block,
     		id: create_key_block.name,
     		type: "key",
-    		source: "(76:0) {#key activeCountry}",
+    		source: "(98:0) {#key activeCountry}",
     		ctx
     	});
 
@@ -4721,6 +5033,21 @@ var app = (function () {
 
     const b = 1000000000;
 
+    // Helper f(n) for formatDecimalPlaces
+    function formatAmount$1(value) {
+    	if (window.innerWidth < 768) {
+    		return value.replace(/G/, 'B').slice(-1)[0];
+    	}
+
+    	if (value.includes('T')) {
+    		return 'T';
+    	} else if (value.includes('G')) {
+    		return 'B';
+    	} else {
+    		return 'M';
+    	}
+    }
+
     function instance$4($$self, $$props, $$invalidate) {
     	let activeChartRange;
     	let { $$slots: slots = {}, $$scope } = $$props;
@@ -4732,6 +5059,14 @@ var app = (function () {
     	let width = 300;
     	let height = 300;
     	const margin = { top: 5, right: 10, bottom: 10, left: 10 };
+
+    	/* formats values up to two decimal places while maintaining 1-3 digits left of the first comma (eg 500.00B or 1.00T) */
+    	function formatDecimalPlaces(value) {
+    		let amt = formatAmount$1(format('.5s')(value));
+    		let numOne = format('$.5s')(value).split('.')[0];
+    		let numTwo = format('.5s')(value).split('.')[1].slice(0, 1);
+    		return numOne + '.' + numTwo + amt;
+    	}
 
     	const chartRange = country => {
     		const val = allData.find(d => d.country === country.country).funding;
@@ -4778,19 +5113,19 @@ var app = (function () {
     	const formatTooltip = (data, selector) => {
     		const template = `
       <h2 class="tooltip__heading">${data.country}</h2>
-      <ul class="port-values" role="list">
-        <li><div>GDP:${data.gdp}</div> </li>
-        <li><div>Contributed: ${data.funding}</div> </li>
+      <ul class="tooltip__values" role="list">
+        <li>GDP:<span> ${formatDecimalPlaces(data.gdp)}</span> </li>
+        <li>Contributed:<span> ${formatDecimalPlaces(data.funding)}</span> </li>
       </ul>
     `;
 
     		return {
     			content: template,
     			allowHTML: true,
-    			placement: "top",
+    			placement: 'top',
     			maxWidth: 175,
     			triggerTarget: document.getElementById(selector),
-    			touch: false
+    			touch: true
     		};
     	};
 
@@ -4824,6 +5159,7 @@ var app = (function () {
     		filter,
     		range,
     		tippy,
+    		format,
     		activeCountry,
     		allData,
     		contributed,
@@ -4832,6 +5168,8 @@ var app = (function () {
     		height,
     		margin,
     		b,
+    		formatAmount: formatAmount$1,
+    		formatDecimalPlaces,
     		chartRange,
     		getActiveRemainingRow,
     		getRemainingRow,
@@ -5980,318 +6318,6 @@ var app = (function () {
     	set order(value) {
     		throw new Error("<Slider>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
-    }
-
-    function formatDecimal(x) {
-      return Math.abs(x = Math.round(x)) >= 1e21
-          ? x.toLocaleString("en").replace(/,/g, "")
-          : x.toString(10);
-    }
-
-    // Computes the decimal coefficient and exponent of the specified number x with
-    // significant digits p, where x is positive and p is in [1, 21] or undefined.
-    // For example, formatDecimalParts(1.23) returns ["123", 0].
-    function formatDecimalParts(x, p) {
-      if ((i = (x = p ? x.toExponential(p - 1) : x.toExponential()).indexOf("e")) < 0) return null; // NaN, ±Infinity
-      var i, coefficient = x.slice(0, i);
-
-      // The string returned by toExponential either has the form \d\.\d+e[-+]\d+
-      // (e.g., 1.2e+3) or the form \de[-+]\d+ (e.g., 1e+3).
-      return [
-        coefficient.length > 1 ? coefficient[0] + coefficient.slice(2) : coefficient,
-        +x.slice(i + 1)
-      ];
-    }
-
-    function exponent(x) {
-      return x = formatDecimalParts(Math.abs(x)), x ? x[1] : NaN;
-    }
-
-    function formatGroup(grouping, thousands) {
-      return function(value, width) {
-        var i = value.length,
-            t = [],
-            j = 0,
-            g = grouping[0],
-            length = 0;
-
-        while (i > 0 && g > 0) {
-          if (length + g + 1 > width) g = Math.max(1, width - length);
-          t.push(value.substring(i -= g, i + g));
-          if ((length += g + 1) > width) break;
-          g = grouping[j = (j + 1) % grouping.length];
-        }
-
-        return t.reverse().join(thousands);
-      };
-    }
-
-    function formatNumerals(numerals) {
-      return function(value) {
-        return value.replace(/[0-9]/g, function(i) {
-          return numerals[+i];
-        });
-      };
-    }
-
-    // [[fill]align][sign][symbol][0][width][,][.precision][~][type]
-    var re = /^(?:(.)?([<>=^]))?([+\-( ])?([$#])?(0)?(\d+)?(,)?(\.\d+)?(~)?([a-z%])?$/i;
-
-    function formatSpecifier(specifier) {
-      if (!(match = re.exec(specifier))) throw new Error("invalid format: " + specifier);
-      var match;
-      return new FormatSpecifier({
-        fill: match[1],
-        align: match[2],
-        sign: match[3],
-        symbol: match[4],
-        zero: match[5],
-        width: match[6],
-        comma: match[7],
-        precision: match[8] && match[8].slice(1),
-        trim: match[9],
-        type: match[10]
-      });
-    }
-
-    formatSpecifier.prototype = FormatSpecifier.prototype; // instanceof
-
-    function FormatSpecifier(specifier) {
-      this.fill = specifier.fill === undefined ? " " : specifier.fill + "";
-      this.align = specifier.align === undefined ? ">" : specifier.align + "";
-      this.sign = specifier.sign === undefined ? "-" : specifier.sign + "";
-      this.symbol = specifier.symbol === undefined ? "" : specifier.symbol + "";
-      this.zero = !!specifier.zero;
-      this.width = specifier.width === undefined ? undefined : +specifier.width;
-      this.comma = !!specifier.comma;
-      this.precision = specifier.precision === undefined ? undefined : +specifier.precision;
-      this.trim = !!specifier.trim;
-      this.type = specifier.type === undefined ? "" : specifier.type + "";
-    }
-
-    FormatSpecifier.prototype.toString = function() {
-      return this.fill
-          + this.align
-          + this.sign
-          + this.symbol
-          + (this.zero ? "0" : "")
-          + (this.width === undefined ? "" : Math.max(1, this.width | 0))
-          + (this.comma ? "," : "")
-          + (this.precision === undefined ? "" : "." + Math.max(0, this.precision | 0))
-          + (this.trim ? "~" : "")
-          + this.type;
-    };
-
-    // Trims insignificant zeros, e.g., replaces 1.2000k with 1.2k.
-    function formatTrim(s) {
-      out: for (var n = s.length, i = 1, i0 = -1, i1; i < n; ++i) {
-        switch (s[i]) {
-          case ".": i0 = i1 = i; break;
-          case "0": if (i0 === 0) i0 = i; i1 = i; break;
-          default: if (!+s[i]) break out; if (i0 > 0) i0 = 0; break;
-        }
-      }
-      return i0 > 0 ? s.slice(0, i0) + s.slice(i1 + 1) : s;
-    }
-
-    var prefixExponent;
-
-    function formatPrefixAuto(x, p) {
-      var d = formatDecimalParts(x, p);
-      if (!d) return x + "";
-      var coefficient = d[0],
-          exponent = d[1],
-          i = exponent - (prefixExponent = Math.max(-8, Math.min(8, Math.floor(exponent / 3))) * 3) + 1,
-          n = coefficient.length;
-      return i === n ? coefficient
-          : i > n ? coefficient + new Array(i - n + 1).join("0")
-          : i > 0 ? coefficient.slice(0, i) + "." + coefficient.slice(i)
-          : "0." + new Array(1 - i).join("0") + formatDecimalParts(x, Math.max(0, p + i - 1))[0]; // less than 1y!
-    }
-
-    function formatRounded(x, p) {
-      var d = formatDecimalParts(x, p);
-      if (!d) return x + "";
-      var coefficient = d[0],
-          exponent = d[1];
-      return exponent < 0 ? "0." + new Array(-exponent).join("0") + coefficient
-          : coefficient.length > exponent + 1 ? coefficient.slice(0, exponent + 1) + "." + coefficient.slice(exponent + 1)
-          : coefficient + new Array(exponent - coefficient.length + 2).join("0");
-    }
-
-    var formatTypes = {
-      "%": (x, p) => (x * 100).toFixed(p),
-      "b": (x) => Math.round(x).toString(2),
-      "c": (x) => x + "",
-      "d": formatDecimal,
-      "e": (x, p) => x.toExponential(p),
-      "f": (x, p) => x.toFixed(p),
-      "g": (x, p) => x.toPrecision(p),
-      "o": (x) => Math.round(x).toString(8),
-      "p": (x, p) => formatRounded(x * 100, p),
-      "r": formatRounded,
-      "s": formatPrefixAuto,
-      "X": (x) => Math.round(x).toString(16).toUpperCase(),
-      "x": (x) => Math.round(x).toString(16)
-    };
-
-    function identity(x) {
-      return x;
-    }
-
-    var map = Array.prototype.map,
-        prefixes = ["y","z","a","f","p","n","µ","m","","k","M","G","T","P","E","Z","Y"];
-
-    function formatLocale(locale) {
-      var group = locale.grouping === undefined || locale.thousands === undefined ? identity : formatGroup(map.call(locale.grouping, Number), locale.thousands + ""),
-          currencyPrefix = locale.currency === undefined ? "" : locale.currency[0] + "",
-          currencySuffix = locale.currency === undefined ? "" : locale.currency[1] + "",
-          decimal = locale.decimal === undefined ? "." : locale.decimal + "",
-          numerals = locale.numerals === undefined ? identity : formatNumerals(map.call(locale.numerals, String)),
-          percent = locale.percent === undefined ? "%" : locale.percent + "",
-          minus = locale.minus === undefined ? "−" : locale.minus + "",
-          nan = locale.nan === undefined ? "NaN" : locale.nan + "";
-
-      function newFormat(specifier) {
-        specifier = formatSpecifier(specifier);
-
-        var fill = specifier.fill,
-            align = specifier.align,
-            sign = specifier.sign,
-            symbol = specifier.symbol,
-            zero = specifier.zero,
-            width = specifier.width,
-            comma = specifier.comma,
-            precision = specifier.precision,
-            trim = specifier.trim,
-            type = specifier.type;
-
-        // The "n" type is an alias for ",g".
-        if (type === "n") comma = true, type = "g";
-
-        // The "" type, and any invalid type, is an alias for ".12~g".
-        else if (!formatTypes[type]) precision === undefined && (precision = 12), trim = true, type = "g";
-
-        // If zero fill is specified, padding goes after sign and before digits.
-        if (zero || (fill === "0" && align === "=")) zero = true, fill = "0", align = "=";
-
-        // Compute the prefix and suffix.
-        // For SI-prefix, the suffix is lazily computed.
-        var prefix = symbol === "$" ? currencyPrefix : symbol === "#" && /[boxX]/.test(type) ? "0" + type.toLowerCase() : "",
-            suffix = symbol === "$" ? currencySuffix : /[%p]/.test(type) ? percent : "";
-
-        // What format function should we use?
-        // Is this an integer type?
-        // Can this type generate exponential notation?
-        var formatType = formatTypes[type],
-            maybeSuffix = /[defgprs%]/.test(type);
-
-        // Set the default precision if not specified,
-        // or clamp the specified precision to the supported range.
-        // For significant precision, it must be in [1, 21].
-        // For fixed precision, it must be in [0, 20].
-        precision = precision === undefined ? 6
-            : /[gprs]/.test(type) ? Math.max(1, Math.min(21, precision))
-            : Math.max(0, Math.min(20, precision));
-
-        function format(value) {
-          var valuePrefix = prefix,
-              valueSuffix = suffix,
-              i, n, c;
-
-          if (type === "c") {
-            valueSuffix = formatType(value) + valueSuffix;
-            value = "";
-          } else {
-            value = +value;
-
-            // Determine the sign. -0 is not less than 0, but 1 / -0 is!
-            var valueNegative = value < 0 || 1 / value < 0;
-
-            // Perform the initial formatting.
-            value = isNaN(value) ? nan : formatType(Math.abs(value), precision);
-
-            // Trim insignificant zeros.
-            if (trim) value = formatTrim(value);
-
-            // If a negative value rounds to zero after formatting, and no explicit positive sign is requested, hide the sign.
-            if (valueNegative && +value === 0 && sign !== "+") valueNegative = false;
-
-            // Compute the prefix and suffix.
-            valuePrefix = (valueNegative ? (sign === "(" ? sign : minus) : sign === "-" || sign === "(" ? "" : sign) + valuePrefix;
-            valueSuffix = (type === "s" ? prefixes[8 + prefixExponent / 3] : "") + valueSuffix + (valueNegative && sign === "(" ? ")" : "");
-
-            // Break the formatted value into the integer “value” part that can be
-            // grouped, and fractional or exponential “suffix” part that is not.
-            if (maybeSuffix) {
-              i = -1, n = value.length;
-              while (++i < n) {
-                if (c = value.charCodeAt(i), 48 > c || c > 57) {
-                  valueSuffix = (c === 46 ? decimal + value.slice(i + 1) : value.slice(i)) + valueSuffix;
-                  value = value.slice(0, i);
-                  break;
-                }
-              }
-            }
-          }
-
-          // If the fill character is not "0", grouping is applied before padding.
-          if (comma && !zero) value = group(value, Infinity);
-
-          // Compute the padding.
-          var length = valuePrefix.length + value.length + valueSuffix.length,
-              padding = length < width ? new Array(width - length + 1).join(fill) : "";
-
-          // If the fill character is "0", grouping is applied after padding.
-          if (comma && zero) value = group(padding + value, padding.length ? width - valueSuffix.length : Infinity), padding = "";
-
-          // Reconstruct the final output based on the desired alignment.
-          switch (align) {
-            case "<": value = valuePrefix + value + valueSuffix + padding; break;
-            case "=": value = valuePrefix + padding + value + valueSuffix; break;
-            case "^": value = padding.slice(0, length = padding.length >> 1) + valuePrefix + value + valueSuffix + padding.slice(length); break;
-            default: value = padding + valuePrefix + value + valueSuffix; break;
-          }
-
-          return numerals(value);
-        }
-
-        format.toString = function() {
-          return specifier + "";
-        };
-
-        return format;
-      }
-
-      function formatPrefix(specifier, value) {
-        var f = newFormat((specifier = formatSpecifier(specifier), specifier.type = "f", specifier)),
-            e = Math.max(-8, Math.min(8, Math.floor(exponent(value) / 3))) * 3,
-            k = Math.pow(10, -e),
-            prefix = prefixes[8 + e / 3];
-        return function(value) {
-          return f(k * value) + prefix;
-        };
-      }
-
-      return {
-        format: newFormat,
-        formatPrefix: formatPrefix
-      };
-    }
-
-    var locale;
-    var format;
-
-    defaultLocale({
-      thousands: ",",
-      grouping: [3],
-      currency: ["$", ""]
-    });
-
-    function defaultLocale(definition) {
-      locale = formatLocale(definition);
-      format = locale.format;
-      return locale;
     }
 
     /* src/components/Table.svelte generated by Svelte v3.43.1 */

@@ -4,68 +4,74 @@
 /*================================
 =            Tooltips            =
 ================================*/
-.tippy-content,
-.interactive__tooltip {
-  max-width: 175px;
+.tippy-content {
+  width: 100%;
   padding: 0.75rem !important;
   color: $color__gray-900;
   @include font-size(14px);
   line-height: 1.2;
-  text-align: center;
   background-color: $color__white;
   border: 1px solid $color__primary;
   border-radius: 3px;
   opacity: 0.95;
 }
 
+.tippy-box {
+  background-color: transparent !important;
+}
+
+.tippy-backdrop {
+  background-color: transparent;
+}
+
+.tippy-box[data-placement^='top'] > .tippy-arrow::before {
+  border-top-color: $color__primary !important;
+}
+
+.tippy-box[data-placement^='bottom'].tippy-arrow::before {
+  border-bottom-color: $color__primary !important;
+}
+
+.tippy-box[data-placement^='left'].tippy-arrow::before {
+  border-left-color: $color__primary !important;
+}
+
+.tippy-box[data-placement^='right'].tippy-arrow::before {
+  border-right-color: $color__primary !important;
+}
+
 .tooltip {
   &__heading {
+    text-align: center;
     margin: 0 0 rem(12px);
     padding: 0 0 rem(4px);
-    font-family: $font__roboto;
+    font-family: $font__museo;
     color: $color__primary;
     @include font-size(16px);
     font-weight: 600;
     letter-spacing: 0.02em;
-    
-    &::after {
-      content: '';
-      display: block;
-      position: relative;
-      top: 3px;
-      width: rem(32px);
-      border-bottom: 2px solid $color__gray-300;
-    }
   }
-}
 
-.country-values {
-  display: flex;
-  margin-right: rem(-132px);
-  margin: 0;
-  padding: 0;
-  color: $color__black;
-  @include font-size(14px);
-  list-style: none;
-
-  @include breakpoint(medium) {
+  &__values {
     margin: 0;
-    display: block;
-  }
-
-  li {
-    position: relative;
-    margin-bottom: 0.5rem;
-    margin-right: 1.5rem;
+    padding: 0;
+    color: $color__gray-900;
+    @include font-size(14px);
+    list-style: none;
+    text-transform: uppercase;
 
     @include breakpoint(medium) {
-      margin-right: 1.5rem;
+      margin: 0;
+      display: block;
     }
-  }
 
-  div {
-    color: $color__item-labels;
-    @include font-size(12px);
-    text-transform: uppercase;
+    li {
+      position: relative;
+      margin-bottom: 0.5rem;
+    }
+
+    span {
+      font-weight: 600;
+    }
   }
 }
