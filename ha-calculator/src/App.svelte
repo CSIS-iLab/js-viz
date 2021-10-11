@@ -2,6 +2,7 @@
   import parseData from './data.js'
   import Chart from './components/Chart.svelte'
   import Table from './components/Table.svelte'
+  import Legend from './components/Legend.svelte'
 
   $: totalReq = 38536692263
   $: remaining = 0
@@ -88,11 +89,13 @@
   {:then allData}
     <Table
       allData="{allData.data}"
-      row={allData.row.funding}
+      row="{allData.row.funding}"
       bind:activeCountry
       totalReq="{totalReq}"
       bind:contributed
     />
+
+    <Legend />
 
     <Chart
       allData="{allData.data}"
@@ -104,8 +107,7 @@
   {/await}
 </main>
 
-<style type="text/scss">
-
+<style type="text/scss" global>
   @import './scss/components/_header.scss';
   @import './scss/layout/_layout.scss';
 </style>

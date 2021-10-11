@@ -5,47 +5,10 @@
 =            Chart           =
 ============================*/
 
-.yo {
-  position: relative;
-  width: 100%;
-  max-width: $size__max-width;
-  margin: 0 auto;
-  display: grid;
-  grid-template-areas: 'active active' 'inactive-0 inactive-1' 'inactive-2 inactive-3';
-
-  .active {
-    grid-area: active;
-    stroke: unset;
-    margin-bottom: 4rem;
-    margin-top: 2rem;
-  }
-
-  .inactive-0 {
-    grid-area: inactive-0;
-  }
-
-  .inactive-1 {
-    grid-area: inactive-1;
-  }
-
-  .inactive-2 {
-    grid-area: inactive-2;
-  }
-
-  .inactive-3 {
-    grid-area: inactive-3;
-  }
-}
-
 .interactive__charts {
   position: relative;
   width: 100%;
-  // max-width: $size__content-max-width;
   margin: 0 auto;
-  fill: $color__blue;
-  stroke: $color__dkblue;
-  stroke-width: 1.5px;
-  // border: 1px solid cornflowerblue;
 
   &:hover {
     fill: $color__dkblue;
@@ -58,9 +21,12 @@
   svg {
     width: 100%;
     height: 100%;
-  }
+    fill: $color__blue;
+    stroke: $color__dkblue;
+    stroke-width: 1.5px;
 
-  text {
-    border-top: 1px solid red;
+    rect:last-of-type {
+      fill: url(#diagonalHatch);
+    }
   }
 }

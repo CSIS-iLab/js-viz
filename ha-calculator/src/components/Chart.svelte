@@ -94,9 +94,8 @@
   }
 </script>
 
-<!-- <div>Active Country: {activeCountry}</div> -->
 {#key activeCountry}
-  <div class="yo">
+  <div class="interactive__charts-container">
     <figure
       class="interactive__charts active"
       bind:clientWidth="{width}"
@@ -145,6 +144,17 @@
         data-attr="{country.country}"
       >
         <svg>
+          <defs>
+            <pattern
+              id="diagonalHatch"
+              patternUnits="userSpaceOnUse"
+              width="4"
+              height="4"
+              patternTransform="rotate(-45 2 2)"
+            >
+              <path d="M -1,2 l 6,0" stroke="#000000" stroke-width="1"></path>
+            </pattern>
+          </defs>
           {#if country.country !== activeCountry}
             <g data-attr="{country.country}">
               {#each chartRange(country) as i}
@@ -157,7 +167,9 @@
                     use:tippy="{formatTooltip(
                       country,
                       `tooltip-node-${countryIndex}`
-                    )}"></rect>
+                    )}"
+                  >
+                  </rect>
                 {/each}
               {/each}
             </g>
@@ -181,8 +193,6 @@
 <style type="text/scss" global>
   @import '../scss/custom/_chart.scss';
   @import '../scss/components/_tooltips.scss';
-  // @import './scss/components/_header.scss';
-  // @import './scss/layout/_layout.scss';
 
   .main-stop {
     stop-color: #0064a3;

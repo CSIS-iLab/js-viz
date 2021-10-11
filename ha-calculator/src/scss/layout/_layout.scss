@@ -8,3 +8,35 @@
   max-width: $size__content-max-width;
   margin: 0 auto;
 }
+
+.interactive__charts-container {
+  position: relative;
+  width: 100%;
+  max-width: $size__max-width;
+  margin: 0 auto;
+  display: grid;
+  grid-template-areas: 'active active' 'inactive-0 inactive-1' 'inactive-2 inactive-3';
+
+  .active {
+    grid-area: active;
+    stroke: unset;
+    margin-bottom: 4rem;
+    margin-top: 2rem;
+  }
+
+  .inactive-0 {
+    grid-area: inactive-0;
+  }
+
+  .inactive-1 {
+    grid-area: inactive-1;
+  }
+
+  .inactive-2 {
+    grid-area: inactive-2;
+  }
+
+  .inactive-3 {
+    grid-area: inactive-3;
+  }
+}
