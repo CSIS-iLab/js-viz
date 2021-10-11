@@ -136,8 +136,8 @@
       </svg>
     </figure>
 
-    <!-- {#each allData.filter(d => d.country !== activeCountry) as country, countryIndex} -->
-    {#each allData as country, countryIndex}
+    {#each allData.filter((d) => d.country !== activeCountry) as country, countryIndex}
+      <!-- {#each allData as country, countryIndex} -->
       <figure
         class="interactive__charts {'inactive-' + countryIndex}"
         bind:clientWidth="{width}"

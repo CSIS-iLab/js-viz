@@ -4352,32 +4352,32 @@ var app = (function () {
 
     function get_each_context$1(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[15] = list[i];
-    	child_ctx[17] = i;
+    	child_ctx[16] = list[i];
+    	child_ctx[18] = i;
     	return child_ctx;
     }
 
     function get_each_context_1(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[18] = list[i];
+    	child_ctx[19] = list[i];
     	return child_ctx;
     }
 
     function get_each_context_2(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[21] = list[i];
+    	child_ctx[22] = list[i];
     	return child_ctx;
     }
 
     function get_each_context_3(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[18] = list[i];
+    	child_ctx[19] = list[i];
     	return child_ctx;
     }
 
     function get_each_context_4(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[21] = list[i];
+    	child_ctx[22] = list[i];
     	return child_ctx;
     }
 
@@ -4392,8 +4392,8 @@ var app = (function () {
     			rect = svg_element("rect");
     			attr_dev(rect, "width", "20px");
     			attr_dev(rect, "height", "20px");
-    			attr_dev(rect, "x", rect_x_value = /*i*/ ctx[18] * 24);
-    			attr_dev(rect, "y", rect_y_value = /*j*/ ctx[21] * 24);
+    			attr_dev(rect, "x", rect_x_value = /*i*/ ctx[19] * 24);
+    			attr_dev(rect, "y", rect_y_value = /*j*/ ctx[22] * 24);
     			attr_dev(rect, "fill", "url(#gradient)");
     			add_location(rect, file$4, 112, 14, 3150);
     		},
@@ -4401,11 +4401,11 @@ var app = (function () {
     			insert_dev(target, rect, anchor);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*activeChartRange*/ 16 && rect_x_value !== (rect_x_value = /*i*/ ctx[18] * 24)) {
+    			if (dirty & /*activeChartRange*/ 16 && rect_x_value !== (rect_x_value = /*i*/ ctx[19] * 24)) {
     				attr_dev(rect, "x", rect_x_value);
     			}
 
-    			if (dirty & /*activeChartRange*/ 16 && rect_y_value !== (rect_y_value = /*j*/ ctx[21] * 24)) {
+    			if (dirty & /*activeChartRange*/ 16 && rect_y_value !== (rect_y_value = /*j*/ ctx[22] * 24)) {
     				attr_dev(rect, "y", rect_y_value);
     			}
     		},
@@ -4428,7 +4428,7 @@ var app = (function () {
     // (111:10) {#each activeChartRange as i}
     function create_each_block_3(ctx) {
     	let each_1_anchor;
-    	let each_value_4 = /*getActiveRemainingRow*/ ctx[6](/*i*/ ctx[18]);
+    	let each_value_4 = /*getActiveRemainingRow*/ ctx[6](/*i*/ ctx[19]);
     	validate_each_argument(each_value_4);
     	let each_blocks = [];
 
@@ -4453,7 +4453,7 @@ var app = (function () {
     		},
     		p: function update(ctx, dirty) {
     			if (dirty & /*activeChartRange, getActiveRemainingRow*/ 80) {
-    				each_value_4 = /*getActiveRemainingRow*/ ctx[6](/*i*/ ctx[18]);
+    				each_value_4 = /*getActiveRemainingRow*/ ctx[6](/*i*/ ctx[19]);
     				validate_each_argument(each_value_4);
     				let i;
 
@@ -4500,10 +4500,10 @@ var app = (function () {
     	let rect;
     	let rect_y_value;
     	let text_1;
-    	let t_value = /*country*/ ctx[15].country + "";
+    	let t_value = /*country*/ ctx[16].country + "";
     	let t;
     	let text_1_y_value;
-    	let each_value_1 = /*chartRange*/ ctx[5](/*country*/ ctx[15]);
+    	let each_value_1 = /*chartRange*/ ctx[5](/*country*/ ctx[16]);
     	validate_each_argument(each_value_1);
     	let each_blocks = [];
 
@@ -4522,8 +4522,8 @@ var app = (function () {
     			rect = svg_element("rect");
     			text_1 = svg_element("text");
     			t = text$1(t_value);
-    			attr_dev(g, "data-attr", g_data_attr_value = /*country*/ ctx[15].country);
-    			add_location(g, file$4, 148, 12, 4128);
+    			attr_dev(g, "data-attr", g_data_attr_value = /*country*/ ctx[16].country);
+    			add_location(g, file$4, 148, 12, 4132);
     			attr_dev(rect, "fill", "none");
     			attr_dev(rect, "stroke", "#c5c5c5");
     			attr_dev(rect, "stroke-width", "1.5");
@@ -4532,10 +4532,10 @@ var app = (function () {
     			attr_dev(rect, "width", "15px");
     			attr_dev(rect, "height", "1");
     			attr_dev(rect, "id", "svg_2");
-    			add_location(rect, file$4, 163, 12, 4661);
+    			add_location(rect, file$4, 163, 12, 4665);
     			attr_dev(text_1, "x", "0");
     			attr_dev(text_1, "y", text_1_y_value = /*height*/ ctx[3] - 40);
-    			add_location(text_1, file$4, 172, 12, 4906);
+    			add_location(text_1, file$4, 172, 12, 4910);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, g, anchor);
@@ -4549,8 +4549,8 @@ var app = (function () {
     			append_dev(text_1, t);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*getRemainingRow, chartRange, allData, formatTooltip*/ 418) {
-    				each_value_1 = /*chartRange*/ ctx[5](/*country*/ ctx[15]);
+    			if (dirty & /*getRemainingRow, chartRange, allData, activeCountry, formatTooltip*/ 419) {
+    				each_value_1 = /*chartRange*/ ctx[5](/*country*/ ctx[16]);
     				validate_each_argument(each_value_1);
     				let i;
 
@@ -4573,7 +4573,7 @@ var app = (function () {
     				each_blocks.length = each_value_1.length;
     			}
 
-    			if (dirty & /*allData*/ 2 && g_data_attr_value !== (g_data_attr_value = /*country*/ ctx[15].country)) {
+    			if (dirty & /*allData, activeCountry*/ 3 && g_data_attr_value !== (g_data_attr_value = /*country*/ ctx[16].country)) {
     				attr_dev(g, "data-attr", g_data_attr_value);
     			}
 
@@ -4581,7 +4581,7 @@ var app = (function () {
     				attr_dev(rect, "y", rect_y_value);
     			}
 
-    			if (dirty & /*allData*/ 2 && t_value !== (t_value = /*country*/ ctx[15].country + "")) set_data_dev(t, t_value);
+    			if (dirty & /*allData, activeCountry*/ 3 && t_value !== (t_value = /*country*/ ctx[16].country + "")) set_data_dev(t, t_value);
 
     			if (dirty & /*height*/ 8 && text_1_y_value !== (text_1_y_value = /*height*/ ctx[3] - 40)) {
     				attr_dev(text_1, "y", text_1_y_value);
@@ -4620,30 +4620,30 @@ var app = (function () {
     			rect = svg_element("rect");
     			attr_dev(rect, "width", "12px");
     			attr_dev(rect, "height", "12px");
-    			attr_dev(rect, "x", rect_x_value = /*i*/ ctx[18] * 16);
-    			attr_dev(rect, "y", rect_y_value = /*j*/ ctx[21] * 16);
-    			add_location(rect, file$4, 151, 18, 4284);
+    			attr_dev(rect, "x", rect_x_value = /*i*/ ctx[19] * 16);
+    			attr_dev(rect, "y", rect_y_value = /*j*/ ctx[22] * 16);
+    			add_location(rect, file$4, 151, 18, 4288);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, rect, anchor);
 
     			if (!mounted) {
-    				dispose = action_destroyer(tippy_action = tippy.call(null, rect, /*formatTooltip*/ ctx[8](/*country*/ ctx[15], `tooltip-node-${/*countryIndex*/ ctx[17]}`)));
+    				dispose = action_destroyer(tippy_action = tippy.call(null, rect, /*formatTooltip*/ ctx[8](/*country*/ ctx[16], `tooltip-node-${/*countryIndex*/ ctx[18]}`)));
     				mounted = true;
     			}
     		},
     		p: function update(new_ctx, dirty) {
     			ctx = new_ctx;
 
-    			if (dirty & /*allData*/ 2 && rect_x_value !== (rect_x_value = /*i*/ ctx[18] * 16)) {
+    			if (dirty & /*allData, activeCountry*/ 3 && rect_x_value !== (rect_x_value = /*i*/ ctx[19] * 16)) {
     				attr_dev(rect, "x", rect_x_value);
     			}
 
-    			if (dirty & /*allData*/ 2 && rect_y_value !== (rect_y_value = /*j*/ ctx[21] * 16)) {
+    			if (dirty & /*allData, activeCountry*/ 3 && rect_y_value !== (rect_y_value = /*j*/ ctx[22] * 16)) {
     				attr_dev(rect, "y", rect_y_value);
     			}
 
-    			if (tippy_action && is_function(tippy_action.update) && dirty & /*allData*/ 2) tippy_action.update.call(null, /*formatTooltip*/ ctx[8](/*country*/ ctx[15], `tooltip-node-${/*countryIndex*/ ctx[17]}`));
+    			if (tippy_action && is_function(tippy_action.update) && dirty & /*allData, activeCountry*/ 3) tippy_action.update.call(null, /*formatTooltip*/ ctx[8](/*country*/ ctx[16], `tooltip-node-${/*countryIndex*/ ctx[18]}`));
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(rect);
@@ -4666,7 +4666,7 @@ var app = (function () {
     // (150:14) {#each chartRange(country) as i}
     function create_each_block_1(ctx) {
     	let each_1_anchor;
-    	let each_value_2 = /*getRemainingRow*/ ctx[7](/*i*/ ctx[18], /*country*/ ctx[15]);
+    	let each_value_2 = /*getRemainingRow*/ ctx[7](/*i*/ ctx[19], /*country*/ ctx[16]);
     	validate_each_argument(each_value_2);
     	let each_blocks = [];
 
@@ -4690,8 +4690,8 @@ var app = (function () {
     			insert_dev(target, each_1_anchor, anchor);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*chartRange, allData, getRemainingRow, formatTooltip*/ 418) {
-    				each_value_2 = /*getRemainingRow*/ ctx[7](/*i*/ ctx[18], /*country*/ ctx[15]);
+    			if (dirty & /*chartRange, allData, activeCountry, getRemainingRow, formatTooltip*/ 419) {
+    				each_value_2 = /*getRemainingRow*/ ctx[7](/*i*/ ctx[19], /*country*/ ctx[16]);
     				validate_each_argument(each_value_2);
     				let i;
 
@@ -4731,14 +4731,14 @@ var app = (function () {
     	return block;
     }
 
-    // (140:4) {#each allData as country, countryIndex}
+    // (139:4) {#each allData.filter((d) => d.country !== activeCountry) as country, countryIndex}
     function create_each_block$1(ctx) {
     	let figure;
     	let svg_1;
     	let t;
     	let figure_data_attr_value;
     	let figure_resize_listener;
-    	let if_block = /*country*/ ctx[15].country !== /*activeCountry*/ ctx[0] && create_if_block$1(ctx);
+    	let if_block = /*country*/ ctx[16].country !== /*activeCountry*/ ctx[0] && create_if_block$1(ctx);
 
     	const block = {
     		c: function create() {
@@ -4746,21 +4746,21 @@ var app = (function () {
     			svg_1 = svg_element("svg");
     			if (if_block) if_block.c();
     			t = space();
-    			add_location(svg_1, file$4, 146, 8, 4060);
-    			attr_dev(figure, "class", "interactive__charts " + ('inactive-' + /*countryIndex*/ ctx[17]));
-    			attr_dev(figure, "data-attr", figure_data_attr_value = /*country*/ ctx[15].country);
-    			add_render_callback(() => /*figure_elementresize_handler_1*/ ctx[11].call(figure));
-    			add_location(figure, file$4, 140, 6, 3861);
+    			add_location(svg_1, file$4, 146, 8, 4064);
+    			attr_dev(figure, "class", "interactive__charts " + ('inactive-' + /*countryIndex*/ ctx[18]));
+    			attr_dev(figure, "data-attr", figure_data_attr_value = /*country*/ ctx[16].country);
+    			add_render_callback(() => /*figure_elementresize_handler_1*/ ctx[12].call(figure));
+    			add_location(figure, file$4, 140, 6, 3865);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, figure, anchor);
     			append_dev(figure, svg_1);
     			if (if_block) if_block.m(svg_1, null);
     			append_dev(figure, t);
-    			figure_resize_listener = add_resize_listener(figure, /*figure_elementresize_handler_1*/ ctx[11].bind(figure));
+    			figure_resize_listener = add_resize_listener(figure, /*figure_elementresize_handler_1*/ ctx[12].bind(figure));
     		},
     		p: function update(ctx, dirty) {
-    			if (/*country*/ ctx[15].country !== /*activeCountry*/ ctx[0]) {
+    			if (/*country*/ ctx[16].country !== /*activeCountry*/ ctx[0]) {
     				if (if_block) {
     					if_block.p(ctx, dirty);
     				} else {
@@ -4773,7 +4773,7 @@ var app = (function () {
     				if_block = null;
     			}
 
-    			if (dirty & /*allData*/ 2 && figure_data_attr_value !== (figure_data_attr_value = /*country*/ ctx[15].country)) {
+    			if (dirty & /*allData, activeCountry*/ 3 && figure_data_attr_value !== (figure_data_attr_value = /*country*/ ctx[16].country)) {
     				attr_dev(figure, "data-attr", figure_data_attr_value);
     			}
     		},
@@ -4788,7 +4788,7 @@ var app = (function () {
     		block,
     		id: create_each_block$1.name,
     		type: "each",
-    		source: "(140:4) {#each allData as country, countryIndex}",
+    		source: "(139:4) {#each allData.filter((d) => d.country !== activeCountry) as country, countryIndex}",
     		ctx
     	});
 
@@ -4819,7 +4819,7 @@ var app = (function () {
     		each_blocks_1[i] = create_each_block_3(get_each_context_3(ctx, each_value_3, i));
     	}
 
-    	let each_value = /*allData*/ ctx[1];
+    	let each_value = /*allData*/ ctx[1].filter(/*func*/ ctx[11]);
     	validate_each_argument(each_value);
     	let each_blocks = [];
 
@@ -4942,8 +4942,8 @@ var app = (function () {
     				attr_dev(text_1, "y", text_1_y_value);
     			}
 
-    			if (dirty & /*allData, width, height, chartRange, getRemainingRow, formatTooltip, activeCountry*/ 431) {
-    				each_value = /*allData*/ ctx[1];
+    			if (dirty & /*allData, activeCountry, width, height, chartRange, getRemainingRow, formatTooltip*/ 431) {
+    				each_value = /*allData*/ ctx[1].filter(/*func*/ ctx[11]);
     				validate_each_argument(each_value);
     				let i;
 
@@ -5142,6 +5142,8 @@ var app = (function () {
     		$$invalidate(3, height);
     	}
 
+    	const func = d => d.country !== activeCountry;
+
     	function figure_elementresize_handler_1() {
     		width = this.clientWidth;
     		height = this.clientHeight;
@@ -5209,6 +5211,7 @@ var app = (function () {
     		formatTooltip,
     		contributed,
     		figure_elementresize_handler,
+    		func,
     		figure_elementresize_handler_1
     	];
     }
@@ -6329,7 +6332,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (102:12) {#each getDropdownOptions() as option}
+    // (99:12) {#each getDropdownOptions() as option}
     function create_each_block(ctx) {
     	let option;
     	let t_value = /*option*/ ctx[17] + "";
@@ -6341,7 +6344,7 @@ var app = (function () {
     			t = text$1(t_value);
     			option.__value = /*option*/ ctx[17];
     			option.value = option.__value;
-    			add_location(option, file$1, 102, 14, 2859);
+    			add_location(option, file$1, 99, 14, 2757);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, option, anchor);
@@ -6357,7 +6360,7 @@ var app = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(102:12) {#each getDropdownOptions() as option}",
+    		source: "(99:12) {#each getDropdownOptions() as option}",
     		ctx
     	});
 
@@ -6385,20 +6388,22 @@ var app = (function () {
     	let select;
     	let t9;
     	let td0;
+    	let t10_value = /*formatDecimalPlaces*/ ctx[5](/*gdp*/ ctx[3]) + "";
+    	let t10;
     	let t11;
     	let td1;
     	let input;
     	let t12;
     	let td2;
-    	let t13_value = /*formatDecimalPlaces*/ ctx[4](/*contributed*/ ctx[1]) + "";
+    	let t13_value = /*formatDecimalPlaces*/ ctx[5](/*contributed*/ ctx[1]) + "";
     	let t13;
     	let t14;
     	let td3;
-    	let t15_value = /*formatDecimalPlaces*/ ctx[4](/*remaining*/ ctx[3]) + "";
+    	let t15_value = /*formatDecimalPlaces*/ ctx[5](/*remaining*/ ctx[4]) + "";
     	let t15;
     	let mounted;
     	let dispose;
-    	let each_value = /*getDropdownOptions*/ ctx[5]();
+    	let each_value = /*getDropdownOptions*/ ctx[6]();
     	validate_each_argument(each_value);
     	let each_blocks = [];
 
@@ -6437,7 +6442,7 @@ var app = (function () {
 
     			t9 = space();
     			td0 = element("td");
-    			td0.textContent = `${/*formatDecimalPlaces*/ ctx[4](/*getAttr*/ ctx[6]('gdp'))}`;
+    			t10 = text$1(t10_value);
     			t11 = space();
     			td1 = element("td");
     			input = element("input");
@@ -6447,37 +6452,37 @@ var app = (function () {
     			t14 = space();
     			td3 = element("td");
     			t15 = text$1(t15_value);
-    			add_location(th0, file$1, 85, 6, 2396);
-    			add_location(th1, file$1, 86, 6, 2412);
-    			add_location(th2, file$1, 87, 6, 2431);
-    			add_location(th3, file$1, 88, 6, 2460);
-    			add_location(th4, file$1, 89, 6, 2489);
+    			add_location(th0, file$1, 82, 6, 2294);
+    			add_location(th1, file$1, 83, 6, 2310);
+    			add_location(th2, file$1, 84, 6, 2329);
+    			add_location(th3, file$1, 85, 6, 2358);
+    			add_location(th4, file$1, 86, 6, 2387);
     			attr_dev(tr0, "class", "interactive__subheading");
-    			add_location(tr0, file$1, 84, 4, 2353);
-    			add_location(thead, file$1, 83, 2, 2341);
+    			add_location(tr0, file$1, 81, 4, 2251);
+    			add_location(thead, file$1, 80, 2, 2239);
     			attr_dev(select, "class", "input__select");
     			if (/*activeCountry*/ ctx[0] === void 0) add_render_callback(() => /*select_change_handler*/ ctx[13].call(select));
-    			add_location(select, file$1, 96, 10, 2645);
+    			add_location(select, file$1, 93, 10, 2543);
     			attr_dev(div, "class", "interactive__dropdown");
-    			add_location(div, file$1, 95, 8, 2599);
+    			add_location(div, file$1, 92, 8, 2497);
     			attr_dev(th5, "class", "interactive__subheading");
-    			add_location(th5, file$1, 94, 6, 2554);
-    			add_location(td0, file$1, 107, 6, 2975);
+    			add_location(th5, file$1, 91, 6, 2452);
+    			add_location(td0, file$1, 104, 6, 2873);
     			attr_dev(input, "type", "range");
     			attr_dev(input, "min", "0");
     			attr_dev(input, "max", "100");
-    			add_location(input, file$1, 113, 8, 3272);
-    			add_location(td1, file$1, 110, 6, 3044);
+    			add_location(input, file$1, 108, 8, 2944);
+    			add_location(td1, file$1, 107, 6, 2931);
     			attr_dev(td2, "class", "calc-values");
-    			add_location(td2, file$1, 121, 6, 3456);
+    			add_location(td2, file$1, 116, 6, 3128);
     			attr_dev(td3, "class", "calc-values");
-    			add_location(td3, file$1, 124, 6, 3542);
-    			add_location(tr1, file$1, 93, 4, 2543);
-    			add_location(tbody, file$1, 92, 2, 2531);
+    			add_location(td3, file$1, 119, 6, 3214);
+    			add_location(tr1, file$1, 90, 4, 2441);
+    			add_location(tbody, file$1, 89, 2, 2429);
     			attr_dev(table, "class", "interactive__table interactive__table--large");
     			attr_dev(table, "cellpadding", "0");
     			attr_dev(table, "cellspacing", "0");
-    			add_location(table, file$1, 82, 0, 2246);
+    			add_location(table, file$1, 75, 0, 2137);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -6509,6 +6514,7 @@ var app = (function () {
     			select_option(select, /*activeCountry*/ ctx[0]);
     			append_dev(tr1, t9);
     			append_dev(tr1, td0);
+    			append_dev(td0, t10);
     			append_dev(tr1, t11);
     			append_dev(tr1, td1);
     			append_dev(td1, input);
@@ -6533,8 +6539,8 @@ var app = (function () {
     			}
     		},
     		p: function update(ctx, [dirty]) {
-    			if (dirty & /*getDropdownOptions*/ 32) {
-    				each_value = /*getDropdownOptions*/ ctx[5]();
+    			if (dirty & /*getDropdownOptions*/ 64) {
+    				each_value = /*getDropdownOptions*/ ctx[6]();
     				validate_each_argument(each_value);
     				let i;
 
@@ -6557,16 +6563,18 @@ var app = (function () {
     				each_blocks.length = each_value.length;
     			}
 
-    			if (dirty & /*activeCountry, getDropdownOptions*/ 33) {
+    			if (dirty & /*activeCountry, getDropdownOptions*/ 65) {
     				select_option(select, /*activeCountry*/ ctx[0]);
     			}
+
+    			if (dirty & /*gdp*/ 8 && t10_value !== (t10_value = /*formatDecimalPlaces*/ ctx[5](/*gdp*/ ctx[3]) + "")) set_data_dev(t10, t10_value);
 
     			if (dirty & /*activePercentage*/ 4) {
     				set_input_value(input, /*activePercentage*/ ctx[2]);
     			}
 
-    			if (dirty & /*contributed*/ 2 && t13_value !== (t13_value = /*formatDecimalPlaces*/ ctx[4](/*contributed*/ ctx[1]) + "")) set_data_dev(t13, t13_value);
-    			if (dirty & /*remaining*/ 8 && t15_value !== (t15_value = /*formatDecimalPlaces*/ ctx[4](/*remaining*/ ctx[3]) + "")) set_data_dev(t15, t15_value);
+    			if (dirty & /*contributed*/ 2 && t13_value !== (t13_value = /*formatDecimalPlaces*/ ctx[5](/*contributed*/ ctx[1]) + "")) set_data_dev(t13, t13_value);
+    			if (dirty & /*remaining*/ 16 && t15_value !== (t15_value = /*formatDecimalPlaces*/ ctx[5](/*remaining*/ ctx[4]) + "")) set_data_dev(t15, t15_value);
     		},
     		i: noop,
     		o: noop,
@@ -6604,6 +6612,7 @@ var app = (function () {
     }
 
     function instance$1($$self, $$props, $$invalidate) {
+    	let gdp;
     	let remaining;
     	let total;
     	let { $$slots: slots = {}, $$scope } = $$props;
@@ -6626,13 +6635,8 @@ var app = (function () {
     		return allData.sort((a, b) => a.country.localeCompare(b.country)).map(c => c.country);
     	};
 
-    	const getAttr = attr => {
-    		return allData.find(d => d.country === activeCountry)[attr];
-    	};
-
     	let activePercentage = allData.find(d => d.country === activeCountry).adjustable_gdp * 100000;
 
-    	// $: console.log(total, 'total')
     	const handleChange = () => {
     		const country = allData.find(d => d.country == activeCountry);
     		const convertedPercentage = activePercentage * 0.00001;
@@ -6642,7 +6646,7 @@ var app = (function () {
 
     	const handleActiveCountry = () => {
     		$$invalidate(2, activePercentage = allData.find(d => d.country === activeCountry).adjustable_gdp * 100000);
-    	}; // console.log(allData)
+    	};
 
     	const writable_props = ['activeCountry', 'allData', 'row', 'totalReq', 'contributed'];
 
@@ -6653,7 +6657,7 @@ var app = (function () {
     	function select_change_handler() {
     		activeCountry = select_value(this);
     		$$invalidate(0, activeCountry);
-    		$$invalidate(5, getDropdownOptions);
+    		$$invalidate(6, getDropdownOptions);
     	}
 
     	const change_handler = () => handleActiveCountry();
@@ -6684,12 +6688,12 @@ var app = (function () {
     		formatAmount,
     		formatDecimalPlaces,
     		getDropdownOptions,
-    		getAttr,
     		activePercentage,
     		handleChange,
     		handleActiveCountry,
     		total,
-    		remaining
+    		remaining,
+    		gdp
     	});
 
     	$$self.$inject_state = $$props => {
@@ -6700,7 +6704,8 @@ var app = (function () {
     		if ('contributed' in $$props) $$invalidate(1, contributed = $$props.contributed);
     		if ('activePercentage' in $$props) $$invalidate(2, activePercentage = $$props.activePercentage);
     		if ('total' in $$props) $$invalidate(12, total = $$props.total);
-    		if ('remaining' in $$props) $$invalidate(3, remaining = $$props.remaining);
+    		if ('remaining' in $$props) $$invalidate(4, remaining = $$props.remaining);
+    		if ('gdp' in $$props) $$invalidate(3, gdp = $$props.gdp);
     	};
 
     	if ($$props && "$$inject" in $$props) {
@@ -6708,9 +6713,12 @@ var app = (function () {
     	}
 
     	$$self.$$.update = () => {
-    		if ($$self.$$.dirty & /*activePercentage*/ 4) {
-    			// console.log(activePercentage)
-    			$$invalidate(1, contributed = Math.floor(getAttr('gdp') * (activePercentage * 0.00001)));
+    		if ($$self.$$.dirty & /*allData, activeCountry*/ 513) {
+    			$$invalidate(3, gdp = allData.find(d => d.country === activeCountry).gdp);
+    		}
+
+    		if ($$self.$$.dirty & /*gdp, activePercentage*/ 12) {
+    			$$invalidate(1, contributed = Math.floor(gdp * (activePercentage * 0.00001)));
     		}
 
     		if ($$self.$$.dirty & /*allData, activeCountry, contributed, row*/ 1539) {
@@ -6723,7 +6731,7 @@ var app = (function () {
     		}
 
     		if ($$self.$$.dirty & /*totalReq, total*/ 6144) {
-    			$$invalidate(3, remaining = Math.floor(totalReq - total));
+    			$$invalidate(4, remaining = Math.floor(totalReq - total));
     		}
     	};
 
@@ -6731,10 +6739,10 @@ var app = (function () {
     		activeCountry,
     		contributed,
     		activePercentage,
+    		gdp,
     		remaining,
     		formatDecimalPlaces,
     		getDropdownOptions,
-    		getAttr,
     		handleChange,
     		handleActiveCountry,
     		allData,
