@@ -1,11 +1,11 @@
 @use 'abstracts' as *;
 
 .interactive__legend {
-  margin: 1rem auto;
+  margin: 1rem 9rem auto;
   max-width: $size__max-width;
   height: rem(60px);
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
 
   svg {
     max-width: 200px;

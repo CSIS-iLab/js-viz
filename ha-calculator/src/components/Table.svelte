@@ -106,7 +106,7 @@ function setBubble(range, bubble) {
   bubble.innerHTML = formatBubble(val);
 
   // Sorta magic numbers based on size of the native UI thumb
- bubble.style.left = `calc(${newVal}% + (${8 - newVal * 0.15}px))`;
+ bubble.style.left = `calc(${newVal}% + (${8 - newVal * 0.20}px))`;
 }
 </script>
 
@@ -154,7 +154,7 @@ function setBubble(range, bubble) {
             max="100"
             on:change="{() => handleChange()}"
           >
-          <output class="bubble" bind:this={bubble}></output>
+          <output class="slider__bubble" bind:this={bubble}></output>
       </div>
       </td>
       <td class="calc-values">
