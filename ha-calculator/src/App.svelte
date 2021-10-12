@@ -74,11 +74,7 @@
       doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo
       inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
       Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut
-      fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem
-      sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit
-      amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora
-      incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad
-      minima veniam, quis
+      fugit, sed quia consequuntur magni dolores 
     </p>
   </header>
 
@@ -102,6 +98,32 @@
       activeCountry="{activeCountry}"
       contributed="{contributed}"
     />
+
+
+
+    <footer class="interactive__source">
+      <a href="https://www.csis.org/" class="source-holder"
+        ><img
+          src="./images/csis-logo.png"
+          target="_blank"
+          alt="Center for Strategic & International Studies"
+          title="Center for Strategic & International Studies"
+          width="300"
+          height="31"
+        />
+      </a>
+      <div class="source-details">
+        <p>
+          Source:
+          <a
+            href="https://www.csis.org/"
+            target="_blank"
+            alt="source"
+            >???</a
+          >
+        </p>
+      </div>
+    </footer>
   {:catch error}
     <p style="color: red">{error.message}</p>
   {/await}
@@ -109,5 +131,6 @@
 
 <style type="text/scss" global>
   @import './scss/components/_header.scss';
+  @import './scss/components/_source.scss';
   @import './scss/layout/_layout.scss';
 </style>
