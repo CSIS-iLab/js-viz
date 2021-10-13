@@ -76,6 +76,16 @@
     }
   }
 
+  const spaceLabels = () => {
+    if (activeCountry === 'Japan') {
+      return 70
+    } else if (activeCountry === 'Germany') {
+      return 90
+    } else {
+      return 40
+    }
+  }
+
   const formatTooltip = (data, selector) => {
     const template = `
       <h2 class="tooltip__heading">${data.country}</h2>
@@ -114,7 +124,7 @@
               <rect
                 width="20px"
                 height="20px"
-                x="{(i * 24) + 40}"
+                x="{(i * 24) + spaceLabels() }"
                 y="{j * 24}"
                 fill="url(#gradient)"
               >

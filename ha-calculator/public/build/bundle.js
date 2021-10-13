@@ -4473,36 +4473,36 @@ var app = (function () {
 
     function get_each_context$1(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[16] = list[i];
-    	child_ctx[18] = i;
+    	child_ctx[17] = list[i];
+    	child_ctx[19] = i;
     	return child_ctx;
     }
 
     function get_each_context_1(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[19] = list[i];
+    	child_ctx[20] = list[i];
     	return child_ctx;
     }
 
     function get_each_context_2(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[22] = list[i];
+    	child_ctx[23] = list[i];
     	return child_ctx;
     }
 
     function get_each_context_3(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[19] = list[i];
+    	child_ctx[20] = list[i];
     	return child_ctx;
     }
 
     function get_each_context_4(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[22] = list[i];
+    	child_ctx[23] = list[i];
     	return child_ctx;
     }
 
-    // (113:12) {#each getActiveRemainingRow(i) as j}
+    // (123:12) {#each getActiveRemainingRow(i) as j}
     function create_each_block_4(ctx) {
     	let rect;
     	let rect_x_value;
@@ -4513,20 +4513,20 @@ var app = (function () {
     			rect = svg_element("rect");
     			attr_dev(rect, "width", "20px");
     			attr_dev(rect, "height", "20px");
-    			attr_dev(rect, "x", rect_x_value = /*i*/ ctx[19] * 24 + 40);
-    			attr_dev(rect, "y", rect_y_value = /*j*/ ctx[22] * 24);
+    			attr_dev(rect, "x", rect_x_value = /*i*/ ctx[20] * 24 + /*spaceLabels*/ ctx[8]());
+    			attr_dev(rect, "y", rect_y_value = /*j*/ ctx[23] * 24);
     			attr_dev(rect, "fill", "url(#gradient)");
-    			add_location(rect, file$4, 113, 14, 3169);
+    			add_location(rect, file$4, 123, 14, 3354);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, rect, anchor);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*activeChartRange*/ 16 && rect_x_value !== (rect_x_value = /*i*/ ctx[19] * 24 + 40)) {
+    			if (dirty & /*activeChartRange*/ 16 && rect_x_value !== (rect_x_value = /*i*/ ctx[20] * 24 + /*spaceLabels*/ ctx[8]())) {
     				attr_dev(rect, "x", rect_x_value);
     			}
 
-    			if (dirty & /*activeChartRange*/ 16 && rect_y_value !== (rect_y_value = /*j*/ ctx[22] * 24)) {
+    			if (dirty & /*activeChartRange*/ 16 && rect_y_value !== (rect_y_value = /*j*/ ctx[23] * 24)) {
     				attr_dev(rect, "y", rect_y_value);
     			}
     		},
@@ -4539,17 +4539,17 @@ var app = (function () {
     		block,
     		id: create_each_block_4.name,
     		type: "each",
-    		source: "(113:12) {#each getActiveRemainingRow(i) as j}",
+    		source: "(123:12) {#each getActiveRemainingRow(i) as j}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (112:10) {#each activeChartRange as i}
+    // (122:10) {#each activeChartRange as i}
     function create_each_block_3(ctx) {
     	let each_1_anchor;
-    	let each_value_4 = /*getActiveRemainingRow*/ ctx[6](/*i*/ ctx[19]);
+    	let each_value_4 = /*getActiveRemainingRow*/ ctx[6](/*i*/ ctx[20]);
     	validate_each_argument(each_value_4);
     	let each_blocks = [];
 
@@ -4573,8 +4573,8 @@ var app = (function () {
     			insert_dev(target, each_1_anchor, anchor);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*activeChartRange, getActiveRemainingRow*/ 80) {
-    				each_value_4 = /*getActiveRemainingRow*/ ctx[6](/*i*/ ctx[19]);
+    			if (dirty & /*activeChartRange, spaceLabels, getActiveRemainingRow*/ 336) {
+    				each_value_4 = /*getActiveRemainingRow*/ ctx[6](/*i*/ ctx[20]);
     				validate_each_argument(each_value_4);
     				let i;
 
@@ -4607,24 +4607,24 @@ var app = (function () {
     		block,
     		id: create_each_block_3.name,
     		type: "each",
-    		source: "(112:10) {#each activeChartRange as i}",
+    		source: "(122:10) {#each activeChartRange as i}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (160:10) {#if country.country !== activeCountry}
+    // (170:10) {#if country.country !== activeCountry}
     function create_if_block$1(ctx) {
     	let g;
     	let g_data_attr_value;
     	let rect;
     	let rect_y_value;
     	let text_1;
-    	let t_value = /*country*/ ctx[16].country + "";
+    	let t_value = /*country*/ ctx[17].country + "";
     	let t;
     	let text_1_y_value;
-    	let each_value_1 = /*chartRange*/ ctx[5](/*country*/ ctx[16]);
+    	let each_value_1 = /*chartRange*/ ctx[5](/*country*/ ctx[17]);
     	validate_each_argument(each_value_1);
     	let each_blocks = [];
 
@@ -4643,8 +4643,8 @@ var app = (function () {
     			rect = svg_element("rect");
     			text_1 = svg_element("text");
     			t = text$1(t_value);
-    			attr_dev(g, "data-attr", g_data_attr_value = /*country*/ ctx[16].country);
-    			add_location(g, file$4, 160, 12, 4509);
+    			attr_dev(g, "data-attr", g_data_attr_value = /*country*/ ctx[17].country);
+    			add_location(g, file$4, 170, 12, 4706);
     			attr_dev(rect, "fill", "none");
     			attr_dev(rect, "stroke", "#c5c5c5");
     			attr_dev(rect, "stroke-width", "1.5");
@@ -4653,10 +4653,10 @@ var app = (function () {
     			attr_dev(rect, "width", "15px");
     			attr_dev(rect, "height", "1");
     			attr_dev(rect, "id", "svg_2");
-    			add_location(rect, file$4, 177, 12, 5080);
+    			add_location(rect, file$4, 187, 12, 5277);
     			attr_dev(text_1, "x", "0");
     			attr_dev(text_1, "y", text_1_y_value = /*height*/ ctx[3] - 40);
-    			add_location(text_1, file$4, 186, 12, 5325);
+    			add_location(text_1, file$4, 196, 12, 5522);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, g, anchor);
@@ -4670,8 +4670,8 @@ var app = (function () {
     			append_dev(text_1, t);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*getRemainingRow, chartRange, allData, activeCountry, formatTooltip*/ 419) {
-    				each_value_1 = /*chartRange*/ ctx[5](/*country*/ ctx[16]);
+    			if (dirty & /*getRemainingRow, chartRange, allData, activeCountry, formatTooltip*/ 675) {
+    				each_value_1 = /*chartRange*/ ctx[5](/*country*/ ctx[17]);
     				validate_each_argument(each_value_1);
     				let i;
 
@@ -4694,7 +4694,7 @@ var app = (function () {
     				each_blocks.length = each_value_1.length;
     			}
 
-    			if (dirty & /*allData, activeCountry*/ 3 && g_data_attr_value !== (g_data_attr_value = /*country*/ ctx[16].country)) {
+    			if (dirty & /*allData, activeCountry*/ 3 && g_data_attr_value !== (g_data_attr_value = /*country*/ ctx[17].country)) {
     				attr_dev(g, "data-attr", g_data_attr_value);
     			}
 
@@ -4702,7 +4702,7 @@ var app = (function () {
     				attr_dev(rect, "y", rect_y_value);
     			}
 
-    			if (dirty & /*allData, activeCountry*/ 3 && t_value !== (t_value = /*country*/ ctx[16].country + "")) set_data_dev(t, t_value);
+    			if (dirty & /*allData, activeCountry*/ 3 && t_value !== (t_value = /*country*/ ctx[17].country + "")) set_data_dev(t, t_value);
 
     			if (dirty & /*height*/ 8 && text_1_y_value !== (text_1_y_value = /*height*/ ctx[3] - 40)) {
     				attr_dev(text_1, "y", text_1_y_value);
@@ -4720,14 +4720,14 @@ var app = (function () {
     		block,
     		id: create_if_block$1.name,
     		type: "if",
-    		source: "(160:10) {#if country.country !== activeCountry}",
+    		source: "(170:10) {#if country.country !== activeCountry}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (163:16) {#each getRemainingRow(i, country) as j}
+    // (173:16) {#each getRemainingRow(i, country) as j}
     function create_each_block_2(ctx) {
     	let rect;
     	let rect_x_value;
@@ -4741,30 +4741,30 @@ var app = (function () {
     			rect = svg_element("rect");
     			attr_dev(rect, "width", "12px");
     			attr_dev(rect, "height", "12px");
-    			attr_dev(rect, "x", rect_x_value = /*i*/ ctx[19] * 16);
-    			attr_dev(rect, "y", rect_y_value = /*j*/ ctx[22] * 16);
-    			add_location(rect, file$4, 163, 18, 4665);
+    			attr_dev(rect, "x", rect_x_value = /*i*/ ctx[20] * 16);
+    			attr_dev(rect, "y", rect_y_value = /*j*/ ctx[23] * 16);
+    			add_location(rect, file$4, 173, 18, 4862);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, rect, anchor);
 
     			if (!mounted) {
-    				dispose = action_destroyer(tippy_action = tippy.call(null, rect, /*formatTooltip*/ ctx[8](/*country*/ ctx[16], `tooltip-node-${/*countryIndex*/ ctx[18]}`)));
+    				dispose = action_destroyer(tippy_action = tippy.call(null, rect, /*formatTooltip*/ ctx[9](/*country*/ ctx[17], `tooltip-node-${/*countryIndex*/ ctx[19]}`)));
     				mounted = true;
     			}
     		},
     		p: function update(new_ctx, dirty) {
     			ctx = new_ctx;
 
-    			if (dirty & /*allData, activeCountry*/ 3 && rect_x_value !== (rect_x_value = /*i*/ ctx[19] * 16)) {
+    			if (dirty & /*allData, activeCountry*/ 3 && rect_x_value !== (rect_x_value = /*i*/ ctx[20] * 16)) {
     				attr_dev(rect, "x", rect_x_value);
     			}
 
-    			if (dirty & /*allData, activeCountry*/ 3 && rect_y_value !== (rect_y_value = /*j*/ ctx[22] * 16)) {
+    			if (dirty & /*allData, activeCountry*/ 3 && rect_y_value !== (rect_y_value = /*j*/ ctx[23] * 16)) {
     				attr_dev(rect, "y", rect_y_value);
     			}
 
-    			if (tippy_action && is_function(tippy_action.update) && dirty & /*allData, activeCountry*/ 3) tippy_action.update.call(null, /*formatTooltip*/ ctx[8](/*country*/ ctx[16], `tooltip-node-${/*countryIndex*/ ctx[18]}`));
+    			if (tippy_action && is_function(tippy_action.update) && dirty & /*allData, activeCountry*/ 3) tippy_action.update.call(null, /*formatTooltip*/ ctx[9](/*country*/ ctx[17], `tooltip-node-${/*countryIndex*/ ctx[19]}`));
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(rect);
@@ -4777,17 +4777,17 @@ var app = (function () {
     		block,
     		id: create_each_block_2.name,
     		type: "each",
-    		source: "(163:16) {#each getRemainingRow(i, country) as j}",
+    		source: "(173:16) {#each getRemainingRow(i, country) as j}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (162:14) {#each chartRange(country) as i}
+    // (172:14) {#each chartRange(country) as i}
     function create_each_block_1(ctx) {
     	let each_1_anchor;
-    	let each_value_2 = /*getRemainingRow*/ ctx[7](/*i*/ ctx[19], /*country*/ ctx[16]);
+    	let each_value_2 = /*getRemainingRow*/ ctx[7](/*i*/ ctx[20], /*country*/ ctx[17]);
     	validate_each_argument(each_value_2);
     	let each_blocks = [];
 
@@ -4811,8 +4811,8 @@ var app = (function () {
     			insert_dev(target, each_1_anchor, anchor);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*chartRange, allData, activeCountry, getRemainingRow, formatTooltip*/ 419) {
-    				each_value_2 = /*getRemainingRow*/ ctx[7](/*i*/ ctx[19], /*country*/ ctx[16]);
+    			if (dirty & /*chartRange, allData, activeCountry, getRemainingRow, formatTooltip*/ 675) {
+    				each_value_2 = /*getRemainingRow*/ ctx[7](/*i*/ ctx[20], /*country*/ ctx[17]);
     				validate_each_argument(each_value_2);
     				let i;
 
@@ -4845,14 +4845,14 @@ var app = (function () {
     		block,
     		id: create_each_block_1.name,
     		type: "each",
-    		source: "(162:14) {#each chartRange(country) as i}",
+    		source: "(172:14) {#each chartRange(country) as i}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (140:4) {#each allData.filter((d) => d.country !== activeCountry) as country, countryIndex}
+    // (150:4) {#each allData.filter((d) => d.country !== activeCountry) as country, countryIndex}
     function create_each_block$1(ctx) {
     	let figure;
     	let svg_1;
@@ -4861,7 +4861,7 @@ var app = (function () {
     	let path;
     	let figure_data_attr_value;
     	let figure_resize_listener;
-    	let if_block = /*country*/ ctx[16].country !== /*activeCountry*/ ctx[0] && create_if_block$1(ctx);
+    	let if_block = /*country*/ ctx[17].country !== /*activeCountry*/ ctx[0] && create_if_block$1(ctx);
 
     	const block = {
     		c: function create() {
@@ -4874,19 +4874,19 @@ var app = (function () {
     			attr_dev(path, "d", "M -1,2 l 6,0");
     			attr_dev(path, "stroke", "#000000");
     			attr_dev(path, "stroke-width", "1");
-    			add_location(path, file$4, 156, 14, 4341);
+    			add_location(path, file$4, 166, 14, 4538);
     			attr_dev(pattern, "id", "diagonalHatch");
     			attr_dev(pattern, "patternUnits", "userSpaceOnUse");
     			attr_dev(pattern, "width", "4");
     			attr_dev(pattern, "height", "4");
     			attr_dev(pattern, "patternTransform", "rotate(-45 2 2)");
-    			add_location(pattern, file$4, 149, 12, 4129);
-    			add_location(defs, file$4, 148, 10, 4110);
-    			add_location(svg_1, file$4, 147, 8, 4094);
-    			attr_dev(figure, "class", "interactive__charts " + ('inactive-' + /*countryIndex*/ ctx[18]));
-    			attr_dev(figure, "data-attr", figure_data_attr_value = /*country*/ ctx[16].country);
-    			add_render_callback(() => /*figure_elementresize_handler_1*/ ctx[12].call(figure));
-    			add_location(figure, file$4, 141, 6, 3895);
+    			add_location(pattern, file$4, 159, 12, 4326);
+    			add_location(defs, file$4, 158, 10, 4307);
+    			add_location(svg_1, file$4, 157, 8, 4291);
+    			attr_dev(figure, "class", "interactive__charts " + ('inactive-' + /*countryIndex*/ ctx[19]));
+    			attr_dev(figure, "data-attr", figure_data_attr_value = /*country*/ ctx[17].country);
+    			add_render_callback(() => /*figure_elementresize_handler_1*/ ctx[13].call(figure));
+    			add_location(figure, file$4, 151, 6, 4092);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, figure, anchor);
@@ -4895,10 +4895,10 @@ var app = (function () {
     			append_dev(defs, pattern);
     			append_dev(pattern, path);
     			if (if_block) if_block.m(svg_1, null);
-    			figure_resize_listener = add_resize_listener(figure, /*figure_elementresize_handler_1*/ ctx[12].bind(figure));
+    			figure_resize_listener = add_resize_listener(figure, /*figure_elementresize_handler_1*/ ctx[13].bind(figure));
     		},
     		p: function update(ctx, dirty) {
-    			if (/*country*/ ctx[16].country !== /*activeCountry*/ ctx[0]) {
+    			if (/*country*/ ctx[17].country !== /*activeCountry*/ ctx[0]) {
     				if (if_block) {
     					if_block.p(ctx, dirty);
     				} else {
@@ -4911,7 +4911,7 @@ var app = (function () {
     				if_block = null;
     			}
 
-    			if (dirty & /*allData, activeCountry*/ 3 && figure_data_attr_value !== (figure_data_attr_value = /*country*/ ctx[16].country)) {
+    			if (dirty & /*allData, activeCountry*/ 3 && figure_data_attr_value !== (figure_data_attr_value = /*country*/ ctx[17].country)) {
     				attr_dev(figure, "data-attr", figure_data_attr_value);
     			}
     		},
@@ -4926,14 +4926,14 @@ var app = (function () {
     		block,
     		id: create_each_block$1.name,
     		type: "each",
-    		source: "(140:4) {#each allData.filter((d) => d.country !== activeCountry) as country, countryIndex}",
+    		source: "(150:4) {#each allData.filter((d) => d.country !== activeCountry) as country, countryIndex}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (99:0) {#key activeCountry}
+    // (109:0) {#key activeCountry}
     function create_key_block(ctx) {
     	let div;
     	let figure;
@@ -4961,7 +4961,7 @@ var app = (function () {
     		each_blocks_1[i] = create_each_block_3(get_each_context_3(ctx, each_value_3, i));
     	}
 
-    	let each_value = /*allData*/ ctx[1].filter(/*func*/ ctx[11]);
+    	let each_value = /*allData*/ ctx[1].filter(/*func*/ ctx[12]);
     	validate_each_argument(each_value);
     	let each_blocks = [];
 
@@ -4998,14 +4998,14 @@ var app = (function () {
     			create_component(legend.$$.fragment);
     			attr_dev(stop0, "class", "main-stop");
     			attr_dev(stop0, "offset", "0%");
-    			add_location(stop0, file$4, 107, 10, 2900);
+    			add_location(stop0, file$4, 117, 10, 3085);
     			attr_dev(stop1, "class", "alt-stop");
     			attr_dev(stop1, "offset", "100%");
-    			add_location(stop1, file$4, 108, 10, 2954);
+    			add_location(stop1, file$4, 118, 10, 3139);
     			attr_dev(linearGradient, "id", "gradient");
-    			add_location(linearGradient, file$4, 106, 8, 2859);
+    			add_location(linearGradient, file$4, 116, 8, 3044);
     			attr_dev(g, "data-attr", /*activeCountry*/ ctx[0]);
-    			add_location(g, file$4, 110, 8, 3033);
+    			add_location(g, file$4, 120, 8, 3218);
     			attr_dev(rect, "fill", "none");
     			attr_dev(rect, "stroke", "#c5c5c5");
     			attr_dev(rect, "stroke-width", "1.5");
@@ -5014,17 +5014,17 @@ var app = (function () {
     			attr_dev(rect, "width", rect_width_value = /*width*/ ctx[2] * 3);
     			attr_dev(rect, "height", "1");
     			attr_dev(rect, "id", "svg_2");
-    			add_location(rect, file$4, 124, 8, 3434);
+    			add_location(rect, file$4, 134, 8, 3631);
     			attr_dev(text_1, "x", "0");
     			attr_dev(text_1, "y", text_1_y_value = /*height*/ ctx[3] / 2);
-    			add_location(text_1, file$4, 135, 8, 3667);
+    			add_location(text_1, file$4, 145, 8, 3864);
     			attr_dev(svg_1, "class", "green");
-    			add_location(svg_1, file$4, 105, 6, 2831);
+    			add_location(svg_1, file$4, 115, 6, 3016);
     			attr_dev(figure, "class", "interactive__charts active");
-    			add_render_callback(() => /*figure_elementresize_handler*/ ctx[10].call(figure));
-    			add_location(figure, file$4, 100, 4, 2702);
+    			add_render_callback(() => /*figure_elementresize_handler*/ ctx[11].call(figure));
+    			add_location(figure, file$4, 110, 4, 2887);
     			attr_dev(div, "class", "interactive__charts-container");
-    			add_location(div, file$4, 99, 2, 2654);
+    			add_location(div, file$4, 109, 2, 2839);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -5042,7 +5042,7 @@ var app = (function () {
     			append_dev(svg_1, rect);
     			append_dev(svg_1, text_1);
     			append_dev(text_1, t0);
-    			figure_resize_listener = add_resize_listener(figure, /*figure_elementresize_handler*/ ctx[10].bind(figure));
+    			figure_resize_listener = add_resize_listener(figure, /*figure_elementresize_handler*/ ctx[11].bind(figure));
     			append_dev(div, t1);
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
@@ -5054,7 +5054,7 @@ var app = (function () {
     			current = true;
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*getActiveRemainingRow, activeChartRange*/ 80) {
+    			if (dirty & /*getActiveRemainingRow, activeChartRange, spaceLabels*/ 336) {
     				each_value_3 = /*activeChartRange*/ ctx[4];
     				validate_each_argument(each_value_3);
     				let i;
@@ -5096,8 +5096,8 @@ var app = (function () {
     				attr_dev(text_1, "y", text_1_y_value);
     			}
 
-    			if (dirty & /*allData, activeCountry, width, height, chartRange, getRemainingRow, formatTooltip*/ 431) {
-    				each_value = /*allData*/ ctx[1].filter(/*func*/ ctx[11]);
+    			if (dirty & /*allData, activeCountry, width, height, chartRange, getRemainingRow, formatTooltip*/ 687) {
+    				each_value = /*allData*/ ctx[1].filter(/*func*/ ctx[12]);
     				validate_each_argument(each_value);
     				let i;
 
@@ -5142,7 +5142,7 @@ var app = (function () {
     		block,
     		id: create_key_block.name,
     		type: "key",
-    		source: "(99:0) {#key activeCountry}",
+    		source: "(109:0) {#key activeCountry}",
     		ctx
     	});
 
@@ -5286,6 +5286,16 @@ var app = (function () {
     		}
     	};
 
+    	const spaceLabels = () => {
+    		if (activeCountry === 'Japan') {
+    			return 70;
+    		} else if (activeCountry === 'Germany') {
+    			return 90;
+    		} else {
+    			return 40;
+    		}
+    	};
+
     	const formatTooltip = (data, selector) => {
     		const template = `
       <h2 class="tooltip__heading">${data.country}</h2>
@@ -5330,7 +5340,7 @@ var app = (function () {
     	$$self.$$set = $$props => {
     		if ('activeCountry' in $$props) $$invalidate(0, activeCountry = $$props.activeCountry);
     		if ('allData' in $$props) $$invalidate(1, allData = $$props.allData);
-    		if ('contributed' in $$props) $$invalidate(9, contributed = $$props.contributed);
+    		if ('contributed' in $$props) $$invalidate(10, contributed = $$props.contributed);
     	};
 
     	$$self.$capture_state = () => ({
@@ -5352,6 +5362,7 @@ var app = (function () {
     		chartRange,
     		getActiveRemainingRow,
     		getRemainingRow,
+    		spaceLabels,
     		formatTooltip,
     		activeChartRange
     	});
@@ -5359,7 +5370,7 @@ var app = (function () {
     	$$self.$inject_state = $$props => {
     		if ('activeCountry' in $$props) $$invalidate(0, activeCountry = $$props.activeCountry);
     		if ('allData' in $$props) $$invalidate(1, allData = $$props.allData);
-    		if ('contributed' in $$props) $$invalidate(9, contributed = $$props.contributed);
+    		if ('contributed' in $$props) $$invalidate(10, contributed = $$props.contributed);
     		if ('svg' in $$props) svg = $$props.svg;
     		if ('width' in $$props) $$invalidate(2, width = $$props.width);
     		if ('height' in $$props) $$invalidate(3, height = $$props.height);
@@ -5371,7 +5382,7 @@ var app = (function () {
     	}
 
     	$$self.$$.update = () => {
-    		if ($$self.$$.dirty & /*contributed*/ 512) {
+    		if ($$self.$$.dirty & /*contributed*/ 1024) {
     			$$invalidate(4, activeChartRange = range(0, Math.ceil(contributed / b), 1));
     		}
     	};
@@ -5385,6 +5396,7 @@ var app = (function () {
     		chartRange,
     		getActiveRemainingRow,
     		getRemainingRow,
+    		spaceLabels,
     		formatTooltip,
     		contributed,
     		figure_elementresize_handler,
@@ -5400,7 +5412,7 @@ var app = (function () {
     		init(this, options, instance$4, create_fragment$4, safe_not_equal, {
     			activeCountry: 0,
     			allData: 1,
-    			contributed: 9
+    			contributed: 10
     		});
 
     		dispatch_dev("SvelteRegisterComponent", {
@@ -5421,7 +5433,7 @@ var app = (function () {
     			console.warn("<Chart> was created without expected prop 'allData'");
     		}
 
-    		if (/*contributed*/ ctx[9] === undefined && !('contributed' in props)) {
+    		if (/*contributed*/ ctx[10] === undefined && !('contributed' in props)) {
     			console.warn("<Chart> was created without expected prop 'contributed'");
     		}
     	}
