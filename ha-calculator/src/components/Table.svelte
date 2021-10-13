@@ -17,7 +17,7 @@ import { onMount, afterUpdate } from 'svelte';
     if (val < 10) {
       return '.00' + val + '%'
     } else if ( val === '100') {
-      return '.010%' 
+      return '.10%' 
     } else {
       return '.0' + val + '%'
     }

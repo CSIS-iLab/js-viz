@@ -6523,7 +6523,7 @@ var app = (function () {
     			t = text$1(t_value);
     			option.__value = /*option*/ ctx[23];
     			option.value = option.__value;
-    			add_location(option, file$1, 136, 14, 3601);
+    			add_location(option, file$1, 136, 14, 3600);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, option, anchor);
@@ -6637,43 +6637,43 @@ var app = (function () {
     			t15 = space();
     			td3 = element("td");
     			t16 = text$1(t16_value);
-    			add_location(th0, file$1, 119, 6, 3138);
-    			add_location(th1, file$1, 120, 6, 3154);
-    			add_location(th2, file$1, 121, 6, 3173);
-    			add_location(th3, file$1, 122, 6, 3202);
-    			add_location(th4, file$1, 123, 6, 3231);
+    			add_location(th0, file$1, 119, 6, 3137);
+    			add_location(th1, file$1, 120, 6, 3153);
+    			add_location(th2, file$1, 121, 6, 3172);
+    			add_location(th3, file$1, 122, 6, 3201);
+    			add_location(th4, file$1, 123, 6, 3230);
     			attr_dev(tr0, "class", "interactive__subheading");
-    			add_location(tr0, file$1, 118, 4, 3095);
-    			add_location(thead, file$1, 117, 2, 3083);
+    			add_location(tr0, file$1, 118, 4, 3094);
+    			add_location(thead, file$1, 117, 2, 3082);
     			attr_dev(select, "class", "input__select");
     			if (/*activeCountry*/ ctx[0] === void 0) add_render_callback(() => /*select_change_handler*/ ctx[15].call(select));
-    			add_location(select, file$1, 130, 10, 3387);
+    			add_location(select, file$1, 130, 10, 3386);
     			attr_dev(div0, "class", "interactive__dropdown");
-    			add_location(div0, file$1, 129, 8, 3341);
+    			add_location(div0, file$1, 129, 8, 3340);
     			attr_dev(th5, "class", "interactive__subheading");
-    			add_location(th5, file$1, 128, 6, 3296);
-    			add_location(td0, file$1, 141, 6, 3717);
+    			add_location(th5, file$1, 128, 6, 3295);
+    			add_location(td0, file$1, 141, 6, 3716);
     			attr_dev(input, "id", "slider");
     			attr_dev(input, "type", "range");
     			attr_dev(input, "name", "slider");
     			attr_dev(input, "min", "0");
     			attr_dev(input, "max", "100");
-    			add_location(input, file$1, 146, 10, 3824);
+    			add_location(input, file$1, 146, 10, 3823);
     			attr_dev(output, "class", "slider__bubble");
-    			add_location(output, file$1, 156, 10, 4092);
+    			add_location(output, file$1, 156, 10, 4091);
     			attr_dev(div1, "class", "slider-wrap");
-    			add_location(div1, file$1, 145, 8, 3788);
-    			add_location(td1, file$1, 144, 6, 3775);
+    			add_location(div1, file$1, 145, 8, 3787);
+    			add_location(td1, file$1, 144, 6, 3774);
     			attr_dev(td2, "class", "calc-values");
-    			add_location(td2, file$1, 159, 6, 4183);
+    			add_location(td2, file$1, 159, 6, 4182);
     			attr_dev(td3, "class", "calc-values");
-    			add_location(td3, file$1, 162, 6, 4269);
-    			add_location(tr1, file$1, 127, 4, 3285);
-    			add_location(tbody, file$1, 126, 2, 3273);
+    			add_location(td3, file$1, 162, 6, 4268);
+    			add_location(tr1, file$1, 127, 4, 3284);
+    			add_location(tbody, file$1, 126, 2, 3272);
     			attr_dev(table, "class", "interactive__table interactive__table--large");
     			attr_dev(table, "cellpadding", "0");
     			attr_dev(table, "cellspacing", "0");
-    			add_location(table, file$1, 112, 0, 2981);
+    			add_location(table, file$1, 112, 0, 2980);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -6827,7 +6827,7 @@ var app = (function () {
     		if (val < 10) {
     			return '.00' + val + '%';
     		} else if (val === '100') {
-    			return '.010%';
+    			return '.10%';
     		} else {
     			return '.0' + val + '%';
     		}
