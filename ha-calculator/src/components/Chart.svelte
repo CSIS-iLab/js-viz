@@ -181,7 +181,7 @@
               stroke-width="1.5"
               x="0"
               y="{height - 60}"
-              width="{width}"
+              width="15px"
               height="1"
               id="svg_2"></rect>
             <text x="0" y="{height - 40}">{country.country}</text>

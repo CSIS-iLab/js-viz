@@ -1,5 +1,5 @@
 
-(function(l, r) { if (!l || l.getElementById('livereloadscript')) return; r = l.createElement('script'); r.async = 1; r.src = '//' + (self.location.host || 'localhost').split(':')[0] + ':35730/livereload.js?snipver=1'; r.id = 'livereloadscript'; l.getElementsByTagName('head')[0].appendChild(r) })(self.document);
+(function(l, r) { if (!l || l.getElementById('livereloadscript')) return; r = l.createElement('script'); r.async = 1; r.src = '//' + (self.location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1'; r.id = 'livereloadscript'; l.getElementsByTagName('head')[0].appendChild(r) })(self.document);
 var app = (function () {
     'use strict';
 
@@ -4650,13 +4650,13 @@ var app = (function () {
     			attr_dev(rect, "stroke-width", "1.5");
     			attr_dev(rect, "x", "0");
     			attr_dev(rect, "y", rect_y_value = /*height*/ ctx[3] - 60);
-    			attr_dev(rect, "width", /*width*/ ctx[2]);
+    			attr_dev(rect, "width", "15px");
     			attr_dev(rect, "height", "1");
     			attr_dev(rect, "id", "svg_2");
     			add_location(rect, file$4, 177, 12, 5080);
     			attr_dev(text_1, "x", "0");
     			attr_dev(text_1, "y", text_1_y_value = /*height*/ ctx[3] - 40);
-    			add_location(text_1, file$4, 186, 12, 5328);
+    			add_location(text_1, file$4, 186, 12, 5325);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, g, anchor);
@@ -4700,10 +4700,6 @@ var app = (function () {
 
     			if (dirty & /*height*/ 8 && rect_y_value !== (rect_y_value = /*height*/ ctx[3] - 60)) {
     				attr_dev(rect, "y", rect_y_value);
-    			}
-
-    			if (dirty & /*width*/ 4) {
-    				attr_dev(rect, "width", /*width*/ ctx[2]);
     			}
 
     			if (dirty & /*allData, activeCountry*/ 3 && t_value !== (t_value = /*country*/ ctx[16].country + "")) set_data_dev(t, t_value);
