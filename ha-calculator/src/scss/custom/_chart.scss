@@ -15,7 +15,7 @@
   }
 
   @include breakpoint(medium) {
-    margin: 0 3rem;
+    margin: 0;
   }
 
   svg {
@@ -29,4 +29,10 @@
       fill: url(#diagonalHatch);
     }
   }
+}
+
+.active text {
+  fill: $color__black;
+  stroke: $color__black;
+  @include font-size(20px);
 }

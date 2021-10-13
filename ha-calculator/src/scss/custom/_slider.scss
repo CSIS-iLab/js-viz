@@ -45,6 +45,13 @@ input[type=range]{
   border: 1px solid white;
 }
 
+@-moz-document url-prefix() {
+
+  input[type=range]{
+  -webkit-appearance: inherit;
+  }
+}
+
 input[type=range]::-webkit-slider-runnable-track {
   width: 250px;
   height: 6px;

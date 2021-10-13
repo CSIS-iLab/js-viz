@@ -5,9 +5,9 @@
 ==============================*/
 .interactive__source {
   position: relative;
-  max-width: $size__content-max-width;
+  max-width: $size__max-width;
   text-align: right;
-  margin: 0.5rem auto;
+  margin: 0 auto;
 
   a:not(.source-holder) {
     color: $color__blue;

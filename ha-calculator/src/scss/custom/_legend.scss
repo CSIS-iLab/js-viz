@@ -1,11 +1,23 @@
 @use 'abstracts' as *;
 
 .interactive__legend {
-  margin: 1rem 9rem auto;
+  margin: 0 auto;
   max-width: $size__max-width;
   height: rem(60px);
   display: flex;
   justify-content: flex-start;
+
+  @include breakpoint(medium) {
+    // margin: 1rem 9rem auto;
+    // position: absolute;
+    // right: -120px;
+    // top: -10px;
+    grid-area: active;
+    justify-self: flex-end;
+    margin: 0;
+    align-self: center;
+    margin-bottom: rem(48px);
+  }
 
   svg {
     max-width: 200px;

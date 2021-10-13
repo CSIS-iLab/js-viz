@@ -10,6 +10,8 @@
   margin: 1.5rem auto;
   @include font-size(16px);
   line-height: 1.2;
+  width: 100%;
+  // display: flex;
 
   &--small {
     @include breakpoint('medium') {
@@ -18,7 +20,7 @@
   }
 
   &--large {
-    display: none;
+    // display: none;
 
     @include breakpoint('medium') {
       display: table;
@@ -65,12 +67,4 @@
       text-align: center;
     }
   }
-
-  // .calc-values:after {
-  //   content: '';
-  //   display: block;
-  //   width: 20px;
-  //   top: 10px;
-  //   border-bottom: 1px solid $color__gray-900;
-  // }
 }

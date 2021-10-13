@@ -91,7 +91,7 @@
       bind:contributed
     />
 
-    <Legend />
+    <!-- <Legend /> -->
 
     <Chart
       allData="{allData.data}"

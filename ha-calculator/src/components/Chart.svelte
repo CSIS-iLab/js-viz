@@ -2,6 +2,8 @@
   import { filter, range } from 'd3-array'
   import tippy from 'sveltejs-tippy'
   import { format } from 'd3-format'
+  import Legend from './Legend.svelte'
+
   export let activeCountry
   export let allData
   export let contributed
@@ -112,7 +114,7 @@
               <rect
                 width="20px"
                 height="20px"
-                x="{i * 24}"
+                x="{(i * 24) + 40}"
                 y="{j * 24}"
                 fill="url(#gradient)"
               >
@@ -125,13 +127,13 @@
           stroke="#c5c5c5"
           stroke-width="1.5"
           x="0"
-          y="{height - 24}"
-          width="15px"
+          y="{height - 1}"
+          width="{width * 3}"
           height="1"
           id="svg_2"
         >
         </rect>
-        <text x="0" y="{height - 5}">{activeCountry}</text>
+        <text x="0" y="{height/2}">{activeCountry}</text>
       </svg>
     </figure>
 
@@ -179,7 +181,7 @@
               stroke-width="1.5"
               x="0"
               y="{height - 60}"
-              width="15px"
+              width="{width}"
               height="1"
               id="svg_2"></rect>
             <text x="0" y="{height - 40}">{country.country}</text>
@@ -187,8 +189,10 @@
         </svg>
       </figure>
     {/each}
+    <Legend />
   </div>
 {/key}
+
 
 <style type="text/scss" global>
   @import '../scss/custom/_chart.scss';

@@ -6,21 +6,34 @@
 
 .interactive {
   max-width: $size__content-max-width;
-  margin: 0 auto;
+  margin: 0 2rem auto;
+
+  @include breakpoint(medium) {
+    margin: 0 auto;
+  }
 }
 
 .interactive__charts-container {
-  position: relative;
-  width: 100%;
-  max-width: $size__max-width;
-  margin: 0 auto;
   display: grid;
-  grid-template-areas: 'active active' 'inactive-0 inactive-1' 'inactive-2 inactive-3';
+  grid-template-areas: 'active' 'inactive-0' 'inactive-1' 'inactive-2' 'inactive-3';
+  position: relative;
+  max-width: $size__max-width;
+  width: 100%;
+  margin: 0 auto;
+
+  @include breakpoint(medium) {
+    grid-template-areas: 'active active' 'inactive-0 inactive-1' 'inactive-2 inactive-3';
+  }
 
   .active {
     grid-area: active;
+    margin-bottom: 2rem;
+    margin-top: 2rem;
     stroke: unset;
-    margin-bottom: 4rem;
+  }
+
+  @include breakpoint(medium) {
+    // margin-bottom: 4rem;
     margin-top: 2rem;
   }
 
