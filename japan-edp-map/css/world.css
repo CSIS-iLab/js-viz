@@ -1,0 +1,168 @@
+body {
+  font-family: "Source Sans Pro", sans-serif;
+}
+
+div#searchbox input {
+  width: 75%;
+}
+
+div#results {
+  background: #fff;
+}
+
+.box header h1 {
+  display: inline-block;
+  color: #2e3c43;
+  line-height: 26px;
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 21px;
+  font-weight: 700;
+  width: calc(100% - 67px);
+}
+
+.description {
+  color: #747d82;
+  font-size: 12px;
+  line-height: 16px;
+  font-family: "Open Sans", Arial, Helvetica, sans-serif;
+}
+
+.button__title {
+  font-size: 12px !important;
+}
+
+.ul {
+  font-family: "Source Sans Pro", sans-serif;
+}
+
+.leaflet-popup-content-wrapper {
+  background-color: white;
+  box-shadow: 0 3px 14px rgba(0, 0, 0, 0.4);
+  color: #333;
+}
+
+.popupHeaderStyle {
+  font-family: "Source Sans Pro", sans-serif;
+  font-weight: 600;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.popupEntryStyle {
+  padding: 0;
+  margin: 0;
+  font: 14px "Source Sans Pro", sans-serif;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  text-align: center;
+}
+
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+  background-color: #e4e3e3;
+  box-shadow: 0 3px 14px rgba(0, 0, 0, 0.4);
+  border-radius: 6px;
+}
+
+#controls #info h3 {
+  font-family: "Source Sans Pro", sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 20px;
+  line-height: 24px;
+  margin: 16px 0 4px;
+}
+
+.leaflet-top {
+  top: 38px;
+}
+
+.legend {
+  position: relative;
+  top: 5px;
+  display: flex;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.legend[data-type="total_cases"] {
+  --ramp1: #ffc6c4;
+  --ramp2: #f29ca3;
+  --ramp3: #da7489;
+  --ramp4: #b95073;
+  --ramp5: #93345d;
+  --ramp6: #672044;
+}
+
+.legend li {
+  padding: 0px;
+  margin: 0;
+  position: relative;
+}
+
+.legend li::before {
+  content: "";
+  position: relative;
+  padding: 0;
+  margin: 0;
+  display: inline-block;
+  width: 25px;
+  height: 5px;
+  background: var(--bg);
+}
+
+#ramp1::before {
+  background-color: var(--ramp1);
+  border: 3px solid var(--ramp1);
+}
+
+#ramp2::before {
+  background-color: var(--ramp2);
+  border: 3px solid var(--ramp2);
+}
+
+#ramp3::before {
+  background-color: var(--ramp3);
+  border: 3px solid var(--ramp3);
+}
+
+#ramp4::before {
+  background-color: var(--ramp4);
+  border: 3px solid var(--ramp4);
+}
+
+#ramp5::before {
+  background-color: var(--ramp5);
+  border: 3px solid var(--ramp5);
+}
+
+#ramp6::before {
+  background-color: var(--ramp6);
+  border: 3px solid var(--ramp6);
+}
+
+.legend__value {
+  position: relative;
+  padding-bottom: 10px !important;
+}
+
+.legend__value > span {
+  position: absolute;
+  top: 15px;
+  right: 23px;
+  font-size: 12px !important;
+}
+
+#ramp6 > span {
+  position: absolute;
+  right: 15px;
+}
+
+.leaflet-control-zoomslider {
+  top: -10px;
+  left: 20px;
+}
+
+aside.toolbox {
+  top: 35px;
+}
