@@ -17,9 +17,14 @@ li {
 
 .reduce > ul > li {
   display: inline-block;
-  width: 18%;
+  width: 24%;
   margin: 0px;
   padding: 0px;
+}
+
+.highcharts-xaxis-grid .highcharts-grid-line {
+	stroke-width: 2px;
+	stroke: #e6e6e6;
 }
 
 @media screen and (max-width: 600px) {
@@ -74,7 +79,7 @@ p {
 
 .source {
   position: relative;
-  top: 450px;
+  top: 640px;
   text-align: right;
   justify-content: right;
   font-size: 10px;
@@ -86,7 +91,7 @@ p {
 @media screen and (max-width: 600px) {
   .source {
     position: relative;
-    top: 1100px !important;
+    top: 1270px !important;
   }
 }
 
