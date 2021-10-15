@@ -4317,10 +4317,10 @@ var app = (function () {
     			attr_dev(rect0, "x", "0");
     			attr_dev(rect0, "y", "24");
     			attr_dev(rect0, "fill", "url(#gradient)");
-    			add_location(rect0, file$3, 5, 4, 100);
+    			add_location(rect0, file$3, 2, 4, 80);
     			attr_dev(text0, "x", "30");
     			attr_dev(text0, "y", "40");
-    			add_location(text0, file$3, 6, 4, 181);
+    			add_location(text0, file$3, 3, 4, 161);
     			attr_dev(rect1, "fill", "url(#diagonalHatch)");
     			attr_dev(rect1, "stroke", "#004E80");
     			attr_dev(rect1, "x", "100");
@@ -4328,14 +4328,14 @@ var app = (function () {
     			attr_dev(rect1, "width", "20px");
     			attr_dev(rect1, "height", "20px");
     			attr_dev(rect1, "id", "svg_2");
-    			add_location(rect1, file$3, 7, 4, 218);
+    			add_location(rect1, file$3, 4, 4, 198);
     			attr_dev(text1, "x", "130");
     			attr_dev(text1, "y", "40");
-    			add_location(text1, file$3, 17, 4, 385);
+    			add_location(text1, file$3, 14, 4, 365);
     			attr_dev(svg, "class", "legend__squares");
-    			add_location(svg, file$3, 4, 2, 66);
+    			add_location(svg, file$3, 1, 2, 46);
     			attr_dev(figure, "class", "interactive__legend legend");
-    			add_location(figure, file$3, 3, 0, 20);
+    			add_location(figure, file$3, 0, 0, 0);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");

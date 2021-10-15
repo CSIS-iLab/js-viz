@@ -1,6 +1,3 @@
-<script>
-</script>
-
 <figure class="interactive__legend legend">
   <svg class="legend__squares">
     <rect width="20px" height="20px" x="0" y="24" fill="url(#gradient)"> </rect>
