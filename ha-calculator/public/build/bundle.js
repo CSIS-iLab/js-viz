@@ -4429,7 +4429,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (123:12) {#each getActiveRemainingRow(i) as j}
+    // (125:12) {#each getActiveRemainingRow(i) as j}
     function create_each_block_4(ctx) {
     	let rect;
     	let rect_x_value;
@@ -4443,7 +4443,7 @@ var app = (function () {
     			attr_dev(rect, "x", rect_x_value = /*i*/ ctx[20] * 24 + /*spaceLabels*/ ctx[8]());
     			attr_dev(rect, "y", rect_y_value = /*j*/ ctx[23] * 24);
     			attr_dev(rect, "fill", "url(#gradient)");
-    			add_location(rect, file$2, 123, 14, 3354);
+    			add_location(rect, file$2, 125, 14, 3422);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, rect, anchor);
@@ -4466,14 +4466,14 @@ var app = (function () {
     		block,
     		id: create_each_block_4.name,
     		type: "each",
-    		source: "(123:12) {#each getActiveRemainingRow(i) as j}",
+    		source: "(125:12) {#each getActiveRemainingRow(i) as j}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (122:10) {#each activeChartRange as i}
+    // (124:10) {#each activeChartRange as i}
     function create_each_block_3(ctx) {
     	let each_1_anchor;
     	let each_value_4 = /*getActiveRemainingRow*/ ctx[6](/*i*/ ctx[20]);
@@ -4534,14 +4534,14 @@ var app = (function () {
     		block,
     		id: create_each_block_3.name,
     		type: "each",
-    		source: "(122:10) {#each activeChartRange as i}",
+    		source: "(124:10) {#each activeChartRange as i}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (170:10) {#if country.country !== activeCountry}
+    // (172:10) {#if country.country !== activeCountry}
     function create_if_block(ctx) {
     	let g;
     	let g_data_attr_value;
@@ -4571,7 +4571,7 @@ var app = (function () {
     			text_1 = svg_element("text");
     			t = text$1(t_value);
     			attr_dev(g, "data-attr", g_data_attr_value = /*country*/ ctx[17].country);
-    			add_location(g, file$2, 170, 12, 4706);
+    			add_location(g, file$2, 172, 12, 4774);
     			attr_dev(rect, "fill", "none");
     			attr_dev(rect, "stroke", "#c5c5c5");
     			attr_dev(rect, "stroke-width", "1.5");
@@ -4580,10 +4580,10 @@ var app = (function () {
     			attr_dev(rect, "width", "15px");
     			attr_dev(rect, "height", "1");
     			attr_dev(rect, "id", "svg_2");
-    			add_location(rect, file$2, 187, 12, 5277);
+    			add_location(rect, file$2, 189, 12, 5345);
     			attr_dev(text_1, "x", "0");
     			attr_dev(text_1, "y", text_1_y_value = /*height*/ ctx[3] - 40);
-    			add_location(text_1, file$2, 196, 12, 5522);
+    			add_location(text_1, file$2, 198, 12, 5590);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, g, anchor);
@@ -4647,14 +4647,14 @@ var app = (function () {
     		block,
     		id: create_if_block.name,
     		type: "if",
-    		source: "(170:10) {#if country.country !== activeCountry}",
+    		source: "(172:10) {#if country.country !== activeCountry}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (173:16) {#each getRemainingRow(i, country) as j}
+    // (175:16) {#each getRemainingRow(i, country) as j}
     function create_each_block_2(ctx) {
     	let rect;
     	let rect_x_value;
@@ -4670,7 +4670,7 @@ var app = (function () {
     			attr_dev(rect, "height", "12px");
     			attr_dev(rect, "x", rect_x_value = /*i*/ ctx[20] * 16);
     			attr_dev(rect, "y", rect_y_value = /*j*/ ctx[23] * 16);
-    			add_location(rect, file$2, 173, 18, 4862);
+    			add_location(rect, file$2, 175, 18, 4930);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, rect, anchor);
@@ -4704,14 +4704,14 @@ var app = (function () {
     		block,
     		id: create_each_block_2.name,
     		type: "each",
-    		source: "(173:16) {#each getRemainingRow(i, country) as j}",
+    		source: "(175:16) {#each getRemainingRow(i, country) as j}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (172:14) {#each chartRange(country) as i}
+    // (174:14) {#each chartRange(country) as i}
     function create_each_block_1(ctx) {
     	let each_1_anchor;
     	let each_value_2 = /*getRemainingRow*/ ctx[7](/*i*/ ctx[20], /*country*/ ctx[17]);
@@ -4772,14 +4772,14 @@ var app = (function () {
     		block,
     		id: create_each_block_1.name,
     		type: "each",
-    		source: "(172:14) {#each chartRange(country) as i}",
+    		source: "(174:14) {#each chartRange(country) as i}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (150:4) {#each allData.filter((d) => d.country !== activeCountry) as country, countryIndex}
+    // (152:4) {#each allData.filter((d) => d.country !== activeCountry) as country, countryIndex}
     function create_each_block$1(ctx) {
     	let figure;
     	let svg_1;
@@ -4801,19 +4801,19 @@ var app = (function () {
     			attr_dev(path, "d", "M -1,2 l 6,0");
     			attr_dev(path, "stroke", "#000000");
     			attr_dev(path, "stroke-width", "1");
-    			add_location(path, file$2, 166, 14, 4538);
+    			add_location(path, file$2, 168, 14, 4606);
     			attr_dev(pattern, "id", "diagonalHatch");
     			attr_dev(pattern, "patternUnits", "userSpaceOnUse");
     			attr_dev(pattern, "width", "4");
     			attr_dev(pattern, "height", "4");
     			attr_dev(pattern, "patternTransform", "rotate(-45 2 2)");
-    			add_location(pattern, file$2, 159, 12, 4326);
-    			add_location(defs, file$2, 158, 10, 4307);
-    			add_location(svg_1, file$2, 157, 8, 4291);
+    			add_location(pattern, file$2, 161, 12, 4394);
+    			add_location(defs, file$2, 160, 10, 4375);
+    			add_location(svg_1, file$2, 159, 8, 4359);
     			attr_dev(figure, "class", "interactive__charts " + ('inactive-' + /*countryIndex*/ ctx[19]));
     			attr_dev(figure, "data-attr", figure_data_attr_value = /*country*/ ctx[17].country);
     			add_render_callback(() => /*figure_elementresize_handler_1*/ ctx[13].call(figure));
-    			add_location(figure, file$2, 151, 6, 4092);
+    			add_location(figure, file$2, 153, 6, 4160);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, figure, anchor);
@@ -4853,14 +4853,14 @@ var app = (function () {
     		block,
     		id: create_each_block$1.name,
     		type: "each",
-    		source: "(150:4) {#each allData.filter((d) => d.country !== activeCountry) as country, countryIndex}",
+    		source: "(152:4) {#each allData.filter((d) => d.country !== activeCountry) as country, countryIndex}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (109:0) {#key activeCountry}
+    // (111:0) {#key activeCountry}
     function create_key_block(ctx) {
     	let div;
     	let figure;
@@ -4925,14 +4925,14 @@ var app = (function () {
     			create_component(legend.$$.fragment);
     			attr_dev(stop0, "class", "main-stop");
     			attr_dev(stop0, "offset", "0%");
-    			add_location(stop0, file$2, 117, 10, 3085);
+    			add_location(stop0, file$2, 119, 10, 3153);
     			attr_dev(stop1, "class", "alt-stop");
     			attr_dev(stop1, "offset", "100%");
-    			add_location(stop1, file$2, 118, 10, 3139);
+    			add_location(stop1, file$2, 120, 10, 3207);
     			attr_dev(linearGradient, "id", "gradient");
-    			add_location(linearGradient, file$2, 116, 8, 3044);
+    			add_location(linearGradient, file$2, 118, 8, 3112);
     			attr_dev(g, "data-attr", /*activeCountry*/ ctx[0]);
-    			add_location(g, file$2, 120, 8, 3218);
+    			add_location(g, file$2, 122, 8, 3286);
     			attr_dev(rect, "fill", "none");
     			attr_dev(rect, "stroke", "#c5c5c5");
     			attr_dev(rect, "stroke-width", "1.5");
@@ -4941,17 +4941,17 @@ var app = (function () {
     			attr_dev(rect, "width", rect_width_value = /*width*/ ctx[2] * 3);
     			attr_dev(rect, "height", "1");
     			attr_dev(rect, "id", "svg_2");
-    			add_location(rect, file$2, 134, 8, 3631);
+    			add_location(rect, file$2, 136, 8, 3699);
     			attr_dev(text_1, "x", "0");
     			attr_dev(text_1, "y", text_1_y_value = /*height*/ ctx[3] / 2);
-    			add_location(text_1, file$2, 145, 8, 3864);
+    			add_location(text_1, file$2, 147, 8, 3932);
     			attr_dev(svg_1, "class", "green");
-    			add_location(svg_1, file$2, 115, 6, 3016);
+    			add_location(svg_1, file$2, 117, 6, 3084);
     			attr_dev(figure, "class", "interactive__charts active");
     			add_render_callback(() => /*figure_elementresize_handler*/ ctx[11].call(figure));
-    			add_location(figure, file$2, 110, 4, 2887);
+    			add_location(figure, file$2, 112, 4, 2955);
     			attr_dev(div, "class", "interactive__charts-container");
-    			add_location(div, file$2, 109, 2, 2839);
+    			add_location(div, file$2, 111, 2, 2907);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -5069,7 +5069,7 @@ var app = (function () {
     		block,
     		id: create_key_block.name,
     		type: "key",
-    		source: "(109:0) {#key activeCountry}",
+    		source: "(111:0) {#key activeCountry}",
     		ctx
     	});
 
@@ -5218,6 +5218,8 @@ var app = (function () {
     			return 70;
     		} else if (activeCountry === 'Germany') {
     			return 90;
+    		} else if (activeCountry === 'EU Comission') {
+    			return 130;
     		} else {
     			return 40;
     		}
