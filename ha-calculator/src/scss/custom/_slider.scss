@@ -48,7 +48,7 @@ input[type=range]{
 @-moz-document url-prefix() {
 
   input[type=range]{
-  -webkit-appearance: inherit;
+  -webkit-appearance: progressbar;
   }
 }
 
