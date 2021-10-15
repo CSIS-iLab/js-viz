@@ -4443,7 +4443,7 @@ var app = (function () {
     			attr_dev(rect, "x", rect_x_value = /*i*/ ctx[20] * 24 + /*spaceLabels*/ ctx[8]());
     			attr_dev(rect, "y", rect_y_value = /*j*/ ctx[23] * 24);
     			attr_dev(rect, "fill", "url(#gradient)");
-    			add_location(rect, file$2, 125, 14, 3422);
+    			add_location(rect, file$2, 125, 14, 3348);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, rect, anchor);
@@ -4571,7 +4571,7 @@ var app = (function () {
     			text_1 = svg_element("text");
     			t = text$1(t_value);
     			attr_dev(g, "data-attr", g_data_attr_value = /*country*/ ctx[17].country);
-    			add_location(g, file$2, 172, 12, 4774);
+    			add_location(g, file$2, 172, 12, 4700);
     			attr_dev(rect, "fill", "none");
     			attr_dev(rect, "stroke", "#c5c5c5");
     			attr_dev(rect, "stroke-width", "1.5");
@@ -4580,10 +4580,10 @@ var app = (function () {
     			attr_dev(rect, "width", "15px");
     			attr_dev(rect, "height", "1");
     			attr_dev(rect, "id", "svg_2");
-    			add_location(rect, file$2, 189, 12, 5345);
+    			add_location(rect, file$2, 189, 12, 5271);
     			attr_dev(text_1, "x", "0");
     			attr_dev(text_1, "y", text_1_y_value = /*height*/ ctx[3] - 40);
-    			add_location(text_1, file$2, 198, 12, 5590);
+    			add_location(text_1, file$2, 198, 12, 5516);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, g, anchor);
@@ -4670,7 +4670,7 @@ var app = (function () {
     			attr_dev(rect, "height", "12px");
     			attr_dev(rect, "x", rect_x_value = /*i*/ ctx[20] * 16);
     			attr_dev(rect, "y", rect_y_value = /*j*/ ctx[23] * 16);
-    			add_location(rect, file$2, 175, 18, 4930);
+    			add_location(rect, file$2, 175, 18, 4856);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, rect, anchor);
@@ -4801,19 +4801,19 @@ var app = (function () {
     			attr_dev(path, "d", "M -1,2 l 6,0");
     			attr_dev(path, "stroke", "#000000");
     			attr_dev(path, "stroke-width", "1");
-    			add_location(path, file$2, 168, 14, 4606);
+    			add_location(path, file$2, 168, 14, 4532);
     			attr_dev(pattern, "id", "diagonalHatch");
     			attr_dev(pattern, "patternUnits", "userSpaceOnUse");
     			attr_dev(pattern, "width", "4");
     			attr_dev(pattern, "height", "4");
     			attr_dev(pattern, "patternTransform", "rotate(-45 2 2)");
-    			add_location(pattern, file$2, 161, 12, 4394);
-    			add_location(defs, file$2, 160, 10, 4375);
-    			add_location(svg_1, file$2, 159, 8, 4359);
+    			add_location(pattern, file$2, 161, 12, 4320);
+    			add_location(defs, file$2, 160, 10, 4301);
+    			add_location(svg_1, file$2, 159, 8, 4285);
     			attr_dev(figure, "class", "interactive__charts " + ('inactive-' + /*countryIndex*/ ctx[19]));
     			attr_dev(figure, "data-attr", figure_data_attr_value = /*country*/ ctx[17].country);
     			add_render_callback(() => /*figure_elementresize_handler_1*/ ctx[13].call(figure));
-    			add_location(figure, file$2, 153, 6, 4160);
+    			add_location(figure, file$2, 153, 6, 4086);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, figure, anchor);
@@ -4925,14 +4925,14 @@ var app = (function () {
     			create_component(legend.$$.fragment);
     			attr_dev(stop0, "class", "main-stop");
     			attr_dev(stop0, "offset", "0%");
-    			add_location(stop0, file$2, 119, 10, 3153);
+    			add_location(stop0, file$2, 119, 10, 3079);
     			attr_dev(stop1, "class", "alt-stop");
     			attr_dev(stop1, "offset", "100%");
-    			add_location(stop1, file$2, 120, 10, 3207);
+    			add_location(stop1, file$2, 120, 10, 3133);
     			attr_dev(linearGradient, "id", "gradient");
-    			add_location(linearGradient, file$2, 118, 8, 3112);
+    			add_location(linearGradient, file$2, 118, 8, 3038);
     			attr_dev(g, "data-attr", /*activeCountry*/ ctx[0]);
-    			add_location(g, file$2, 122, 8, 3286);
+    			add_location(g, file$2, 122, 8, 3212);
     			attr_dev(rect, "fill", "none");
     			attr_dev(rect, "stroke", "#c5c5c5");
     			attr_dev(rect, "stroke-width", "1.5");
@@ -4941,17 +4941,17 @@ var app = (function () {
     			attr_dev(rect, "width", rect_width_value = /*width*/ ctx[2] * 3);
     			attr_dev(rect, "height", "1");
     			attr_dev(rect, "id", "svg_2");
-    			add_location(rect, file$2, 136, 8, 3699);
+    			add_location(rect, file$2, 136, 8, 3625);
     			attr_dev(text_1, "x", "0");
     			attr_dev(text_1, "y", text_1_y_value = /*height*/ ctx[3] / 2);
-    			add_location(text_1, file$2, 147, 8, 3932);
+    			add_location(text_1, file$2, 147, 8, 3858);
     			attr_dev(svg_1, "class", "green");
-    			add_location(svg_1, file$2, 117, 6, 3084);
+    			add_location(svg_1, file$2, 117, 6, 3010);
     			attr_dev(figure, "class", "interactive__charts active");
     			add_render_callback(() => /*figure_elementresize_handler*/ ctx[11].call(figure));
-    			add_location(figure, file$2, 112, 4, 2955);
+    			add_location(figure, file$2, 112, 4, 2881);
     			attr_dev(div, "class", "interactive__charts-container");
-    			add_location(div, file$2, 111, 2, 2907);
+    			add_location(div, file$2, 111, 2, 2833);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -5137,7 +5137,7 @@ var app = (function () {
     const b = 1000000000;
 
     // Helper f(n) for formatDecimalPlaces
-    function formatAmount$1(value) {
+    function formatAmount(value) {
     	if (window.innerWidth < 768) {
     		return value.replace(/G/, 'B').slice(-1)[0];
     	}
@@ -5165,7 +5165,7 @@ var app = (function () {
 
     	/* formats values up to two decimal places while maintaining 1-3 digits left of the first comma (eg 500.00B or 1.00T) */
     	function formatDecimalPlaces(value) {
-    		let amt = formatAmount$1(format('.5s')(value));
+    		let amt = formatAmount(format('.5s')(value));
     		let numOne = format('$.5s')(value).split('.')[0];
     		let numTwo = format('.5s')(value).split('.')[1].slice(0, 1);
     		return numOne + '.' + numTwo + amt;
@@ -5286,7 +5286,7 @@ var app = (function () {
     		height,
     		margin,
     		b,
-    		formatAmount: formatAmount$1,
+    		formatAmount,
     		formatDecimalPlaces,
     		chartRange,
     		getActiveRemainingRow,
@@ -5399,23 +5399,23 @@ var app = (function () {
 
     function get_each_context(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[26] = list[i];
+    	child_ctx[27] = list[i];
     	return child_ctx;
     }
 
-    // (155:12) {#each getDropdownOptions() as option}
+    // (152:12) {#each getDropdownOptions() as option}
     function create_each_block(ctx) {
     	let option;
-    	let t_value = /*option*/ ctx[26] + "";
+    	let t_value = /*option*/ ctx[27] + "";
     	let t;
 
     	const block = {
     		c: function create() {
     			option = element("option");
     			t = text$1(t_value);
-    			option.__value = /*option*/ ctx[26];
+    			option.__value = /*option*/ ctx[27];
     			option.value = option.__value;
-    			add_location(option, file$1, 155, 14, 4161);
+    			add_location(option, file$1, 152, 14, 4065);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, option, anchor);
@@ -5431,7 +5431,7 @@ var app = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(155:12) {#each getDropdownOptions() as option}",
+    		source: "(152:12) {#each getDropdownOptions() as option}",
     		ctx
     	});
 
@@ -5536,51 +5536,51 @@ var app = (function () {
     			t17 = space();
     			button = element("button");
     			img = element("img");
-    			add_location(th0, file$1, 138, 6, 3698);
-    			add_location(th1, file$1, 139, 6, 3714);
-    			add_location(th2, file$1, 140, 6, 3733);
-    			add_location(th3, file$1, 141, 6, 3762);
-    			add_location(th4, file$1, 142, 6, 3791);
+    			add_location(th0, file$1, 135, 6, 3602);
+    			add_location(th1, file$1, 136, 6, 3618);
+    			add_location(th2, file$1, 137, 6, 3637);
+    			add_location(th3, file$1, 138, 6, 3666);
+    			add_location(th4, file$1, 139, 6, 3695);
     			attr_dev(tr0, "class", "interactive__subheading");
-    			add_location(tr0, file$1, 137, 4, 3655);
-    			add_location(thead, file$1, 136, 2, 3643);
+    			add_location(tr0, file$1, 134, 4, 3559);
+    			add_location(thead, file$1, 133, 2, 3547);
     			attr_dev(select, "class", "input__select");
     			if (/*activeCountry*/ ctx[0] === void 0) add_render_callback(() => /*select_change_handler*/ ctx[16].call(select));
-    			add_location(select, file$1, 149, 10, 3947);
+    			add_location(select, file$1, 146, 10, 3851);
     			attr_dev(div0, "class", "interactive__dropdown");
-    			add_location(div0, file$1, 148, 8, 3901);
+    			add_location(div0, file$1, 145, 8, 3805);
     			attr_dev(th5, "class", "interactive__subheading");
-    			add_location(th5, file$1, 147, 6, 3856);
-    			add_location(td0, file$1, 160, 6, 4277);
+    			add_location(th5, file$1, 144, 6, 3760);
+    			add_location(td0, file$1, 157, 6, 4181);
     			attr_dev(input, "id", "slider");
     			attr_dev(input, "type", "range");
     			attr_dev(input, "name", "slider");
     			attr_dev(input, "min", "0");
     			attr_dev(input, "max", "100");
-    			add_location(input, file$1, 165, 10, 4384);
+    			add_location(input, file$1, 162, 10, 4288);
     			attr_dev(output, "class", "slider__bubble");
-    			add_location(output, file$1, 175, 10, 4652);
+    			add_location(output, file$1, 172, 10, 4556);
     			attr_dev(div1, "class", "slider-wrap");
-    			add_location(div1, file$1, 164, 8, 4348);
-    			add_location(td1, file$1, 163, 6, 4335);
+    			add_location(div1, file$1, 161, 8, 4252);
+    			add_location(td1, file$1, 160, 6, 4239);
     			attr_dev(td2, "class", "calc-values");
-    			add_location(td2, file$1, 178, 6, 4743);
+    			add_location(td2, file$1, 175, 6, 4647);
     			attr_dev(td3, "class", "calc-values");
-    			add_location(td3, file$1, 181, 6, 4829);
-    			add_location(tr1, file$1, 146, 4, 3845);
-    			add_location(tbody, file$1, 145, 2, 3833);
+    			add_location(td3, file$1, 178, 6, 4733);
+    			add_location(tr1, file$1, 143, 4, 3749);
+    			add_location(tbody, file$1, 142, 2, 3737);
     			attr_dev(table, "class", "interactive__table interactive__table--large");
     			attr_dev(table, "cellpadding", "0");
     			attr_dev(table, "cellspacing", "0");
-    			add_location(table, file$1, 131, 0, 3541);
+    			add_location(table, file$1, 128, 0, 3445);
     			if (!src_url_equal(img.src, img_src_value = "./images/replay.svg")) attr_dev(img, "src", img_src_value);
     			attr_dev(img, "target", "_blank");
     			attr_dev(img, "alt", "Refresh button");
     			attr_dev(img, "title", "Refresh button");
     			attr_dev(img, "width", "300");
     			attr_dev(img, "height", "31");
-    			add_location(img, file$1, 189, 4, 4988);
-    			add_location(button, file$1, 188, 2, 4940);
+    			add_location(img, file$1, 186, 4, 4892);
+    			add_location(button, file$1, 185, 2, 4844);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -5708,20 +5708,6 @@ var app = (function () {
     	return block;
     }
 
-    function formatAmount(value) {
-    	if (window.innerWidth < 768) {
-    		return value.replace(/G/, 'B').slice(-1)[0];
-    	}
-
-    	if (value.includes('T')) {
-    		return 'T';
-    	} else if (value.includes('G')) {
-    		return 'B';
-    	} else {
-    		return 'M';
-    	}
-    }
-
     function instance$1($$self, $$props, $$invalidate) {
     	let gdp;
     	let remaining;
@@ -5736,6 +5722,7 @@ var app = (function () {
     	let origValues;
     	let slider;
     	let bubble;
+    	let activePercentage = allData.find(d => d.country === activeCountry).adjustable_gdp * 100000;
 
     	const formatBubble = val => {
     		console.log(val);
@@ -5749,19 +5736,32 @@ var app = (function () {
     		}
     	};
 
+    	// Helper f(n) for formatDecimalPlaces
+    	const formatAmount = value => {
+    		if (window.innerWidth < 768) {
+    			return value.replace(/G/, 'B').slice(-1)[0];
+    		}
+
+    		if (value.includes('T')) {
+    			return 'T';
+    		} else if (value.includes('G')) {
+    			return 'B';
+    		} else {
+    			return 'M';
+    		}
+    	};
+
     	/* formats values up to two decimal places while maintaining 1-3 digits left of the first comma (eg 500.00B or 1.00T) */
-    	function formatDecimalPlaces(value) {
+    	const formatDecimalPlaces = value => {
     		let amt = formatAmount(format('.5s')(value));
     		let numOne = format('$.5s')(value).split('.')[0];
     		let numTwo = format('.5s')(value).split('.')[1].slice(0, 1);
     		return numOne + '.' + numTwo + amt;
-    	}
+    	};
 
     	const getDropdownOptions = () => {
     		return allData.sort((a, b) => a.country.localeCompare(b.country)).map(c => c.country);
     	};
-
-    	let activePercentage = allData.find(d => d.country === activeCountry).adjustable_gdp * 100000;
 
     	const handleChange = () => {
     		const country = allData.find(d => d.country == activeCountry);
@@ -5773,26 +5773,6 @@ var app = (function () {
     	const handleActiveCountry = () => {
     		$$invalidate(2, activePercentage = allData.find(d => d.country === activeCountry).adjustable_gdp * 100000);
     	};
-
-    	onMount(() => {
-    		// Save original values for refresh function
-    		origValues = allData.map(d => {
-    			return {
-    				country: d.country,
-    				gdp: d.gdp,
-    				adjustable_gdp: d.adjustable_gdp,
-    				funding: d.funding
-    			};
-    		});
-
-    		slider.addEventListener("input", () => {
-    			setBubble(slider, bubble);
-    		});
-    	});
-
-    	afterUpdate(() => {
-    		setBubble(slider, bubble);
-    	});
 
     	const setBubble = (range, bubble) => {
     		const val = range.value;
@@ -5825,8 +5805,27 @@ var app = (function () {
 
     		$$invalidate(0, activeCountry = 'US');
     		$$invalidate(2, activePercentage = allData.find(d => d.country === activeCountry).adjustable_gdp * 100000);
-    		console.log(allData);
     	};
+
+    	onMount(() => {
+    		// Save original values for refresh function
+    		origValues = allData.map(d => {
+    			return {
+    				country: d.country,
+    				gdp: d.gdp,
+    				adjustable_gdp: d.adjustable_gdp,
+    				funding: d.funding
+    			};
+    		});
+
+    		slider.addEventListener("input", () => {
+    			setBubble(slider, bubble);
+    		});
+    	});
+
+    	afterUpdate(() => {
+    		setBubble(slider, bubble);
+    	});
 
     	const writable_props = ['activeCountry', 'allData', 'row', 'totalReq', 'contributed'];
 
@@ -5874,9 +5873,7 @@ var app = (function () {
     	};
 
     	$$self.$capture_state = () => ({
-    		range,
     		format,
-    		tippy,
     		onMount,
     		afterUpdate,
     		activeCountry,
@@ -5887,11 +5884,11 @@ var app = (function () {
     		origValues,
     		slider,
     		bubble,
+    		activePercentage,
     		formatBubble,
     		formatAmount,
     		formatDecimalPlaces,
     		getDropdownOptions,
-    		activePercentage,
     		handleChange,
     		handleActiveCountry,
     		setBubble,

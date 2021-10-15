@@ -11,8 +11,8 @@
   let svg
   let width = 300
   let height = 300
+
   const margin = { top: 5, right: 10, bottom: 10, left: 10 }
-  // const temp = allData.find((d) => d.country === activeCountry).funding
   const b = 1000000000
 
   // Helper f(n) for formatDecimalPlaces

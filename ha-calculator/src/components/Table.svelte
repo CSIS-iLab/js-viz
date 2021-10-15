@@ -1,7 +1,5 @@
 <script>
-  import { range } from 'd3-array';
   import { format } from 'd3-format'
-  import tippy from 'sveltejs-tippy'
   import { onMount, afterUpdate } from 'svelte';
 
   export let activeCountry
@@ -13,46 +11,6 @@
   let origValues
   let slider
   let bubble
-
-  const formatBubble = (val) => {
-    console.log(val)
-    if (val < 10) {
-      return '.00' + val + '%'
-    } else if ( val === '100') {
-      return '.10%' 
-    } else {
-      return '.0' + val + '%'
-    }
-  }
-
-  // Helper f(n) for formatDecimalPlaces
-  function formatAmount(value) {
-    if (window.innerWidth < 768) {
-      return value.replace(/G/, 'B').slice(-1)[0]
-    }
-
-    if (value.includes('T')) {
-      return 'T'
-    } else if (value.includes('G')) {
-      return 'B'
-    } else {
-      return 'M'
-    }
-  }
-
-  /* formats values up to two decimal places while maintaining 1-3 digits left of the first comma (eg 500.00B or 1.00T) */
-  function formatDecimalPlaces(value) {
-    let amt = formatAmount(format('.5s')(value))
-    let numOne = format('$.5s')(value).split('.')[0]
-    let numTwo = format('.5s')(value).split('.')[1].slice(0, 1)
-    return numOne + '.' + numTwo + amt
-  }
-
-  const getDropdownOptions = () => {
-    return allData
-      .sort((a, b) => a.country.localeCompare(b.country))
-      .map((c) => c.country)
-  }
 
   $: gdp = allData.find((d) => d.country === activeCountry).gdp
 
@@ -72,6 +30,46 @@
       row
   )
 
+  const formatBubble = (val) => {
+    console.log(val)
+    if (val < 10) {
+      return '.00' + val + '%'
+    } else if ( val === '100') {
+      return '.10%' 
+    } else {
+      return '.0' + val + '%'
+    }
+  }
+
+  // Helper f(n) for formatDecimalPlaces
+  const formatAmount = (value) => {
+    if (window.innerWidth < 768) {
+      return value.replace(/G/, 'B').slice(-1)[0]
+    }
+
+    if (value.includes('T')) {
+      return 'T'
+    } else if (value.includes('G')) {
+      return 'B'
+    } else {
+      return 'M'
+    }
+  }
+
+  /* formats values up to two decimal places while maintaining 1-3 digits left of the first comma (eg 500.00B or 1.00T) */
+  const formatDecimalPlaces = (value) => {
+    let amt = formatAmount(format('.5s')(value))
+    let numOne = format('$.5s')(value).split('.')[0]
+    let numTwo = format('.5s')(value).split('.')[1].slice(0, 1)
+    return numOne + '.' + numTwo + amt
+  }
+
+  const getDropdownOptions = () => {
+    return allData
+      .sort((a, b) => a.country.localeCompare(b.country))
+      .map((c) => c.country)
+  }
+
   const handleChange = () => {
     const country = allData.find((d) => d.country == activeCountry)
     const convertedPercentage = activePercentage * 0.00001
@@ -80,6 +78,30 @@
   }
 
   const handleActiveCountry = () => {
+    activePercentage =
+      allData.find((d) => d.country === activeCountry).adjustable_gdp * 100000
+  }
+
+  const setBubble = (range, bubble) => {
+    const val = range.value;
+    const min = range.min ? range.min : 0;
+    const max = range.max ? range.max : 100;
+    const newVal = Number(((val - min) * 100) / (max - min));
+    console.log(newVal)
+    bubble.innerHTML = formatBubble(val);
+
+    // Sorta magic numbers based on size of the native UI thumb
+    bubble.style.left = `calc(${newVal}% + (${8 - newVal * 0.20}px))`;
+  }
+
+  const handleRefresh = () => {
+    allData = allData.map(d => {
+      const orig = origValues.find(f => f.country === d.country)
+      console.log( { ...d, funding: orig.funding, adjustable_gdp: orig.adjustable_gdp })
+      return { ...d, funding: orig.funding, adjustable_gdp: orig.adjustable_gdp }
+    })
+
+    activeCountry = 'US'
     activePercentage =
       allData.find((d) => d.country === activeCountry).adjustable_gdp * 100000
   }
@@ -102,31 +124,6 @@
   afterUpdate(() => {
     setBubble(slider,bubble)
   })
-
-  const setBubble = (range, bubble) => {
-    const val = range.value;
-    const min = range.min ? range.min : 0;
-    const max = range.max ? range.max : 100;
-    const newVal = Number(((val - min) * 100) / (max - min));
-    console.log(newVal)
-    bubble.innerHTML = formatBubble(val);
-
-    // Sorta magic numbers based on size of the native UI thumb
-    bubble.style.left = `calc(${newVal}% + (${8 - newVal * 0.20}px))`;
-  }
-
-  const handleRefresh = () => {
-    
-    allData = allData.map(d => {
-      const orig = origValues.find(f => f.country === d.country)
-      console.log( { ...d, funding: orig.funding, adjustable_gdp: orig.adjustable_gdp })
-      return { ...d, funding: orig.funding, adjustable_gdp: orig.adjustable_gdp }
-    })
-    activeCountry = 'US'
-    activePercentage =
-      allData.find((d) => d.country === activeCountry).adjustable_gdp * 100000
-    console.log(allData)
-  }
 </script>
 
 <table
