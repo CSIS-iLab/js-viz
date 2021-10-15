@@ -5477,8 +5477,7 @@ var app = (function () {
     	let t16;
     	let t17;
     	let button;
-    	let img;
-    	let img_src_value;
+    	let span;
     	let mounted;
     	let dispose;
     	let each_value = /*getDropdownOptions*/ ctx[8]();
@@ -5535,7 +5534,7 @@ var app = (function () {
     			t16 = text$1(t16_value);
     			t17 = space();
     			button = element("button");
-    			img = element("img");
+    			span = element("span");
     			add_location(th0, file$1, 135, 6, 3602);
     			add_location(th1, file$1, 136, 6, 3618);
     			add_location(th2, file$1, 137, 6, 3637);
@@ -5573,13 +5572,9 @@ var app = (function () {
     			attr_dev(table, "cellpadding", "0");
     			attr_dev(table, "cellspacing", "0");
     			add_location(table, file$1, 128, 0, 3445);
-    			if (!src_url_equal(img.src, img_src_value = "./images/replay.svg")) attr_dev(img, "src", img_src_value);
-    			attr_dev(img, "target", "_blank");
-    			attr_dev(img, "alt", "Refresh button");
-    			attr_dev(img, "title", "Refresh button");
-    			attr_dev(img, "width", "300");
-    			attr_dev(img, "height", "31");
-    			add_location(img, file$1, 186, 4, 4892);
+    			attr_dev(span, "class", "icon icon-replay");
+    			add_location(span, file$1, 186, 3, 4916);
+    			attr_dev(button, "class", "btn btn__refresh");
     			add_location(button, file$1, 185, 2, 4844);
     		},
     		l: function claim(nodes) {
@@ -5630,7 +5625,7 @@ var app = (function () {
     			append_dev(td3, t16);
     			insert_dev(target, t17, anchor);
     			insert_dev(target, button, anchor);
-    			append_dev(button, img);
+    			append_dev(button, span);
 
     			if (!mounted) {
     				dispose = [

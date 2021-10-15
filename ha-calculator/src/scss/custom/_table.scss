@@ -68,3 +68,28 @@
     }
   }
 }
+
+
+
+.btn {
+  background-color: transparent;
+
+  .icon {
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    background-image: url(/images/replay.svg);
+    background-size: cover;
+    background-color: transparent;
+    filter: invert(0%) sepia(100%) saturate(0%) hue-rotate(13deg) brightness(98%) contrast(105%);
+    opacity: 80%;
+  
+    &:hover {
+      filter: invert(0%) sepia(100%) saturate(0%) hue-rotate(13deg) brightness(98%) contrast(105%);
+      opacity: 1;
+    }
+
+ 
+  }
+}
+

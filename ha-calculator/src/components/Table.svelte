@@ -183,19 +183,13 @@
   </tbody>
 </table>
 
-  <button on:click="{() => handleRefresh()}">
-    <img
-      src="./images/replay.svg"
-      target="_blank"
-      alt="Refresh button"
-      title="Refresh button"
-      width="300"
-      height="31"
-    />
+  <button class="btn btn__refresh" on:click="{() => handleRefresh()}">
+   <span class="icon icon-replay"></span>
   </button>
 
 
 <style type="text/scss" global>
+  @import '../scss/components/_buttons.scss';
   @import '../scss/components/_form-elements.scss';
   @import '../scss/custom/_table.scss';
   @import '../scss/custom/_slider.scss';
