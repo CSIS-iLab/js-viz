@@ -2,7 +2,6 @@
   import parseData from './data.js'
   import Chart from './components/Chart.svelte'
   import Table from './components/Table.svelte'
-  import Legend from './components/Legend.svelte'
 
   $: totalReq = 38536692263
   $: remaining = 0
@@ -66,7 +65,6 @@
 </script>
 
 <main class="interactive">
-  <!-- <div>{contributed}</div> -->
   <header class="interactive__header">
     <h1>HA Calculator</h1>
     <p>
@@ -91,15 +89,11 @@
       bind:contributed
     />
 
-    <!-- <Legend /> -->
-
     <Chart
       allData="{allData.data}"
       activeCountry="{activeCountry}"
       contributed="{contributed}"
     />
-
-
 
     <footer class="interactive__source">
       <a href="https://www.csis.org/" class="source-holder"

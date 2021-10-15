@@ -1,16 +1,18 @@
 <script>
-  // import RangeSlider from "svelte-range-slider-pips";
-  import Slider from '@bulatdashiev/svelte-slider'
-import { range } from 'd3-array';
+  import { range } from 'd3-array';
   import { format } from 'd3-format'
-import tippy from 'sveltejs-tippy'
-import { onMount, afterUpdate } from 'svelte';
+  import tippy from 'sveltejs-tippy'
+  import { onMount, afterUpdate } from 'svelte';
 
   export let activeCountry
   export let allData
   export let row
   export let totalReq
   export let contributed
+
+  let origValues
+  let slider
+  let bubble
 
   const formatBubble = (val) => {
     console.log(val)
@@ -54,8 +56,7 @@ import { onMount, afterUpdate } from 'svelte';
 
   $: gdp = allData.find((d) => d.country === activeCountry).gdp
 
-  let activePercentage =
-    allData.find((d) => d.country === activeCountry).adjustable_gdp * 100000
+  let activePercentage = allData.find((d) => d.country === activeCountry).adjustable_gdp * 100000
 
   $: contributed = Math.floor(gdp * (activePercentage * 0.00001))
 
@@ -76,19 +77,23 @@ import { onMount, afterUpdate } from 'svelte';
     const convertedPercentage = activePercentage * 0.00001
     country.adjustable_gdp = convertedPercentage
     country.funding = contributed
-    // console.log(allData)
   }
 
   const handleActiveCountry = () => {
     activePercentage =
       allData.find((d) => d.country === activeCountry).adjustable_gdp * 100000
-    // setTimeout(() => {setBubble(slider,bubble)},500) 
   }
 
-  let slider
-  let bubble
-
   onMount(() => {
+    // Save original values for refresh function
+    origValues = allData.map(d => {
+     return { 
+      country: d.country,
+      gdp: d.gdp,
+      adjustable_gdp: d.adjustable_gdp,
+      funding: d.funding
+     }})
+
     slider.addEventListener("input", () => {
     setBubble(slider, bubble)
     });
@@ -98,16 +103,30 @@ import { onMount, afterUpdate } from 'svelte';
     setBubble(slider,bubble)
   })
 
-function setBubble(range, bubble) {
-  const val = range.value;
-  const min = range.min ? range.min : 0;
-  const max = range.max ? range.max : 100;
-  const newVal = Number(((val - min) * 100) / (max - min));
-  bubble.innerHTML = formatBubble(val);
+  const setBubble = (range, bubble) => {
+    const val = range.value;
+    const min = range.min ? range.min : 0;
+    const max = range.max ? range.max : 100;
+    const newVal = Number(((val - min) * 100) / (max - min));
+    console.log(newVal)
+    bubble.innerHTML = formatBubble(val);
 
-  // Sorta magic numbers based on size of the native UI thumb
- bubble.style.left = `calc(${newVal}% + (${8 - newVal * 0.20}px))`;
-}
+    // Sorta magic numbers based on size of the native UI thumb
+    bubble.style.left = `calc(${newVal}% + (${8 - newVal * 0.20}px))`;
+  }
+
+  const handleRefresh = () => {
+    
+    allData = allData.map(d => {
+      const orig = origValues.find(f => f.country === d.country)
+      console.log( { ...d, funding: orig.funding, adjustable_gdp: orig.adjustable_gdp })
+      return { ...d, funding: orig.funding, adjustable_gdp: orig.adjustable_gdp }
+    })
+    activeCountry = 'US'
+    activePercentage =
+      allData.find((d) => d.country === activeCountry).adjustable_gdp * 100000
+    console.log(allData)
+  }
 </script>
 
 <table
@@ -166,6 +185,19 @@ function setBubble(range, bubble) {
     </tr>
   </tbody>
 </table>
+
+  <button on:click="{() => handleRefresh()}">
+    <img
+      src="./images/replay.svg"
+      target="_blank"
+      alt="Refresh button"
+      title="Refresh button"
+      width="300"
+      height="31"
+    />
+  </button>
+
+
 <style type="text/scss" global>
   @import '../scss/components/_form-elements.scss';
   @import '../scss/custom/_table.scss';
