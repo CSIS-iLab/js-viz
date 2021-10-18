@@ -20,33 +20,18 @@ const client = new carto.Client({
   username: "csis",
 });
 
-const mapSource = new carto.source.SQL(`SELECT * FROM 
-gedpinteractivemap`);
+const mapSource = new carto.source.SQL(`SELECT * FROM edpinteractivemap`);
 
 const mapStyle = new carto.style.CartoCSS(`
         #layer {
-          #geonames_stats{
-            polygon-fill: #672044;
-            polygon-opacity: 0.9;
-            line-color: #FFF;
-            line-width: 0.5;
-            line-opacity: 0.5;
-          }
-          #geonames_stats [ number_of_immigrants <= 100000] {
-              polygon-fill: #93345d;
-          }
-          #geonames_stats [ number_of_immigrants <= 30000] {
-              polygon-fill: #b95073;
-          }
-          #geonames_stats [ number_of_immigrants <= 10000] {
-              polygon-fill: #da7489;
-          }
-          #geonames_stats [ number_of_immigrants <= 5000] {
-            polygon-fill: #f29ca3;
-          }
-          #geonames_stats [ number_of_immigrants <= 1000] {
-          polygon-fill: #ffc6c4;
-          }
+          polygon-fill: ramp([country],
+            (#5F4690, #1D6996, #38A6A5, #0F8554, #73AF48),
+            ("China, Taiwan Province of", "India", "Indonesia", "Japan", "South Korea"),
+            "=");
+          polygon-opacity: 0.9;
+          line-color: #FFF;
+          line-width: 0.5;
+          line-opacity: 0.5;
         }
         #layer::outline {
           line-width: 0.5;
@@ -56,37 +41,44 @@ const mapStyle = new carto.style.CartoCSS(`
       `);
 
 const mapLayer = new carto.layer.Layer(mapSource, mapStyle, {
-  featureOverColumns: ["destination", "number_of_immigrants"],
+  featureOverColumns: ["country",
+    "iso",
+    "region",
+    "description",
+    "oda_for_government_and_civil_society_2019_in_usd_millions",
+    "focus_areas",
+    "major_recipients"
+  ],
 });
 
 client.addLayer(mapLayer);
 
-// client.getLeafletLayer().bringToFront().addTo(map);
+client.getLeafletLayer().bringToFront().addTo(map);
 
-// const popup = L.popup({ closeButton: true });
+const popup = L.popup({ closeButton: true });
 
-// mapLayer.on(carto.layer.events.FEATURE_CLICKED, createPopup);
+mapLayer.on(carto.layer.events.FEATURE_CLICKED, createPopup);
 
-// function createPopup(event) {
-//   popup.setLatLng(event.latLng);
+function createPopup(event) {
+  popup.setLatLng(event.latLng);
 
-//   if (!popup.isOpen()) {
-//     var data = event.data;
-//     console.log(event.data);
-//     var content = "<div>";
+  if (!popup.isOpen()) {
+    var data = event.data;
+    console.log(event.data);
+    var content = "<div>";
 
-//     content += `
-//     <div class="popupHeaderStyle">
-//       ${data.destination}
-//     </div>
-//     <div class="popupEntryStyle">
-//       ${data.number_of_immigrants}
-//     </div>
-//     `;
-//     popup.setContent("" + content);
-//     popup.openOn(map);
-//   }
-// }
+    content += `
+    <div class="popupHeaderStyle">
+      ${data.country}
+    </div>
+    <div class="popupEntryStyle">
+      ${data.description}
+    </div>
+    `;
+    popup.setContent("" + content);
+    popup.openOn(map);
+  }
+}
 
 L.control
   .attribution({

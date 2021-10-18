@@ -23,11 +23,21 @@
 
     <script src="https://unpkg.com/babel-polyfill@6.26.0/dist/polyfill.js"></script>
     <!-- Include Leaflet -->
-    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
+    <!-- <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
     <link
       href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
       rel="stylesheet"
-    />
+    /> -->
+    <!-- Include new Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+    crossorigin=""/>
+    <!-- Include new Leaflet CSS -->
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+    crossorigin=""></script>
+    
     <!-- Include CARTO.js -->
     <script src="https://libs.cartocdn.com/carto.js/v4.1.11/carto.min.js"></script>
     <link
