@@ -4,8 +4,6 @@
   import Table from './components/Table.svelte'
 
   $: totalReq = 38536692263
-  $: remaining = 0
-  $: total = 0
   $: activeCountry = 'US'
 
   let contributed = 0
@@ -21,12 +19,6 @@
       src: dataSrc,
     })
 
-    console.log(res)
-    total = res.data.reduce((acc, i) => {
-      return (acc += i.funding)
-    }, 0)
-    remaining = totalReq - total
-    console.log(total + 5815512166, '------------')
     return res
   }
 
@@ -77,22 +69,26 @@
   </header>
 
   {#await data}
+
     <div class="loading-container">
       <div class="loading"></div>
     </div>
+
   {:then allData}
+
     <Table
       allData="{allData.data}"
       row="{allData.row.funding}"
+      {totalReq}
       bind:activeCountry
-      totalReq="{totalReq}"
       bind:contributed
     />
 
     <Chart
       allData="{allData.data}"
-      activeCountry="{activeCountry}"
-      contributed="{contributed}"
+      {activeCountry}
+      {contributed}
+      {isMobile}
     />
 
     <footer class="interactive__source">

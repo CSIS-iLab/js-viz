@@ -34,5 +34,18 @@
 .active text {
   fill: $color__black;
   stroke: $color__black;
-  @include font-size(20px);
+  @include font-size(16px);
+
+  @include breakpoint(medium) {
+    @include font-size(20px);
+  }
+}
+
+.main-stop {
+  stop-color: $color__blue-gradient-100;
+}
+
+.alt-stop {
+  stop-color: $color__blue-gradient-200;
+
 }

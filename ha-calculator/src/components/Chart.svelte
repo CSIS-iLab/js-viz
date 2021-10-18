@@ -1,19 +1,18 @@
 <script>
-  import { filter, range } from 'd3-array'
-  import tippy from 'sveltejs-tippy'
+  import { range } from 'd3-array'
   import { format } from 'd3-format'
+  import tippy from 'sveltejs-tippy'
   import Legend from './Legend.svelte'
 
   export let activeCountry
   export let allData
   export let contributed
+  export let isMobile
 
-  let svg
   let width = 300
   let height = 300
 
-  const margin = { top: 5, right: 10, bottom: 10, left: 10 }
-  const b = 1000000000
+  const bil = 1000000000
 
   // Helper f(n) for formatDecimalPlaces
   function formatAmount(value) {
@@ -38,35 +37,40 @@
     return numOne + '.' + numTwo + amt
   }
 
-  $: activeChartRange = range(0, Math.ceil(contributed / b), 1)
+  $: activeChartRange = range(0, Math.ceil(contributed / bil), 1)
 
   const chartRange = (country) => {
     const val = allData.find((d) => d.country === country.country).funding
-    return range(0, Math.ceil(val / b), 1)
+    return range(0, Math.ceil(val / bil), 1)
   }
 
-  const getActiveRemainingRow = (num) => {
+  // Builds the final column of the activeChart accounting for the remaining values
+  const getActiveRemainingRow = (index) => {
     const step = 200000000
-    if (num + 1 === Math.ceil(contributed / b)) {
+    // Check to see if drawing the last column
+    if (index + 1 === Math.ceil(contributed / bil)) {
       let arr = []
-      for (let i of range(0, b, step)) {
-        if (contributed % b > i) {
+      // checks every 200 mil increment to add squares in last column
+      for (let i of range(0, bil, step)) {
+        if (contributed % bil > i) {
           arr.push(4-arr.length)
         }
       }
       return arr
     } else {
+      // Builds full columns
       return [0, 1, 2, 3, 4]
     }
   }
 
-  const getRemainingRow = (num, country) => {
+  // Builds small multiple charts that do not need redrawing  
+  const getRemainingRow = (index, country) => {
     const val = allData.find((d) => d.country === country.country).funding
     const step = 200000000
-    if (num + 1 === Math.ceil(val / b)) {
+    if (index + 1 === Math.ceil(val / bil)) {
       let arr = []
-      for (let i of range(0, b, step)) {
-        if (val % b > i) {
+      for (let i of range(0, bil, step)) {
+        if (val % bil > i) {
           arr.push(4-arr.length)
         }
       }
@@ -77,6 +81,10 @@
   }
 
   const spaceLabels = () => {
+    if (isMobile) {
+      return 0
+    }
+
     if (activeCountry === 'Japan') {
       return 70
     } else if (activeCountry === 'Germany') {
@@ -124,10 +132,10 @@
           {#each activeChartRange as i}
             {#each getActiveRemainingRow(i) as j}
               <rect
-                width="20px"
-                height="20px"
-                x="{(i * 24) + spaceLabels() }"
-                y="{j * 24}"
+                width={isMobile ? '10px' : '20px'}
+                height={isMobile ? '10px' : '20px'}
+                x="{(isMobile ? i * 14 : i * 24) + spaceLabels()}"
+                y="{isMobile ? j * 14 : j * 24}"
                 fill="url(#gradient)"
               >
               </rect>
@@ -142,15 +150,13 @@
           y="{height - 1}"
           width="{width * 3}"
           height="1"
-          id="svg_2"
         >
         </rect>
-        <text x="0" y="{height/2}">{activeCountry}</text>
+        <text x="0" y="{isMobile ? height - 48 : height/2}">{activeCountry}</text>
       </svg>
     </figure>
 
     {#each allData.filter((d) => d.country !== activeCountry) as country, countryIndex}
-      <!-- {#each allData as country, countryIndex} -->
       <figure
         class="interactive__charts {'inactive-' + countryIndex}"
         bind:clientWidth="{width}"
@@ -174,10 +180,10 @@
               {#each chartRange(country) as i}
                 {#each getRemainingRow(i, country) as j}
                   <rect
-                    width="12px"
-                    height="12px"
-                    x="{i * 16}"
-                    y="{j * 16}"
+                    width="{isMobile ? '10px' : '12px'}"
+                    height="{isMobile ? '10px' : '12px'}"
+                    x="{isMobile ? i * 14 : i * 16}"
+                    y="{isMobile ? j * 14 : j * 16}"
                     use:tippy="{formatTooltip(
                       country,
                       `tooltip-node-${countryIndex}`
@@ -209,11 +215,4 @@
 <style type="text/scss" global>
   @import '../scss/custom/_chart.scss';
   @import '../scss/components/_tooltips.scss';
-
-  .main-stop {
-    stop-color: #0064a3;
-  }
-  .alt-stop {
-    stop-color: #004165;
-  }
 </style>

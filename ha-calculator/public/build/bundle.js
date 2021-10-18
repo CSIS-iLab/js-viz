@@ -821,16 +821,316 @@ var app = (function () {
       return range;
     }
 
-    function filter(values, test) {
-      if (typeof test !== "function") throw new TypeError("test is not a function");
-      const array = [];
-      let index = -1;
-      for (const value of values) {
-        if (test(value, ++index, values)) {
-          array.push(value);
+    function formatDecimal(x) {
+      return Math.abs(x = Math.round(x)) >= 1e21
+          ? x.toLocaleString("en").replace(/,/g, "")
+          : x.toString(10);
+    }
+
+    // Computes the decimal coefficient and exponent of the specified number x with
+    // significant digits p, where x is positive and p is in [1, 21] or undefined.
+    // For example, formatDecimalParts(1.23) returns ["123", 0].
+    function formatDecimalParts(x, p) {
+      if ((i = (x = p ? x.toExponential(p - 1) : x.toExponential()).indexOf("e")) < 0) return null; // NaN, ±Infinity
+      var i, coefficient = x.slice(0, i);
+
+      // The string returned by toExponential either has the form \d\.\d+e[-+]\d+
+      // (e.g., 1.2e+3) or the form \de[-+]\d+ (e.g., 1e+3).
+      return [
+        coefficient.length > 1 ? coefficient[0] + coefficient.slice(2) : coefficient,
+        +x.slice(i + 1)
+      ];
+    }
+
+    function exponent(x) {
+      return x = formatDecimalParts(Math.abs(x)), x ? x[1] : NaN;
+    }
+
+    function formatGroup(grouping, thousands) {
+      return function(value, width) {
+        var i = value.length,
+            t = [],
+            j = 0,
+            g = grouping[0],
+            length = 0;
+
+        while (i > 0 && g > 0) {
+          if (length + g + 1 > width) g = Math.max(1, width - length);
+          t.push(value.substring(i -= g, i + g));
+          if ((length += g + 1) > width) break;
+          g = grouping[j = (j + 1) % grouping.length];
+        }
+
+        return t.reverse().join(thousands);
+      };
+    }
+
+    function formatNumerals(numerals) {
+      return function(value) {
+        return value.replace(/[0-9]/g, function(i) {
+          return numerals[+i];
+        });
+      };
+    }
+
+    // [[fill]align][sign][symbol][0][width][,][.precision][~][type]
+    var re = /^(?:(.)?([<>=^]))?([+\-( ])?([$#])?(0)?(\d+)?(,)?(\.\d+)?(~)?([a-z%])?$/i;
+
+    function formatSpecifier(specifier) {
+      if (!(match = re.exec(specifier))) throw new Error("invalid format: " + specifier);
+      var match;
+      return new FormatSpecifier({
+        fill: match[1],
+        align: match[2],
+        sign: match[3],
+        symbol: match[4],
+        zero: match[5],
+        width: match[6],
+        comma: match[7],
+        precision: match[8] && match[8].slice(1),
+        trim: match[9],
+        type: match[10]
+      });
+    }
+
+    formatSpecifier.prototype = FormatSpecifier.prototype; // instanceof
+
+    function FormatSpecifier(specifier) {
+      this.fill = specifier.fill === undefined ? " " : specifier.fill + "";
+      this.align = specifier.align === undefined ? ">" : specifier.align + "";
+      this.sign = specifier.sign === undefined ? "-" : specifier.sign + "";
+      this.symbol = specifier.symbol === undefined ? "" : specifier.symbol + "";
+      this.zero = !!specifier.zero;
+      this.width = specifier.width === undefined ? undefined : +specifier.width;
+      this.comma = !!specifier.comma;
+      this.precision = specifier.precision === undefined ? undefined : +specifier.precision;
+      this.trim = !!specifier.trim;
+      this.type = specifier.type === undefined ? "" : specifier.type + "";
+    }
+
+    FormatSpecifier.prototype.toString = function() {
+      return this.fill
+          + this.align
+          + this.sign
+          + this.symbol
+          + (this.zero ? "0" : "")
+          + (this.width === undefined ? "" : Math.max(1, this.width | 0))
+          + (this.comma ? "," : "")
+          + (this.precision === undefined ? "" : "." + Math.max(0, this.precision | 0))
+          + (this.trim ? "~" : "")
+          + this.type;
+    };
+
+    // Trims insignificant zeros, e.g., replaces 1.2000k with 1.2k.
+    function formatTrim(s) {
+      out: for (var n = s.length, i = 1, i0 = -1, i1; i < n; ++i) {
+        switch (s[i]) {
+          case ".": i0 = i1 = i; break;
+          case "0": if (i0 === 0) i0 = i; i1 = i; break;
+          default: if (!+s[i]) break out; if (i0 > 0) i0 = 0; break;
         }
       }
-      return array;
+      return i0 > 0 ? s.slice(0, i0) + s.slice(i1 + 1) : s;
+    }
+
+    var prefixExponent;
+
+    function formatPrefixAuto(x, p) {
+      var d = formatDecimalParts(x, p);
+      if (!d) return x + "";
+      var coefficient = d[0],
+          exponent = d[1],
+          i = exponent - (prefixExponent = Math.max(-8, Math.min(8, Math.floor(exponent / 3))) * 3) + 1,
+          n = coefficient.length;
+      return i === n ? coefficient
+          : i > n ? coefficient + new Array(i - n + 1).join("0")
+          : i > 0 ? coefficient.slice(0, i) + "." + coefficient.slice(i)
+          : "0." + new Array(1 - i).join("0") + formatDecimalParts(x, Math.max(0, p + i - 1))[0]; // less than 1y!
+    }
+
+    function formatRounded(x, p) {
+      var d = formatDecimalParts(x, p);
+      if (!d) return x + "";
+      var coefficient = d[0],
+          exponent = d[1];
+      return exponent < 0 ? "0." + new Array(-exponent).join("0") + coefficient
+          : coefficient.length > exponent + 1 ? coefficient.slice(0, exponent + 1) + "." + coefficient.slice(exponent + 1)
+          : coefficient + new Array(exponent - coefficient.length + 2).join("0");
+    }
+
+    var formatTypes = {
+      "%": (x, p) => (x * 100).toFixed(p),
+      "b": (x) => Math.round(x).toString(2),
+      "c": (x) => x + "",
+      "d": formatDecimal,
+      "e": (x, p) => x.toExponential(p),
+      "f": (x, p) => x.toFixed(p),
+      "g": (x, p) => x.toPrecision(p),
+      "o": (x) => Math.round(x).toString(8),
+      "p": (x, p) => formatRounded(x * 100, p),
+      "r": formatRounded,
+      "s": formatPrefixAuto,
+      "X": (x) => Math.round(x).toString(16).toUpperCase(),
+      "x": (x) => Math.round(x).toString(16)
+    };
+
+    function identity(x) {
+      return x;
+    }
+
+    var map = Array.prototype.map,
+        prefixes = ["y","z","a","f","p","n","µ","m","","k","M","G","T","P","E","Z","Y"];
+
+    function formatLocale(locale) {
+      var group = locale.grouping === undefined || locale.thousands === undefined ? identity : formatGroup(map.call(locale.grouping, Number), locale.thousands + ""),
+          currencyPrefix = locale.currency === undefined ? "" : locale.currency[0] + "",
+          currencySuffix = locale.currency === undefined ? "" : locale.currency[1] + "",
+          decimal = locale.decimal === undefined ? "." : locale.decimal + "",
+          numerals = locale.numerals === undefined ? identity : formatNumerals(map.call(locale.numerals, String)),
+          percent = locale.percent === undefined ? "%" : locale.percent + "",
+          minus = locale.minus === undefined ? "−" : locale.minus + "",
+          nan = locale.nan === undefined ? "NaN" : locale.nan + "";
+
+      function newFormat(specifier) {
+        specifier = formatSpecifier(specifier);
+
+        var fill = specifier.fill,
+            align = specifier.align,
+            sign = specifier.sign,
+            symbol = specifier.symbol,
+            zero = specifier.zero,
+            width = specifier.width,
+            comma = specifier.comma,
+            precision = specifier.precision,
+            trim = specifier.trim,
+            type = specifier.type;
+
+        // The "n" type is an alias for ",g".
+        if (type === "n") comma = true, type = "g";
+
+        // The "" type, and any invalid type, is an alias for ".12~g".
+        else if (!formatTypes[type]) precision === undefined && (precision = 12), trim = true, type = "g";
+
+        // If zero fill is specified, padding goes after sign and before digits.
+        if (zero || (fill === "0" && align === "=")) zero = true, fill = "0", align = "=";
+
+        // Compute the prefix and suffix.
+        // For SI-prefix, the suffix is lazily computed.
+        var prefix = symbol === "$" ? currencyPrefix : symbol === "#" && /[boxX]/.test(type) ? "0" + type.toLowerCase() : "",
+            suffix = symbol === "$" ? currencySuffix : /[%p]/.test(type) ? percent : "";
+
+        // What format function should we use?
+        // Is this an integer type?
+        // Can this type generate exponential notation?
+        var formatType = formatTypes[type],
+            maybeSuffix = /[defgprs%]/.test(type);
+
+        // Set the default precision if not specified,
+        // or clamp the specified precision to the supported range.
+        // For significant precision, it must be in [1, 21].
+        // For fixed precision, it must be in [0, 20].
+        precision = precision === undefined ? 6
+            : /[gprs]/.test(type) ? Math.max(1, Math.min(21, precision))
+            : Math.max(0, Math.min(20, precision));
+
+        function format(value) {
+          var valuePrefix = prefix,
+              valueSuffix = suffix,
+              i, n, c;
+
+          if (type === "c") {
+            valueSuffix = formatType(value) + valueSuffix;
+            value = "";
+          } else {
+            value = +value;
+
+            // Determine the sign. -0 is not less than 0, but 1 / -0 is!
+            var valueNegative = value < 0 || 1 / value < 0;
+
+            // Perform the initial formatting.
+            value = isNaN(value) ? nan : formatType(Math.abs(value), precision);
+
+            // Trim insignificant zeros.
+            if (trim) value = formatTrim(value);
+
+            // If a negative value rounds to zero after formatting, and no explicit positive sign is requested, hide the sign.
+            if (valueNegative && +value === 0 && sign !== "+") valueNegative = false;
+
+            // Compute the prefix and suffix.
+            valuePrefix = (valueNegative ? (sign === "(" ? sign : minus) : sign === "-" || sign === "(" ? "" : sign) + valuePrefix;
+            valueSuffix = (type === "s" ? prefixes[8 + prefixExponent / 3] : "") + valueSuffix + (valueNegative && sign === "(" ? ")" : "");
+
+            // Break the formatted value into the integer “value” part that can be
+            // grouped, and fractional or exponential “suffix” part that is not.
+            if (maybeSuffix) {
+              i = -1, n = value.length;
+              while (++i < n) {
+                if (c = value.charCodeAt(i), 48 > c || c > 57) {
+                  valueSuffix = (c === 46 ? decimal + value.slice(i + 1) : value.slice(i)) + valueSuffix;
+                  value = value.slice(0, i);
+                  break;
+                }
+              }
+            }
+          }
+
+          // If the fill character is not "0", grouping is applied before padding.
+          if (comma && !zero) value = group(value, Infinity);
+
+          // Compute the padding.
+          var length = valuePrefix.length + value.length + valueSuffix.length,
+              padding = length < width ? new Array(width - length + 1).join(fill) : "";
+
+          // If the fill character is "0", grouping is applied after padding.
+          if (comma && zero) value = group(padding + value, padding.length ? width - valueSuffix.length : Infinity), padding = "";
+
+          // Reconstruct the final output based on the desired alignment.
+          switch (align) {
+            case "<": value = valuePrefix + value + valueSuffix + padding; break;
+            case "=": value = valuePrefix + padding + value + valueSuffix; break;
+            case "^": value = padding.slice(0, length = padding.length >> 1) + valuePrefix + value + valueSuffix + padding.slice(length); break;
+            default: value = padding + valuePrefix + value + valueSuffix; break;
+          }
+
+          return numerals(value);
+        }
+
+        format.toString = function() {
+          return specifier + "";
+        };
+
+        return format;
+      }
+
+      function formatPrefix(specifier, value) {
+        var f = newFormat((specifier = formatSpecifier(specifier), specifier.type = "f", specifier)),
+            e = Math.max(-8, Math.min(8, Math.floor(exponent(value) / 3))) * 3,
+            k = Math.pow(10, -e),
+            prefix = prefixes[8 + e / 3];
+        return function(value) {
+          return f(k * value) + prefix;
+        };
+      }
+
+      return {
+        format: newFormat,
+        formatPrefix: formatPrefix
+      };
+    }
+
+    var locale;
+    var format;
+
+    defaultLocale({
+      thousands: ",",
+      grouping: [3],
+      currency: ["$", ""]
+    });
+
+    function defaultLocale(definition) {
+      locale = formatLocale(definition);
+      format = locale.format;
+      return locale;
     }
 
     var top = 'top';
@@ -3976,318 +4276,6 @@ var app = (function () {
       tippy$1(node, props);
     }
 
-    function formatDecimal(x) {
-      return Math.abs(x = Math.round(x)) >= 1e21
-          ? x.toLocaleString("en").replace(/,/g, "")
-          : x.toString(10);
-    }
-
-    // Computes the decimal coefficient and exponent of the specified number x with
-    // significant digits p, where x is positive and p is in [1, 21] or undefined.
-    // For example, formatDecimalParts(1.23) returns ["123", 0].
-    function formatDecimalParts(x, p) {
-      if ((i = (x = p ? x.toExponential(p - 1) : x.toExponential()).indexOf("e")) < 0) return null; // NaN, ±Infinity
-      var i, coefficient = x.slice(0, i);
-
-      // The string returned by toExponential either has the form \d\.\d+e[-+]\d+
-      // (e.g., 1.2e+3) or the form \de[-+]\d+ (e.g., 1e+3).
-      return [
-        coefficient.length > 1 ? coefficient[0] + coefficient.slice(2) : coefficient,
-        +x.slice(i + 1)
-      ];
-    }
-
-    function exponent(x) {
-      return x = formatDecimalParts(Math.abs(x)), x ? x[1] : NaN;
-    }
-
-    function formatGroup(grouping, thousands) {
-      return function(value, width) {
-        var i = value.length,
-            t = [],
-            j = 0,
-            g = grouping[0],
-            length = 0;
-
-        while (i > 0 && g > 0) {
-          if (length + g + 1 > width) g = Math.max(1, width - length);
-          t.push(value.substring(i -= g, i + g));
-          if ((length += g + 1) > width) break;
-          g = grouping[j = (j + 1) % grouping.length];
-        }
-
-        return t.reverse().join(thousands);
-      };
-    }
-
-    function formatNumerals(numerals) {
-      return function(value) {
-        return value.replace(/[0-9]/g, function(i) {
-          return numerals[+i];
-        });
-      };
-    }
-
-    // [[fill]align][sign][symbol][0][width][,][.precision][~][type]
-    var re = /^(?:(.)?([<>=^]))?([+\-( ])?([$#])?(0)?(\d+)?(,)?(\.\d+)?(~)?([a-z%])?$/i;
-
-    function formatSpecifier(specifier) {
-      if (!(match = re.exec(specifier))) throw new Error("invalid format: " + specifier);
-      var match;
-      return new FormatSpecifier({
-        fill: match[1],
-        align: match[2],
-        sign: match[3],
-        symbol: match[4],
-        zero: match[5],
-        width: match[6],
-        comma: match[7],
-        precision: match[8] && match[8].slice(1),
-        trim: match[9],
-        type: match[10]
-      });
-    }
-
-    formatSpecifier.prototype = FormatSpecifier.prototype; // instanceof
-
-    function FormatSpecifier(specifier) {
-      this.fill = specifier.fill === undefined ? " " : specifier.fill + "";
-      this.align = specifier.align === undefined ? ">" : specifier.align + "";
-      this.sign = specifier.sign === undefined ? "-" : specifier.sign + "";
-      this.symbol = specifier.symbol === undefined ? "" : specifier.symbol + "";
-      this.zero = !!specifier.zero;
-      this.width = specifier.width === undefined ? undefined : +specifier.width;
-      this.comma = !!specifier.comma;
-      this.precision = specifier.precision === undefined ? undefined : +specifier.precision;
-      this.trim = !!specifier.trim;
-      this.type = specifier.type === undefined ? "" : specifier.type + "";
-    }
-
-    FormatSpecifier.prototype.toString = function() {
-      return this.fill
-          + this.align
-          + this.sign
-          + this.symbol
-          + (this.zero ? "0" : "")
-          + (this.width === undefined ? "" : Math.max(1, this.width | 0))
-          + (this.comma ? "," : "")
-          + (this.precision === undefined ? "" : "." + Math.max(0, this.precision | 0))
-          + (this.trim ? "~" : "")
-          + this.type;
-    };
-
-    // Trims insignificant zeros, e.g., replaces 1.2000k with 1.2k.
-    function formatTrim(s) {
-      out: for (var n = s.length, i = 1, i0 = -1, i1; i < n; ++i) {
-        switch (s[i]) {
-          case ".": i0 = i1 = i; break;
-          case "0": if (i0 === 0) i0 = i; i1 = i; break;
-          default: if (!+s[i]) break out; if (i0 > 0) i0 = 0; break;
-        }
-      }
-      return i0 > 0 ? s.slice(0, i0) + s.slice(i1 + 1) : s;
-    }
-
-    var prefixExponent;
-
-    function formatPrefixAuto(x, p) {
-      var d = formatDecimalParts(x, p);
-      if (!d) return x + "";
-      var coefficient = d[0],
-          exponent = d[1],
-          i = exponent - (prefixExponent = Math.max(-8, Math.min(8, Math.floor(exponent / 3))) * 3) + 1,
-          n = coefficient.length;
-      return i === n ? coefficient
-          : i > n ? coefficient + new Array(i - n + 1).join("0")
-          : i > 0 ? coefficient.slice(0, i) + "." + coefficient.slice(i)
-          : "0." + new Array(1 - i).join("0") + formatDecimalParts(x, Math.max(0, p + i - 1))[0]; // less than 1y!
-    }
-
-    function formatRounded(x, p) {
-      var d = formatDecimalParts(x, p);
-      if (!d) return x + "";
-      var coefficient = d[0],
-          exponent = d[1];
-      return exponent < 0 ? "0." + new Array(-exponent).join("0") + coefficient
-          : coefficient.length > exponent + 1 ? coefficient.slice(0, exponent + 1) + "." + coefficient.slice(exponent + 1)
-          : coefficient + new Array(exponent - coefficient.length + 2).join("0");
-    }
-
-    var formatTypes = {
-      "%": (x, p) => (x * 100).toFixed(p),
-      "b": (x) => Math.round(x).toString(2),
-      "c": (x) => x + "",
-      "d": formatDecimal,
-      "e": (x, p) => x.toExponential(p),
-      "f": (x, p) => x.toFixed(p),
-      "g": (x, p) => x.toPrecision(p),
-      "o": (x) => Math.round(x).toString(8),
-      "p": (x, p) => formatRounded(x * 100, p),
-      "r": formatRounded,
-      "s": formatPrefixAuto,
-      "X": (x) => Math.round(x).toString(16).toUpperCase(),
-      "x": (x) => Math.round(x).toString(16)
-    };
-
-    function identity(x) {
-      return x;
-    }
-
-    var map = Array.prototype.map,
-        prefixes = ["y","z","a","f","p","n","µ","m","","k","M","G","T","P","E","Z","Y"];
-
-    function formatLocale(locale) {
-      var group = locale.grouping === undefined || locale.thousands === undefined ? identity : formatGroup(map.call(locale.grouping, Number), locale.thousands + ""),
-          currencyPrefix = locale.currency === undefined ? "" : locale.currency[0] + "",
-          currencySuffix = locale.currency === undefined ? "" : locale.currency[1] + "",
-          decimal = locale.decimal === undefined ? "." : locale.decimal + "",
-          numerals = locale.numerals === undefined ? identity : formatNumerals(map.call(locale.numerals, String)),
-          percent = locale.percent === undefined ? "%" : locale.percent + "",
-          minus = locale.minus === undefined ? "−" : locale.minus + "",
-          nan = locale.nan === undefined ? "NaN" : locale.nan + "";
-
-      function newFormat(specifier) {
-        specifier = formatSpecifier(specifier);
-
-        var fill = specifier.fill,
-            align = specifier.align,
-            sign = specifier.sign,
-            symbol = specifier.symbol,
-            zero = specifier.zero,
-            width = specifier.width,
-            comma = specifier.comma,
-            precision = specifier.precision,
-            trim = specifier.trim,
-            type = specifier.type;
-
-        // The "n" type is an alias for ",g".
-        if (type === "n") comma = true, type = "g";
-
-        // The "" type, and any invalid type, is an alias for ".12~g".
-        else if (!formatTypes[type]) precision === undefined && (precision = 12), trim = true, type = "g";
-
-        // If zero fill is specified, padding goes after sign and before digits.
-        if (zero || (fill === "0" && align === "=")) zero = true, fill = "0", align = "=";
-
-        // Compute the prefix and suffix.
-        // For SI-prefix, the suffix is lazily computed.
-        var prefix = symbol === "$" ? currencyPrefix : symbol === "#" && /[boxX]/.test(type) ? "0" + type.toLowerCase() : "",
-            suffix = symbol === "$" ? currencySuffix : /[%p]/.test(type) ? percent : "";
-
-        // What format function should we use?
-        // Is this an integer type?
-        // Can this type generate exponential notation?
-        var formatType = formatTypes[type],
-            maybeSuffix = /[defgprs%]/.test(type);
-
-        // Set the default precision if not specified,
-        // or clamp the specified precision to the supported range.
-        // For significant precision, it must be in [1, 21].
-        // For fixed precision, it must be in [0, 20].
-        precision = precision === undefined ? 6
-            : /[gprs]/.test(type) ? Math.max(1, Math.min(21, precision))
-            : Math.max(0, Math.min(20, precision));
-
-        function format(value) {
-          var valuePrefix = prefix,
-              valueSuffix = suffix,
-              i, n, c;
-
-          if (type === "c") {
-            valueSuffix = formatType(value) + valueSuffix;
-            value = "";
-          } else {
-            value = +value;
-
-            // Determine the sign. -0 is not less than 0, but 1 / -0 is!
-            var valueNegative = value < 0 || 1 / value < 0;
-
-            // Perform the initial formatting.
-            value = isNaN(value) ? nan : formatType(Math.abs(value), precision);
-
-            // Trim insignificant zeros.
-            if (trim) value = formatTrim(value);
-
-            // If a negative value rounds to zero after formatting, and no explicit positive sign is requested, hide the sign.
-            if (valueNegative && +value === 0 && sign !== "+") valueNegative = false;
-
-            // Compute the prefix and suffix.
-            valuePrefix = (valueNegative ? (sign === "(" ? sign : minus) : sign === "-" || sign === "(" ? "" : sign) + valuePrefix;
-            valueSuffix = (type === "s" ? prefixes[8 + prefixExponent / 3] : "") + valueSuffix + (valueNegative && sign === "(" ? ")" : "");
-
-            // Break the formatted value into the integer “value” part that can be
-            // grouped, and fractional or exponential “suffix” part that is not.
-            if (maybeSuffix) {
-              i = -1, n = value.length;
-              while (++i < n) {
-                if (c = value.charCodeAt(i), 48 > c || c > 57) {
-                  valueSuffix = (c === 46 ? decimal + value.slice(i + 1) : value.slice(i)) + valueSuffix;
-                  value = value.slice(0, i);
-                  break;
-                }
-              }
-            }
-          }
-
-          // If the fill character is not "0", grouping is applied before padding.
-          if (comma && !zero) value = group(value, Infinity);
-
-          // Compute the padding.
-          var length = valuePrefix.length + value.length + valueSuffix.length,
-              padding = length < width ? new Array(width - length + 1).join(fill) : "";
-
-          // If the fill character is "0", grouping is applied after padding.
-          if (comma && zero) value = group(padding + value, padding.length ? width - valueSuffix.length : Infinity), padding = "";
-
-          // Reconstruct the final output based on the desired alignment.
-          switch (align) {
-            case "<": value = valuePrefix + value + valueSuffix + padding; break;
-            case "=": value = valuePrefix + padding + value + valueSuffix; break;
-            case "^": value = padding.slice(0, length = padding.length >> 1) + valuePrefix + value + valueSuffix + padding.slice(length); break;
-            default: value = padding + valuePrefix + value + valueSuffix; break;
-          }
-
-          return numerals(value);
-        }
-
-        format.toString = function() {
-          return specifier + "";
-        };
-
-        return format;
-      }
-
-      function formatPrefix(specifier, value) {
-        var f = newFormat((specifier = formatSpecifier(specifier), specifier.type = "f", specifier)),
-            e = Math.max(-8, Math.min(8, Math.floor(exponent(value) / 3))) * 3,
-            k = Math.pow(10, -e),
-            prefix = prefixes[8 + e / 3];
-        return function(value) {
-          return f(k * value) + prefix;
-        };
-      }
-
-      return {
-        format: newFormat,
-        formatPrefix: formatPrefix
-      };
-    }
-
-    var locale;
-    var format;
-
-    defaultLocale({
-      thousands: ",",
-      grouping: [3],
-      currency: ["$", ""]
-    });
-
-    function defaultLocale(definition) {
-      locale = formatLocale(definition);
-      format = locale.format;
-      return locale;
-    }
-
     /* src/components/Legend.svelte generated by Svelte v3.43.1 */
 
     const file$3 = "src/components/Legend.svelte";
@@ -4400,60 +4388,81 @@ var app = (function () {
 
     function get_each_context$1(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[17] = list[i];
-    	child_ctx[19] = i;
+    	child_ctx[16] = list[i];
+    	child_ctx[18] = i;
     	return child_ctx;
     }
 
     function get_each_context_1(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[20] = list[i];
+    	child_ctx[19] = list[i];
     	return child_ctx;
     }
 
     function get_each_context_2(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[23] = list[i];
+    	child_ctx[22] = list[i];
     	return child_ctx;
     }
 
     function get_each_context_3(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[20] = list[i];
+    	child_ctx[19] = list[i];
     	return child_ctx;
     }
 
     function get_each_context_4(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[23] = list[i];
+    	child_ctx[22] = list[i];
     	return child_ctx;
     }
 
-    // (125:12) {#each getActiveRemainingRow(i) as j}
+    // (133:12) {#each getActiveRemainingRow(i) as j}
     function create_each_block_4(ctx) {
     	let rect;
+    	let rect_width_value;
+    	let rect_height_value;
     	let rect_x_value;
     	let rect_y_value;
 
     	const block = {
     		c: function create() {
     			rect = svg_element("rect");
-    			attr_dev(rect, "width", "20px");
-    			attr_dev(rect, "height", "20px");
-    			attr_dev(rect, "x", rect_x_value = /*i*/ ctx[20] * 24 + /*spaceLabels*/ ctx[8]());
-    			attr_dev(rect, "y", rect_y_value = /*j*/ ctx[23] * 24);
+    			attr_dev(rect, "width", rect_width_value = /*isMobile*/ ctx[2] ? '10px' : '20px');
+    			attr_dev(rect, "height", rect_height_value = /*isMobile*/ ctx[2] ? '10px' : '20px');
+
+    			attr_dev(rect, "x", rect_x_value = (/*isMobile*/ ctx[2]
+    			? /*i*/ ctx[19] * 14
+    			: /*i*/ ctx[19] * 24) + /*spaceLabels*/ ctx[9]());
+
+    			attr_dev(rect, "y", rect_y_value = /*isMobile*/ ctx[2]
+    			? /*j*/ ctx[22] * 14
+    			: /*j*/ ctx[22] * 24);
+
     			attr_dev(rect, "fill", "url(#gradient)");
-    			add_location(rect, file$2, 125, 14, 3348);
+    			add_location(rect, file$2, 133, 14, 3652);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, rect, anchor);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*activeChartRange*/ 16 && rect_x_value !== (rect_x_value = /*i*/ ctx[20] * 24 + /*spaceLabels*/ ctx[8]())) {
+    			if (dirty & /*isMobile*/ 4 && rect_width_value !== (rect_width_value = /*isMobile*/ ctx[2] ? '10px' : '20px')) {
+    				attr_dev(rect, "width", rect_width_value);
+    			}
+
+    			if (dirty & /*isMobile*/ 4 && rect_height_value !== (rect_height_value = /*isMobile*/ ctx[2] ? '10px' : '20px')) {
+    				attr_dev(rect, "height", rect_height_value);
+    			}
+
+    			if (dirty & /*isMobile, activeChartRange*/ 36 && rect_x_value !== (rect_x_value = (/*isMobile*/ ctx[2]
+    			? /*i*/ ctx[19] * 14
+    			: /*i*/ ctx[19] * 24) + /*spaceLabels*/ ctx[9]())) {
     				attr_dev(rect, "x", rect_x_value);
     			}
 
-    			if (dirty & /*activeChartRange*/ 16 && rect_y_value !== (rect_y_value = /*j*/ ctx[23] * 24)) {
+    			if (dirty & /*isMobile, activeChartRange*/ 36 && rect_y_value !== (rect_y_value = /*isMobile*/ ctx[2]
+    			? /*j*/ ctx[22] * 14
+    			: /*j*/ ctx[22] * 24)) {
     				attr_dev(rect, "y", rect_y_value);
     			}
     		},
@@ -4466,17 +4475,17 @@ var app = (function () {
     		block,
     		id: create_each_block_4.name,
     		type: "each",
-    		source: "(125:12) {#each getActiveRemainingRow(i) as j}",
+    		source: "(133:12) {#each getActiveRemainingRow(i) as j}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (124:10) {#each activeChartRange as i}
+    // (132:10) {#each activeChartRange as i}
     function create_each_block_3(ctx) {
     	let each_1_anchor;
-    	let each_value_4 = /*getActiveRemainingRow*/ ctx[6](/*i*/ ctx[20]);
+    	let each_value_4 = /*getActiveRemainingRow*/ ctx[7](/*i*/ ctx[19]);
     	validate_each_argument(each_value_4);
     	let each_blocks = [];
 
@@ -4500,8 +4509,8 @@ var app = (function () {
     			insert_dev(target, each_1_anchor, anchor);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*activeChartRange, spaceLabels, getActiveRemainingRow*/ 336) {
-    				each_value_4 = /*getActiveRemainingRow*/ ctx[6](/*i*/ ctx[20]);
+    			if (dirty & /*isMobile, activeChartRange, spaceLabels, getActiveRemainingRow*/ 676) {
+    				each_value_4 = /*getActiveRemainingRow*/ ctx[7](/*i*/ ctx[19]);
     				validate_each_argument(each_value_4);
     				let i;
 
@@ -4534,24 +4543,24 @@ var app = (function () {
     		block,
     		id: create_each_block_3.name,
     		type: "each",
-    		source: "(124:10) {#each activeChartRange as i}",
+    		source: "(132:10) {#each activeChartRange as i}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (172:10) {#if country.country !== activeCountry}
+    // (178:10) {#if country.country !== activeCountry}
     function create_if_block(ctx) {
     	let g;
     	let g_data_attr_value;
     	let rect;
     	let rect_y_value;
     	let text_1;
-    	let t_value = /*country*/ ctx[17].country + "";
+    	let t_value = /*country*/ ctx[16].country + "";
     	let t;
     	let text_1_y_value;
-    	let each_value_1 = /*chartRange*/ ctx[5](/*country*/ ctx[17]);
+    	let each_value_1 = /*chartRange*/ ctx[6](/*country*/ ctx[16]);
     	validate_each_argument(each_value_1);
     	let each_blocks = [];
 
@@ -4570,20 +4579,20 @@ var app = (function () {
     			rect = svg_element("rect");
     			text_1 = svg_element("text");
     			t = text$1(t_value);
-    			attr_dev(g, "data-attr", g_data_attr_value = /*country*/ ctx[17].country);
-    			add_location(g, file$2, 172, 12, 4700);
+    			attr_dev(g, "data-attr", g_data_attr_value = /*country*/ ctx[16].country);
+    			add_location(g, file$2, 178, 12, 5035);
     			attr_dev(rect, "fill", "none");
     			attr_dev(rect, "stroke", "#c5c5c5");
     			attr_dev(rect, "stroke-width", "1.5");
     			attr_dev(rect, "x", "0");
-    			attr_dev(rect, "y", rect_y_value = /*height*/ ctx[3] - 60);
+    			attr_dev(rect, "y", rect_y_value = /*height*/ ctx[4] - 60);
     			attr_dev(rect, "width", "15px");
     			attr_dev(rect, "height", "1");
     			attr_dev(rect, "id", "svg_2");
-    			add_location(rect, file$2, 189, 12, 5271);
+    			add_location(rect, file$2, 195, 12, 5694);
     			attr_dev(text_1, "x", "0");
-    			attr_dev(text_1, "y", text_1_y_value = /*height*/ ctx[3] - 40);
-    			add_location(text_1, file$2, 198, 12, 5516);
+    			attr_dev(text_1, "y", text_1_y_value = /*height*/ ctx[4] - 40);
+    			add_location(text_1, file$2, 204, 12, 5939);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, g, anchor);
@@ -4597,8 +4606,8 @@ var app = (function () {
     			append_dev(text_1, t);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*getRemainingRow, chartRange, allData, activeCountry, formatTooltip*/ 675) {
-    				each_value_1 = /*chartRange*/ ctx[5](/*country*/ ctx[17]);
+    			if (dirty & /*getRemainingRow, chartRange, allData, activeCountry, isMobile, formatTooltip*/ 1351) {
+    				each_value_1 = /*chartRange*/ ctx[6](/*country*/ ctx[16]);
     				validate_each_argument(each_value_1);
     				let i;
 
@@ -4621,17 +4630,17 @@ var app = (function () {
     				each_blocks.length = each_value_1.length;
     			}
 
-    			if (dirty & /*allData, activeCountry*/ 3 && g_data_attr_value !== (g_data_attr_value = /*country*/ ctx[17].country)) {
+    			if (dirty & /*allData, activeCountry*/ 3 && g_data_attr_value !== (g_data_attr_value = /*country*/ ctx[16].country)) {
     				attr_dev(g, "data-attr", g_data_attr_value);
     			}
 
-    			if (dirty & /*height*/ 8 && rect_y_value !== (rect_y_value = /*height*/ ctx[3] - 60)) {
+    			if (dirty & /*height*/ 16 && rect_y_value !== (rect_y_value = /*height*/ ctx[4] - 60)) {
     				attr_dev(rect, "y", rect_y_value);
     			}
 
-    			if (dirty & /*allData, activeCountry*/ 3 && t_value !== (t_value = /*country*/ ctx[17].country + "")) set_data_dev(t, t_value);
+    			if (dirty & /*allData, activeCountry*/ 3 && t_value !== (t_value = /*country*/ ctx[16].country + "")) set_data_dev(t, t_value);
 
-    			if (dirty & /*height*/ 8 && text_1_y_value !== (text_1_y_value = /*height*/ ctx[3] - 40)) {
+    			if (dirty & /*height*/ 16 && text_1_y_value !== (text_1_y_value = /*height*/ ctx[4] - 40)) {
     				attr_dev(text_1, "y", text_1_y_value);
     			}
     		},
@@ -4647,16 +4656,18 @@ var app = (function () {
     		block,
     		id: create_if_block.name,
     		type: "if",
-    		source: "(172:10) {#if country.country !== activeCountry}",
+    		source: "(178:10) {#if country.country !== activeCountry}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (175:16) {#each getRemainingRow(i, country) as j}
+    // (181:16) {#each getRemainingRow(i, country) as j}
     function create_each_block_2(ctx) {
     	let rect;
+    	let rect_width_value;
+    	let rect_height_value;
     	let rect_x_value;
     	let rect_y_value;
     	let tippy_action;
@@ -4666,32 +4677,51 @@ var app = (function () {
     	const block = {
     		c: function create() {
     			rect = svg_element("rect");
-    			attr_dev(rect, "width", "12px");
-    			attr_dev(rect, "height", "12px");
-    			attr_dev(rect, "x", rect_x_value = /*i*/ ctx[20] * 16);
-    			attr_dev(rect, "y", rect_y_value = /*j*/ ctx[23] * 16);
-    			add_location(rect, file$2, 175, 18, 4856);
+    			attr_dev(rect, "width", rect_width_value = /*isMobile*/ ctx[2] ? '10px' : '12px');
+    			attr_dev(rect, "height", rect_height_value = /*isMobile*/ ctx[2] ? '10px' : '12px');
+
+    			attr_dev(rect, "x", rect_x_value = /*isMobile*/ ctx[2]
+    			? /*i*/ ctx[19] * 14
+    			: /*i*/ ctx[19] * 16);
+
+    			attr_dev(rect, "y", rect_y_value = /*isMobile*/ ctx[2]
+    			? /*j*/ ctx[22] * 14
+    			: /*j*/ ctx[22] * 16);
+
+    			add_location(rect, file$2, 181, 18, 5191);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, rect, anchor);
 
     			if (!mounted) {
-    				dispose = action_destroyer(tippy_action = tippy.call(null, rect, /*formatTooltip*/ ctx[9](/*country*/ ctx[17], `tooltip-node-${/*countryIndex*/ ctx[19]}`)));
+    				dispose = action_destroyer(tippy_action = tippy.call(null, rect, /*formatTooltip*/ ctx[10](/*country*/ ctx[16], `tooltip-node-${/*countryIndex*/ ctx[18]}`)));
     				mounted = true;
     			}
     		},
     		p: function update(new_ctx, dirty) {
     			ctx = new_ctx;
 
-    			if (dirty & /*allData, activeCountry*/ 3 && rect_x_value !== (rect_x_value = /*i*/ ctx[20] * 16)) {
+    			if (dirty & /*isMobile*/ 4 && rect_width_value !== (rect_width_value = /*isMobile*/ ctx[2] ? '10px' : '12px')) {
+    				attr_dev(rect, "width", rect_width_value);
+    			}
+
+    			if (dirty & /*isMobile*/ 4 && rect_height_value !== (rect_height_value = /*isMobile*/ ctx[2] ? '10px' : '12px')) {
+    				attr_dev(rect, "height", rect_height_value);
+    			}
+
+    			if (dirty & /*isMobile, allData, activeCountry*/ 7 && rect_x_value !== (rect_x_value = /*isMobile*/ ctx[2]
+    			? /*i*/ ctx[19] * 14
+    			: /*i*/ ctx[19] * 16)) {
     				attr_dev(rect, "x", rect_x_value);
     			}
 
-    			if (dirty & /*allData, activeCountry*/ 3 && rect_y_value !== (rect_y_value = /*j*/ ctx[23] * 16)) {
+    			if (dirty & /*isMobile, allData, activeCountry*/ 7 && rect_y_value !== (rect_y_value = /*isMobile*/ ctx[2]
+    			? /*j*/ ctx[22] * 14
+    			: /*j*/ ctx[22] * 16)) {
     				attr_dev(rect, "y", rect_y_value);
     			}
 
-    			if (tippy_action && is_function(tippy_action.update) && dirty & /*allData, activeCountry*/ 3) tippy_action.update.call(null, /*formatTooltip*/ ctx[9](/*country*/ ctx[17], `tooltip-node-${/*countryIndex*/ ctx[19]}`));
+    			if (tippy_action && is_function(tippy_action.update) && dirty & /*allData, activeCountry*/ 3) tippy_action.update.call(null, /*formatTooltip*/ ctx[10](/*country*/ ctx[16], `tooltip-node-${/*countryIndex*/ ctx[18]}`));
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(rect);
@@ -4704,17 +4734,17 @@ var app = (function () {
     		block,
     		id: create_each_block_2.name,
     		type: "each",
-    		source: "(175:16) {#each getRemainingRow(i, country) as j}",
+    		source: "(181:16) {#each getRemainingRow(i, country) as j}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (174:14) {#each chartRange(country) as i}
+    // (180:14) {#each chartRange(country) as i}
     function create_each_block_1(ctx) {
     	let each_1_anchor;
-    	let each_value_2 = /*getRemainingRow*/ ctx[7](/*i*/ ctx[20], /*country*/ ctx[17]);
+    	let each_value_2 = /*getRemainingRow*/ ctx[8](/*i*/ ctx[19], /*country*/ ctx[16]);
     	validate_each_argument(each_value_2);
     	let each_blocks = [];
 
@@ -4738,8 +4768,8 @@ var app = (function () {
     			insert_dev(target, each_1_anchor, anchor);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*chartRange, allData, activeCountry, getRemainingRow, formatTooltip*/ 675) {
-    				each_value_2 = /*getRemainingRow*/ ctx[7](/*i*/ ctx[20], /*country*/ ctx[17]);
+    			if (dirty & /*isMobile, chartRange, allData, activeCountry, getRemainingRow, formatTooltip*/ 1351) {
+    				each_value_2 = /*getRemainingRow*/ ctx[8](/*i*/ ctx[19], /*country*/ ctx[16]);
     				validate_each_argument(each_value_2);
     				let i;
 
@@ -4772,28 +4802,28 @@ var app = (function () {
     		block,
     		id: create_each_block_1.name,
     		type: "each",
-    		source: "(174:14) {#each chartRange(country) as i}",
+    		source: "(180:14) {#each chartRange(country) as i}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (152:4) {#each allData.filter((d) => d.country !== activeCountry) as country, countryIndex}
+    // (159:4) {#each allData.filter((d) => d.country !== activeCountry) as country, countryIndex}
     function create_each_block$1(ctx) {
     	let figure;
-    	let svg_1;
+    	let svg;
     	let defs;
     	let pattern;
     	let path;
     	let figure_data_attr_value;
     	let figure_resize_listener;
-    	let if_block = /*country*/ ctx[17].country !== /*activeCountry*/ ctx[0] && create_if_block(ctx);
+    	let if_block = /*country*/ ctx[16].country !== /*activeCountry*/ ctx[0] && create_if_block(ctx);
 
     	const block = {
     		c: function create() {
     			figure = element("figure");
-    			svg_1 = svg_element("svg");
+    			svg = svg_element("svg");
     			defs = svg_element("defs");
     			pattern = svg_element("pattern");
     			path = svg_element("path");
@@ -4801,44 +4831,44 @@ var app = (function () {
     			attr_dev(path, "d", "M -1,2 l 6,0");
     			attr_dev(path, "stroke", "#000000");
     			attr_dev(path, "stroke-width", "1");
-    			add_location(path, file$2, 168, 14, 4532);
+    			add_location(path, file$2, 174, 14, 4867);
     			attr_dev(pattern, "id", "diagonalHatch");
     			attr_dev(pattern, "patternUnits", "userSpaceOnUse");
     			attr_dev(pattern, "width", "4");
     			attr_dev(pattern, "height", "4");
     			attr_dev(pattern, "patternTransform", "rotate(-45 2 2)");
-    			add_location(pattern, file$2, 161, 12, 4320);
-    			add_location(defs, file$2, 160, 10, 4301);
-    			add_location(svg_1, file$2, 159, 8, 4285);
-    			attr_dev(figure, "class", "interactive__charts " + ('inactive-' + /*countryIndex*/ ctx[19]));
-    			attr_dev(figure, "data-attr", figure_data_attr_value = /*country*/ ctx[17].country);
-    			add_render_callback(() => /*figure_elementresize_handler_1*/ ctx[13].call(figure));
-    			add_location(figure, file$2, 153, 6, 4086);
+    			add_location(pattern, file$2, 167, 12, 4655);
+    			add_location(defs, file$2, 166, 10, 4636);
+    			add_location(svg, file$2, 165, 8, 4620);
+    			attr_dev(figure, "class", "interactive__charts " + ('inactive-' + /*countryIndex*/ ctx[18]));
+    			attr_dev(figure, "data-attr", figure_data_attr_value = /*country*/ ctx[16].country);
+    			add_render_callback(() => /*figure_elementresize_handler_1*/ ctx[14].call(figure));
+    			add_location(figure, file$2, 159, 6, 4421);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, figure, anchor);
-    			append_dev(figure, svg_1);
-    			append_dev(svg_1, defs);
+    			append_dev(figure, svg);
+    			append_dev(svg, defs);
     			append_dev(defs, pattern);
     			append_dev(pattern, path);
-    			if (if_block) if_block.m(svg_1, null);
-    			figure_resize_listener = add_resize_listener(figure, /*figure_elementresize_handler_1*/ ctx[13].bind(figure));
+    			if (if_block) if_block.m(svg, null);
+    			figure_resize_listener = add_resize_listener(figure, /*figure_elementresize_handler_1*/ ctx[14].bind(figure));
     		},
     		p: function update(ctx, dirty) {
-    			if (/*country*/ ctx[17].country !== /*activeCountry*/ ctx[0]) {
+    			if (/*country*/ ctx[16].country !== /*activeCountry*/ ctx[0]) {
     				if (if_block) {
     					if_block.p(ctx, dirty);
     				} else {
     					if_block = create_if_block(ctx);
     					if_block.c();
-    					if_block.m(svg_1, null);
+    					if_block.m(svg, null);
     				}
     			} else if (if_block) {
     				if_block.d(1);
     				if_block = null;
     			}
 
-    			if (dirty & /*allData, activeCountry*/ 3 && figure_data_attr_value !== (figure_data_attr_value = /*country*/ ctx[17].country)) {
+    			if (dirty & /*allData, activeCountry*/ 3 && figure_data_attr_value !== (figure_data_attr_value = /*country*/ ctx[16].country)) {
     				attr_dev(figure, "data-attr", figure_data_attr_value);
     			}
     		},
@@ -4853,18 +4883,18 @@ var app = (function () {
     		block,
     		id: create_each_block$1.name,
     		type: "each",
-    		source: "(152:4) {#each allData.filter((d) => d.country !== activeCountry) as country, countryIndex}",
+    		source: "(159:4) {#each allData.filter((d) => d.country !== activeCountry) as country, countryIndex}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (111:0) {#key activeCountry}
+    // (119:0) {#key activeCountry}
     function create_key_block(ctx) {
     	let div;
     	let figure;
-    	let svg_1;
+    	let svg;
     	let linearGradient;
     	let stop0;
     	let stop1;
@@ -4880,7 +4910,7 @@ var app = (function () {
     	let t2;
     	let legend;
     	let current;
-    	let each_value_3 = /*activeChartRange*/ ctx[4];
+    	let each_value_3 = /*activeChartRange*/ ctx[5];
     	validate_each_argument(each_value_3);
     	let each_blocks_1 = [];
 
@@ -4888,7 +4918,7 @@ var app = (function () {
     		each_blocks_1[i] = create_each_block_3(get_each_context_3(ctx, each_value_3, i));
     	}
 
-    	let each_value = /*allData*/ ctx[1].filter(/*func*/ ctx[12]);
+    	let each_value = /*allData*/ ctx[1].filter(/*func*/ ctx[13]);
     	validate_each_argument(each_value);
     	let each_blocks = [];
 
@@ -4902,7 +4932,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			figure = element("figure");
-    			svg_1 = svg_element("svg");
+    			svg = svg_element("svg");
     			linearGradient = svg_element("linearGradient");
     			stop0 = svg_element("stop");
     			stop1 = svg_element("stop");
@@ -4925,51 +4955,54 @@ var app = (function () {
     			create_component(legend.$$.fragment);
     			attr_dev(stop0, "class", "main-stop");
     			attr_dev(stop0, "offset", "0%");
-    			add_location(stop0, file$2, 119, 10, 3079);
+    			add_location(stop0, file$2, 127, 10, 3383);
     			attr_dev(stop1, "class", "alt-stop");
     			attr_dev(stop1, "offset", "100%");
-    			add_location(stop1, file$2, 120, 10, 3133);
+    			add_location(stop1, file$2, 128, 10, 3437);
     			attr_dev(linearGradient, "id", "gradient");
-    			add_location(linearGradient, file$2, 118, 8, 3038);
+    			add_location(linearGradient, file$2, 126, 8, 3342);
     			attr_dev(g, "data-attr", /*activeCountry*/ ctx[0]);
-    			add_location(g, file$2, 122, 8, 3212);
+    			add_location(g, file$2, 130, 8, 3516);
     			attr_dev(rect, "fill", "none");
     			attr_dev(rect, "stroke", "#c5c5c5");
     			attr_dev(rect, "stroke-width", "1.5");
     			attr_dev(rect, "x", "0");
-    			attr_dev(rect, "y", rect_y_value = /*height*/ ctx[3] - 1);
-    			attr_dev(rect, "width", rect_width_value = /*width*/ ctx[2] * 3);
+    			attr_dev(rect, "y", rect_y_value = /*height*/ ctx[4] - 1);
+    			attr_dev(rect, "width", rect_width_value = /*width*/ ctx[3] * 3);
     			attr_dev(rect, "height", "1");
-    			attr_dev(rect, "id", "svg_2");
-    			add_location(rect, file$2, 136, 8, 3625);
+    			add_location(rect, file$2, 144, 8, 4012);
     			attr_dev(text_1, "x", "0");
-    			attr_dev(text_1, "y", text_1_y_value = /*height*/ ctx[3] / 2);
-    			add_location(text_1, file$2, 147, 8, 3858);
-    			attr_dev(svg_1, "class", "green");
-    			add_location(svg_1, file$2, 117, 6, 3010);
+
+    			attr_dev(text_1, "y", text_1_y_value = /*isMobile*/ ctx[2]
+    			? /*height*/ ctx[4] - 48
+    			: /*height*/ ctx[4] / 2);
+
+    			add_location(text_1, file$2, 154, 8, 4224);
+    			attr_dev(svg, "class", "green");
+    			add_location(svg, file$2, 125, 6, 3314);
     			attr_dev(figure, "class", "interactive__charts active");
-    			add_render_callback(() => /*figure_elementresize_handler*/ ctx[11].call(figure));
-    			add_location(figure, file$2, 112, 4, 2881);
+    			add_render_callback(() => /*figure_elementresize_handler*/ ctx[12].call(figure));
+    			add_location(figure, file$2, 120, 4, 3185);
     			attr_dev(div, "class", "interactive__charts-container");
-    			add_location(div, file$2, 111, 2, 2833);
+    			add_location(div, file$2, 119, 2, 3137);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
     			append_dev(div, figure);
-    			append_dev(figure, svg_1);
-    			append_dev(svg_1, linearGradient);
+    			append_dev(figure, svg);
+    			append_dev(svg, linearGradient);
     			append_dev(linearGradient, stop0);
     			append_dev(linearGradient, stop1);
-    			append_dev(svg_1, g);
+    			append_dev(svg, g);
 
     			for (let i = 0; i < each_blocks_1.length; i += 1) {
     				each_blocks_1[i].m(g, null);
     			}
 
-    			append_dev(svg_1, rect);
-    			append_dev(svg_1, text_1);
+    			append_dev(svg, rect);
+    			append_dev(svg, text_1);
     			append_dev(text_1, t0);
-    			figure_resize_listener = add_resize_listener(figure, /*figure_elementresize_handler*/ ctx[11].bind(figure));
+    			figure_resize_listener = add_resize_listener(figure, /*figure_elementresize_handler*/ ctx[12].bind(figure));
     			append_dev(div, t1);
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
@@ -4981,8 +5014,8 @@ var app = (function () {
     			current = true;
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*getActiveRemainingRow, activeChartRange, spaceLabels*/ 336) {
-    				each_value_3 = /*activeChartRange*/ ctx[4];
+    			if (dirty & /*getActiveRemainingRow, activeChartRange, isMobile, spaceLabels*/ 676) {
+    				each_value_3 = /*activeChartRange*/ ctx[5];
     				validate_each_argument(each_value_3);
     				let i;
 
@@ -5009,22 +5042,24 @@ var app = (function () {
     				attr_dev(g, "data-attr", /*activeCountry*/ ctx[0]);
     			}
 
-    			if (!current || dirty & /*height*/ 8 && rect_y_value !== (rect_y_value = /*height*/ ctx[3] - 1)) {
+    			if (!current || dirty & /*height*/ 16 && rect_y_value !== (rect_y_value = /*height*/ ctx[4] - 1)) {
     				attr_dev(rect, "y", rect_y_value);
     			}
 
-    			if (!current || dirty & /*width*/ 4 && rect_width_value !== (rect_width_value = /*width*/ ctx[2] * 3)) {
+    			if (!current || dirty & /*width*/ 8 && rect_width_value !== (rect_width_value = /*width*/ ctx[3] * 3)) {
     				attr_dev(rect, "width", rect_width_value);
     			}
 
     			if (!current || dirty & /*activeCountry*/ 1) set_data_dev(t0, /*activeCountry*/ ctx[0]);
 
-    			if (!current || dirty & /*height*/ 8 && text_1_y_value !== (text_1_y_value = /*height*/ ctx[3] / 2)) {
+    			if (!current || dirty & /*isMobile, height*/ 20 && text_1_y_value !== (text_1_y_value = /*isMobile*/ ctx[2]
+    			? /*height*/ ctx[4] - 48
+    			: /*height*/ ctx[4] / 2)) {
     				attr_dev(text_1, "y", text_1_y_value);
     			}
 
-    			if (dirty & /*allData, activeCountry, width, height, chartRange, getRemainingRow, formatTooltip*/ 687) {
-    				each_value = /*allData*/ ctx[1].filter(/*func*/ ctx[12]);
+    			if (dirty & /*allData, activeCountry, width, height, chartRange, getRemainingRow, isMobile, formatTooltip*/ 1375) {
+    				each_value = /*allData*/ ctx[1].filter(/*func*/ ctx[13]);
     				validate_each_argument(each_value);
     				let i;
 
@@ -5069,7 +5104,7 @@ var app = (function () {
     		block,
     		id: create_key_block.name,
     		type: "key",
-    		source: "(111:0) {#key activeCountry}",
+    		source: "(119:0) {#key activeCountry}",
     		ctx
     	});
 
@@ -5134,7 +5169,7 @@ var app = (function () {
     	return block;
     }
 
-    const b = 1000000000;
+    const bil = 1000000000;
 
     // Helper f(n) for formatDecimalPlaces
     function formatAmount(value) {
@@ -5158,10 +5193,9 @@ var app = (function () {
     	let { activeCountry } = $$props;
     	let { allData } = $$props;
     	let { contributed } = $$props;
-    	let svg;
+    	let { isMobile } = $$props;
     	let width = 300;
     	let height = 300;
-    	const margin = { top: 5, right: 10, bottom: 10, left: 10 };
 
     	/* formats values up to two decimal places while maintaining 1-3 digits left of the first comma (eg 500.00B or 1.00T) */
     	function formatDecimalPlaces(value) {
@@ -5173,36 +5207,41 @@ var app = (function () {
 
     	const chartRange = country => {
     		const val = allData.find(d => d.country === country.country).funding;
-    		return range(0, Math.ceil(val / b), 1);
+    		return range(0, Math.ceil(val / bil), 1);
     	};
 
-    	const getActiveRemainingRow = num => {
+    	// Builds the final column of the activeChart accounting for the remaining values
+    	const getActiveRemainingRow = index => {
     		const step = 200000000;
 
-    		if (num + 1 === Math.ceil(contributed / b)) {
+    		// Check to see if drawing the last column
+    		if (index + 1 === Math.ceil(contributed / bil)) {
     			let arr = [];
 
-    			for (let i of range(0, b, step)) {
-    				if (contributed % b > i) {
+    			// checks every 200 mil increment to add squares in last column
+    			for (let i of range(0, bil, step)) {
+    				if (contributed % bil > i) {
     					arr.push(4 - arr.length);
     				}
     			}
 
     			return arr;
     		} else {
+    			// Builds full columns
     			return [0, 1, 2, 3, 4];
     		}
     	};
 
-    	const getRemainingRow = (num, country) => {
+    	// Builds small multiple charts that do not need redrawing  
+    	const getRemainingRow = (index, country) => {
     		const val = allData.find(d => d.country === country.country).funding;
     		const step = 200000000;
 
-    		if (num + 1 === Math.ceil(val / b)) {
+    		if (index + 1 === Math.ceil(val / bil)) {
     			let arr = [];
 
-    			for (let i of range(0, b, step)) {
-    				if (val % b > i) {
+    			for (let i of range(0, bil, step)) {
+    				if (val % bil > i) {
     					arr.push(4 - arr.length);
     				}
     			}
@@ -5214,6 +5253,10 @@ var app = (function () {
     	};
 
     	const spaceLabels = () => {
+    		if (isMobile) {
+    			return 0;
+    		}
+
     		if (activeCountry === 'Japan') {
     			return 70;
     		} else if (activeCountry === 'Germany') {
@@ -5244,7 +5287,7 @@ var app = (function () {
     		};
     	};
 
-    	const writable_props = ['activeCountry', 'allData', 'contributed'];
+    	const writable_props = ['activeCountry', 'allData', 'contributed', 'isMobile'];
 
     	Object.keys($$props).forEach(key => {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console.warn(`<Chart> was created with unknown prop '${key}'`);
@@ -5253,8 +5296,8 @@ var app = (function () {
     	function figure_elementresize_handler() {
     		width = this.clientWidth;
     		height = this.clientHeight;
-    		$$invalidate(2, width);
-    		$$invalidate(3, height);
+    		$$invalidate(3, width);
+    		$$invalidate(4, height);
     	}
 
     	const func = d => d.country !== activeCountry;
@@ -5262,30 +5305,29 @@ var app = (function () {
     	function figure_elementresize_handler_1() {
     		width = this.clientWidth;
     		height = this.clientHeight;
-    		$$invalidate(2, width);
-    		$$invalidate(3, height);
+    		$$invalidate(3, width);
+    		$$invalidate(4, height);
     	}
 
     	$$self.$$set = $$props => {
     		if ('activeCountry' in $$props) $$invalidate(0, activeCountry = $$props.activeCountry);
     		if ('allData' in $$props) $$invalidate(1, allData = $$props.allData);
-    		if ('contributed' in $$props) $$invalidate(10, contributed = $$props.contributed);
+    		if ('contributed' in $$props) $$invalidate(11, contributed = $$props.contributed);
+    		if ('isMobile' in $$props) $$invalidate(2, isMobile = $$props.isMobile);
     	};
 
     	$$self.$capture_state = () => ({
-    		filter,
     		range,
-    		tippy,
     		format,
+    		tippy,
     		Legend,
     		activeCountry,
     		allData,
     		contributed,
-    		svg,
+    		isMobile,
     		width,
     		height,
-    		margin,
-    		b,
+    		bil,
     		formatAmount,
     		formatDecimalPlaces,
     		chartRange,
@@ -5299,11 +5341,11 @@ var app = (function () {
     	$$self.$inject_state = $$props => {
     		if ('activeCountry' in $$props) $$invalidate(0, activeCountry = $$props.activeCountry);
     		if ('allData' in $$props) $$invalidate(1, allData = $$props.allData);
-    		if ('contributed' in $$props) $$invalidate(10, contributed = $$props.contributed);
-    		if ('svg' in $$props) svg = $$props.svg;
-    		if ('width' in $$props) $$invalidate(2, width = $$props.width);
-    		if ('height' in $$props) $$invalidate(3, height = $$props.height);
-    		if ('activeChartRange' in $$props) $$invalidate(4, activeChartRange = $$props.activeChartRange);
+    		if ('contributed' in $$props) $$invalidate(11, contributed = $$props.contributed);
+    		if ('isMobile' in $$props) $$invalidate(2, isMobile = $$props.isMobile);
+    		if ('width' in $$props) $$invalidate(3, width = $$props.width);
+    		if ('height' in $$props) $$invalidate(4, height = $$props.height);
+    		if ('activeChartRange' in $$props) $$invalidate(5, activeChartRange = $$props.activeChartRange);
     	};
 
     	if ($$props && "$$inject" in $$props) {
@@ -5311,14 +5353,15 @@ var app = (function () {
     	}
 
     	$$self.$$.update = () => {
-    		if ($$self.$$.dirty & /*contributed*/ 1024) {
-    			$$invalidate(4, activeChartRange = range(0, Math.ceil(contributed / b), 1));
+    		if ($$self.$$.dirty & /*contributed*/ 2048) {
+    			$$invalidate(5, activeChartRange = range(0, Math.ceil(contributed / bil), 1));
     		}
     	};
 
     	return [
     		activeCountry,
     		allData,
+    		isMobile,
     		width,
     		height,
     		activeChartRange,
@@ -5341,7 +5384,8 @@ var app = (function () {
     		init(this, options, instance$2, create_fragment$2, safe_not_equal, {
     			activeCountry: 0,
     			allData: 1,
-    			contributed: 10
+    			contributed: 11,
+    			isMobile: 2
     		});
 
     		dispatch_dev("SvelteRegisterComponent", {
@@ -5362,8 +5406,12 @@ var app = (function () {
     			console.warn("<Chart> was created without expected prop 'allData'");
     		}
 
-    		if (/*contributed*/ ctx[10] === undefined && !('contributed' in props)) {
+    		if (/*contributed*/ ctx[11] === undefined && !('contributed' in props)) {
     			console.warn("<Chart> was created without expected prop 'contributed'");
+    		}
+
+    		if (/*isMobile*/ ctx[2] === undefined && !('isMobile' in props)) {
+    			console.warn("<Chart> was created without expected prop 'isMobile'");
     		}
     	}
 
@@ -5388,6 +5436,14 @@ var app = (function () {
     	}
 
     	set contributed(value) {
+    		throw new Error("<Chart>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get isMobile() {
+    		throw new Error("<Chart>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set isMobile(value) {
     		throw new Error("<Chart>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
     }
@@ -6020,10 +6076,10 @@ var app = (function () {
     const { console: console_1 } = globals;
     const file = "src/App.svelte";
 
-    // (121:2) {:catch error}
+    // (117:2) {:catch error}
     function create_catch_block(ctx) {
     	let p;
-    	let t_value = /*error*/ ctx[15].message + "";
+    	let t_value = /*error*/ ctx[13].message + "";
     	let t;
 
     	const block = {
@@ -6031,7 +6087,7 @@ var app = (function () {
     			p = element("p");
     			t = text$1(t_value);
     			set_style(p, "color", "red");
-    			add_location(p, file, 121, 4, 2895);
+    			add_location(p, file, 117, 4, 2650);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
@@ -6049,14 +6105,14 @@ var app = (function () {
     		block,
     		id: create_catch_block.name,
     		type: "catch",
-    		source: "(121:2) {:catch error}",
+    		source: "(117:2) {:catch error}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (83:2) {:then allData}
+    // (77:2) {:then allData}
     function create_then_block(ctx) {
     	let table;
     	let updating_activeCountry;
@@ -6076,17 +6132,17 @@ var app = (function () {
     	let current;
 
     	function table_activeCountry_binding(value) {
-    		/*table_activeCountry_binding*/ ctx[4](value);
+    		/*table_activeCountry_binding*/ ctx[5](value);
     	}
 
     	function table_contributed_binding(value) {
-    		/*table_contributed_binding*/ ctx[5](value);
+    		/*table_contributed_binding*/ ctx[6](value);
     	}
 
     	let table_props = {
-    		allData: /*allData*/ ctx[14].data,
-    		row: /*allData*/ ctx[14].row.funding,
-    		totalReq: /*totalReq*/ ctx[1]
+    		allData: /*allData*/ ctx[12].data,
+    		row: /*allData*/ ctx[12].row.funding,
+    		totalReq: /*totalReq*/ ctx[3]
     	};
 
     	if (/*activeCountry*/ ctx[2] !== void 0) {
@@ -6103,9 +6159,10 @@ var app = (function () {
 
     	chart = new Chart({
     			props: {
-    				allData: /*allData*/ ctx[14].data,
+    				allData: /*allData*/ ctx[12].data,
     				activeCountry: /*activeCountry*/ ctx[2],
-    				contributed: /*contributed*/ ctx[0]
+    				contributed: /*contributed*/ ctx[0],
+    				isMobile: /*isMobile*/ ctx[1]
     			},
     			$$inline: true
     		});
@@ -6131,19 +6188,19 @@ var app = (function () {
     			attr_dev(img, "title", "Center for Strategic & International Studies");
     			attr_dev(img, "width", "300");
     			attr_dev(img, "height", "31");
-    			add_location(img, file, 99, 9, 2370);
+    			add_location(img, file, 95, 9, 2125);
     			attr_dev(a0, "href", "https://www.csis.org/");
     			attr_dev(a0, "class", "source-holder");
-    			add_location(a0, file, 98, 6, 2307);
+    			add_location(a0, file, 94, 6, 2062);
     			attr_dev(a1, "href", "https://www.csis.org/");
     			attr_dev(a1, "target", "_blank");
     			attr_dev(a1, "alt", "source");
-    			add_location(a1, file, 111, 10, 2705);
-    			add_location(p, file, 109, 8, 2673);
+    			add_location(a1, file, 107, 10, 2460);
+    			add_location(p, file, 105, 8, 2428);
     			attr_dev(div, "class", "source-details");
-    			add_location(div, file, 108, 6, 2636);
+    			add_location(div, file, 104, 6, 2391);
     			attr_dev(footer, "class", "interactive__source");
-    			add_location(footer, file, 97, 4, 2264);
+    			add_location(footer, file, 93, 4, 2019);
     		},
     		m: function mount(target, anchor) {
     			mount_component(table, target, anchor);
@@ -6162,7 +6219,7 @@ var app = (function () {
     		},
     		p: function update(ctx, dirty) {
     			const table_changes = {};
-    			if (dirty & /*totalReq*/ 2) table_changes.totalReq = /*totalReq*/ ctx[1];
+    			if (dirty & /*totalReq*/ 8) table_changes.totalReq = /*totalReq*/ ctx[3];
 
     			if (!updating_activeCountry && dirty & /*activeCountry*/ 4) {
     				updating_activeCountry = true;
@@ -6180,6 +6237,7 @@ var app = (function () {
     			const chart_changes = {};
     			if (dirty & /*activeCountry*/ 4) chart_changes.activeCountry = /*activeCountry*/ ctx[2];
     			if (dirty & /*contributed*/ 1) chart_changes.contributed = /*contributed*/ ctx[0];
+    			if (dirty & /*isMobile*/ 2) chart_changes.isMobile = /*isMobile*/ ctx[1];
     			chart.$set(chart_changes);
     		},
     		i: function intro(local) {
@@ -6206,14 +6264,14 @@ var app = (function () {
     		block,
     		id: create_then_block.name,
     		type: "then",
-    		source: "(83:2) {:then allData}",
+    		source: "(77:2) {:then allData}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (79:15)      <div class="loading-container">       <div class="loading"></div>     </div>   {:then allData}
+    // (71:15)       <div class="loading-container">       <div class="loading"></div>     </div>    {:then allData}
     function create_pending_block(ctx) {
     	let div1;
     	let div0;
@@ -6223,9 +6281,9 @@ var app = (function () {
     			div1 = element("div");
     			div0 = element("div");
     			attr_dev(div0, "class", "loading");
-    			add_location(div0, file, 80, 6, 1921);
+    			add_location(div0, file, 73, 6, 1698);
     			attr_dev(div1, "class", "loading-container");
-    			add_location(div1, file, 79, 4, 1883);
+    			add_location(div1, file, 72, 4, 1660);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div1, anchor);
@@ -6243,7 +6301,7 @@ var app = (function () {
     		block,
     		id: create_pending_block.name,
     		type: "pending",
-    		source: "(79:15)      <div class=\\\"loading-container\\\">       <div class=\\\"loading\\\"></div>     </div>   {:then allData}",
+    		source: "(71:15)       <div class=\\\"loading-container\\\">       <div class=\\\"loading\\\"></div>     </div>    {:then allData}",
     		ctx
     	});
 
@@ -6267,12 +6325,12 @@ var app = (function () {
     		pending: create_pending_block,
     		then: create_then_block,
     		catch: create_catch_block,
-    		value: 14,
-    		error: 15,
+    		value: 12,
+    		error: 13,
     		blocks: [,,,]
     	};
 
-    	handle_promise(/*data*/ ctx[3], info);
+    	handle_promise(/*data*/ ctx[4], info);
 
     	const block = {
     		c: function create() {
@@ -6285,12 +6343,12 @@ var app = (function () {
     			p.textContent = "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium\n      doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo\n      inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.\n      Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut\n      fugit, sed quia consequuntur magni dolores";
     			t3 = space();
     			info.block.c();
-    			add_location(h1, file, 68, 4, 1451);
-    			add_location(p, file, 69, 4, 1478);
+    			add_location(h1, file, 60, 4, 1227);
+    			add_location(p, file, 61, 4, 1254);
     			attr_dev(header, "class", "interactive__header");
-    			add_location(header, file, 67, 2, 1410);
+    			add_location(header, file, 59, 2, 1186);
     			attr_dev(main, "class", "interactive");
-    			add_location(main, file, 66, 0, 1381);
+    			add_location(main, file, 58, 0, 1157);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -6345,8 +6403,6 @@ var app = (function () {
 
     function instance($$self, $$props, $$invalidate) {
     	let totalReq;
-    	let remaining;
-    	let total;
     	let activeCountry;
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('App', slots, []);
@@ -6360,17 +6416,6 @@ var app = (function () {
 
     	async function loadData() {
     		let res = await parseData({ src: dataSrc });
-    		console.log(res);
-
-    		total = res.data.reduce(
-    			(acc, i) => {
-    				return acc += i.funding;
-    			},
-    			0
-    		);
-
-    		remaining = totalReq - total;
-    		console.log(total + 5815512166, '------------');
     		return res;
     	}
 
@@ -6383,9 +6428,9 @@ var app = (function () {
 
     	function resize(mediaQueryList) {
     		if (mediaQueryList.matches) {
-    			isMobile = true;
+    			$$invalidate(1, isMobile = true);
     		} else {
-    			isMobile = false;
+    			$$invalidate(1, isMobile = false);
     		}
     	}
 
@@ -6434,35 +6479,30 @@ var app = (function () {
     		isMobile,
     		mq,
     		resize,
-    		total,
-    		totalReq,
-    		remaining,
-    		activeCountry
+    		activeCountry,
+    		totalReq
     	});
 
     	$$self.$inject_state = $$props => {
     		if ('contributed' in $$props) $$invalidate(0, contributed = $$props.contributed);
-    		if ('isMobile' in $$props) isMobile = $$props.isMobile;
+    		if ('isMobile' in $$props) $$invalidate(1, isMobile = $$props.isMobile);
     		if ('mq' in $$props) mq = $$props.mq;
-    		if ('total' in $$props) total = $$props.total;
-    		if ('totalReq' in $$props) $$invalidate(1, totalReq = $$props.totalReq);
-    		if ('remaining' in $$props) remaining = $$props.remaining;
     		if ('activeCountry' in $$props) $$invalidate(2, activeCountry = $$props.activeCountry);
+    		if ('totalReq' in $$props) $$invalidate(3, totalReq = $$props.totalReq);
     	};
 
     	if ($$props && "$$inject" in $$props) {
     		$$self.$inject_state($$props.$$inject);
     	}
 
-    	$$invalidate(1, totalReq = 38536692263);
-    	remaining = 0;
-    	total = 0;
+    	$$invalidate(3, totalReq = 38536692263);
     	$$invalidate(2, activeCountry = 'US');
 
     	return [
     		contributed,
-    		totalReq,
+    		isMobile,
     		activeCountry,
+    		totalReq,
     		data,
     		table_activeCountry_binding,
     		table_contributed_binding
