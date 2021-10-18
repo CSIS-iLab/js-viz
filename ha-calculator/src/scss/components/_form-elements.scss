@@ -23,7 +23,7 @@
   box-sizing: border-box;
   width: 100%;
   min-width: 140px;
-  max-width: 200px;
+  max-width: 175px;
   height: 30px;
   margin: 0;
   padding: 0 35px 0 7px;
@@ -45,6 +45,10 @@
   border: 2px solid var(--highlight-color, $color__blue);
   border-radius: 2px;
   appearance: none;
+
+  @include breakpoint(medium) {
+    max-width: 200px;
+  }
 
   &:disabled {
     opacity: 0.5;

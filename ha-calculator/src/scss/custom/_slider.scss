@@ -12,6 +12,10 @@
 .slider {
   width: 100%;
 
+  @include breakpoint(medium) {
+    width: 250px;
+  }
+
   &__bubble {
     background: $color__white;
     color: $color__black;
@@ -22,6 +26,7 @@
     left: 50%;
     transform: translateX(-50%);
     border: 2px solid $color__gray-300;
+    z-index: 5;
   
     &:after {
       content: "";
@@ -80,8 +85,4 @@ input[type=range]:focus {
 
 input[type=range]:focus::-webkit-slider-runnable-track {
   background: #ccc;
-}
-
-input {
-  width: 250px;
 }

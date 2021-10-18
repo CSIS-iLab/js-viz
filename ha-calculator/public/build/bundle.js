@@ -5403,7 +5403,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (152:12) {#each getDropdownOptions() as option}
+    // (136:6) {#each getDropdownOptions() as option}
     function create_each_block(ctx) {
     	let option;
     	let t_value = /*option*/ ctx[27] + "";
@@ -5415,7 +5415,7 @@ var app = (function () {
     			t = text$1(t_value);
     			option.__value = /*option*/ ctx[27];
     			option.value = option.__value;
-    			add_location(option, file$1, 152, 14, 4065);
+    			add_location(option, file$1, 136, 8, 3719);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, option, anchor);
@@ -5431,7 +5431,7 @@ var app = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(152:12) {#each getDropdownOptions() as option}",
+    		source: "(136:6) {#each getDropdownOptions() as option}",
     		ctx
     	});
 
@@ -5439,43 +5439,35 @@ var app = (function () {
     }
 
     function create_fragment$1(ctx) {
-    	let table;
-    	let thead;
-    	let tr0;
-    	let th0;
-    	let t0;
-    	let th1;
-    	let t2;
-    	let th2;
-    	let t4;
-    	let th3;
-    	let t6;
-    	let th4;
-    	let t8;
-    	let tbody;
-    	let tr1;
-    	let th5;
+    	let div9;
     	let div0;
     	let select;
-    	let t9;
-    	let td0;
-    	let t10_value = /*formatDecimalPlaces*/ ctx[7](/*gdp*/ ctx[3]) + "";
-    	let t10;
-    	let t11;
-    	let td1;
+    	let t0;
     	let div1;
+    	let t2;
+    	let div2;
+    	let t3_value = /*formatDecimalPlaces*/ ctx[7](/*gdp*/ ctx[3]) + "";
+    	let t3;
+    	let t4;
+    	let div3;
+    	let t6;
+    	let div4;
     	let input;
-    	let t12;
+    	let t7;
     	let output;
-    	let t13;
-    	let td2;
-    	let t14_value = /*formatDecimalPlaces*/ ctx[7](/*contributed*/ ctx[1]) + "";
+    	let t8;
+    	let div5;
+    	let t10;
+    	let div6;
+    	let t11_value = /*formatDecimalPlaces*/ ctx[7](/*contributed*/ ctx[1]) + "";
+    	let t11;
+    	let t12;
+    	let div7;
     	let t14;
+    	let div8;
+    	let t15_value = /*formatDecimalPlaces*/ ctx[7](/*remaining*/ ctx[6]) + "";
     	let t15;
-    	let td3;
-    	let t16_value = /*formatDecimalPlaces*/ ctx[7](/*remaining*/ ctx[6]) + "";
     	let t16;
-    	let t17;
     	let button;
     	let span;
     	let mounted;
@@ -5490,26 +5482,7 @@ var app = (function () {
 
     	const block = {
     		c: function create() {
-    			table = element("table");
-    			thead = element("thead");
-    			tr0 = element("tr");
-    			th0 = element("th");
-    			t0 = space();
-    			th1 = element("th");
-    			th1.textContent = "GDP";
-    			t2 = space();
-    			th2 = element("th");
-    			th2.textContent = "% Contributed";
-    			t4 = space();
-    			th3 = element("th");
-    			th3.textContent = "$ Contributed";
-    			t6 = space();
-    			th4 = element("th");
-    			th4.textContent = "Remaining";
-    			t8 = space();
-    			tbody = element("tbody");
-    			tr1 = element("tr");
-    			th5 = element("th");
+    			div9 = element("div");
     			div0 = element("div");
     			select = element("select");
 
@@ -5517,87 +5490,78 @@ var app = (function () {
     				each_blocks[i].c();
     			}
 
-    			t9 = space();
-    			td0 = element("td");
-    			t10 = text$1(t10_value);
-    			t11 = space();
-    			td1 = element("td");
+    			t0 = space();
     			div1 = element("div");
+    			div1.textContent = "GDP";
+    			t2 = space();
+    			div2 = element("div");
+    			t3 = text$1(t3_value);
+    			t4 = space();
+    			div3 = element("div");
+    			div3.textContent = "% Contributed";
+    			t6 = space();
+    			div4 = element("div");
     			input = element("input");
-    			t12 = space();
+    			t7 = space();
     			output = element("output");
-    			t13 = space();
-    			td2 = element("td");
-    			t14 = text$1(t14_value);
-    			t15 = space();
-    			td3 = element("td");
-    			t16 = text$1(t16_value);
-    			t17 = space();
+    			t8 = space();
+    			div5 = element("div");
+    			div5.textContent = "Contributed";
+    			t10 = space();
+    			div6 = element("div");
+    			t11 = text$1(t11_value);
+    			t12 = space();
+    			div7 = element("div");
+    			div7.textContent = "Remaining";
+    			t14 = space();
+    			div8 = element("div");
+    			t15 = text$1(t15_value);
+    			t16 = space();
     			button = element("button");
     			span = element("span");
-    			add_location(th0, file$1, 135, 6, 3602);
-    			add_location(th1, file$1, 136, 6, 3618);
-    			add_location(th2, file$1, 137, 6, 3637);
-    			add_location(th3, file$1, 138, 6, 3666);
-    			add_location(th4, file$1, 139, 6, 3695);
-    			attr_dev(tr0, "class", "interactive__subheading");
-    			add_location(tr0, file$1, 134, 4, 3559);
-    			add_location(thead, file$1, 133, 2, 3547);
     			attr_dev(select, "class", "input__select");
     			if (/*activeCountry*/ ctx[0] === void 0) add_render_callback(() => /*select_change_handler*/ ctx[16].call(select));
-    			add_location(select, file$1, 146, 10, 3851);
-    			attr_dev(div0, "class", "interactive__dropdown");
-    			add_location(div0, file$1, 145, 8, 3805);
-    			attr_dev(th5, "class", "interactive__subheading");
-    			add_location(th5, file$1, 144, 6, 3760);
-    			add_location(td0, file$1, 157, 6, 4181);
+    			add_location(select, file$1, 130, 4, 3541);
+    			attr_dev(div0, "class", "interactive__dropdown interactive__value");
+    			add_location(div0, file$1, 129, 2, 3482);
+    			attr_dev(div1, "class", "interactive__label gdp-label");
+    			add_location(div1, file$1, 141, 2, 3802);
+    			attr_dev(div2, "class", "interactive__value gdp");
+    			add_location(div2, file$1, 142, 2, 3856);
+    			attr_dev(div3, "class", "interactive__label slider-label");
+    			add_location(div3, file$1, 144, 2, 3930);
     			attr_dev(input, "id", "slider");
+    			attr_dev(input, "class", "slider");
     			attr_dev(input, "type", "range");
     			attr_dev(input, "name", "slider");
     			attr_dev(input, "min", "0");
     			attr_dev(input, "max", "100");
-    			add_location(input, file$1, 162, 10, 4288);
+    			add_location(input, file$1, 146, 6, 4068);
     			attr_dev(output, "class", "slider__bubble");
-    			add_location(output, file$1, 172, 10, 4556);
-    			attr_dev(div1, "class", "slider-wrap");
-    			add_location(div1, file$1, 161, 8, 4252);
-    			add_location(td1, file$1, 160, 6, 4239);
-    			attr_dev(td2, "class", "calc-values");
-    			add_location(td2, file$1, 175, 6, 4647);
-    			attr_dev(td3, "class", "calc-values");
-    			add_location(td3, file$1, 178, 6, 4733);
-    			add_location(tr1, file$1, 143, 4, 3749);
-    			add_location(tbody, file$1, 142, 2, 3737);
-    			attr_dev(table, "class", "interactive__table interactive__table--large");
-    			attr_dev(table, "cellpadding", "0");
-    			attr_dev(table, "cellspacing", "0");
-    			add_location(table, file$1, 128, 0, 3445);
+    			add_location(output, file$1, 157, 6, 4319);
+    			attr_dev(div4, "class", "interactive__slider interactive__value slider-wrap");
+    			add_location(div4, file$1, 145, 2, 3997);
+    			attr_dev(div5, "class", "interactive__label con-label");
+    			add_location(div5, file$1, 160, 2, 4391);
+    			attr_dev(div6, "class", "interactive__value contributed");
+    			add_location(div6, file$1, 161, 2, 4453);
+    			attr_dev(div7, "class", "interactive__label rem-label");
+    			add_location(div7, file$1, 163, 2, 4541);
+    			attr_dev(div8, "class", "interactive__value remaining");
+    			add_location(div8, file$1, 164, 2, 4601);
     			attr_dev(span, "class", "icon icon-replay");
-    			add_location(span, file$1, 186, 3, 4916);
-    			attr_dev(button, "class", "btn btn__refresh");
-    			add_location(button, file$1, 185, 2, 4844);
+    			add_location(span, file$1, 167, 4, 4775);
+    			attr_dev(button, "class", "interactive__btn btn btn__refresh");
+    			add_location(button, file$1, 166, 2, 4685);
+    			attr_dev(div9, "class", "interactive__options");
+    			add_location(div9, file$1, 128, 0, 3445);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, table, anchor);
-    			append_dev(table, thead);
-    			append_dev(thead, tr0);
-    			append_dev(tr0, th0);
-    			append_dev(tr0, t0);
-    			append_dev(tr0, th1);
-    			append_dev(tr0, t2);
-    			append_dev(tr0, th2);
-    			append_dev(tr0, t4);
-    			append_dev(tr0, th3);
-    			append_dev(tr0, t6);
-    			append_dev(tr0, th4);
-    			append_dev(table, t8);
-    			append_dev(table, tbody);
-    			append_dev(tbody, tr1);
-    			append_dev(tr1, th5);
-    			append_dev(th5, div0);
+    			insert_dev(target, div9, anchor);
+    			append_dev(div9, div0);
     			append_dev(div0, select);
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
@@ -5605,26 +5569,33 @@ var app = (function () {
     			}
 
     			select_option(select, /*activeCountry*/ ctx[0]);
-    			append_dev(tr1, t9);
-    			append_dev(tr1, td0);
-    			append_dev(td0, t10);
-    			append_dev(tr1, t11);
-    			append_dev(tr1, td1);
-    			append_dev(td1, div1);
-    			append_dev(div1, input);
+    			append_dev(div9, t0);
+    			append_dev(div9, div1);
+    			append_dev(div9, t2);
+    			append_dev(div9, div2);
+    			append_dev(div2, t3);
+    			append_dev(div9, t4);
+    			append_dev(div9, div3);
+    			append_dev(div9, t6);
+    			append_dev(div9, div4);
+    			append_dev(div4, input);
     			set_input_value(input, /*activePercentage*/ ctx[2]);
     			/*input_binding*/ ctx[19](input);
-    			append_dev(div1, t12);
-    			append_dev(div1, output);
+    			append_dev(div4, t7);
+    			append_dev(div4, output);
     			/*output_binding*/ ctx[21](output);
-    			append_dev(tr1, t13);
-    			append_dev(tr1, td2);
-    			append_dev(td2, t14);
-    			append_dev(tr1, t15);
-    			append_dev(tr1, td3);
-    			append_dev(td3, t16);
-    			insert_dev(target, t17, anchor);
-    			insert_dev(target, button, anchor);
+    			append_dev(div9, t8);
+    			append_dev(div9, div5);
+    			append_dev(div9, t10);
+    			append_dev(div9, div6);
+    			append_dev(div6, t11);
+    			append_dev(div9, t12);
+    			append_dev(div9, div7);
+    			append_dev(div9, t14);
+    			append_dev(div9, div8);
+    			append_dev(div8, t15);
+    			append_dev(div9, t16);
+    			append_dev(div9, button);
     			append_dev(button, span);
 
     			if (!mounted) {
@@ -5669,24 +5640,22 @@ var app = (function () {
     				select_option(select, /*activeCountry*/ ctx[0]);
     			}
 
-    			if (dirty & /*gdp*/ 8 && t10_value !== (t10_value = /*formatDecimalPlaces*/ ctx[7](/*gdp*/ ctx[3]) + "")) set_data_dev(t10, t10_value);
+    			if (dirty & /*gdp*/ 8 && t3_value !== (t3_value = /*formatDecimalPlaces*/ ctx[7](/*gdp*/ ctx[3]) + "")) set_data_dev(t3, t3_value);
 
     			if (dirty & /*activePercentage*/ 4) {
     				set_input_value(input, /*activePercentage*/ ctx[2]);
     			}
 
-    			if (dirty & /*contributed*/ 2 && t14_value !== (t14_value = /*formatDecimalPlaces*/ ctx[7](/*contributed*/ ctx[1]) + "")) set_data_dev(t14, t14_value);
-    			if (dirty & /*remaining*/ 64 && t16_value !== (t16_value = /*formatDecimalPlaces*/ ctx[7](/*remaining*/ ctx[6]) + "")) set_data_dev(t16, t16_value);
+    			if (dirty & /*contributed*/ 2 && t11_value !== (t11_value = /*formatDecimalPlaces*/ ctx[7](/*contributed*/ ctx[1]) + "")) set_data_dev(t11, t11_value);
+    			if (dirty & /*remaining*/ 64 && t15_value !== (t15_value = /*formatDecimalPlaces*/ ctx[7](/*remaining*/ ctx[6]) + "")) set_data_dev(t15, t15_value);
     		},
     		i: noop,
     		o: noop,
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(table);
+    			if (detaching) detach_dev(div9);
     			destroy_each(each_blocks, detaching);
     			/*input_binding*/ ctx[19](null);
     			/*output_binding*/ ctx[21](null);
-    			if (detaching) detach_dev(t17);
-    			if (detaching) detach_dev(button);
     			mounted = false;
     			run_all(dispose);
     		}

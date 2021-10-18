@@ -1,0 +1,67 @@
+@use 'abstracts' as *;
+@use 'sass:color';
+
+/*============================
+=      Table Grid           =
+============================*/
+
+.interactive {
+  &__options {
+    display: grid;
+    grid-template-areas: '. dropdown' 'gdp-label gdp' 'slider-label slider' 'con-label contributed' 'rem-label remaining' '. refresh';
+    grid-template-columns: 2fr;
+    max-width: $size__max-width;
+    margin: 1.5rem auto;
+    @include font-size(16px);
+    line-height: 1.2;
+    width: 100%;
+    
+    @include breakpoint(medium) {
+      grid-template-areas: '. gdp-label slider-label con-label rem-label .' 'dropdown gdp slider contributed remaining refresh';
+      grid-template-rows: 2fr;
+      grid-template-columns: unset;
+    }
+  }
+
+  &__dropdown {
+    grid-area: dropdown;
+  }
+
+  &__slider {
+    grid-area: slider;
+  }
+
+  .gdp-label {
+    grid-area: gdp-label;
+  }
+
+  .gdp {
+    grid-area: gdp;
+  }
+
+  .slider-label {
+    grid-area: slider-label;
+  }
+
+  .con-label {
+    grid-area: con-label;
+  }
+
+  .contributed {
+    grid-area: contributed;
+  }
+
+  .rem-label {
+    grid-area: rem-label;
+  }
+
+  .remaining {
+    grid-area: remaining;
+  }
+
+  &__btn {
+    grid-area: refresh;
+  }
+}
+
+

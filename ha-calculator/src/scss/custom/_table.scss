@@ -1,95 +1,73 @@
 @use 'abstracts' as *;
 @use 'sass:color';
 
+@use './custom/table-grid';
+
+
 /*============================
-=            Table           =
+=             Table         =
 ============================*/
 
-.interactive__table {
-  max-width: $size__max-width;
-  margin: 1.5rem auto;
-  @include font-size(16px);
-  line-height: 1.2;
-  width: 100%;
-  // display: flex;
+.interactive {
+  &__label {
+    position: relative;
+    margin-bottom: 1.5rem;
+    padding: 0 rem(16px) rem(24px) 0;
+    font-weight: 700;
+    text-align: center;
 
-  &--small {
-    @include breakpoint('medium') {
-      display: none;
+    @include breakpoint(medium) {
+      padding: 0 rem(16px) 0 0;
     }
   }
 
-  &--large {
-    // display: none;
+  &__label:after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: -3rem;
+    right: 0;
+    height: 150px;
+    border-right: 2px solid $color__gray-400;
 
-    @include breakpoint('medium') {
-      display: table;
-    }
-  }
-
-  thead {
-    th {
-      padding: rem(4px) rem(12px);
+    @include breakpoint(medium) {
+      top: 1.5rem;
+      right: -3.5rem;
+      width: 300px;
+      height: unset;
       border-bottom: 2px solid $color__black;
     }
   }
 
-  tbody {
-    tr:not(:first-child) > * {
-      @include breakpoint('medium') {
-        border-top: 1px solid $color__gray-500;
-      }
-    }
+  &__value {
+    padding-left: rem(16px);
+    padding-bottom: rem(24px);
+    color: $color__black;
+    text-align: center;
 
-    tr:first-of-type th {
-      border-top: 0;
-    }
-
-    th,
-    td {
-      padding: rem(8px);
-    }
-
-    th {
-      padding-bottom: 0;
-      text-align: center;
-      border-top: 1px solid $color__gray-500;
-
-      @include breakpoint('medium') {
-        padding-bottom: rem(8px);
-        text-align: right;
-        border-top: 0;
-      }
-    }
-
-    td {
-      color: $color__black;
-      text-align: center;
+    @include breakpoint(medium) {
+      // padding-right: rem(16px);
+      padding: 0 rem(16px) 0 0;
     }
   }
-}
 
-
-
-.btn {
-  background-color: transparent;
-
-  .icon {
-    display: inline-block;
-    width: 25px;
-    height: 25px;
-    background-image: url(/images/replay.svg);
-    background-size: cover;
+  &__btn {
     background-color: transparent;
-    filter: invert(0%) sepia(100%) saturate(0%) hue-rotate(13deg) brightness(98%) contrast(105%);
-    opacity: 80%;
-  
-    &:hover {
-      filter: invert(0%) sepia(100%) saturate(0%) hue-rotate(13deg) brightness(98%) contrast(105%);
-      opacity: 1;
-    }
 
- 
+    .icon {
+      display: inline-block;
+      width: 25px;
+      height: 25px;
+      background-image: url(/images/replay.svg);
+      background-size: cover;
+      background-color: transparent;
+      filter: invert(0%) sepia(100%) saturate(0%) hue-rotate(13deg) brightness(98%) contrast(105%);
+      opacity: 80%;
+    
+      &:hover {
+        filter: invert(0%) sepia(100%) saturate(0%) hue-rotate(13deg) brightness(98%) contrast(105%);
+        opacity: 1;
+      }
+    }
   }
 }
-

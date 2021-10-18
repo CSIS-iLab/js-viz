@@ -126,67 +126,48 @@
   })
 </script>
 
-<table
-  class="interactive__table interactive__table--large"
-  cellpadding="0"
-  cellspacing="0"
->
-  <thead>
-    <tr class="interactive__subheading">
-      <th></th>
-      <th>GDP</th>
-      <th>% Contributed</th>
-      <th>$ Contributed</th>
-      <th>Remaining</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th class="interactive__subheading">
-        <div class="interactive__dropdown">
-          <select
-            class="input__select"
-            bind:value="{activeCountry}"
-            on:change="{() => handleActiveCountry()}"
-          >
-            {#each getDropdownOptions() as option}
-              <option value="{option}">{option}</option>
-            {/each}
-          </select>
-        </div>
-      </th>
-      <td>
-        {formatDecimalPlaces(gdp)}
-      </td>
-      <td>
-        <div class="slider-wrap">
-          <input
-            id="slider"
-            type="range"
-            name="slider"
-            bind:value="{activePercentage}"
-            bind:this={slider}
-            min="0"
-            max="100"
-            on:change="{() => handleChange()}"
-          >
-          <output class="slider__bubble" bind:this={bubble}></output>
-      </div>
-      </td>
-      <td class="calc-values">
-        {formatDecimalPlaces(contributed)}
-      </td>
-      <td class="calc-values">
-        {formatDecimalPlaces(remaining)}
-      </td>
-    </tr>
-  </tbody>
-</table>
+<div class="interactive__options">
+  <div class="interactive__dropdown interactive__value">
+    <select
+      class="input__select"
+      bind:value="{activeCountry}"
+      on:change="{() => handleActiveCountry()}"
+    >
+      {#each getDropdownOptions() as option}
+        <option value="{option}">{option}</option>
+      {/each}
+    </select>
+  </div>
 
-  <button class="btn btn__refresh" on:click="{() => handleRefresh()}">
-   <span class="icon icon-replay"></span>
+  <div class="interactive__label gdp-label">GDP</div>
+  <div class="interactive__value gdp">{formatDecimalPlaces(gdp)}</div>
+  
+  <div class="interactive__label slider-label">% Contributed</div>
+  <div class="interactive__slider interactive__value slider-wrap">
+      <input
+        id="slider"
+        class="slider"
+        type="range"
+        name="slider"
+        bind:value="{activePercentage}"
+        bind:this={slider}
+        min="0"
+        max="100"
+        on:change="{() => handleChange()}"
+      >
+      <output class="slider__bubble" bind:this={bubble}></output>
+  </div>
+
+  <div class="interactive__label con-label">Contributed</div>
+  <div class="interactive__value contributed">{formatDecimalPlaces(contributed)}</div>
+
+  <div class="interactive__label rem-label">Remaining</div>
+  <div class="interactive__value remaining">{formatDecimalPlaces(remaining)}</div>
+
+  <button class="interactive__btn btn btn__refresh" on:click="{() => handleRefresh()}">
+    <span class="icon icon-replay"></span>
   </button>
-
+</div>
 
 <style type="text/scss" global>
   @import '../scss/components/_buttons.scss';
