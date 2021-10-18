@@ -11,24 +11,43 @@
 .interactive {
   &__label {
     position: relative;
-    margin-bottom: 1.5rem;
+    margin: rem(18px) 0;
     padding: 0 rem(16px) rem(24px) 0;
     font-weight: 700;
     text-align: center;
+    border-bottom: 2px solid $color__gray-200;
 
     @include breakpoint(medium) {
+      margin-top: unset;
+      margin-bottom: 1.5rem;
       padding: 0 rem(16px) 0 0;
+      border-bottom: none;
     }
+
+    
+  }
+
+  &__dropdown {
+    border-bottom: unset !important;
+    margin-bottom: 0.5rem;
+
+    @include breakpoint(medium) {
+      margin-bottom: unset;
+    }
+  }
+
+  &__slider {
+    padding-left: 0 !important;
   }
 
   &__label:after {
     content: '';
     display: block;
     position: absolute;
-    top: -3rem;
+    top: -1.5rem;
     right: 0;
-    height: 150px;
-    border-right: 2px solid $color__gray-400;
+    height: 120px;
+    border-right: 2px solid $color__gray-200;
 
     @include breakpoint(medium) {
       top: 1.5rem;
@@ -40,14 +59,17 @@
   }
 
   &__value {
+    margin: rem(18px) 0;
     padding-left: rem(16px);
     padding-bottom: rem(24px);
     color: $color__black;
     text-align: center;
+    border-bottom: 2px solid $color__gray-200;
 
     @include breakpoint(medium) {
-      // padding-right: rem(16px);
+      margin: unset;
       padding: 0 rem(16px) 0 0;
+      border-bottom: none;
     }
   }
 

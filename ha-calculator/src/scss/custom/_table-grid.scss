@@ -8,7 +8,7 @@
 .interactive {
   &__options {
     display: grid;
-    grid-template-areas: '. dropdown' 'gdp-label gdp' 'slider-label slider' 'con-label contributed' 'rem-label remaining' '. refresh';
+    grid-template-areas: 'dropdown dropdown' 'gdp-label gdp' 'slider-label slider' 'con-label contributed' 'rem-label remaining' '. refresh';
     grid-template-columns: 2fr;
     max-width: $size__max-width;
     margin: 1.5rem auto;
