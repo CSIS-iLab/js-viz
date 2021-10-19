@@ -28,7 +28,7 @@ const mapStyle = new carto.style.CartoCSS(`
             (#5F4690, #1D6996, #38A6A5, #0F8554, #73AF48),
             ("China, Taiwan Province of", "India", "Indonesia", "Japan", "South Korea"),
             "=");
-          polygon-opacity: 0.9;
+          polygon-opacity: 0.6;
           line-color: #FFF;
           line-width: 0.5;
           line-opacity: 0.5;
@@ -69,11 +69,24 @@ function createPopup(event) {
 
     content += `
     <div class="popupHeaderStyle">
-      ${data.country}
+      Country: ${data.country}
     </div>
     <div class="popupEntryStyle">
-      ${data.description}
+      <strong>Region: </strong>${data.region}
     </div>
+    <div class="popupEntryStyle">
+      <strong>Description: </strong>${data.description}
+    </div>
+    <div class="popupEntryStyle">
+      <strong>ODA for Government and Civil Society 2019 in usd (millions): </strong>${data.oda_for_government_and_civil_society_2019_in_usd_millions}
+    </div>
+    <div class="popupEntryStyle">
+      <strong>Focus Areas: </strong>${data.focus_areas}
+    </div>
+    <div class="popupEntryStyle">
+      <strong>Mayor Recipients: </strong>${data.major_recipients}
+    </div>
+    
     `;
     popup.setContent("" + content);
     popup.openOn(map);
@@ -85,6 +98,6 @@ L.control
     position: "bottomright",
   })
   .setPrefix(
-    '<a href="https://www.csis.org/programs/americas-program">CSIS Americas Program</a>, <a href="https://leafletjs.com/">Leaflet</a>'
+    '<a href="https://www.csis.org/programs/japan-chair">CSIS Japan Chair</a>, <a href="https://leafletjs.com/">Leaflet</a>'
   )
   .addTo(map);
