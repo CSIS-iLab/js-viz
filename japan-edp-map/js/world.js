@@ -77,14 +77,6 @@ function createSidePanel(event) {
       <p class="side-panel-value">Focus Areas: <span>${data.focus_areas}</span> </p>
       <p class="side-panel-value">Major Recipients: <span>${data.major_recipients}</span> </p>
     `;
-      // ${data.african_sister_cities
-      //   ? `<p class="side-panel-value">African Sister City: <span>${data.african_sister_cities}</span></p>`
-      //   : ""
-      // }
-      // <p class="side-panel-desc">${data.sidebar} ${data.linked_commentary
-      //       ? `<a href="${data.linked_commentary}" target="_blank"> Read More</a> </p>`
-      //       : ""
-      //     }</p>`;
     panelContent.innerHTML = content;
   }
 }
