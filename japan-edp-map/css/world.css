@@ -37,7 +37,7 @@ body {
 .description > span {
   margin: 20px;
   display: block;
-  color: #D1786E;
+  color: #993933;
 }
 
 .panel {
@@ -76,7 +76,7 @@ body {
 }
 
 .close-btn:hover {
-  color: #D1786E;
+  color: #993933;
 }
 
 
@@ -90,7 +90,7 @@ body {
 
 .side-panel-value {
   text-transform: uppercase;
-  color:#D1786E;
+  color:#993933;
   font-size: 15px;
 }
 
