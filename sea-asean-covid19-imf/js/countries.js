@@ -9,6 +9,7 @@ const countries = [
   { id: "sing", name: "Singapore", sheet: "Singapore" },
   { id: "thai", name: "Thailand", sheet: "Thailand" },
   { id: "viet", name: "Vietnam", sheet: "Vietnam" },
+  { id: "timor", name: "Timor-Leste", sheet: "TimorLeste" }
 ];
 
 for (let i = 0; i < countries.length; i++) {
@@ -29,7 +30,7 @@ function drawChart(index, id, name, sheet) {
 
     // General Chart Options
     chart: {
-      type: "line",
+      type: "line"
     },
 
     // Colors
@@ -50,15 +51,12 @@ function drawChart(index, id, name, sheet) {
     // Chart Legend
     legend: {
       enabled: false,
-      // align: "center",
-      // verticalAlign: "bottom",
-      // layout: "horizontal",
     },
     // Y Axis
     yAxis: {
       gridLineColor: "transparent",
       startOnTick: true,
-      tickPositions: [-14, -7, 0, 7, 14],
+      tickPositions: [-20, -9, 0, 9, 20],
       plotLines: [
         {
           dashStyle: "longdash",
@@ -73,10 +71,8 @@ function drawChart(index, id, name, sheet) {
       },
     },
     xAxis: {
-      tickPositions: [2019, 2020, 2021],
+      tickPositions: [2019, 2020, 2021, 2022],
       offset: 0,
-      lineColor: "transparent",
-      gridLineColor: "transparent",
       labels: {
         enabled: true,
         formatter: function (params) {
@@ -84,31 +80,13 @@ function drawChart(index, id, name, sheet) {
             return "'19";
           } else if (params.value === 2020) {
             return "'20";
-          } else {
+          } else if (params.value === 2021) {
             return "'21";
+          } else {
+            return "'22";
           }
         },
       },
-      plotLines: [
-        {
-          color: "rgb(230, 230, 230)",
-          width: 2,
-          value: 2019,
-          zIndex: -5,
-        },
-        {
-          color: "rgb(230, 230, 230)",
-          width: 2,
-          value: 2020,
-          zIndex: -5,
-        },
-        {
-          color: "rgb(230, 230, 230)",
-          width: 2,
-          value: 2021,
-          zIndex: -5,
-        },
-      ],
     },
     exporting: {
       enabled: false,
