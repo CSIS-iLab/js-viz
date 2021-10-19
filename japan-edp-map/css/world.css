@@ -28,6 +28,9 @@ body {
 .box-header {
   line-height: 1.1;
   text-transform: uppercase;
+  letter-spacing: 0.03em;
+  border: none !important;
+  padding: 0 !important;
 }
 
 .description {
