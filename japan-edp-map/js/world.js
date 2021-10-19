@@ -24,10 +24,7 @@ const mapSource = new carto.source.SQL(`SELECT * FROM edpinteractivemap`);
 
 const mapStyle = new carto.style.CartoCSS(`
         #layer {
-          polygon-fill: ramp([country],
-            (#5F4690, #1D6996, #38A6A5, #0F8554, #73AF48),
-            ("China, Taiwan Province of", "India", "Indonesia", "Japan", "South Korea"),
-            "=");
+          polygon-fill: #D1786E;
           polygon-opacity: 0.6;
           line-color: #FFF;
           line-width: 0.5;
@@ -55,43 +52,48 @@ client.addLayer(mapLayer);
 
 client.getLeafletLayer().bringToFront().addTo(map);
 
-const popup = L.popup({ closeButton: true });
+const sidePanel = L.popup({ closeButton: true });
 
-mapLayer.on(carto.layer.events.FEATURE_CLICKED, createPopup);
+mapLayer.on(carto.layer.events.FEATURE_CLICKED, createSidePanel);
 
-function createPopup(event) {
-  popup.setLatLng(event.latLng);
+function createSidePanel(event) {
+  sidePanel.setLatLng(event.latLng);
 
-  if (!popup.isOpen()) {
+  const panel = document.querySelector('.panel');
+  const panelContent = document.querySelector('.panel-content')
+  panel.classList.add('open');
+
+  if (!sidePanel.isOpen()) {
     var data = event.data;
-    console.log(event.data);
-    var content = "<div>";
+   
+    var content = "";
 
     content += `
-    <div class="popupHeaderStyle">
-      Country: ${data.country}
-    </div>
-    <div class="popupEntryStyle">
-      <strong>Region: </strong>${data.region}
-    </div>
-    <div class="popupEntryStyle">
-      <strong>Description: </strong>${data.description}
-    </div>
-    <div class="popupEntryStyle">
-      <strong>ODA for Government and Civil Society 2019 in usd (millions): </strong>${data.oda_for_government_and_civil_society_2019_in_usd_millions}
-    </div>
-    <div class="popupEntryStyle">
-      <strong>Focus Areas: </strong>${data.focus_areas}
-    </div>
-    <div class="popupEntryStyle">
-      <strong>Mayor Recipients: </strong>${data.major_recipients}
-    </div>
-    
+    <h2 class="sidePanelHeaderStyle">
+      ${data.country}
+    </h2>
+      <p class="side-panel-value">Description: <span>${data.description}</span> </p>
+      <p class="side-panel-value">ODA for Government and Civil Society 2019 in USD (millions): <span>${data.oda_for_government_and_civil_society_2019_in_usd_millions}</span> </p>
+      <p class="side-panel-value">Focus Areas: <span>${data.focus_areas}</span> </p>
+      <p class="side-panel-value">Major Recipients: <span>${data.major_recipients}</span> </p>
     `;
-    popup.setContent("" + content);
-    popup.openOn(map);
+      // ${data.african_sister_cities
+      //   ? `<p class="side-panel-value">African Sister City: <span>${data.african_sister_cities}</span></p>`
+      //   : ""
+      // }
+      // <p class="side-panel-desc">${data.sidebar} ${data.linked_commentary
+      //       ? `<a href="${data.linked_commentary}" target="_blank"> Read More</a> </p>`
+      //       : ""
+      //     }</p>`;
+    panelContent.innerHTML = content;
   }
 }
+
+const closeBtn = document.querySelector('.close-btn')
+closeBtn.addEventListener('click', function(e) {
+  const panel = document.querySelector('.panel');
+  panel.classList.remove('open');
+})
 
 L.control
   .attribution({

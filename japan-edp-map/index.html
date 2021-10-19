@@ -22,12 +22,7 @@
     />
 
     <script src="https://unpkg.com/babel-polyfill@6.26.0/dist/polyfill.js"></script>
-    <!-- Include Leaflet -->
-    <!-- <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
-    <link
-      href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
-      rel="stylesheet"
-    /> -->
+
     <!-- Include new Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
     integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
@@ -56,31 +51,22 @@
   <body>
     <div id="map" class="map" tabindex="0"></div>
 
-    <aside class="toolbox">
+    <section class="toolbox">
+      <header>
+        <h1 class="box-header">Enhancing Democratic Partnerships in the Indo-Pacific Region</h1>
+      </header>
+      <p class="description">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit:
+        <span>Proin interdum eget mauris ac varius. Curabitur commodo nisl lorem, sit amet accumsan sapien cursus gravida.</span>
+        Click along to learn more about it.
+      </p>
+    </section>
 
-      <section class="box">
-        <header>
-          <h1>Enhancing Democratic Partnerships in the Indo-Pacific Region</h1>
-        </header>
-        <section>
-        <!-- <p class="description open-sans">
-          Hover over the interactive map to learn more detail about Guyanese living in countries around the world as of 2019
-        </p>
-        <hr />
-        <div class="button-container">
-          <div class="button__title">Total Population per Country</div>
-        </div>
-        <ul id="legend" class="legend" data-type="total_cases">
-          <li id="ramp1" class="legend__value"><span></span></li>
-          <li id="ramp2" class="legend__value"><span>1k</span></li>
-          <li id="ramp3" class="legend__value"><span>5k</span></li>
-          <li id="ramp4" class="legend__value"><span>10k</span></li>
-          <li id="ramp5" class="legend__value"><span>30k</span></li>
-          <li id="ramp6" class="legend__value"><span>100k</span></li>
-        </ul> -->
-      </section>
-      <footer class="js-footer"></footer>
-    </aside>
+    <section class="panel">
+      <button class="close-btn">X</button>
+      <div class="panel-content"></div>
+    </section>
+    <footer class="js-footer"></footer>
 
     <script src="js/world.js"></script>
   </body>
