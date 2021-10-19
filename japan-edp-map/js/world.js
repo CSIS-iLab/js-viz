@@ -24,8 +24,8 @@ const mapSource = new carto.source.SQL(`SELECT * FROM edpinteractivemap`);
 
 const mapStyle = new carto.style.CartoCSS(`
         #layer {
-          polygon-fill: #FD9800;
-          polygon-opacity: 0.2;
+          polygon-fill: #E28801;
+          polygon-opacity: .25;
           line-color: #FFF;
           line-width: 0.5;
           line-opacity: 0.5;
