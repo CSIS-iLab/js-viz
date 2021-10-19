@@ -51,15 +51,12 @@ function drawChart(index, id, name, sheet) {
     // Chart Legend
     legend: {
       enabled: false,
-      // align: "center",
-      // verticalAlign: "bottom",
-      // layout: "horizontal",
     },
     // Y Axis
     yAxis: {
       gridLineColor: "transparent",
       startOnTick: true,
-      tickPositions: [-18, -9, 0, 9, 18],
+      tickPositions: [-20, -9, 0, 9, 20],
       plotLines: [
         {
           dashStyle: "longdash",
@@ -90,26 +87,6 @@ function drawChart(index, id, name, sheet) {
           }
         },
       },
-      // plotLines: [
-      //   {
-      //     color: "rgb(230, 230, 230)",
-      //     width: 2,
-      //     value: 2019,
-      //     zIndex: -5,
-      //   },
-      //   {
-      //     color: "rgb(230, 230, 230)",
-      //     width: 2,
-      //     value: 2020,
-      //     zIndex: -5,
-      //   },
-      //   {
-      //     color: "rgb(230, 230, 230)",
-      //     width: 2,
-      //     value: 2021,
-      //     zIndex: -5,
-      //   },
-      // ],
     },
     exporting: {
       enabled: false,
