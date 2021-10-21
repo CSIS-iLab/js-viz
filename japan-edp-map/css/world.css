@@ -8,8 +8,8 @@ body {
   top: 2rem;
   border-radius: 3px;
   font-family: "Source Sans Pro", sans-serif;
-  max-width: 340px;
-  min-width: 340px;
+  max-width: 315px;
+  min-width: 315px;
   z-index: 2;
   background-color: #fff;
   padding: 0.5rem .5rem;
@@ -17,10 +17,12 @@ body {
 
 .toolbox header h1{
   text-align: center;
-  font-family: "Source Sans Pro", sans-serif;
+  /* font-family: "Source Sans Pro", sans-serif; */
+  font-family: 'Spectral', serif;
+  /* font-size: 1.3em; */
   line-height: 1.1;
   /* text-transform: uppercase; */
-  color: #353535;
+  color: #004165;
   font-weight: 600;
   border-bottom: 1px solid rgba(0,0,0,0.5);
   padding-bottom: 12px;
@@ -28,8 +30,10 @@ body {
 
 .box-header {
   line-height: 1.1;
+  /* margin-top: 12px;
+  margin-bottom: 12px; */
   /* text-transform: uppercase; */
-  letter-spacing: 0.03em;
+  /* letter-spacing: 0.03em; */
   border: none !important;
   padding: 0 !important;
 }
@@ -62,6 +66,10 @@ body {
 
 .panel-content {
   max-height: 100%;
+}
+
+.panel-content h2, span {
+  font-family: 'Spectral', serif;
 }
 
 .open {
