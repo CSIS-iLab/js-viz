@@ -68,7 +68,12 @@ body {
   max-height: 100%;
 }
 
-.panel-content h2, span {
+.panel-content h2 {
+  font-family: 'Spectral', serif;
+  text-transform: capitalize;
+}
+
+.panel-content span {
   font-family: 'Spectral', serif;
 }
 
