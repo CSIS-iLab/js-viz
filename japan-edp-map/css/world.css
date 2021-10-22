@@ -17,7 +17,6 @@ body {
 }
 
 .toolbox header h1{
-  text-align: center;
   line-height: 1.1;
   color: #353535;
   font-weight: 600;
@@ -33,7 +32,6 @@ body {
 
 .description {
   color: #353535;
-  text-align: center;
 }
 
 .description > span {
