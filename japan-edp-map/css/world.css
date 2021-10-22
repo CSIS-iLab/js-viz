@@ -7,20 +7,17 @@ body {
   left: 2rem;
   top: 2rem;
   border-radius: 3px;
-  /* font-family: "Source Sans Pro", sans-serif; */
   font-family: 'Spectral', serif;
   max-width: 315px;
   min-width: 315px;
   z-index: 2;
   background-color: #fff;
-  padding: 0.5rem .5rem;
+  padding: 0.5rem 1.5rem;
+  box-shadow: -4px 4px 8px rgb(0 0 0 / 20%);
 }
 
 .toolbox header h1{
   text-align: center;
-  /* font-family: "Source Sans Pro", sans-serif; */
-  /* font-family: 'Spectral', serif; */
-  /* font-size: 1.3em; */
   line-height: 1.1;
   color: #353535;
   font-weight: 600;
@@ -32,10 +29,6 @@ body {
   line-height: 1.1;
   margin-top: .5rem;
   margin-bottom: .5rem;
-  /* text-transform: uppercase; */
-  /* letter-spacing: 0.03em; */
-  /* border: none !important; */
-  /* padding: 0 !important; */
 }
 
 .description {
