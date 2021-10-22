@@ -117,9 +117,10 @@ body {
 }
 
 .side-panel-value span {
-  text-transform: capitalize;
+  text-transform: none;
   font-weight: 400;
   font-size: 17px;
+  line-height: 1.4;
   color:  #353535;
 }
 
