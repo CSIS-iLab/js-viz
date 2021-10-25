@@ -89,7 +89,7 @@
       return 70
     } else if (activeCountry === 'Germany') {
       return 90
-    } else if (activeCountry === 'EU Comission') {
+    } else if (activeCountry === 'EU Commission') {
       return 130
     } else {
       return 40
