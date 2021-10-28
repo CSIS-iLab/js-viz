@@ -36,10 +36,6 @@ var tooltip = {
     var yPos = event.pageY;
     var xPos = event.pageX;
 
-    if (xPos + 10 > document.body.clientWidth - 215) {
-      xPos = document.body.clientWidth + 5 - 215;
-    }
-
     tooltipEl
       .transition()
       .duration(200)
