@@ -9,20 +9,12 @@ let googleSpreadsheetKey = "12_yhWuslrui9_kW57-HwySPk9kv1Mp2VlAYHUo5QWO8";
 var googleAPIKey = "AIzaSyBXuQRRw4K4W8E4eGHoSFUSrK-ZwpD4Zz4";
 var googleSpreadsheetRange = "Budget";
 
-// var spreadsheetID = "12_yhWuslrui9_kW57-HwySPk9kv1Mp2VlAYHUo5QWO8";
-// var translationsURL =
-//   "https://spreadsheets.google.com/feeds/list/" +
-//   spreadsheetID +
-//   "/1/public/values?alt=json";
-
 const URL = `https://sheets.googleapis.com/v4/spreadsheets/${googleSpreadsheetKey}/values/${googleSpreadsheetRange}?alt=json&key=${googleAPIKey}`;  
 
 fetch(URL)
-  .then(function(response) {
-    return response.json();
-  })
-  .then(function(json) {
-    countries = parseData(json);
+  .then( res => res.json())
+  .then( data => {
+    countries = parseData( data );
     init();
   });
 
@@ -36,7 +28,6 @@ function parseData(rawData) {
     })
     return countryData;
   });
-  console.log(data);
   return data;
 }
 
@@ -124,7 +115,6 @@ function createBubbleChart() {
   budgets = countries.map(function(country) {
     return +country.Budget
   });
-  // console.log(budgets);
   meanBudget = d3.mean(budgets);
   budgetExtent = d3.extent(budgets);
   regions = d3.set(
