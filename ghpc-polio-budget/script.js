@@ -4,32 +4,28 @@ var continents = {
   EU: "Europe",
   ME: "The Middle East"
 };
-var spreadsheetID = "12_yhWuslrui9_kW57-HwySPk9kv1Mp2VlAYHUo5QWO8";
-var translationsURL =
-  "https://spreadsheets.google.com/feeds/list/" +
-  spreadsheetID +
-  "/1/public/values?alt=json";
-fetch(translationsURL)
-  .then(function(response) {
-    return response.json();
-  })
-  .then(function(json) {
-    countries = parseData(json.feed.entry);
+
+let googleSpreadsheetKey = "12_yhWuslrui9_kW57-HwySPk9kv1Mp2VlAYHUo5QWO8";
+var googleAPIKey = "AIzaSyBXuQRRw4K4W8E4eGHoSFUSrK-ZwpD4Zz4";
+var googleSpreadsheetRange = "Budget";
+
+const URL = `https://sheets.googleapis.com/v4/spreadsheets/${googleSpreadsheetKey}/values/${googleSpreadsheetRange}?alt=json&key=${googleAPIKey}`;  
+
+fetch(URL)
+  .then( res => res.json())
+  .then( data => {
+    countries = parseData( data );
     init();
   });
 
 function parseData(rawData) {
-  var data = rawData.map(function(r) {
-    var row = r;
+  const columnTitles = rawData.values.shift();
+  var data = rawData.values.map(function(r) {
+    var rows = r;
     var countryData = {};
-    Object.keys(row).forEach(function(c) {
-      var column = c;
-
-      if (column.indexOf("gsx$") > -1) {
-        var columnName = column.replace("gsx$", "");
-        countryData[columnName] = row[column]["$t"];
-      }
-    });
+    rows.forEach( ( row, i ) => {
+      countryData[columnTitles[i]] = row
+    })
     return countryData;
   });
   return data;
@@ -39,10 +35,6 @@ var tooltip = {
   show: function show(content) {
     var yPos = event.pageY;
     var xPos = event.pageX;
-
-    if (xPos + 10 > document.body.clientWidth - 215) {
-      xPos = document.body.clientWidth + 5 - 215;
-    }
 
     tooltipEl
       .transition()
@@ -117,14 +109,14 @@ window.addEventListener("resize", function() {
 
 function createBubbleChart() {
   budgets = countries.map(function(country) {
-    return +country.budget;
+    return +country.Budget
   });
   meanBudget = d3.mean(budgets);
   budgetExtent = d3.extent(budgets);
   regions = d3.set(
     countries
       .map(function(country) {
-        return country.regioncode;
+        return country.RegionCode;
       })
       .sort(function(a, b) {
         return continents[a].length - continents[b].length;
@@ -247,25 +239,25 @@ function createCircles() {
         .append("g")
         .attr("class", "circle-container");
   circleContainers.each(function(g, gi, nodes) {
-    var circleNodes = document.querySelectorAll(".circle-" + g.countrycode)
+    var circleNodes = document.querySelectorAll(".circle-" + g.CountryCode)
       .length;
     var circleSVG = circleNodes
-      ? d3.selectAll(".circle-" + g.countrycode)
+      ? d3.selectAll(".circle-" + g.CountryCode)
       : d3
           .select(nodes[gi])
           .append("circle")
-          .attr("class", "circle-" + g.countrycode);
+          .attr("class", "circle-" + g.CountryCode);
     circleSVG
       .attr("r", function(d) {
-        return circleRadiusScale(d.budget);
+        return circleRadiusScale(d.Budget);
       })
       .attr("fill", function(d) {
-        return regionColorScale(d.regioncode);
+        return regionColorScale(d.RegionCode);
       });
-    var labelNodes = document.querySelectorAll(".label-" + g.countrycode)
+    var labelNodes = document.querySelectorAll(".label-" + g.CountryCode)
       .length;
     var labelSVG = labelNodes
-      ? d3.selectAll(".label-" + g.countrycode)
+      ? d3.selectAll(".label-" + g.CountryCode)
       : d3
           .select(nodes[gi])
           .append("text")
@@ -274,10 +266,10 @@ function createCircles() {
           .attr("fill", "white");
     labelSVG
       .attr("font-size", function(d) {
-        return fontScale(d.budget) + "rem";
+        return fontScale(d.Budget) + "rem";
       })
       .text(function(d) {
-        return d.countrycode;
+        return d.CountryCode;
       });
   });
   circles = svg
@@ -305,13 +297,13 @@ function createCircles() {
     if (window.innerWidth < 768) return;
     var tooltipContent =
       '<div><span style="font-size:18px;color:' +
-      regionColorScale(d.regioncode) +
+      regionColorScale(d.RegionCode) +
       '">\u25CF </span><b>' +
-      d.countryname +
+      d.CountryName +
       "</b><br/>$" +
-      formatBudget(d.budget) +
+      formatBudget(d.Budget) +
       "</div>";
-    tooltipEl.style("border", regionColorScale(d.regioncode) + " 1px solid");
+    tooltipEl.style("border", regionColorScale(d.RegionCode) + " 1px solid");
     tooltip.show(tooltipContent);
   }
 
@@ -319,7 +311,7 @@ function createCircles() {
     var info = "";
 
     if (country) {
-      info = country.countryname + ": $" + formatBudget(country.budget);
+      info = country.CountryName + ": $" + formatBudget(country.Budget);
     }
 
     d3.select("#country-info").html(info);
@@ -327,8 +319,8 @@ function createCircles() {
 }
 
 function createForces() {
-  var regionNamesDomain = regions.values().map(function(regionCode) {
-    return continents[regionCode];
+  var regionNamesDomain = regions.values().map(function(RegionCode) {
+    return continents[RegionCode];
   });
   var scaledBudgetMargin = circleSize.max;
   budgetScaleX = d3
@@ -344,7 +336,7 @@ function createForces() {
     x: d3
       .forceX(function(d) {
         return (
-          budgetScaleX(continents[d.regioncode]) +
+          budgetScaleX(continents[d.RegionCode]) +
           centerCirclesInScaleBandOffset +
           75
         );
@@ -352,7 +344,7 @@ function createForces() {
       .strength(forceStrength * 1.3),
     y: d3
       .forceY(function(d) {
-        return budgetScaleY(d.budget);
+        return budgetScaleY(d.Budget);
       })
       .strength(forceStrength * 21)
   };
@@ -379,13 +371,13 @@ function createForceSimulation() {
         return d.x - 50;
       })
       .attr("y", function(d) {
-        return d.y + labelMarginScale(d.budget);
+        return d.y + labelMarginScale(d.Budget);
       });
   });
 }
 
 function forceCollide(d) {
-  return circleRadiusScale(d.budget) + 1;
+  return circleRadiusScale(d.Budget) + 1;
 }
 
 function createBudgetForces() {
