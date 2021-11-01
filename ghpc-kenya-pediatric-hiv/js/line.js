@@ -7,7 +7,7 @@ Highcharts.setOptions({
 Highcharts.chart('container', {
 
     title: {
-        text: 'New Pediatric HIV Infections in Kenya (Age 0-14)'
+        text: 'New Pediatric (Ages 0-14) HIV Infections in Kenya'
     },
     chart: {
         style: {
@@ -16,28 +16,22 @@ Highcharts.chart('container', {
     },
     data: {
         googleAPIKey: 'AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg',
-        googleSpreadsheetKey: '1HA3hEmlb-rrp1_WsN5abxflDUbEhu_u4Zi1s3aaLaAg',
-        parsed: function (columns) {
-            console.log(columns)
-        },
-        error: console.error
+        googleSpreadsheetKey: '1HA3hEmlb-rrp1_WsN5abxflDUbEhu_u4Zi1s3aaLaAg'
     },
 
-    subtitle: {
-        text: 'Source: '
-    },
+    // subtitle: {
+    //     text: '*"Pediatric" refers to children ages 0-14'
+    // },
 
     yAxis: {
         title: {
-            text: 'Number of New Infections, Ages 0-14'
+            text: 'Number of New Pediatric Infections'
         }
     },
 
     credits: {
-    //   enabled: true,
       text: 'CSIS Global Health Policy Center (GHPC) | Source: AIDSinfo, UNAIDS',
       href: false
-    //   href: true
     },
 
     xAxis: {
@@ -54,11 +48,12 @@ Highcharts.chart('container', {
     },
     plotOptions: {
         series: {
-            color: "#0065A4"
+            color: "#0065A4",
+            label: false
         }
     },
     tooltip: {
-        pointFormat: '{series.name}: <b>{point.y:,.0f}</b><br/>',
+        pointFormat: '<b>{point.y:,.0f} Infections</b><br/>',
         shared: true
     }
 
