@@ -84,7 +84,7 @@ body {
   font-size: 20px;
   transition: 0.3s all ease;
   border: none;
-  opacity:0.5; 
+  opacity:0.5;
   font-size: 1.5rem;
 }
 
@@ -115,6 +115,11 @@ body {
   color:  #353535;
 }
 
+.side-panel-value span.second{
+  display: block;
+  margin-top: 1rem;
+}
+
 .side-panel-desc {
   margin-top: 40px;
   padding-bottom: 40px;
@@ -127,7 +132,7 @@ a {
 }
 
 a:hover {
-  text-decoration: none; 
+  text-decoration: none;
   color: #115175;
 }
 

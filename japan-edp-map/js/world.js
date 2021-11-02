@@ -65,17 +65,26 @@ function createSidePanel(event) {
 
   if (!sidePanel.isOpen()) {
     var data = event.data;
-   
-    var content = "";
+    var content = '';
+    let description = '';
+    // Format data.description into 2 spans | only used to explain Taiwan situation.
+    const indexAt = data.description.lastIndexOf('*');
+    if (indexAt != -1) {
+      const descriptionFirst = data.description.slice(0, indexAt);
+      const descriptionSecond = data.description.substring(indexAt);
+      description = `<span>${descriptionFirst}</span> <span class='second'>${descriptionSecond}</span>`
+    } else {
+      description = `<span>${data.description}</span>`;
+    }
 
     content += `
     <h2 class="sidePanelHeaderStyle">
       ${data.country}
     </h2>
-      <p class="side-panel-value">Description: <span>${data.description}</span> </p>
-      <p class="side-panel-value">ODA for Government and Civil Society 2019 in USD (millions): <span>${data.oda_for_government_and_civil_society_2019_in_usd_millions}</span> </p>
-      <p class="side-panel-value">Focus Areas: <span>${data.focus_areas}</span> </p>
-      <p class="side-panel-value">Major Recipients: <span>${data.major_recipients}</span> </p>
+    <p class="side-panel-value">Description: ${description}</p>
+    <p class="side-panel-value">ODA for Government and Civil Society 2019 in USD (millions): <span>${data.oda_for_government_and_civil_society_2019_in_usd_millions}</span> </p>
+    <p class="side-panel-value">Focus Areas: <span>${data.focus_areas}</span> </p>
+    <p class="side-panel-value">Major Recipients: <span>${data.major_recipients}</span> </p>
     `;
     panelContent.innerHTML = content;
   }
