@@ -21,21 +21,31 @@ const client = new carto.Client({
 });
 
 const mapSource = new carto.source.SQL(`SELECT * FROM ghpc_children_hiv_keyna_2017`);
+console.log(mapSource)
 
 const colors = ["#d1eeea", "#96d0d1", "#68abb8", "#45829b", "#2a5674"]
 
-const mapStyle = new carto.style.CartoCSS(`
-    #layer {
-        polygon-fill: #000;
-        #geonames_stats {
-            polygon-fill: ${colors[0]};
-            polygon-opacity: 0.9;
-            line-color: #fff;
-            line-width: 0.5;
-            line-opacity: 0.9;
-        }
-    }
-`);
+const mapStyle = new carto.style.CartoCSS(`#layer {
+    polygon-fill: #374C70;
+    polygon-opacity: 0.9;
+    polygon-gamma: 0.5;
+    line-color: #FFF;
+    line-width: 1;
+    line-opacity: 0.5;
+    line-comp-op: soft-light;
+}`);
+console.log(mapStyle)
+
+    // #layer {
+    //     polygon-fill: #000;
+    //     #geonames_stats {
+    //         polygon-fill: ${colors[0]};
+    //         polygon-opacity: 0.9;
+    //         line-color: #fff;
+    //         line-width: 0.5;
+    //         line-opacity: 0.9;
+    //     }
+    // }
 
 const mapLayer = new carto.layer.Layer(mapSource, mapStyle, {
   featureOverColumns: [""],
