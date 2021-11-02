@@ -45,7 +45,7 @@ div#results {
   font-family: "Source Sans Pro", sans-serif;
   font-weight: 600;
   text-transform: uppercase;
-  text-align: center;
+  text-align: left;
 }
 
 .popupEntryStyle {

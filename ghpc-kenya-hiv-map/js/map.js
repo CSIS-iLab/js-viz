@@ -4,11 +4,11 @@ var basemap = L.tileLayer(
 );
 
 var map = L.map("map", {
-  center: [0, 0],
-  zoom: 3,
+  center: [0.0236, 37.9062],
+  zoom: 6,
   maxZoom: 7,
   scrollWheelZoom: true,
-  minZoom: 1,
+  minZoom: 3,
   zoomControl: true,
   scrollWheelZoom: true,
   layers: [basemap],
@@ -25,14 +25,27 @@ console.log(mapSource)
 
 const colors = ["#d1eeea", "#96d0d1", "#68abb8", "#45829b", "#2a5674"]
 
-const mapStyle = new carto.style.CartoCSS(`#layer {
-    polygon-fill: #374C70;
-    polygon-opacity: 0.9;
-    polygon-gamma: 0.5;
-    line-color: #FFF;
-    line-width: 1;
-    line-opacity: 0.5;
-    line-comp-op: soft-light;
+const mapStyle = new carto.style.CartoCSS(`
+#layer {
+    polygon-opacity: 1;
+    line-color: #808080;
+    line-width: .5;
+    line-opacity: .5;
+    #geonames_stats {
+        polygon-fill: ${colors[0]};
+    }
+    #geonames_stats [number_of_children_living_with_hiv_0_14 >= 600] {
+        polygon-fill: ${colors[1]};
+    }
+    #geonames_stats [number_of_children_living_with_hiv_0_14 >= 2000]{
+        polygon-fill: ${colors[2]};
+    }
+    #geonames_stats [number_of_children_living_with_hiv_0_14 >= 4000]{
+        polygon-fill: ${colors[3]};
+    }
+    #geonames_stats [number_of_children_living_with_hiv_0_14 >= 6000]{
+        polygon-fill: ${colors[4]};
+    }
 }`);
 console.log(mapStyle)
 
@@ -48,7 +61,7 @@ console.log(mapStyle)
     // }
 
 const mapLayer = new carto.layer.Layer(mapSource, mapStyle, {
-  featureOverColumns: [""],
+  featureOverColumns: ["number_of_children_living_with_hiv_0_14", "county"],
 });
 
 client.addLayer(mapLayer);
@@ -69,10 +82,10 @@ function createPopup(event) {
 
     content += `
     <div class="popupHeaderStyle">
-      ${data.county}
+      County: ${data.county}
     </div>
     <div class="popupEntryStyle">
-      ${data.number_of_children_living_with_hiv_0_14}
+      Number of Pediatric HIV cases: ${data.number_of_children_living_with_hiv_0_14}
     </div>
     `;
     popup.setContent("" + content);
