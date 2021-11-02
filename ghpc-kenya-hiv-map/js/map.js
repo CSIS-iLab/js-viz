@@ -72,7 +72,7 @@ function createPopup(event) {
       County: ${data.county}
     </div>
     <div class="popupEntryStyle">
-      Number of Pediatric HIV cases: ${data.number_of_children_living_with_hiv_0_14}
+      Children Living with HIV: ${data.number_of_children_living_with_hiv_0_14}
     </div>
     `;
     popup.setContent("" + content);
