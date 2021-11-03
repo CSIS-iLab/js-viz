@@ -119,22 +119,22 @@ Highcharts.chart('container', {
             value: 2
         },{
             sets: ["TB", "TB/HIV"],
-            name: "middle1",
+            name: "Highest TB and HIV/TB Burden Countries",
             subname: "middle1",
             value: 1
         }, {
             sets: ["TB/HIV", "MDR/RR-TB"],
-            name: "middle2",
+            name: "Highest HIV/TB and MDR/RR-TB Burden Countries",
             subname: "middle2",
             value: 1
         }, {
             sets: ["TB", "MDR/RR-TB"],
-            name: "middle3",
+            name: "Highest TB and MDR/RR-TB Burden Countries",
             subname: "middle3",
             value: 1
         },{
             sets: ["TB", "MDR/RR-TB","TB/HIV"],
-            name: "center",
+            name: "10 Countries with TB , HIV/TB, and MDR/RR-TB Burden",
             subname: "center",
             value: 1
         }]
