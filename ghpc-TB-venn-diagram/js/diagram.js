@@ -81,9 +81,9 @@ Highcharts.chart('container', {
             console.log(typeof subname)
             console.log(allData[subname])
             let string= '';
-            if (allData[subname].length == 0) {
-                string+="None"
-            }
+            // if (allData[subname].length == 0) {
+            //     string+="None"
+            // }
             for(num in allData[subname]){
                 string += `<li>${allData[subname][num]}</li>`
             }
