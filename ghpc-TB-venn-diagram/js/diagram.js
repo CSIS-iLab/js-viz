@@ -1,0 +1,145 @@
+let allData = {
+    side1: [],
+    side2: [],
+    side3: [],
+    middle1: [],
+    middle2: [],
+    middle3: [],
+    center: []
+}
+// let side1 = [];
+// let side2 = [];
+// let side3 = [];
+// let middle1 = [];
+// let middle2 = [];
+// let middle3 = [];
+// let center = [];
+
+Highcharts.data({
+    googleAPIKey: 'AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg',
+    googleSpreadsheetKey: '1I594eG9WNqHCyhZ3sRtXcuJBqA3OlpF7gZ3NmwXxg9M',
+    parsed: function(columns) {
+        let countryList = [];
+        columns.forEach(column => {
+            for (x=1; x< column.length; x++) {
+                if(!countryList.includes(column[x])) {
+                    countryList.push(column[x]);
+                }
+            }
+        });
+        for(num in countryList){
+            let x,y,z = 0;
+            if (columns[0].includes(countryList[num])){
+                x = 1;
+            }
+            if (columns[1].includes(countryList[num])) {
+                y = 1;
+            }
+            if (columns[2].includes(countryList[num])) {
+                z = 1;
+            }
+            // console.log(x, " ", y, " ", z)
+            if(x == 1 && y == 1 && z == 1){
+                // console.log("added to the center");
+                allData.center.push(countryList[num]);
+            } else if (x,y == 1 && z !== 1) {
+                allData.middle1.push(countryList[num]);
+            }
+            else if(z,y == 1 && x !== 1){
+                allData.middle2.push(countryList[num])
+            }
+            else if(x,z == 1 && y !== 1){
+                allData.middle3.push(countryList[num]);
+            }
+            else if(x == 1 && y,z !== 1){
+                allData.side1.push(countryList[num]);
+            }  
+            else if(y == 1 && x,z !== 1) {
+                allData.side2.push(countryList[num]);
+            }   
+            else if(z == 1 && x,y !== 1) {
+                allData.side3.push(countryList[num]);
+            }
+            else {
+                console.log("ERROR: ", countryList[num])
+            }
+        }
+        console.log(allData)
+    }
+})
+
+Highcharts.chart('container', {
+    chart: {
+        height: 600,
+    },
+    tooltip: {
+        hideDelay: 500,
+        useHTML: true,
+        formatter: function () {
+            var subname = this.point.subname;
+            console.log(subname);
+            console.log(typeof subname)
+            console.log(allData[subname])
+            let string= '';
+            if (allData[subname].length == 0) {
+                string+="None"
+            }
+            for(num in allData[subname]){
+                string += `<li>${allData[subname][num]}</li>`
+            }
+            console.log(string)
+            return (
+            `<div class="tooltip">
+            <h4>${this.point.name}</h4>
+            <ul>
+              ${string}
+            </ul>
+            </div>
+            `
+            );
+        }
+    },
+    series: [{
+        type: 'venn',
+        name: 'Insert Title Here',
+        data: [{
+            sets: ["TB"],
+            name: "Highest TB Burden Countries",
+            subname: "side1",
+            value: 2
+        },{
+            sets: ["TB/HIV"],
+            name: "Highest TB/HIV Burden Countries",
+            subname: "side2",
+            value: 2
+        },{
+            sets: ["MDR/RR-TB"],
+            name: "Highest MDR/RR-TB Burden Countries",
+            subname: "side3",
+            value: 2
+        },{
+            sets: ["TB", "TB/HIV"],
+            name: "middle1",
+            subname: "middle1",
+            value: 1
+        }, {
+            sets: ["TB/HIV", "MDR/RR-TB"],
+            name: "middle2",
+            subname: "middle2",
+            value: 1
+        }, {
+            sets: ["TB", "MDR/RR-TB"],
+            name: "middle3",
+            subname: "middle3",
+            value: 1
+        },{
+            sets: ["TB", "MDR/RR-TB","TB/HIV"],
+            name: "center",
+            subname: "center",
+            value: 1
+        }]
+    }],
+    title: {
+        text: 'Insert Title Here'
+    }
+});

@@ -1,0 +1,15 @@
+.tooltip h4 {
+    margin: 0;
+    margin-bottom: 4px;
+}
+
+.tooltip ul {
+    padding: 0;
+    margin: 0;
+}
+
+.tooltip ul li {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
