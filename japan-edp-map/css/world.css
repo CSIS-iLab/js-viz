@@ -118,6 +118,8 @@ body {
 .side-panel-value span.second{
   display: block;
   margin-top: 1rem;
+  color:  #077283;
+  font-size: .9rem;
 }
 
 .side-panel-desc {

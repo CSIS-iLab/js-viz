@@ -42,7 +42,7 @@ const mapLayer = new carto.layer.Layer(mapSource, mapStyle, {
     "iso",
     "region",
     "description",
-    "oda_for_government_and_civil_society_2019_in_usd_millions",
+    "financial_support",
     "focus_areas",
     "major_recipients"
   ],
@@ -67,22 +67,27 @@ function createSidePanel(event) {
     var data = event.data;
     var content = '';
     let description = '';
+    let financial_support ='';
     // Format data.description into 2 spans | only used to explain Taiwan situation.
     const indexAt = data.description.lastIndexOf('*');
-    if (indexAt != -1) {
-      const descriptionFirst = data.description.slice(0, indexAt);
-      const descriptionSecond = data.description.substring(indexAt);
-      description = `<span>${descriptionFirst}</span> <span class='second'>${descriptionSecond}</span>`
+    // Format Source from the column financial_support
+    // Need to find source then from the word source make a new sentence to put in a tag and add some margin and a diferent color
+    let indexWordSource = data.financial_support.indexOf('Source');
+    
+    if (indexWordSource != -1) {
+      const financialSupportFirst = data.financial_support.slice(0, indexWordSource);
+      const financialSupportSecond = data.financial_support.substring(indexWordSource);
+      financial_support = `<span>${financialSupportFirst}</span> <span class='second'>${financialSupportSecond}</span>`
     } else {
-      description = `<span>${data.description}</span>`;
+      financial_support = `<span>${data.financial_support}</span>`
     }
 
     content += `
     <h2 class="sidePanelHeaderStyle">
       ${data.country}
     </h2>
-    <p class="side-panel-value">Description: ${description}</p>
-    <p class="side-panel-value">ODA for Government and Civil Society 2019 in USD (millions): <span>${data.oda_for_government_and_civil_society_2019_in_usd_millions}</span> </p>
+    <p class="side-panel-value">Description: <span>${data.description}</span> </p>
+    <p class="side-panel-value">Financial Support: <span>${financial_support}</span> </p>
     <p class="side-panel-value">Focus Areas: <span>${data.focus_areas}</span> </p>
     <p class="side-panel-value">Major Recipients: <span>${data.major_recipients}</span> </p>
     `;
