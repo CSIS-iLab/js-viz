@@ -90,6 +90,7 @@ function createSidePanel(event) {
     <p class="side-panel-value">Financial Support: <span>${financial_support}</span> </p>
     <p class="side-panel-value">Focus Areas: <span>${data.focus_areas}</span> </p>
     <p class="side-panel-value">Major Recipients: <span>${data.major_recipients}</span> </p>
+    <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQkwD7rYDN3TMwOVYdkuTc-T0a_LLN8chUU3jYUrLv42ckCWlBJYY83WNPpi6b_snNJTpz22u1VYwGu/pubhtml" target="_blank">See the file</a>
     `;
     panelContent.innerHTML = content;
   }

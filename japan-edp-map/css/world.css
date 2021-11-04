@@ -117,9 +117,11 @@ body {
 
 .side-panel-value span.second{
   display: block;
-  margin-top: 1rem;
-  color:  #077283;
+  color:  #353535;
   font-size: .9rem;
+  font-style: italic;
+  margin-top: .25rem;
+  opacity: 85%;
 }
 
 .side-panel-desc {
