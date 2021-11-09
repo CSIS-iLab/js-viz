@@ -23,19 +23,19 @@ const client = new carto.Client({
 const mapSource = new carto.source.SQL(`SELECT * FROM edpinteractivemap`);
 
 const mapStyle = new carto.style.CartoCSS(`
-        #layer {
-          polygon-fill: #E28801;
-          polygon-opacity: .25;
-          line-color: #FFF;
-          line-width: 0.5;
-          line-opacity: 0.5;
-        }
-        #layer::outline {
-          line-width: 0.5;
-          line-color: #FFF;
-          line-opacity: 0.5;
-        }
-      `);
+  #layer {
+    polygon-fill: #E28801;
+    polygon-opacity: .25;
+    line-color: #FFF;
+    line-width: 0.5;
+    line-opacity: 0.5;
+  }
+  #layer::outline {
+    line-width: 0.5;
+    line-color: #FFF;
+    line-opacity: 0.5;
+  }
+`);
 
 const mapLayer = new carto.layer.Layer(mapSource, mapStyle, {
   featureOverColumns: ["country",
@@ -60,26 +60,21 @@ function createSidePanel(event) {
   sidePanel.setLatLng(event.latLng);
 
   const panel = document.querySelector('.panel');
-  const panelContent = document.querySelector('.panel-content')
+  const panelContent = document.querySelector('.panel-content');
   panel.classList.add('open');
 
   if (!sidePanel.isOpen()) {
     var data = event.data;
     var content = '';
-    let description = '';
     let financial_support ='';
-    // Format data.description into 2 spans | only used to explain Taiwan situation.
-    const indexAt = data.description.lastIndexOf('*');
     // Format Source from the column financial_support
-    // Need to find source then from the word source make a new sentence to put in a tag and add some margin and a diferent color
-    let indexWordSource = data.financial_support.indexOf('Source');
-    
+    let indexWordSource = data.financial_support.indexOf('Source');    
     if (indexWordSource != -1) {
       const financialSupportFirst = data.financial_support.slice(0, indexWordSource);
       const financialSupportSecond = data.financial_support.substring(indexWordSource);
-      financial_support = `<span>${financialSupportFirst}</span> <span class='second'>${financialSupportSecond}</span>`
+      financial_support = `<span>${financialSupportFirst}</span> <span class='second'>${financialSupportSecond}</span>`;
     } else {
-      financial_support = `<span>${data.financial_support}</span>`
+      financial_support = `<span>${data.financial_support}</span>`;
     }
 
     content += `
@@ -90,13 +85,13 @@ function createSidePanel(event) {
     <p class="side-panel-value">Financial Support: <span>${financial_support}</span> </p>
     <p class="side-panel-value">Focus Areas: <span>${data.focus_areas}</span> </p>
     <p class="side-panel-value">Major Recipients: <span>${data.major_recipients}</span> </p>
-    <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vQkwD7rYDN3TMwOVYdkuTc-T0a_LLN8chUU3jYUrLv42ckCWlBJYY83WNPpi6b_snNJTpz22u1VYwGu/pubhtml" target="_blank">See the file</a>
+    <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vTxYNVcd_DsRaJzHo6c3dN78Y9uOypX2jX4VzEaJZpgX_t9qXFfCzNENobD7aFXB-HeVawqjFXtslKI/pubhtml" target="_blank">Click here for more details.</a>
     `;
     panelContent.innerHTML = content;
   }
 }
 
-const closeBtn = document.querySelector('.close-btn')
+const closeBtn = document.querySelector('.close-btn');
 closeBtn.addEventListener('click', function(e) {
   const panel = document.querySelector('.panel');
   panel.classList.remove('open');
