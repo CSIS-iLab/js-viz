@@ -85,7 +85,7 @@ function createSidePanel(event) {
     <p class="side-panel-value">Financial Support: <span>${financial_support}</span> </p>
     <p class="side-panel-value">Focus Areas: <span>${data.focus_areas}</span> </p>
     <p class="side-panel-value">Major Recipients: <span>${data.major_recipients}</span> </p>
-    <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vTxYNVcd_DsRaJzHo6c3dN78Y9uOypX2jX4VzEaJZpgX_t9qXFfCzNENobD7aFXB-HeVawqjFXtslKI/pubhtml" target="_blank">Click here for more details.</a>
+    <p class="side-panel-link">For more details, click <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vTxYNVcd_DsRaJzHo6c3dN78Y9uOypX2jX4VzEaJZpgX_t9qXFfCzNENobD7aFXB-HeVawqjFXtslKI/pubhtml" target="_blank">here</a>.</p>
     `;
     panelContent.innerHTML = content;
   }

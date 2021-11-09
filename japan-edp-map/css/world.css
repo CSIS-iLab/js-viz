@@ -78,13 +78,14 @@ body {
 .close-btn {
   position: absolute;
   right: 10px;
-  top: 25px;
+  top: 32px;
   font-family: "Source Sans Pro", sans-serif;
+  color: #353535;
   background-color: white;
   font-size: 20px;
   transition: 0.3s all ease;
   border: none;
-  opacity:0.5;
+  opacity:0.8;
   font-size: 1.5rem;
 }
 
@@ -105,6 +106,15 @@ body {
   text-transform: uppercase;
   color:#077283;
   font-size: 15px;
+}
+
+p.side-panel-link {
+  text-transform: none;
+  font-family: 'Spectral', serif;
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 1.4;
+  color:  #353535;
 }
 
 .side-panel-value span {
@@ -132,12 +142,12 @@ body {
 }
 
 a {
-  color: #0065A4;
+  color: #077283;
 }
 
 a:hover {
   text-decoration: none;
-  color: #115175;
+  color: #032A30;
 }
 
 .leaflet-left {
