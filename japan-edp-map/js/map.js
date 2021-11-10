@@ -43,6 +43,7 @@ const mapLayer = new carto.layer.Layer(mapSource, mapStyle, {
     "region",
     "description",
     "financial_support",
+    "source",
     "focus_areas",
     "major_recipients"
   ],
@@ -66,23 +67,19 @@ function createSidePanel(event) {
   if (!sidePanel.isOpen()) {
     var data = event.data;
     var content = '';
-    let financial_support ='';
-    // Format Source from the column financial_support
-    let indexWordSource = data.financial_support.indexOf('Source');    
-    if (indexWordSource != -1) {
-      const financialSupportFirst = data.financial_support.slice(0, indexWordSource);
-      const financialSupportSecond = data.financial_support.substring(indexWordSource);
-      financial_support = `<span>${financialSupportFirst}</span> <span class='second'>${financialSupportSecond}</span>`;
-    } else {
-      financial_support = `<span>${data.financial_support}</span>`;
-    }
 
     content += `
     <h2 class="sidePanelHeaderStyle">
       ${data.country}
     </h2>
     <p class="side-panel-value">Description: <span>${data.description}</span> </p>
-    <p class="side-panel-value">Financial Support: <span>${financial_support}</span> </p>
+    <p class="side-panel-value">Financial Support: <span>${data.financial_support}</span> </p>
+    `
+    if (data.source) {
+      content += `<p class="side-panel-value"><span class="source">${data.source}</span> </p>`
+    }
+    content +=
+    `
     <p class="side-panel-value">Focus Areas: <span>${data.focus_areas}</span> </p>
     <p class="side-panel-value">Major Recipients: <span>${data.major_recipients}</span> </p>
     <p class="side-panel-link">For more details, click <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vTxYNVcd_DsRaJzHo6c3dN78Y9uOypX2jX4VzEaJZpgX_t9qXFfCzNENobD7aFXB-HeVawqjFXtslKI/pubhtml" target="_blank">here</a>.</p>

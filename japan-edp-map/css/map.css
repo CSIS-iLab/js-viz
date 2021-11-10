@@ -74,11 +74,12 @@ body {
 .open {
   right: 0%;
 }
-
+/* TODO: Check with Serven the close button position. */
 .close-btn {
   position: absolute;
-  right: 10px;
-  top: 32px;
+  right: 35px;
+  z-index: 1;
+  top: 30px;
   font-family: "Source Sans Pro", sans-serif;
   color: #353535;
   background-color: white;
@@ -125,7 +126,7 @@ p.side-panel-link {
   color:  #353535;
 }
 
-.side-panel-value span.second{
+.side-panel-value span.source{
   display: block;
   color:  #353535;
   font-size: .9rem;
