@@ -74,16 +74,15 @@ body {
 .open {
   right: 0%;
 }
-/* TODO: Check with Serven the close button position. */
+
 .close-btn {
   position: absolute;
   right: 35px;
+  top: 27px;
   z-index: 1;
-  top: 30px;
   font-family: "Source Sans Pro", sans-serif;
   color: #353535;
   background-color: white;
-  font-size: 20px;
   transition: 0.3s all ease;
   border: none;
   opacity:0.8;
