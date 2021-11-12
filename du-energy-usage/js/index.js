@@ -18,8 +18,10 @@ let sumSolarTotalElectricity = 0
 let sumWindTotalElectricity = 0
 
 Highcharts.data({
+  googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
   googleSpreadsheetKey: "1BjZa0EDc9hDeAvcbW3JPA7owR3RHS-Uz171zPPh_Az4",
-  googleSpreadsheetWorksheet: 1,
+  // googleSpreadsheetWorksheet: 1,
+  googleSpreadsheetRange: "InteractiveData",
   switchRowsAndColumns: true,
   parsed: function (columns) {
     let dataset = {};
