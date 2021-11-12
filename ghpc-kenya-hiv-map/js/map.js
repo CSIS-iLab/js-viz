@@ -55,17 +55,29 @@ client.addLayer(mapLayer);
 
 client.getLeafletLayer().bringToFront().addTo(map);
 
-const popup = L.popup({ closeButton: true });
+const popup = L.popup();
 
-mapLayer.on(carto.layer.events.FEATURE_CLICKED, createPopup);
+// mapLayer.on(carto.layer.events.FEATURE_CLICKED, createPopup);
+
+mapLayer.on('featureOver', createPopup);
+mapLayer.on('featureOut', destroyPopup);
+
+function destroyPopup(event) {
+  // let tooltip = document.getElementsByClassName("leaflet-popup")[0];
+  // console.log("Feature out!");
+  // console.log(tooltip);
+  // tooltip.style.opcaity =0;
+  if(popup.isOpen()){
+    popup.remove();
+  }
+}
 
 function createPopup(event) {
   popup.setLatLng(event.latLng);
-
-  if (!popup.isOpen()) {
     var data = event.data;
-    console.log(event.data);
-    var content = "<div>";
+    console.log(event);
+    console.log(this)
+    var content = "<div id='tooltip'>";
 
     content += `
     <div class="popupHeaderStyle">
@@ -77,8 +89,8 @@ function createPopup(event) {
     `;
     popup.setContent("" + content);
     popup.openOn(map);
-  }
 }
+
 
 L.control
   .attribution({

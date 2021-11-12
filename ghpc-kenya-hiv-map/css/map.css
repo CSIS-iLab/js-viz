@@ -41,6 +41,14 @@ div#results {
   color: #333;
 }
 
+.leaflet-popup-close-button {
+  display: none;
+}
+
+#tooltip {
+  display:block;
+}
+
 .popupHeaderStyle {
   font-family: "Source Sans Pro", sans-serif;
   font-weight: 600;
