@@ -71,6 +71,12 @@ div#results {
   border-radius: 3px;
 }
 
+@media screen and (max-width: 500px){
+  .toolbox {
+    max-width: 80% !important ;
+  }
+}
+
 #controls #info h3 {
   font-family: "Source Sans Pro", sans-serif;
   font-weight: 700;
@@ -90,11 +96,12 @@ div#results {
 }
 
 .legend[data-type="total_cases"] {
-  --ramp1: #d1eeea;
-  --ramp2: #96d0d1;
-  --ramp3: #68abb8;
-  --ramp4: #45829b;
-  --ramp5: #2a5674;
+  --ramp1: #ffdfd9;
+  --ramp2: #f6c2b9;
+  --ramp3: #eca69b;
+  --ramp4: #e0897d;
+  --ramp5: #d36c61;
+  --ramp6: #c44e47;
 }
 
 .legend li {
@@ -154,9 +161,4 @@ div#results {
   top: 15px;
   right: 23px;
   font-size: 12px !important;
-}
-
-#ramp6 > span {
-  position: absolute;
-  right: 15px;
 }

@@ -22,7 +22,7 @@ const client = new carto.Client({
 
 const mapSource = new carto.source.SQL(`SELECT * FROM ghpc_children_hiv_keyna_2017`);
 
-const colors = ["#d1eeea", "#96d0d1", "#68abb8", "#45829b", "#2a5674"]
+const colors = ["#c44e47", "#d36c61", "#e0897d", "#eca69b", "#f6c2b9", "#ffdfd9"]
 
 const mapStyle = new carto.style.CartoCSS(`
 #layer {
@@ -31,19 +31,22 @@ const mapStyle = new carto.style.CartoCSS(`
     line-width: .5;
     line-opacity: .5;
     #geonames_stats {
-        polygon-fill: ${colors[0]};
+        polygon-fill: ${colors[5]};
     }
     #geonames_stats [number_of_children_living_with_hiv_0_14 >= 600] {
-        polygon-fill: ${colors[1]};
+        polygon-fill: ${colors[4]};
     }
     #geonames_stats [number_of_children_living_with_hiv_0_14 >= 2000]{
-        polygon-fill: ${colors[2]};
-    }
-    #geonames_stats [number_of_children_living_with_hiv_0_14 >= 4000]{
         polygon-fill: ${colors[3]};
     }
+    #geonames_stats [number_of_children_living_with_hiv_0_14 >= 4000]{
+        polygon-fill: ${colors[2]};
+    }
     #geonames_stats [number_of_children_living_with_hiv_0_14 >= 6000]{
-        polygon-fill: ${colors[4]};
+        polygon-fill: ${colors[1]};
+    }
+    #geonames_stats [number_of_children_living_with_hiv_0_14 >= 8000]{
+        polygon-fill: ${colors[0]};
     }
 }`);
 
@@ -63,10 +66,6 @@ mapLayer.on('featureOver', createPopup);
 mapLayer.on('featureOut', destroyPopup);
 
 function destroyPopup(event) {
-  // let tooltip = document.getElementsByClassName("leaflet-popup")[0];
-  // console.log("Feature out!");
-  // console.log(tooltip);
-  // tooltip.style.opcaity =0;
   if(popup.isOpen()){
     popup.remove();
   }
@@ -97,7 +96,7 @@ L.control
     position: "bottomright",
   })
   .setPrefix(
-    '<a href="https://www.csis.org/programs/PROGRAMNAME">CSIS PROGRAM</a>, <a href="https://leafletjs.com/">Leaflet</a>'
+    'Source: <a href="http://nacc.or.ke/wp-content/uploads/2018/12/HIV-estimates-report-Kenya-20182.pdf">National AIDS and STI Control Program (NASCOP) and National AIDS Control Council, Kenya HIV Estimates 2018 Report, October 2018 (pages 27-28)</a> | <a href="https://www.csis.org/programs/global-health-policy-center">CSIS Global Health Policy Center</a>, <a href="https://leafletjs.com/">Leaflet</a>'
   )
   .addTo(map);
 
