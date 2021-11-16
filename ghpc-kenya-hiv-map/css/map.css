@@ -89,12 +89,12 @@ div#results {
 }
 
 .legend[data-type="total_cases"] {
-  --ramp1: #ffdfd9;
-  --ramp2: #f6c2b9;
-  --ramp3: #eca69b;
-  --ramp4: #e0897d;
-  --ramp5: #d36c61;
-  --ramp6: #c44e47;
+  --ramp1: #ffcfbf;
+  --ramp2: #fd998c;
+  --ramp3: #e56b61;
+  --ramp4: #bc4741;
+  --ramp5: #942223;
+  --ramp6: #670000;
 }
 
 .legend li {

@@ -22,7 +22,7 @@ const client = new carto.Client({
 
 const mapSource = new carto.source.SQL(`SELECT * FROM ghpc_children_hiv_keyna_2017`);
 
-const colors = ["#c44e47", "#d36c61", "#e0897d", "#eca69b", "#f6c2b9", "#ffdfd9"]
+const colors = ["#670000", "#942223", "#bc4741", "#e56b61", "#fd998c", "#ffcfbf"]
 
 const mapStyle = new carto.style.CartoCSS(`
 #layer {
