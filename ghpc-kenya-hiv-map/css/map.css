@@ -13,22 +13,22 @@ div#results {
 .box header h1 {
   display: inline-block;
   color: #2e3c43;
-  line-height: 26px;
+  line-height: 1.625rem;
   font-family: "Source Sans Pro", sans-serif;
-  font-size: 21px;
+  font-size: 1.313rem;
   font-weight: 700;
   width: calc(100% - 67px);
 }
 
 .description {
   color: #747d82;
-  font-size: 12px;
-  line-height: 16px;
+  font-size: .75rem;
+  line-height: 1rem;
   font-family: "Open Sans", Arial, Helvetica, sans-serif;
 }
 
 .button__title {
-  font-size: 12px !important;
+  font-size: .75rem !important;
 }
 
 .ul {
@@ -59,7 +59,7 @@ div#results {
 .popupEntryStyle {
   padding: 0;
   margin: 0;
-  font: 14px "Source Sans Pro", sans-serif;
+  font: .875rem "Source Sans Pro", sans-serif;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   text-align: center;
 }
@@ -77,22 +77,15 @@ div#results {
   }
 }
 
-#controls #info h3 {
-  font-family: "Source Sans Pro", sans-serif;
-  font-weight: 700;
-  text-transform: uppercase;
-  font-size: 20px;
-  line-height: 24px;
-  margin: 16px 0 4px;
-}
-
 .legend {
   position: relative;
-  top: 5px;
+  top: .313rem;
   display: flex;
   margin: 0;
   padding: 0;
   list-style: none;
+  padding-bottom: .75rem;
+  font-size: .75rem;
 }
 
 .legend[data-type="total_cases"] {
@@ -153,12 +146,10 @@ div#results {
 
 .legend__value {
   position: relative;
-  padding-bottom: 12px !important;
 }
 
 .legend__value > span {
   position: absolute;
-  top: 15px;
-  right: 23px;
-  font-size: 12px !important;
+  top: .938rem;
+  right: 1.438rem;
 }

@@ -74,8 +74,6 @@ function destroyPopup(event) {
 function createPopup(event) {
   popup.setLatLng(event.latLng);
     var data = event.data;
-    console.log(event);
-    console.log(this)
     var content = "<div id='tooltip'>";
 
     content += `
