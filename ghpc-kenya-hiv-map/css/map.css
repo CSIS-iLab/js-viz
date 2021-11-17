@@ -2,10 +2,6 @@ body {
   font-family: "Source Sans Pro", sans-serif;
 }
 
-div#searchbox input {
-  width: 75%;
-}
-
 div#results {
   background: #fff;
 }
@@ -152,4 +148,81 @@ div#results {
   position: absolute;
   top: .938rem;
   right: 1.438rem;
+}
+
+.menu-translate {
+  position: relative;
+  padding-left: 10px;
+  color: #2e3c43;
+  font-weight: 800;
+  font-size: 22px;
+  line-height: 22px;
+  font-family: "Montserrat", Arial, Helvetica, sans-serif;
+}
+
+.hamburger {
+  position: relative;
+  width: 100%;
+  top: 50px;
+  left: 24px;
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 4px;
+  padding: 16px;
+  margin-left: -24px;
+  margin-right: -24px;
+}
+
+.hamburger span:nth-child(1) {
+  transform-origin: 0% 0%;
+}
+
+.hamburger span:nth-child(3) {
+  transform-origin: 0% 100%;
+}
+
+aside.toolbox .ui:checked ~ .hamburger span:nth-child(1) {
+  opacity: 1;
+  transform: rotate(45deg) translate(-3px, -3px);
+}
+
+aside.toolbox .ui:checked ~ .hamburger span:nth-child(2) {
+  opacity: 0;
+  transform: rotate(0deg) scale(0.2, 0.2);
+}
+
+aside.toolbox .ui:checked ~ .hamburger span:nth-child(3) {
+  transform: rotate(-45deg) translate(0, 0px);
+}
+
+.mobile-only { 
+  height:80px;
+  font:unset;
+  font-family:Open Sans,sans-serif;
+  font-size:12px;
+  visibility:visible
+}
+@media screen and (min-width:48em){
+  .mobile-only{
+    height:0;
+    visibility:hidden
+  }
+}
+
+hr {
+  background: #b3b3b3;
+  height: 1px;
+  border-width: 0;
+  color: gray;
+}
+
+.is-hidden {
+  display: none;
+}
+
+@media (max-width: 770px) {
+  .description {
+    padding-top: 10px;
+  }
 }
