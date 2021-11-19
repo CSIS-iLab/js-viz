@@ -23,10 +23,6 @@ div#results {
   font-family: "Open Sans", Arial, Helvetica, sans-serif;
 }
 
-.button__title {
-  font-size: .75rem !important;
-}
-
 .ul {
   font-family: "Source Sans Pro", sans-serif;
 }
@@ -65,12 +61,6 @@ div#results {
   background-color: #e4e3e3;
   box-shadow: 0 3px 14px rgba(0, 0, 0, 0.4);
   border-radius: 3px;
-}
-
-@media screen and (max-width: 500px){
-  .toolbox {
-    max-width: 80% !important ;
-  }
 }
 
 .legend {
