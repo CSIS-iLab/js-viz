@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Number of Pediatric HIV Cases by County in Kenya, 2017 | CSIS Global Health Policy Center</title>
+    <meta name="viewport" content="initial-scale=1.0" />
+    <meta charset="utf-8" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600"
+      rel="stylesheet"
+    />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700"rel="stylesheet"/>
+
+    <!-- Share meta -->
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:type" content="article" />
+    <meta
+      property="og:title"
+      content="Number of Pediatric HIV Cases by County in Kenya, 2017 | CSIS Global Health Policy Center"
+    />
+
+    <script src="https://unpkg.com/babel-polyfill@6.26.0/dist/polyfill.js"></script>
+    <!-- Include Leaflet -->
+    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
+    <link
+      href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+      rel="stylesheet"
+    />
+    <!-- Include CARTO.js -->
+    <script src="https://libs.cartocdn.com/carto.js/v4.2.0/carto.min.js"></script>
+    <link
+      href="https://carto.com/developers/carto-js/examples/maps/public/style.css"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="preconnect stylesheet"
+      href="https://use.typekit.net/ats0hoc.css"
+    />
+
+    <link href="css/base-map.css" rel="stylesheet" />
+    <link href="css/map.css" rel="stylesheet" />
+  </head>
+  
+  <body>
+    <nav id='menu-ui' class='menu-ui'></nav>
+    <div id="map" class="map" tabindex="0"></div>
+
+    <aside class="toolbox">
+      <input type="checkbox" checked class="ui mobile-only" />
+
+      <div class="hamburger mobile-only">
+        <div class="icon">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <h1 class="menu-translate">
+          Number of Pediatric HIV Cases by County in Kenya, 2017
+        </h1>
+      </div>
+
+      <section class="box">
+        <header class="mobile-toggle">
+          <h1>Number of Pediatric HIV Cases by County in Kenya, 2017</h1>
+        </header>
+        <section>
+        <p class="description open-sans mobile-toggle">
+          There are over 105,000 children living with HIV in Kenya. Hover over the interactive map to learn which counties have the highest burden of pediatric HIV, including Homa Bay County. Homa Bay has the most cases, with over 10,000 HIV-positive children.
+        </p>
+        <hr />
+        <div class="button-container">
+          <div class="button__title">Number of Children Living with HIV (0-14)</div>
+        </div>
+        <ul id="legend" class="legend" data-type="total_cases">
+          <li id="ramp1" class="legend__value"><span></span></li>
+          <li id="ramp2" class="legend__value"><span>600</span></li>
+          <li id="ramp3" class="legend__value"><span>2k</span></li>
+          <li id="ramp4" class="legend__value"><span>4k</span></li>
+          <li id="ramp5" class="legend__value"><span>6k</span></li>
+          <li id="ramp6" class="legend__value"><span>8k</span></li>
+        </ul>
+      </section>
+      <footer class="js-footer"></footer>
+    </aside>
+
+    <script src="js/map.js"></script>
+  </body>
+</html>
