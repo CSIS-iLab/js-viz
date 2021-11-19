@@ -215,6 +215,6 @@ hr {
 
 @media (max-width: 770px) {
   .description {
-    padding-top: 10px;
+    padding-top: .625rem;
   }
 }

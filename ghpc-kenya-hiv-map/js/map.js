@@ -4,7 +4,7 @@ var basemap = L.tileLayer(
 );
 
 var map = L.map("map", {
-  center: [0.0236, 37.9062],
+  center: [0.8, 40.4062],
   zoom: 6,
   maxZoom: 7,
   scrollWheelZoom: true,
@@ -60,8 +60,6 @@ client.getLeafletLayer().bringToFront().addTo(map);
 
 const popup = L.popup();
 
-// mapLayer.on(carto.layer.events.FEATURE_CLICKED, createPopup);
-
 mapLayer.on('featureOver', createPopup);
 mapLayer.on('featureOut', destroyPopup);
 
@@ -94,7 +92,7 @@ L.control
     position: "bottomright",
   })
   .setPrefix(
-    'Source: <a href="http://nacc.or.ke/wp-content/uploads/2018/12/HIV-estimates-report-Kenya-20182.pdf">National AIDS and STI Control Program (NASCOP) and National AIDS Control Council, Kenya HIV Estimates 2018 Report, October 2018 (pages 27-28)</a> | <a href="https://www.csis.org/programs/global-health-policy-center">CSIS Global Health Policy Center</a>, <a href="https://leafletjs.com/">Leaflet</a>'
+    'Source: <a target="_blank" href="http://nacc.or.ke/wp-content/uploads/2018/12/HIV-estimates-report-Kenya-20182.pdf">National AIDS and STI Control Program (NASCOP) and National AIDS Control Council, Kenya HIV Estimates 2018 Report, October 2018 (pages 27-28)</a> | <a target="_blank" href="https://www.csis.org/programs/global-health-policy-center">CSIS Global Health Policy Center</a>, <a target="_blank" href="https://leafletjs.com/">Leaflet</a>'
   )
   .addTo(map);
 

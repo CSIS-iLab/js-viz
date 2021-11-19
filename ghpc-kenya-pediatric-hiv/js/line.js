@@ -33,7 +33,7 @@ Highcharts.chart('container', {
     },
 
     credits: {
-      text: '<a href="https://www.csis.org/programs/global-health-policy-center">CSIS Global Health Policy Center (GHPC)</a> | Source: AIDSinfo, UNAIDS, 2020, <a href="https://aidsinfo.unaids.org/">https://aidsinfo.unaids.org/</a>',
+      text: '<a target="_blank" href="https://www.csis.org/programs/global-health-policy-center">CSIS Global Health Policy Center (GHPC)</a> | Source: AIDSinfo, UNAIDS, 2020, <a target="_blank" href="https://aidsinfo.unaids.org/">https://aidsinfo.unaids.org/</a>',
       href: false
     },
 
