@@ -7,13 +7,6 @@ let allData = {
     middle3: [],
     center: []
 }
-// let side1 = [];
-// let side2 = [];
-// let side3 = [];
-// let middle1 = [];
-// let middle2 = [];
-// let middle3 = [];
-// let center = [];
 
 Highcharts.data({
     googleAPIKey: 'AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg',
@@ -38,9 +31,7 @@ Highcharts.data({
             if (columns[2].includes(countryList[num])) {
                 z = 1;
             }
-            // console.log(x, " ", y, " ", z)
             if(x == 1 && y == 1 && z == 1){
-                // console.log("added to the center");
                 allData.center.push(countryList[num]);
             } else if (x,y == 1 && z !== 1) {
                 allData.middle1.push(countryList[num]);
@@ -64,7 +55,6 @@ Highcharts.data({
                 console.log("ERROR: ", countryList[num])
             }
         }
-        console.log(allData)
     }
 })
 
@@ -77,17 +67,10 @@ Highcharts.chart('container', {
         useHTML: true,
         formatter: function () {
             var subname = this.point.subname;
-            console.log(subname);
-            console.log(typeof subname)
-            console.log(allData[subname])
             let string= '';
-            // if (allData[subname].length == 0) {
-            //     string+="None"
-            // }
             for(num in allData[subname]){
                 string += `<li>${allData[subname][num]}</li>`
             }
-            console.log(string)
             return (
             `<div class="tooltip">
             <h4>${this.point.name}</h4>
@@ -106,6 +89,7 @@ Highcharts.chart('container', {
             sets: ["TB"],
             name: "Highest TB Burden Countries",
             subname: "side1",
+            color: "red",
             value: 2
         },{
             sets: ["TB/HIV"],
