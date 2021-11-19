@@ -8,6 +8,8 @@ let allData = {
     center: []
 }
 
+let colors = ["#2E7FB3", "#71B9A9", "#F1C076", "#439B9C", "#BAB473", "#929575", "#9EA46B"];
+
 Highcharts.data({
     googleAPIKey: 'AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg',
     googleSpreadsheetKey: '1I594eG9WNqHCyhZ3sRtXcuJBqA3OlpF7gZ3NmwXxg9M',
@@ -89,37 +91,43 @@ Highcharts.chart('container', {
             sets: ["TB"],
             name: "Highest TB Burden Countries",
             subname: "side1",
-            color: "red",
+            color: `${colors[0]}`,
             value: 2
         },{
             sets: ["TB/HIV"],
             name: "Highest TB/HIV Burden Countries",
             subname: "side2",
+            color: `${colors[1]}`,
             value: 2
         },{
             sets: ["MDR/RR-TB"],
             name: "Highest MDR/RR-TB Burden Countries",
             subname: "side3",
+            color: `${colors[2]}`,
             value: 2
         },{
             sets: ["TB", "TB/HIV"],
             name: "Highest TB and HIV/TB Burden Countries",
             subname: "middle1",
+            color: `${colors[3]}`,
             value: 1
         }, {
             sets: ["TB/HIV", "MDR/RR-TB"],
             name: "Highest HIV/TB and MDR/RR-TB Burden Countries",
             subname: "middle2",
+            color: `${colors[4]}`,
             value: 1
         }, {
             sets: ["TB", "MDR/RR-TB"],
             name: "Highest TB and MDR/RR-TB Burden Countries",
             subname: "middle3",
+            color: `${colors[5]}`,
             value: 1
         },{
             sets: ["TB", "MDR/RR-TB","TB/HIV"],
             name: "10 Countries with TB , HIV/TB, and MDR/RR-TB Burden",
             subname: "center",
+            color: `${colors[6]}`,
             value: 1
         }]
     }],
