@@ -26,31 +26,34 @@ Highcharts.data({
             let x,y,z = 0;
             if (columns[0].includes(countryList[num])){
                 x = 1;
+                console.log(num, "x")
             }
             if (columns[1].includes(countryList[num])) {
                 y = 1;
+                console.log(num, "y")
             }
             if (columns[2].includes(countryList[num])) {
                 z = 1;
+                console.log(num, "z")
             }
             if(x == 1 && y == 1 && z == 1){
                 allData.center.push(countryList[num]);
-            } else if (x,y == 1 && z !== 1) {
+            } else if (x == 1 && y == 1 && z !== 1) {
                 allData.middle1.push(countryList[num]);
             }
-            else if(z,y == 1 && x !== 1){
+            else if(z ==1 && y == 1 && x !== 1){
                 allData.middle2.push(countryList[num])
             }
-            else if(x,z == 1 && y !== 1){
+            else if(x == 1 && z == 1 && y !== 1){
                 allData.middle3.push(countryList[num]);
             }
-            else if(x == 1 && y,z !== 1){
+            else if(x == 1 && y !== 1 && z !== 1){
                 allData.side1.push(countryList[num]);
             }  
-            else if(y == 1 && x,z !== 1) {
+            else if(y == 1 && x !== 1 && z !== 1) {
                 allData.side2.push(countryList[num]);
             }   
-            else if(z == 1 && x,y !== 1) {
+            else if(z == 1 && x !== 1 && y !== 1) {
                 allData.side3.push(countryList[num]);
             }
             else {
