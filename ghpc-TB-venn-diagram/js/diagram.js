@@ -89,7 +89,7 @@ Highcharts.chart('container', {
     },
     series: [{
         type: 'venn',
-        name: 'Insert Title Here',
+        name: 'Intersection of High TB, MDR/RR-TB, and TB/HIV Burden Countries',
         data: [{
             sets: ["TB"],
             name: "Highest TB Burden Countries",
