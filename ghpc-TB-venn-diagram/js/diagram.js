@@ -72,6 +72,13 @@ Highcharts.data({
                 console.log("ERROR: ", countryList[num])
             }
         }
+      allData.center.sort();
+      allData.middle1.sort();
+      allData.middle2.sort();
+      allData.middle3.sort();
+      allData.side1.sort();
+      allData.side2.sort();
+      allData.side3.sort();
     }
 })
 
