@@ -38,14 +38,26 @@ Highcharts.data({
             }
             if(x == 1 && y == 1 && z == 1){
                 allData.center.push(countryList[num]);
+                allData.middle1.push(countryList[num]);
+                allData.middle2.push(countryList[num]);
+                allData.middle3.push(countryList[num]);
+                allData.side1.push(countryList[num]);
+                allData.side2.push(countryList[num]);
+                allData.side3.push(countryList[num]);
             } else if (x == 1 && y == 1 && z !== 1) {
                 allData.middle1.push(countryList[num]);
+                allData.side1.push(countryList[num]);
+                allData.side2.push(countryList[num]);
             }
             else if(z ==1 && y == 1 && x !== 1){
                 allData.middle2.push(countryList[num])
+                allData.side2.push(countryList[num]);
+                allData.side3.push(countryList[num]);
             }
             else if(x == 1 && z == 1 && y !== 1){
                 allData.middle3.push(countryList[num]);
+                allData.side1.push(countryList[num]);
+                allData.side3.push(countryList[num]);
             }
             else if(x == 1 && y !== 1 && z !== 1){
                 allData.side1.push(countryList[num]);
