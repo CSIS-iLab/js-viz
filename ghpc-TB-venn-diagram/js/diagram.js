@@ -155,5 +155,9 @@ Highcharts.chart('container', {
     }],
     title: {
         text: 'Intersection of High TB, MDR/RR-TB, and TB/HIV Burden Countries'
+    },
+    credits: {
+      text: "CSIS Global Health Policy Center | Source: World Health Organization",
+      href: 0
     }
 });
