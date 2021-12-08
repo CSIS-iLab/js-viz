@@ -13,6 +13,7 @@ let colors = ["#2E7FB3", "#71B9A9", "#F1C076", "#439B9C", "#BAB473", "#929575", 
 Highcharts.data({
     googleAPIKey: 'AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg',
     googleSpreadsheetKey: '1I594eG9WNqHCyhZ3sRtXcuJBqA3OlpF7gZ3NmwXxg9M',
+    googleSpreadsheetRange: 'Sheet1',
     parsed: function(columns) {
         let countryList = [];
         columns.forEach(column => {
