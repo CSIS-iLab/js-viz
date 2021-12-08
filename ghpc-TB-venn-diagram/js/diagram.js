@@ -147,7 +147,7 @@ Highcharts.chart('container', {
             value: 1
         },{
             sets: ["TB", "MDR/RR-TB","TB/HIV"],
-            name: "10 Countries with TB , HIV/TB, and MDR/RR-TB Burden",
+            name: "10 Countries with TB, HIV/TB, and MDR/RR-TB Burden",
             subname: "center",
             color: `${colors[6]}`,
             value: 1
