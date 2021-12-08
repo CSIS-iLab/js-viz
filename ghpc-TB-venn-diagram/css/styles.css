@@ -23,7 +23,7 @@
     fill: white;
     color: white;
     visibility: visible;
-    text-shadow: 0px 0px 10px #00000040;
+    text-shadow: 0 0 10px #00000040;
     font-weight: normal;
 }
 
