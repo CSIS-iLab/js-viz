@@ -27,15 +27,12 @@ Highcharts.data({
             let x,y,z = 0;
             if (columns[0].includes(countryList[num])){
                 x = 1;
-                console.log(num, "x")
             }
             if (columns[1].includes(countryList[num])) {
                 y = 1;
-                console.log(num, "y")
             }
             if (columns[2].includes(countryList[num])) {
                 z = 1;
-                console.log(num, "z")
             }
             if(x == 1 && y == 1 && z == 1){
                 allData.center.push(countryList[num]);
@@ -68,9 +65,6 @@ Highcharts.data({
             }   
             else if(z == 1 && x !== 1 && y !== 1) {
                 allData.side3.push(countryList[num]);
-            }
-            else {
-                console.log("ERROR: ", countryList[num])
             }
         }
       allData.center.sort();
