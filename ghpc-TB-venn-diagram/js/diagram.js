@@ -154,6 +154,6 @@ Highcharts.chart('container', {
         }]
     }],
     title: {
-        text: 'Insert Title Here'
+        text: 'Intersection of High TB, MDR/RR-TB, and TB/HIV Burden Countries'
     }
 });
