@@ -28,7 +28,7 @@ function displayInfo(dataset) {
         data: null,
         render: function (data, type) {
           if ( type === "display") {
-            data = '<a href="' + data.URL + '">' + data.Bill + "</a>";
+            data = '<a href="' + data.URL + '" target="_blank">' + data.Bill + "</a>";
           }
           return data;
         }
