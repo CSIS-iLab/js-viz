@@ -1,0 +1,49 @@
+@use 'abstracts' as *;
+
+/*===============================
+=            Header            =
+===============================*/
+
+.interactive__header {
+  margin: 0 auto;
+  max-width: $size__max-width;
+
+  @include breakpoint(medium) {
+    margin: 0 50px 10px;
+  }
+
+  h1 {
+    color: $color__gray-900;
+    font-family: $font__hind;
+    @include font-size(23px);
+    line-height: 1.36;
+    font-weight: 400;
+    margin: 1rem auto;
+    text-align: center;
+
+    @include breakpoint("medium") {
+      @include font-size(25px);
+    }
+  }
+
+  p {
+    color: $color__gray-900;
+    text-align: center;
+    @include font-size(16px);
+    line-height: 1.5;
+    margin: 0 0 1rem;
+
+    @include breakpoint("medium") {
+    }
+  }
+
+  a {
+    color: #ed392a;
+    text-decoration: none;
+    transition: all .3s ease-in-out;
+
+    &:hover {
+      box-shadow: inset 0 -2px 0 0 $color__gray-200;
+    }
+  }
+}

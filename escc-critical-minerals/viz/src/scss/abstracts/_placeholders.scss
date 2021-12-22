@@ -1,0 +1,25 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+%label {
+  color: $color__black;
+  font-family: $font__hind;
+  @include font-size(16px);
+  line-height: 1.4;
+
+  @include breakpoint('medium') {
+    @include font-size(14px);
+  }
+}
+
+%form__label {
+  color: $color__black;
+  font-family: $font__hind;
+  font-weight: 400;
+  @include font-size(20px);
+  line-height: 1.4;
+
+  @include breakpoint('medium') {
+    @include font-size(14px);
+  }
+}
