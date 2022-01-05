@@ -1,0 +1,67 @@
+@use 'sass:color';
+
+// Variables
+$color__white: #fff;
+$color__black: #000;
+
+$color__gray-100: #f1f1f1;
+$color__gray-200: #d4d0cb;
+$color__gray-300: #c5c5c5;
+$color__gray-400: #808081;
+$color__gray-500: #d4d0cb;
+$color__gray-800: #555;
+$color__gray-900: #333;
+
+$color__red: #ed392a;
+$color__dark-red: #c42d21;
+$color__green: #58a897;
+$color__bright-green: #8cb561;
+$color__light-blue: #83badc;
+$color__blue: #3b75bb;
+$color__dk-blue: #084d7c;
+$color__purple: #a483a8;
+$color__dark-purple: #69518d;
+$color__orange: #f7890e;
+// $color__orange: #8cb561;
+$color__yellow: #e7ae3f;
+$color__blue-gray-100: #728c99;
+$color__blue-gray-200: #455a64;
+$color__blue-gray-900: #303f46;
+
+$color__primary: $color__blue-gray-200;
+$color__primary-200: color.scale($color__primary, $lightness: -10%);
+$gridlines: #d3d8db;
+$color__gridlines: #ebebeb;
+$color__item-labels: rgba(000, 000, 000, 0.65);
+$color__cat-labels: $color__blue-gray-200;
+
+/*----------  Fonts  ----------*/
+$font__hind: 'Hind', sans-serif;
+$font__roboto: 'Roboto', sans-serif;
+
+/*----------  Structural  ----------*/
+$breakpoints: (
+  'small': 0,
+  'medium': 48em,
+  'large': 64em,
+  'xlarge': 90em,
+);
+
+$size__chart-width: 300px;
+$size__max-width: 900px;
+$size__content-max-width: 1200px;
+
+/*----------  Custom  ----------*/
+
+$indicators: (
+  'Europe & North America': $color__dark-purple,
+  'East Asia & Pacific': $color__green,
+  'Latin America & Caribbean': $color__light-blue,
+  'Sub-Saharan Africa': $color__yellow,
+  'Middle East & North Africa': $color__dk-blue,
+  'Central & South Asia': $color__bright-green,
+  'High': $color__dark-purple,
+  'Upper Middle': $color__green,
+  'Lower Middle': $color__light-blue,
+  'Low': $color__yellow,
+);
