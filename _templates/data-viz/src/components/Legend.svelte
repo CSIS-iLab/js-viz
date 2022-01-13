@@ -41,5 +41,5 @@
 </figure>
 
 <style type="text/scss" global>
-  @import '../scss/custom/_legend.scss';
+  // @import '../scss/custom/_legend.scss';
 </style>

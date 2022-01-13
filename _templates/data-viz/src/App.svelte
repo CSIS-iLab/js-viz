@@ -203,12 +203,12 @@
   </div>
 
   <!-- <footer class="interactive__source">
-      <a href="https://chinapower.csis.org" class="source-holder"
+      <a href="https://loremipsum.csis.org" class="source-holder"
         ><img
-          src="./images/cpp-logo-red.svg"
+          src="./images/logo.svg"
           target="_blank"
-          alt="ChinaPower Project"
-          title="ChinaPower Project"
+          alt="Project Title"
+          title="Project Title"
           width="300"
           height="31"
         /></a

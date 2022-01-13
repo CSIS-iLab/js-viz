@@ -21,7 +21,7 @@
     margin: 1rem auto;
     text-align: center;
 
-    @include breakpoint("medium") {
+    @include breakpoint('medium') {
       @include font-size(25px);
     }
   }
@@ -33,17 +33,17 @@
     line-height: 1.5;
     margin: 0 0 1rem;
 
-    @include breakpoint("medium") {
+    @include breakpoint('medium') {
     }
   }
 
   a {
     color: #ed392a;
     text-decoration: none;
-    transition: all .3s ease-in-out;
+    transition: all 0.3s ease-in-out;
 
     &:hover {
-      box-shadow: inset 0 -2px 0 0 $color__gray-200;
+      box-shadow: inset 0 -2px 0 0 $color__black;
     }
   }
 }

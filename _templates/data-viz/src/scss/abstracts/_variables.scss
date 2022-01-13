@@ -1,0 +1,20 @@
+@use 'sass:color';
+
+// Variables
+$color__white: #fff;
+$color__black: #000;
+
+/*----------  Fonts  ----------*/
+$font__hind: 'Hind', sans-serif;
+$font__roboto: 'Roboto', sans-serif;
+
+/*----------  Structural  ----------*/
+$breakpoints: (
+  'small': 0,
+  'medium': 48em,
+  'large': 64em,
+  'xlarge': 90em,
+);
+
+$size__max-width: 800px;
+$size__content-max-width: 1200px;

@@ -34,15 +34,37 @@
 
 <figure bind:this="{figure}">
   <svg>
+    <!-- data -->
     {#each data.mineralData as country}
       <circle cx="{xScale(country.x)}px" cy="{yScale(country.y)}px" r="5px"
       ></circle>
     {/each}
+
+    <!-- y axis -->
+    <g class="axis y-axis">
+      {#each yTicks as tick}
+        <g class="tick tick-{tick}" transform="translate(0, {yScale(tick)})">
+          <line x1="{padding.left}" x2="{xScale(22)}"></line>
+          <text x="{padding.left - 8}" y="+4">{tick}</text>
+        </g>
+      {/each}
+    </g>
+
+    <!-- x axis -->
+    <g class="axis x-axis">
+      {#each xTicks as tick}
+        <g class="tick" transform="translate({xScale(tick)},0)">
+          <line y1="{yScale(0)}" y2="{yScale(13)}"></line>
+          <text y="{height - padding.bottom + 16}">{tick}</text>
+        </g>
+      {/each}
+    </g>
   </svg>
 </figure>
 
 <style>
   figure {
     border: 1px solid orangered;
+    max-width: 350px;
   }
 </style>
