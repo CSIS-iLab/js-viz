@@ -1,0 +1,88 @@
+@use 'abstracts' as *;
+
+.interactive__legend-container {
+  display: flex;
+  flex-direction: row;
+  margin-top: rem(32px);
+  max-width: 160px;
+  max-height: 180px;
+
+  @include breakpoint(medium) {
+    display: block;
+    flex-direction: unset;
+    margin-top: unset;
+    max-width: unset;
+  }
+
+  .interactive__size-legend {
+    max-height: 85px;
+    max-width: 80px;
+    margin: 0;
+    padding-right: rem(32px);
+
+    @include breakpoint(medium) {
+      margin: rem(12px) rem(36px);
+    }
+  }
+
+  .interactive__color-legend {
+    margin-top: 0;
+    margin-bottom: 2.5rem;
+    max-width: 100px;
+  }
+}
+
+.legend {
+  width: 300px;
+
+  @include breakpoint(medium) {
+    padding: 0.5rem 0.75rem 0;
+  }
+
+  &__title {
+    margin-bottom: rem(8px);
+    margin-left: rem(8px);
+    color: $color__cat-labels;
+    @include font-size(14px);
+    line-height: 1.2;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  &__labels {
+    font-family: $font__hind;
+    @include font-size(14px);
+    fill: $color__item-labels;
+  }
+
+  circle {
+    fill-opacity: 0.5;
+
+    @each $indicator, $color in $indicators {
+      &[data-color="#{$indicator}"] {
+        fill: $color;
+        stroke: darken($color, 1);
+        stroke-width: 1.5px;
+      }
+    }
+  }
+
+  &__size-circles {
+    circle {
+      stroke: $color__gray-800;
+    }
+
+    line {
+      stroke:  $color__gray-400;
+    }
+  }
+
+  &__color-circles {
+    max-width: 188px;
+
+    @include breakpoint(medium) {
+      max-width: unset;
+    }
+  }
+}
+
