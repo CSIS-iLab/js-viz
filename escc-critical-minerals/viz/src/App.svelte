@@ -1,4 +1,29 @@
 <script>
+  import parseData from './data.js'
+  import { select, selectAll } from 'd3-selection'
+  import Options from './components/Options.svelte'
+  import Chart from './components/Chart.svelte'
+  import SizeLegend from './components/sizeLegend.svelte'
+  import Legend from './components/Legend.svelte'
+
+  const dataSrc = {
+    scatter:
+      'https://docs.google.com/spreadsheets/d/e/2PACX-1vTxzv5D7cjQIQ4Wi6wFM1v_mUIB_Fef9d1KGL42xG_-THTfg5T4e8Ez11Ou63P4IE60DUV1XnMasEa0/pub?output=csv',
+  }
+
+  const data = loadData()
+
+  async function loadData() {
+    let res = await parseData({
+      src: dataSrc,
+    })
+    return res
+  }
+
+  const init = () => {
+    resize(mq)
+  }
+
 	export let name;
 </script>
 
