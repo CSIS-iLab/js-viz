@@ -3,7 +3,7 @@ Highcharts.chart("hcContainer", {
   data: {
     googleAPIKey: 'AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg',
     googleSpreadsheetKey: "1rPblPBVo7zD0u65uEGnaFCkVCBLt5t-ejEqh3q6xTWg",
-    googleSpreadsheetRange: "s2_9",
+    googleSpreadsheetRange: "s3_7",
   },
   // General Chart Options
   chart: {
@@ -21,7 +21,7 @@ Highcharts.chart("hcContainer", {
   ],
   // Chart Title and Subtitle
   title: {
-    text: "There should be limitation on people gathering in public places and participating in demonstrations."
+    text: "Individuals should be allowed to own, buy and sell land."
   },
   subtitle: {
     text: "% of respondents that believe ___"
@@ -46,6 +46,7 @@ Highcharts.chart("hcContainer", {
     title: {
       text: ""
     },
+    max:100,
     // reversedStacks: false,
     // labels: {
     //   formatter: function(){
