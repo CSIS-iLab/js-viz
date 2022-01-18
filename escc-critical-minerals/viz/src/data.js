@@ -1,33 +1,44 @@
 import * as d3Fetch from 'd3-fetch'
 
 const stringFields = [
-  'iso',
   'country',
   'region',
-  'income_level'
+  'mineral',
+  'production2020',
+  'reserves2020'
 ]
 
-const stringify = d => {
-  for (var i in d) {
-    if (!stringFields.includes(i)) {
-      d[i] = +d[i]
-    }
-  }
-  return d
-}
-
+// I don't think that I really need to include this code
+// const stringify = d => {
+//   for (var i in d) {
+//     console.log(d)
+//     if (!stringFields.includes(i)) {
+//       d[i] = +d[i]
+//     }
+//   }
+//   return d
+// }
 
 function parseData({ src }) {
-  const scatterPromise = d3Fetch.csv(src.scatter, stringify)
+  // here, we are using d3Fetch.csv
+  const scatterPromise = d3Fetch.csv(src.scatter)
   
   let data = Promise.all([scatterPromise]).then(res => {
-    let [dataset] = res
+    let [initialdata] = res
 
-    dataset = dataset.filter(d => 
-      (d.vaccine_index || d.vaccine_index === 0 ) 
-      && ( d.medical_aid_index || d.medical_aid_index === 0 ) 
-      && (d.total || d.total === 0) 
-    ) 
+    console.log("initial data", initialdata);
+
+    let dataset = [{mineral: 'Cobalt', mineralData: []}, {mineral: 'Lithium', mineralData: []}, {mineral: 'Nickle', mineralData: []}, {mineral: 'Rare Earths', mineralData: []}, {mineral: 'Manganese', mineralData: []}, {mineral: 'Graphite', mineralData: []}]
+
+    // I'm not entirely sure what this is doing either
+    dataset[0].data = initialdata.filter(d => d.mineral == 'Cobalt');
+    dataset[1].data = initialdata.filter(d => d.mineral == 'Lithium');
+    dataset[2].data = initialdata.filter(d => d.mineral == 'Nickel');
+    dataset[3].data = initialdata.filter(d => d.mineral == 'Rare Earths');
+    dataset[4].data = initialdata.filter(d => d.mineral == 'Manganese');
+    dataset[5].data = initialdata.filter(d => d.mineral == 'Graphite');
+
+    console.log("final data", dataset);
 
     return dataset
   })

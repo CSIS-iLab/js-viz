@@ -1,5 +1,4 @@
 /* ----------  Components  ---------- */
-@use 'components/buttons';
 @use 'components/form-elements';
 @use 'components/header';
 @use 'components/loading';
@@ -12,7 +11,3 @@
 @use 'layout/layout';
 
 /* ----------  Custom Components  ---------- */
-@use 'custom/chart';
-@use 'custom/legend';
-@use 'custom/options';
-@use 'custom/size-legend';
