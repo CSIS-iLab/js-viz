@@ -21,10 +21,15 @@ Highcharts.chart("hcContainer", {
   ],
   // Chart Title and Subtitle
   title: {
-    text: "A high tariff should be imposed on imported goods that are also produced domestically to protect domestic industries."
+    text: "A high tariff should be imposed on imported goods that are also produced domestically to protect domestic industries.",
+    align: "left",
+    style: {
+      fontWeight: 'bold'
+    }
   },
   subtitle: {
-    text: "% of respondents that believe ___"
+    text: "% of respondents that believe ___",
+    align: "left",
   },
   // Credits
   credits: {
@@ -37,9 +42,13 @@ Highcharts.chart("hcContainer", {
   },
   // Chart Legend
   legend: {
-    align: "center",
-    verticalAlign: "bottom",
-    layout: "horizontal"
+    align: "left",
+    verticalAlign: "top",
+    layout: "horizontal",
+    itemStyle: {
+      color: '#000000',
+      fontWeight: 'normal'
+    }
   },
   // Y Axis
   yAxis: {
@@ -48,12 +57,6 @@ Highcharts.chart("hcContainer", {
     },
     max:100,
     reversedStacks: false,
-    // labels: {
-    //   formatter: function(){
-    //     return `${(this.value / 1000000000).toFixed(0)}`
-    //   }
-    // },
-    // max: 500000000000
   },
   xAxis: {
     type: "category"
@@ -61,15 +64,18 @@ Highcharts.chart("hcContainer", {
   // Tooltip
   tooltip: {
     shared: true,
-    // pointFormatter: function() {
-    //   return `<span style="color:${this.color}">\u25CF </span>${this.series.name}
-    //   $${(this.y / 1000000000).toFixed(1)} billion<br />`;
-    // }
   },
   // Additional Plot Options
   plotOptions: {
     series: {
-      stacking: 'normal'
+      stacking: 'normal',
+      dataLabels: {
+        align: 'left',
+        enabled: true,
+        style: {
+          textOutline: 'none'
+        },
+      }
     }
   }
 });
