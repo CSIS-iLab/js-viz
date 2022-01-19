@@ -55,6 +55,9 @@ Highcharts.chart("hcContainer", {
     // },
     // max: 500000000000
   },
+  xAxis: {
+    type: "category"
+  },
   // Tooltip
   tooltip: {
     shared: true,
