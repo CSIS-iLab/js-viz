@@ -47,7 +47,7 @@ Highcharts.chart("hcContainer", {
       text: ""
     },
     max:100,
-    // reversedStacks: false,
+    reversedStacks: false,
     // labels: {
     //   formatter: function(){
     //     return `${(this.value / 1000000000).toFixed(0)}`
