@@ -1,0 +1,6 @@
+@media only screen and (max-width: 688px) {
+/* General data label style */
+  .highcharts-data-label text {
+    display: none;
+}
+}
