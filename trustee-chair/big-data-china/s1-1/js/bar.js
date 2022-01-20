@@ -78,7 +78,7 @@ Highcharts.chart("hcContainer", {
         format: '${y}%',
         style: {
           textOutline: 'none'
-        },
+        }
       }
     }
   }
