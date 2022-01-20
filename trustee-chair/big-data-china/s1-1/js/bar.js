@@ -12,12 +12,12 @@ Highcharts.chart("hcContainer", {
   },
   // Colors
   colors: [
-    "#004165", // Strongly Disagree
-    "#0064A3", // Disagree
-    "#BCBCBC", // Neutral
-    "#0FAA91", // Agree
-    "#0A8672", // Strongly Agree
-    "#eaeae6" // refuse to answer
+    "#C52125", // Strongly Disagree
+    "#FD8A6D", // Disagree
+    "#FFC270", // Neutral
+    "#0FAA94", // Agree
+    "#01846C", // Strongly Agree
+    "#C5C4C0" // refuse to answer
   ],
   // Chart Title and Subtitle
   title: {
@@ -43,11 +43,14 @@ Highcharts.chart("hcContainer", {
   // Chart Legend
   legend: {
     align: "left",
-    verticalAlign: "bottom",
+    verticalAlign: "top",
     layout: "horizontal",
     itemStyle: {
       color: '#000000',
       fontWeight: 'normal'
+    },
+    labelFormatter: function () {
+      return this.name.slice(0, -2); // to remove the las 2 characters of the string ' %'
     }
   },
   // Y Axis
@@ -72,6 +75,7 @@ Highcharts.chart("hcContainer", {
       dataLabels: {
         align: 'left',
         enabled: true,
+        format: '${y}%',
         style: {
           textOutline: 'none'
         },
