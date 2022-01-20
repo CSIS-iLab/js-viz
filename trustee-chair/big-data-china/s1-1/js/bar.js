@@ -75,7 +75,7 @@ Highcharts.chart("hcContainer", {
       dataLabels: {
         align: 'left',
         enabled: true,
-        format: '${y}%',
+        format: '{y}%',
         style: {
           textOutline: 'none'
         }
