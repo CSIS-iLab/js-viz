@@ -224,10 +224,10 @@
 </main>
 
 <style type="text/scss" global>
-  // @import './scss/components/_utilities.scss';
-  // @import './scss/layout/_base.scss';
-  // @import './scss/layout/_layout.scss';
-  // @import './scss/components/_header.scss';
-  // @import './scss/components/_source.scss';
-  // @import './scss/components/_loading.scss';
+  @import './scss/components/_utilities.scss';
+  @import './scss/layout/_base.scss';
+  @import './scss/layout/_layout.scss';
+  @import './scss/components/_header.scss';
+  @import './scss/components/_chart.scss';
+  @import './scss/components/_loading.scss';
 </style>

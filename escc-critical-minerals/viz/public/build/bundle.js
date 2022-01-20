@@ -694,17 +694,6 @@ var app = (function () {
 
     var csv = dsvParse(csvParse);
 
-    // I don't think that I really need to include this code
-    // const stringify = d => {
-    //   for (var i in d) {
-    //     console.log(d)
-    //     if (!stringFields.includes(i)) {
-    //       d[i] = +d[i]
-    //     }
-    //   }
-    //   return d
-    // }
-
     function parseData({ src }) {
       // here, we are using d3Fetch.csv
       const scatterPromise = csv(src.scatter);
@@ -714,15 +703,45 @@ var app = (function () {
 
         console.log("initial data", initialdata);
 
-        let dataset = [{mineral: 'Cobalt', mineralData: []}, {mineral: 'Lithium', mineralData: []}, {mineral: 'Nickle', mineralData: []}, {mineral: 'Rare Earths', mineralData: []}, {mineral: 'Manganese', mineralData: []}, {mineral: 'Graphite', mineralData: []}];
+        // correct to input number strings as ints
+        let correcteddata = initialdata.map((d) => {
 
-        // I'm not entirely sure what this is doing either
-        dataset[0].data = initialdata.filter(d => d.mineral == 'Cobalt');
-        dataset[1].data = initialdata.filter(d => d.mineral == 'Lithium');
-        dataset[2].data = initialdata.filter(d => d.mineral == 'Nickel');
-        dataset[3].data = initialdata.filter(d => d.mineral == 'Rare Earths');
-        dataset[4].data = initialdata.filter(d => d.mineral == 'Manganese');
-        dataset[5].data = initialdata.filter(d => d.mineral == 'Graphite');
+          const checkNaN = a => {
+            if (isNaN(a)) {
+              d.isNan = true;
+              return 0;
+            } else {
+              d.isNan = false;
+              return parseInt(a);
+            }
+          };
+
+          d.production2020 = checkNaN(d.production2020);
+          d.reserves2020 = checkNaN(d.reserves2020);
+          return d
+        });
+
+        console.log("corrected data", correcteddata);
+
+        let minerals = ['Cobalt', 'Lithium', 'Nickel', 'Rare Earths', 'Manganese', 'Graphite'];
+
+        let dataset = [{mineral: minerals[0], mineralData: []}, {mineral: minerals[1], mineralData: []}, {mineral: minerals[2], mineralData: []}, {mineral: minerals[3], mineralData: []}, {mineral: minerals[4], mineralData: []}, {mineral: minerals[5], mineralData: []}];
+
+        for(let x = 0; x < minerals.length; x++) {
+          dataset[x].mineralData = correcteddata.filter(d => d.mineral == minerals[x]);
+
+          dataset[x].totalProduction = 0;
+          dataset[x].totalReserves = 0;
+
+          dataset[x].mineralData.forEach(d => {
+            dataset[x].totalProduction += d.production2020;
+            dataset[x].totalReserves += d.reserves2020;
+          });
+          dataset[x].mineralData.forEach(d => {
+            d.percentReserves = ((d.reserves2020 / dataset[x].totalReserves)*100);
+            d.percentProduction = ((d.production2020 / dataset[x].totalProduction)*100);
+          });
+        }
 
         console.log("final data", dataset);
 
@@ -1988,23 +2007,23 @@ var app = (function () {
 
     function get_each_context$2(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[11] = list[i];
+    	child_ctx[13] = list[i];
     	return child_ctx;
     }
 
     function get_each_context_1(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[11] = list[i];
+    	child_ctx[13] = list[i];
     	return child_ctx;
     }
 
     function get_each_context_2(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[16] = list[i];
+    	child_ctx[18] = list[i];
     	return child_ctx;
     }
 
-    // (53:4) {#each data.mineralData as country}
+    // (60:4) {#each data.mineralData as country}
     function create_each_block_2(ctx) {
     	let circle;
     	let circle_cx_value;
@@ -2013,20 +2032,20 @@ var app = (function () {
     	const block = {
     		c: function create() {
     			circle = svg_element("circle");
-    			attr_dev(circle, "cx", circle_cx_value = "" + (/*xScale*/ ctx[6](/*country*/ ctx[16].x) + "px"));
-    			attr_dev(circle, "cy", circle_cy_value = "" + (/*yScale*/ ctx[5](/*country*/ ctx[16].y) + "px"));
-    			attr_dev(circle, "r", "5px");
-    			add_location(circle, file$2, 53, 6, 2099);
+    			attr_dev(circle, "cx", circle_cx_value = "" + (/*xScale*/ ctx[7](/*country*/ ctx[18].percentProduction) + "px"));
+    			attr_dev(circle, "cy", circle_cy_value = "" + (/*yScale*/ ctx[6](/*country*/ ctx[18].percentReserves) + "px"));
+    			attr_dev(circle, "r", "3px");
+    			add_location(circle, file$2, 62, 6, 2822);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, circle, anchor);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*xScale, data*/ 65 && circle_cx_value !== (circle_cx_value = "" + (/*xScale*/ ctx[6](/*country*/ ctx[16].x) + "px"))) {
+    			if (dirty & /*xScale, data*/ 129 && circle_cx_value !== (circle_cx_value = "" + (/*xScale*/ ctx[7](/*country*/ ctx[18].percentProduction) + "px"))) {
     				attr_dev(circle, "cx", circle_cx_value);
     			}
 
-    			if (dirty & /*yScale, data*/ 33 && circle_cy_value !== (circle_cy_value = "" + (/*yScale*/ ctx[5](/*country*/ ctx[16].y) + "px"))) {
+    			if (dirty & /*yScale, data*/ 65 && circle_cy_value !== (circle_cy_value = "" + (/*yScale*/ ctx[6](/*country*/ ctx[18].percentReserves) + "px"))) {
     				attr_dev(circle, "cy", circle_cy_value);
     			}
     		},
@@ -2039,20 +2058,19 @@ var app = (function () {
     		block,
     		id: create_each_block_2.name,
     		type: "each",
-    		source: "(53:4) {#each data.mineralData as country}",
+    		source: "(60:4) {#each data.mineralData as country}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (59:6) {#each yTicks as tick}
+    // (69:6) {#each yTicks as tick}
     function create_each_block_1(ctx) {
     	let g;
     	let line;
-    	let line_x__value_1;
     	let text_1;
-    	let t_value = /*tick*/ ctx[11] + "";
+    	let t_value = /*tick*/ ctx[13] + "";
     	let t;
     	let g_class_value;
     	let g_transform_value;
@@ -2063,15 +2081,15 @@ var app = (function () {
     			line = svg_element("line");
     			text_1 = svg_element("text");
     			t = text$1(t_value);
-    			attr_dev(line, "x1", /*padding*/ ctx[7].left);
-    			attr_dev(line, "x2", line_x__value_1 = /*xScale*/ ctx[6](22));
-    			add_location(line, file$2, 62, 10, 2517);
-    			attr_dev(text_1, "x", /*padding*/ ctx[7].left - 8);
+    			attr_dev(line, "x1", /*padding*/ ctx[10].left - 3);
+    			attr_dev(line, "x2", /*padding*/ ctx[10].left);
+    			add_location(line, file$2, 72, 10, 3386);
+    			attr_dev(text_1, "x", /*padding*/ ctx[10].left - 4);
     			attr_dev(text_1, "y", "+4");
-    			add_location(text_1, file$2, 63, 10, 2579);
-    			attr_dev(g, "class", g_class_value = "tick tick-" + /*tick*/ ctx[11]);
-    			attr_dev(g, "transform", g_transform_value = "translate(0, " + /*yScale*/ ctx[5](/*tick*/ ctx[11]) + ")");
-    			add_location(g, file$2, 60, 8, 2383);
+    			add_location(text_1, file$2, 73, 10, 3454);
+    			attr_dev(g, "class", g_class_value = "tick tick-" + /*tick*/ ctx[13]);
+    			attr_dev(g, "transform", g_transform_value = "translate(0, " + /*yScale*/ ctx[6](/*tick*/ ctx[13]) + ")");
+    			add_location(g, file$2, 70, 8, 3252);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, g, anchor);
@@ -2080,17 +2098,13 @@ var app = (function () {
     			append_dev(text_1, t);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*xScale*/ 64 && line_x__value_1 !== (line_x__value_1 = /*xScale*/ ctx[6](22))) {
-    				attr_dev(line, "x2", line_x__value_1);
-    			}
+    			if (dirty & /*yTicks*/ 16 && t_value !== (t_value = /*tick*/ ctx[13] + "")) set_data_dev(t, t_value);
 
-    			if (dirty & /*yTicks*/ 8 && t_value !== (t_value = /*tick*/ ctx[11] + "")) set_data_dev(t, t_value);
-
-    			if (dirty & /*yTicks*/ 8 && g_class_value !== (g_class_value = "tick tick-" + /*tick*/ ctx[11])) {
+    			if (dirty & /*yTicks*/ 16 && g_class_value !== (g_class_value = "tick tick-" + /*tick*/ ctx[13])) {
     				attr_dev(g, "class", g_class_value);
     			}
 
-    			if (dirty & /*yScale, yTicks*/ 40 && g_transform_value !== (g_transform_value = "translate(0, " + /*yScale*/ ctx[5](/*tick*/ ctx[11]) + ")")) {
+    			if (dirty & /*yScale, yTicks*/ 80 && g_transform_value !== (g_transform_value = "translate(0, " + /*yScale*/ ctx[6](/*tick*/ ctx[13]) + ")")) {
     				attr_dev(g, "transform", g_transform_value);
     			}
     		},
@@ -2103,23 +2117,24 @@ var app = (function () {
     		block,
     		id: create_each_block_1.name,
     		type: "each",
-    		source: "(59:6) {#each yTicks as tick}",
+    		source: "(69:6) {#each yTicks as tick}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (71:6) {#each xTicks as tick}
+    // (83:6) {#each xTicks as tick}
     function create_each_block$2(ctx) {
     	let g;
     	let line;
     	let line_y__value;
     	let line_y__value_1;
     	let text_1;
-    	let t_value = /*tick*/ ctx[11] + "";
+    	let t_value = /*tick*/ ctx[13] + "";
     	let t;
     	let text_1_y_value;
+    	let g_class_value;
     	let g_transform_value;
 
     	const block = {
@@ -2128,14 +2143,14 @@ var app = (function () {
     			line = svg_element("line");
     			text_1 = svg_element("text");
     			t = text$1(t_value);
-    			attr_dev(line, "y1", line_y__value = /*yScale*/ ctx[5](0));
-    			attr_dev(line, "y2", line_y__value_1 = /*yScale*/ ctx[5](13));
-    			add_location(line, file$2, 72, 10, 2818);
-    			attr_dev(text_1, "y", text_1_y_value = /*height*/ ctx[1] - /*padding*/ ctx[7].bottom + 16);
-    			add_location(text_1, file$2, 73, 10, 2877);
-    			attr_dev(g, "class", "tick");
-    			attr_dev(g, "transform", g_transform_value = "translate(" + /*xScale*/ ctx[6](/*tick*/ ctx[11]) + ",0)");
-    			add_location(g, file$2, 71, 8, 2751);
+    			attr_dev(line, "y1", line_y__value = /*height*/ ctx[2] - /*padding*/ ctx[10].bottom + 4);
+    			attr_dev(line, "y2", line_y__value_1 = /*height*/ ctx[2] - /*padding*/ ctx[10].bottom);
+    			add_location(line, file$2, 84, 10, 3908);
+    			attr_dev(text_1, "y", text_1_y_value = /*height*/ ctx[2] - /*padding*/ ctx[10].bottom + 16);
+    			add_location(text_1, file$2, 85, 10, 3998);
+    			attr_dev(g, "class", g_class_value = "tick tick-" + /*tick*/ ctx[13]);
+    			attr_dev(g, "transform", g_transform_value = "translate(" + /*xScale*/ ctx[7](/*tick*/ ctx[13]) + ",0)");
+    			add_location(g, file$2, 83, 8, 3829);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, g, anchor);
@@ -2144,21 +2159,25 @@ var app = (function () {
     			append_dev(text_1, t);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*yScale*/ 32 && line_y__value !== (line_y__value = /*yScale*/ ctx[5](0))) {
+    			if (dirty & /*height*/ 4 && line_y__value !== (line_y__value = /*height*/ ctx[2] - /*padding*/ ctx[10].bottom + 4)) {
     				attr_dev(line, "y1", line_y__value);
     			}
 
-    			if (dirty & /*yScale*/ 32 && line_y__value_1 !== (line_y__value_1 = /*yScale*/ ctx[5](13))) {
+    			if (dirty & /*height*/ 4 && line_y__value_1 !== (line_y__value_1 = /*height*/ ctx[2] - /*padding*/ ctx[10].bottom)) {
     				attr_dev(line, "y2", line_y__value_1);
     			}
 
-    			if (dirty & /*xTicks*/ 16 && t_value !== (t_value = /*tick*/ ctx[11] + "")) set_data_dev(t, t_value);
+    			if (dirty & /*xTicks*/ 32 && t_value !== (t_value = /*tick*/ ctx[13] + "")) set_data_dev(t, t_value);
 
-    			if (dirty & /*height*/ 2 && text_1_y_value !== (text_1_y_value = /*height*/ ctx[1] - /*padding*/ ctx[7].bottom + 16)) {
+    			if (dirty & /*height*/ 4 && text_1_y_value !== (text_1_y_value = /*height*/ ctx[2] - /*padding*/ ctx[10].bottom + 16)) {
     				attr_dev(text_1, "y", text_1_y_value);
     			}
 
-    			if (dirty & /*xScale, xTicks*/ 80 && g_transform_value !== (g_transform_value = "translate(" + /*xScale*/ ctx[6](/*tick*/ ctx[11]) + ",0)")) {
+    			if (dirty & /*xTicks*/ 32 && g_class_value !== (g_class_value = "tick tick-" + /*tick*/ ctx[13])) {
+    				attr_dev(g, "class", g_class_value);
+    			}
+
+    			if (dirty & /*xScale, xTicks*/ 160 && g_transform_value !== (g_transform_value = "translate(" + /*xScale*/ ctx[7](/*tick*/ ctx[13]) + ",0)")) {
     				attr_dev(g, "transform", g_transform_value);
     			}
     		},
@@ -2171,7 +2190,7 @@ var app = (function () {
     		block,
     		id: create_each_block$2.name,
     		type: "each",
-    		source: "(71:6) {#each xTicks as tick}",
+    		source: "(83:6) {#each xTicks as tick}",
     		ctx
     	});
 
@@ -2179,10 +2198,29 @@ var app = (function () {
     }
 
     function create_fragment$2(ctx) {
+    	let p;
+    	let t0_value = /*data*/ ctx[0].mineral + "";
+    	let t0;
+    	let t1;
     	let figure_1;
     	let svg;
     	let g0;
+    	let line0;
+    	let line0_x__value;
+    	let line0_x__value_1;
+    	let line0_transform_value;
+    	let text0;
+    	let t2;
+    	let text0_x_value;
     	let g1;
+    	let line1;
+    	let line1_y__value;
+    	let line1_y__value_1;
+    	let line1_transform_value;
+    	let text1;
+    	let t3;
+    	let text1_x_value;
+    	let text1_y_value;
     	let mounted;
     	let dispose;
     	let each_value_2 = /*data*/ ctx[0].mineralData;
@@ -2193,7 +2231,7 @@ var app = (function () {
     		each_blocks_2[i] = create_each_block_2(get_each_context_2(ctx, each_value_2, i));
     	}
 
-    	let each_value_1 = /*yTicks*/ ctx[3];
+    	let each_value_1 = /*yTicks*/ ctx[4];
     	validate_each_argument(each_value_1);
     	let each_blocks_1 = [];
 
@@ -2201,7 +2239,7 @@ var app = (function () {
     		each_blocks_1[i] = create_each_block_1(get_each_context_1(ctx, each_value_1, i));
     	}
 
-    	let each_value = /*xTicks*/ ctx[4];
+    	let each_value = /*xTicks*/ ctx[5];
     	validate_each_argument(each_value);
     	let each_blocks = [];
 
@@ -2211,6 +2249,9 @@ var app = (function () {
 
     	const block = {
     		c: function create() {
+    			p = element("p");
+    			t0 = text$1(t0_value);
+    			t1 = space();
     			figure_1 = element("figure");
     			svg = svg_element("svg");
 
@@ -2219,29 +2260,57 @@ var app = (function () {
     			}
 
     			g0 = svg_element("g");
+    			line0 = svg_element("line");
 
     			for (let i = 0; i < each_blocks_1.length; i += 1) {
     				each_blocks_1[i].c();
     			}
 
+    			text0 = svg_element("text");
+    			t2 = text$1(/*yAxisTitle*/ ctx[8]);
     			g1 = svg_element("g");
+    			line1 = svg_element("line");
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
     				each_blocks[i].c();
     			}
 
+    			text1 = svg_element("text");
+    			t3 = text$1(/*xAxisTitle*/ ctx[9]);
+    			add_location(p, file$2, 49, 0, 2197);
+    			attr_dev(line0, "class", "axis-guideline");
+    			attr_dev(line0, "x1", line0_x__value = /*xScale*/ ctx[7](0));
+    			attr_dev(line0, "x2", line0_x__value_1 = /*xScale*/ ctx[7](100));
+    			attr_dev(line0, "transform", line0_transform_value = "translate(0," + /*yScale*/ ctx[6](0) + ")");
+    			add_location(line0, file$2, 67, 6, 2999);
+    			attr_dev(text0, "class", "yAxisTitle");
+    			attr_dev(text0, "x", text0_x_value = -/*height*/ ctx[2] / 2);
+    			attr_dev(text0, "y", /*padding*/ ctx[10].left - 30);
+    			add_location(text0, file$2, 76, 6, 3537);
     			attr_dev(g0, "class", "axis y-axis");
-    			add_location(g0, file$2, 57, 4, 2216);
+    			add_location(g0, file$2, 66, 4, 2969);
+    			attr_dev(line1, "class", "axis-guideline");
+    			attr_dev(line1, "y1", line1_y__value = /*yScale*/ ctx[6](0));
+    			attr_dev(line1, "y2", line1_y__value_1 = /*yScale*/ ctx[6](100));
+    			attr_dev(line1, "transform", line1_transform_value = "translate(" + /*xScale*/ ctx[7](0) + ")");
+    			add_location(line1, file$2, 81, 6, 3684);
+    			attr_dev(text1, "class", "xAxisTitle");
+    			attr_dev(text1, "x", text1_x_value = /*width*/ ctx[1] / 2);
+    			attr_dev(text1, "y", text1_y_value = /*height*/ ctx[2] - 4);
+    			add_location(text1, file$2, 88, 6, 4086);
     			attr_dev(g1, "class", "axis x-axis");
-    			add_location(g1, file$2, 69, 4, 2690);
-    			add_location(svg, file$2, 48, 2, 1957);
-    			attr_dev(figure_1, "class", "svelte-1er5sef");
-    			add_location(figure_1, file$2, 45, 0, 1863);
+    			add_location(g1, file$2, 80, 4, 3654);
+    			attr_dev(svg, "class", "chart");
+    			add_location(svg, file$2, 55, 2, 2442);
+    			add_location(figure_1, file$2, 52, 0, 2348);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     		},
     		m: function mount(target, anchor) {
+    			insert_dev(target, p, anchor);
+    			append_dev(p, t0);
+    			insert_dev(target, t1, anchor);
     			insert_dev(target, figure_1, anchor);
     			append_dev(figure_1, svg);
 
@@ -2250,26 +2319,34 @@ var app = (function () {
     			}
 
     			append_dev(svg, g0);
+    			append_dev(g0, line0);
 
     			for (let i = 0; i < each_blocks_1.length; i += 1) {
     				each_blocks_1[i].m(g0, null);
     			}
 
+    			append_dev(g0, text0);
+    			append_dev(text0, t2);
     			append_dev(svg, g1);
+    			append_dev(g1, line1);
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
     				each_blocks[i].m(g1, null);
     			}
 
-    			/*figure_1_binding*/ ctx[10](figure_1);
+    			append_dev(g1, text1);
+    			append_dev(text1, t3);
+    			/*figure_1_binding*/ ctx[12](figure_1);
 
     			if (!mounted) {
-    				dispose = listen_dev(window, "resize", /*resize*/ ctx[8], false, false, false);
+    				dispose = listen_dev(window, "resize", /*resize*/ ctx[11], false, false, false);
     				mounted = true;
     			}
     		},
     		p: function update(ctx, [dirty]) {
-    			if (dirty & /*xScale, data, yScale*/ 97) {
+    			if (dirty & /*data*/ 1 && t0_value !== (t0_value = /*data*/ ctx[0].mineral + "")) set_data_dev(t0, t0_value);
+
+    			if (dirty & /*xScale, data, yScale*/ 193) {
     				each_value_2 = /*data*/ ctx[0].mineralData;
     				validate_each_argument(each_value_2);
     				let i;
@@ -2293,8 +2370,20 @@ var app = (function () {
     				each_blocks_2.length = each_value_2.length;
     			}
 
-    			if (dirty & /*yTicks, yScale, padding, xScale*/ 232) {
-    				each_value_1 = /*yTicks*/ ctx[3];
+    			if (dirty & /*xScale*/ 128 && line0_x__value !== (line0_x__value = /*xScale*/ ctx[7](0))) {
+    				attr_dev(line0, "x1", line0_x__value);
+    			}
+
+    			if (dirty & /*xScale*/ 128 && line0_x__value_1 !== (line0_x__value_1 = /*xScale*/ ctx[7](100))) {
+    				attr_dev(line0, "x2", line0_x__value_1);
+    			}
+
+    			if (dirty & /*yScale*/ 64 && line0_transform_value !== (line0_transform_value = "translate(0," + /*yScale*/ ctx[6](0) + ")")) {
+    				attr_dev(line0, "transform", line0_transform_value);
+    			}
+
+    			if (dirty & /*yTicks, yScale, padding*/ 1104) {
+    				each_value_1 = /*yTicks*/ ctx[4];
     				validate_each_argument(each_value_1);
     				let i;
 
@@ -2306,7 +2395,7 @@ var app = (function () {
     					} else {
     						each_blocks_1[i] = create_each_block_1(child_ctx);
     						each_blocks_1[i].c();
-    						each_blocks_1[i].m(g0, null);
+    						each_blocks_1[i].m(g0, text0);
     					}
     				}
 
@@ -2317,8 +2406,24 @@ var app = (function () {
     				each_blocks_1.length = each_value_1.length;
     			}
 
-    			if (dirty & /*xScale, xTicks, height, padding, yScale*/ 242) {
-    				each_value = /*xTicks*/ ctx[4];
+    			if (dirty & /*height*/ 4 && text0_x_value !== (text0_x_value = -/*height*/ ctx[2] / 2)) {
+    				attr_dev(text0, "x", text0_x_value);
+    			}
+
+    			if (dirty & /*yScale*/ 64 && line1_y__value !== (line1_y__value = /*yScale*/ ctx[6](0))) {
+    				attr_dev(line1, "y1", line1_y__value);
+    			}
+
+    			if (dirty & /*yScale*/ 64 && line1_y__value_1 !== (line1_y__value_1 = /*yScale*/ ctx[6](100))) {
+    				attr_dev(line1, "y2", line1_y__value_1);
+    			}
+
+    			if (dirty & /*xScale*/ 128 && line1_transform_value !== (line1_transform_value = "translate(" + /*xScale*/ ctx[7](0) + ")")) {
+    				attr_dev(line1, "transform", line1_transform_value);
+    			}
+
+    			if (dirty & /*xTicks, xScale, height, padding*/ 1188) {
+    				each_value = /*xTicks*/ ctx[5];
     				validate_each_argument(each_value);
     				let i;
 
@@ -2330,7 +2435,7 @@ var app = (function () {
     					} else {
     						each_blocks[i] = create_each_block$2(child_ctx);
     						each_blocks[i].c();
-    						each_blocks[i].m(g1, null);
+    						each_blocks[i].m(g1, text1);
     					}
     				}
 
@@ -2340,15 +2445,25 @@ var app = (function () {
 
     				each_blocks.length = each_value.length;
     			}
+
+    			if (dirty & /*width*/ 2 && text1_x_value !== (text1_x_value = /*width*/ ctx[1] / 2)) {
+    				attr_dev(text1, "x", text1_x_value);
+    			}
+
+    			if (dirty & /*height*/ 4 && text1_y_value !== (text1_y_value = /*height*/ ctx[2] - 4)) {
+    				attr_dev(text1, "y", text1_y_value);
+    			}
     		},
     		i: noop,
     		o: noop,
     		d: function destroy(detaching) {
+    			if (detaching) detach_dev(p);
+    			if (detaching) detach_dev(t1);
     			if (detaching) detach_dev(figure_1);
     			destroy_each(each_blocks_2, detaching);
     			destroy_each(each_blocks_1, detaching);
     			destroy_each(each_blocks, detaching);
-    			/*figure_1_binding*/ ctx[10](null);
+    			/*figure_1_binding*/ ctx[12](null);
     			mounted = false;
     			dispose();
     		}
@@ -2375,18 +2490,21 @@ var app = (function () {
     	let { data } = $$props;
     	console.log(data);
 
-    	// here, I am using a figure to hold my chart – it's interesting I'm using a figure for this and I'm not sure why.
+    	// here, I am using a figure to hold my chart – it's interesting I'm using a figure for this and I'm not sure why. We are using it because we want to wrap the svg tag as well (bunch of small multiples, so it's easier to recognize)
     	let figure;
 
-    	let width = 500;
-    	let height = 300;
+    	let width = 600;
+    	let height = 400;
+    	let yAxisTitle = "Reserves, % of World Total";
+    	let xAxisTitle = "Production, % of World Total";
 
     	// add in padding on figure element, with one line structure
-    	const padding = { top: 20, right: 40, bottom: 40, left: 25 };
+    	const padding = { top: 25, right: 35, bottom: 35, left: 45 };
 
     	// I don't understand what is happening here with the ; element in svelte
+    	// lines 36 to 45 are a code family!
     	const resize = () => {
-    		$$invalidate(9, { width, height } = figure.getBoundingClientRect(), width, $$invalidate(1, height));
+    		$$invalidate(1, { width, height } = figure.getBoundingClientRect(), width, $$invalidate(2, height));
     	};
 
     	onMount(resize);
@@ -2399,7 +2517,7 @@ var app = (function () {
     	function figure_1_binding($$value) {
     		binding_callbacks[$$value ? 'unshift' : 'push'](() => {
     			figure = $$value;
-    			$$invalidate(2, figure);
+    			$$invalidate(3, figure);
     		});
     	}
 
@@ -2414,6 +2532,8 @@ var app = (function () {
     		figure,
     		width,
     		height,
+    		yAxisTitle,
+    		xAxisTitle,
     		padding,
     		resize,
     		yTicks,
@@ -2424,13 +2544,15 @@ var app = (function () {
 
     	$$self.$inject_state = $$props => {
     		if ('data' in $$props) $$invalidate(0, data = $$props.data);
-    		if ('figure' in $$props) $$invalidate(2, figure = $$props.figure);
-    		if ('width' in $$props) $$invalidate(9, width = $$props.width);
-    		if ('height' in $$props) $$invalidate(1, height = $$props.height);
-    		if ('yTicks' in $$props) $$invalidate(3, yTicks = $$props.yTicks);
-    		if ('xTicks' in $$props) $$invalidate(4, xTicks = $$props.xTicks);
-    		if ('yScale' in $$props) $$invalidate(5, yScale = $$props.yScale);
-    		if ('xScale' in $$props) $$invalidate(6, xScale = $$props.xScale);
+    		if ('figure' in $$props) $$invalidate(3, figure = $$props.figure);
+    		if ('width' in $$props) $$invalidate(1, width = $$props.width);
+    		if ('height' in $$props) $$invalidate(2, height = $$props.height);
+    		if ('yAxisTitle' in $$props) $$invalidate(8, yAxisTitle = $$props.yAxisTitle);
+    		if ('xAxisTitle' in $$props) $$invalidate(9, xAxisTitle = $$props.xAxisTitle);
+    		if ('yTicks' in $$props) $$invalidate(4, yTicks = $$props.yTicks);
+    		if ('xTicks' in $$props) $$invalidate(5, xTicks = $$props.xTicks);
+    		if ('yScale' in $$props) $$invalidate(6, yScale = $$props.yScale);
+    		if ('xScale' in $$props) $$invalidate(7, xScale = $$props.xScale);
     	};
 
     	if ($$props && "$$inject" in $$props) {
@@ -2438,31 +2560,33 @@ var app = (function () {
     	}
 
     	$$self.$$.update = () => {
-    		if ($$self.$$.dirty & /*width*/ 512) {
+    		if ($$self.$$.dirty & /*width*/ 2) {
     			// add in the x scale by including a preset domain and a physical range of the padding with width offset
-    			$$invalidate(6, xScale = linear().domain([0, 20]).range([padding.left, width - padding.right]));
+    			$$invalidate(7, xScale = linear().domain([0, 75]).range([padding.left, width - padding.right]));
     		}
 
-    		if ($$self.$$.dirty & /*height*/ 2) {
+    		if ($$self.$$.dirty & /*height*/ 4) {
     			// similar to the Y scale, changes around the scaling via range based on preset domain range
-    			$$invalidate(5, yScale = linear().domain([0, 12]).range([height - padding.bottom, padding.top]));
+    			$$invalidate(6, yScale = linear().domain([0, 100]).range([height - padding.bottom, padding.top]));
     		}
     	};
 
-    	$$invalidate(4, xTicks = [0, 4, 8, 12, 16, 20]);
-    	$$invalidate(3, yTicks = [0, 2, 4, 6, 8, 10, 12]);
+    	$$invalidate(5, xTicks = [0, 25, 50, 75]);
+    	$$invalidate(4, yTicks = [0, 25, 50, 75, 100]);
 
     	return [
     		data,
+    		width,
     		height,
     		figure,
     		yTicks,
     		xTicks,
     		yScale,
     		xScale,
+    		yAxisTitle,
+    		xAxisTitle,
     		padding,
     		resize,
-    		width,
     		figure_1_binding
     	];
     }

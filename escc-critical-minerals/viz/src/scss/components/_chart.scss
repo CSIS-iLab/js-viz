@@ -1,0 +1,64 @@
+@use '../abstracts' as *;
+
+p {
+  
+}
+
+figure {
+  margin-inline-start: 0;
+  margin-inline-end: 0;
+  margin-block-end: 0;
+  margin-block-start: 0;
+  max-width: 400px;
+  height: 250px;
+
+  .chart {
+    width: 100%;
+    height: 100%;
+
+    .axis {
+      .xAxisTitle,
+      .yAxisTitle {
+        text-anchor: middle;
+      }
+
+      .yAxisTitle {
+        transform: rotate(-90deg);
+      }
+    }
+
+    text {
+      @extend %axis__ticks;
+    }
+
+    .axis {
+      .tick {
+        @extend %axis__ticks;
+
+        line {
+          z-index: 1;
+          stroke: $graph__lines-secondary;
+        }
+      }
+
+      &-guideline {
+        stroke: $graph__lines-primary;
+      }
+
+      &.y-axis {
+        .tick {
+          text {
+            text-anchor: end;
+          }
+        }
+      }
+      &.x-axis {
+        .tick {
+          text {
+            text-anchor: middle;
+          }
+        }
+      }
+    }
+  }
+}

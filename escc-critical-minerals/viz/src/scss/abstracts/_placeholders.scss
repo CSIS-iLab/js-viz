@@ -23,3 +23,15 @@
     @include font-size(14px);
   }
 }
+
+%axis__ticks {
+  fill: $color__black;
+  font-family: $font__hind;
+  font-weight: 400;
+  @include font-size(12px);
+  line-height: 1.4;
+
+  @include breakpoint('medium') {
+    @include font-size(14px);
+  }
+}
