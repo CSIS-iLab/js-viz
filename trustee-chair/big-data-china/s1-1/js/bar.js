@@ -14,8 +14,8 @@ Highcharts.chart("hcContainer", {
   colors: [
     "#C52125", // Strongly Disagree
     "#FD8A6D", // Disagree
-    "#FFC270", // Neutral
-    "#0FAA94", // Agree
+    "#FFF1B5", // Neutral
+    "#93BB84", // Agree
     "#01846C", // Strongly Agree
     "#C5C4C0" // refuse to answer
   ],
@@ -24,6 +24,8 @@ Highcharts.chart("hcContainer", {
     text: "The government should safeguard national sovereignty and territorial integrity as much as possible through diplomatic and economic means to avoid military conflicts.",
     align: "left",
     style: {
+      color: 'black',
+      fontSize: '20px',
       fontWeight: 'bold'
     }
   },
@@ -45,9 +47,11 @@ Highcharts.chart("hcContainer", {
     align: "left",
     verticalAlign: "top",
     layout: "horizontal",
+    symbolRadius: 0,
+    // backgroundColor: '#FCFFC5',
     itemStyle: {
-      color: '#000000',
-      fontWeight: 'normal'
+      // color: '#000000',
+      fontWeight: 'normal',
     },
     labelFormatter: function () {
       return this.name.slice(0, -2); // to remove the las 2 characters of the string ' %'
@@ -60,24 +64,39 @@ Highcharts.chart("hcContainer", {
     },
     max:100,
     reversedStacks: false,
+    visible: false,
   },
   xAxis: {
     type: "category"
   },
   // Tooltip
   tooltip: {
+    headerFormat: "",
+    formatter: function () {
+      return this.points.reduce(function (s, point) {
+          return s + '<br/>' + point.series.name + ': ' +
+              point.y + 'm';
+      }, '<b>' + this.x + '</b>');
+    },
     shared: true,
   },
   // Additional Plot Options
   plotOptions: {
     series: {
       stacking: 'normal',
+      borderWidth: 0,
+      groupPadding: 0.1,
+      
       dataLabels: {
         align: 'left',
         enabled: true,
-        format: '{y}%',
+        // format: '{y}%',
+        formatter: function () {
+          return this.y.toFixed(1) + '%'
+        },
         style: {
-          textOutline: 'none'
+          textOutline: 'none',
+          fontWeight: 'normal'
         }
       }
     }

@@ -14,8 +14,8 @@ Highcharts.chart("hcContainer", {
   colors: [
     "#C52125", // Strongly Disagree
     "#FD8A6D", // Disagree
-    "#FFC270", // Neutral
-    "#0FAA94", // Agree
+    "#FFF1B5", // Neutral
+    "#93BB84", // Agree
     "#01846C", // Strongly Agree
     "#C5C4C0" // refuse to answer
   ],
