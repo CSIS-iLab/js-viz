@@ -71,13 +71,13 @@ Highcharts.chart("hcContainer", {
   },
   // Tooltip
   tooltip: {
-    headerFormat: "",
-    formatter: function () {
-      return this.points.reduce(function (s, point) {
-          return s + '<br/>' + point.series.name + ': ' +
-              point.y + 'm';
-      }, '<b>' + this.x + '</b>');
-    },
+    // headerFormat: "",
+    // formatter: function () {
+    //   return this.points.reduce(function (s, point) {
+    //       return s + '<br/>' + point.series.name + ': ' +
+    //           point.y + 'm';
+    //   }, '<b>' + this.x + '</b>');
+    // },
     shared: true,
   },
   // Additional Plot Options
