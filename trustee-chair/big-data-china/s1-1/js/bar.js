@@ -38,6 +38,9 @@ Highcharts.chart("hcContainer", {
     enabled: true,
     href: false,
     text: "CSIS | Big Data China",
+    style: {
+      fontSize: '11px'
+    },
     position: {
       y: -30
     }
@@ -48,9 +51,8 @@ Highcharts.chart("hcContainer", {
     verticalAlign: "top",
     layout: "horizontal",
     symbolRadius: 0,
-    // backgroundColor: '#FCFFC5',
     itemStyle: {
-      // color: '#000000',
+      color: '#333',
       fontWeight: 'normal',
     },
     labelFormatter: function () {
@@ -71,13 +73,17 @@ Highcharts.chart("hcContainer", {
   },
   // Tooltip
   tooltip: {
-    // headerFormat: "",
-    // formatter: function () {
-    //   return this.points.reduce(function (s, point) {
-    //       return s + '<br/>' + point.series.name + ': ' +
-    //           point.y + 'm';
-    //   }, '<b>' + this.x + '</b>');
-    // },
+    headerFormat: '',
+    pointFormatter: function pointFormatter(e) {
+      return '<div><span style="font-size:18px;color:' +
+        this.color +
+        '">\u25A0 </span><b>' +
+        this.y +'%'+
+        "</b><br/>" +
+        this.y +
+        "</div>"
+      
+    },
     shared: true,
   },
   // Additional Plot Options
