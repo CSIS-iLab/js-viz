@@ -24,6 +24,8 @@ Highcharts.chart("hcContainer", {
     text: "A high tariff should be imposed on imported goods that are also produced domestically to protect domestic industries.",
     align: "left",
     style: {
+      color: 'black',
+      fontSize: '20px',
       fontWeight: 'bold'
     }
   },
@@ -36,6 +38,9 @@ Highcharts.chart("hcContainer", {
     enabled: true,
     href: false,
     text: "CSIS | Big Data China",
+    style: {
+      fontSize: '11px'
+    },
     position: {
       y: -30
     }
@@ -45,12 +50,13 @@ Highcharts.chart("hcContainer", {
     align: "left",
     verticalAlign: "top",
     layout: "horizontal",
+    symbolRadius: 0,
     itemStyle: {
-      color: '#000000',
-      fontWeight: 'normal'
+      color: '#333',
+      fontWeight: 'normal',
     },
     labelFormatter: function () {
-      return this.name.slice(0, -2); // to remove the las 2 characters of the string ' %'
+      return this.name.slice(0, -2); // remove the last 2 characters of the string ' %'
     }
   },
   // Y Axis
@@ -60,24 +66,35 @@ Highcharts.chart("hcContainer", {
     },
     max:100,
     reversedStacks: false,
+    visible: false,
   },
   xAxis: {
     type: "category"
   },
   // Tooltip
   tooltip: {
+    headerFormat: '{point.key}<br/>',
+    pointFormatter: function () {      
+      return '<span style="font-size: 14px;color:' + this.color + '">\u25A0</span> ' + this.series.name.slice(0, -2) + ': <b> ' + this.y.toFixed(1) + '%</b><br/>'
+    },
     shared: true,
   },
   // Additional Plot Options
   plotOptions: {
     series: {
       stacking: 'normal',
+      borderWidth: 0,
+      groupPadding: 0.1,
+      
       dataLabels: {
         align: 'left',
         enabled: true,
-        format: '{y}%',
+        formatter: function () {
+          return this.y.toFixed(1) + '%'
+        },
         style: {
-          textOutline: 'none'
+          textOutline: 'none',
+          fontWeight: 'normal'
         }
       }
     }

@@ -56,7 +56,7 @@ Highcharts.chart("hcContainer", {
       fontWeight: 'normal',
     },
     labelFormatter: function () {
-      return this.name.slice(0, -2); // to remove the las 2 characters of the string ' %'
+      return this.name.slice(0, -2); // remove the last 2 characters of the string ' %'
     }
   },
   // Y Axis
@@ -73,16 +73,9 @@ Highcharts.chart("hcContainer", {
   },
   // Tooltip
   tooltip: {
-    headerFormat: '',
-    pointFormatter: function pointFormatter(e) {
-      return '<div><span style="font-size:18px;color:' +
-        this.color +
-        '">\u25A0 </span><b>' +
-        this.y +'%'+
-        "</b><br/>" +
-        this.y +
-        "</div>"
-      
+    headerFormat: '{point.key}<br/>',
+    pointFormatter: function () {      
+      return '<span style="font-size: 14px;color:' + this.color + '">\u25A0</span> ' + this.series.name.slice(0, -2) + ': <b> ' + this.y.toFixed(1) + '%</b><br/>'
     },
     shared: true,
   },
@@ -96,7 +89,6 @@ Highcharts.chart("hcContainer", {
       dataLabels: {
         align: 'left',
         enabled: true,
-        // format: '{y}%',
         formatter: function () {
           return this.y.toFixed(1) + '%'
         },
