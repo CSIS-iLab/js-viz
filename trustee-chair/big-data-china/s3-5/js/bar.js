@@ -48,6 +48,7 @@ Highcharts.chart("hcContainer", {
   // Chart Legend
   legend: {
     align: "left",
+    x: -10,
     verticalAlign: "top",
     layout: "horizontal",
     symbolRadius: 0,
