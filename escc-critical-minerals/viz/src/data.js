@@ -15,7 +15,7 @@ function parseData({ src }) {
   let data = Promise.all([scatterPromise]).then(res => {
     let [initialdata] = res
 
-    console.log("initial data", initialdata);
+    // console.log("initial data", initialdata);
 
     // correct to input number strings as ints
     let correcteddata = initialdata.map((d) => {
@@ -35,7 +35,7 @@ function parseData({ src }) {
       return d
     })
 
-    console.log("corrected data", correcteddata);
+    // console.log("corrected data", correcteddata);
 
     let minerals = ['Cobalt', 'Lithium', 'Nickel', 'Rare Earths', 'Manganese', 'Graphite'];
 
@@ -57,7 +57,7 @@ function parseData({ src }) {
       })
     }
 
-    console.log("final data", dataset);
+    // console.log("final data", dataset);
 
     return dataset
   })

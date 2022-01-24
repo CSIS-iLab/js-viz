@@ -20,130 +20,6 @@
     return res
   }
 
-// Mock data; Use structure above for production
-  const allData2 = [
-    {
-      mineral: 'cobalt',
-      mineralData: [
-        {
-          name: 'USA',
-          x: 5,
-          y: 4,
-        },
-        {
-          name: 'Canda',
-          x: 4,
-          y: 6,
-        },
-        {
-          name: 'Zimbabwe',
-          x: 7,
-          y: 8,
-        },
-        {
-          name: ' Chile',
-          x: 8,
-          y: 12,
-        },
-        {
-          name: 'Hungary',
-          x: 9,
-          y: 10,
-        },
-      ],
-    },
-    {
-      mineral: 'talc',
-      mineralData: [
-        {
-          name: 'USA',
-          x: 5,
-          y: 4,
-        },
-        {
-          name: 'Canda',
-          x: 4,
-          y: 6,
-        },
-        {
-          name: 'Zimbabwe',
-          x: 7,
-          y: 8,
-        },
-        {
-          name: ' Chile',
-          x: 8,
-          y: 12,
-        },
-        {
-          name: 'Hungary',
-          x: 9,
-          y: 10,
-        },
-      ],
-    },
-    {
-      mineral: 'diamond',
-      mineralData: [
-        {
-          name: 'USA',
-          x: 5,
-          y: 4,
-        },
-        {
-          name: 'Canda',
-          x: 4,
-          y: 6,
-        },
-        {
-          name: 'Zimbabwe',
-          x: 7,
-          y: 8,
-        },
-        {
-          name: ' Chile',
-          x: 8,
-          y: 12,
-        },
-        {
-          name: 'Hungary',
-          x: 9,
-          y: 10,
-        },
-      ],
-    },
-    {
-      mineral: 'emerald',
-      mineralData: [
-        {
-          name: 'USA',
-          x: 5,
-          y: 4,
-        },
-        {
-          name: 'Canda',
-          x: 4,
-          y: 6,
-        },
-        {
-          name: 'Zimbabwe',
-          x: 7,
-          y: 8,
-        },
-        {
-          name: ' Chile',
-          x: 8,
-          y: 12,
-        },
-        {
-          name: 'Hungary',
-          x: 9,
-          y: 10,
-        },
-      ],
-    },
-  ]
-
   const init = () => {
     resize(mq)
   }
@@ -202,9 +78,9 @@
     <Chart data="{data}" isMobile="{isMobile}" />
   {/each}
 
-  <div class="interactive__legend-container">
+  <!-- <div class="interactive__legend-container">
     <Legend />
-  </div>
+  </div> -->
 
   <!-- <footer class="interactive__source">
       <a href="https://loremipsum.csis.org" class="source-holder"
