@@ -8,7 +8,10 @@ Highcharts.chart("hcContainer", {
   // General Chart Options
   chart: {
     type: "bar",
-    spacingBottom: 60
+    spacingBottom: 60,
+    style: {
+      fontFamily: ['Source Sans Pro', 'sans-serif']
+    }
   },
   // Colors
   colors: [
