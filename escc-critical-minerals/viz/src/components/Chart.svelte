@@ -24,7 +24,7 @@
 
   // add in the x scale by including a preset domain and a physical range of the padding with width offset
   $: xScale = scaleLinear()
-    .domain([0, 75])
+    .domain([0, 100])
     .range([padding.left, width - padding.right])
   
   // similar to the Y scale, changes around the scaling via range based on preset domain range
@@ -33,7 +33,7 @@
     .range([height - padding.bottom, padding.top])
   
   // x and y ticks are manually added – might be an issue for dynamic rendering later
-  $: xTicks = [0, 25, 50, 75]
+  $: xTicks = [0, 25, 50, 75, 100]
 
   $: yTicks = [0, 25, 50, 75, 100]
 
@@ -48,7 +48,6 @@
       content: template,
       allowHTML: true,
       placement: "top",
-      // triggerTarget: document.getElementById(selector),
     };
   };
 
@@ -99,6 +98,6 @@
   </svg>
 </figure>
 
-<style>
-  @import './scss/components/_chart.scss';
+<style type="text/scss">
+  @import "../scss/components/_chart.scss";
 </style>

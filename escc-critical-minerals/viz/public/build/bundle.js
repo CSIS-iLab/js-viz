@@ -1,2 +1,6622 @@
-var app=function(){"use strict";function t(){}function e(t){return t()}function n(){return Object.create(null)}function r(t){t.forEach(e)}function i(t){return"function"==typeof t}function o(t,e){return t!=t?e==e:t!==e||t&&"object"==typeof t||"function"==typeof t}function a(t,e){t.appendChild(e)}function s(t,e,n){t.insertBefore(e,n||null)}function u(t){t.parentNode.removeChild(t)}function c(t,e){for(let n=0;n<t.length;n+=1)t[n]&&t[n].d(e)}function l(t){return document.createElement(t)}function f(t){return document.createElementNS("http://www.w3.org/2000/svg",t)}function p(t){return document.createTextNode(t)}function d(){return p(" ")}function h(t,e,n){null==n?t.removeAttribute(e):t.getAttribute(e)!==n&&t.setAttribute(e,n)}function m(t,e){e=""+e,t.wholeText!==e&&(t.data=e)}let g;function v(t){g=t}function b(){if(!g)throw new Error("Function called outside component initialization");return g}const y=[],w=[],x=[],M=[],k=Promise.resolve();let O=!1;function E(t){x.push(t)}const A=new Set;let T=0;function N(){const t=g;do{for(;T<y.length;){const t=y[T];T++,v(t),$(t.$$)}for(v(null),y.length=0,T=0;w.length;)w.pop()();for(let t=0;t<x.length;t+=1){const e=x[t];A.has(e)||(A.add(e),e())}x.length=0}while(y.length);for(;M.length;)M.pop()();O=!1,A.clear(),v(t)}function $(t){if(null!==t.fragment){t.update(),r(t.before_update);const e=t.dirty;t.dirty=[-1],t.fragment&&t.fragment.p(t.ctx,e),t.after_update.forEach(E)}}const j=new Set;let D;function C(){D={r:0,c:[],p:D}}function L(){D.r||r(D.c),D=D.p}function P(t,e){t&&t.i&&(j.delete(t),t.i(e))}function R(t,e,n,r){if(t&&t.o){if(j.has(t))return;j.add(t),D.c.push((()=>{j.delete(t),r&&(n&&t.d(1),r())})),t.o(e)}}function S(t,n,o,a){const{fragment:s,on_mount:u,on_destroy:c,after_update:l}=t.$$;s&&s.m(n,o),a||E((()=>{const n=u.map(e).filter(i);c?c.push(...n):r(n),t.$$.on_mount=[]})),l.forEach(E)}function _(t,e){const n=t.$$;null!==n.fragment&&(r(n.on_destroy),n.fragment&&n.fragment.d(e),n.on_destroy=n.fragment=null,n.ctx=[])}function H(t,e){-1===t.$$.dirty[0]&&(y.push(t),O||(O=!0,k.then(N)),t.$$.dirty.fill(0)),t.$$.dirty[e/31|0]|=1<<e%31}function V(e,i,o,a,s,c,l,f=[-1]){const p=g;v(e);const d=e.$$={fragment:null,ctx:null,props:c,update:t,not_equal:s,bound:n(),on_mount:[],on_destroy:[],on_disconnect:[],before_update:[],after_update:[],context:new Map(i.context||(p?p.$$.context:[])),callbacks:n(),dirty:f,skip_bound:!1,root:i.target||p.$$.root};l&&l(d.root);let h=!1;if(d.ctx=o?o(e,i.props||{},((t,n,...r)=>{const i=r.length?r[0]:n;return d.ctx&&s(d.ctx[t],d.ctx[t]=i)&&(!d.skip_bound&&d.bound[t]&&d.bound[t](i),h&&H(e,t)),n})):[],d.update(),h=!0,r(d.before_update),d.fragment=!!a&&a(d.ctx),i.target){if(i.hydrate){const t=function(t){return Array.from(t.childNodes)}(i.target);d.fragment&&d.fragment.l(t),t.forEach(u)}else d.fragment&&d.fragment.c();i.intro&&P(e.$$.fragment),S(e,i.target,i.anchor,i.customElement),N()}v(p)}class q{$destroy(){_(this,1),this.$destroy=t}$on(t,e){const n=this.$$.callbacks[t]||(this.$$.callbacks[t]=[]);return n.push(e),()=>{const t=n.indexOf(e);-1!==t&&n.splice(t,1)}}$set(t){var e;this.$$set&&(e=t,0!==Object.keys(e).length)&&(this.$$.skip_bound=!0,this.$$set(t),this.$$.skip_bound=!1)}}var B={},W={};function I(t){return new Function("d","return {"+t.map((function(t,e){return JSON.stringify(t)+": d["+e+'] || ""'})).join(",")+"}")}function U(t){var e=Object.create(null),n=[];return t.forEach((function(t){for(var r in t)r in e||n.push(e[r]=r)})),n}function F(t,e){var n=t+"",r=n.length;return r<e?new Array(e-r+1).join(0)+n:n}function z(t){var e,n=t.getUTCHours(),r=t.getUTCMinutes(),i=t.getUTCSeconds(),o=t.getUTCMilliseconds();return isNaN(t)?"Invalid Date":((e=t.getUTCFullYear())<0?"-"+F(-e,6):e>9999?"+"+F(e,6):F(e,4))+"-"+F(t.getUTCMonth()+1,2)+"-"+F(t.getUTCDate(),2)+(o?"T"+F(n,2)+":"+F(r,2)+":"+F(i,2)+"."+F(o,3)+"Z":i?"T"+F(n,2)+":"+F(r,2)+":"+F(i,2)+"Z":r||n?"T"+F(n,2)+":"+F(r,2)+"Z":"")}var X=function(t){var e=new RegExp('["'+t+"\n\r]"),n=t.charCodeAt(0);function r(t,e){var r,i=[],o=t.length,a=0,s=0,u=o<=0,c=!1;function l(){if(u)return W;if(c)return c=!1,B;var e,r,i=a;if(34===t.charCodeAt(i)){for(;a++<o&&34!==t.charCodeAt(a)||34===t.charCodeAt(++a););return(e=a)>=o?u=!0:10===(r=t.charCodeAt(a++))?c=!0:13===r&&(c=!0,10===t.charCodeAt(a)&&++a),t.slice(i+1,e-1).replace(/""/g,'"')}for(;a<o;){if(10===(r=t.charCodeAt(e=a++)))c=!0;else if(13===r)c=!0,10===t.charCodeAt(a)&&++a;else if(r!==n)continue;return t.slice(i,e)}return u=!0,t.slice(i,o)}for(10===t.charCodeAt(o-1)&&--o,13===t.charCodeAt(o-1)&&--o;(r=l())!==W;){for(var f=[];r!==B&&r!==W;)f.push(r),r=l();e&&null==(f=e(f,s++))||i.push(f)}return i}function i(e,n){return e.map((function(e){return n.map((function(t){return a(e[t])})).join(t)}))}function o(e){return e.map(a).join(t)}function a(t){return null==t?"":t instanceof Date?z(t):e.test(t+="")?'"'+t.replace(/"/g,'""')+'"':t}return{parse:function(t,e){var n,i,o=r(t,(function(t,r){if(n)return n(t,r-1);i=t,n=e?function(t,e){var n=I(t);return function(r,i){return e(n(r),i,t)}}(t,e):I(t)}));return o.columns=i||[],o},parseRows:r,format:function(e,n){return null==n&&(n=U(e)),[n.map(a).join(t)].concat(i(e,n)).join("\n")},formatBody:function(t,e){return null==e&&(e=U(t)),i(t,e).join("\n")},formatRows:function(t){return t.map(o).join("\n")},formatRow:o,formatValue:a}}(","),Y=X.parse;function G(t){if(!t.ok)throw new Error(t.status+" "+t.statusText);return t.text()}function Z(t,e){return fetch(t,e).then(G)}var J,Q=(J=Y,function(t,e,n){return 2===arguments.length&&"function"==typeof e&&(n=e,e=void 0),Z(t,e).then((function(t){return J(t,n)}))});function K(t,e){return t<e?-1:t>e?1:t>=e?0:NaN}function tt(t){let e=t,n=t;function r(t,e,r,i){for(null==r&&(r=0),null==i&&(i=t.length);r<i;){const o=r+i>>>1;n(t[o],e)<0?r=o+1:i=o}return r}return 1===t.length&&(e=(e,n)=>t(e)-n,n=function(t){return(e,n)=>K(t(e),n)}(t)),{left:r,center:function(t,n,i,o){null==i&&(i=0),null==o&&(o=t.length);const a=r(t,n,i,o-1);return a>i&&e(t[a-1],n)>-e(t[a],n)?a-1:a},right:function(t,e,r,i){for(null==r&&(r=0),null==i&&(i=t.length);r<i;){const o=r+i>>>1;n(t[o],e)>0?i=o:r=o+1}return r}}}const et=tt(K).right;tt((function(t){return null===t?NaN:+t})).center;var nt=et,rt=Math.sqrt(50),it=Math.sqrt(10),ot=Math.sqrt(2);function at(t,e,n){var r=(e-t)/Math.max(0,n),i=Math.floor(Math.log(r)/Math.LN10),o=r/Math.pow(10,i);return i>=0?(o>=rt?10:o>=it?5:o>=ot?2:1)*Math.pow(10,i):-Math.pow(10,-i)/(o>=rt?10:o>=it?5:o>=ot?2:1)}function st(t,e){switch(arguments.length){case 0:break;case 1:this.range(t);break;default:this.range(e).domain(t)}return this}function ut(t,e,n){t.prototype=e.prototype=n,n.constructor=t}function ct(t,e){var n=Object.create(t.prototype);for(var r in e)n[r]=e[r];return n}function lt(){}var ft=.7,pt=1/ft,dt="\\s*([+-]?\\d+)\\s*",ht="\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)\\s*",mt="\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)%\\s*",gt=/^#([0-9a-f]{3,8})$/,vt=new RegExp("^rgb\\("+[dt,dt,dt]+"\\)$"),bt=new RegExp("^rgb\\("+[mt,mt,mt]+"\\)$"),yt=new RegExp("^rgba\\("+[dt,dt,dt,ht]+"\\)$"),wt=new RegExp("^rgba\\("+[mt,mt,mt,ht]+"\\)$"),xt=new RegExp("^hsl\\("+[ht,mt,mt]+"\\)$"),Mt=new RegExp("^hsla\\("+[ht,mt,mt,ht]+"\\)$"),kt={aliceblue:15792383,antiquewhite:16444375,aqua:65535,aquamarine:8388564,azure:15794175,beige:16119260,bisque:16770244,black:0,blanchedalmond:16772045,blue:255,blueviolet:9055202,brown:10824234,burlywood:14596231,cadetblue:6266528,chartreuse:8388352,chocolate:13789470,coral:16744272,cornflowerblue:6591981,cornsilk:16775388,crimson:14423100,cyan:65535,darkblue:139,darkcyan:35723,darkgoldenrod:12092939,darkgray:11119017,darkgreen:25600,darkgrey:11119017,darkkhaki:12433259,darkmagenta:9109643,darkolivegreen:5597999,darkorange:16747520,darkorchid:10040012,darkred:9109504,darksalmon:15308410,darkseagreen:9419919,darkslateblue:4734347,darkslategray:3100495,darkslategrey:3100495,darkturquoise:52945,darkviolet:9699539,deeppink:16716947,deepskyblue:49151,dimgray:6908265,dimgrey:6908265,dodgerblue:2003199,firebrick:11674146,floralwhite:16775920,forestgreen:2263842,fuchsia:16711935,gainsboro:14474460,ghostwhite:16316671,gold:16766720,goldenrod:14329120,gray:8421504,green:32768,greenyellow:11403055,grey:8421504,honeydew:15794160,hotpink:16738740,indianred:13458524,indigo:4915330,ivory:16777200,khaki:15787660,lavender:15132410,lavenderblush:16773365,lawngreen:8190976,lemonchiffon:16775885,lightblue:11393254,lightcoral:15761536,lightcyan:14745599,lightgoldenrodyellow:16448210,lightgray:13882323,lightgreen:9498256,lightgrey:13882323,lightpink:16758465,lightsalmon:16752762,lightseagreen:2142890,lightskyblue:8900346,lightslategray:7833753,lightslategrey:7833753,lightsteelblue:11584734,lightyellow:16777184,lime:65280,limegreen:3329330,linen:16445670,magenta:16711935,maroon:8388608,mediumaquamarine:6737322,mediumblue:205,mediumorchid:12211667,mediumpurple:9662683,mediumseagreen:3978097,mediumslateblue:8087790,mediumspringgreen:64154,mediumturquoise:4772300,mediumvioletred:13047173,midnightblue:1644912,mintcream:16121850,mistyrose:16770273,moccasin:16770229,navajowhite:16768685,navy:128,oldlace:16643558,olive:8421376,olivedrab:7048739,orange:16753920,orangered:16729344,orchid:14315734,palegoldenrod:15657130,palegreen:10025880,paleturquoise:11529966,palevioletred:14381203,papayawhip:16773077,peachpuff:16767673,peru:13468991,pink:16761035,plum:14524637,powderblue:11591910,purple:8388736,rebeccapurple:6697881,red:16711680,rosybrown:12357519,royalblue:4286945,saddlebrown:9127187,salmon:16416882,sandybrown:16032864,seagreen:3050327,seashell:16774638,sienna:10506797,silver:12632256,skyblue:8900331,slateblue:6970061,slategray:7372944,slategrey:7372944,snow:16775930,springgreen:65407,steelblue:4620980,tan:13808780,teal:32896,thistle:14204888,tomato:16737095,turquoise:4251856,violet:15631086,wheat:16113331,white:16777215,whitesmoke:16119285,yellow:16776960,yellowgreen:10145074};function Ot(){return this.rgb().formatHex()}function Et(){return this.rgb().formatRgb()}function At(t){var e,n;return t=(t+"").trim().toLowerCase(),(e=gt.exec(t))?(n=e[1].length,e=parseInt(e[1],16),6===n?Tt(e):3===n?new Dt(e>>8&15|e>>4&240,e>>4&15|240&e,(15&e)<<4|15&e,1):8===n?Nt(e>>24&255,e>>16&255,e>>8&255,(255&e)/255):4===n?Nt(e>>12&15|e>>8&240,e>>8&15|e>>4&240,e>>4&15|240&e,((15&e)<<4|15&e)/255):null):(e=vt.exec(t))?new Dt(e[1],e[2],e[3],1):(e=bt.exec(t))?new Dt(255*e[1]/100,255*e[2]/100,255*e[3]/100,1):(e=yt.exec(t))?Nt(e[1],e[2],e[3],e[4]):(e=wt.exec(t))?Nt(255*e[1]/100,255*e[2]/100,255*e[3]/100,e[4]):(e=xt.exec(t))?Rt(e[1],e[2]/100,e[3]/100,1):(e=Mt.exec(t))?Rt(e[1],e[2]/100,e[3]/100,e[4]):kt.hasOwnProperty(t)?Tt(kt[t]):"transparent"===t?new Dt(NaN,NaN,NaN,0):null}function Tt(t){return new Dt(t>>16&255,t>>8&255,255&t,1)}function Nt(t,e,n,r){return r<=0&&(t=e=n=NaN),new Dt(t,e,n,r)}function $t(t){return t instanceof lt||(t=At(t)),t?new Dt((t=t.rgb()).r,t.g,t.b,t.opacity):new Dt}function jt(t,e,n,r){return 1===arguments.length?$t(t):new Dt(t,e,n,null==r?1:r)}function Dt(t,e,n,r){this.r=+t,this.g=+e,this.b=+n,this.opacity=+r}function Ct(){return"#"+Pt(this.r)+Pt(this.g)+Pt(this.b)}function Lt(){var t=this.opacity;return(1===(t=isNaN(t)?1:Math.max(0,Math.min(1,t)))?"rgb(":"rgba(")+Math.max(0,Math.min(255,Math.round(this.r)||0))+", "+Math.max(0,Math.min(255,Math.round(this.g)||0))+", "+Math.max(0,Math.min(255,Math.round(this.b)||0))+(1===t?")":", "+t+")")}function Pt(t){return((t=Math.max(0,Math.min(255,Math.round(t)||0)))<16?"0":"")+t.toString(16)}function Rt(t,e,n,r){return r<=0?t=e=n=NaN:n<=0||n>=1?t=e=NaN:e<=0&&(t=NaN),new _t(t,e,n,r)}function St(t){if(t instanceof _t)return new _t(t.h,t.s,t.l,t.opacity);if(t instanceof lt||(t=At(t)),!t)return new _t;if(t instanceof _t)return t;var e=(t=t.rgb()).r/255,n=t.g/255,r=t.b/255,i=Math.min(e,n,r),o=Math.max(e,n,r),a=NaN,s=o-i,u=(o+i)/2;return s?(a=e===o?(n-r)/s+6*(n<r):n===o?(r-e)/s+2:(e-n)/s+4,s/=u<.5?o+i:2-o-i,a*=60):s=u>0&&u<1?0:a,new _t(a,s,u,t.opacity)}function _t(t,e,n,r){this.h=+t,this.s=+e,this.l=+n,this.opacity=+r}function Ht(t,e,n){return 255*(t<60?e+(n-e)*t/60:t<180?n:t<240?e+(n-e)*(240-t)/60:e)}ut(lt,At,{copy:function(t){return Object.assign(new this.constructor,this,t)},displayable:function(){return this.rgb().displayable()},hex:Ot,formatHex:Ot,formatHsl:function(){return St(this).formatHsl()},formatRgb:Et,toString:Et}),ut(Dt,jt,ct(lt,{brighter:function(t){return t=null==t?pt:Math.pow(pt,t),new Dt(this.r*t,this.g*t,this.b*t,this.opacity)},darker:function(t){return t=null==t?ft:Math.pow(ft,t),new Dt(this.r*t,this.g*t,this.b*t,this.opacity)},rgb:function(){return this},displayable:function(){return-.5<=this.r&&this.r<255.5&&-.5<=this.g&&this.g<255.5&&-.5<=this.b&&this.b<255.5&&0<=this.opacity&&this.opacity<=1},hex:Ct,formatHex:Ct,formatRgb:Lt,toString:Lt})),ut(_t,(function(t,e,n,r){return 1===arguments.length?St(t):new _t(t,e,n,null==r?1:r)}),ct(lt,{brighter:function(t){return t=null==t?pt:Math.pow(pt,t),new _t(this.h,this.s,this.l*t,this.opacity)},darker:function(t){return t=null==t?ft:Math.pow(ft,t),new _t(this.h,this.s,this.l*t,this.opacity)},rgb:function(){var t=this.h%360+360*(this.h<0),e=isNaN(t)||isNaN(this.s)?0:this.s,n=this.l,r=n+(n<.5?n:1-n)*e,i=2*n-r;return new Dt(Ht(t>=240?t-240:t+120,i,r),Ht(t,i,r),Ht(t<120?t+240:t-120,i,r),this.opacity)},displayable:function(){return(0<=this.s&&this.s<=1||isNaN(this.s))&&0<=this.l&&this.l<=1&&0<=this.opacity&&this.opacity<=1},formatHsl:function(){var t=this.opacity;return(1===(t=isNaN(t)?1:Math.max(0,Math.min(1,t)))?"hsl(":"hsla(")+(this.h||0)+", "+100*(this.s||0)+"%, "+100*(this.l||0)+"%"+(1===t?")":", "+t+")")}}));var Vt=t=>()=>t;function qt(t){return 1==(t=+t)?Bt:function(e,n){return n-e?function(t,e,n){return t=Math.pow(t,n),e=Math.pow(e,n)-t,n=1/n,function(r){return Math.pow(t+r*e,n)}}(e,n,t):Vt(isNaN(e)?n:e)}}function Bt(t,e){var n=e-t;return n?function(t,e){return function(n){return t+n*e}}(t,n):Vt(isNaN(t)?e:t)}var Wt=function t(e){var n=qt(e);function r(t,e){var r=n((t=jt(t)).r,(e=jt(e)).r),i=n(t.g,e.g),o=n(t.b,e.b),a=Bt(t.opacity,e.opacity);return function(e){return t.r=r(e),t.g=i(e),t.b=o(e),t.opacity=a(e),t+""}}return r.gamma=t,r}(1);function It(t,e){e||(e=[]);var n,r=t?Math.min(e.length,t.length):0,i=e.slice();return function(o){for(n=0;n<r;++n)i[n]=t[n]*(1-o)+e[n]*o;return i}}function Ut(t,e){var n,r=e?e.length:0,i=t?Math.min(r,t.length):0,o=new Array(i),a=new Array(r);for(n=0;n<i;++n)o[n]=Jt(t[n],e[n]);for(;n<r;++n)a[n]=e[n];return function(t){for(n=0;n<i;++n)a[n]=o[n](t);return a}}function Ft(t,e){var n=new Date;return t=+t,e=+e,function(r){return n.setTime(t*(1-r)+e*r),n}}function zt(t,e){return t=+t,e=+e,function(n){return t*(1-n)+e*n}}function Xt(t,e){var n,r={},i={};for(n in null!==t&&"object"==typeof t||(t={}),null!==e&&"object"==typeof e||(e={}),e)n in t?r[n]=Jt(t[n],e[n]):i[n]=e[n];return function(t){for(n in r)i[n]=r[n](t);return i}}var Yt=/[-+]?(?:\d+\.?\d*|\.?\d+)(?:[eE][-+]?\d+)?/g,Gt=new RegExp(Yt.source,"g");function Zt(t,e){var n,r,i,o=Yt.lastIndex=Gt.lastIndex=0,a=-1,s=[],u=[];for(t+="",e+="";(n=Yt.exec(t))&&(r=Gt.exec(e));)(i=r.index)>o&&(i=e.slice(o,i),s[a]?s[a]+=i:s[++a]=i),(n=n[0])===(r=r[0])?s[a]?s[a]+=r:s[++a]=r:(s[++a]=null,u.push({i:a,x:zt(n,r)})),o=Gt.lastIndex;return o<e.length&&(i=e.slice(o),s[a]?s[a]+=i:s[++a]=i),s.length<2?u[0]?function(t){return function(e){return t(e)+""}}(u[0].x):function(t){return function(){return t}}(e):(e=u.length,function(t){for(var n,r=0;r<e;++r)s[(n=u[r]).i]=n.x(t);return s.join("")})}function Jt(t,e){var n,r,i=typeof e;return null==e||"boolean"===i?Vt(e):("number"===i?zt:"string"===i?(n=At(e))?(e=n,Wt):Zt:e instanceof At?Wt:e instanceof Date?Ft:(r=e,!ArrayBuffer.isView(r)||r instanceof DataView?Array.isArray(e)?Ut:"function"!=typeof e.valueOf&&"function"!=typeof e.toString||isNaN(e)?Xt:zt:It))(t,e)}function Qt(t,e){return t=+t,e=+e,function(n){return Math.round(t*(1-n)+e*n)}}function Kt(t){return+t}var te=[0,1];function ee(t){return t}function ne(t,e){return(e-=t=+t)?function(n){return(n-t)/e}:(n=isNaN(e)?NaN:.5,function(){return n});var n}function re(t,e,n){var r=t[0],i=t[1],o=e[0],a=e[1];return i<r?(r=ne(i,r),o=n(a,o)):(r=ne(r,i),o=n(o,a)),function(t){return o(r(t))}}function ie(t,e,n){var r=Math.min(t.length,e.length)-1,i=new Array(r),o=new Array(r),a=-1;for(t[r]<t[0]&&(t=t.slice().reverse(),e=e.slice().reverse());++a<r;)i[a]=ne(t[a],t[a+1]),o[a]=n(e[a],e[a+1]);return function(e){var n=nt(t,e,1,r)-1;return o[n](i[n](e))}}function oe(t,e){return e.domain(t.domain()).range(t.range()).interpolate(t.interpolate()).clamp(t.clamp()).unknown(t.unknown())}function ae(){var t,e,n,r,i,o,a=te,s=te,u=Jt,c=ee;function l(){var t,e,n,u=Math.min(a.length,s.length);return c!==ee&&(t=a[0],e=a[u-1],t>e&&(n=t,t=e,e=n),c=function(n){return Math.max(t,Math.min(e,n))}),r=u>2?ie:re,i=o=null,f}function f(e){return null==e||isNaN(e=+e)?n:(i||(i=r(a.map(t),s,u)))(t(c(e)))}return f.invert=function(n){return c(e((o||(o=r(s,a.map(t),zt)))(n)))},f.domain=function(t){return arguments.length?(a=Array.from(t,Kt),l()):a.slice()},f.range=function(t){return arguments.length?(s=Array.from(t),l()):s.slice()},f.rangeRound=function(t){return s=Array.from(t),u=Qt,l()},f.clamp=function(t){return arguments.length?(c=!!t||ee,l()):c!==ee},f.interpolate=function(t){return arguments.length?(u=t,l()):u},f.unknown=function(t){return arguments.length?(n=t,f):n},function(n,r){return t=n,e=r,l()}}function se(){return ae()(ee,ee)}function ue(t,e){if((n=(t=e?t.toExponential(e-1):t.toExponential()).indexOf("e"))<0)return null;var n,r=t.slice(0,n);return[r.length>1?r[0]+r.slice(2):r,+t.slice(n+1)]}function ce(t){return(t=ue(Math.abs(t)))?t[1]:NaN}var le,fe=/^(?:(.)?([<>=^]))?([+\-( ])?([$#])?(0)?(\d+)?(,)?(\.\d+)?(~)?([a-z%])?$/i;function pe(t){if(!(e=fe.exec(t)))throw new Error("invalid format: "+t);var e;return new de({fill:e[1],align:e[2],sign:e[3],symbol:e[4],zero:e[5],width:e[6],comma:e[7],precision:e[8]&&e[8].slice(1),trim:e[9],type:e[10]})}function de(t){this.fill=void 0===t.fill?" ":t.fill+"",this.align=void 0===t.align?">":t.align+"",this.sign=void 0===t.sign?"-":t.sign+"",this.symbol=void 0===t.symbol?"":t.symbol+"",this.zero=!!t.zero,this.width=void 0===t.width?void 0:+t.width,this.comma=!!t.comma,this.precision=void 0===t.precision?void 0:+t.precision,this.trim=!!t.trim,this.type=void 0===t.type?"":t.type+""}function he(t,e){var n=ue(t,e);if(!n)return t+"";var r=n[0],i=n[1];return i<0?"0."+new Array(-i).join("0")+r:r.length>i+1?r.slice(0,i+1)+"."+r.slice(i+1):r+new Array(i-r.length+2).join("0")}pe.prototype=de.prototype,de.prototype.toString=function(){return this.fill+this.align+this.sign+this.symbol+(this.zero?"0":"")+(void 0===this.width?"":Math.max(1,0|this.width))+(this.comma?",":"")+(void 0===this.precision?"":"."+Math.max(0,0|this.precision))+(this.trim?"~":"")+this.type};var me={"%":(t,e)=>(100*t).toFixed(e),b:t=>Math.round(t).toString(2),c:t=>t+"",d:function(t){return Math.abs(t=Math.round(t))>=1e21?t.toLocaleString("en").replace(/,/g,""):t.toString(10)},e:(t,e)=>t.toExponential(e),f:(t,e)=>t.toFixed(e),g:(t,e)=>t.toPrecision(e),o:t=>Math.round(t).toString(8),p:(t,e)=>he(100*t,e),r:he,s:function(t,e){var n=ue(t,e);if(!n)return t+"";var r=n[0],i=n[1],o=i-(le=3*Math.max(-8,Math.min(8,Math.floor(i/3))))+1,a=r.length;return o===a?r:o>a?r+new Array(o-a+1).join("0"):o>0?r.slice(0,o)+"."+r.slice(o):"0."+new Array(1-o).join("0")+ue(t,Math.max(0,e+o-1))[0]},X:t=>Math.round(t).toString(16).toUpperCase(),x:t=>Math.round(t).toString(16)};function ge(t){return t}var ve,be,ye,we=Array.prototype.map,xe=["y","z","a","f","p","n","µ","m","","k","M","G","T","P","E","Z","Y"];function Me(t){var e,n,r=void 0===t.grouping||void 0===t.thousands?ge:(e=we.call(t.grouping,Number),n=t.thousands+"",function(t,r){for(var i=t.length,o=[],a=0,s=e[0],u=0;i>0&&s>0&&(u+s+1>r&&(s=Math.max(1,r-u)),o.push(t.substring(i-=s,i+s)),!((u+=s+1)>r));)s=e[a=(a+1)%e.length];return o.reverse().join(n)}),i=void 0===t.currency?"":t.currency[0]+"",o=void 0===t.currency?"":t.currency[1]+"",a=void 0===t.decimal?".":t.decimal+"",s=void 0===t.numerals?ge:function(t){return function(e){return e.replace(/[0-9]/g,(function(e){return t[+e]}))}}(we.call(t.numerals,String)),u=void 0===t.percent?"%":t.percent+"",c=void 0===t.minus?"−":t.minus+"",l=void 0===t.nan?"NaN":t.nan+"";function f(t){var e=(t=pe(t)).fill,n=t.align,f=t.sign,p=t.symbol,d=t.zero,h=t.width,m=t.comma,g=t.precision,v=t.trim,b=t.type;"n"===b?(m=!0,b="g"):me[b]||(void 0===g&&(g=12),v=!0,b="g"),(d||"0"===e&&"="===n)&&(d=!0,e="0",n="=");var y="$"===p?i:"#"===p&&/[boxX]/.test(b)?"0"+b.toLowerCase():"",w="$"===p?o:/[%p]/.test(b)?u:"",x=me[b],M=/[defgprs%]/.test(b);function k(t){var i,o,u,p=y,k=w;if("c"===b)k=x(t)+k,t="";else{var O=(t=+t)<0||1/t<0;if(t=isNaN(t)?l:x(Math.abs(t),g),v&&(t=function(t){t:for(var e,n=t.length,r=1,i=-1;r<n;++r)switch(t[r]){case".":i=e=r;break;case"0":0===i&&(i=r),e=r;break;default:if(!+t[r])break t;i>0&&(i=0)}return i>0?t.slice(0,i)+t.slice(e+1):t}(t)),O&&0==+t&&"+"!==f&&(O=!1),p=(O?"("===f?f:c:"-"===f||"("===f?"":f)+p,k=("s"===b?xe[8+le/3]:"")+k+(O&&"("===f?")":""),M)for(i=-1,o=t.length;++i<o;)if(48>(u=t.charCodeAt(i))||u>57){k=(46===u?a+t.slice(i+1):t.slice(i))+k,t=t.slice(0,i);break}}m&&!d&&(t=r(t,1/0));var E=p.length+t.length+k.length,A=E<h?new Array(h-E+1).join(e):"";switch(m&&d&&(t=r(A+t,A.length?h-k.length:1/0),A=""),n){case"<":t=p+t+k+A;break;case"=":t=p+A+t+k;break;case"^":t=A.slice(0,E=A.length>>1)+p+t+k+A.slice(E);break;default:t=A+p+t+k}return s(t)}return g=void 0===g?6:/[gprs]/.test(b)?Math.max(1,Math.min(21,g)):Math.max(0,Math.min(20,g)),k.toString=function(){return t+""},k}return{format:f,formatPrefix:function(t,e){var n=f(((t=pe(t)).type="f",t)),r=3*Math.max(-8,Math.min(8,Math.floor(ce(e)/3))),i=Math.pow(10,-r),o=xe[8+r/3];return function(t){return n(i*t)+o}}}}function ke(t,e,n,r){var i,o=function(t,e,n){var r=Math.abs(e-t)/Math.max(0,n),i=Math.pow(10,Math.floor(Math.log(r)/Math.LN10)),o=r/i;return o>=rt?i*=10:o>=it?i*=5:o>=ot&&(i*=2),e<t?-i:i}(t,e,n);switch((r=pe(null==r?",f":r)).type){case"s":var a=Math.max(Math.abs(t),Math.abs(e));return null!=r.precision||isNaN(i=function(t,e){return Math.max(0,3*Math.max(-8,Math.min(8,Math.floor(ce(e)/3)))-ce(Math.abs(t)))}(o,a))||(r.precision=i),ye(r,a);case"":case"e":case"g":case"p":case"r":null!=r.precision||isNaN(i=function(t,e){return t=Math.abs(t),e=Math.abs(e)-t,Math.max(0,ce(e)-ce(t))+1}(o,Math.max(Math.abs(t),Math.abs(e))))||(r.precision=i-("e"===r.type));break;case"f":case"%":null!=r.precision||isNaN(i=function(t){return Math.max(0,-ce(Math.abs(t)))}(o))||(r.precision=i-2*("%"===r.type))}return be(r)}function Oe(t){var e=t.domain;return t.ticks=function(t){var n=e();return function(t,e,n){var r,i,o,a,s=-1;if(n=+n,(t=+t)==(e=+e)&&n>0)return[t];if((r=e<t)&&(i=t,t=e,e=i),0===(a=at(t,e,n))||!isFinite(a))return[];if(a>0){let n=Math.round(t/a),r=Math.round(e/a);for(n*a<t&&++n,r*a>e&&--r,o=new Array(i=r-n+1);++s<i;)o[s]=(n+s)*a}else{a=-a;let n=Math.round(t*a),r=Math.round(e*a);for(n/a<t&&++n,r/a>e&&--r,o=new Array(i=r-n+1);++s<i;)o[s]=(n+s)/a}return r&&o.reverse(),o}(n[0],n[n.length-1],null==t?10:t)},t.tickFormat=function(t,n){var r=e();return ke(r[0],r[r.length-1],null==t?10:t,n)},t.nice=function(n){null==n&&(n=10);var r,i,o=e(),a=0,s=o.length-1,u=o[a],c=o[s],l=10;for(c<u&&(i=u,u=c,c=i,i=a,a=s,s=i);l-- >0;){if((i=at(u,c,n))===r)return o[a]=u,o[s]=c,e(o);if(i>0)u=Math.floor(u/i)*i,c=Math.ceil(c/i)*i;else{if(!(i<0))break;u=Math.ceil(u*i)/i,c=Math.floor(c*i)/i}r=i}return t},t}function Ee(){var t=se();return t.copy=function(){return oe(t,Ee())},st.apply(t,arguments),Oe(t)}ve=Me({thousands:",",grouping:[3],currency:["$",""]}),be=ve.format,ye=ve.formatPrefix;var Ae="top",Te="bottom",Ne="right",$e="left",je="auto",De=[Ae,Te,Ne,$e],Ce="start",Le="end",Pe="viewport",Re="popper",Se=De.reduce((function(t,e){return t.concat([e+"-"+Ce,e+"-"+Le])}),[]),_e=[].concat(De,[je]).reduce((function(t,e){return t.concat([e,e+"-"+Ce,e+"-"+Le])}),[]),He=["beforeRead","read","afterRead","beforeMain","main","afterMain","beforeWrite","write","afterWrite"];function Ve(t){return t?(t.nodeName||"").toLowerCase():null}function qe(t){if(null==t)return window;if("[object Window]"!==t.toString()){var e=t.ownerDocument;return e&&e.defaultView||window}return t}function Be(t){return t instanceof qe(t).Element||t instanceof Element}function We(t){return t instanceof qe(t).HTMLElement||t instanceof HTMLElement}function Ie(t){return"undefined"!=typeof ShadowRoot&&(t instanceof qe(t).ShadowRoot||t instanceof ShadowRoot)}var Ue={name:"applyStyles",enabled:!0,phase:"write",fn:function(t){var e=t.state;Object.keys(e.elements).forEach((function(t){var n=e.styles[t]||{},r=e.attributes[t]||{},i=e.elements[t];We(i)&&Ve(i)&&(Object.assign(i.style,n),Object.keys(r).forEach((function(t){var e=r[t];!1===e?i.removeAttribute(t):i.setAttribute(t,!0===e?"":e)})))}))},effect:function(t){var e=t.state,n={popper:{position:e.options.strategy,left:"0",top:"0",margin:"0"},arrow:{position:"absolute"},reference:{}};return Object.assign(e.elements.popper.style,n.popper),e.styles=n,e.elements.arrow&&Object.assign(e.elements.arrow.style,n.arrow),function(){Object.keys(e.elements).forEach((function(t){var r=e.elements[t],i=e.attributes[t]||{},o=Object.keys(e.styles.hasOwnProperty(t)?e.styles[t]:n[t]).reduce((function(t,e){return t[e]="",t}),{});We(r)&&Ve(r)&&(Object.assign(r.style,o),Object.keys(i).forEach((function(t){r.removeAttribute(t)})))}))}},requires:["computeStyles"]};function Fe(t){return t.split("-")[0]}var ze=Math.max,Xe=Math.min,Ye=Math.round;function Ge(t,e){void 0===e&&(e=!1);var n=t.getBoundingClientRect(),r=1,i=1;if(We(t)&&e){var o=t.offsetHeight,a=t.offsetWidth;a>0&&(r=Ye(n.width)/a||1),o>0&&(i=Ye(n.height)/o||1)}return{width:n.width/r,height:n.height/i,top:n.top/i,right:n.right/r,bottom:n.bottom/i,left:n.left/r,x:n.left/r,y:n.top/i}}function Ze(t){var e=Ge(t),n=t.offsetWidth,r=t.offsetHeight;return Math.abs(e.width-n)<=1&&(n=e.width),Math.abs(e.height-r)<=1&&(r=e.height),{x:t.offsetLeft,y:t.offsetTop,width:n,height:r}}function Je(t,e){var n=e.getRootNode&&e.getRootNode();if(t.contains(e))return!0;if(n&&Ie(n)){var r=e;do{if(r&&t.isSameNode(r))return!0;r=r.parentNode||r.host}while(r)}return!1}function Qe(t){return qe(t).getComputedStyle(t)}function Ke(t){return["table","td","th"].indexOf(Ve(t))>=0}function tn(t){return((Be(t)?t.ownerDocument:t.document)||window.document).documentElement}function en(t){return"html"===Ve(t)?t:t.assignedSlot||t.parentNode||(Ie(t)?t.host:null)||tn(t)}function nn(t){return We(t)&&"fixed"!==Qe(t).position?t.offsetParent:null}function rn(t){for(var e=qe(t),n=nn(t);n&&Ke(n)&&"static"===Qe(n).position;)n=nn(n);return n&&("html"===Ve(n)||"body"===Ve(n)&&"static"===Qe(n).position)?e:n||function(t){var e=-1!==navigator.userAgent.toLowerCase().indexOf("firefox");if(-1!==navigator.userAgent.indexOf("Trident")&&We(t)&&"fixed"===Qe(t).position)return null;for(var n=en(t);We(n)&&["html","body"].indexOf(Ve(n))<0;){var r=Qe(n);if("none"!==r.transform||"none"!==r.perspective||"paint"===r.contain||-1!==["transform","perspective"].indexOf(r.willChange)||e&&"filter"===r.willChange||e&&r.filter&&"none"!==r.filter)return n;n=n.parentNode}return null}(t)||e}function on(t){return["top","bottom"].indexOf(t)>=0?"x":"y"}function an(t,e,n){return ze(t,Xe(e,n))}function sn(t){return Object.assign({},{top:0,right:0,bottom:0,left:0},t)}function un(t,e){return e.reduce((function(e,n){return e[n]=t,e}),{})}var cn={name:"arrow",enabled:!0,phase:"main",fn:function(t){var e,n=t.state,r=t.name,i=t.options,o=n.elements.arrow,a=n.modifiersData.popperOffsets,s=Fe(n.placement),u=on(s),c=[$e,Ne].indexOf(s)>=0?"height":"width";if(o&&a){var l=function(t,e){return sn("number"!=typeof(t="function"==typeof t?t(Object.assign({},e.rects,{placement:e.placement})):t)?t:un(t,De))}(i.padding,n),f=Ze(o),p="y"===u?Ae:$e,d="y"===u?Te:Ne,h=n.rects.reference[c]+n.rects.reference[u]-a[u]-n.rects.popper[c],m=a[u]-n.rects.reference[u],g=rn(o),v=g?"y"===u?g.clientHeight||0:g.clientWidth||0:0,b=h/2-m/2,y=l[p],w=v-f[c]-l[d],x=v/2-f[c]/2+b,M=an(y,x,w),k=u;n.modifiersData[r]=((e={})[k]=M,e.centerOffset=M-x,e)}},effect:function(t){var e=t.state,n=t.options.element,r=void 0===n?"[data-popper-arrow]":n;null!=r&&("string"!=typeof r||(r=e.elements.popper.querySelector(r)))&&Je(e.elements.popper,r)&&(e.elements.arrow=r)},requires:["popperOffsets"],requiresIfExists:["preventOverflow"]};function ln(t){return t.split("-")[1]}var fn={top:"auto",right:"auto",bottom:"auto",left:"auto"};function pn(t){var e,n=t.popper,r=t.popperRect,i=t.placement,o=t.variation,a=t.offsets,s=t.position,u=t.gpuAcceleration,c=t.adaptive,l=t.roundOffsets,f=t.isFixed,p=a.x,d=void 0===p?0:p,h=a.y,m=void 0===h?0:h,g="function"==typeof l?l({x:d,y:m}):{x:d,y:m};d=g.x,m=g.y;var v=a.hasOwnProperty("x"),b=a.hasOwnProperty("y"),y=$e,w=Ae,x=window;if(c){var M=rn(n),k="clientHeight",O="clientWidth";if(M===qe(n)&&"static"!==Qe(M=tn(n)).position&&"absolute"===s&&(k="scrollHeight",O="scrollWidth"),M=M,i===Ae||(i===$e||i===Ne)&&o===Le)w=Te,m-=(f&&x.visualViewport?x.visualViewport.height:M[k])-r.height,m*=u?1:-1;if(i===$e||(i===Ae||i===Te)&&o===Le)y=Ne,d-=(f&&x.visualViewport?x.visualViewport.width:M[O])-r.width,d*=u?1:-1}var E,A=Object.assign({position:s},c&&fn),T=!0===l?function(t){var e=t.x,n=t.y,r=window.devicePixelRatio||1;return{x:Ye(e*r)/r||0,y:Ye(n*r)/r||0}}({x:d,y:m}):{x:d,y:m};return d=T.x,m=T.y,u?Object.assign({},A,((E={})[w]=b?"0":"",E[y]=v?"0":"",E.transform=(x.devicePixelRatio||1)<=1?"translate("+d+"px, "+m+"px)":"translate3d("+d+"px, "+m+"px, 0)",E)):Object.assign({},A,((e={})[w]=b?m+"px":"",e[y]=v?d+"px":"",e.transform="",e))}var dn={passive:!0};var hn={name:"eventListeners",enabled:!0,phase:"write",fn:function(){},effect:function(t){var e=t.state,n=t.instance,r=t.options,i=r.scroll,o=void 0===i||i,a=r.resize,s=void 0===a||a,u=qe(e.elements.popper),c=[].concat(e.scrollParents.reference,e.scrollParents.popper);return o&&c.forEach((function(t){t.addEventListener("scroll",n.update,dn)})),s&&u.addEventListener("resize",n.update,dn),function(){o&&c.forEach((function(t){t.removeEventListener("scroll",n.update,dn)})),s&&u.removeEventListener("resize",n.update,dn)}},data:{}},mn={left:"right",right:"left",bottom:"top",top:"bottom"};function gn(t){return t.replace(/left|right|bottom|top/g,(function(t){return mn[t]}))}var vn={start:"end",end:"start"};function bn(t){return t.replace(/start|end/g,(function(t){return vn[t]}))}function yn(t){var e=qe(t);return{scrollLeft:e.pageXOffset,scrollTop:e.pageYOffset}}function wn(t){return Ge(tn(t)).left+yn(t).scrollLeft}function xn(t){var e=Qe(t),n=e.overflow,r=e.overflowX,i=e.overflowY;return/auto|scroll|overlay|hidden/.test(n+i+r)}function Mn(t){return["html","body","#document"].indexOf(Ve(t))>=0?t.ownerDocument.body:We(t)&&xn(t)?t:Mn(en(t))}function kn(t,e){var n;void 0===e&&(e=[]);var r=Mn(t),i=r===(null==(n=t.ownerDocument)?void 0:n.body),o=qe(r),a=i?[o].concat(o.visualViewport||[],xn(r)?r:[]):r,s=e.concat(a);return i?s:s.concat(kn(en(a)))}function On(t){return Object.assign({},t,{left:t.x,top:t.y,right:t.x+t.width,bottom:t.y+t.height})}function En(t,e){return e===Pe?On(function(t){var e=qe(t),n=tn(t),r=e.visualViewport,i=n.clientWidth,o=n.clientHeight,a=0,s=0;return r&&(i=r.width,o=r.height,/^((?!chrome|android).)*safari/i.test(navigator.userAgent)||(a=r.offsetLeft,s=r.offsetTop)),{width:i,height:o,x:a+wn(t),y:s}}(t)):Be(e)?function(t){var e=Ge(t);return e.top=e.top+t.clientTop,e.left=e.left+t.clientLeft,e.bottom=e.top+t.clientHeight,e.right=e.left+t.clientWidth,e.width=t.clientWidth,e.height=t.clientHeight,e.x=e.left,e.y=e.top,e}(e):On(function(t){var e,n=tn(t),r=yn(t),i=null==(e=t.ownerDocument)?void 0:e.body,o=ze(n.scrollWidth,n.clientWidth,i?i.scrollWidth:0,i?i.clientWidth:0),a=ze(n.scrollHeight,n.clientHeight,i?i.scrollHeight:0,i?i.clientHeight:0),s=-r.scrollLeft+wn(t),u=-r.scrollTop;return"rtl"===Qe(i||n).direction&&(s+=ze(n.clientWidth,i?i.clientWidth:0)-o),{width:o,height:a,x:s,y:u}}(tn(t)))}function An(t,e,n){var r="clippingParents"===e?function(t){var e=kn(en(t)),n=["absolute","fixed"].indexOf(Qe(t).position)>=0&&We(t)?rn(t):t;return Be(n)?e.filter((function(t){return Be(t)&&Je(t,n)&&"body"!==Ve(t)})):[]}(t):[].concat(e),i=[].concat(r,[n]),o=i[0],a=i.reduce((function(e,n){var r=En(t,n);return e.top=ze(r.top,e.top),e.right=Xe(r.right,e.right),e.bottom=Xe(r.bottom,e.bottom),e.left=ze(r.left,e.left),e}),En(t,o));return a.width=a.right-a.left,a.height=a.bottom-a.top,a.x=a.left,a.y=a.top,a}function Tn(t){var e,n=t.reference,r=t.element,i=t.placement,o=i?Fe(i):null,a=i?ln(i):null,s=n.x+n.width/2-r.width/2,u=n.y+n.height/2-r.height/2;switch(o){case Ae:e={x:s,y:n.y-r.height};break;case Te:e={x:s,y:n.y+n.height};break;case Ne:e={x:n.x+n.width,y:u};break;case $e:e={x:n.x-r.width,y:u};break;default:e={x:n.x,y:n.y}}var c=o?on(o):null;if(null!=c){var l="y"===c?"height":"width";switch(a){case Ce:e[c]=e[c]-(n[l]/2-r[l]/2);break;case Le:e[c]=e[c]+(n[l]/2-r[l]/2)}}return e}function Nn(t,e){void 0===e&&(e={});var n=e,r=n.placement,i=void 0===r?t.placement:r,o=n.boundary,a=void 0===o?"clippingParents":o,s=n.rootBoundary,u=void 0===s?Pe:s,c=n.elementContext,l=void 0===c?Re:c,f=n.altBoundary,p=void 0!==f&&f,d=n.padding,h=void 0===d?0:d,m=sn("number"!=typeof h?h:un(h,De)),g=l===Re?"reference":Re,v=t.rects.popper,b=t.elements[p?g:l],y=An(Be(b)?b:b.contextElement||tn(t.elements.popper),a,u),w=Ge(t.elements.reference),x=Tn({reference:w,element:v,strategy:"absolute",placement:i}),M=On(Object.assign({},v,x)),k=l===Re?M:w,O={top:y.top-k.top+m.top,bottom:k.bottom-y.bottom+m.bottom,left:y.left-k.left+m.left,right:k.right-y.right+m.right},E=t.modifiersData.offset;if(l===Re&&E){var A=E[i];Object.keys(O).forEach((function(t){var e=[Ne,Te].indexOf(t)>=0?1:-1,n=[Ae,Te].indexOf(t)>=0?"y":"x";O[t]+=A[n]*e}))}return O}function $n(t,e){void 0===e&&(e={});var n=e,r=n.placement,i=n.boundary,o=n.rootBoundary,a=n.padding,s=n.flipVariations,u=n.allowedAutoPlacements,c=void 0===u?_e:u,l=ln(r),f=l?s?Se:Se.filter((function(t){return ln(t)===l})):De,p=f.filter((function(t){return c.indexOf(t)>=0}));0===p.length&&(p=f);var d=p.reduce((function(e,n){return e[n]=Nn(t,{placement:n,boundary:i,rootBoundary:o,padding:a})[Fe(n)],e}),{});return Object.keys(d).sort((function(t,e){return d[t]-d[e]}))}var jn={name:"flip",enabled:!0,phase:"main",fn:function(t){var e=t.state,n=t.options,r=t.name;if(!e.modifiersData[r]._skip){for(var i=n.mainAxis,o=void 0===i||i,a=n.altAxis,s=void 0===a||a,u=n.fallbackPlacements,c=n.padding,l=n.boundary,f=n.rootBoundary,p=n.altBoundary,d=n.flipVariations,h=void 0===d||d,m=n.allowedAutoPlacements,g=e.options.placement,v=Fe(g),b=u||(v===g||!h?[gn(g)]:function(t){if(Fe(t)===je)return[];var e=gn(t);return[bn(t),e,bn(e)]}(g)),y=[g].concat(b).reduce((function(t,n){return t.concat(Fe(n)===je?$n(e,{placement:n,boundary:l,rootBoundary:f,padding:c,flipVariations:h,allowedAutoPlacements:m}):n)}),[]),w=e.rects.reference,x=e.rects.popper,M=new Map,k=!0,O=y[0],E=0;E<y.length;E++){var A=y[E],T=Fe(A),N=ln(A)===Ce,$=[Ae,Te].indexOf(T)>=0,j=$?"width":"height",D=Nn(e,{placement:A,boundary:l,rootBoundary:f,altBoundary:p,padding:c}),C=$?N?Ne:$e:N?Te:Ae;w[j]>x[j]&&(C=gn(C));var L=gn(C),P=[];if(o&&P.push(D[T]<=0),s&&P.push(D[C]<=0,D[L]<=0),P.every((function(t){return t}))){O=A,k=!1;break}M.set(A,P)}if(k)for(var R=function(t){var e=y.find((function(e){var n=M.get(e);if(n)return n.slice(0,t).every((function(t){return t}))}));if(e)return O=e,"break"},S=h?3:1;S>0;S--){if("break"===R(S))break}e.placement!==O&&(e.modifiersData[r]._skip=!0,e.placement=O,e.reset=!0)}},requiresIfExists:["offset"],data:{_skip:!1}};function Dn(t,e,n){return void 0===n&&(n={x:0,y:0}),{top:t.top-e.height-n.y,right:t.right-e.width+n.x,bottom:t.bottom-e.height+n.y,left:t.left-e.width-n.x}}function Cn(t){return[Ae,Ne,Te,$e].some((function(e){return t[e]>=0}))}var Ln={name:"offset",enabled:!0,phase:"main",requires:["popperOffsets"],fn:function(t){var e=t.state,n=t.options,r=t.name,i=n.offset,o=void 0===i?[0,0]:i,a=_e.reduce((function(t,n){return t[n]=function(t,e,n){var r=Fe(t),i=[$e,Ae].indexOf(r)>=0?-1:1,o="function"==typeof n?n(Object.assign({},e,{placement:t})):n,a=o[0],s=o[1];return a=a||0,s=(s||0)*i,[$e,Ne].indexOf(r)>=0?{x:s,y:a}:{x:a,y:s}}(n,e.rects,o),t}),{}),s=a[e.placement],u=s.x,c=s.y;null!=e.modifiersData.popperOffsets&&(e.modifiersData.popperOffsets.x+=u,e.modifiersData.popperOffsets.y+=c),e.modifiersData[r]=a}};var Pn={name:"preventOverflow",enabled:!0,phase:"main",fn:function(t){var e=t.state,n=t.options,r=t.name,i=n.mainAxis,o=void 0===i||i,a=n.altAxis,s=void 0!==a&&a,u=n.boundary,c=n.rootBoundary,l=n.altBoundary,f=n.padding,p=n.tether,d=void 0===p||p,h=n.tetherOffset,m=void 0===h?0:h,g=Nn(e,{boundary:u,rootBoundary:c,padding:f,altBoundary:l}),v=Fe(e.placement),b=ln(e.placement),y=!b,w=on(v),x="x"===w?"y":"x",M=e.modifiersData.popperOffsets,k=e.rects.reference,O=e.rects.popper,E="function"==typeof m?m(Object.assign({},e.rects,{placement:e.placement})):m,A="number"==typeof E?{mainAxis:E,altAxis:E}:Object.assign({mainAxis:0,altAxis:0},E),T=e.modifiersData.offset?e.modifiersData.offset[e.placement]:null,N={x:0,y:0};if(M){if(o){var $,j="y"===w?Ae:$e,D="y"===w?Te:Ne,C="y"===w?"height":"width",L=M[w],P=L+g[j],R=L-g[D],S=d?-O[C]/2:0,_=b===Ce?k[C]:O[C],H=b===Ce?-O[C]:-k[C],V=e.elements.arrow,q=d&&V?Ze(V):{width:0,height:0},B=e.modifiersData["arrow#persistent"]?e.modifiersData["arrow#persistent"].padding:{top:0,right:0,bottom:0,left:0},W=B[j],I=B[D],U=an(0,k[C],q[C]),F=y?k[C]/2-S-U-W-A.mainAxis:_-U-W-A.mainAxis,z=y?-k[C]/2+S+U+I+A.mainAxis:H+U+I+A.mainAxis,X=e.elements.arrow&&rn(e.elements.arrow),Y=X?"y"===w?X.clientTop||0:X.clientLeft||0:0,G=null!=($=null==T?void 0:T[w])?$:0,Z=L+z-G,J=an(d?Xe(P,L+F-G-Y):P,L,d?ze(R,Z):R);M[w]=J,N[w]=J-L}if(s){var Q,K="x"===w?Ae:$e,tt="x"===w?Te:Ne,et=M[x],nt="y"===x?"height":"width",rt=et+g[K],it=et-g[tt],ot=-1!==[Ae,$e].indexOf(v),at=null!=(Q=null==T?void 0:T[x])?Q:0,st=ot?rt:et-k[nt]-O[nt]-at+A.altAxis,ut=ot?et+k[nt]+O[nt]-at-A.altAxis:it,ct=d&&ot?function(t,e,n){var r=an(t,e,n);return r>n?n:r}(st,et,ut):an(d?st:rt,et,d?ut:it);M[x]=ct,N[x]=ct-et}e.modifiersData[r]=N}},requiresIfExists:["offset"]};function Rn(t,e,n){void 0===n&&(n=!1);var r,i=We(e),o=We(e)&&function(t){var e=t.getBoundingClientRect(),n=Ye(e.width)/t.offsetWidth||1,r=Ye(e.height)/t.offsetHeight||1;return 1!==n||1!==r}(e),a=tn(e),s=Ge(t,o),u={scrollLeft:0,scrollTop:0},c={x:0,y:0};return(i||!i&&!n)&&(("body"!==Ve(e)||xn(a))&&(u=(r=e)!==qe(r)&&We(r)?function(t){return{scrollLeft:t.scrollLeft,scrollTop:t.scrollTop}}(r):yn(r)),We(e)?((c=Ge(e,!0)).x+=e.clientLeft,c.y+=e.clientTop):a&&(c.x=wn(a))),{x:s.left+u.scrollLeft-c.x,y:s.top+u.scrollTop-c.y,width:s.width,height:s.height}}function Sn(t){var e=new Map,n=new Set,r=[];function i(t){n.add(t.name),[].concat(t.requires||[],t.requiresIfExists||[]).forEach((function(t){if(!n.has(t)){var r=e.get(t);r&&i(r)}})),r.push(t)}return t.forEach((function(t){e.set(t.name,t)})),t.forEach((function(t){n.has(t.name)||i(t)})),r}var _n={placement:"bottom",modifiers:[],strategy:"absolute"};function Hn(){for(var t=arguments.length,e=new Array(t),n=0;n<t;n++)e[n]=arguments[n];return!e.some((function(t){return!(t&&"function"==typeof t.getBoundingClientRect)}))}function Vn(t){void 0===t&&(t={});var e=t,n=e.defaultModifiers,r=void 0===n?[]:n,i=e.defaultOptions,o=void 0===i?_n:i;return function(t,e,n){void 0===n&&(n=o);var i,a,s={placement:"bottom",orderedModifiers:[],options:Object.assign({},_n,o),modifiersData:{},elements:{reference:t,popper:e},attributes:{},styles:{}},u=[],c=!1,l={state:s,setOptions:function(n){var i="function"==typeof n?n(s.options):n;f(),s.options=Object.assign({},o,s.options,i),s.scrollParents={reference:Be(t)?kn(t):t.contextElement?kn(t.contextElement):[],popper:kn(e)};var a,c,p=function(t){var e=Sn(t);return He.reduce((function(t,n){return t.concat(e.filter((function(t){return t.phase===n})))}),[])}((a=[].concat(r,s.options.modifiers),c=a.reduce((function(t,e){var n=t[e.name];return t[e.name]=n?Object.assign({},n,e,{options:Object.assign({},n.options,e.options),data:Object.assign({},n.data,e.data)}):e,t}),{}),Object.keys(c).map((function(t){return c[t]}))));return s.orderedModifiers=p.filter((function(t){return t.enabled})),s.orderedModifiers.forEach((function(t){var e=t.name,n=t.options,r=void 0===n?{}:n,i=t.effect;if("function"==typeof i){var o=i({state:s,name:e,instance:l,options:r}),a=function(){};u.push(o||a)}})),l.update()},forceUpdate:function(){if(!c){var t=s.elements,e=t.reference,n=t.popper;if(Hn(e,n)){s.rects={reference:Rn(e,rn(n),"fixed"===s.options.strategy),popper:Ze(n)},s.reset=!1,s.placement=s.options.placement,s.orderedModifiers.forEach((function(t){return s.modifiersData[t.name]=Object.assign({},t.data)}));for(var r=0;r<s.orderedModifiers.length;r++)if(!0!==s.reset){var i=s.orderedModifiers[r],o=i.fn,a=i.options,u=void 0===a?{}:a,f=i.name;"function"==typeof o&&(s=o({state:s,options:u,name:f,instance:l})||s)}else s.reset=!1,r=-1}}},update:(i=function(){return new Promise((function(t){l.forceUpdate(),t(s)}))},function(){return a||(a=new Promise((function(t){Promise.resolve().then((function(){a=void 0,t(i())}))}))),a}),destroy:function(){f(),c=!0}};if(!Hn(t,e))return l;function f(){u.forEach((function(t){return t()})),u=[]}return l.setOptions(n).then((function(t){!c&&n.onFirstUpdate&&n.onFirstUpdate(t)})),l}}var qn=Vn({defaultModifiers:[hn,{name:"popperOffsets",enabled:!0,phase:"read",fn:function(t){var e=t.state,n=t.name;e.modifiersData[n]=Tn({reference:e.rects.reference,element:e.rects.popper,strategy:"absolute",placement:e.placement})},data:{}},{name:"computeStyles",enabled:!0,phase:"beforeWrite",fn:function(t){var e=t.state,n=t.options,r=n.gpuAcceleration,i=void 0===r||r,o=n.adaptive,a=void 0===o||o,s=n.roundOffsets,u=void 0===s||s,c={placement:Fe(e.placement),variation:ln(e.placement),popper:e.elements.popper,popperRect:e.rects.popper,gpuAcceleration:i,isFixed:"fixed"===e.options.strategy};null!=e.modifiersData.popperOffsets&&(e.styles.popper=Object.assign({},e.styles.popper,pn(Object.assign({},c,{offsets:e.modifiersData.popperOffsets,position:e.options.strategy,adaptive:a,roundOffsets:u})))),null!=e.modifiersData.arrow&&(e.styles.arrow=Object.assign({},e.styles.arrow,pn(Object.assign({},c,{offsets:e.modifiersData.arrow,position:"absolute",adaptive:!1,roundOffsets:u})))),e.attributes.popper=Object.assign({},e.attributes.popper,{"data-popper-placement":e.placement})},data:{}},Ue,Ln,jn,Pn,cn,{name:"hide",enabled:!0,phase:"main",requiresIfExists:["preventOverflow"],fn:function(t){var e=t.state,n=t.name,r=e.rects.reference,i=e.rects.popper,o=e.modifiersData.preventOverflow,a=Nn(e,{elementContext:"reference"}),s=Nn(e,{altBoundary:!0}),u=Dn(a,r),c=Dn(s,i,o),l=Cn(u),f=Cn(c);e.modifiersData[n]={referenceClippingOffsets:u,popperEscapeOffsets:c,isReferenceHidden:l,hasPopperEscaped:f},e.attributes.popper=Object.assign({},e.attributes.popper,{"data-popper-reference-hidden":l,"data-popper-escaped":f})}}]}),Bn={passive:!0},Wn="tippy-content",In="tippy-arrow",Un="tippy-svg-arrow";function Fn(t,e,n){if(Array.isArray(t)){var r=t[e];return null==r?Array.isArray(n)?n[e]:n:r}return t}function zn(t,e){var n={}.toString.call(t);return 0===n.indexOf("[object")&&n.indexOf(e+"]")>-1}function Xn(t,e){return"function"==typeof t?t.apply(void 0,e):t}function Yn(t,e){return 0===e?t:function(r){clearTimeout(n),n=setTimeout((function(){t(r)}),e)};var n}function Gn(t){return[].concat(t)}function Zn(t,e){-1===t.indexOf(e)&&t.push(e)}function Jn(t){return[].slice.call(t)}function Qn(){return document.createElement("div")}function Kn(t){return zn(t,"Element")}function tr(t){return Kn(t)?[t]:function(t){return zn(t,"NodeList")}(t)?Jn(t):Array.isArray(t)?t:Jn(document.querySelectorAll(t))}function er(t,e){t.forEach((function(t){t&&(t.style.transitionDuration=e+"ms")}))}function nr(t,e){t.forEach((function(t){t&&t.setAttribute("data-state",e)}))}function rr(t,e,n){var r=e+"EventListener";["transitionend","webkitTransitionEnd"].forEach((function(e){t[r](e,n)}))}var ir={isTouch:!1},or=0;function ar(){ir.isTouch||(ir.isTouch=!0,window.performance&&document.addEventListener("mousemove",sr))}function sr(){var t=performance.now();t-or<20&&(ir.isTouch=!1,document.removeEventListener("mousemove",sr)),or=t}function ur(){var t,e=document.activeElement;if((t=e)&&t._tippy&&t._tippy.reference===t){var n=e._tippy;e.blur&&!n.state.isVisible&&e.blur()}}var cr="undefined"!=typeof window&&"undefined"!=typeof document,lr=cr?navigator.userAgent:"",fr=/MSIE |Trident\//.test(lr),pr=cr&&/iPhone|iPad|iPod/.test(navigator.platform),dr=Object.assign({appendTo:function(){return document.body},aria:{content:"auto",expanded:"auto"},content:"",delay:0,duration:[300,250],getReferenceClientRect:null,hideOnClick:!0,ignoreAttributes:!1,interactive:!1,interactiveBorder:2,interactiveDebounce:0,moveTransition:"",offset:[0,10],onAfterUpdate:function(){},onBeforeUpdate:function(){},onCreate:function(){},onDestroy:function(){},onHidden:function(){},onHide:function(){},onMount:function(){},onShow:function(){},onShown:function(){},onTrigger:function(){},onUntrigger:function(){},placement:"top",plugins:[],popperOptions:{},render:null,showOnCreate:!1,touch:!0,trigger:"mouseenter focus",triggerTarget:null},{animateFill:!1,followCursor:!1,inlinePositioning:!1,sticky:!1},{},{allowHTML:!1,animation:"fade",arrow:!0,content:"",inertia:!1,maxWidth:350,role:"tooltip",theme:"",zIndex:9999}),hr=Object.keys(dr);function mr(t){var e=(t.plugins||[]).reduce((function(e,n){var r=n.name,i=n.defaultValue;return r&&(e[r]=void 0!==t[r]?t[r]:i),e}),{});return Object.assign({},t,{},e)}function gr(t,e){var n=Object.assign({},e,{content:Xn(e.content,[t])},e.ignoreAttributes?{}:function(t,e){return(e?Object.keys(mr(Object.assign({},dr,{plugins:e}))):hr).reduce((function(e,n){var r=(t.getAttribute("data-tippy-"+n)||"").trim();if(!r)return e;if("content"===n)e[n]=r;else try{e[n]=JSON.parse(r)}catch(t){e[n]=r}return e}),{})}(t,e.plugins));return n.aria=Object.assign({},dr.aria,{},n.aria),n.aria={expanded:"auto"===n.aria.expanded?e.interactive:n.aria.expanded,content:"auto"===n.aria.content?e.interactive?null:"describedby":n.aria.content},n}function vr(t,e){t.innerHTML=e}function br(t){var e=Qn();return!0===t?e.className=In:(e.className=Un,Kn(t)?e.appendChild(t):vr(e,t)),e}function yr(t,e){Kn(e.content)?(vr(t,""),t.appendChild(e.content)):"function"!=typeof e.content&&(e.allowHTML?vr(t,e.content):t.textContent=e.content)}function wr(t){var e=t.firstElementChild,n=Jn(e.children);return{box:e,content:n.find((function(t){return t.classList.contains(Wn)})),arrow:n.find((function(t){return t.classList.contains(In)||t.classList.contains(Un)})),backdrop:n.find((function(t){return t.classList.contains("tippy-backdrop")}))}}function xr(t){var e=Qn(),n=Qn();n.className="tippy-box",n.setAttribute("data-state","hidden"),n.setAttribute("tabindex","-1");var r=Qn();function i(n,r){var i=wr(e),o=i.box,a=i.content,s=i.arrow;r.theme?o.setAttribute("data-theme",r.theme):o.removeAttribute("data-theme"),"string"==typeof r.animation?o.setAttribute("data-animation",r.animation):o.removeAttribute("data-animation"),r.inertia?o.setAttribute("data-inertia",""):o.removeAttribute("data-inertia"),o.style.maxWidth="number"==typeof r.maxWidth?r.maxWidth+"px":r.maxWidth,r.role?o.setAttribute("role",r.role):o.removeAttribute("role"),n.content!==r.content&&yr(a,t.props),r.arrow?s?n.arrow!==r.arrow&&(o.removeChild(s),o.appendChild(br(r.arrow))):o.appendChild(br(r.arrow)):s&&o.removeChild(s)}return r.className=Wn,r.setAttribute("data-state","hidden"),yr(r,t.props),e.appendChild(n),n.appendChild(r),i(t.props,t.props),{popper:e,onUpdate:i}}xr.$$tippy=!0;var Mr=1,kr=[],Or=[];function Er(t,e){var n,r,i,o,a,s,u,c,l=gr(t,Object.assign({},dr,{},mr(e))),f=!1,p=!1,d=!1,h=[],m=Yn(F,l.interactiveDebounce),g=function(t){var e=Gn(t)[0];return e&&e.ownerDocument||document}(l.triggerTarget||t),v=Mr++,b=(c=l.plugins).filter((function(t,e){return c.indexOf(t)===e})),y={id:v,reference:t,popper:Qn(),popperInstance:null,props:l,state:{isEnabled:!0,isVisible:!1,isDestroyed:!1,isMounted:!1,isShown:!1},plugins:b,clearDelayTimeouts:function(){clearTimeout(n),clearTimeout(r),cancelAnimationFrame(i)},setProps:function(e){if(y.state.isDestroyed)return;L("onBeforeUpdate",[y,e]),I();var n=y.props,r=gr(t,Object.assign({},y.props,{},e,{ignoreAttributes:!0}));y.props=r,W(),n.interactiveDebounce!==r.interactiveDebounce&&(S(),m=Yn(F,r.interactiveDebounce));n.triggerTarget&&!r.triggerTarget?Gn(n.triggerTarget).forEach((function(t){t.removeAttribute("aria-expanded")})):r.triggerTarget&&t.removeAttribute("aria-expanded");R(),D(),M&&M(n,r);y.popperInstance&&(G(),J().forEach((function(t){requestAnimationFrame(t._tippy.popperInstance.forceUpdate)})));L("onAfterUpdate",[y,e])},setContent:function(t){y.setProps({content:t})},show:function(){var t=y.state.isVisible,e=y.state.isDestroyed,n=!y.state.isEnabled,r=ir.isTouch&&!y.props.touch,i=Fn(y.props.duration,0,dr.duration);if(t||e||n||r)return;if(N().hasAttribute("disabled"))return;if(L("onShow",[y],!1),!1===y.props.onShow(y))return;y.state.isVisible=!0,T()&&(x.style.visibility="visible");D(),H(),y.state.isMounted||(x.style.transition="none");if(T()){var o=$(),a=o.box,u=o.content;er([a,u],0)}s=function(){if(y.state.isVisible&&!d){if(d=!0,x.offsetHeight,x.style.transition=y.props.moveTransition,T()&&y.props.animation){var t=$(),e=t.box,n=t.content;er([e,n],i),nr([e,n],"visible")}P(),R(),Zn(Or,y),C(!0),y.state.isMounted=!0,L("onMount",[y]),y.props.animation&&T()&&function(t,e){q(t,e)}(i,(function(){y.state.isShown=!0,L("onShown",[y])}))}},function(){var t,e=y.props.appendTo,n=N();t=y.props.interactive&&e===dr.appendTo||"parent"===e?n.parentNode:Xn(e,[n]);t.contains(x)||t.appendChild(x);G()}()},hide:function(){var t=!y.state.isVisible,e=y.state.isDestroyed,n=!y.state.isEnabled,r=Fn(y.props.duration,1,dr.duration);if(t||e||n)return;if(L("onHide",[y],!1),!1===y.props.onHide(y))return;y.state.isVisible=!1,y.state.isShown=!1,d=!1,T()&&(x.style.visibility="hidden");if(S(),V(),D(),T()){var i=$(),o=i.box,a=i.content;y.props.animation&&(er([o,a],r),nr([o,a],"hidden"))}P(),R(),y.props.animation?T()&&function(t,e){q(t,(function(){!y.state.isVisible&&x.parentNode&&x.parentNode.contains(x)&&e()}))}(r,y.unmount):y.unmount()},enable:function(){y.state.isEnabled=!0},disable:function(){y.hide(),y.state.isEnabled=!1},unmount:function(){y.state.isVisible&&y.hide();if(!y.state.isMounted)return;Z(),J().forEach((function(t){t._tippy.unmount()})),x.parentNode&&x.parentNode.removeChild(x);0===(Or=Or.filter((function(t){return t!==y}))).length&&C(!1);y.state.isMounted=!1,L("onHidden",[y])},destroy:function(){if(y.state.isDestroyed)return;y.clearDelayTimeouts(),y.unmount(),I(),delete t._tippy,y.state.isDestroyed=!0,L("onDestroy",[y])}};if(!l.render)return y;var w=l.render(y),x=w.popper,M=w.onUpdate;x.setAttribute("data-tippy-root",""),x.id="tippy-"+y.id,y.popper=x,t._tippy=y,x._tippy=y;var k=b.map((function(t){return t.fn(y)})),O=t.hasAttribute("aria-expanded");return W(),R(),D(),L("onCreate",[y]),l.showOnCreate&&Q(),x.addEventListener("mouseenter",(function(){y.props.interactive&&y.state.isVisible&&y.clearDelayTimeouts()})),x.addEventListener("mouseleave",(function(t){y.props.interactive&&y.props.trigger.indexOf("mouseenter")>=0&&(g.addEventListener("mousemove",m),m(t))})),y;function E(){var t=y.props.touch;return Array.isArray(t)?t:[t,0]}function A(){return"hold"===E()[0]}function T(){var t;return!!(null==(t=y.props.render)?void 0:t.$$tippy)}function N(){return u||t}function $(){return wr(x)}function j(t){return y.state.isMounted&&!y.state.isVisible||ir.isTouch||o&&"focus"===o.type?0:Fn(y.props.delay,t?0:1,dr.delay)}function D(){x.style.pointerEvents=y.props.interactive&&y.state.isVisible?"":"none",x.style.zIndex=""+y.props.zIndex}function C(t){var e=t&&pr&&ir.isTouch;g.body.classList[e?"add":"remove"]("tippy-iOS")}function L(t,e,n){var r;(void 0===n&&(n=!0),k.forEach((function(n){n[t]&&n[t].apply(void 0,e)})),n)&&(r=y.props)[t].apply(r,e)}function P(){var e=y.props.aria;if(e.content){var n="aria-"+e.content,r=x.id;Gn(y.props.triggerTarget||t).forEach((function(t){var e=t.getAttribute(n);if(y.state.isVisible)t.setAttribute(n,e?e+" "+r:r);else{var i=e&&e.replace(r,"").trim();i?t.setAttribute(n,i):t.removeAttribute(n)}}))}}function R(){!O&&y.props.aria.expanded&&Gn(y.props.triggerTarget||t).forEach((function(t){y.props.interactive?t.setAttribute("aria-expanded",y.state.isVisible&&t===N()?"true":"false"):t.removeAttribute("aria-expanded")}))}function S(){g.body.removeEventListener("mouseleave",K),g.removeEventListener("mousemove",m),kr=kr.filter((function(t){return t!==m}))}function _(t){if(!y.props.interactive||!x.contains(t.target)){if(N().contains(t.target)){if(ir.isTouch)return;if(y.state.isVisible&&y.props.trigger.indexOf("click")>=0)return}!0===y.props.hideOnClick&&(f=!1,y.clearDelayTimeouts(),y.hide(),p=!0,setTimeout((function(){p=!1})),y.state.isMounted||V())}}function H(){g.addEventListener("mousedown",_,!0)}function V(){g.removeEventListener("mousedown",_,!0)}function q(t,e){var n=$().box;function r(t){t.target===n&&(rr(n,"remove",r),e())}if(0===t)return e();rr(n,"remove",a),rr(n,"add",r),a=r}function B(e,n,r){void 0===r&&(r=!1),Gn(y.props.triggerTarget||t).forEach((function(t){t.addEventListener(e,n,r),h.push({node:t,eventType:e,handler:n,options:r})}))}function W(){var t;A()&&(B("touchstart",U,Bn),B("touchend",z,Bn)),(t=y.props.trigger,t.split(/\s+/).filter(Boolean)).forEach((function(t){if("manual"!==t)switch(B(t,U),t){case"mouseenter":B("mouseleave",z);break;case"focus":B(fr?"focusout":"blur",X);break;case"focusin":B("focusout",X)}}))}function I(){h.forEach((function(t){var e=t.node,n=t.eventType,r=t.handler,i=t.options;e.removeEventListener(n,r,i)})),h=[]}function U(t){var e=!1;if(y.state.isEnabled&&!Y(t)&&!p){if(o=t,u=t.currentTarget,R(),!y.state.isVisible&&function(t){return zn(t,"MouseEvent")}(t)&&kr.forEach((function(e){return e(t)})),"click"===t.type&&(y.props.trigger.indexOf("mouseenter")<0||f)&&!1!==y.props.hideOnClick&&y.state.isVisible)e=!0;else{var r=E(),i=r[0],a=r[1];ir.isTouch&&"hold"===i&&a?n=setTimeout((function(){Q(t)}),a):Q(t)}"click"===t.type&&(f=!e),e&&K(t)}}function F(e){var n=e.target,r=t.contains(n)||x.contains(n);if("mousemove"!==e.type||!r){var i=J().concat(x).map((function(t){var e,n=null==(e=t._tippy.popperInstance)?void 0:e.state;return n?{popperRect:t.getBoundingClientRect(),popperState:n,props:l}:null})).filter(Boolean);(function(t,e){var n=e.clientX,r=e.clientY;return t.every((function(t){var e=t.popperRect,i=t.popperState,o=t.props.interactiveBorder,a=i.placement.split("-")[0],s=i.modifiersData.offset;if(!s)return!0;var u="bottom"===a?s.top.y:0,c="top"===a?s.bottom.y:0,l="right"===a?s.left.x:0,f="left"===a?s.right.x:0,p=e.top-r+u>o,d=r-e.bottom-c>o,h=e.left-n+l>o,m=n-e.right-f>o;return p||d||h||m}))})(i,e)&&(S(),K(e))}}function z(t){if(!(Y(t)||y.props.trigger.indexOf("click")>=0&&f))return y.props.interactive?(g.body.addEventListener("mouseleave",K),g.addEventListener("mousemove",m),Zn(kr,m),void m(t)):void K(t)}function X(t){y.props.trigger.indexOf("focusin")<0&&t.target!==N()||y.props.interactive&&t.relatedTarget&&x.contains(t.relatedTarget)||K(t)}function Y(t){return!!ir.isTouch&&A()!==t.type.indexOf("touch")>=0}function G(){Z();var e=y.props,n=e.popperOptions,r=e.placement,i=e.offset,o=e.getReferenceClientRect,a=e.moveTransition,u=T()?wr(x).arrow:null,c=o?{getBoundingClientRect:o}:t,l={name:"$$tippy",enabled:!0,phase:"beforeWrite",requires:["computeStyles"],fn:function(t){var e=t.state;if(T()){var n=$().box;["placement","reference-hidden","escaped"].forEach((function(t){"placement"===t?n.setAttribute("data-placement",e.placement):e.attributes.popper["data-popper-"+t]?n.setAttribute("data-"+t,""):n.removeAttribute("data-"+t)})),e.attributes.popper={}}}},f={name:"arrow",enabled:!!u,options:{element:u,padding:3}},p=[{name:"offset",options:{offset:i}},{name:"preventOverflow",options:{padding:{top:2,bottom:2,left:5,right:5}}},{name:"flip",options:{padding:5}},{name:"computeStyles",options:{adaptive:!a}}].concat(T()?[f]:[],(null==n?void 0:n.modifiers)||[],[l]);y.popperInstance=qn(c,x,Object.assign({},n,{placement:r,onFirstUpdate:s,modifiers:p}))}function Z(){y.popperInstance&&(y.popperInstance.destroy(),y.popperInstance=null)}function J(){return Jn(x.querySelectorAll("[data-tippy-root]"))}function Q(t){y.clearDelayTimeouts(),t&&L("onTrigger",[y,t]),H();var e=j(!0);e?n=setTimeout((function(){y.show()}),e):y.show()}function K(t){if(y.clearDelayTimeouts(),L("onUntrigger",[y,t]),y.state.isVisible){if(!(y.props.trigger.indexOf("mouseenter")>=0&&y.props.trigger.indexOf("click")>=0&&["mouseleave","mousemove"].indexOf(t.type)>=0&&f)){var e=j(!1);e?r=setTimeout((function(){y.state.isVisible&&y.hide()}),e):i=requestAnimationFrame((function(){y.hide()}))}}else V()}}function Ar(t,e){void 0===e&&(e={});var n=dr.plugins.concat(e.plugins||[]);document.addEventListener("touchstart",ar,Object.assign({},Bn,{capture:!0})),window.addEventListener("blur",ur);var r=Object.assign({},e,{plugins:n}),i=tr(t).reduce((function(t,e){var n=e&&Er(e,r);return n&&t.push(n),t}),[]);return Kn(t)?i[0]:i}function Tr(t,e){Ar(t,e)}function Nr(t,e,n){const r=t.slice();return r[12]=e[n],r}function $r(t,e,n){const r=t.slice();return r[12]=e[n],r}function jr(t,e,n){const r=t.slice();return r[17]=e[n],r}function Dr(e){let n,r,o,a,c,l;return{c(){n=f("circle"),h(n,"cx",r=e[7](e[17].percentProduction)),h(n,"cy",o=e[6](e[17].percentReserves)+"px"),h(n,"r","3px")},m(r,o){var u;s(r,n,o),c||(u=a=Tr.call(null,n,e[9](e[17])),l=u&&i(u.destroy)?u.destroy:t,c=!0)},p(t,s){e=t,129&s&&r!==(r=e[7](e[17].percentProduction))&&h(n,"cx",r),65&s&&o!==(o=e[6](e[17].percentReserves)+"px")&&h(n,"cy",o),a&&i(a.update)&&1&s&&a.update.call(null,e[9](e[17]))},d(t){t&&u(n),c=!1,l()}}}function Cr(t){let e,n,r,i,o,c,l,d,g,v=t[12]+"";return{c(){e=f("g"),n=f("line"),o=f("text"),c=p(v),h(n,"x1",r=t[8].left-3),h(n,"x2",i=t[8].left),h(o,"x",l=t[8].left-4),h(o,"y","+4"),h(e,"class",d="tick tick-"+t[12]),h(e,"transform",g="translate(0, "+t[6](t[12])+")")},m(t,r){s(t,e,r),a(e,n),a(e,o),a(o,c)},p(t,n){16&n&&v!==(v=t[12]+"")&&m(c,v),16&n&&d!==(d="tick tick-"+t[12])&&h(e,"class",d),80&n&&g!==(g="translate(0, "+t[6](t[12])+")")&&h(e,"transform",g)},d(t){t&&u(e)}}}function Lr(t){let e,n,r,i,o,c,l,d,g,v=t[12]+"";return{c(){e=f("g"),n=f("line"),o=f("text"),c=p(v),h(n,"y1",r=t[2]-t[8].bottom+4),h(n,"y2",i=t[2]-t[8].bottom),h(o,"y",l=t[2]-t[8].bottom+16),h(e,"class",d="tick tick-"+t[12]),h(e,"transform",g="translate("+t[7](t[12])+",0)")},m(t,r){s(t,e,r),a(e,n),a(e,o),a(o,c)},p(t,a){4&a&&r!==(r=t[2]-t[8].bottom+4)&&h(n,"y1",r),4&a&&i!==(i=t[2]-t[8].bottom)&&h(n,"y2",i),32&a&&v!==(v=t[12]+"")&&m(c,v),4&a&&l!==(l=t[2]-t[8].bottom+16)&&h(o,"y",l),32&a&&d!==(d="tick tick-"+t[12])&&h(e,"class",d),160&a&&g!==(g="translate("+t[7](t[12])+",0)")&&h(e,"transform",g)},d(t){t&&u(e)}}}function Pr(e){let n,r,i,o,g,v,b,y,w,x,M,k,O,E,A,T,N,$,j,D,C,L,P,R,S=e[0].mineral+"",_=e[0].mineralData,H=[];for(let t=0;t<_.length;t+=1)H[t]=Dr(jr(e,_,t));let V=e[4],q=[];for(let t=0;t<V.length;t+=1)q[t]=Cr($r(e,V,t));let B=e[5],W=[];for(let t=0;t<B.length;t+=1)W[t]=Lr(Nr(e,B,t));return{c(){n=l("p"),r=p(S),i=d(),o=l("figure"),g=f("svg");for(let t=0;t<H.length;t+=1)H[t].c();v=f("g"),b=f("line");for(let t=0;t<q.length;t+=1)q[t].c();M=f("text"),k=p(Rr),E=f("g"),A=f("line");for(let t=0;t<W.length;t+=1)W[t].c();j=f("text"),D=p(Sr),h(b,"class","axis-guideline"),h(b,"x1",y=e[7](0)),h(b,"x2",w=e[7](100)),h(b,"transform",x="translate(0,"+e[6](0)+")"),h(M,"class","yAxisTitle"),h(M,"x",O=-e[2]/2),h(M,"y",e[8].left-30),h(v,"class","axis y-axis"),h(A,"class","axis-guideline"),h(A,"y1",T=e[6](0)),h(A,"y2",N=e[6](100)),h(A,"transform",$="translate("+e[7](0)+")"),h(j,"class","xAxisTitle"),h(j,"x",C=e[1]/2),h(j,"y",L=e[2]-4),h(E,"class","axis x-axis"),h(g,"class","chart")},m(t,u){s(t,n,u),a(n,r),s(t,i,u),s(t,o,u),a(o,g);for(let t=0;t<H.length;t+=1)H[t].m(g,null);a(g,v),a(v,b);for(let t=0;t<q.length;t+=1)q[t].m(v,null);a(v,M),a(M,k),a(g,E),a(E,A);for(let t=0;t<W.length;t+=1)W[t].m(E,null);var c,l,f,p;a(E,j),a(j,D),e[11](o),P||(c=window,l="resize",f=e[10],c.addEventListener(l,f,p),R=()=>c.removeEventListener(l,f,p),P=!0)},p(t,[e]){if(1&e&&S!==(S=t[0].mineral+"")&&m(r,S),705&e){let n;for(_=t[0].mineralData,n=0;n<_.length;n+=1){const r=jr(t,_,n);H[n]?H[n].p(r,e):(H[n]=Dr(r),H[n].c(),H[n].m(g,v))}for(;n<H.length;n+=1)H[n].d(1);H.length=_.length}if(128&e&&y!==(y=t[7](0))&&h(b,"x1",y),128&e&&w!==(w=t[7](100))&&h(b,"x2",w),64&e&&x!==(x="translate(0,"+t[6](0)+")")&&h(b,"transform",x),336&e){let n;for(V=t[4],n=0;n<V.length;n+=1){const r=$r(t,V,n);q[n]?q[n].p(r,e):(q[n]=Cr(r),q[n].c(),q[n].m(v,M))}for(;n<q.length;n+=1)q[n].d(1);q.length=V.length}if(4&e&&O!==(O=-t[2]/2)&&h(M,"x",O),64&e&&T!==(T=t[6](0))&&h(A,"y1",T),64&e&&N!==(N=t[6](100))&&h(A,"y2",N),128&e&&$!==($="translate("+t[7](0)+")")&&h(A,"transform",$),420&e){let n;for(B=t[5],n=0;n<B.length;n+=1){const r=Nr(t,B,n);W[n]?W[n].p(r,e):(W[n]=Lr(r),W[n].c(),W[n].m(E,j))}for(;n<W.length;n+=1)W[n].d(1);W.length=B.length}2&e&&C!==(C=t[1]/2)&&h(j,"x",C),4&e&&L!==(L=t[2]-4)&&h(j,"y",L)},i:t,o:t,d(t){t&&u(n),t&&u(i),t&&u(o),c(H,t),c(q,t),c(W,t),e[11](null),P=!1,R()}}}Ar.defaultProps=dr,Ar.setDefaultProps=function(t){Object.keys(t).forEach((function(e){dr[e]=t[e]}))},Ar.currentInput=ir,Ar.setDefaultProps({render:xr});let Rr="Reserves, % of World Total",Sr="Production, % of World Total";function _r(t,e,n){let r,i,o,a,s,{data:u}=e;console.log(u);let c=600,l=400;const f={top:25,right:35,bottom:35,left:45},p=()=>{n(1,({width:c,height:l}=s.getBoundingClientRect()),c,n(2,l))};var d;return d=p,b().$$.on_mount.push(d),t.$$set=t=>{"data"in t&&n(0,u=t.data)},t.$$.update=()=>{2&t.$$.dirty&&n(7,r=Ee().domain([0,75]).range([f.left,c-f.right])),4&t.$$.dirty&&n(6,i=Ee().domain([0,100]).range([l-f.bottom,f.top]))},n(5,o=[0,25,50,75]),n(4,a=[0,25,50,75,100]),[u,c,l,s,a,o,i,r,f,(t,e)=>({content:`\n      <p><span>Country:</span> ${t.country}</p>\n      <p><span>Percent of World's Production:</span> ${parseFloat(t.percentProduction).toFixed(2)}%</p>\n      <p><span>Percent of World's Reserves:</span> ${parseFloat(t.percentReserves).toFixed(2)}%</p>\n    `,allowHTML:!0,placement:"top"}),p,function(t){w[t?"unshift":"push"]((()=>{s=t,n(3,s)}))}]}class Hr extends q{constructor(t){super(),V(this,t,_r,Pr,o,{data:0})}}function Vr(t,e,n){const r=t.slice();return r[7]=e[n],r}function qr(e){let n,r,i=e[10].message+"";return{c(){var t,e,o;n=l("p"),r=p(i),t="color",e="red",n.style.setProperty(t,e,o?"important":"")},m(t,e){s(t,n,e),a(n,r)},p:t,i:t,o:t,d(t){t&&u(n)}}}function Br(t){let e,n,r=t[1],i=[];for(let e=0;e<r.length;e+=1)i[e]=Wr(Vr(t,r,e));const o=t=>R(i[t],1,1,(()=>{i[t]=null}));return{c(){for(let t=0;t<i.length;t+=1)i[t].c();e=p("")},m(t,r){for(let e=0;e<i.length;e+=1)i[e].m(t,r);s(t,e,r),n=!0},p(t,n){if(3&n){let a;for(r=t[1],a=0;a<r.length;a+=1){const o=Vr(t,r,a);i[a]?(i[a].p(o,n),P(i[a],1)):(i[a]=Wr(o),i[a].c(),P(i[a],1),i[a].m(e.parentNode,e))}for(C(),a=r.length;a<i.length;a+=1)o(a);L()}},i(t){if(!n){for(let t=0;t<r.length;t+=1)P(i[t]);n=!0}},o(t){i=i.filter(Boolean);for(let t=0;t<i.length;t+=1)R(i[t]);n=!1},d(t){c(i,t),t&&u(e)}}}function Wr(t){let e,n;return e=new Hr({props:{data:t[7],isMobile:t[0]}}),{c(){var t;(t=e.$$.fragment)&&t.c()},m(t,r){S(e,t,r),n=!0},p(t,n){const r={};1&n&&(r.isMobile=t[0]),e.$set(r)},i(t){n||(P(e.$$.fragment,t),n=!0)},o(t){R(e.$$.fragment,t),n=!1},d(t){_(e,t)}}}function Ir(e){let n;return{c(){n=l("div"),n.innerHTML='<div class="loading"></div>',h(n,"class","loading-container")},m(t,e){s(t,n,e)},p:t,i:t,o:t,d(t){t&&u(n)}}}function Ur(t){let e,n,r,i,o={ctx:t,current:null,token:null,hasCatch:!0,pending:Ir,then:Br,catch:qr,value:1,error:10,blocks:[,,,]};return function(t,e){const n=e.token={};function r(t,r,i,o){if(e.token!==n)return;e.resolved=o;let a=e.ctx;void 0!==i&&(a=a.slice(),a[i]=o);const s=t&&(e.current=t)(a);let u=!1;e.block&&(e.blocks?e.blocks.forEach(((t,n)=>{n!==r&&t&&(C(),R(t,1,1,(()=>{e.blocks[n]===t&&(e.blocks[n]=null)})),L())})):e.block.d(1),s.c(),P(s,1),s.m(e.mount(),e.anchor),u=!0),e.block=s,e.blocks&&(e.blocks[r]=s),u&&N()}if((i=t)&&"object"==typeof i&&"function"==typeof i.then){const n=b();if(t.then((t=>{v(n),r(e.then,1,e.value,t),v(null)}),(t=>{if(v(n),r(e.catch,2,e.error,t),v(null),!e.hasCatch)throw t})),e.current!==e.pending)return r(e.pending,0),!0}else{if(e.current!==e.then)return r(e.then,1,e.value,t),!0;e.resolved=t}var i}(t[1],o),{c(){e=l("main"),n=l("header"),n.innerHTML="<h1>Chart Title</h1> \n    <p>Interactive header in lorem ipsum: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod\n      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim\n      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea\n      commodo consequat. Duis aute irure dolor in reprehenderit in voluptate\n      velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat\n      cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id\n      est laborum.</p>",r=d(),o.block.c(),h(n,"class","interactive__header"),h(e,"class","interactive")},m(t,u){s(t,e,u),a(e,n),a(e,r),o.block.m(e,o.anchor=null),o.mount=()=>e,o.anchor=null,i=!0},p(e,[n]){!function(t,e,n){const r=e.slice(),{resolved:i}=t;t.current===t.then&&(r[t.value]=i),t.current===t.catch&&(r[t.error]=i),t.block.p(r,n)}(o,t=e,n)},i(t){i||(P(o.block),i=!0)},o(t){for(let t=0;t<3;t+=1){R(o.blocks[t])}i=!1},d(t){t&&u(e),o.block.d(),o.token=null,o=null}}}function Fr(t,e,n){const r={scatter:"https://docs.google.com/spreadsheets/d/e/2PACX-1vTxzv5D7cjQIQ4Wi6wFM1v_mUIB_Fef9d1KGL42xG_-THTfg5T4e8Ez11Ou63P4IE60DUV1XnMasEa0/pub?output=csv"},i=async function(){return await function({src:t}){const e=Q(t.scatter);return Promise.all([e]).then((t=>{let[e]=t,n=e.map((t=>{const e=e=>isNaN(e)?(t.isNan=!0,0):(t.isNan=!1,parseInt(e));return t.production2020=e(t.production2020),t.reserves2020=e(t.reserves2020),t})),r=["Cobalt","Lithium","Nickel","Rare Earths","Manganese","Graphite"],i=[{mineral:r[0],mineralData:[]},{mineral:r[1],mineralData:[]},{mineral:r[2],mineralData:[]},{mineral:r[3],mineralData:[]},{mineral:r[4],mineralData:[]},{mineral:r[5],mineralData:[]}];for(let t=0;t<r.length;t++)i[t].mineralData=n.filter((e=>e.mineral==r[t])),i[t].totalProduction=0,i[t].totalReserves=0,i[t].mineralData.forEach((e=>{i[t].totalProduction+=e.production2020,i[t].totalReserves+=e.reserves2020})),i[t].mineralData.forEach((e=>{e.percentReserves=e.reserves2020/i[t].totalReserves*100,e.percentProduction=e.production2020/i[t].totalProduction*100}));return i}))}({src:r})}();let o=!1,a=window.matchMedia("(max-width: 48em)");function s(t){t.matches?n(0,o=!0):n(0,o=!1)}try{a.addEventListener("change",(t=>{s(t)}))}catch(t){try{a.addListener((t=>{s(t)}))}catch(t){console.error(t)}}return window.addEventListener("DOMContentLoaded",(()=>{s(a)})),[o,i]}return new class extends q{constructor(t){super(),V(this,t,Fr,Ur,o,{})}}({target:document.getElementById("interactive")})}();
+
+(function(l, r) { if (!l || l.getElementById('livereloadscript')) return; r = l.createElement('script'); r.async = 1; r.src = '//' + (self.location.host || 'localhost').split(':')[0] + ':35730/livereload.js?snipver=1'; r.id = 'livereloadscript'; l.getElementsByTagName('head')[0].appendChild(r) })(self.document);
+var app = (function () {
+    'use strict';
+
+    function noop() { }
+    function is_promise(value) {
+        return value && typeof value === 'object' && typeof value.then === 'function';
+    }
+    function add_location(element, file, line, column, char) {
+        element.__svelte_meta = {
+            loc: { file, line, column, char }
+        };
+    }
+    function run(fn) {
+        return fn();
+    }
+    function blank_object() {
+        return Object.create(null);
+    }
+    function run_all(fns) {
+        fns.forEach(run);
+    }
+    function is_function(thing) {
+        return typeof thing === 'function';
+    }
+    function safe_not_equal(a, b) {
+        return a != a ? b == b : a !== b || ((a && typeof a === 'object') || typeof a === 'function');
+    }
+    function is_empty(obj) {
+        return Object.keys(obj).length === 0;
+    }
+    function action_destroyer(action_result) {
+        return action_result && is_function(action_result.destroy) ? action_result.destroy : noop;
+    }
+    function append(target, node) {
+        target.appendChild(node);
+    }
+    function insert(target, node, anchor) {
+        target.insertBefore(node, anchor || null);
+    }
+    function detach(node) {
+        node.parentNode.removeChild(node);
+    }
+    function destroy_each(iterations, detaching) {
+        for (let i = 0; i < iterations.length; i += 1) {
+            if (iterations[i])
+                iterations[i].d(detaching);
+        }
+    }
+    function element(name) {
+        return document.createElement(name);
+    }
+    function svg_element(name) {
+        return document.createElementNS('http://www.w3.org/2000/svg', name);
+    }
+    function text$1(data) {
+        return document.createTextNode(data);
+    }
+    function space() {
+        return text$1(' ');
+    }
+    function empty() {
+        return text$1('');
+    }
+    function listen(node, event, handler, options) {
+        node.addEventListener(event, handler, options);
+        return () => node.removeEventListener(event, handler, options);
+    }
+    function attr(node, attribute, value) {
+        if (value == null)
+            node.removeAttribute(attribute);
+        else if (node.getAttribute(attribute) !== value)
+            node.setAttribute(attribute, value);
+    }
+    function children(element) {
+        return Array.from(element.childNodes);
+    }
+    function set_style(node, key, value, important) {
+        node.style.setProperty(key, value, important ? 'important' : '');
+    }
+    function custom_event(type, detail, bubbles = false) {
+        const e = document.createEvent('CustomEvent');
+        e.initCustomEvent(type, bubbles, false, detail);
+        return e;
+    }
+
+    let current_component;
+    function set_current_component(component) {
+        current_component = component;
+    }
+    function get_current_component() {
+        if (!current_component)
+            throw new Error('Function called outside component initialization');
+        return current_component;
+    }
+    function onMount(fn) {
+        get_current_component().$$.on_mount.push(fn);
+    }
+
+    const dirty_components = [];
+    const binding_callbacks = [];
+    const render_callbacks = [];
+    const flush_callbacks = [];
+    const resolved_promise = Promise.resolve();
+    let update_scheduled = false;
+    function schedule_update() {
+        if (!update_scheduled) {
+            update_scheduled = true;
+            resolved_promise.then(flush);
+        }
+    }
+    function add_render_callback(fn) {
+        render_callbacks.push(fn);
+    }
+    // flush() calls callbacks in this order:
+    // 1. All beforeUpdate callbacks, in order: parents before children
+    // 2. All bind:this callbacks, in reverse order: children before parents.
+    // 3. All afterUpdate callbacks, in order: parents before children. EXCEPT
+    //    for afterUpdates called during the initial onMount, which are called in
+    //    reverse order: children before parents.
+    // Since callbacks might update component values, which could trigger another
+    // call to flush(), the following steps guard against this:
+    // 1. During beforeUpdate, any updated components will be added to the
+    //    dirty_components array and will cause a reentrant call to flush(). Because
+    //    the flush index is kept outside the function, the reentrant call will pick
+    //    up where the earlier call left off and go through all dirty components. The
+    //    current_component value is saved and restored so that the reentrant call will
+    //    not interfere with the "parent" flush() call.
+    // 2. bind:this callbacks cannot trigger new flush() calls.
+    // 3. During afterUpdate, any updated components will NOT have their afterUpdate
+    //    callback called a second time; the seen_callbacks set, outside the flush()
+    //    function, guarantees this behavior.
+    const seen_callbacks = new Set();
+    let flushidx = 0; // Do *not* move this inside the flush() function
+    function flush() {
+        const saved_component = current_component;
+        do {
+            // first, call beforeUpdate functions
+            // and update components
+            while (flushidx < dirty_components.length) {
+                const component = dirty_components[flushidx];
+                flushidx++;
+                set_current_component(component);
+                update(component.$$);
+            }
+            set_current_component(null);
+            dirty_components.length = 0;
+            flushidx = 0;
+            while (binding_callbacks.length)
+                binding_callbacks.pop()();
+            // then, once components are updated, call
+            // afterUpdate functions. This may cause
+            // subsequent updates...
+            for (let i = 0; i < render_callbacks.length; i += 1) {
+                const callback = render_callbacks[i];
+                if (!seen_callbacks.has(callback)) {
+                    // ...so guard against infinite loops
+                    seen_callbacks.add(callback);
+                    callback();
+                }
+            }
+            render_callbacks.length = 0;
+        } while (dirty_components.length);
+        while (flush_callbacks.length) {
+            flush_callbacks.pop()();
+        }
+        update_scheduled = false;
+        seen_callbacks.clear();
+        set_current_component(saved_component);
+    }
+    function update($$) {
+        if ($$.fragment !== null) {
+            $$.update();
+            run_all($$.before_update);
+            const dirty = $$.dirty;
+            $$.dirty = [-1];
+            $$.fragment && $$.fragment.p($$.ctx, dirty);
+            $$.after_update.forEach(add_render_callback);
+        }
+    }
+    const outroing = new Set();
+    let outros;
+    function group_outros() {
+        outros = {
+            r: 0,
+            c: [],
+            p: outros // parent group
+        };
+    }
+    function check_outros() {
+        if (!outros.r) {
+            run_all(outros.c);
+        }
+        outros = outros.p;
+    }
+    function transition_in(block, local) {
+        if (block && block.i) {
+            outroing.delete(block);
+            block.i(local);
+        }
+    }
+    function transition_out(block, local, detach, callback) {
+        if (block && block.o) {
+            if (outroing.has(block))
+                return;
+            outroing.add(block);
+            outros.c.push(() => {
+                outroing.delete(block);
+                if (callback) {
+                    if (detach)
+                        block.d(1);
+                    callback();
+                }
+            });
+            block.o(local);
+        }
+    }
+
+    function handle_promise(promise, info) {
+        const token = info.token = {};
+        function update(type, index, key, value) {
+            if (info.token !== token)
+                return;
+            info.resolved = value;
+            let child_ctx = info.ctx;
+            if (key !== undefined) {
+                child_ctx = child_ctx.slice();
+                child_ctx[key] = value;
+            }
+            const block = type && (info.current = type)(child_ctx);
+            let needs_flush = false;
+            if (info.block) {
+                if (info.blocks) {
+                    info.blocks.forEach((block, i) => {
+                        if (i !== index && block) {
+                            group_outros();
+                            transition_out(block, 1, 1, () => {
+                                if (info.blocks[i] === block) {
+                                    info.blocks[i] = null;
+                                }
+                            });
+                            check_outros();
+                        }
+                    });
+                }
+                else {
+                    info.block.d(1);
+                }
+                block.c();
+                transition_in(block, 1);
+                block.m(info.mount(), info.anchor);
+                needs_flush = true;
+            }
+            info.block = block;
+            if (info.blocks)
+                info.blocks[index] = block;
+            if (needs_flush) {
+                flush();
+            }
+        }
+        if (is_promise(promise)) {
+            const current_component = get_current_component();
+            promise.then(value => {
+                set_current_component(current_component);
+                update(info.then, 1, info.value, value);
+                set_current_component(null);
+            }, error => {
+                set_current_component(current_component);
+                update(info.catch, 2, info.error, error);
+                set_current_component(null);
+                if (!info.hasCatch) {
+                    throw error;
+                }
+            });
+            // if we previously had a then/catch block, destroy it
+            if (info.current !== info.pending) {
+                update(info.pending, 0);
+                return true;
+            }
+        }
+        else {
+            if (info.current !== info.then) {
+                update(info.then, 1, info.value, promise);
+                return true;
+            }
+            info.resolved = promise;
+        }
+    }
+    function update_await_block_branch(info, ctx, dirty) {
+        const child_ctx = ctx.slice();
+        const { resolved } = info;
+        if (info.current === info.then) {
+            child_ctx[info.value] = resolved;
+        }
+        if (info.current === info.catch) {
+            child_ctx[info.error] = resolved;
+        }
+        info.block.p(child_ctx, dirty);
+    }
+
+    const globals = (typeof window !== 'undefined'
+        ? window
+        : typeof globalThis !== 'undefined'
+            ? globalThis
+            : global);
+    function create_component(block) {
+        block && block.c();
+    }
+    function mount_component(component, target, anchor, customElement) {
+        const { fragment, on_mount, on_destroy, after_update } = component.$$;
+        fragment && fragment.m(target, anchor);
+        if (!customElement) {
+            // onMount happens before the initial afterUpdate
+            add_render_callback(() => {
+                const new_on_destroy = on_mount.map(run).filter(is_function);
+                if (on_destroy) {
+                    on_destroy.push(...new_on_destroy);
+                }
+                else {
+                    // Edge case - component was destroyed immediately,
+                    // most likely as a result of a binding initialising
+                    run_all(new_on_destroy);
+                }
+                component.$$.on_mount = [];
+            });
+        }
+        after_update.forEach(add_render_callback);
+    }
+    function destroy_component(component, detaching) {
+        const $$ = component.$$;
+        if ($$.fragment !== null) {
+            run_all($$.on_destroy);
+            $$.fragment && $$.fragment.d(detaching);
+            // TODO null out other refs, including component.$$ (but need to
+            // preserve final state?)
+            $$.on_destroy = $$.fragment = null;
+            $$.ctx = [];
+        }
+    }
+    function make_dirty(component, i) {
+        if (component.$$.dirty[0] === -1) {
+            dirty_components.push(component);
+            schedule_update();
+            component.$$.dirty.fill(0);
+        }
+        component.$$.dirty[(i / 31) | 0] |= (1 << (i % 31));
+    }
+    function init(component, options, instance, create_fragment, not_equal, props, append_styles, dirty = [-1]) {
+        const parent_component = current_component;
+        set_current_component(component);
+        const $$ = component.$$ = {
+            fragment: null,
+            ctx: null,
+            // state
+            props,
+            update: noop,
+            not_equal,
+            bound: blank_object(),
+            // lifecycle
+            on_mount: [],
+            on_destroy: [],
+            on_disconnect: [],
+            before_update: [],
+            after_update: [],
+            context: new Map(options.context || (parent_component ? parent_component.$$.context : [])),
+            // everything else
+            callbacks: blank_object(),
+            dirty,
+            skip_bound: false,
+            root: options.target || parent_component.$$.root
+        };
+        append_styles && append_styles($$.root);
+        let ready = false;
+        $$.ctx = instance
+            ? instance(component, options.props || {}, (i, ret, ...rest) => {
+                const value = rest.length ? rest[0] : ret;
+                if ($$.ctx && not_equal($$.ctx[i], $$.ctx[i] = value)) {
+                    if (!$$.skip_bound && $$.bound[i])
+                        $$.bound[i](value);
+                    if (ready)
+                        make_dirty(component, i);
+                }
+                return ret;
+            })
+            : [];
+        $$.update();
+        ready = true;
+        run_all($$.before_update);
+        // `false` as a special case of no DOM component
+        $$.fragment = create_fragment ? create_fragment($$.ctx) : false;
+        if (options.target) {
+            if (options.hydrate) {
+                const nodes = children(options.target);
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                $$.fragment && $$.fragment.l(nodes);
+                nodes.forEach(detach);
+            }
+            else {
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                $$.fragment && $$.fragment.c();
+            }
+            if (options.intro)
+                transition_in(component.$$.fragment);
+            mount_component(component, options.target, options.anchor, options.customElement);
+            flush();
+        }
+        set_current_component(parent_component);
+    }
+    /**
+     * Base class for Svelte components. Used when dev=false.
+     */
+    class SvelteComponent {
+        $destroy() {
+            destroy_component(this, 1);
+            this.$destroy = noop;
+        }
+        $on(type, callback) {
+            const callbacks = (this.$$.callbacks[type] || (this.$$.callbacks[type] = []));
+            callbacks.push(callback);
+            return () => {
+                const index = callbacks.indexOf(callback);
+                if (index !== -1)
+                    callbacks.splice(index, 1);
+            };
+        }
+        $set($$props) {
+            if (this.$$set && !is_empty($$props)) {
+                this.$$.skip_bound = true;
+                this.$$set($$props);
+                this.$$.skip_bound = false;
+            }
+        }
+    }
+
+    function dispatch_dev(type, detail) {
+        document.dispatchEvent(custom_event(type, Object.assign({ version: '3.44.3' }, detail), true));
+    }
+    function append_dev(target, node) {
+        dispatch_dev('SvelteDOMInsert', { target, node });
+        append(target, node);
+    }
+    function insert_dev(target, node, anchor) {
+        dispatch_dev('SvelteDOMInsert', { target, node, anchor });
+        insert(target, node, anchor);
+    }
+    function detach_dev(node) {
+        dispatch_dev('SvelteDOMRemove', { node });
+        detach(node);
+    }
+    function listen_dev(node, event, handler, options, has_prevent_default, has_stop_propagation) {
+        const modifiers = options === true ? ['capture'] : options ? Array.from(Object.keys(options)) : [];
+        if (has_prevent_default)
+            modifiers.push('preventDefault');
+        if (has_stop_propagation)
+            modifiers.push('stopPropagation');
+        dispatch_dev('SvelteDOMAddEventListener', { node, event, handler, modifiers });
+        const dispose = listen(node, event, handler, options);
+        return () => {
+            dispatch_dev('SvelteDOMRemoveEventListener', { node, event, handler, modifiers });
+            dispose();
+        };
+    }
+    function attr_dev(node, attribute, value) {
+        attr(node, attribute, value);
+        if (value == null)
+            dispatch_dev('SvelteDOMRemoveAttribute', { node, attribute });
+        else
+            dispatch_dev('SvelteDOMSetAttribute', { node, attribute, value });
+    }
+    function set_data_dev(text, data) {
+        data = '' + data;
+        if (text.wholeText === data)
+            return;
+        dispatch_dev('SvelteDOMSetData', { node: text, data });
+        text.data = data;
+    }
+    function validate_each_argument(arg) {
+        if (typeof arg !== 'string' && !(arg && typeof arg === 'object' && 'length' in arg)) {
+            let msg = '{#each} only iterates over array-like objects.';
+            if (typeof Symbol === 'function' && arg && Symbol.iterator in arg) {
+                msg += ' You can use a spread to convert this iterable into an array.';
+            }
+            throw new Error(msg);
+        }
+    }
+    function validate_slots(name, slot, keys) {
+        for (const slot_key of Object.keys(slot)) {
+            if (!~keys.indexOf(slot_key)) {
+                console.warn(`<${name}> received an unexpected slot "${slot_key}".`);
+            }
+        }
+    }
+    /**
+     * Base class for Svelte components with some minor dev-enhancements. Used when dev=true.
+     */
+    class SvelteComponentDev extends SvelteComponent {
+        constructor(options) {
+            if (!options || (!options.target && !options.$$inline)) {
+                throw new Error("'target' is a required option");
+            }
+            super();
+        }
+        $destroy() {
+            super.$destroy();
+            this.$destroy = () => {
+                console.warn('Component was already destroyed'); // eslint-disable-line no-console
+            };
+        }
+        $capture_state() { }
+        $inject_state() { }
+    }
+
+    var EOL = {},
+        EOF = {},
+        QUOTE = 34,
+        NEWLINE = 10,
+        RETURN = 13;
+
+    function objectConverter(columns) {
+      return new Function("d", "return {" + columns.map(function(name, i) {
+        return JSON.stringify(name) + ": d[" + i + "] || \"\"";
+      }).join(",") + "}");
+    }
+
+    function customConverter(columns, f) {
+      var object = objectConverter(columns);
+      return function(row, i) {
+        return f(object(row), i, columns);
+      };
+    }
+
+    // Compute unique columns in order of discovery.
+    function inferColumns(rows) {
+      var columnSet = Object.create(null),
+          columns = [];
+
+      rows.forEach(function(row) {
+        for (var column in row) {
+          if (!(column in columnSet)) {
+            columns.push(columnSet[column] = column);
+          }
+        }
+      });
+
+      return columns;
+    }
+
+    function pad(value, width) {
+      var s = value + "", length = s.length;
+      return length < width ? new Array(width - length + 1).join(0) + s : s;
+    }
+
+    function formatYear(year) {
+      return year < 0 ? "-" + pad(-year, 6)
+        : year > 9999 ? "+" + pad(year, 6)
+        : pad(year, 4);
+    }
+
+    function formatDate(date) {
+      var hours = date.getUTCHours(),
+          minutes = date.getUTCMinutes(),
+          seconds = date.getUTCSeconds(),
+          milliseconds = date.getUTCMilliseconds();
+      return isNaN(date) ? "Invalid Date"
+          : formatYear(date.getUTCFullYear()) + "-" + pad(date.getUTCMonth() + 1, 2) + "-" + pad(date.getUTCDate(), 2)
+          + (milliseconds ? "T" + pad(hours, 2) + ":" + pad(minutes, 2) + ":" + pad(seconds, 2) + "." + pad(milliseconds, 3) + "Z"
+          : seconds ? "T" + pad(hours, 2) + ":" + pad(minutes, 2) + ":" + pad(seconds, 2) + "Z"
+          : minutes || hours ? "T" + pad(hours, 2) + ":" + pad(minutes, 2) + "Z"
+          : "");
+    }
+
+    function dsvFormat(delimiter) {
+      var reFormat = new RegExp("[\"" + delimiter + "\n\r]"),
+          DELIMITER = delimiter.charCodeAt(0);
+
+      function parse(text, f) {
+        var convert, columns, rows = parseRows(text, function(row, i) {
+          if (convert) return convert(row, i - 1);
+          columns = row, convert = f ? customConverter(row, f) : objectConverter(row);
+        });
+        rows.columns = columns || [];
+        return rows;
+      }
+
+      function parseRows(text, f) {
+        var rows = [], // output rows
+            N = text.length,
+            I = 0, // current character index
+            n = 0, // current line number
+            t, // current token
+            eof = N <= 0, // current token followed by EOF?
+            eol = false; // current token followed by EOL?
+
+        // Strip the trailing newline.
+        if (text.charCodeAt(N - 1) === NEWLINE) --N;
+        if (text.charCodeAt(N - 1) === RETURN) --N;
+
+        function token() {
+          if (eof) return EOF;
+          if (eol) return eol = false, EOL;
+
+          // Unescape quotes.
+          var i, j = I, c;
+          if (text.charCodeAt(j) === QUOTE) {
+            while (I++ < N && text.charCodeAt(I) !== QUOTE || text.charCodeAt(++I) === QUOTE);
+            if ((i = I) >= N) eof = true;
+            else if ((c = text.charCodeAt(I++)) === NEWLINE) eol = true;
+            else if (c === RETURN) { eol = true; if (text.charCodeAt(I) === NEWLINE) ++I; }
+            return text.slice(j + 1, i - 1).replace(/""/g, "\"");
+          }
+
+          // Find next delimiter or newline.
+          while (I < N) {
+            if ((c = text.charCodeAt(i = I++)) === NEWLINE) eol = true;
+            else if (c === RETURN) { eol = true; if (text.charCodeAt(I) === NEWLINE) ++I; }
+            else if (c !== DELIMITER) continue;
+            return text.slice(j, i);
+          }
+
+          // Return last token before EOF.
+          return eof = true, text.slice(j, N);
+        }
+
+        while ((t = token()) !== EOF) {
+          var row = [];
+          while (t !== EOL && t !== EOF) row.push(t), t = token();
+          if (f && (row = f(row, n++)) == null) continue;
+          rows.push(row);
+        }
+
+        return rows;
+      }
+
+      function preformatBody(rows, columns) {
+        return rows.map(function(row) {
+          return columns.map(function(column) {
+            return formatValue(row[column]);
+          }).join(delimiter);
+        });
+      }
+
+      function format(rows, columns) {
+        if (columns == null) columns = inferColumns(rows);
+        return [columns.map(formatValue).join(delimiter)].concat(preformatBody(rows, columns)).join("\n");
+      }
+
+      function formatBody(rows, columns) {
+        if (columns == null) columns = inferColumns(rows);
+        return preformatBody(rows, columns).join("\n");
+      }
+
+      function formatRows(rows) {
+        return rows.map(formatRow).join("\n");
+      }
+
+      function formatRow(row) {
+        return row.map(formatValue).join(delimiter);
+      }
+
+      function formatValue(value) {
+        return value == null ? ""
+            : value instanceof Date ? formatDate(value)
+            : reFormat.test(value += "") ? "\"" + value.replace(/"/g, "\"\"") + "\""
+            : value;
+      }
+
+      return {
+        parse: parse,
+        parseRows: parseRows,
+        format: format,
+        formatBody: formatBody,
+        formatRows: formatRows,
+        formatRow: formatRow,
+        formatValue: formatValue
+      };
+    }
+
+    var csv$1 = dsvFormat(",");
+
+    var csvParse = csv$1.parse;
+
+    function responseText(response) {
+      if (!response.ok) throw new Error(response.status + " " + response.statusText);
+      return response.text();
+    }
+
+    function text(input, init) {
+      return fetch(input, init).then(responseText);
+    }
+
+    function dsvParse(parse) {
+      return function(input, init, row) {
+        if (arguments.length === 2 && typeof init === "function") row = init, init = undefined;
+        return text(input, init).then(function(response) {
+          return parse(response, row);
+        });
+      };
+    }
+
+    var csv = dsvParse(csvParse);
+
+    function parseData({ src }) {
+
+      const scatterPromise = csv(src.scatter);
+      
+      let data = Promise.all([scatterPromise]).then(res => {
+        let [initialdata] = res;
+        const average = (inputArray, target) => inputArray.reduce((acc, country) => acc + country[target], 0)/inputArray.length;
+        let table = [];
+        let minerals = ['Cobalt', 'Lithium', 'Nickel', 'Rare Earths', 'Manganese', 'Graphite'];
+
+        // correct to input number strings as ints
+        let correcteddata = initialdata.map((d) => {
+          const checkNaN = a => {
+            if (isNaN(a)) {
+              d.isNan = true;
+              return 0;
+            } else {
+              d.isNan = false;
+              return parseInt(a);
+            }
+          };
+
+          d.production2020 = checkNaN(d.production2020);
+          d.reserves2020 = checkNaN(d.reserves2020);
+          return d;
+        });
+
+        let dataset = minerals.map((mineral) => ({
+          mineral: mineral, 
+          mineralData: correcteddata.filter(d => d.mineral === mineral),
+          totalProduction: 0,
+          totalReserves: 0
+        }));
+        
+        for(let x = 0; x < minerals.length; x++) {
+          dataset[x].mineralData.forEach(d => {
+            dataset[x].totalProduction += d.production2020;
+            dataset[x].totalReserves += d.reserves2020;
+          });
+          dataset[x].mineralData.forEach(d => {
+            d.percentReserves = ((d.reserves2020 / dataset[x].totalReserves)*100);
+            d.percentProduction = ((d.production2020 / dataset[x].totalProduction)*100);
+          });
+
+          // debugger;
+          table[x] = dataset[x].mineralData.map(function (country){
+            let col1 = country.percentProduction - average(dataset[x].mineralData, "percentProduction");
+            let col2 = country.percentReserves - average(dataset[x].mineralData, "percentReserves");
+            let col3 = col1 * col2;
+            let col4 = col1 * col1;
+            return ([col1, col2, col3, col4])
+          });
+        }
+
+        const trendline = (mineral, i) => {
+          console.log(mineral);
+          console.log(i);
+          let element1 = table[i];
+          console.log(element1);
+          let totalX = table[i].reduce((acc, nextEl) => acc + nextEl[2], 0);
+          let totalY = table[i].reduce((acc, nextEl) => acc + nextEl[3], 0);
+          let slope = totalX/totalY;
+          console.log(slope);
+          average(mineral.mineralData, "percentProduction");
+          average(mineral.mineralData, "percentReserves");
+          // let yInt = 
+          mineral.slope = slope;
+          mineral.intercept = [];
+          // let dats2 = table[i].reduce((acc, table[i][3]) => acc + table[i][3], 0);
+          // return x
+        };
+        // debugger;
+        dataset.map((mineral, index) => trendline(mineral, index));
+
+        // console.log("final data", dataset);
+
+        return dataset
+      });
+      
+      return data
+    }
+
+    function ascending(a, b) {
+      return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
+    }
+
+    function bisector(f) {
+      let delta = f;
+      let compare = f;
+
+      if (f.length === 1) {
+        delta = (d, x) => f(d) - x;
+        compare = ascendingComparator(f);
+      }
+
+      function left(a, x, lo, hi) {
+        if (lo == null) lo = 0;
+        if (hi == null) hi = a.length;
+        while (lo < hi) {
+          const mid = (lo + hi) >>> 1;
+          if (compare(a[mid], x) < 0) lo = mid + 1;
+          else hi = mid;
+        }
+        return lo;
+      }
+
+      function right(a, x, lo, hi) {
+        if (lo == null) lo = 0;
+        if (hi == null) hi = a.length;
+        while (lo < hi) {
+          const mid = (lo + hi) >>> 1;
+          if (compare(a[mid], x) > 0) hi = mid;
+          else lo = mid + 1;
+        }
+        return lo;
+      }
+
+      function center(a, x, lo, hi) {
+        if (lo == null) lo = 0;
+        if (hi == null) hi = a.length;
+        const i = left(a, x, lo, hi - 1);
+        return i > lo && delta(a[i - 1], x) > -delta(a[i], x) ? i - 1 : i;
+      }
+
+      return {left, center, right};
+    }
+
+    function ascendingComparator(f) {
+      return (d, x) => ascending(f(d), x);
+    }
+
+    function number$1(x) {
+      return x === null ? NaN : +x;
+    }
+
+    const ascendingBisect = bisector(ascending);
+    const bisectRight = ascendingBisect.right;
+    bisector(number$1).center;
+    var bisect = bisectRight;
+
+    var e10 = Math.sqrt(50),
+        e5 = Math.sqrt(10),
+        e2 = Math.sqrt(2);
+
+    function ticks(start, stop, count) {
+      var reverse,
+          i = -1,
+          n,
+          ticks,
+          step;
+
+      stop = +stop, start = +start, count = +count;
+      if (start === stop && count > 0) return [start];
+      if (reverse = stop < start) n = start, start = stop, stop = n;
+      if ((step = tickIncrement(start, stop, count)) === 0 || !isFinite(step)) return [];
+
+      if (step > 0) {
+        let r0 = Math.round(start / step), r1 = Math.round(stop / step);
+        if (r0 * step < start) ++r0;
+        if (r1 * step > stop) --r1;
+        ticks = new Array(n = r1 - r0 + 1);
+        while (++i < n) ticks[i] = (r0 + i) * step;
+      } else {
+        step = -step;
+        let r0 = Math.round(start * step), r1 = Math.round(stop * step);
+        if (r0 / step < start) ++r0;
+        if (r1 / step > stop) --r1;
+        ticks = new Array(n = r1 - r0 + 1);
+        while (++i < n) ticks[i] = (r0 + i) / step;
+      }
+
+      if (reverse) ticks.reverse();
+
+      return ticks;
+    }
+
+    function tickIncrement(start, stop, count) {
+      var step = (stop - start) / Math.max(0, count),
+          power = Math.floor(Math.log(step) / Math.LN10),
+          error = step / Math.pow(10, power);
+      return power >= 0
+          ? (error >= e10 ? 10 : error >= e5 ? 5 : error >= e2 ? 2 : 1) * Math.pow(10, power)
+          : -Math.pow(10, -power) / (error >= e10 ? 10 : error >= e5 ? 5 : error >= e2 ? 2 : 1);
+    }
+
+    function tickStep(start, stop, count) {
+      var step0 = Math.abs(stop - start) / Math.max(0, count),
+          step1 = Math.pow(10, Math.floor(Math.log(step0) / Math.LN10)),
+          error = step0 / step1;
+      if (error >= e10) step1 *= 10;
+      else if (error >= e5) step1 *= 5;
+      else if (error >= e2) step1 *= 2;
+      return stop < start ? -step1 : step1;
+    }
+
+    function initRange(domain, range) {
+      switch (arguments.length) {
+        case 0: break;
+        case 1: this.range(domain); break;
+        default: this.range(range).domain(domain); break;
+      }
+      return this;
+    }
+
+    function define(constructor, factory, prototype) {
+      constructor.prototype = factory.prototype = prototype;
+      prototype.constructor = constructor;
+    }
+
+    function extend(parent, definition) {
+      var prototype = Object.create(parent.prototype);
+      for (var key in definition) prototype[key] = definition[key];
+      return prototype;
+    }
+
+    function Color() {}
+
+    var darker = 0.7;
+    var brighter = 1 / darker;
+
+    var reI = "\\s*([+-]?\\d+)\\s*",
+        reN = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)\\s*",
+        reP = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)%\\s*",
+        reHex = /^#([0-9a-f]{3,8})$/,
+        reRgbInteger = new RegExp("^rgb\\(" + [reI, reI, reI] + "\\)$"),
+        reRgbPercent = new RegExp("^rgb\\(" + [reP, reP, reP] + "\\)$"),
+        reRgbaInteger = new RegExp("^rgba\\(" + [reI, reI, reI, reN] + "\\)$"),
+        reRgbaPercent = new RegExp("^rgba\\(" + [reP, reP, reP, reN] + "\\)$"),
+        reHslPercent = new RegExp("^hsl\\(" + [reN, reP, reP] + "\\)$"),
+        reHslaPercent = new RegExp("^hsla\\(" + [reN, reP, reP, reN] + "\\)$");
+
+    var named = {
+      aliceblue: 0xf0f8ff,
+      antiquewhite: 0xfaebd7,
+      aqua: 0x00ffff,
+      aquamarine: 0x7fffd4,
+      azure: 0xf0ffff,
+      beige: 0xf5f5dc,
+      bisque: 0xffe4c4,
+      black: 0x000000,
+      blanchedalmond: 0xffebcd,
+      blue: 0x0000ff,
+      blueviolet: 0x8a2be2,
+      brown: 0xa52a2a,
+      burlywood: 0xdeb887,
+      cadetblue: 0x5f9ea0,
+      chartreuse: 0x7fff00,
+      chocolate: 0xd2691e,
+      coral: 0xff7f50,
+      cornflowerblue: 0x6495ed,
+      cornsilk: 0xfff8dc,
+      crimson: 0xdc143c,
+      cyan: 0x00ffff,
+      darkblue: 0x00008b,
+      darkcyan: 0x008b8b,
+      darkgoldenrod: 0xb8860b,
+      darkgray: 0xa9a9a9,
+      darkgreen: 0x006400,
+      darkgrey: 0xa9a9a9,
+      darkkhaki: 0xbdb76b,
+      darkmagenta: 0x8b008b,
+      darkolivegreen: 0x556b2f,
+      darkorange: 0xff8c00,
+      darkorchid: 0x9932cc,
+      darkred: 0x8b0000,
+      darksalmon: 0xe9967a,
+      darkseagreen: 0x8fbc8f,
+      darkslateblue: 0x483d8b,
+      darkslategray: 0x2f4f4f,
+      darkslategrey: 0x2f4f4f,
+      darkturquoise: 0x00ced1,
+      darkviolet: 0x9400d3,
+      deeppink: 0xff1493,
+      deepskyblue: 0x00bfff,
+      dimgray: 0x696969,
+      dimgrey: 0x696969,
+      dodgerblue: 0x1e90ff,
+      firebrick: 0xb22222,
+      floralwhite: 0xfffaf0,
+      forestgreen: 0x228b22,
+      fuchsia: 0xff00ff,
+      gainsboro: 0xdcdcdc,
+      ghostwhite: 0xf8f8ff,
+      gold: 0xffd700,
+      goldenrod: 0xdaa520,
+      gray: 0x808080,
+      green: 0x008000,
+      greenyellow: 0xadff2f,
+      grey: 0x808080,
+      honeydew: 0xf0fff0,
+      hotpink: 0xff69b4,
+      indianred: 0xcd5c5c,
+      indigo: 0x4b0082,
+      ivory: 0xfffff0,
+      khaki: 0xf0e68c,
+      lavender: 0xe6e6fa,
+      lavenderblush: 0xfff0f5,
+      lawngreen: 0x7cfc00,
+      lemonchiffon: 0xfffacd,
+      lightblue: 0xadd8e6,
+      lightcoral: 0xf08080,
+      lightcyan: 0xe0ffff,
+      lightgoldenrodyellow: 0xfafad2,
+      lightgray: 0xd3d3d3,
+      lightgreen: 0x90ee90,
+      lightgrey: 0xd3d3d3,
+      lightpink: 0xffb6c1,
+      lightsalmon: 0xffa07a,
+      lightseagreen: 0x20b2aa,
+      lightskyblue: 0x87cefa,
+      lightslategray: 0x778899,
+      lightslategrey: 0x778899,
+      lightsteelblue: 0xb0c4de,
+      lightyellow: 0xffffe0,
+      lime: 0x00ff00,
+      limegreen: 0x32cd32,
+      linen: 0xfaf0e6,
+      magenta: 0xff00ff,
+      maroon: 0x800000,
+      mediumaquamarine: 0x66cdaa,
+      mediumblue: 0x0000cd,
+      mediumorchid: 0xba55d3,
+      mediumpurple: 0x9370db,
+      mediumseagreen: 0x3cb371,
+      mediumslateblue: 0x7b68ee,
+      mediumspringgreen: 0x00fa9a,
+      mediumturquoise: 0x48d1cc,
+      mediumvioletred: 0xc71585,
+      midnightblue: 0x191970,
+      mintcream: 0xf5fffa,
+      mistyrose: 0xffe4e1,
+      moccasin: 0xffe4b5,
+      navajowhite: 0xffdead,
+      navy: 0x000080,
+      oldlace: 0xfdf5e6,
+      olive: 0x808000,
+      olivedrab: 0x6b8e23,
+      orange: 0xffa500,
+      orangered: 0xff4500,
+      orchid: 0xda70d6,
+      palegoldenrod: 0xeee8aa,
+      palegreen: 0x98fb98,
+      paleturquoise: 0xafeeee,
+      palevioletred: 0xdb7093,
+      papayawhip: 0xffefd5,
+      peachpuff: 0xffdab9,
+      peru: 0xcd853f,
+      pink: 0xffc0cb,
+      plum: 0xdda0dd,
+      powderblue: 0xb0e0e6,
+      purple: 0x800080,
+      rebeccapurple: 0x663399,
+      red: 0xff0000,
+      rosybrown: 0xbc8f8f,
+      royalblue: 0x4169e1,
+      saddlebrown: 0x8b4513,
+      salmon: 0xfa8072,
+      sandybrown: 0xf4a460,
+      seagreen: 0x2e8b57,
+      seashell: 0xfff5ee,
+      sienna: 0xa0522d,
+      silver: 0xc0c0c0,
+      skyblue: 0x87ceeb,
+      slateblue: 0x6a5acd,
+      slategray: 0x708090,
+      slategrey: 0x708090,
+      snow: 0xfffafa,
+      springgreen: 0x00ff7f,
+      steelblue: 0x4682b4,
+      tan: 0xd2b48c,
+      teal: 0x008080,
+      thistle: 0xd8bfd8,
+      tomato: 0xff6347,
+      turquoise: 0x40e0d0,
+      violet: 0xee82ee,
+      wheat: 0xf5deb3,
+      white: 0xffffff,
+      whitesmoke: 0xf5f5f5,
+      yellow: 0xffff00,
+      yellowgreen: 0x9acd32
+    };
+
+    define(Color, color, {
+      copy: function(channels) {
+        return Object.assign(new this.constructor, this, channels);
+      },
+      displayable: function() {
+        return this.rgb().displayable();
+      },
+      hex: color_formatHex, // Deprecated! Use color.formatHex.
+      formatHex: color_formatHex,
+      formatHsl: color_formatHsl,
+      formatRgb: color_formatRgb,
+      toString: color_formatRgb
+    });
+
+    function color_formatHex() {
+      return this.rgb().formatHex();
+    }
+
+    function color_formatHsl() {
+      return hslConvert(this).formatHsl();
+    }
+
+    function color_formatRgb() {
+      return this.rgb().formatRgb();
+    }
+
+    function color(format) {
+      var m, l;
+      format = (format + "").trim().toLowerCase();
+      return (m = reHex.exec(format)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? rgbn(m) // #ff0000
+          : l === 3 ? new Rgb((m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), ((m & 0xf) << 4) | (m & 0xf), 1) // #f00
+          : l === 8 ? rgba(m >> 24 & 0xff, m >> 16 & 0xff, m >> 8 & 0xff, (m & 0xff) / 0xff) // #ff000000
+          : l === 4 ? rgba((m >> 12 & 0xf) | (m >> 8 & 0xf0), (m >> 8 & 0xf) | (m >> 4 & 0xf0), (m >> 4 & 0xf) | (m & 0xf0), (((m & 0xf) << 4) | (m & 0xf)) / 0xff) // #f000
+          : null) // invalid hex
+          : (m = reRgbInteger.exec(format)) ? new Rgb(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
+          : (m = reRgbPercent.exec(format)) ? new Rgb(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
+          : (m = reRgbaInteger.exec(format)) ? rgba(m[1], m[2], m[3], m[4]) // rgba(255, 0, 0, 1)
+          : (m = reRgbaPercent.exec(format)) ? rgba(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) // rgb(100%, 0%, 0%, 1)
+          : (m = reHslPercent.exec(format)) ? hsla(m[1], m[2] / 100, m[3] / 100, 1) // hsl(120, 50%, 50%)
+          : (m = reHslaPercent.exec(format)) ? hsla(m[1], m[2] / 100, m[3] / 100, m[4]) // hsla(120, 50%, 50%, 1)
+          : named.hasOwnProperty(format) ? rgbn(named[format]) // eslint-disable-line no-prototype-builtins
+          : format === "transparent" ? new Rgb(NaN, NaN, NaN, 0)
+          : null;
+    }
+
+    function rgbn(n) {
+      return new Rgb(n >> 16 & 0xff, n >> 8 & 0xff, n & 0xff, 1);
+    }
+
+    function rgba(r, g, b, a) {
+      if (a <= 0) r = g = b = NaN;
+      return new Rgb(r, g, b, a);
+    }
+
+    function rgbConvert(o) {
+      if (!(o instanceof Color)) o = color(o);
+      if (!o) return new Rgb;
+      o = o.rgb();
+      return new Rgb(o.r, o.g, o.b, o.opacity);
+    }
+
+    function rgb$1(r, g, b, opacity) {
+      return arguments.length === 1 ? rgbConvert(r) : new Rgb(r, g, b, opacity == null ? 1 : opacity);
+    }
+
+    function Rgb(r, g, b, opacity) {
+      this.r = +r;
+      this.g = +g;
+      this.b = +b;
+      this.opacity = +opacity;
+    }
+
+    define(Rgb, rgb$1, extend(Color, {
+      brighter: function(k) {
+        k = k == null ? brighter : Math.pow(brighter, k);
+        return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
+      },
+      darker: function(k) {
+        k = k == null ? darker : Math.pow(darker, k);
+        return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
+      },
+      rgb: function() {
+        return this;
+      },
+      displayable: function() {
+        return (-0.5 <= this.r && this.r < 255.5)
+            && (-0.5 <= this.g && this.g < 255.5)
+            && (-0.5 <= this.b && this.b < 255.5)
+            && (0 <= this.opacity && this.opacity <= 1);
+      },
+      hex: rgb_formatHex, // Deprecated! Use color.formatHex.
+      formatHex: rgb_formatHex,
+      formatRgb: rgb_formatRgb,
+      toString: rgb_formatRgb
+    }));
+
+    function rgb_formatHex() {
+      return "#" + hex(this.r) + hex(this.g) + hex(this.b);
+    }
+
+    function rgb_formatRgb() {
+      var a = this.opacity; a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
+      return (a === 1 ? "rgb(" : "rgba(")
+          + Math.max(0, Math.min(255, Math.round(this.r) || 0)) + ", "
+          + Math.max(0, Math.min(255, Math.round(this.g) || 0)) + ", "
+          + Math.max(0, Math.min(255, Math.round(this.b) || 0))
+          + (a === 1 ? ")" : ", " + a + ")");
+    }
+
+    function hex(value) {
+      value = Math.max(0, Math.min(255, Math.round(value) || 0));
+      return (value < 16 ? "0" : "") + value.toString(16);
+    }
+
+    function hsla(h, s, l, a) {
+      if (a <= 0) h = s = l = NaN;
+      else if (l <= 0 || l >= 1) h = s = NaN;
+      else if (s <= 0) h = NaN;
+      return new Hsl(h, s, l, a);
+    }
+
+    function hslConvert(o) {
+      if (o instanceof Hsl) return new Hsl(o.h, o.s, o.l, o.opacity);
+      if (!(o instanceof Color)) o = color(o);
+      if (!o) return new Hsl;
+      if (o instanceof Hsl) return o;
+      o = o.rgb();
+      var r = o.r / 255,
+          g = o.g / 255,
+          b = o.b / 255,
+          min = Math.min(r, g, b),
+          max = Math.max(r, g, b),
+          h = NaN,
+          s = max - min,
+          l = (max + min) / 2;
+      if (s) {
+        if (r === max) h = (g - b) / s + (g < b) * 6;
+        else if (g === max) h = (b - r) / s + 2;
+        else h = (r - g) / s + 4;
+        s /= l < 0.5 ? max + min : 2 - max - min;
+        h *= 60;
+      } else {
+        s = l > 0 && l < 1 ? 0 : h;
+      }
+      return new Hsl(h, s, l, o.opacity);
+    }
+
+    function hsl(h, s, l, opacity) {
+      return arguments.length === 1 ? hslConvert(h) : new Hsl(h, s, l, opacity == null ? 1 : opacity);
+    }
+
+    function Hsl(h, s, l, opacity) {
+      this.h = +h;
+      this.s = +s;
+      this.l = +l;
+      this.opacity = +opacity;
+    }
+
+    define(Hsl, hsl, extend(Color, {
+      brighter: function(k) {
+        k = k == null ? brighter : Math.pow(brighter, k);
+        return new Hsl(this.h, this.s, this.l * k, this.opacity);
+      },
+      darker: function(k) {
+        k = k == null ? darker : Math.pow(darker, k);
+        return new Hsl(this.h, this.s, this.l * k, this.opacity);
+      },
+      rgb: function() {
+        var h = this.h % 360 + (this.h < 0) * 360,
+            s = isNaN(h) || isNaN(this.s) ? 0 : this.s,
+            l = this.l,
+            m2 = l + (l < 0.5 ? l : 1 - l) * s,
+            m1 = 2 * l - m2;
+        return new Rgb(
+          hsl2rgb(h >= 240 ? h - 240 : h + 120, m1, m2),
+          hsl2rgb(h, m1, m2),
+          hsl2rgb(h < 120 ? h + 240 : h - 120, m1, m2),
+          this.opacity
+        );
+      },
+      displayable: function() {
+        return (0 <= this.s && this.s <= 1 || isNaN(this.s))
+            && (0 <= this.l && this.l <= 1)
+            && (0 <= this.opacity && this.opacity <= 1);
+      },
+      formatHsl: function() {
+        var a = this.opacity; a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
+        return (a === 1 ? "hsl(" : "hsla(")
+            + (this.h || 0) + ", "
+            + (this.s || 0) * 100 + "%, "
+            + (this.l || 0) * 100 + "%"
+            + (a === 1 ? ")" : ", " + a + ")");
+      }
+    }));
+
+    /* From FvD 13.37, CSS Color Module Level 3 */
+    function hsl2rgb(h, m1, m2) {
+      return (h < 60 ? m1 + (m2 - m1) * h / 60
+          : h < 180 ? m2
+          : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60
+          : m1) * 255;
+    }
+
+    var constant = x => () => x;
+
+    function linear$1(a, d) {
+      return function(t) {
+        return a + t * d;
+      };
+    }
+
+    function exponential(a, b, y) {
+      return a = Math.pow(a, y), b = Math.pow(b, y) - a, y = 1 / y, function(t) {
+        return Math.pow(a + t * b, y);
+      };
+    }
+
+    function gamma(y) {
+      return (y = +y) === 1 ? nogamma : function(a, b) {
+        return b - a ? exponential(a, b, y) : constant(isNaN(a) ? b : a);
+      };
+    }
+
+    function nogamma(a, b) {
+      var d = b - a;
+      return d ? linear$1(a, d) : constant(isNaN(a) ? b : a);
+    }
+
+    var rgb = (function rgbGamma(y) {
+      var color = gamma(y);
+
+      function rgb(start, end) {
+        var r = color((start = rgb$1(start)).r, (end = rgb$1(end)).r),
+            g = color(start.g, end.g),
+            b = color(start.b, end.b),
+            opacity = nogamma(start.opacity, end.opacity);
+        return function(t) {
+          start.r = r(t);
+          start.g = g(t);
+          start.b = b(t);
+          start.opacity = opacity(t);
+          return start + "";
+        };
+      }
+
+      rgb.gamma = rgbGamma;
+
+      return rgb;
+    })(1);
+
+    function numberArray(a, b) {
+      if (!b) b = [];
+      var n = a ? Math.min(b.length, a.length) : 0,
+          c = b.slice(),
+          i;
+      return function(t) {
+        for (i = 0; i < n; ++i) c[i] = a[i] * (1 - t) + b[i] * t;
+        return c;
+      };
+    }
+
+    function isNumberArray(x) {
+      return ArrayBuffer.isView(x) && !(x instanceof DataView);
+    }
+
+    function genericArray(a, b) {
+      var nb = b ? b.length : 0,
+          na = a ? Math.min(nb, a.length) : 0,
+          x = new Array(na),
+          c = new Array(nb),
+          i;
+
+      for (i = 0; i < na; ++i) x[i] = interpolate(a[i], b[i]);
+      for (; i < nb; ++i) c[i] = b[i];
+
+      return function(t) {
+        for (i = 0; i < na; ++i) c[i] = x[i](t);
+        return c;
+      };
+    }
+
+    function date(a, b) {
+      var d = new Date;
+      return a = +a, b = +b, function(t) {
+        return d.setTime(a * (1 - t) + b * t), d;
+      };
+    }
+
+    function interpolateNumber(a, b) {
+      return a = +a, b = +b, function(t) {
+        return a * (1 - t) + b * t;
+      };
+    }
+
+    function object(a, b) {
+      var i = {},
+          c = {},
+          k;
+
+      if (a === null || typeof a !== "object") a = {};
+      if (b === null || typeof b !== "object") b = {};
+
+      for (k in b) {
+        if (k in a) {
+          i[k] = interpolate(a[k], b[k]);
+        } else {
+          c[k] = b[k];
+        }
+      }
+
+      return function(t) {
+        for (k in i) c[k] = i[k](t);
+        return c;
+      };
+    }
+
+    var reA = /[-+]?(?:\d+\.?\d*|\.?\d+)(?:[eE][-+]?\d+)?/g,
+        reB = new RegExp(reA.source, "g");
+
+    function zero(b) {
+      return function() {
+        return b;
+      };
+    }
+
+    function one(b) {
+      return function(t) {
+        return b(t) + "";
+      };
+    }
+
+    function string(a, b) {
+      var bi = reA.lastIndex = reB.lastIndex = 0, // scan index for next number in b
+          am, // current match in a
+          bm, // current match in b
+          bs, // string preceding current number in b, if any
+          i = -1, // index in s
+          s = [], // string constants and placeholders
+          q = []; // number interpolators
+
+      // Coerce inputs to strings.
+      a = a + "", b = b + "";
+
+      // Interpolate pairs of numbers in a & b.
+      while ((am = reA.exec(a))
+          && (bm = reB.exec(b))) {
+        if ((bs = bm.index) > bi) { // a string precedes the next number in b
+          bs = b.slice(bi, bs);
+          if (s[i]) s[i] += bs; // coalesce with previous string
+          else s[++i] = bs;
+        }
+        if ((am = am[0]) === (bm = bm[0])) { // numbers in a & b match
+          if (s[i]) s[i] += bm; // coalesce with previous string
+          else s[++i] = bm;
+        } else { // interpolate non-matching numbers
+          s[++i] = null;
+          q.push({i: i, x: interpolateNumber(am, bm)});
+        }
+        bi = reB.lastIndex;
+      }
+
+      // Add remains of b.
+      if (bi < b.length) {
+        bs = b.slice(bi);
+        if (s[i]) s[i] += bs; // coalesce with previous string
+        else s[++i] = bs;
+      }
+
+      // Special optimization for only a single match.
+      // Otherwise, interpolate each of the numbers and rejoin the string.
+      return s.length < 2 ? (q[0]
+          ? one(q[0].x)
+          : zero(b))
+          : (b = q.length, function(t) {
+              for (var i = 0, o; i < b; ++i) s[(o = q[i]).i] = o.x(t);
+              return s.join("");
+            });
+    }
+
+    function interpolate(a, b) {
+      var t = typeof b, c;
+      return b == null || t === "boolean" ? constant(b)
+          : (t === "number" ? interpolateNumber
+          : t === "string" ? ((c = color(b)) ? (b = c, rgb) : string)
+          : b instanceof color ? rgb
+          : b instanceof Date ? date
+          : isNumberArray(b) ? numberArray
+          : Array.isArray(b) ? genericArray
+          : typeof b.valueOf !== "function" && typeof b.toString !== "function" || isNaN(b) ? object
+          : interpolateNumber)(a, b);
+    }
+
+    function interpolateRound(a, b) {
+      return a = +a, b = +b, function(t) {
+        return Math.round(a * (1 - t) + b * t);
+      };
+    }
+
+    function constants(x) {
+      return function() {
+        return x;
+      };
+    }
+
+    function number(x) {
+      return +x;
+    }
+
+    var unit = [0, 1];
+
+    function identity$1(x) {
+      return x;
+    }
+
+    function normalize(a, b) {
+      return (b -= (a = +a))
+          ? function(x) { return (x - a) / b; }
+          : constants(isNaN(b) ? NaN : 0.5);
+    }
+
+    function clamper(a, b) {
+      var t;
+      if (a > b) t = a, a = b, b = t;
+      return function(x) { return Math.max(a, Math.min(b, x)); };
+    }
+
+    // normalize(a, b)(x) takes a domain value x in [a,b] and returns the corresponding parameter t in [0,1].
+    // interpolate(a, b)(t) takes a parameter t in [0,1] and returns the corresponding range value x in [a,b].
+    function bimap(domain, range, interpolate) {
+      var d0 = domain[0], d1 = domain[1], r0 = range[0], r1 = range[1];
+      if (d1 < d0) d0 = normalize(d1, d0), r0 = interpolate(r1, r0);
+      else d0 = normalize(d0, d1), r0 = interpolate(r0, r1);
+      return function(x) { return r0(d0(x)); };
+    }
+
+    function polymap(domain, range, interpolate) {
+      var j = Math.min(domain.length, range.length) - 1,
+          d = new Array(j),
+          r = new Array(j),
+          i = -1;
+
+      // Reverse descending domains.
+      if (domain[j] < domain[0]) {
+        domain = domain.slice().reverse();
+        range = range.slice().reverse();
+      }
+
+      while (++i < j) {
+        d[i] = normalize(domain[i], domain[i + 1]);
+        r[i] = interpolate(range[i], range[i + 1]);
+      }
+
+      return function(x) {
+        var i = bisect(domain, x, 1, j) - 1;
+        return r[i](d[i](x));
+      };
+    }
+
+    function copy(source, target) {
+      return target
+          .domain(source.domain())
+          .range(source.range())
+          .interpolate(source.interpolate())
+          .clamp(source.clamp())
+          .unknown(source.unknown());
+    }
+
+    function transformer() {
+      var domain = unit,
+          range = unit,
+          interpolate$1 = interpolate,
+          transform,
+          untransform,
+          unknown,
+          clamp = identity$1,
+          piecewise,
+          output,
+          input;
+
+      function rescale() {
+        var n = Math.min(domain.length, range.length);
+        if (clamp !== identity$1) clamp = clamper(domain[0], domain[n - 1]);
+        piecewise = n > 2 ? polymap : bimap;
+        output = input = null;
+        return scale;
+      }
+
+      function scale(x) {
+        return x == null || isNaN(x = +x) ? unknown : (output || (output = piecewise(domain.map(transform), range, interpolate$1)))(transform(clamp(x)));
+      }
+
+      scale.invert = function(y) {
+        return clamp(untransform((input || (input = piecewise(range, domain.map(transform), interpolateNumber)))(y)));
+      };
+
+      scale.domain = function(_) {
+        return arguments.length ? (domain = Array.from(_, number), rescale()) : domain.slice();
+      };
+
+      scale.range = function(_) {
+        return arguments.length ? (range = Array.from(_), rescale()) : range.slice();
+      };
+
+      scale.rangeRound = function(_) {
+        return range = Array.from(_), interpolate$1 = interpolateRound, rescale();
+      };
+
+      scale.clamp = function(_) {
+        return arguments.length ? (clamp = _ ? true : identity$1, rescale()) : clamp !== identity$1;
+      };
+
+      scale.interpolate = function(_) {
+        return arguments.length ? (interpolate$1 = _, rescale()) : interpolate$1;
+      };
+
+      scale.unknown = function(_) {
+        return arguments.length ? (unknown = _, scale) : unknown;
+      };
+
+      return function(t, u) {
+        transform = t, untransform = u;
+        return rescale();
+      };
+    }
+
+    function continuous() {
+      return transformer()(identity$1, identity$1);
+    }
+
+    function formatDecimal(x) {
+      return Math.abs(x = Math.round(x)) >= 1e21
+          ? x.toLocaleString("en").replace(/,/g, "")
+          : x.toString(10);
+    }
+
+    // Computes the decimal coefficient and exponent of the specified number x with
+    // significant digits p, where x is positive and p is in [1, 21] or undefined.
+    // For example, formatDecimalParts(1.23) returns ["123", 0].
+    function formatDecimalParts(x, p) {
+      if ((i = (x = p ? x.toExponential(p - 1) : x.toExponential()).indexOf("e")) < 0) return null; // NaN, ±Infinity
+      var i, coefficient = x.slice(0, i);
+
+      // The string returned by toExponential either has the form \d\.\d+e[-+]\d+
+      // (e.g., 1.2e+3) or the form \de[-+]\d+ (e.g., 1e+3).
+      return [
+        coefficient.length > 1 ? coefficient[0] + coefficient.slice(2) : coefficient,
+        +x.slice(i + 1)
+      ];
+    }
+
+    function exponent(x) {
+      return x = formatDecimalParts(Math.abs(x)), x ? x[1] : NaN;
+    }
+
+    function formatGroup(grouping, thousands) {
+      return function(value, width) {
+        var i = value.length,
+            t = [],
+            j = 0,
+            g = grouping[0],
+            length = 0;
+
+        while (i > 0 && g > 0) {
+          if (length + g + 1 > width) g = Math.max(1, width - length);
+          t.push(value.substring(i -= g, i + g));
+          if ((length += g + 1) > width) break;
+          g = grouping[j = (j + 1) % grouping.length];
+        }
+
+        return t.reverse().join(thousands);
+      };
+    }
+
+    function formatNumerals(numerals) {
+      return function(value) {
+        return value.replace(/[0-9]/g, function(i) {
+          return numerals[+i];
+        });
+      };
+    }
+
+    // [[fill]align][sign][symbol][0][width][,][.precision][~][type]
+    var re = /^(?:(.)?([<>=^]))?([+\-( ])?([$#])?(0)?(\d+)?(,)?(\.\d+)?(~)?([a-z%])?$/i;
+
+    function formatSpecifier(specifier) {
+      if (!(match = re.exec(specifier))) throw new Error("invalid format: " + specifier);
+      var match;
+      return new FormatSpecifier({
+        fill: match[1],
+        align: match[2],
+        sign: match[3],
+        symbol: match[4],
+        zero: match[5],
+        width: match[6],
+        comma: match[7],
+        precision: match[8] && match[8].slice(1),
+        trim: match[9],
+        type: match[10]
+      });
+    }
+
+    formatSpecifier.prototype = FormatSpecifier.prototype; // instanceof
+
+    function FormatSpecifier(specifier) {
+      this.fill = specifier.fill === undefined ? " " : specifier.fill + "";
+      this.align = specifier.align === undefined ? ">" : specifier.align + "";
+      this.sign = specifier.sign === undefined ? "-" : specifier.sign + "";
+      this.symbol = specifier.symbol === undefined ? "" : specifier.symbol + "";
+      this.zero = !!specifier.zero;
+      this.width = specifier.width === undefined ? undefined : +specifier.width;
+      this.comma = !!specifier.comma;
+      this.precision = specifier.precision === undefined ? undefined : +specifier.precision;
+      this.trim = !!specifier.trim;
+      this.type = specifier.type === undefined ? "" : specifier.type + "";
+    }
+
+    FormatSpecifier.prototype.toString = function() {
+      return this.fill
+          + this.align
+          + this.sign
+          + this.symbol
+          + (this.zero ? "0" : "")
+          + (this.width === undefined ? "" : Math.max(1, this.width | 0))
+          + (this.comma ? "," : "")
+          + (this.precision === undefined ? "" : "." + Math.max(0, this.precision | 0))
+          + (this.trim ? "~" : "")
+          + this.type;
+    };
+
+    // Trims insignificant zeros, e.g., replaces 1.2000k with 1.2k.
+    function formatTrim(s) {
+      out: for (var n = s.length, i = 1, i0 = -1, i1; i < n; ++i) {
+        switch (s[i]) {
+          case ".": i0 = i1 = i; break;
+          case "0": if (i0 === 0) i0 = i; i1 = i; break;
+          default: if (!+s[i]) break out; if (i0 > 0) i0 = 0; break;
+        }
+      }
+      return i0 > 0 ? s.slice(0, i0) + s.slice(i1 + 1) : s;
+    }
+
+    var prefixExponent;
+
+    function formatPrefixAuto(x, p) {
+      var d = formatDecimalParts(x, p);
+      if (!d) return x + "";
+      var coefficient = d[0],
+          exponent = d[1],
+          i = exponent - (prefixExponent = Math.max(-8, Math.min(8, Math.floor(exponent / 3))) * 3) + 1,
+          n = coefficient.length;
+      return i === n ? coefficient
+          : i > n ? coefficient + new Array(i - n + 1).join("0")
+          : i > 0 ? coefficient.slice(0, i) + "." + coefficient.slice(i)
+          : "0." + new Array(1 - i).join("0") + formatDecimalParts(x, Math.max(0, p + i - 1))[0]; // less than 1y!
+    }
+
+    function formatRounded(x, p) {
+      var d = formatDecimalParts(x, p);
+      if (!d) return x + "";
+      var coefficient = d[0],
+          exponent = d[1];
+      return exponent < 0 ? "0." + new Array(-exponent).join("0") + coefficient
+          : coefficient.length > exponent + 1 ? coefficient.slice(0, exponent + 1) + "." + coefficient.slice(exponent + 1)
+          : coefficient + new Array(exponent - coefficient.length + 2).join("0");
+    }
+
+    var formatTypes = {
+      "%": (x, p) => (x * 100).toFixed(p),
+      "b": (x) => Math.round(x).toString(2),
+      "c": (x) => x + "",
+      "d": formatDecimal,
+      "e": (x, p) => x.toExponential(p),
+      "f": (x, p) => x.toFixed(p),
+      "g": (x, p) => x.toPrecision(p),
+      "o": (x) => Math.round(x).toString(8),
+      "p": (x, p) => formatRounded(x * 100, p),
+      "r": formatRounded,
+      "s": formatPrefixAuto,
+      "X": (x) => Math.round(x).toString(16).toUpperCase(),
+      "x": (x) => Math.round(x).toString(16)
+    };
+
+    function identity(x) {
+      return x;
+    }
+
+    var map = Array.prototype.map,
+        prefixes = ["y","z","a","f","p","n","µ","m","","k","M","G","T","P","E","Z","Y"];
+
+    function formatLocale(locale) {
+      var group = locale.grouping === undefined || locale.thousands === undefined ? identity : formatGroup(map.call(locale.grouping, Number), locale.thousands + ""),
+          currencyPrefix = locale.currency === undefined ? "" : locale.currency[0] + "",
+          currencySuffix = locale.currency === undefined ? "" : locale.currency[1] + "",
+          decimal = locale.decimal === undefined ? "." : locale.decimal + "",
+          numerals = locale.numerals === undefined ? identity : formatNumerals(map.call(locale.numerals, String)),
+          percent = locale.percent === undefined ? "%" : locale.percent + "",
+          minus = locale.minus === undefined ? "−" : locale.minus + "",
+          nan = locale.nan === undefined ? "NaN" : locale.nan + "";
+
+      function newFormat(specifier) {
+        specifier = formatSpecifier(specifier);
+
+        var fill = specifier.fill,
+            align = specifier.align,
+            sign = specifier.sign,
+            symbol = specifier.symbol,
+            zero = specifier.zero,
+            width = specifier.width,
+            comma = specifier.comma,
+            precision = specifier.precision,
+            trim = specifier.trim,
+            type = specifier.type;
+
+        // The "n" type is an alias for ",g".
+        if (type === "n") comma = true, type = "g";
+
+        // The "" type, and any invalid type, is an alias for ".12~g".
+        else if (!formatTypes[type]) precision === undefined && (precision = 12), trim = true, type = "g";
+
+        // If zero fill is specified, padding goes after sign and before digits.
+        if (zero || (fill === "0" && align === "=")) zero = true, fill = "0", align = "=";
+
+        // Compute the prefix and suffix.
+        // For SI-prefix, the suffix is lazily computed.
+        var prefix = symbol === "$" ? currencyPrefix : symbol === "#" && /[boxX]/.test(type) ? "0" + type.toLowerCase() : "",
+            suffix = symbol === "$" ? currencySuffix : /[%p]/.test(type) ? percent : "";
+
+        // What format function should we use?
+        // Is this an integer type?
+        // Can this type generate exponential notation?
+        var formatType = formatTypes[type],
+            maybeSuffix = /[defgprs%]/.test(type);
+
+        // Set the default precision if not specified,
+        // or clamp the specified precision to the supported range.
+        // For significant precision, it must be in [1, 21].
+        // For fixed precision, it must be in [0, 20].
+        precision = precision === undefined ? 6
+            : /[gprs]/.test(type) ? Math.max(1, Math.min(21, precision))
+            : Math.max(0, Math.min(20, precision));
+
+        function format(value) {
+          var valuePrefix = prefix,
+              valueSuffix = suffix,
+              i, n, c;
+
+          if (type === "c") {
+            valueSuffix = formatType(value) + valueSuffix;
+            value = "";
+          } else {
+            value = +value;
+
+            // Determine the sign. -0 is not less than 0, but 1 / -0 is!
+            var valueNegative = value < 0 || 1 / value < 0;
+
+            // Perform the initial formatting.
+            value = isNaN(value) ? nan : formatType(Math.abs(value), precision);
+
+            // Trim insignificant zeros.
+            if (trim) value = formatTrim(value);
+
+            // If a negative value rounds to zero after formatting, and no explicit positive sign is requested, hide the sign.
+            if (valueNegative && +value === 0 && sign !== "+") valueNegative = false;
+
+            // Compute the prefix and suffix.
+            valuePrefix = (valueNegative ? (sign === "(" ? sign : minus) : sign === "-" || sign === "(" ? "" : sign) + valuePrefix;
+            valueSuffix = (type === "s" ? prefixes[8 + prefixExponent / 3] : "") + valueSuffix + (valueNegative && sign === "(" ? ")" : "");
+
+            // Break the formatted value into the integer “value” part that can be
+            // grouped, and fractional or exponential “suffix” part that is not.
+            if (maybeSuffix) {
+              i = -1, n = value.length;
+              while (++i < n) {
+                if (c = value.charCodeAt(i), 48 > c || c > 57) {
+                  valueSuffix = (c === 46 ? decimal + value.slice(i + 1) : value.slice(i)) + valueSuffix;
+                  value = value.slice(0, i);
+                  break;
+                }
+              }
+            }
+          }
+
+          // If the fill character is not "0", grouping is applied before padding.
+          if (comma && !zero) value = group(value, Infinity);
+
+          // Compute the padding.
+          var length = valuePrefix.length + value.length + valueSuffix.length,
+              padding = length < width ? new Array(width - length + 1).join(fill) : "";
+
+          // If the fill character is "0", grouping is applied after padding.
+          if (comma && zero) value = group(padding + value, padding.length ? width - valueSuffix.length : Infinity), padding = "";
+
+          // Reconstruct the final output based on the desired alignment.
+          switch (align) {
+            case "<": value = valuePrefix + value + valueSuffix + padding; break;
+            case "=": value = valuePrefix + padding + value + valueSuffix; break;
+            case "^": value = padding.slice(0, length = padding.length >> 1) + valuePrefix + value + valueSuffix + padding.slice(length); break;
+            default: value = padding + valuePrefix + value + valueSuffix; break;
+          }
+
+          return numerals(value);
+        }
+
+        format.toString = function() {
+          return specifier + "";
+        };
+
+        return format;
+      }
+
+      function formatPrefix(specifier, value) {
+        var f = newFormat((specifier = formatSpecifier(specifier), specifier.type = "f", specifier)),
+            e = Math.max(-8, Math.min(8, Math.floor(exponent(value) / 3))) * 3,
+            k = Math.pow(10, -e),
+            prefix = prefixes[8 + e / 3];
+        return function(value) {
+          return f(k * value) + prefix;
+        };
+      }
+
+      return {
+        format: newFormat,
+        formatPrefix: formatPrefix
+      };
+    }
+
+    var locale;
+    var format;
+    var formatPrefix;
+
+    defaultLocale({
+      thousands: ",",
+      grouping: [3],
+      currency: ["$", ""]
+    });
+
+    function defaultLocale(definition) {
+      locale = formatLocale(definition);
+      format = locale.format;
+      formatPrefix = locale.formatPrefix;
+      return locale;
+    }
+
+    function precisionFixed(step) {
+      return Math.max(0, -exponent(Math.abs(step)));
+    }
+
+    function precisionPrefix(step, value) {
+      return Math.max(0, Math.max(-8, Math.min(8, Math.floor(exponent(value) / 3))) * 3 - exponent(Math.abs(step)));
+    }
+
+    function precisionRound(step, max) {
+      step = Math.abs(step), max = Math.abs(max) - step;
+      return Math.max(0, exponent(max) - exponent(step)) + 1;
+    }
+
+    function tickFormat(start, stop, count, specifier) {
+      var step = tickStep(start, stop, count),
+          precision;
+      specifier = formatSpecifier(specifier == null ? ",f" : specifier);
+      switch (specifier.type) {
+        case "s": {
+          var value = Math.max(Math.abs(start), Math.abs(stop));
+          if (specifier.precision == null && !isNaN(precision = precisionPrefix(step, value))) specifier.precision = precision;
+          return formatPrefix(specifier, value);
+        }
+        case "":
+        case "e":
+        case "g":
+        case "p":
+        case "r": {
+          if (specifier.precision == null && !isNaN(precision = precisionRound(step, Math.max(Math.abs(start), Math.abs(stop))))) specifier.precision = precision - (specifier.type === "e");
+          break;
+        }
+        case "f":
+        case "%": {
+          if (specifier.precision == null && !isNaN(precision = precisionFixed(step))) specifier.precision = precision - (specifier.type === "%") * 2;
+          break;
+        }
+      }
+      return format(specifier);
+    }
+
+    function linearish(scale) {
+      var domain = scale.domain;
+
+      scale.ticks = function(count) {
+        var d = domain();
+        return ticks(d[0], d[d.length - 1], count == null ? 10 : count);
+      };
+
+      scale.tickFormat = function(count, specifier) {
+        var d = domain();
+        return tickFormat(d[0], d[d.length - 1], count == null ? 10 : count, specifier);
+      };
+
+      scale.nice = function(count) {
+        if (count == null) count = 10;
+
+        var d = domain();
+        var i0 = 0;
+        var i1 = d.length - 1;
+        var start = d[i0];
+        var stop = d[i1];
+        var prestep;
+        var step;
+        var maxIter = 10;
+
+        if (stop < start) {
+          step = start, start = stop, stop = step;
+          step = i0, i0 = i1, i1 = step;
+        }
+        
+        while (maxIter-- > 0) {
+          step = tickIncrement(start, stop, count);
+          if (step === prestep) {
+            d[i0] = start;
+            d[i1] = stop;
+            return domain(d);
+          } else if (step > 0) {
+            start = Math.floor(start / step) * step;
+            stop = Math.ceil(stop / step) * step;
+          } else if (step < 0) {
+            start = Math.ceil(start * step) / step;
+            stop = Math.floor(stop * step) / step;
+          } else {
+            break;
+          }
+          prestep = step;
+        }
+
+        return scale;
+      };
+
+      return scale;
+    }
+
+    function linear() {
+      var scale = continuous();
+
+      scale.copy = function() {
+        return copy(scale, linear());
+      };
+
+      initRange.apply(scale, arguments);
+
+      return linearish(scale);
+    }
+
+    var top = 'top';
+    var bottom = 'bottom';
+    var right = 'right';
+    var left = 'left';
+    var auto = 'auto';
+    var basePlacements = [top, bottom, right, left];
+    var start = 'start';
+    var end = 'end';
+    var clippingParents = 'clippingParents';
+    var viewport = 'viewport';
+    var popper = 'popper';
+    var reference = 'reference';
+    var variationPlacements = /*#__PURE__*/basePlacements.reduce(function (acc, placement) {
+      return acc.concat([placement + "-" + start, placement + "-" + end]);
+    }, []);
+    var placements = /*#__PURE__*/[].concat(basePlacements, [auto]).reduce(function (acc, placement) {
+      return acc.concat([placement, placement + "-" + start, placement + "-" + end]);
+    }, []); // modifiers that need to read the DOM
+
+    var beforeRead = 'beforeRead';
+    var read = 'read';
+    var afterRead = 'afterRead'; // pure-logic modifiers
+
+    var beforeMain = 'beforeMain';
+    var main = 'main';
+    var afterMain = 'afterMain'; // modifier with the purpose to write to the DOM (or write into a framework state)
+
+    var beforeWrite = 'beforeWrite';
+    var write = 'write';
+    var afterWrite = 'afterWrite';
+    var modifierPhases = [beforeRead, read, afterRead, beforeMain, main, afterMain, beforeWrite, write, afterWrite];
+
+    function getNodeName(element) {
+      return element ? (element.nodeName || '').toLowerCase() : null;
+    }
+
+    function getWindow(node) {
+      if (node == null) {
+        return window;
+      }
+
+      if (node.toString() !== '[object Window]') {
+        var ownerDocument = node.ownerDocument;
+        return ownerDocument ? ownerDocument.defaultView || window : window;
+      }
+
+      return node;
+    }
+
+    function isElement$1(node) {
+      var OwnElement = getWindow(node).Element;
+      return node instanceof OwnElement || node instanceof Element;
+    }
+
+    function isHTMLElement(node) {
+      var OwnElement = getWindow(node).HTMLElement;
+      return node instanceof OwnElement || node instanceof HTMLElement;
+    }
+
+    function isShadowRoot(node) {
+      // IE 11 has no ShadowRoot
+      if (typeof ShadowRoot === 'undefined') {
+        return false;
+      }
+
+      var OwnElement = getWindow(node).ShadowRoot;
+      return node instanceof OwnElement || node instanceof ShadowRoot;
+    }
+
+    // and applies them to the HTMLElements such as popper and arrow
+
+    function applyStyles(_ref) {
+      var state = _ref.state;
+      Object.keys(state.elements).forEach(function (name) {
+        var style = state.styles[name] || {};
+        var attributes = state.attributes[name] || {};
+        var element = state.elements[name]; // arrow is optional + virtual elements
+
+        if (!isHTMLElement(element) || !getNodeName(element)) {
+          return;
+        } // Flow doesn't support to extend this property, but it's the most
+        // effective way to apply styles to an HTMLElement
+        // $FlowFixMe[cannot-write]
+
+
+        Object.assign(element.style, style);
+        Object.keys(attributes).forEach(function (name) {
+          var value = attributes[name];
+
+          if (value === false) {
+            element.removeAttribute(name);
+          } else {
+            element.setAttribute(name, value === true ? '' : value);
+          }
+        });
+      });
+    }
+
+    function effect$2(_ref2) {
+      var state = _ref2.state;
+      var initialStyles = {
+        popper: {
+          position: state.options.strategy,
+          left: '0',
+          top: '0',
+          margin: '0'
+        },
+        arrow: {
+          position: 'absolute'
+        },
+        reference: {}
+      };
+      Object.assign(state.elements.popper.style, initialStyles.popper);
+      state.styles = initialStyles;
+
+      if (state.elements.arrow) {
+        Object.assign(state.elements.arrow.style, initialStyles.arrow);
+      }
+
+      return function () {
+        Object.keys(state.elements).forEach(function (name) {
+          var element = state.elements[name];
+          var attributes = state.attributes[name] || {};
+          var styleProperties = Object.keys(state.styles.hasOwnProperty(name) ? state.styles[name] : initialStyles[name]); // Set all values to an empty string to unset them
+
+          var style = styleProperties.reduce(function (style, property) {
+            style[property] = '';
+            return style;
+          }, {}); // arrow is optional + virtual elements
+
+          if (!isHTMLElement(element) || !getNodeName(element)) {
+            return;
+          }
+
+          Object.assign(element.style, style);
+          Object.keys(attributes).forEach(function (attribute) {
+            element.removeAttribute(attribute);
+          });
+        });
+      };
+    } // eslint-disable-next-line import/no-unused-modules
+
+
+    var applyStyles$1 = {
+      name: 'applyStyles',
+      enabled: true,
+      phase: 'write',
+      fn: applyStyles,
+      effect: effect$2,
+      requires: ['computeStyles']
+    };
+
+    function getBasePlacement$1(placement) {
+      return placement.split('-')[0];
+    }
+
+    var max = Math.max;
+    var min = Math.min;
+    var round = Math.round;
+
+    function getBoundingClientRect(element, includeScale) {
+      if (includeScale === void 0) {
+        includeScale = false;
+      }
+
+      var rect = element.getBoundingClientRect();
+      var scaleX = 1;
+      var scaleY = 1;
+
+      if (isHTMLElement(element) && includeScale) {
+        var offsetHeight = element.offsetHeight;
+        var offsetWidth = element.offsetWidth; // Do not attempt to divide by 0, otherwise we get `Infinity` as scale
+        // Fallback to 1 in case both values are `0`
+
+        if (offsetWidth > 0) {
+          scaleX = round(rect.width) / offsetWidth || 1;
+        }
+
+        if (offsetHeight > 0) {
+          scaleY = round(rect.height) / offsetHeight || 1;
+        }
+      }
+
+      return {
+        width: rect.width / scaleX,
+        height: rect.height / scaleY,
+        top: rect.top / scaleY,
+        right: rect.right / scaleX,
+        bottom: rect.bottom / scaleY,
+        left: rect.left / scaleX,
+        x: rect.left / scaleX,
+        y: rect.top / scaleY
+      };
+    }
+
+    // means it doesn't take into account transforms.
+
+    function getLayoutRect(element) {
+      var clientRect = getBoundingClientRect(element); // Use the clientRect sizes if it's not been transformed.
+      // Fixes https://github.com/popperjs/popper-core/issues/1223
+
+      var width = element.offsetWidth;
+      var height = element.offsetHeight;
+
+      if (Math.abs(clientRect.width - width) <= 1) {
+        width = clientRect.width;
+      }
+
+      if (Math.abs(clientRect.height - height) <= 1) {
+        height = clientRect.height;
+      }
+
+      return {
+        x: element.offsetLeft,
+        y: element.offsetTop,
+        width: width,
+        height: height
+      };
+    }
+
+    function contains(parent, child) {
+      var rootNode = child.getRootNode && child.getRootNode(); // First, attempt with faster native method
+
+      if (parent.contains(child)) {
+        return true;
+      } // then fallback to custom implementation with Shadow DOM support
+      else if (rootNode && isShadowRoot(rootNode)) {
+          var next = child;
+
+          do {
+            if (next && parent.isSameNode(next)) {
+              return true;
+            } // $FlowFixMe[prop-missing]: need a better way to handle this...
+
+
+            next = next.parentNode || next.host;
+          } while (next);
+        } // Give up, the result is false
+
+
+      return false;
+    }
+
+    function getComputedStyle(element) {
+      return getWindow(element).getComputedStyle(element);
+    }
+
+    function isTableElement(element) {
+      return ['table', 'td', 'th'].indexOf(getNodeName(element)) >= 0;
+    }
+
+    function getDocumentElement(element) {
+      // $FlowFixMe[incompatible-return]: assume body is always available
+      return ((isElement$1(element) ? element.ownerDocument : // $FlowFixMe[prop-missing]
+      element.document) || window.document).documentElement;
+    }
+
+    function getParentNode(element) {
+      if (getNodeName(element) === 'html') {
+        return element;
+      }
+
+      return (// this is a quicker (but less type safe) way to save quite some bytes from the bundle
+        // $FlowFixMe[incompatible-return]
+        // $FlowFixMe[prop-missing]
+        element.assignedSlot || // step into the shadow DOM of the parent of a slotted node
+        element.parentNode || ( // DOM Element detected
+        isShadowRoot(element) ? element.host : null) || // ShadowRoot detected
+        // $FlowFixMe[incompatible-call]: HTMLElement is a Node
+        getDocumentElement(element) // fallback
+
+      );
+    }
+
+    function getTrueOffsetParent(element) {
+      if (!isHTMLElement(element) || // https://github.com/popperjs/popper-core/issues/837
+      getComputedStyle(element).position === 'fixed') {
+        return null;
+      }
+
+      return element.offsetParent;
+    } // `.offsetParent` reports `null` for fixed elements, while absolute elements
+    // return the containing block
+
+
+    function getContainingBlock(element) {
+      var isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') !== -1;
+      var isIE = navigator.userAgent.indexOf('Trident') !== -1;
+
+      if (isIE && isHTMLElement(element)) {
+        // In IE 9, 10 and 11 fixed elements containing block is always established by the viewport
+        var elementCss = getComputedStyle(element);
+
+        if (elementCss.position === 'fixed') {
+          return null;
+        }
+      }
+
+      var currentNode = getParentNode(element);
+
+      while (isHTMLElement(currentNode) && ['html', 'body'].indexOf(getNodeName(currentNode)) < 0) {
+        var css = getComputedStyle(currentNode); // This is non-exhaustive but covers the most common CSS properties that
+        // create a containing block.
+        // https://developer.mozilla.org/en-US/docs/Web/CSS/Containing_block#identifying_the_containing_block
+
+        if (css.transform !== 'none' || css.perspective !== 'none' || css.contain === 'paint' || ['transform', 'perspective'].indexOf(css.willChange) !== -1 || isFirefox && css.willChange === 'filter' || isFirefox && css.filter && css.filter !== 'none') {
+          return currentNode;
+        } else {
+          currentNode = currentNode.parentNode;
+        }
+      }
+
+      return null;
+    } // Gets the closest ancestor positioned element. Handles some edge cases,
+    // such as table ancestors and cross browser bugs.
+
+
+    function getOffsetParent(element) {
+      var window = getWindow(element);
+      var offsetParent = getTrueOffsetParent(element);
+
+      while (offsetParent && isTableElement(offsetParent) && getComputedStyle(offsetParent).position === 'static') {
+        offsetParent = getTrueOffsetParent(offsetParent);
+      }
+
+      if (offsetParent && (getNodeName(offsetParent) === 'html' || getNodeName(offsetParent) === 'body' && getComputedStyle(offsetParent).position === 'static')) {
+        return window;
+      }
+
+      return offsetParent || getContainingBlock(element) || window;
+    }
+
+    function getMainAxisFromPlacement(placement) {
+      return ['top', 'bottom'].indexOf(placement) >= 0 ? 'x' : 'y';
+    }
+
+    function within(min$1, value, max$1) {
+      return max(min$1, min(value, max$1));
+    }
+    function withinMaxClamp(min, value, max) {
+      var v = within(min, value, max);
+      return v > max ? max : v;
+    }
+
+    function getFreshSideObject() {
+      return {
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0
+      };
+    }
+
+    function mergePaddingObject(paddingObject) {
+      return Object.assign({}, getFreshSideObject(), paddingObject);
+    }
+
+    function expandToHashMap(value, keys) {
+      return keys.reduce(function (hashMap, key) {
+        hashMap[key] = value;
+        return hashMap;
+      }, {});
+    }
+
+    var toPaddingObject = function toPaddingObject(padding, state) {
+      padding = typeof padding === 'function' ? padding(Object.assign({}, state.rects, {
+        placement: state.placement
+      })) : padding;
+      return mergePaddingObject(typeof padding !== 'number' ? padding : expandToHashMap(padding, basePlacements));
+    };
+
+    function arrow(_ref) {
+      var _state$modifiersData$;
+
+      var state = _ref.state,
+          name = _ref.name,
+          options = _ref.options;
+      var arrowElement = state.elements.arrow;
+      var popperOffsets = state.modifiersData.popperOffsets;
+      var basePlacement = getBasePlacement$1(state.placement);
+      var axis = getMainAxisFromPlacement(basePlacement);
+      var isVertical = [left, right].indexOf(basePlacement) >= 0;
+      var len = isVertical ? 'height' : 'width';
+
+      if (!arrowElement || !popperOffsets) {
+        return;
+      }
+
+      var paddingObject = toPaddingObject(options.padding, state);
+      var arrowRect = getLayoutRect(arrowElement);
+      var minProp = axis === 'y' ? top : left;
+      var maxProp = axis === 'y' ? bottom : right;
+      var endDiff = state.rects.reference[len] + state.rects.reference[axis] - popperOffsets[axis] - state.rects.popper[len];
+      var startDiff = popperOffsets[axis] - state.rects.reference[axis];
+      var arrowOffsetParent = getOffsetParent(arrowElement);
+      var clientSize = arrowOffsetParent ? axis === 'y' ? arrowOffsetParent.clientHeight || 0 : arrowOffsetParent.clientWidth || 0 : 0;
+      var centerToReference = endDiff / 2 - startDiff / 2; // Make sure the arrow doesn't overflow the popper if the center point is
+      // outside of the popper bounds
+
+      var min = paddingObject[minProp];
+      var max = clientSize - arrowRect[len] - paddingObject[maxProp];
+      var center = clientSize / 2 - arrowRect[len] / 2 + centerToReference;
+      var offset = within(min, center, max); // Prevents breaking syntax highlighting...
+
+      var axisProp = axis;
+      state.modifiersData[name] = (_state$modifiersData$ = {}, _state$modifiersData$[axisProp] = offset, _state$modifiersData$.centerOffset = offset - center, _state$modifiersData$);
+    }
+
+    function effect$1(_ref2) {
+      var state = _ref2.state,
+          options = _ref2.options;
+      var _options$element = options.element,
+          arrowElement = _options$element === void 0 ? '[data-popper-arrow]' : _options$element;
+
+      if (arrowElement == null) {
+        return;
+      } // CSS selector
+
+
+      if (typeof arrowElement === 'string') {
+        arrowElement = state.elements.popper.querySelector(arrowElement);
+
+        if (!arrowElement) {
+          return;
+        }
+      }
+
+      if (!contains(state.elements.popper, arrowElement)) {
+
+        return;
+      }
+
+      state.elements.arrow = arrowElement;
+    } // eslint-disable-next-line import/no-unused-modules
+
+
+    var arrow$1 = {
+      name: 'arrow',
+      enabled: true,
+      phase: 'main',
+      fn: arrow,
+      effect: effect$1,
+      requires: ['popperOffsets'],
+      requiresIfExists: ['preventOverflow']
+    };
+
+    function getVariation(placement) {
+      return placement.split('-')[1];
+    }
+
+    var unsetSides = {
+      top: 'auto',
+      right: 'auto',
+      bottom: 'auto',
+      left: 'auto'
+    }; // Round the offsets to the nearest suitable subpixel based on the DPR.
+    // Zooming can change the DPR, but it seems to report a value that will
+    // cleanly divide the values into the appropriate subpixels.
+
+    function roundOffsetsByDPR(_ref) {
+      var x = _ref.x,
+          y = _ref.y;
+      var win = window;
+      var dpr = win.devicePixelRatio || 1;
+      return {
+        x: round(x * dpr) / dpr || 0,
+        y: round(y * dpr) / dpr || 0
+      };
+    }
+
+    function mapToStyles(_ref2) {
+      var _Object$assign2;
+
+      var popper = _ref2.popper,
+          popperRect = _ref2.popperRect,
+          placement = _ref2.placement,
+          variation = _ref2.variation,
+          offsets = _ref2.offsets,
+          position = _ref2.position,
+          gpuAcceleration = _ref2.gpuAcceleration,
+          adaptive = _ref2.adaptive,
+          roundOffsets = _ref2.roundOffsets,
+          isFixed = _ref2.isFixed;
+      var _offsets$x = offsets.x,
+          x = _offsets$x === void 0 ? 0 : _offsets$x,
+          _offsets$y = offsets.y,
+          y = _offsets$y === void 0 ? 0 : _offsets$y;
+
+      var _ref3 = typeof roundOffsets === 'function' ? roundOffsets({
+        x: x,
+        y: y
+      }) : {
+        x: x,
+        y: y
+      };
+
+      x = _ref3.x;
+      y = _ref3.y;
+      var hasX = offsets.hasOwnProperty('x');
+      var hasY = offsets.hasOwnProperty('y');
+      var sideX = left;
+      var sideY = top;
+      var win = window;
+
+      if (adaptive) {
+        var offsetParent = getOffsetParent(popper);
+        var heightProp = 'clientHeight';
+        var widthProp = 'clientWidth';
+
+        if (offsetParent === getWindow(popper)) {
+          offsetParent = getDocumentElement(popper);
+
+          if (getComputedStyle(offsetParent).position !== 'static' && position === 'absolute') {
+            heightProp = 'scrollHeight';
+            widthProp = 'scrollWidth';
+          }
+        } // $FlowFixMe[incompatible-cast]: force type refinement, we compare offsetParent with window above, but Flow doesn't detect it
+
+
+        offsetParent = offsetParent;
+
+        if (placement === top || (placement === left || placement === right) && variation === end) {
+          sideY = bottom;
+          var offsetY = isFixed && win.visualViewport ? win.visualViewport.height : // $FlowFixMe[prop-missing]
+          offsetParent[heightProp];
+          y -= offsetY - popperRect.height;
+          y *= gpuAcceleration ? 1 : -1;
+        }
+
+        if (placement === left || (placement === top || placement === bottom) && variation === end) {
+          sideX = right;
+          var offsetX = isFixed && win.visualViewport ? win.visualViewport.width : // $FlowFixMe[prop-missing]
+          offsetParent[widthProp];
+          x -= offsetX - popperRect.width;
+          x *= gpuAcceleration ? 1 : -1;
+        }
+      }
+
+      var commonStyles = Object.assign({
+        position: position
+      }, adaptive && unsetSides);
+
+      var _ref4 = roundOffsets === true ? roundOffsetsByDPR({
+        x: x,
+        y: y
+      }) : {
+        x: x,
+        y: y
+      };
+
+      x = _ref4.x;
+      y = _ref4.y;
+
+      if (gpuAcceleration) {
+        var _Object$assign;
+
+        return Object.assign({}, commonStyles, (_Object$assign = {}, _Object$assign[sideY] = hasY ? '0' : '', _Object$assign[sideX] = hasX ? '0' : '', _Object$assign.transform = (win.devicePixelRatio || 1) <= 1 ? "translate(" + x + "px, " + y + "px)" : "translate3d(" + x + "px, " + y + "px, 0)", _Object$assign));
+      }
+
+      return Object.assign({}, commonStyles, (_Object$assign2 = {}, _Object$assign2[sideY] = hasY ? y + "px" : '', _Object$assign2[sideX] = hasX ? x + "px" : '', _Object$assign2.transform = '', _Object$assign2));
+    }
+
+    function computeStyles(_ref5) {
+      var state = _ref5.state,
+          options = _ref5.options;
+      var _options$gpuAccelerat = options.gpuAcceleration,
+          gpuAcceleration = _options$gpuAccelerat === void 0 ? true : _options$gpuAccelerat,
+          _options$adaptive = options.adaptive,
+          adaptive = _options$adaptive === void 0 ? true : _options$adaptive,
+          _options$roundOffsets = options.roundOffsets,
+          roundOffsets = _options$roundOffsets === void 0 ? true : _options$roundOffsets;
+
+      var commonStyles = {
+        placement: getBasePlacement$1(state.placement),
+        variation: getVariation(state.placement),
+        popper: state.elements.popper,
+        popperRect: state.rects.popper,
+        gpuAcceleration: gpuAcceleration,
+        isFixed: state.options.strategy === 'fixed'
+      };
+
+      if (state.modifiersData.popperOffsets != null) {
+        state.styles.popper = Object.assign({}, state.styles.popper, mapToStyles(Object.assign({}, commonStyles, {
+          offsets: state.modifiersData.popperOffsets,
+          position: state.options.strategy,
+          adaptive: adaptive,
+          roundOffsets: roundOffsets
+        })));
+      }
+
+      if (state.modifiersData.arrow != null) {
+        state.styles.arrow = Object.assign({}, state.styles.arrow, mapToStyles(Object.assign({}, commonStyles, {
+          offsets: state.modifiersData.arrow,
+          position: 'absolute',
+          adaptive: false,
+          roundOffsets: roundOffsets
+        })));
+      }
+
+      state.attributes.popper = Object.assign({}, state.attributes.popper, {
+        'data-popper-placement': state.placement
+      });
+    } // eslint-disable-next-line import/no-unused-modules
+
+
+    var computeStyles$1 = {
+      name: 'computeStyles',
+      enabled: true,
+      phase: 'beforeWrite',
+      fn: computeStyles,
+      data: {}
+    };
+
+    var passive = {
+      passive: true
+    };
+
+    function effect(_ref) {
+      var state = _ref.state,
+          instance = _ref.instance,
+          options = _ref.options;
+      var _options$scroll = options.scroll,
+          scroll = _options$scroll === void 0 ? true : _options$scroll,
+          _options$resize = options.resize,
+          resize = _options$resize === void 0 ? true : _options$resize;
+      var window = getWindow(state.elements.popper);
+      var scrollParents = [].concat(state.scrollParents.reference, state.scrollParents.popper);
+
+      if (scroll) {
+        scrollParents.forEach(function (scrollParent) {
+          scrollParent.addEventListener('scroll', instance.update, passive);
+        });
+      }
+
+      if (resize) {
+        window.addEventListener('resize', instance.update, passive);
+      }
+
+      return function () {
+        if (scroll) {
+          scrollParents.forEach(function (scrollParent) {
+            scrollParent.removeEventListener('scroll', instance.update, passive);
+          });
+        }
+
+        if (resize) {
+          window.removeEventListener('resize', instance.update, passive);
+        }
+      };
+    } // eslint-disable-next-line import/no-unused-modules
+
+
+    var eventListeners = {
+      name: 'eventListeners',
+      enabled: true,
+      phase: 'write',
+      fn: function fn() {},
+      effect: effect,
+      data: {}
+    };
+
+    var hash$1 = {
+      left: 'right',
+      right: 'left',
+      bottom: 'top',
+      top: 'bottom'
+    };
+    function getOppositePlacement(placement) {
+      return placement.replace(/left|right|bottom|top/g, function (matched) {
+        return hash$1[matched];
+      });
+    }
+
+    var hash = {
+      start: 'end',
+      end: 'start'
+    };
+    function getOppositeVariationPlacement(placement) {
+      return placement.replace(/start|end/g, function (matched) {
+        return hash[matched];
+      });
+    }
+
+    function getWindowScroll(node) {
+      var win = getWindow(node);
+      var scrollLeft = win.pageXOffset;
+      var scrollTop = win.pageYOffset;
+      return {
+        scrollLeft: scrollLeft,
+        scrollTop: scrollTop
+      };
+    }
+
+    function getWindowScrollBarX(element) {
+      // If <html> has a CSS width greater than the viewport, then this will be
+      // incorrect for RTL.
+      // Popper 1 is broken in this case and never had a bug report so let's assume
+      // it's not an issue. I don't think anyone ever specifies width on <html>
+      // anyway.
+      // Browsers where the left scrollbar doesn't cause an issue report `0` for
+      // this (e.g. Edge 2019, IE11, Safari)
+      return getBoundingClientRect(getDocumentElement(element)).left + getWindowScroll(element).scrollLeft;
+    }
+
+    function getViewportRect(element) {
+      var win = getWindow(element);
+      var html = getDocumentElement(element);
+      var visualViewport = win.visualViewport;
+      var width = html.clientWidth;
+      var height = html.clientHeight;
+      var x = 0;
+      var y = 0; // NB: This isn't supported on iOS <= 12. If the keyboard is open, the popper
+      // can be obscured underneath it.
+      // Also, `html.clientHeight` adds the bottom bar height in Safari iOS, even
+      // if it isn't open, so if this isn't available, the popper will be detected
+      // to overflow the bottom of the screen too early.
+
+      if (visualViewport) {
+        width = visualViewport.width;
+        height = visualViewport.height; // Uses Layout Viewport (like Chrome; Safari does not currently)
+        // In Chrome, it returns a value very close to 0 (+/-) but contains rounding
+        // errors due to floating point numbers, so we need to check precision.
+        // Safari returns a number <= 0, usually < -1 when pinch-zoomed
+        // Feature detection fails in mobile emulation mode in Chrome.
+        // Math.abs(win.innerWidth / visualViewport.scale - visualViewport.width) <
+        // 0.001
+        // Fallback here: "Not Safari" userAgent
+
+        if (!/^((?!chrome|android).)*safari/i.test(navigator.userAgent)) {
+          x = visualViewport.offsetLeft;
+          y = visualViewport.offsetTop;
+        }
+      }
+
+      return {
+        width: width,
+        height: height,
+        x: x + getWindowScrollBarX(element),
+        y: y
+      };
+    }
+
+    // of the `<html>` and `<body>` rect bounds if horizontally scrollable
+
+    function getDocumentRect(element) {
+      var _element$ownerDocumen;
+
+      var html = getDocumentElement(element);
+      var winScroll = getWindowScroll(element);
+      var body = (_element$ownerDocumen = element.ownerDocument) == null ? void 0 : _element$ownerDocumen.body;
+      var width = max(html.scrollWidth, html.clientWidth, body ? body.scrollWidth : 0, body ? body.clientWidth : 0);
+      var height = max(html.scrollHeight, html.clientHeight, body ? body.scrollHeight : 0, body ? body.clientHeight : 0);
+      var x = -winScroll.scrollLeft + getWindowScrollBarX(element);
+      var y = -winScroll.scrollTop;
+
+      if (getComputedStyle(body || html).direction === 'rtl') {
+        x += max(html.clientWidth, body ? body.clientWidth : 0) - width;
+      }
+
+      return {
+        width: width,
+        height: height,
+        x: x,
+        y: y
+      };
+    }
+
+    function isScrollParent(element) {
+      // Firefox wants us to check `-x` and `-y` variations as well
+      var _getComputedStyle = getComputedStyle(element),
+          overflow = _getComputedStyle.overflow,
+          overflowX = _getComputedStyle.overflowX,
+          overflowY = _getComputedStyle.overflowY;
+
+      return /auto|scroll|overlay|hidden/.test(overflow + overflowY + overflowX);
+    }
+
+    function getScrollParent(node) {
+      if (['html', 'body', '#document'].indexOf(getNodeName(node)) >= 0) {
+        // $FlowFixMe[incompatible-return]: assume body is always available
+        return node.ownerDocument.body;
+      }
+
+      if (isHTMLElement(node) && isScrollParent(node)) {
+        return node;
+      }
+
+      return getScrollParent(getParentNode(node));
+    }
+
+    /*
+    given a DOM element, return the list of all scroll parents, up the list of ancesors
+    until we get to the top window object. This list is what we attach scroll listeners
+    to, because if any of these parent elements scroll, we'll need to re-calculate the
+    reference element's position.
+    */
+
+    function listScrollParents(element, list) {
+      var _element$ownerDocumen;
+
+      if (list === void 0) {
+        list = [];
+      }
+
+      var scrollParent = getScrollParent(element);
+      var isBody = scrollParent === ((_element$ownerDocumen = element.ownerDocument) == null ? void 0 : _element$ownerDocumen.body);
+      var win = getWindow(scrollParent);
+      var target = isBody ? [win].concat(win.visualViewport || [], isScrollParent(scrollParent) ? scrollParent : []) : scrollParent;
+      var updatedList = list.concat(target);
+      return isBody ? updatedList : // $FlowFixMe[incompatible-call]: isBody tells us target will be an HTMLElement here
+      updatedList.concat(listScrollParents(getParentNode(target)));
+    }
+
+    function rectToClientRect(rect) {
+      return Object.assign({}, rect, {
+        left: rect.x,
+        top: rect.y,
+        right: rect.x + rect.width,
+        bottom: rect.y + rect.height
+      });
+    }
+
+    function getInnerBoundingClientRect(element) {
+      var rect = getBoundingClientRect(element);
+      rect.top = rect.top + element.clientTop;
+      rect.left = rect.left + element.clientLeft;
+      rect.bottom = rect.top + element.clientHeight;
+      rect.right = rect.left + element.clientWidth;
+      rect.width = element.clientWidth;
+      rect.height = element.clientHeight;
+      rect.x = rect.left;
+      rect.y = rect.top;
+      return rect;
+    }
+
+    function getClientRectFromMixedType(element, clippingParent) {
+      return clippingParent === viewport ? rectToClientRect(getViewportRect(element)) : isElement$1(clippingParent) ? getInnerBoundingClientRect(clippingParent) : rectToClientRect(getDocumentRect(getDocumentElement(element)));
+    } // A "clipping parent" is an overflowable container with the characteristic of
+    // clipping (or hiding) overflowing elements with a position different from
+    // `initial`
+
+
+    function getClippingParents(element) {
+      var clippingParents = listScrollParents(getParentNode(element));
+      var canEscapeClipping = ['absolute', 'fixed'].indexOf(getComputedStyle(element).position) >= 0;
+      var clipperElement = canEscapeClipping && isHTMLElement(element) ? getOffsetParent(element) : element;
+
+      if (!isElement$1(clipperElement)) {
+        return [];
+      } // $FlowFixMe[incompatible-return]: https://github.com/facebook/flow/issues/1414
+
+
+      return clippingParents.filter(function (clippingParent) {
+        return isElement$1(clippingParent) && contains(clippingParent, clipperElement) && getNodeName(clippingParent) !== 'body';
+      });
+    } // Gets the maximum area that the element is visible in due to any number of
+    // clipping parents
+
+
+    function getClippingRect(element, boundary, rootBoundary) {
+      var mainClippingParents = boundary === 'clippingParents' ? getClippingParents(element) : [].concat(boundary);
+      var clippingParents = [].concat(mainClippingParents, [rootBoundary]);
+      var firstClippingParent = clippingParents[0];
+      var clippingRect = clippingParents.reduce(function (accRect, clippingParent) {
+        var rect = getClientRectFromMixedType(element, clippingParent);
+        accRect.top = max(rect.top, accRect.top);
+        accRect.right = min(rect.right, accRect.right);
+        accRect.bottom = min(rect.bottom, accRect.bottom);
+        accRect.left = max(rect.left, accRect.left);
+        return accRect;
+      }, getClientRectFromMixedType(element, firstClippingParent));
+      clippingRect.width = clippingRect.right - clippingRect.left;
+      clippingRect.height = clippingRect.bottom - clippingRect.top;
+      clippingRect.x = clippingRect.left;
+      clippingRect.y = clippingRect.top;
+      return clippingRect;
+    }
+
+    function computeOffsets(_ref) {
+      var reference = _ref.reference,
+          element = _ref.element,
+          placement = _ref.placement;
+      var basePlacement = placement ? getBasePlacement$1(placement) : null;
+      var variation = placement ? getVariation(placement) : null;
+      var commonX = reference.x + reference.width / 2 - element.width / 2;
+      var commonY = reference.y + reference.height / 2 - element.height / 2;
+      var offsets;
+
+      switch (basePlacement) {
+        case top:
+          offsets = {
+            x: commonX,
+            y: reference.y - element.height
+          };
+          break;
+
+        case bottom:
+          offsets = {
+            x: commonX,
+            y: reference.y + reference.height
+          };
+          break;
+
+        case right:
+          offsets = {
+            x: reference.x + reference.width,
+            y: commonY
+          };
+          break;
+
+        case left:
+          offsets = {
+            x: reference.x - element.width,
+            y: commonY
+          };
+          break;
+
+        default:
+          offsets = {
+            x: reference.x,
+            y: reference.y
+          };
+      }
+
+      var mainAxis = basePlacement ? getMainAxisFromPlacement(basePlacement) : null;
+
+      if (mainAxis != null) {
+        var len = mainAxis === 'y' ? 'height' : 'width';
+
+        switch (variation) {
+          case start:
+            offsets[mainAxis] = offsets[mainAxis] - (reference[len] / 2 - element[len] / 2);
+            break;
+
+          case end:
+            offsets[mainAxis] = offsets[mainAxis] + (reference[len] / 2 - element[len] / 2);
+            break;
+        }
+      }
+
+      return offsets;
+    }
+
+    function detectOverflow(state, options) {
+      if (options === void 0) {
+        options = {};
+      }
+
+      var _options = options,
+          _options$placement = _options.placement,
+          placement = _options$placement === void 0 ? state.placement : _options$placement,
+          _options$boundary = _options.boundary,
+          boundary = _options$boundary === void 0 ? clippingParents : _options$boundary,
+          _options$rootBoundary = _options.rootBoundary,
+          rootBoundary = _options$rootBoundary === void 0 ? viewport : _options$rootBoundary,
+          _options$elementConte = _options.elementContext,
+          elementContext = _options$elementConte === void 0 ? popper : _options$elementConte,
+          _options$altBoundary = _options.altBoundary,
+          altBoundary = _options$altBoundary === void 0 ? false : _options$altBoundary,
+          _options$padding = _options.padding,
+          padding = _options$padding === void 0 ? 0 : _options$padding;
+      var paddingObject = mergePaddingObject(typeof padding !== 'number' ? padding : expandToHashMap(padding, basePlacements));
+      var altContext = elementContext === popper ? reference : popper;
+      var popperRect = state.rects.popper;
+      var element = state.elements[altBoundary ? altContext : elementContext];
+      var clippingClientRect = getClippingRect(isElement$1(element) ? element : element.contextElement || getDocumentElement(state.elements.popper), boundary, rootBoundary);
+      var referenceClientRect = getBoundingClientRect(state.elements.reference);
+      var popperOffsets = computeOffsets({
+        reference: referenceClientRect,
+        element: popperRect,
+        strategy: 'absolute',
+        placement: placement
+      });
+      var popperClientRect = rectToClientRect(Object.assign({}, popperRect, popperOffsets));
+      var elementClientRect = elementContext === popper ? popperClientRect : referenceClientRect; // positive = overflowing the clipping rect
+      // 0 or negative = within the clipping rect
+
+      var overflowOffsets = {
+        top: clippingClientRect.top - elementClientRect.top + paddingObject.top,
+        bottom: elementClientRect.bottom - clippingClientRect.bottom + paddingObject.bottom,
+        left: clippingClientRect.left - elementClientRect.left + paddingObject.left,
+        right: elementClientRect.right - clippingClientRect.right + paddingObject.right
+      };
+      var offsetData = state.modifiersData.offset; // Offsets can be applied only to the popper element
+
+      if (elementContext === popper && offsetData) {
+        var offset = offsetData[placement];
+        Object.keys(overflowOffsets).forEach(function (key) {
+          var multiply = [right, bottom].indexOf(key) >= 0 ? 1 : -1;
+          var axis = [top, bottom].indexOf(key) >= 0 ? 'y' : 'x';
+          overflowOffsets[key] += offset[axis] * multiply;
+        });
+      }
+
+      return overflowOffsets;
+    }
+
+    function computeAutoPlacement(state, options) {
+      if (options === void 0) {
+        options = {};
+      }
+
+      var _options = options,
+          placement = _options.placement,
+          boundary = _options.boundary,
+          rootBoundary = _options.rootBoundary,
+          padding = _options.padding,
+          flipVariations = _options.flipVariations,
+          _options$allowedAutoP = _options.allowedAutoPlacements,
+          allowedAutoPlacements = _options$allowedAutoP === void 0 ? placements : _options$allowedAutoP;
+      var variation = getVariation(placement);
+      var placements$1 = variation ? flipVariations ? variationPlacements : variationPlacements.filter(function (placement) {
+        return getVariation(placement) === variation;
+      }) : basePlacements;
+      var allowedPlacements = placements$1.filter(function (placement) {
+        return allowedAutoPlacements.indexOf(placement) >= 0;
+      });
+
+      if (allowedPlacements.length === 0) {
+        allowedPlacements = placements$1;
+      } // $FlowFixMe[incompatible-type]: Flow seems to have problems with two array unions...
+
+
+      var overflows = allowedPlacements.reduce(function (acc, placement) {
+        acc[placement] = detectOverflow(state, {
+          placement: placement,
+          boundary: boundary,
+          rootBoundary: rootBoundary,
+          padding: padding
+        })[getBasePlacement$1(placement)];
+        return acc;
+      }, {});
+      return Object.keys(overflows).sort(function (a, b) {
+        return overflows[a] - overflows[b];
+      });
+    }
+
+    function getExpandedFallbackPlacements(placement) {
+      if (getBasePlacement$1(placement) === auto) {
+        return [];
+      }
+
+      var oppositePlacement = getOppositePlacement(placement);
+      return [getOppositeVariationPlacement(placement), oppositePlacement, getOppositeVariationPlacement(oppositePlacement)];
+    }
+
+    function flip(_ref) {
+      var state = _ref.state,
+          options = _ref.options,
+          name = _ref.name;
+
+      if (state.modifiersData[name]._skip) {
+        return;
+      }
+
+      var _options$mainAxis = options.mainAxis,
+          checkMainAxis = _options$mainAxis === void 0 ? true : _options$mainAxis,
+          _options$altAxis = options.altAxis,
+          checkAltAxis = _options$altAxis === void 0 ? true : _options$altAxis,
+          specifiedFallbackPlacements = options.fallbackPlacements,
+          padding = options.padding,
+          boundary = options.boundary,
+          rootBoundary = options.rootBoundary,
+          altBoundary = options.altBoundary,
+          _options$flipVariatio = options.flipVariations,
+          flipVariations = _options$flipVariatio === void 0 ? true : _options$flipVariatio,
+          allowedAutoPlacements = options.allowedAutoPlacements;
+      var preferredPlacement = state.options.placement;
+      var basePlacement = getBasePlacement$1(preferredPlacement);
+      var isBasePlacement = basePlacement === preferredPlacement;
+      var fallbackPlacements = specifiedFallbackPlacements || (isBasePlacement || !flipVariations ? [getOppositePlacement(preferredPlacement)] : getExpandedFallbackPlacements(preferredPlacement));
+      var placements = [preferredPlacement].concat(fallbackPlacements).reduce(function (acc, placement) {
+        return acc.concat(getBasePlacement$1(placement) === auto ? computeAutoPlacement(state, {
+          placement: placement,
+          boundary: boundary,
+          rootBoundary: rootBoundary,
+          padding: padding,
+          flipVariations: flipVariations,
+          allowedAutoPlacements: allowedAutoPlacements
+        }) : placement);
+      }, []);
+      var referenceRect = state.rects.reference;
+      var popperRect = state.rects.popper;
+      var checksMap = new Map();
+      var makeFallbackChecks = true;
+      var firstFittingPlacement = placements[0];
+
+      for (var i = 0; i < placements.length; i++) {
+        var placement = placements[i];
+
+        var _basePlacement = getBasePlacement$1(placement);
+
+        var isStartVariation = getVariation(placement) === start;
+        var isVertical = [top, bottom].indexOf(_basePlacement) >= 0;
+        var len = isVertical ? 'width' : 'height';
+        var overflow = detectOverflow(state, {
+          placement: placement,
+          boundary: boundary,
+          rootBoundary: rootBoundary,
+          altBoundary: altBoundary,
+          padding: padding
+        });
+        var mainVariationSide = isVertical ? isStartVariation ? right : left : isStartVariation ? bottom : top;
+
+        if (referenceRect[len] > popperRect[len]) {
+          mainVariationSide = getOppositePlacement(mainVariationSide);
+        }
+
+        var altVariationSide = getOppositePlacement(mainVariationSide);
+        var checks = [];
+
+        if (checkMainAxis) {
+          checks.push(overflow[_basePlacement] <= 0);
+        }
+
+        if (checkAltAxis) {
+          checks.push(overflow[mainVariationSide] <= 0, overflow[altVariationSide] <= 0);
+        }
+
+        if (checks.every(function (check) {
+          return check;
+        })) {
+          firstFittingPlacement = placement;
+          makeFallbackChecks = false;
+          break;
+        }
+
+        checksMap.set(placement, checks);
+      }
+
+      if (makeFallbackChecks) {
+        // `2` may be desired in some cases – research later
+        var numberOfChecks = flipVariations ? 3 : 1;
+
+        var _loop = function _loop(_i) {
+          var fittingPlacement = placements.find(function (placement) {
+            var checks = checksMap.get(placement);
+
+            if (checks) {
+              return checks.slice(0, _i).every(function (check) {
+                return check;
+              });
+            }
+          });
+
+          if (fittingPlacement) {
+            firstFittingPlacement = fittingPlacement;
+            return "break";
+          }
+        };
+
+        for (var _i = numberOfChecks; _i > 0; _i--) {
+          var _ret = _loop(_i);
+
+          if (_ret === "break") break;
+        }
+      }
+
+      if (state.placement !== firstFittingPlacement) {
+        state.modifiersData[name]._skip = true;
+        state.placement = firstFittingPlacement;
+        state.reset = true;
+      }
+    } // eslint-disable-next-line import/no-unused-modules
+
+
+    var flip$1 = {
+      name: 'flip',
+      enabled: true,
+      phase: 'main',
+      fn: flip,
+      requiresIfExists: ['offset'],
+      data: {
+        _skip: false
+      }
+    };
+
+    function getSideOffsets(overflow, rect, preventedOffsets) {
+      if (preventedOffsets === void 0) {
+        preventedOffsets = {
+          x: 0,
+          y: 0
+        };
+      }
+
+      return {
+        top: overflow.top - rect.height - preventedOffsets.y,
+        right: overflow.right - rect.width + preventedOffsets.x,
+        bottom: overflow.bottom - rect.height + preventedOffsets.y,
+        left: overflow.left - rect.width - preventedOffsets.x
+      };
+    }
+
+    function isAnySideFullyClipped(overflow) {
+      return [top, right, bottom, left].some(function (side) {
+        return overflow[side] >= 0;
+      });
+    }
+
+    function hide(_ref) {
+      var state = _ref.state,
+          name = _ref.name;
+      var referenceRect = state.rects.reference;
+      var popperRect = state.rects.popper;
+      var preventedOffsets = state.modifiersData.preventOverflow;
+      var referenceOverflow = detectOverflow(state, {
+        elementContext: 'reference'
+      });
+      var popperAltOverflow = detectOverflow(state, {
+        altBoundary: true
+      });
+      var referenceClippingOffsets = getSideOffsets(referenceOverflow, referenceRect);
+      var popperEscapeOffsets = getSideOffsets(popperAltOverflow, popperRect, preventedOffsets);
+      var isReferenceHidden = isAnySideFullyClipped(referenceClippingOffsets);
+      var hasPopperEscaped = isAnySideFullyClipped(popperEscapeOffsets);
+      state.modifiersData[name] = {
+        referenceClippingOffsets: referenceClippingOffsets,
+        popperEscapeOffsets: popperEscapeOffsets,
+        isReferenceHidden: isReferenceHidden,
+        hasPopperEscaped: hasPopperEscaped
+      };
+      state.attributes.popper = Object.assign({}, state.attributes.popper, {
+        'data-popper-reference-hidden': isReferenceHidden,
+        'data-popper-escaped': hasPopperEscaped
+      });
+    } // eslint-disable-next-line import/no-unused-modules
+
+
+    var hide$1 = {
+      name: 'hide',
+      enabled: true,
+      phase: 'main',
+      requiresIfExists: ['preventOverflow'],
+      fn: hide
+    };
+
+    function distanceAndSkiddingToXY(placement, rects, offset) {
+      var basePlacement = getBasePlacement$1(placement);
+      var invertDistance = [left, top].indexOf(basePlacement) >= 0 ? -1 : 1;
+
+      var _ref = typeof offset === 'function' ? offset(Object.assign({}, rects, {
+        placement: placement
+      })) : offset,
+          skidding = _ref[0],
+          distance = _ref[1];
+
+      skidding = skidding || 0;
+      distance = (distance || 0) * invertDistance;
+      return [left, right].indexOf(basePlacement) >= 0 ? {
+        x: distance,
+        y: skidding
+      } : {
+        x: skidding,
+        y: distance
+      };
+    }
+
+    function offset(_ref2) {
+      var state = _ref2.state,
+          options = _ref2.options,
+          name = _ref2.name;
+      var _options$offset = options.offset,
+          offset = _options$offset === void 0 ? [0, 0] : _options$offset;
+      var data = placements.reduce(function (acc, placement) {
+        acc[placement] = distanceAndSkiddingToXY(placement, state.rects, offset);
+        return acc;
+      }, {});
+      var _data$state$placement = data[state.placement],
+          x = _data$state$placement.x,
+          y = _data$state$placement.y;
+
+      if (state.modifiersData.popperOffsets != null) {
+        state.modifiersData.popperOffsets.x += x;
+        state.modifiersData.popperOffsets.y += y;
+      }
+
+      state.modifiersData[name] = data;
+    } // eslint-disable-next-line import/no-unused-modules
+
+
+    var offset$1 = {
+      name: 'offset',
+      enabled: true,
+      phase: 'main',
+      requires: ['popperOffsets'],
+      fn: offset
+    };
+
+    function popperOffsets(_ref) {
+      var state = _ref.state,
+          name = _ref.name;
+      // Offsets are the actual position the popper needs to have to be
+      // properly positioned near its reference element
+      // This is the most basic placement, and will be adjusted by
+      // the modifiers in the next step
+      state.modifiersData[name] = computeOffsets({
+        reference: state.rects.reference,
+        element: state.rects.popper,
+        strategy: 'absolute',
+        placement: state.placement
+      });
+    } // eslint-disable-next-line import/no-unused-modules
+
+
+    var popperOffsets$1 = {
+      name: 'popperOffsets',
+      enabled: true,
+      phase: 'read',
+      fn: popperOffsets,
+      data: {}
+    };
+
+    function getAltAxis(axis) {
+      return axis === 'x' ? 'y' : 'x';
+    }
+
+    function preventOverflow(_ref) {
+      var state = _ref.state,
+          options = _ref.options,
+          name = _ref.name;
+      var _options$mainAxis = options.mainAxis,
+          checkMainAxis = _options$mainAxis === void 0 ? true : _options$mainAxis,
+          _options$altAxis = options.altAxis,
+          checkAltAxis = _options$altAxis === void 0 ? false : _options$altAxis,
+          boundary = options.boundary,
+          rootBoundary = options.rootBoundary,
+          altBoundary = options.altBoundary,
+          padding = options.padding,
+          _options$tether = options.tether,
+          tether = _options$tether === void 0 ? true : _options$tether,
+          _options$tetherOffset = options.tetherOffset,
+          tetherOffset = _options$tetherOffset === void 0 ? 0 : _options$tetherOffset;
+      var overflow = detectOverflow(state, {
+        boundary: boundary,
+        rootBoundary: rootBoundary,
+        padding: padding,
+        altBoundary: altBoundary
+      });
+      var basePlacement = getBasePlacement$1(state.placement);
+      var variation = getVariation(state.placement);
+      var isBasePlacement = !variation;
+      var mainAxis = getMainAxisFromPlacement(basePlacement);
+      var altAxis = getAltAxis(mainAxis);
+      var popperOffsets = state.modifiersData.popperOffsets;
+      var referenceRect = state.rects.reference;
+      var popperRect = state.rects.popper;
+      var tetherOffsetValue = typeof tetherOffset === 'function' ? tetherOffset(Object.assign({}, state.rects, {
+        placement: state.placement
+      })) : tetherOffset;
+      var normalizedTetherOffsetValue = typeof tetherOffsetValue === 'number' ? {
+        mainAxis: tetherOffsetValue,
+        altAxis: tetherOffsetValue
+      } : Object.assign({
+        mainAxis: 0,
+        altAxis: 0
+      }, tetherOffsetValue);
+      var offsetModifierState = state.modifiersData.offset ? state.modifiersData.offset[state.placement] : null;
+      var data = {
+        x: 0,
+        y: 0
+      };
+
+      if (!popperOffsets) {
+        return;
+      }
+
+      if (checkMainAxis) {
+        var _offsetModifierState$;
+
+        var mainSide = mainAxis === 'y' ? top : left;
+        var altSide = mainAxis === 'y' ? bottom : right;
+        var len = mainAxis === 'y' ? 'height' : 'width';
+        var offset = popperOffsets[mainAxis];
+        var min$1 = offset + overflow[mainSide];
+        var max$1 = offset - overflow[altSide];
+        var additive = tether ? -popperRect[len] / 2 : 0;
+        var minLen = variation === start ? referenceRect[len] : popperRect[len];
+        var maxLen = variation === start ? -popperRect[len] : -referenceRect[len]; // We need to include the arrow in the calculation so the arrow doesn't go
+        // outside the reference bounds
+
+        var arrowElement = state.elements.arrow;
+        var arrowRect = tether && arrowElement ? getLayoutRect(arrowElement) : {
+          width: 0,
+          height: 0
+        };
+        var arrowPaddingObject = state.modifiersData['arrow#persistent'] ? state.modifiersData['arrow#persistent'].padding : getFreshSideObject();
+        var arrowPaddingMin = arrowPaddingObject[mainSide];
+        var arrowPaddingMax = arrowPaddingObject[altSide]; // If the reference length is smaller than the arrow length, we don't want
+        // to include its full size in the calculation. If the reference is small
+        // and near the edge of a boundary, the popper can overflow even if the
+        // reference is not overflowing as well (e.g. virtual elements with no
+        // width or height)
+
+        var arrowLen = within(0, referenceRect[len], arrowRect[len]);
+        var minOffset = isBasePlacement ? referenceRect[len] / 2 - additive - arrowLen - arrowPaddingMin - normalizedTetherOffsetValue.mainAxis : minLen - arrowLen - arrowPaddingMin - normalizedTetherOffsetValue.mainAxis;
+        var maxOffset = isBasePlacement ? -referenceRect[len] / 2 + additive + arrowLen + arrowPaddingMax + normalizedTetherOffsetValue.mainAxis : maxLen + arrowLen + arrowPaddingMax + normalizedTetherOffsetValue.mainAxis;
+        var arrowOffsetParent = state.elements.arrow && getOffsetParent(state.elements.arrow);
+        var clientOffset = arrowOffsetParent ? mainAxis === 'y' ? arrowOffsetParent.clientTop || 0 : arrowOffsetParent.clientLeft || 0 : 0;
+        var offsetModifierValue = (_offsetModifierState$ = offsetModifierState == null ? void 0 : offsetModifierState[mainAxis]) != null ? _offsetModifierState$ : 0;
+        var tetherMin = offset + minOffset - offsetModifierValue - clientOffset;
+        var tetherMax = offset + maxOffset - offsetModifierValue;
+        var preventedOffset = within(tether ? min(min$1, tetherMin) : min$1, offset, tether ? max(max$1, tetherMax) : max$1);
+        popperOffsets[mainAxis] = preventedOffset;
+        data[mainAxis] = preventedOffset - offset;
+      }
+
+      if (checkAltAxis) {
+        var _offsetModifierState$2;
+
+        var _mainSide = mainAxis === 'x' ? top : left;
+
+        var _altSide = mainAxis === 'x' ? bottom : right;
+
+        var _offset = popperOffsets[altAxis];
+
+        var _len = altAxis === 'y' ? 'height' : 'width';
+
+        var _min = _offset + overflow[_mainSide];
+
+        var _max = _offset - overflow[_altSide];
+
+        var isOriginSide = [top, left].indexOf(basePlacement) !== -1;
+
+        var _offsetModifierValue = (_offsetModifierState$2 = offsetModifierState == null ? void 0 : offsetModifierState[altAxis]) != null ? _offsetModifierState$2 : 0;
+
+        var _tetherMin = isOriginSide ? _min : _offset - referenceRect[_len] - popperRect[_len] - _offsetModifierValue + normalizedTetherOffsetValue.altAxis;
+
+        var _tetherMax = isOriginSide ? _offset + referenceRect[_len] + popperRect[_len] - _offsetModifierValue - normalizedTetherOffsetValue.altAxis : _max;
+
+        var _preventedOffset = tether && isOriginSide ? withinMaxClamp(_tetherMin, _offset, _tetherMax) : within(tether ? _tetherMin : _min, _offset, tether ? _tetherMax : _max);
+
+        popperOffsets[altAxis] = _preventedOffset;
+        data[altAxis] = _preventedOffset - _offset;
+      }
+
+      state.modifiersData[name] = data;
+    } // eslint-disable-next-line import/no-unused-modules
+
+
+    var preventOverflow$1 = {
+      name: 'preventOverflow',
+      enabled: true,
+      phase: 'main',
+      fn: preventOverflow,
+      requiresIfExists: ['offset']
+    };
+
+    function getHTMLElementScroll(element) {
+      return {
+        scrollLeft: element.scrollLeft,
+        scrollTop: element.scrollTop
+      };
+    }
+
+    function getNodeScroll(node) {
+      if (node === getWindow(node) || !isHTMLElement(node)) {
+        return getWindowScroll(node);
+      } else {
+        return getHTMLElementScroll(node);
+      }
+    }
+
+    function isElementScaled(element) {
+      var rect = element.getBoundingClientRect();
+      var scaleX = round(rect.width) / element.offsetWidth || 1;
+      var scaleY = round(rect.height) / element.offsetHeight || 1;
+      return scaleX !== 1 || scaleY !== 1;
+    } // Returns the composite rect of an element relative to its offsetParent.
+    // Composite means it takes into account transforms as well as layout.
+
+
+    function getCompositeRect(elementOrVirtualElement, offsetParent, isFixed) {
+      if (isFixed === void 0) {
+        isFixed = false;
+      }
+
+      var isOffsetParentAnElement = isHTMLElement(offsetParent);
+      var offsetParentIsScaled = isHTMLElement(offsetParent) && isElementScaled(offsetParent);
+      var documentElement = getDocumentElement(offsetParent);
+      var rect = getBoundingClientRect(elementOrVirtualElement, offsetParentIsScaled);
+      var scroll = {
+        scrollLeft: 0,
+        scrollTop: 0
+      };
+      var offsets = {
+        x: 0,
+        y: 0
+      };
+
+      if (isOffsetParentAnElement || !isOffsetParentAnElement && !isFixed) {
+        if (getNodeName(offsetParent) !== 'body' || // https://github.com/popperjs/popper-core/issues/1078
+        isScrollParent(documentElement)) {
+          scroll = getNodeScroll(offsetParent);
+        }
+
+        if (isHTMLElement(offsetParent)) {
+          offsets = getBoundingClientRect(offsetParent, true);
+          offsets.x += offsetParent.clientLeft;
+          offsets.y += offsetParent.clientTop;
+        } else if (documentElement) {
+          offsets.x = getWindowScrollBarX(documentElement);
+        }
+      }
+
+      return {
+        x: rect.left + scroll.scrollLeft - offsets.x,
+        y: rect.top + scroll.scrollTop - offsets.y,
+        width: rect.width,
+        height: rect.height
+      };
+    }
+
+    function order(modifiers) {
+      var map = new Map();
+      var visited = new Set();
+      var result = [];
+      modifiers.forEach(function (modifier) {
+        map.set(modifier.name, modifier);
+      }); // On visiting object, check for its dependencies and visit them recursively
+
+      function sort(modifier) {
+        visited.add(modifier.name);
+        var requires = [].concat(modifier.requires || [], modifier.requiresIfExists || []);
+        requires.forEach(function (dep) {
+          if (!visited.has(dep)) {
+            var depModifier = map.get(dep);
+
+            if (depModifier) {
+              sort(depModifier);
+            }
+          }
+        });
+        result.push(modifier);
+      }
+
+      modifiers.forEach(function (modifier) {
+        if (!visited.has(modifier.name)) {
+          // check for visited object
+          sort(modifier);
+        }
+      });
+      return result;
+    }
+
+    function orderModifiers(modifiers) {
+      // order based on dependencies
+      var orderedModifiers = order(modifiers); // order based on phase
+
+      return modifierPhases.reduce(function (acc, phase) {
+        return acc.concat(orderedModifiers.filter(function (modifier) {
+          return modifier.phase === phase;
+        }));
+      }, []);
+    }
+
+    function debounce$1(fn) {
+      var pending;
+      return function () {
+        if (!pending) {
+          pending = new Promise(function (resolve) {
+            Promise.resolve().then(function () {
+              pending = undefined;
+              resolve(fn());
+            });
+          });
+        }
+
+        return pending;
+      };
+    }
+
+    function mergeByName(modifiers) {
+      var merged = modifiers.reduce(function (merged, current) {
+        var existing = merged[current.name];
+        merged[current.name] = existing ? Object.assign({}, existing, current, {
+          options: Object.assign({}, existing.options, current.options),
+          data: Object.assign({}, existing.data, current.data)
+        }) : current;
+        return merged;
+      }, {}); // IE11 does not support Object.values
+
+      return Object.keys(merged).map(function (key) {
+        return merged[key];
+      });
+    }
+
+    var DEFAULT_OPTIONS = {
+      placement: 'bottom',
+      modifiers: [],
+      strategy: 'absolute'
+    };
+
+    function areValidElements() {
+      for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+
+      return !args.some(function (element) {
+        return !(element && typeof element.getBoundingClientRect === 'function');
+      });
+    }
+
+    function popperGenerator(generatorOptions) {
+      if (generatorOptions === void 0) {
+        generatorOptions = {};
+      }
+
+      var _generatorOptions = generatorOptions,
+          _generatorOptions$def = _generatorOptions.defaultModifiers,
+          defaultModifiers = _generatorOptions$def === void 0 ? [] : _generatorOptions$def,
+          _generatorOptions$def2 = _generatorOptions.defaultOptions,
+          defaultOptions = _generatorOptions$def2 === void 0 ? DEFAULT_OPTIONS : _generatorOptions$def2;
+      return function createPopper(reference, popper, options) {
+        if (options === void 0) {
+          options = defaultOptions;
+        }
+
+        var state = {
+          placement: 'bottom',
+          orderedModifiers: [],
+          options: Object.assign({}, DEFAULT_OPTIONS, defaultOptions),
+          modifiersData: {},
+          elements: {
+            reference: reference,
+            popper: popper
+          },
+          attributes: {},
+          styles: {}
+        };
+        var effectCleanupFns = [];
+        var isDestroyed = false;
+        var instance = {
+          state: state,
+          setOptions: function setOptions(setOptionsAction) {
+            var options = typeof setOptionsAction === 'function' ? setOptionsAction(state.options) : setOptionsAction;
+            cleanupModifierEffects();
+            state.options = Object.assign({}, defaultOptions, state.options, options);
+            state.scrollParents = {
+              reference: isElement$1(reference) ? listScrollParents(reference) : reference.contextElement ? listScrollParents(reference.contextElement) : [],
+              popper: listScrollParents(popper)
+            }; // Orders the modifiers based on their dependencies and `phase`
+            // properties
+
+            var orderedModifiers = orderModifiers(mergeByName([].concat(defaultModifiers, state.options.modifiers))); // Strip out disabled modifiers
+
+            state.orderedModifiers = orderedModifiers.filter(function (m) {
+              return m.enabled;
+            }); // Validate the provided modifiers so that the consumer will get warned
+
+            runModifierEffects();
+            return instance.update();
+          },
+          // Sync update – it will always be executed, even if not necessary. This
+          // is useful for low frequency updates where sync behavior simplifies the
+          // logic.
+          // For high frequency updates (e.g. `resize` and `scroll` events), always
+          // prefer the async Popper#update method
+          forceUpdate: function forceUpdate() {
+            if (isDestroyed) {
+              return;
+            }
+
+            var _state$elements = state.elements,
+                reference = _state$elements.reference,
+                popper = _state$elements.popper; // Don't proceed if `reference` or `popper` are not valid elements
+            // anymore
+
+            if (!areValidElements(reference, popper)) {
+
+              return;
+            } // Store the reference and popper rects to be read by modifiers
+
+
+            state.rects = {
+              reference: getCompositeRect(reference, getOffsetParent(popper), state.options.strategy === 'fixed'),
+              popper: getLayoutRect(popper)
+            }; // Modifiers have the ability to reset the current update cycle. The
+            // most common use case for this is the `flip` modifier changing the
+            // placement, which then needs to re-run all the modifiers, because the
+            // logic was previously ran for the previous placement and is therefore
+            // stale/incorrect
+
+            state.reset = false;
+            state.placement = state.options.placement; // On each update cycle, the `modifiersData` property for each modifier
+            // is filled with the initial data specified by the modifier. This means
+            // it doesn't persist and is fresh on each update.
+            // To ensure persistent data, use `${name}#persistent`
+
+            state.orderedModifiers.forEach(function (modifier) {
+              return state.modifiersData[modifier.name] = Object.assign({}, modifier.data);
+            });
+
+            for (var index = 0; index < state.orderedModifiers.length; index++) {
+
+              if (state.reset === true) {
+                state.reset = false;
+                index = -1;
+                continue;
+              }
+
+              var _state$orderedModifie = state.orderedModifiers[index],
+                  fn = _state$orderedModifie.fn,
+                  _state$orderedModifie2 = _state$orderedModifie.options,
+                  _options = _state$orderedModifie2 === void 0 ? {} : _state$orderedModifie2,
+                  name = _state$orderedModifie.name;
+
+              if (typeof fn === 'function') {
+                state = fn({
+                  state: state,
+                  options: _options,
+                  name: name,
+                  instance: instance
+                }) || state;
+              }
+            }
+          },
+          // Async and optimistically optimized update – it will not be executed if
+          // not necessary (debounced to run at most once-per-tick)
+          update: debounce$1(function () {
+            return new Promise(function (resolve) {
+              instance.forceUpdate();
+              resolve(state);
+            });
+          }),
+          destroy: function destroy() {
+            cleanupModifierEffects();
+            isDestroyed = true;
+          }
+        };
+
+        if (!areValidElements(reference, popper)) {
+
+          return instance;
+        }
+
+        instance.setOptions(options).then(function (state) {
+          if (!isDestroyed && options.onFirstUpdate) {
+            options.onFirstUpdate(state);
+          }
+        }); // Modifiers have the ability to execute arbitrary code before the first
+        // update cycle runs. They will be executed in the same order as the update
+        // cycle. This is useful when a modifier adds some persistent data that
+        // other modifiers need to use, but the modifier is run after the dependent
+        // one.
+
+        function runModifierEffects() {
+          state.orderedModifiers.forEach(function (_ref3) {
+            var name = _ref3.name,
+                _ref3$options = _ref3.options,
+                options = _ref3$options === void 0 ? {} : _ref3$options,
+                effect = _ref3.effect;
+
+            if (typeof effect === 'function') {
+              var cleanupFn = effect({
+                state: state,
+                name: name,
+                instance: instance,
+                options: options
+              });
+
+              var noopFn = function noopFn() {};
+
+              effectCleanupFns.push(cleanupFn || noopFn);
+            }
+          });
+        }
+
+        function cleanupModifierEffects() {
+          effectCleanupFns.forEach(function (fn) {
+            return fn();
+          });
+          effectCleanupFns = [];
+        }
+
+        return instance;
+      };
+    }
+
+    var defaultModifiers = [eventListeners, popperOffsets$1, computeStyles$1, applyStyles$1, offset$1, flip$1, preventOverflow$1, arrow$1, hide$1];
+    var createPopper = /*#__PURE__*/popperGenerator({
+      defaultModifiers: defaultModifiers
+    }); // eslint-disable-next-line import/no-unused-modules
+
+    /**!
+    * tippy.js v6.0.3
+    * (c) 2017-2020 atomiks
+    * MIT License
+    */
+
+    var PASSIVE = {
+      passive: true
+    };
+    var IOS_CLASS = "tippy-iOS";
+    var BOX_CLASS = "tippy-box";
+    var CONTENT_CLASS = "tippy-content";
+    var BACKDROP_CLASS = "tippy-backdrop";
+    var ARROW_CLASS = "tippy-arrow";
+    var SVG_ARROW_CLASS = "tippy-svg-arrow";
+    function getValueAtIndexOrReturn(value, index, defaultValue) {
+      if (Array.isArray(value)) {
+        var v = value[index];
+        return v == null ? Array.isArray(defaultValue) ? defaultValue[index] : defaultValue : v;
+      }
+
+      return value;
+    }
+    function isType(value, type) {
+      var str = {}.toString.call(value);
+      return str.indexOf('[object') === 0 && str.indexOf(type + "]") > -1;
+    }
+    function invokeWithArgsOrReturn(value, args) {
+      return typeof value === 'function' ? value.apply(void 0, args) : value;
+    }
+    function debounce(fn, ms) {
+      // Avoid wrapping in `setTimeout` if ms is 0 anyway
+      if (ms === 0) {
+        return fn;
+      }
+
+      var timeout;
+      return function (arg) {
+        clearTimeout(timeout);
+        timeout = setTimeout(function () {
+          fn(arg);
+        }, ms);
+      };
+    }
+    function splitBySpaces(value) {
+      return value.split(/\s+/).filter(Boolean);
+    }
+    function normalizeToArray(value) {
+      return [].concat(value);
+    }
+    function pushIfUnique(arr, value) {
+      if (arr.indexOf(value) === -1) {
+        arr.push(value);
+      }
+    }
+    function unique(arr) {
+      return arr.filter(function (item, index) {
+        return arr.indexOf(item) === index;
+      });
+    }
+    function getBasePlacement(placement) {
+      return placement.split('-')[0];
+    }
+    function arrayFrom(value) {
+      return [].slice.call(value);
+    }
+
+    function div() {
+      return document.createElement('div');
+    }
+    function isElement(value) {
+      return isType(value, 'Element');
+    }
+    function isNodeList(value) {
+      return isType(value, 'NodeList');
+    }
+    function isMouseEvent(value) {
+      return isType(value, 'MouseEvent');
+    }
+    function isReferenceElement(value) {
+      return !!(value && value._tippy && value._tippy.reference === value);
+    }
+    function getArrayOfElements(value) {
+      if (isElement(value)) {
+        return [value];
+      }
+
+      if (isNodeList(value)) {
+        return arrayFrom(value);
+      }
+
+      if (Array.isArray(value)) {
+        return value;
+      }
+
+      return arrayFrom(document.querySelectorAll(value));
+    }
+    function setTransitionDuration(els, value) {
+      els.forEach(function (el) {
+        if (el) {
+          el.style.transitionDuration = value + "ms";
+        }
+      });
+    }
+    function setVisibilityState(els, state) {
+      els.forEach(function (el) {
+        if (el) {
+          el.setAttribute('data-state', state);
+        }
+      });
+    }
+    function getOwnerDocument(elementOrElements) {
+      var _normalizeToArray = normalizeToArray(elementOrElements),
+          element = _normalizeToArray[0];
+
+      return element ? element.ownerDocument || document : document;
+    }
+    function isCursorOutsideInteractiveBorder(popperTreeData, event) {
+      var clientX = event.clientX,
+          clientY = event.clientY;
+      return popperTreeData.every(function (_ref) {
+        var popperRect = _ref.popperRect,
+            popperState = _ref.popperState,
+            props = _ref.props;
+        var interactiveBorder = props.interactiveBorder;
+        var basePlacement = getBasePlacement(popperState.placement);
+        var offsetData = popperState.modifiersData.offset;
+
+        if (!offsetData) {
+          return true;
+        }
+
+        var topDistance = basePlacement === 'bottom' ? offsetData.top.y : 0;
+        var bottomDistance = basePlacement === 'top' ? offsetData.bottom.y : 0;
+        var leftDistance = basePlacement === 'right' ? offsetData.left.x : 0;
+        var rightDistance = basePlacement === 'left' ? offsetData.right.x : 0;
+        var exceedsTop = popperRect.top - clientY + topDistance > interactiveBorder;
+        var exceedsBottom = clientY - popperRect.bottom - bottomDistance > interactiveBorder;
+        var exceedsLeft = popperRect.left - clientX + leftDistance > interactiveBorder;
+        var exceedsRight = clientX - popperRect.right - rightDistance > interactiveBorder;
+        return exceedsTop || exceedsBottom || exceedsLeft || exceedsRight;
+      });
+    }
+    function updateTransitionEndListener(box, action, listener) {
+      var method = action + "EventListener"; // some browsers apparently support `transition` (unprefixed) but only fire
+      // `webkitTransitionEnd`...
+
+      ['transitionend', 'webkitTransitionEnd'].forEach(function (event) {
+        box[method](event, listener);
+      });
+    }
+
+    var currentInput = {
+      isTouch: false
+    };
+    var lastMouseMoveTime = 0;
+    /**
+     * When a `touchstart` event is fired, it's assumed the user is using touch
+     * input. We'll bind a `mousemove` event listener to listen for mouse input in
+     * the future. This way, the `isTouch` property is fully dynamic and will handle
+     * hybrid devices that use a mix of touch + mouse input.
+     */
+
+    function onDocumentTouchStart() {
+      if (currentInput.isTouch) {
+        return;
+      }
+
+      currentInput.isTouch = true;
+
+      if (window.performance) {
+        document.addEventListener('mousemove', onDocumentMouseMove);
+      }
+    }
+    /**
+     * When two `mousemove` event are fired consecutively within 20ms, it's assumed
+     * the user is using mouse input again. `mousemove` can fire on touch devices as
+     * well, but very rarely that quickly.
+     */
+
+    function onDocumentMouseMove() {
+      var now = performance.now();
+
+      if (now - lastMouseMoveTime < 20) {
+        currentInput.isTouch = false;
+        document.removeEventListener('mousemove', onDocumentMouseMove);
+      }
+
+      lastMouseMoveTime = now;
+    }
+    /**
+     * When an element is in focus and has a tippy, leaving the tab/window and
+     * returning causes it to show again. For mouse users this is unexpected, but
+     * for keyboard use it makes sense.
+     * TODO: find a better technique to solve this problem
+     */
+
+    function onWindowBlur() {
+      var activeElement = document.activeElement;
+
+      if (isReferenceElement(activeElement)) {
+        var instance = activeElement._tippy;
+
+        if (activeElement.blur && !instance.state.isVisible) {
+          activeElement.blur();
+        }
+      }
+    }
+    function bindGlobalEventListeners() {
+      document.addEventListener('touchstart', onDocumentTouchStart, Object.assign({}, PASSIVE, {
+        capture: true
+      }));
+      window.addEventListener('blur', onWindowBlur);
+    }
+
+    var isBrowser = typeof window !== 'undefined' && typeof document !== 'undefined';
+    var ua = isBrowser ? navigator.userAgent : '';
+    var isIE = /MSIE |Trident\//.test(ua);
+    var isIOS = isBrowser && /iPhone|iPad|iPod/.test(navigator.platform);
+
+    var pluginProps = {
+      animateFill: false,
+      followCursor: false,
+      inlinePositioning: false,
+      sticky: false
+    };
+    var renderProps = {
+      allowHTML: false,
+      animation: 'fade',
+      arrow: true,
+      content: '',
+      inertia: false,
+      maxWidth: 350,
+      role: 'tooltip',
+      theme: '',
+      zIndex: 9999
+    };
+    var defaultProps = Object.assign({
+      appendTo: function appendTo() {
+        return document.body;
+      },
+      aria: {
+        content: 'auto',
+        expanded: 'auto'
+      },
+      content: '',
+      delay: 0,
+      duration: [300, 250],
+      getReferenceClientRect: null,
+      hideOnClick: true,
+      ignoreAttributes: false,
+      interactive: false,
+      interactiveBorder: 2,
+      interactiveDebounce: 0,
+      moveTransition: '',
+      offset: [0, 10],
+      onAfterUpdate: function onAfterUpdate() {},
+      onBeforeUpdate: function onBeforeUpdate() {},
+      onCreate: function onCreate() {},
+      onDestroy: function onDestroy() {},
+      onHidden: function onHidden() {},
+      onHide: function onHide() {},
+      onMount: function onMount() {},
+      onShow: function onShow() {},
+      onShown: function onShown() {},
+      onTrigger: function onTrigger() {},
+      onUntrigger: function onUntrigger() {},
+      placement: 'top',
+      plugins: [],
+      popperOptions: {},
+      render: null,
+      showOnCreate: false,
+      touch: true,
+      trigger: 'mouseenter focus',
+      triggerTarget: null
+    }, pluginProps, {}, renderProps);
+    var defaultKeys = Object.keys(defaultProps);
+    var setDefaultProps = function setDefaultProps(partialProps) {
+
+      var keys = Object.keys(partialProps);
+      keys.forEach(function (key) {
+        defaultProps[key] = partialProps[key];
+      });
+    };
+    function getExtendedPassedProps(passedProps) {
+      var plugins = passedProps.plugins || [];
+      var pluginProps = plugins.reduce(function (acc, plugin) {
+        var name = plugin.name,
+            defaultValue = plugin.defaultValue;
+
+        if (name) {
+          acc[name] = passedProps[name] !== undefined ? passedProps[name] : defaultValue;
+        }
+
+        return acc;
+      }, {});
+      return Object.assign({}, passedProps, {}, pluginProps);
+    }
+    function getDataAttributeProps(reference, plugins) {
+      var propKeys = plugins ? Object.keys(getExtendedPassedProps(Object.assign({}, defaultProps, {
+        plugins: plugins
+      }))) : defaultKeys;
+      var props = propKeys.reduce(function (acc, key) {
+        var valueAsString = (reference.getAttribute("data-tippy-" + key) || '').trim();
+
+        if (!valueAsString) {
+          return acc;
+        }
+
+        if (key === 'content') {
+          acc[key] = valueAsString;
+        } else {
+          try {
+            acc[key] = JSON.parse(valueAsString);
+          } catch (e) {
+            acc[key] = valueAsString;
+          }
+        }
+
+        return acc;
+      }, {});
+      return props;
+    }
+    function evaluateProps(reference, props) {
+      var out = Object.assign({}, props, {
+        content: invokeWithArgsOrReturn(props.content, [reference])
+      }, props.ignoreAttributes ? {} : getDataAttributeProps(reference, props.plugins));
+      out.aria = Object.assign({}, defaultProps.aria, {}, out.aria);
+      out.aria = {
+        expanded: out.aria.expanded === 'auto' ? props.interactive : out.aria.expanded,
+        content: out.aria.content === 'auto' ? props.interactive ? null : 'describedby' : out.aria.content
+      };
+      return out;
+    }
+
+    var innerHTML = function innerHTML() {
+      return 'innerHTML';
+    };
+
+    function dangerouslySetInnerHTML(element, html) {
+      element[innerHTML()] = html;
+    }
+
+    function createArrowElement(value) {
+      var arrow = div();
+
+      if (value === true) {
+        arrow.className = ARROW_CLASS;
+      } else {
+        arrow.className = SVG_ARROW_CLASS;
+
+        if (isElement(value)) {
+          arrow.appendChild(value);
+        } else {
+          dangerouslySetInnerHTML(arrow, value);
+        }
+      }
+
+      return arrow;
+    }
+
+    function setContent(content, props) {
+      if (isElement(props.content)) {
+        dangerouslySetInnerHTML(content, '');
+        content.appendChild(props.content);
+      } else if (typeof props.content !== 'function') {
+        if (props.allowHTML) {
+          dangerouslySetInnerHTML(content, props.content);
+        } else {
+          content.textContent = props.content;
+        }
+      }
+    }
+    function getChildren(popper) {
+      var box = popper.firstElementChild;
+      var boxChildren = arrayFrom(box.children);
+      return {
+        box: box,
+        content: boxChildren.find(function (node) {
+          return node.classList.contains(CONTENT_CLASS);
+        }),
+        arrow: boxChildren.find(function (node) {
+          return node.classList.contains(ARROW_CLASS) || node.classList.contains(SVG_ARROW_CLASS);
+        }),
+        backdrop: boxChildren.find(function (node) {
+          return node.classList.contains(BACKDROP_CLASS);
+        })
+      };
+    }
+    function render(instance) {
+      var popper = div();
+      var box = div();
+      box.className = BOX_CLASS;
+      box.setAttribute('data-state', 'hidden');
+      box.setAttribute('tabindex', '-1');
+      var content = div();
+      content.className = CONTENT_CLASS;
+      content.setAttribute('data-state', 'hidden');
+      setContent(content, instance.props);
+      popper.appendChild(box);
+      box.appendChild(content);
+      onUpdate(instance.props, instance.props);
+
+      function onUpdate(prevProps, nextProps) {
+        var _getChildren = getChildren(popper),
+            box = _getChildren.box,
+            content = _getChildren.content,
+            arrow = _getChildren.arrow;
+
+        if (nextProps.theme) {
+          box.setAttribute('data-theme', nextProps.theme);
+        } else {
+          box.removeAttribute('data-theme');
+        }
+
+        if (typeof nextProps.animation === 'string') {
+          box.setAttribute('data-animation', nextProps.animation);
+        } else {
+          box.removeAttribute('data-animation');
+        }
+
+        if (nextProps.inertia) {
+          box.setAttribute('data-inertia', '');
+        } else {
+          box.removeAttribute('data-inertia');
+        }
+
+        box.style.maxWidth = typeof nextProps.maxWidth === 'number' ? nextProps.maxWidth + "px" : nextProps.maxWidth;
+
+        if (nextProps.role) {
+          box.setAttribute('role', nextProps.role);
+        } else {
+          box.removeAttribute('role');
+        }
+
+        if (prevProps.content !== nextProps.content) {
+          setContent(content, instance.props);
+        }
+
+        if (nextProps.arrow) {
+          if (!arrow) {
+            box.appendChild(createArrowElement(nextProps.arrow));
+          } else if (prevProps.arrow !== nextProps.arrow) {
+            box.removeChild(arrow);
+            box.appendChild(createArrowElement(nextProps.arrow));
+          }
+        } else if (arrow) {
+          box.removeChild(arrow);
+        }
+      }
+
+      return {
+        popper: popper,
+        onUpdate: onUpdate
+      };
+    } // Runtime check to identify if the render function is the default one; this
+    // way we can apply default CSS transitions logic and it can be tree-shaken away
+
+    render.$$tippy = true;
+
+    var idCounter = 1;
+    var mouseMoveListeners = []; // Used by `hideAll()`
+
+    var mountedInstances = [];
+    function createTippy(reference, passedProps) {
+      var props = evaluateProps(reference, Object.assign({}, defaultProps, {}, getExtendedPassedProps(passedProps))); // ===========================================================================
+      // 🔒 Private members
+      // ===========================================================================
+
+      var showTimeout;
+      var hideTimeout;
+      var scheduleHideAnimationFrame;
+      var isVisibleFromClick = false;
+      var didHideDueToDocumentMouseDown = false;
+      var ignoreOnFirstUpdate = false;
+      var lastTriggerEvent;
+      var currentTransitionEndListener;
+      var onFirstUpdate;
+      var listeners = [];
+      var debouncedOnMouseMove = debounce(onMouseMove, props.interactiveDebounce);
+      var currentTarget;
+      var doc = getOwnerDocument(props.triggerTarget || reference); // ===========================================================================
+      // 🔑 Public members
+      // ===========================================================================
+
+      var id = idCounter++;
+      var popperInstance = null;
+      var plugins = unique(props.plugins);
+      var state = {
+        // Is the instance currently enabled?
+        isEnabled: true,
+        // Is the tippy currently showing and not transitioning out?
+        isVisible: false,
+        // Has the instance been destroyed?
+        isDestroyed: false,
+        // Is the tippy currently mounted to the DOM?
+        isMounted: false,
+        // Has the tippy finished transitioning in?
+        isShown: false
+      };
+      var instance = {
+        // properties
+        id: id,
+        reference: reference,
+        popper: div(),
+        popperInstance: popperInstance,
+        props: props,
+        state: state,
+        plugins: plugins,
+        // methods
+        clearDelayTimeouts: clearDelayTimeouts,
+        setProps: setProps,
+        setContent: setContent,
+        show: show,
+        hide: hide,
+        enable: enable,
+        disable: disable,
+        unmount: unmount,
+        destroy: destroy
+      }; // TODO: Investigate why this early return causes a TDZ error in the tests —
+      // it doesn't seem to happen in the browser
+
+      /* istanbul ignore if */
+
+      if (!props.render) {
+
+        return instance;
+      } // ===========================================================================
+      // Initial mutations
+      // ===========================================================================
+
+
+      var _props$render = props.render(instance),
+          popper = _props$render.popper,
+          onUpdate = _props$render.onUpdate;
+
+      popper.setAttribute('data-tippy-root', '');
+      popper.id = "tippy-" + instance.id;
+      instance.popper = popper;
+      reference._tippy = instance;
+      popper._tippy = instance;
+      var pluginsHooks = plugins.map(function (plugin) {
+        return plugin.fn(instance);
+      });
+      var hasAriaExpanded = reference.hasAttribute('aria-expanded');
+      addListeners();
+      handleAriaExpandedAttribute();
+      handleStyles();
+      invokeHook('onCreate', [instance]);
+
+      if (props.showOnCreate) {
+        scheduleShow();
+      } // Prevent a tippy with a delay from hiding if the cursor left then returned
+      // before it started hiding
+
+
+      popper.addEventListener('mouseenter', function () {
+        if (instance.props.interactive && instance.state.isVisible) {
+          instance.clearDelayTimeouts();
+        }
+      });
+      popper.addEventListener('mouseleave', function (event) {
+        if (instance.props.interactive && instance.props.trigger.indexOf('mouseenter') >= 0) {
+          doc.addEventListener('mousemove', debouncedOnMouseMove);
+          debouncedOnMouseMove(event);
+        }
+      });
+      return instance; // ===========================================================================
+      // 🔒 Private methods
+      // ===========================================================================
+
+      function getNormalizedTouchSettings() {
+        var touch = instance.props.touch;
+        return Array.isArray(touch) ? touch : [touch, 0];
+      }
+
+      function getIsCustomTouchBehavior() {
+        return getNormalizedTouchSettings()[0] === 'hold';
+      }
+
+      function getIsDefaultRenderFn() {
+        var _instance$props$rende;
+
+        // @ts-ignore
+        return !!((_instance$props$rende = instance.props.render) == null ? void 0 : _instance$props$rende.$$tippy);
+      }
+
+      function getCurrentTarget() {
+        return currentTarget || reference;
+      }
+
+      function getDefaultTemplateChildren() {
+        return getChildren(popper);
+      }
+
+      function getDelay(isShow) {
+        // For touch or keyboard input, force `0` delay for UX reasons
+        // Also if the instance is mounted but not visible (transitioning out),
+        // ignore delay
+        if (instance.state.isMounted && !instance.state.isVisible || currentInput.isTouch || lastTriggerEvent && lastTriggerEvent.type === 'focus') {
+          return 0;
+        }
+
+        return getValueAtIndexOrReturn(instance.props.delay, isShow ? 0 : 1, defaultProps.delay);
+      }
+
+      function handleStyles() {
+        popper.style.pointerEvents = instance.props.interactive && instance.state.isVisible ? '' : 'none';
+        popper.style.zIndex = "" + instance.props.zIndex;
+      }
+
+      function updateIOSClass(isAdd) {
+        var shouldAdd = isAdd && isIOS && currentInput.isTouch;
+        doc.body.classList[shouldAdd ? 'add' : 'remove'](IOS_CLASS);
+      }
+
+      function invokeHook(hook, args, shouldInvokePropsHook) {
+        if (shouldInvokePropsHook === void 0) {
+          shouldInvokePropsHook = true;
+        }
+
+        pluginsHooks.forEach(function (pluginHooks) {
+          if (pluginHooks[hook]) {
+            pluginHooks[hook].apply(void 0, args);
+          }
+        });
+
+        if (shouldInvokePropsHook) {
+          var _instance$props;
+
+          (_instance$props = instance.props)[hook].apply(_instance$props, args);
+        }
+      }
+
+      function handleAriaContentAttribute() {
+        var aria = instance.props.aria;
+
+        if (!aria.content) {
+          return;
+        }
+
+        var attr = "aria-" + aria.content;
+        var id = popper.id;
+        var nodes = normalizeToArray(instance.props.triggerTarget || reference);
+        nodes.forEach(function (node) {
+          var currentValue = node.getAttribute(attr);
+
+          if (instance.state.isVisible) {
+            node.setAttribute(attr, currentValue ? currentValue + " " + id : id);
+          } else {
+            var nextValue = currentValue && currentValue.replace(id, '').trim();
+
+            if (nextValue) {
+              node.setAttribute(attr, nextValue);
+            } else {
+              node.removeAttribute(attr);
+            }
+          }
+        });
+      }
+
+      function handleAriaExpandedAttribute() {
+        if (hasAriaExpanded || !instance.props.aria.expanded) {
+          return;
+        }
+
+        var nodes = normalizeToArray(instance.props.triggerTarget || reference);
+        nodes.forEach(function (node) {
+          if (instance.props.interactive) {
+            node.setAttribute('aria-expanded', instance.state.isVisible && node === getCurrentTarget() ? 'true' : 'false');
+          } else {
+            node.removeAttribute('aria-expanded');
+          }
+        });
+      }
+
+      function cleanupInteractiveMouseListeners() {
+        doc.body.removeEventListener('mouseleave', scheduleHide);
+        doc.removeEventListener('mousemove', debouncedOnMouseMove);
+        mouseMoveListeners = mouseMoveListeners.filter(function (listener) {
+          return listener !== debouncedOnMouseMove;
+        });
+      }
+
+      function onDocumentMouseDown(event) {
+        // Clicked on interactive popper
+        if (instance.props.interactive && popper.contains(event.target)) {
+          return;
+        } // Clicked on the event listeners target
+
+
+        if (getCurrentTarget().contains(event.target)) {
+          if (currentInput.isTouch) {
+            return;
+          }
+
+          if (instance.state.isVisible && instance.props.trigger.indexOf('click') >= 0) {
+            return;
+          }
+        }
+
+        if (instance.props.hideOnClick === true) {
+          isVisibleFromClick = false;
+          instance.clearDelayTimeouts();
+          instance.hide(); // `mousedown` event is fired right before `focus` if pressing the
+          // currentTarget. This lets a tippy with `focus` trigger know that it
+          // should not show
+
+          didHideDueToDocumentMouseDown = true;
+          setTimeout(function () {
+            didHideDueToDocumentMouseDown = false;
+          }); // The listener gets added in `scheduleShow()`, but this may be hiding it
+          // before it shows, and hide()'s early bail-out behavior can prevent it
+          // from being cleaned up
+
+          if (!instance.state.isMounted) {
+            removeDocumentMouseDownListener();
+          }
+        }
+      }
+
+      function addDocumentMouseDownListener() {
+        doc.addEventListener('mousedown', onDocumentMouseDown, true);
+      }
+
+      function removeDocumentMouseDownListener() {
+        doc.removeEventListener('mousedown', onDocumentMouseDown, true);
+      }
+
+      function onTransitionedOut(duration, callback) {
+        onTransitionEnd(duration, function () {
+          if (!instance.state.isVisible && popper.parentNode && popper.parentNode.contains(popper)) {
+            callback();
+          }
+        });
+      }
+
+      function onTransitionedIn(duration, callback) {
+        onTransitionEnd(duration, callback);
+      }
+
+      function onTransitionEnd(duration, callback) {
+        var box = getDefaultTemplateChildren().box;
+
+        function listener(event) {
+          if (event.target === box) {
+            updateTransitionEndListener(box, 'remove', listener);
+            callback();
+          }
+        } // Make callback synchronous if duration is 0
+        // `transitionend` won't fire otherwise
+
+
+        if (duration === 0) {
+          return callback();
+        }
+
+        updateTransitionEndListener(box, 'remove', currentTransitionEndListener);
+        updateTransitionEndListener(box, 'add', listener);
+        currentTransitionEndListener = listener;
+      }
+
+      function on(eventType, handler, options) {
+        if (options === void 0) {
+          options = false;
+        }
+
+        var nodes = normalizeToArray(instance.props.triggerTarget || reference);
+        nodes.forEach(function (node) {
+          node.addEventListener(eventType, handler, options);
+          listeners.push({
+            node: node,
+            eventType: eventType,
+            handler: handler,
+            options: options
+          });
+        });
+      }
+
+      function addListeners() {
+        if (getIsCustomTouchBehavior()) {
+          on('touchstart', onTrigger, PASSIVE);
+          on('touchend', onMouseLeave, PASSIVE);
+        }
+
+        splitBySpaces(instance.props.trigger).forEach(function (eventType) {
+          if (eventType === 'manual') {
+            return;
+          }
+
+          on(eventType, onTrigger);
+
+          switch (eventType) {
+            case 'mouseenter':
+              on('mouseleave', onMouseLeave);
+              break;
+
+            case 'focus':
+              on(isIE ? 'focusout' : 'blur', onBlurOrFocusOut);
+              break;
+
+            case 'focusin':
+              on('focusout', onBlurOrFocusOut);
+              break;
+          }
+        });
+      }
+
+      function removeListeners() {
+        listeners.forEach(function (_ref) {
+          var node = _ref.node,
+              eventType = _ref.eventType,
+              handler = _ref.handler,
+              options = _ref.options;
+          node.removeEventListener(eventType, handler, options);
+        });
+        listeners = [];
+      }
+
+      function onTrigger(event) {
+        var shouldScheduleClickHide = false;
+
+        if (!instance.state.isEnabled || isEventListenerStopped(event) || didHideDueToDocumentMouseDown) {
+          return;
+        }
+
+        lastTriggerEvent = event;
+        currentTarget = event.currentTarget;
+        handleAriaExpandedAttribute();
+
+        if (!instance.state.isVisible && isMouseEvent(event)) {
+          // If scrolling, `mouseenter` events can be fired if the cursor lands
+          // over a new target, but `mousemove` events don't get fired. This
+          // causes interactive tooltips to get stuck open until the cursor is
+          // moved
+          mouseMoveListeners.forEach(function (listener) {
+            return listener(event);
+          });
+        } // Toggle show/hide when clicking click-triggered tooltips
+
+
+        if (event.type === 'click' && (instance.props.trigger.indexOf('mouseenter') < 0 || isVisibleFromClick) && instance.props.hideOnClick !== false && instance.state.isVisible) {
+          shouldScheduleClickHide = true;
+        } else {
+          var _getNormalizedTouchSe = getNormalizedTouchSettings(),
+              value = _getNormalizedTouchSe[0],
+              duration = _getNormalizedTouchSe[1];
+
+          if (currentInput.isTouch && value === 'hold' && duration) {
+            // We can hijack the show timeout here, it will be cleared by
+            // `scheduleHide()` when necessary
+            showTimeout = setTimeout(function () {
+              scheduleShow(event);
+            }, duration);
+          } else {
+            scheduleShow(event);
+          }
+        }
+
+        if (event.type === 'click') {
+          isVisibleFromClick = !shouldScheduleClickHide;
+        }
+
+        if (shouldScheduleClickHide) {
+          scheduleHide(event);
+        }
+      }
+
+      function onMouseMove(event) {
+        var target = event.target;
+        var isCursorOverReferenceOrPopper = reference.contains(target) || popper.contains(target);
+
+        if (event.type === 'mousemove' && isCursorOverReferenceOrPopper) {
+          return;
+        }
+
+        var popperTreeData = getNestedPopperTree().concat(popper).map(function (popper) {
+          var _instance$popperInsta;
+
+          var instance = popper._tippy;
+          var state = (_instance$popperInsta = instance.popperInstance) == null ? void 0 : _instance$popperInsta.state;
+
+          if (state) {
+            return {
+              popperRect: popper.getBoundingClientRect(),
+              popperState: state,
+              props: props
+            };
+          }
+
+          return null;
+        }).filter(Boolean);
+
+        if (isCursorOutsideInteractiveBorder(popperTreeData, event)) {
+          cleanupInteractiveMouseListeners();
+          scheduleHide(event);
+        }
+      }
+
+      function onMouseLeave(event) {
+        var shouldBail = isEventListenerStopped(event) || instance.props.trigger.indexOf('click') >= 0 && isVisibleFromClick;
+
+        if (shouldBail) {
+          return;
+        }
+
+        if (instance.props.interactive) {
+          doc.body.addEventListener('mouseleave', scheduleHide);
+          doc.addEventListener('mousemove', debouncedOnMouseMove);
+          pushIfUnique(mouseMoveListeners, debouncedOnMouseMove);
+          debouncedOnMouseMove(event);
+          return;
+        }
+
+        scheduleHide(event);
+      }
+
+      function onBlurOrFocusOut(event) {
+        if (instance.props.trigger.indexOf('focusin') < 0 && event.target !== getCurrentTarget()) {
+          return;
+        } // If focus was moved to within the popper
+
+
+        if (instance.props.interactive && event.relatedTarget && popper.contains(event.relatedTarget)) {
+          return;
+        }
+
+        scheduleHide(event);
+      }
+
+      function isEventListenerStopped(event) {
+        return currentInput.isTouch ? getIsCustomTouchBehavior() !== event.type.indexOf('touch') >= 0 : false;
+      }
+
+      function createPopperInstance() {
+        destroyPopperInstance();
+        var _instance$props2 = instance.props,
+            popperOptions = _instance$props2.popperOptions,
+            placement = _instance$props2.placement,
+            offset = _instance$props2.offset,
+            getReferenceClientRect = _instance$props2.getReferenceClientRect,
+            moveTransition = _instance$props2.moveTransition;
+        var arrow = getIsDefaultRenderFn() ? getChildren(popper).arrow : null;
+        var computedReference = getReferenceClientRect ? {
+          getBoundingClientRect: getReferenceClientRect
+        } : reference;
+        var tippyModifier = {
+          name: '$$tippy',
+          enabled: true,
+          phase: 'beforeWrite',
+          requires: ['computeStyles'],
+          fn: function fn(_ref2) {
+            var state = _ref2.state;
+
+            if (getIsDefaultRenderFn()) {
+              var _getDefaultTemplateCh = getDefaultTemplateChildren(),
+                  box = _getDefaultTemplateCh.box;
+
+              ['placement', 'reference-hidden', 'escaped'].forEach(function (attr) {
+                if (attr === 'placement') {
+                  box.setAttribute('data-placement', state.placement);
+                } else {
+                  if (state.attributes.popper["data-popper-" + attr]) {
+                    box.setAttribute("data-" + attr, '');
+                  } else {
+                    box.removeAttribute("data-" + attr);
+                  }
+                }
+              });
+              state.attributes.popper = {};
+            }
+          }
+        };
+        var arrowModifier = {
+          name: 'arrow',
+          enabled: !!arrow,
+          options: {
+            element: arrow,
+            padding: 3
+          }
+        };
+        var modifiers = [{
+          name: 'offset',
+          options: {
+            offset: offset
+          }
+        }, {
+          name: 'preventOverflow',
+          options: {
+            padding: {
+              top: 2,
+              bottom: 2,
+              left: 5,
+              right: 5
+            }
+          }
+        }, {
+          name: 'flip',
+          options: {
+            padding: 5
+          }
+        }, {
+          name: 'computeStyles',
+          options: {
+            adaptive: !moveTransition
+          }
+        }].concat(getIsDefaultRenderFn() ? [arrowModifier] : [], (popperOptions == null ? void 0 : popperOptions.modifiers) || [], [tippyModifier]);
+        instance.popperInstance = createPopper(computedReference, popper, Object.assign({}, popperOptions, {
+          placement: placement,
+          onFirstUpdate: onFirstUpdate,
+          modifiers: modifiers
+        }));
+      }
+
+      function destroyPopperInstance() {
+        if (instance.popperInstance) {
+          instance.popperInstance.destroy();
+          instance.popperInstance = null;
+        }
+      }
+
+      function mount() {
+        var appendTo = instance.props.appendTo;
+        var parentNode; // By default, we'll append the popper to the triggerTargets's parentNode so
+        // it's directly after the reference element so the elements inside the
+        // tippy can be tabbed to
+        // If there are clipping issues, the user can specify a different appendTo
+        // and ensure focus management is handled correctly manually
+
+        var node = getCurrentTarget();
+
+        if (instance.props.interactive && appendTo === defaultProps.appendTo || appendTo === 'parent') {
+          parentNode = node.parentNode;
+        } else {
+          parentNode = invokeWithArgsOrReturn(appendTo, [node]);
+        } // The popper element needs to exist on the DOM before its position can be
+        // updated as Popper needs to read its dimensions
+
+
+        if (!parentNode.contains(popper)) {
+          parentNode.appendChild(popper);
+        }
+
+        createPopperInstance();
+      }
+
+      function getNestedPopperTree() {
+        return arrayFrom(popper.querySelectorAll('[data-tippy-root]'));
+      }
+
+      function scheduleShow(event) {
+        instance.clearDelayTimeouts();
+
+        if (event) {
+          invokeHook('onTrigger', [instance, event]);
+        }
+
+        addDocumentMouseDownListener();
+        var delay = getDelay(true);
+
+        if (delay) {
+          showTimeout = setTimeout(function () {
+            instance.show();
+          }, delay);
+        } else {
+          instance.show();
+        }
+      }
+
+      function scheduleHide(event) {
+        instance.clearDelayTimeouts();
+        invokeHook('onUntrigger', [instance, event]);
+
+        if (!instance.state.isVisible) {
+          removeDocumentMouseDownListener();
+          return;
+        } // For interactive tippies, scheduleHide is added to a document.body handler
+        // from onMouseLeave so must intercept scheduled hides from mousemove/leave
+        // events when trigger contains mouseenter and click, and the tip is
+        // currently shown as a result of a click.
+
+
+        if (instance.props.trigger.indexOf('mouseenter') >= 0 && instance.props.trigger.indexOf('click') >= 0 && ['mouseleave', 'mousemove'].indexOf(event.type) >= 0 && isVisibleFromClick) {
+          return;
+        }
+
+        var delay = getDelay(false);
+
+        if (delay) {
+          hideTimeout = setTimeout(function () {
+            if (instance.state.isVisible) {
+              instance.hide();
+            }
+          }, delay);
+        } else {
+          // Fixes a `transitionend` problem when it fires 1 frame too
+          // late sometimes, we don't want hide() to be called.
+          scheduleHideAnimationFrame = requestAnimationFrame(function () {
+            instance.hide();
+          });
+        }
+      } // ===========================================================================
+      // 🔑 Public methods
+      // ===========================================================================
+
+
+      function enable() {
+        instance.state.isEnabled = true;
+      }
+
+      function disable() {
+        // Disabling the instance should also hide it
+        // https://github.com/atomiks/tippy.js-react/issues/106
+        instance.hide();
+        instance.state.isEnabled = false;
+      }
+
+      function clearDelayTimeouts() {
+        clearTimeout(showTimeout);
+        clearTimeout(hideTimeout);
+        cancelAnimationFrame(scheduleHideAnimationFrame);
+      }
+
+      function setProps(partialProps) {
+
+        if (instance.state.isDestroyed) {
+          return;
+        }
+
+        invokeHook('onBeforeUpdate', [instance, partialProps]);
+        removeListeners();
+        var prevProps = instance.props;
+        var nextProps = evaluateProps(reference, Object.assign({}, instance.props, {}, partialProps, {
+          ignoreAttributes: true
+        }));
+        instance.props = nextProps;
+        addListeners();
+
+        if (prevProps.interactiveDebounce !== nextProps.interactiveDebounce) {
+          cleanupInteractiveMouseListeners();
+          debouncedOnMouseMove = debounce(onMouseMove, nextProps.interactiveDebounce);
+        } // Ensure stale aria-expanded attributes are removed
+
+
+        if (prevProps.triggerTarget && !nextProps.triggerTarget) {
+          normalizeToArray(prevProps.triggerTarget).forEach(function (node) {
+            node.removeAttribute('aria-expanded');
+          });
+        } else if (nextProps.triggerTarget) {
+          reference.removeAttribute('aria-expanded');
+        }
+
+        handleAriaExpandedAttribute();
+        handleStyles();
+
+        if (onUpdate) {
+          onUpdate(prevProps, nextProps);
+        }
+
+        if (instance.popperInstance) {
+          createPopperInstance(); // Fixes an issue with nested tippies if they are all getting re-rendered,
+          // and the nested ones get re-rendered first.
+          // https://github.com/atomiks/tippyjs-react/issues/177
+          // TODO: find a cleaner / more efficient solution(!)
+
+          getNestedPopperTree().forEach(function (nestedPopper) {
+            // React (and other UI libs likely) requires a rAF wrapper as it flushes
+            // its work in one
+            requestAnimationFrame(nestedPopper._tippy.popperInstance.forceUpdate);
+          });
+        }
+
+        invokeHook('onAfterUpdate', [instance, partialProps]);
+      }
+
+      function setContent(content) {
+        instance.setProps({
+          content: content
+        });
+      }
+
+      function show() {
+
+
+        var isAlreadyVisible = instance.state.isVisible;
+        var isDestroyed = instance.state.isDestroyed;
+        var isDisabled = !instance.state.isEnabled;
+        var isTouchAndTouchDisabled = currentInput.isTouch && !instance.props.touch;
+        var duration = getValueAtIndexOrReturn(instance.props.duration, 0, defaultProps.duration);
+
+        if (isAlreadyVisible || isDestroyed || isDisabled || isTouchAndTouchDisabled) {
+          return;
+        } // Normalize `disabled` behavior across browsers.
+        // Firefox allows events on disabled elements, but Chrome doesn't.
+        // Using a wrapper element (i.e. <span>) is recommended.
+
+
+        if (getCurrentTarget().hasAttribute('disabled')) {
+          return;
+        }
+
+        invokeHook('onShow', [instance], false);
+
+        if (instance.props.onShow(instance) === false) {
+          return;
+        }
+
+        instance.state.isVisible = true;
+
+        if (getIsDefaultRenderFn()) {
+          popper.style.visibility = 'visible';
+        }
+
+        handleStyles();
+        addDocumentMouseDownListener();
+
+        if (!instance.state.isMounted) {
+          popper.style.transition = 'none';
+        } // If flipping to the opposite side after hiding at least once, the
+        // animation will use the wrong placement without resetting the duration
+
+
+        if (getIsDefaultRenderFn()) {
+          var _getDefaultTemplateCh2 = getDefaultTemplateChildren(),
+              box = _getDefaultTemplateCh2.box,
+              content = _getDefaultTemplateCh2.content;
+
+          setTransitionDuration([box, content], 0);
+        }
+
+        onFirstUpdate = function onFirstUpdate() {
+          if (!instance.state.isVisible || ignoreOnFirstUpdate) {
+            return;
+          }
+
+          ignoreOnFirstUpdate = true; // reflow
+
+          void popper.offsetHeight;
+          popper.style.transition = instance.props.moveTransition;
+
+          if (getIsDefaultRenderFn() && instance.props.animation) {
+            var _getDefaultTemplateCh3 = getDefaultTemplateChildren(),
+                _box = _getDefaultTemplateCh3.box,
+                _content = _getDefaultTemplateCh3.content;
+
+            setTransitionDuration([_box, _content], duration);
+            setVisibilityState([_box, _content], 'visible');
+          }
+
+          handleAriaContentAttribute();
+          handleAriaExpandedAttribute();
+          pushIfUnique(mountedInstances, instance);
+          updateIOSClass(true);
+          instance.state.isMounted = true;
+          invokeHook('onMount', [instance]);
+
+          if (instance.props.animation && getIsDefaultRenderFn()) {
+            onTransitionedIn(duration, function () {
+              instance.state.isShown = true;
+              invokeHook('onShown', [instance]);
+            });
+          }
+        };
+
+        mount();
+      }
+
+      function hide() {
+
+
+        var isAlreadyHidden = !instance.state.isVisible;
+        var isDestroyed = instance.state.isDestroyed;
+        var isDisabled = !instance.state.isEnabled;
+        var duration = getValueAtIndexOrReturn(instance.props.duration, 1, defaultProps.duration);
+
+        if (isAlreadyHidden || isDestroyed || isDisabled) {
+          return;
+        }
+
+        invokeHook('onHide', [instance], false);
+
+        if (instance.props.onHide(instance) === false) {
+          return;
+        }
+
+        instance.state.isVisible = false;
+        instance.state.isShown = false;
+        ignoreOnFirstUpdate = false;
+
+        if (getIsDefaultRenderFn()) {
+          popper.style.visibility = 'hidden';
+        }
+
+        cleanupInteractiveMouseListeners();
+        removeDocumentMouseDownListener();
+        handleStyles();
+
+        if (getIsDefaultRenderFn()) {
+          var _getDefaultTemplateCh4 = getDefaultTemplateChildren(),
+              box = _getDefaultTemplateCh4.box,
+              content = _getDefaultTemplateCh4.content;
+
+          if (instance.props.animation) {
+            setTransitionDuration([box, content], duration);
+            setVisibilityState([box, content], 'hidden');
+          }
+        }
+
+        handleAriaContentAttribute();
+        handleAriaExpandedAttribute();
+
+        if (instance.props.animation) {
+          if (getIsDefaultRenderFn()) {
+            onTransitionedOut(duration, instance.unmount);
+          }
+        } else {
+          instance.unmount();
+        }
+      }
+
+      function unmount() {
+        if (instance.state.isVisible) {
+          instance.hide();
+        }
+
+        if (!instance.state.isMounted) {
+          return;
+        }
+
+        destroyPopperInstance(); // If a popper is not interactive, it will be appended outside the popper
+        // tree by default. This seems mainly for interactive tippies, but we should
+        // find a workaround if possible
+
+        getNestedPopperTree().forEach(function (nestedPopper) {
+          nestedPopper._tippy.unmount();
+        });
+
+        if (popper.parentNode) {
+          popper.parentNode.removeChild(popper);
+        }
+
+        mountedInstances = mountedInstances.filter(function (i) {
+          return i !== instance;
+        });
+
+        if (mountedInstances.length === 0) {
+          updateIOSClass(false);
+        }
+
+        instance.state.isMounted = false;
+        invokeHook('onHidden', [instance]);
+      }
+
+      function destroy() {
+
+        if (instance.state.isDestroyed) {
+          return;
+        }
+
+        instance.clearDelayTimeouts();
+        instance.unmount();
+        removeListeners();
+        delete reference._tippy;
+        instance.state.isDestroyed = true;
+        invokeHook('onDestroy', [instance]);
+      }
+    }
+
+    function tippy$1(targets, optionalProps) {
+      if (optionalProps === void 0) {
+        optionalProps = {};
+      }
+
+      var plugins = defaultProps.plugins.concat(optionalProps.plugins || []);
+
+      bindGlobalEventListeners();
+      var passedProps = Object.assign({}, optionalProps, {
+        plugins: plugins
+      });
+      var elements = getArrayOfElements(targets);
+
+      var instances = elements.reduce(function (acc, reference) {
+        var instance = reference && createTippy(reference, passedProps);
+
+        if (instance) {
+          acc.push(instance);
+        }
+
+        return acc;
+      }, []);
+      return isElement(targets) ? instances[0] : instances;
+    }
+
+    tippy$1.defaultProps = defaultProps;
+    tippy$1.setDefaultProps = setDefaultProps;
+    tippy$1.currentInput = currentInput;
+
+    tippy$1.setDefaultProps({
+      render: render
+    });
+
+    function tippy(node, props) {
+      tippy$1(node, props);
+    }
+
+    /* src/components/Chart.svelte generated by Svelte v3.44.3 */
+
+    const { console: console_1$1 } = globals;
+    const file$2 = "src/components/Chart.svelte";
+
+    function get_each_context$2(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[14] = list[i];
+    	return child_ctx;
+    }
+
+    function get_each_context_1(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[14] = list[i];
+    	return child_ctx;
+    }
+
+    function get_each_context_2(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[19] = list[i];
+    	return child_ctx;
+    }
+
+    // (71:4) {#each data.mineralData as country}
+    function create_each_block_2(ctx) {
+    	let circle;
+    	let circle_cx_value;
+    	let circle_cy_value;
+    	let tippy_action;
+    	let mounted;
+    	let dispose;
+
+    	const block = {
+    		c: function create() {
+    			circle = svg_element("circle");
+    			attr_dev(circle, "cx", circle_cx_value = /*xScale*/ ctx[7](/*country*/ ctx[19].percentProduction));
+    			attr_dev(circle, "cy", circle_cy_value = "" + (/*yScale*/ ctx[6](/*country*/ ctx[19].percentReserves) + "px"));
+    			attr_dev(circle, "r", "3px");
+    			attr_dev(circle, "class", "svelte-1837hjv");
+    			add_location(circle, file$2, 71, 6, 2541);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, circle, anchor);
+
+    			if (!mounted) {
+    				dispose = action_destroyer(tippy_action = tippy.call(null, circle, /*formatTooltip*/ ctx[11](/*country*/ ctx[19])));
+    				mounted = true;
+    			}
+    		},
+    		p: function update(new_ctx, dirty) {
+    			ctx = new_ctx;
+
+    			if (dirty & /*xScale, data*/ 129 && circle_cx_value !== (circle_cx_value = /*xScale*/ ctx[7](/*country*/ ctx[19].percentProduction))) {
+    				attr_dev(circle, "cx", circle_cx_value);
+    			}
+
+    			if (dirty & /*yScale, data*/ 65 && circle_cy_value !== (circle_cy_value = "" + (/*yScale*/ ctx[6](/*country*/ ctx[19].percentReserves) + "px"))) {
+    				attr_dev(circle, "cy", circle_cy_value);
+    			}
+
+    			if (tippy_action && is_function(tippy_action.update) && dirty & /*data*/ 1) tippy_action.update.call(null, /*formatTooltip*/ ctx[11](/*country*/ ctx[19]));
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(circle);
+    			mounted = false;
+    			dispose();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_each_block_2.name,
+    		type: "each",
+    		source: "(71:4) {#each data.mineralData as country}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (78:6) {#each yTicks as tick}
+    function create_each_block_1(ctx) {
+    	let g;
+    	let line;
+    	let text_1;
+    	let t_value = /*tick*/ ctx[14] + "";
+    	let t;
+    	let g_class_value;
+    	let g_transform_value;
+
+    	const block = {
+    		c: function create() {
+    			g = svg_element("g");
+    			line = svg_element("line");
+    			text_1 = svg_element("text");
+    			t = text$1(t_value);
+    			attr_dev(line, "x1", /*padding*/ ctx[10].left - 3);
+    			attr_dev(line, "x2", /*padding*/ ctx[10].left);
+    			attr_dev(line, "class", "svelte-1837hjv");
+    			add_location(line, file$2, 79, 10, 2978);
+    			attr_dev(text_1, "x", /*padding*/ ctx[10].left - 4);
+    			attr_dev(text_1, "y", "+4");
+    			attr_dev(text_1, "class", "svelte-1837hjv");
+    			add_location(text_1, file$2, 80, 10, 3046);
+    			attr_dev(g, "class", g_class_value = "tick tick-" + /*tick*/ ctx[14] + " svelte-1837hjv");
+    			attr_dev(g, "transform", g_transform_value = "translate(0, " + /*yScale*/ ctx[6](/*tick*/ ctx[14]) + ")");
+    			add_location(g, file$2, 78, 8, 2898);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, g, anchor);
+    			append_dev(g, line);
+    			append_dev(g, text_1);
+    			append_dev(text_1, t);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*yTicks*/ 16 && t_value !== (t_value = /*tick*/ ctx[14] + "")) set_data_dev(t, t_value);
+
+    			if (dirty & /*yTicks*/ 16 && g_class_value !== (g_class_value = "tick tick-" + /*tick*/ ctx[14] + " svelte-1837hjv")) {
+    				attr_dev(g, "class", g_class_value);
+    			}
+
+    			if (dirty & /*yScale, yTicks*/ 80 && g_transform_value !== (g_transform_value = "translate(0, " + /*yScale*/ ctx[6](/*tick*/ ctx[14]) + ")")) {
+    				attr_dev(g, "transform", g_transform_value);
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(g);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_each_block_1.name,
+    		type: "each",
+    		source: "(78:6) {#each yTicks as tick}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (90:6) {#each xTicks as tick}
+    function create_each_block$2(ctx) {
+    	let g;
+    	let line;
+    	let line_y__value;
+    	let line_y__value_1;
+    	let text_1;
+    	let t_value = /*tick*/ ctx[14] + "";
+    	let t;
+    	let text_1_y_value;
+    	let g_class_value;
+    	let g_transform_value;
+
+    	const block = {
+    		c: function create() {
+    			g = svg_element("g");
+    			line = svg_element("line");
+    			text_1 = svg_element("text");
+    			t = text$1(t_value);
+    			attr_dev(line, "y1", line_y__value = /*height*/ ctx[2] - /*padding*/ ctx[10].bottom + 4);
+    			attr_dev(line, "y2", line_y__value_1 = /*height*/ ctx[2] - /*padding*/ ctx[10].bottom);
+    			attr_dev(line, "class", "svelte-1837hjv");
+    			add_location(line, file$2, 91, 10, 3500);
+    			attr_dev(text_1, "y", text_1_y_value = /*height*/ ctx[2] - /*padding*/ ctx[10].bottom + 16);
+    			attr_dev(text_1, "class", "svelte-1837hjv");
+    			add_location(text_1, file$2, 92, 10, 3590);
+    			attr_dev(g, "class", g_class_value = "tick tick-" + /*tick*/ ctx[14] + " svelte-1837hjv");
+    			attr_dev(g, "transform", g_transform_value = "translate(" + /*xScale*/ ctx[7](/*tick*/ ctx[14]) + ",0)");
+    			add_location(g, file$2, 90, 8, 3421);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, g, anchor);
+    			append_dev(g, line);
+    			append_dev(g, text_1);
+    			append_dev(text_1, t);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*height*/ 4 && line_y__value !== (line_y__value = /*height*/ ctx[2] - /*padding*/ ctx[10].bottom + 4)) {
+    				attr_dev(line, "y1", line_y__value);
+    			}
+
+    			if (dirty & /*height*/ 4 && line_y__value_1 !== (line_y__value_1 = /*height*/ ctx[2] - /*padding*/ ctx[10].bottom)) {
+    				attr_dev(line, "y2", line_y__value_1);
+    			}
+
+    			if (dirty & /*xTicks*/ 32 && t_value !== (t_value = /*tick*/ ctx[14] + "")) set_data_dev(t, t_value);
+
+    			if (dirty & /*height*/ 4 && text_1_y_value !== (text_1_y_value = /*height*/ ctx[2] - /*padding*/ ctx[10].bottom + 16)) {
+    				attr_dev(text_1, "y", text_1_y_value);
+    			}
+
+    			if (dirty & /*xTicks*/ 32 && g_class_value !== (g_class_value = "tick tick-" + /*tick*/ ctx[14] + " svelte-1837hjv")) {
+    				attr_dev(g, "class", g_class_value);
+    			}
+
+    			if (dirty & /*xScale, xTicks*/ 160 && g_transform_value !== (g_transform_value = "translate(" + /*xScale*/ ctx[7](/*tick*/ ctx[14]) + ",0)")) {
+    				attr_dev(g, "transform", g_transform_value);
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(g);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_each_block$2.name,
+    		type: "each",
+    		source: "(90:6) {#each xTicks as tick}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function create_fragment$2(ctx) {
+    	let p;
+    	let t0_value = /*data*/ ctx[0].mineral + "";
+    	let t0;
+    	let t1;
+    	let figure_1;
+    	let svg;
+    	let g0;
+    	let line0;
+    	let line0_x__value;
+    	let line0_x__value_1;
+    	let line0_transform_value;
+    	let text0;
+    	let t2;
+    	let text0_x_value;
+    	let g1;
+    	let line1;
+    	let line1_y__value;
+    	let line1_y__value_1;
+    	let line1_transform_value;
+    	let text1;
+    	let t3;
+    	let text1_x_value;
+    	let text1_y_value;
+    	let mounted;
+    	let dispose;
+    	let each_value_2 = /*data*/ ctx[0].mineralData;
+    	validate_each_argument(each_value_2);
+    	let each_blocks_2 = [];
+
+    	for (let i = 0; i < each_value_2.length; i += 1) {
+    		each_blocks_2[i] = create_each_block_2(get_each_context_2(ctx, each_value_2, i));
+    	}
+
+    	let each_value_1 = /*yTicks*/ ctx[4];
+    	validate_each_argument(each_value_1);
+    	let each_blocks_1 = [];
+
+    	for (let i = 0; i < each_value_1.length; i += 1) {
+    		each_blocks_1[i] = create_each_block_1(get_each_context_1(ctx, each_value_1, i));
+    	}
+
+    	let each_value = /*xTicks*/ ctx[5];
+    	validate_each_argument(each_value);
+    	let each_blocks = [];
+
+    	for (let i = 0; i < each_value.length; i += 1) {
+    		each_blocks[i] = create_each_block$2(get_each_context$2(ctx, each_value, i));
+    	}
+
+    	const block = {
+    		c: function create() {
+    			p = element("p");
+    			t0 = text$1(t0_value);
+    			t1 = space();
+    			figure_1 = element("figure");
+    			svg = svg_element("svg");
+
+    			for (let i = 0; i < each_blocks_2.length; i += 1) {
+    				each_blocks_2[i].c();
+    			}
+
+    			g0 = svg_element("g");
+    			line0 = svg_element("line");
+
+    			for (let i = 0; i < each_blocks_1.length; i += 1) {
+    				each_blocks_1[i].c();
+    			}
+
+    			text0 = svg_element("text");
+    			t2 = text$1(/*yAxisTitle*/ ctx[8]);
+    			g1 = svg_element("g");
+    			line1 = svg_element("line");
+
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].c();
+    			}
+
+    			text1 = svg_element("text");
+    			t3 = text$1(/*xAxisTitle*/ ctx[9]);
+    			add_location(p, file$2, 62, 0, 2329);
+    			attr_dev(line0, "class", "axis-guideline svelte-1837hjv");
+    			attr_dev(line0, "x1", line0_x__value = /*xScale*/ ctx[7](0));
+    			attr_dev(line0, "x2", line0_x__value_1 = /*xScale*/ ctx[7](100));
+    			attr_dev(line0, "transform", line0_transform_value = "translate(0," + /*yScale*/ ctx[6](0) + ")");
+    			add_location(line0, file$2, 76, 6, 2751);
+    			attr_dev(text0, "class", "yAxisTitle svelte-1837hjv");
+    			attr_dev(text0, "x", text0_x_value = -/*height*/ ctx[2] / 2);
+    			attr_dev(text0, "y", /*padding*/ ctx[10].left - 30);
+    			add_location(text0, file$2, 83, 6, 3129);
+    			attr_dev(g0, "class", "axis y-axis");
+    			add_location(g0, file$2, 75, 4, 2721);
+    			attr_dev(line1, "class", "axis-guideline svelte-1837hjv");
+    			attr_dev(line1, "y1", line1_y__value = /*yScale*/ ctx[6](0));
+    			attr_dev(line1, "y2", line1_y__value_1 = /*yScale*/ ctx[6](100));
+    			attr_dev(line1, "transform", line1_transform_value = "translate(" + /*xScale*/ ctx[7](0) + ")");
+    			add_location(line1, file$2, 88, 6, 3276);
+    			attr_dev(text1, "class", "xAxisTitle svelte-1837hjv");
+    			attr_dev(text1, "x", text1_x_value = /*width*/ ctx[1] / 2);
+    			attr_dev(text1, "y", text1_y_value = /*height*/ ctx[2] - 4);
+    			add_location(text1, file$2, 95, 6, 3678);
+    			attr_dev(g1, "class", "axis x-axis");
+    			add_location(g1, file$2, 87, 4, 3246);
+    			attr_dev(svg, "class", "chart svelte-1837hjv");
+    			add_location(svg, file$2, 66, 2, 2385);
+    			attr_dev(figure_1, "class", "svelte-1837hjv");
+    			add_location(figure_1, file$2, 64, 0, 2352);
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, p, anchor);
+    			append_dev(p, t0);
+    			insert_dev(target, t1, anchor);
+    			insert_dev(target, figure_1, anchor);
+    			append_dev(figure_1, svg);
+
+    			for (let i = 0; i < each_blocks_2.length; i += 1) {
+    				each_blocks_2[i].m(svg, null);
+    			}
+
+    			append_dev(svg, g0);
+    			append_dev(g0, line0);
+
+    			for (let i = 0; i < each_blocks_1.length; i += 1) {
+    				each_blocks_1[i].m(g0, null);
+    			}
+
+    			append_dev(g0, text0);
+    			append_dev(text0, t2);
+    			append_dev(svg, g1);
+    			append_dev(g1, line1);
+
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].m(g1, null);
+    			}
+
+    			append_dev(g1, text1);
+    			append_dev(text1, t3);
+    			/*figure_1_binding*/ ctx[13](figure_1);
+
+    			if (!mounted) {
+    				dispose = listen_dev(window, "resize", /*resize*/ ctx[12], false, false, false);
+    				mounted = true;
+    			}
+    		},
+    		p: function update(ctx, [dirty]) {
+    			if (dirty & /*data*/ 1 && t0_value !== (t0_value = /*data*/ ctx[0].mineral + "")) set_data_dev(t0, t0_value);
+
+    			if (dirty & /*xScale, data, yScale, formatTooltip*/ 2241) {
+    				each_value_2 = /*data*/ ctx[0].mineralData;
+    				validate_each_argument(each_value_2);
+    				let i;
+
+    				for (i = 0; i < each_value_2.length; i += 1) {
+    					const child_ctx = get_each_context_2(ctx, each_value_2, i);
+
+    					if (each_blocks_2[i]) {
+    						each_blocks_2[i].p(child_ctx, dirty);
+    					} else {
+    						each_blocks_2[i] = create_each_block_2(child_ctx);
+    						each_blocks_2[i].c();
+    						each_blocks_2[i].m(svg, g0);
+    					}
+    				}
+
+    				for (; i < each_blocks_2.length; i += 1) {
+    					each_blocks_2[i].d(1);
+    				}
+
+    				each_blocks_2.length = each_value_2.length;
+    			}
+
+    			if (dirty & /*xScale*/ 128 && line0_x__value !== (line0_x__value = /*xScale*/ ctx[7](0))) {
+    				attr_dev(line0, "x1", line0_x__value);
+    			}
+
+    			if (dirty & /*xScale*/ 128 && line0_x__value_1 !== (line0_x__value_1 = /*xScale*/ ctx[7](100))) {
+    				attr_dev(line0, "x2", line0_x__value_1);
+    			}
+
+    			if (dirty & /*yScale*/ 64 && line0_transform_value !== (line0_transform_value = "translate(0," + /*yScale*/ ctx[6](0) + ")")) {
+    				attr_dev(line0, "transform", line0_transform_value);
+    			}
+
+    			if (dirty & /*yTicks, yScale, padding*/ 1104) {
+    				each_value_1 = /*yTicks*/ ctx[4];
+    				validate_each_argument(each_value_1);
+    				let i;
+
+    				for (i = 0; i < each_value_1.length; i += 1) {
+    					const child_ctx = get_each_context_1(ctx, each_value_1, i);
+
+    					if (each_blocks_1[i]) {
+    						each_blocks_1[i].p(child_ctx, dirty);
+    					} else {
+    						each_blocks_1[i] = create_each_block_1(child_ctx);
+    						each_blocks_1[i].c();
+    						each_blocks_1[i].m(g0, text0);
+    					}
+    				}
+
+    				for (; i < each_blocks_1.length; i += 1) {
+    					each_blocks_1[i].d(1);
+    				}
+
+    				each_blocks_1.length = each_value_1.length;
+    			}
+
+    			if (dirty & /*height*/ 4 && text0_x_value !== (text0_x_value = -/*height*/ ctx[2] / 2)) {
+    				attr_dev(text0, "x", text0_x_value);
+    			}
+
+    			if (dirty & /*yScale*/ 64 && line1_y__value !== (line1_y__value = /*yScale*/ ctx[6](0))) {
+    				attr_dev(line1, "y1", line1_y__value);
+    			}
+
+    			if (dirty & /*yScale*/ 64 && line1_y__value_1 !== (line1_y__value_1 = /*yScale*/ ctx[6](100))) {
+    				attr_dev(line1, "y2", line1_y__value_1);
+    			}
+
+    			if (dirty & /*xScale*/ 128 && line1_transform_value !== (line1_transform_value = "translate(" + /*xScale*/ ctx[7](0) + ")")) {
+    				attr_dev(line1, "transform", line1_transform_value);
+    			}
+
+    			if (dirty & /*xTicks, xScale, height, padding*/ 1188) {
+    				each_value = /*xTicks*/ ctx[5];
+    				validate_each_argument(each_value);
+    				let i;
+
+    				for (i = 0; i < each_value.length; i += 1) {
+    					const child_ctx = get_each_context$2(ctx, each_value, i);
+
+    					if (each_blocks[i]) {
+    						each_blocks[i].p(child_ctx, dirty);
+    					} else {
+    						each_blocks[i] = create_each_block$2(child_ctx);
+    						each_blocks[i].c();
+    						each_blocks[i].m(g1, text1);
+    					}
+    				}
+
+    				for (; i < each_blocks.length; i += 1) {
+    					each_blocks[i].d(1);
+    				}
+
+    				each_blocks.length = each_value.length;
+    			}
+
+    			if (dirty & /*width*/ 2 && text1_x_value !== (text1_x_value = /*width*/ ctx[1] / 2)) {
+    				attr_dev(text1, "x", text1_x_value);
+    			}
+
+    			if (dirty & /*height*/ 4 && text1_y_value !== (text1_y_value = /*height*/ ctx[2] - 4)) {
+    				attr_dev(text1, "y", text1_y_value);
+    			}
+    		},
+    		i: noop,
+    		o: noop,
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(p);
+    			if (detaching) detach_dev(t1);
+    			if (detaching) detach_dev(figure_1);
+    			destroy_each(each_blocks_2, detaching);
+    			destroy_each(each_blocks_1, detaching);
+    			destroy_each(each_blocks, detaching);
+    			/*figure_1_binding*/ ctx[13](null);
+    			mounted = false;
+    			dispose();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_fragment$2.name,
+    		type: "component",
+    		source: "",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function instance$2($$self, $$props, $$invalidate) {
+    	let xScale;
+    	let yScale;
+    	let xTicks;
+    	let yTicks;
+    	let { $$slots: slots = {}, $$scope } = $$props;
+    	validate_slots('Chart', slots, []);
+    	let { data } = $$props;
+    	console.log(data);
+
+    	// here, I am using a figure to hold my chart – it's interesting I'm using a figure for this and I'm not sure why. We are using it because we want to wrap the svg tag as well (bunch of small multiples, so it's easier to recognize)
+    	let figure;
+
+    	let width = 600;
+    	let height = 400;
+    	let yAxisTitle = "Reserves, % of World Total";
+    	let xAxisTitle = "Production, % of World Total";
+
+    	// add in padding on figure element, with one line structure
+    	const padding = { top: 25, right: 35, bottom: 35, left: 45 };
+
+    	const formatTooltip = (data, selector) => {
+    		const template = `
+      <p><span>Country:</span> ${data.country}</p>
+      <p><span>Percent of World's Production:</span> ${parseFloat(data.percentProduction).toFixed(2)}%</p>
+      <p><span>Percent of World's Reserves:</span> ${parseFloat(data.percentReserves).toFixed(2)}%</p>
+    `;
+
+    		return {
+    			content: template,
+    			allowHTML: true,
+    			placement: "top"
+    		};
+    	};
+
+    	const resize = () => {
+    		$$invalidate(1, { width, height } = figure.getBoundingClientRect(), width, $$invalidate(2, height));
+    	};
+
+    	onMount(resize);
+    	const writable_props = ['data'];
+
+    	Object.keys($$props).forEach(key => {
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console_1$1.warn(`<Chart> was created with unknown prop '${key}'`);
+    	});
+
+    	function figure_1_binding($$value) {
+    		binding_callbacks[$$value ? 'unshift' : 'push'](() => {
+    			figure = $$value;
+    			$$invalidate(3, figure);
+    		});
+    	}
+
+    	$$self.$$set = $$props => {
+    		if ('data' in $$props) $$invalidate(0, data = $$props.data);
+    	};
+
+    	$$self.$capture_state = () => ({
+    		onMount,
+    		scaleLinear: linear,
+    		tippy,
+    		data,
+    		figure,
+    		width,
+    		height,
+    		yAxisTitle,
+    		xAxisTitle,
+    		padding,
+    		formatTooltip,
+    		resize,
+    		yTicks,
+    		xTicks,
+    		yScale,
+    		xScale
+    	});
+
+    	$$self.$inject_state = $$props => {
+    		if ('data' in $$props) $$invalidate(0, data = $$props.data);
+    		if ('figure' in $$props) $$invalidate(3, figure = $$props.figure);
+    		if ('width' in $$props) $$invalidate(1, width = $$props.width);
+    		if ('height' in $$props) $$invalidate(2, height = $$props.height);
+    		if ('yAxisTitle' in $$props) $$invalidate(8, yAxisTitle = $$props.yAxisTitle);
+    		if ('xAxisTitle' in $$props) $$invalidate(9, xAxisTitle = $$props.xAxisTitle);
+    		if ('yTicks' in $$props) $$invalidate(4, yTicks = $$props.yTicks);
+    		if ('xTicks' in $$props) $$invalidate(5, xTicks = $$props.xTicks);
+    		if ('yScale' in $$props) $$invalidate(6, yScale = $$props.yScale);
+    		if ('xScale' in $$props) $$invalidate(7, xScale = $$props.xScale);
+    	};
+
+    	if ($$props && "$$inject" in $$props) {
+    		$$self.$inject_state($$props.$$inject);
+    	}
+
+    	$$self.$$.update = () => {
+    		if ($$self.$$.dirty & /*width*/ 2) {
+    			// add in the x scale by including a preset domain and a physical range of the padding with width offset
+    			$$invalidate(7, xScale = linear().domain([0, 100]).range([padding.left, width - padding.right]));
+    		}
+
+    		if ($$self.$$.dirty & /*height*/ 4) {
+    			// similar to the Y scale, changes around the scaling via range based on preset domain range
+    			$$invalidate(6, yScale = linear().domain([0, 100]).range([height - padding.bottom, padding.top]));
+    		}
+    	};
+
+    	$$invalidate(5, xTicks = [0, 25, 50, 75, 100]);
+    	$$invalidate(4, yTicks = [0, 25, 50, 75, 100]);
+
+    	return [
+    		data,
+    		width,
+    		height,
+    		figure,
+    		yTicks,
+    		xTicks,
+    		yScale,
+    		xScale,
+    		yAxisTitle,
+    		xAxisTitle,
+    		padding,
+    		formatTooltip,
+    		resize,
+    		figure_1_binding
+    	];
+    }
+
+    class Chart extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$2, create_fragment$2, safe_not_equal, { data: 0 });
+
+    		dispatch_dev("SvelteRegisterComponent", {
+    			component: this,
+    			tagName: "Chart",
+    			options,
+    			id: create_fragment$2.name
+    		});
+
+    		const { ctx } = this.$$;
+    		const props = options.props || {};
+
+    		if (/*data*/ ctx[0] === undefined && !('data' in props)) {
+    			console_1$1.warn("<Chart> was created without expected prop 'data'");
+    		}
+    	}
+
+    	get data() {
+    		throw new Error("<Chart>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set data(value) {
+    		throw new Error("<Chart>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+    }
+
+    /* src/components/Legend.svelte generated by Svelte v3.44.3 */
+
+    const file$1 = "src/components/Legend.svelte";
+
+    function get_each_context$1(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[5] = list[i];
+    	child_ctx[7] = i;
+    	return child_ctx;
+    }
+
+    // (30:4) {#each legendValues as d, legendIndex}
+    function create_each_block$1(ctx) {
+    	let circle;
+    	let circle_r_value;
+    	let circle_fill_value;
+    	let circle_region_value;
+    	let circle_data_color_value;
+    	let text_1;
+    	let t_value = /*d*/ ctx[5].text + "";
+    	let t;
+
+    	const block = {
+    		c: function create() {
+    			circle = svg_element("circle");
+    			text_1 = svg_element("text");
+    			t = text$1(t_value);
+    			attr_dev(circle, "cx", "5%");
+    			attr_dev(circle, "cy", 10 + /*legendIndex*/ ctx[7] * 25 + 'px');
+    			attr_dev(circle, "r", circle_r_value = /*d*/ ctx[5].r);
+    			attr_dev(circle, "fill", circle_fill_value = /*d*/ ctx[5].fill);
+    			attr_dev(circle, "region", circle_region_value = /*d*/ ctx[5].region);
+    			attr_dev(circle, "data-color", circle_data_color_value = /*d*/ ctx[5].text);
+    			add_location(circle, file$1, 30, 6, 1203);
+    			attr_dev(text_1, "class", "legend__labels");
+    			attr_dev(text_1, "x", "10%");
+    			attr_dev(text_1, "y", 14 + /*legendIndex*/ ctx[7] * 25 + 'px');
+    			add_location(text_1, file$1, 37, 6, 1387);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, circle, anchor);
+    			insert_dev(target, text_1, anchor);
+    			append_dev(text_1, t);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*legendValues*/ 2 && circle_r_value !== (circle_r_value = /*d*/ ctx[5].r)) {
+    				attr_dev(circle, "r", circle_r_value);
+    			}
+
+    			if (dirty & /*legendValues*/ 2 && circle_fill_value !== (circle_fill_value = /*d*/ ctx[5].fill)) {
+    				attr_dev(circle, "fill", circle_fill_value);
+    			}
+
+    			if (dirty & /*legendValues*/ 2 && circle_region_value !== (circle_region_value = /*d*/ ctx[5].region)) {
+    				attr_dev(circle, "region", circle_region_value);
+    			}
+
+    			if (dirty & /*legendValues*/ 2 && circle_data_color_value !== (circle_data_color_value = /*d*/ ctx[5].text)) {
+    				attr_dev(circle, "data-color", circle_data_color_value);
+    			}
+
+    			if (dirty & /*legendValues*/ 2 && t_value !== (t_value = /*d*/ ctx[5].text + "")) set_data_dev(t, t_value);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(circle);
+    			if (detaching) detach_dev(text_1);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_each_block$1.name,
+    		type: "each",
+    		source: "(30:4) {#each legendValues as d, legendIndex}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function create_fragment$1(ctx) {
+    	let figure;
+    	let figcaption;
+
+    	let t0_value = (/*selectedIndicator*/ ctx[0] === 'region'
+    	? 'Region'
+    	: 'Income Level') + "";
+
+    	let t0;
+    	let t1;
+    	let svg;
+    	let each_value = /*legendValues*/ ctx[1];
+    	validate_each_argument(each_value);
+    	let each_blocks = [];
+
+    	for (let i = 0; i < each_value.length; i += 1) {
+    		each_blocks[i] = create_each_block$1(get_each_context$1(ctx, each_value, i));
+    	}
+
+    	const block = {
+    		c: function create() {
+    			figure = element("figure");
+    			figcaption = element("figcaption");
+    			t0 = text$1(t0_value);
+    			t1 = space();
+    			svg = svg_element("svg");
+
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].c();
+    			}
+
+    			attr_dev(figcaption, "class", "legend__title");
+    			add_location(figcaption, file$1, 25, 2, 1000);
+    			attr_dev(svg, "class", "legend__color-circles");
+    			add_location(svg, file$1, 28, 2, 1118);
+    			attr_dev(figure, "class", "interactive__color-legend legend");
+    			add_location(figure, file$1, 24, 0, 948);
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, figure, anchor);
+    			append_dev(figure, figcaption);
+    			append_dev(figcaption, t0);
+    			append_dev(figure, t1);
+    			append_dev(figure, svg);
+
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].m(svg, null);
+    			}
+    		},
+    		p: function update(ctx, [dirty]) {
+    			if (dirty & /*selectedIndicator*/ 1 && t0_value !== (t0_value = (/*selectedIndicator*/ ctx[0] === 'region'
+    			? 'Region'
+    			: 'Income Level') + "")) set_data_dev(t0, t0_value);
+
+    			if (dirty & /*legendValues*/ 2) {
+    				each_value = /*legendValues*/ ctx[1];
+    				validate_each_argument(each_value);
+    				let i;
+
+    				for (i = 0; i < each_value.length; i += 1) {
+    					const child_ctx = get_each_context$1(ctx, each_value, i);
+
+    					if (each_blocks[i]) {
+    						each_blocks[i].p(child_ctx, dirty);
+    					} else {
+    						each_blocks[i] = create_each_block$1(child_ctx);
+    						each_blocks[i].c();
+    						each_blocks[i].m(svg, null);
+    					}
+    				}
+
+    				for (; i < each_blocks.length; i += 1) {
+    					each_blocks[i].d(1);
+    				}
+
+    				each_blocks.length = each_value.length;
+    			}
+    		},
+    		i: noop,
+    		o: noop,
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(figure);
+    			destroy_each(each_blocks, detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_fragment$1.name,
+    		type: "component",
+    		source: "",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function instance$1($$self, $$props, $$invalidate) {
+    	let legendValues;
+    	let { $$slots: slots = {}, $$scope } = $$props;
+    	validate_slots('Legend', slots, []);
+    	let { selectedIndicator } = $$props;
+    	let colorScale = ['#69518d', '#58a897', '#83badc', '#084d7c', '#e7ae3f', '#8cb561'];
+
+    	let regionData = [
+    		{
+    			x: 5,
+    			r: 7,
+    			fill: colorScale[0],
+    			text: 'Europe & North America'
+    		},
+    		{
+    			x: 15,
+    			r: 7,
+    			fill: colorScale[1],
+    			text: 'East Asia & Pacific'
+    		},
+    		{
+    			x: 20,
+    			r: 7,
+    			fill: colorScale[2],
+    			text: 'Latin America & Caribbean'
+    		},
+    		{
+    			x: 25,
+    			r: 7,
+    			fill: colorScale[3],
+    			text: 'Sub-Saharan Africa'
+    		},
+    		{
+    			x: 30,
+    			r: 7,
+    			fill: colorScale[4],
+    			text: 'Middle East & North Africa'
+    		},
+    		{
+    			x: 35,
+    			r: 7,
+    			fill: colorScale[5],
+    			text: 'Central & South Asia'
+    		}
+    	];
+
+    	let incomeData = [
+    		{
+    			x: 0,
+    			r: 7,
+    			fill: colorScale[0],
+    			text: 'High'
+    		},
+    		{
+    			x: 20,
+    			r: 7,
+    			fill: colorScale[1],
+    			text: 'Upper Middle'
+    		},
+    		{
+    			x: 40,
+    			r: 7,
+    			fill: colorScale[2],
+    			text: 'Lower Middle'
+    		},
+    		{
+    			x: 60,
+    			r: 7,
+    			fill: colorScale[3],
+    			text: 'Low'
+    		}
+    	];
+
+    	const writable_props = ['selectedIndicator'];
+
+    	Object.keys($$props).forEach(key => {
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console.warn(`<Legend> was created with unknown prop '${key}'`);
+    	});
+
+    	$$self.$$set = $$props => {
+    		if ('selectedIndicator' in $$props) $$invalidate(0, selectedIndicator = $$props.selectedIndicator);
+    	};
+
+    	$$self.$capture_state = () => ({
+    		selectedIndicator,
+    		colorScale,
+    		regionData,
+    		incomeData,
+    		legendValues
+    	});
+
+    	$$self.$inject_state = $$props => {
+    		if ('selectedIndicator' in $$props) $$invalidate(0, selectedIndicator = $$props.selectedIndicator);
+    		if ('colorScale' in $$props) colorScale = $$props.colorScale;
+    		if ('regionData' in $$props) $$invalidate(3, regionData = $$props.regionData);
+    		if ('incomeData' in $$props) $$invalidate(4, incomeData = $$props.incomeData);
+    		if ('legendValues' in $$props) $$invalidate(1, legendValues = $$props.legendValues);
+    	};
+
+    	if ($$props && "$$inject" in $$props) {
+    		$$self.$inject_state($$props.$$inject);
+    	}
+
+    	$$self.$$.update = () => {
+    		if ($$self.$$.dirty & /*selectedIndicator*/ 1) {
+    			$$invalidate(1, legendValues = selectedIndicator === 'region' ? regionData : incomeData);
+    		}
+    	};
+
+    	return [selectedIndicator, legendValues];
+    }
+
+    class Legend extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$1, create_fragment$1, safe_not_equal, { selectedIndicator: 0 });
+
+    		dispatch_dev("SvelteRegisterComponent", {
+    			component: this,
+    			tagName: "Legend",
+    			options,
+    			id: create_fragment$1.name
+    		});
+
+    		const { ctx } = this.$$;
+    		const props = options.props || {};
+
+    		if (/*selectedIndicator*/ ctx[0] === undefined && !('selectedIndicator' in props)) {
+    			console.warn("<Legend> was created without expected prop 'selectedIndicator'");
+    		}
+    	}
+
+    	get selectedIndicator() {
+    		throw new Error("<Legend>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set selectedIndicator(value) {
+    		throw new Error("<Legend>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+    }
+
+    /* src/App.svelte generated by Svelte v3.44.3 */
+
+    const { console: console_1 } = globals;
+
+    const file = "src/App.svelte";
+
+    function get_each_context(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[7] = list[i];
+    	return child_ctx;
+    }
+
+    // (97:2) {:catch error}
+    function create_catch_block(ctx) {
+    	let p;
+    	let t_value = /*error*/ ctx[10].message + "";
+    	let t;
+
+    	const block = {
+    		c: function create() {
+    			p = element("p");
+    			t = text$1(t_value);
+    			set_style(p, "color", "red");
+    			add_location(p, file, 97, 2, 2579);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, p, anchor);
+    			append_dev(p, t);
+    		},
+    		p: noop,
+    		i: noop,
+    		o: noop,
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(p);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_catch_block.name,
+    		type: "catch",
+    		source: "(97:2) {:catch error}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (75:2) {:then allData}
+    function create_then_block(ctx) {
+    	let each_1_anchor;
+    	let current;
+    	let each_value = /*allData*/ ctx[1];
+    	validate_each_argument(each_value);
+    	let each_blocks = [];
+
+    	for (let i = 0; i < each_value.length; i += 1) {
+    		each_blocks[i] = create_each_block(get_each_context(ctx, each_value, i));
+    	}
+
+    	const out = i => transition_out(each_blocks[i], 1, 1, () => {
+    		each_blocks[i] = null;
+    	});
+
+    	const block = {
+    		c: function create() {
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].c();
+    			}
+
+    			each_1_anchor = empty();
+    		},
+    		m: function mount(target, anchor) {
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].m(target, anchor);
+    			}
+
+    			insert_dev(target, each_1_anchor, anchor);
+    			current = true;
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*allData, isMobile*/ 3) {
+    				each_value = /*allData*/ ctx[1];
+    				validate_each_argument(each_value);
+    				let i;
+
+    				for (i = 0; i < each_value.length; i += 1) {
+    					const child_ctx = get_each_context(ctx, each_value, i);
+
+    					if (each_blocks[i]) {
+    						each_blocks[i].p(child_ctx, dirty);
+    						transition_in(each_blocks[i], 1);
+    					} else {
+    						each_blocks[i] = create_each_block(child_ctx);
+    						each_blocks[i].c();
+    						transition_in(each_blocks[i], 1);
+    						each_blocks[i].m(each_1_anchor.parentNode, each_1_anchor);
+    					}
+    				}
+
+    				group_outros();
+
+    				for (i = each_value.length; i < each_blocks.length; i += 1) {
+    					out(i);
+    				}
+
+    				check_outros();
+    			}
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+
+    			for (let i = 0; i < each_value.length; i += 1) {
+    				transition_in(each_blocks[i]);
+    			}
+
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			each_blocks = each_blocks.filter(Boolean);
+
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				transition_out(each_blocks[i]);
+    			}
+
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			destroy_each(each_blocks, detaching);
+    			if (detaching) detach_dev(each_1_anchor);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_then_block.name,
+    		type: "then",
+    		source: "(75:2) {:then allData}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (77:2) {#each allData as data}
+    function create_each_block(ctx) {
+    	let chart;
+    	let current;
+
+    	chart = new Chart({
+    			props: {
+    				data: /*data*/ ctx[7],
+    				isMobile: /*isMobile*/ ctx[0]
+    			},
+    			$$inline: true
+    		});
+
+    	const block = {
+    		c: function create() {
+    			create_component(chart.$$.fragment);
+    		},
+    		m: function mount(target, anchor) {
+    			mount_component(chart, target, anchor);
+    			current = true;
+    		},
+    		p: function update(ctx, dirty) {
+    			const chart_changes = {};
+    			if (dirty & /*isMobile*/ 1) chart_changes.isMobile = /*isMobile*/ ctx[0];
+    			chart.$set(chart_changes);
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(chart.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(chart.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			destroy_component(chart, detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_each_block.name,
+    		type: "each",
+    		source: "(77:2) {#each allData as data}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (71:18)    <div class="loading-container">     <div class="loading"></div>   </div>   {:then allData}
+    function create_pending_block(ctx) {
+    	let div1;
+    	let div0;
+
+    	const block = {
+    		c: function create() {
+    			div1 = element("div");
+    			div0 = element("div");
+    			attr_dev(div0, "class", "loading");
+    			add_location(div0, file, 72, 4, 1963);
+    			attr_dev(div1, "class", "loading-container");
+    			add_location(div1, file, 71, 2, 1927);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div1, anchor);
+    			append_dev(div1, div0);
+    		},
+    		p: noop,
+    		i: noop,
+    		o: noop,
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div1);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_pending_block.name,
+    		type: "pending",
+    		source: "(71:18)    <div class=\\\"loading-container\\\">     <div class=\\\"loading\\\"></div>   </div>   {:then allData}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function create_fragment(ctx) {
+    	let main;
+    	let header;
+    	let h1;
+    	let t1;
+    	let p;
+    	let t3;
+    	let current;
+
+    	let info = {
+    		ctx,
+    		current: null,
+    		token: null,
+    		hasCatch: true,
+    		pending: create_pending_block,
+    		then: create_then_block,
+    		catch: create_catch_block,
+    		value: 1,
+    		error: 10,
+    		blocks: [,,,]
+    	};
+
+    	handle_promise(/*allData*/ ctx[1], info);
+
+    	const block = {
+    		c: function create() {
+    			main = element("main");
+    			header = element("header");
+    			h1 = element("h1");
+    			h1.textContent = "Chart Title";
+    			t1 = space();
+    			p = element("p");
+    			p.textContent = "Interactive header in lorem ipsum: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod\n      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim\n      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea\n      commodo consequat. Duis aute irure dolor in reprehenderit in voluptate\n      velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat\n      cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id\n      est laborum.";
+    			t3 = space();
+    			info.block.c();
+    			add_location(h1, file, 58, 4, 1332);
+    			add_location(p, file, 59, 4, 1357);
+    			attr_dev(header, "class", "interactive__header");
+    			add_location(header, file, 57, 2, 1291);
+    			attr_dev(main, "class", "interactive");
+    			add_location(main, file, 56, 0, 1262);
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, main, anchor);
+    			append_dev(main, header);
+    			append_dev(header, h1);
+    			append_dev(header, t1);
+    			append_dev(header, p);
+    			append_dev(main, t3);
+    			info.block.m(main, info.anchor = null);
+    			info.mount = () => main;
+    			info.anchor = null;
+    			current = true;
+    		},
+    		p: function update(new_ctx, [dirty]) {
+    			ctx = new_ctx;
+    			update_await_block_branch(info, ctx, dirty);
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(info.block);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			for (let i = 0; i < 3; i += 1) {
+    				const block = info.blocks[i];
+    				transition_out(block);
+    			}
+
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(main);
+    			info.block.d();
+    			info.token = null;
+    			info = null;
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_fragment.name,
+    		type: "component",
+    		source: "",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function instance($$self, $$props, $$invalidate) {
+    	let { $$slots: slots = {}, $$scope } = $$props;
+    	validate_slots('App', slots, []);
+
+    	const dataSrc = {
+    		scatter: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTxzv5D7cjQIQ4Wi6wFM1v_mUIB_Fef9d1KGL42xG_-THTfg5T4e8Ez11Ou63P4IE60DUV1XnMasEa0/pub?output=csv'
+    	};
+
+    	const allData = loadData();
+
+    	async function loadData() {
+    		let res = await parseData({ src: dataSrc });
+    		return res;
+    	}
+
+    	const init = () => {
+    		resize(mq);
+    	};
+
+    	let isMobile = false;
+    	let mq = window.matchMedia('(max-width: 48em)');
+
+    	function resize(mediaQueryList) {
+    		if (mediaQueryList.matches) {
+    			$$invalidate(0, isMobile = true);
+    		} else {
+    			$$invalidate(0, isMobile = false);
+    		}
+    	}
+
+    	try {
+    		// Chrome & Firefox
+    		mq.addEventListener('change', e => {
+    			resize(e);
+    		});
+    	} catch(e1) {
+    		try {
+    			// Safari, because it doesn't support addEventListener...
+    			mq.addListener(e => {
+    				resize(e);
+    			});
+    		} catch(e2) {
+    			console.error(e2);
+    		}
+    	}
+
+    	window.addEventListener('DOMContentLoaded', init);
+    	const writable_props = [];
+
+    	Object.keys($$props).forEach(key => {
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console_1.warn(`<App> was created with unknown prop '${key}'`);
+    	});
+
+    	$$self.$capture_state = () => ({
+    		parseData,
+    		Chart,
+    		Legend,
+    		dataSrc,
+    		allData,
+    		loadData,
+    		init,
+    		isMobile,
+    		mq,
+    		resize
+    	});
+
+    	$$self.$inject_state = $$props => {
+    		if ('isMobile' in $$props) $$invalidate(0, isMobile = $$props.isMobile);
+    		if ('mq' in $$props) mq = $$props.mq;
+    	};
+
+    	if ($$props && "$$inject" in $$props) {
+    		$$self.$inject_state($$props.$$inject);
+    	}
+
+    	return [isMobile, allData];
+    }
+
+    class App extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance, create_fragment, safe_not_equal, {});
+
+    		dispatch_dev("SvelteRegisterComponent", {
+    			component: this,
+    			tagName: "App",
+    			options,
+    			id: create_fragment.name
+    		});
+    	}
+    }
+
+    const app = new App({
+      target: document.getElementById('interactive')
+    });
+
+    return app;
+
+})();
 //# sourceMappingURL=bundle.js.map
