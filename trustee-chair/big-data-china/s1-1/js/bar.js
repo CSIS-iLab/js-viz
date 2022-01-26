@@ -32,12 +32,12 @@ $(document).ready(function() {
     },
     // Colors
     colors: [
-      "#C52125", // Strongly Disagree
-      "#FD8A6D", // Disagree
-      "#FFF1B5", // Neutral
-      "#93BB84", // Agree
-      "#01846C", // Strongly Agree
-      "#C5C4C0" // refuse to answer
+      "#D81C02", // Strongly Disagree
+      "#FC779B", // Disagree
+      "#DCC8FD", // Neutral
+      "#57C5E0", // Agree
+      "#1F74AF", // Strongly Agree
+      "#BEBEBE" // refuse to answer
     ],
     // Chart Title and Subtitle
     title: {
@@ -108,6 +108,8 @@ $(document).ready(function() {
         groupPadding: 0.1,
         
         dataLabels: {
+          allowOverlap: false,
+          // overflow: 'allow',
           align: 'left',
           enabled: true,
           formatter: function () {
