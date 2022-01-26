@@ -33,7 +33,7 @@ $(document).ready(function() {
     // Colors
     colors: [
       "#D81C02", // Strongly Disagree
-      "#FC779B", // Disagree
+      "#FF84A6", // Disagree
       "#DCC8FD", // Neutral
       "#57C5E0", // Agree
       "#1F74AF", // Strongly Agree
