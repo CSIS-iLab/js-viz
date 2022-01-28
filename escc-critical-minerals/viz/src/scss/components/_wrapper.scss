@@ -1,0 +1,13 @@
+// .charts-container {
+//   display: grid;
+//   grid-template-columns: 400px 400px;
+//   row-gap: 40px;
+//   column-gap: 40px;
+// }
+
+.charts-container {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  row-gap: 30px;
+  column-gap: 20px;
+}

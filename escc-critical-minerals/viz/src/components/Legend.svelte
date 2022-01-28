@@ -1,4 +1,6 @@
 <script>
+  import {onMount} from 'svelte'
+  import Chart from './Chart.svelte'
   export let selectedIndicator
 
   let colorScale = ['#69518d', '#58a897', '#83badc', '#084d7c', '#e7ae3f', '#8cb561'];
@@ -19,27 +21,46 @@
     { x: 60, r: 7, fill: colorScale[3], text: 'Low' },
   ]
 
-  $: legendValues = selectedIndicator === 'region' ? regionData : incomeData
+  $: legendValues = selectedIndicator === 'Income' ? incomeData : regionData
+
+  let figure
+  let width = 600
+  let height = 400
+
+  const resize = () => {
+    ;({ width, height } = figure.getBoundingClientRect())
+  }
+
+  onMount(resize)
 </script>
 
-<figure class="interactive__color-legend legend">
+<svelte:window on:resize="{resize}" />
+<figure class="interactive__color-legend legend" bind:this="{figure}">
   <figcaption class="legend__title">
-    {selectedIndicator === 'region' ? 'Region' : 'Income Level'}
+    Legend
   </figcaption>
+  <form action="">
+    <label for="colors">Select something</label>
+    <select bind:value={selectedIndicator} name="colors" id="colors">
+      <option value="Income">Income</option>
+      <option value="Region">Region</option>
+    </select>
+  </form>
   <svg class="legend__color-circles">
     {#each legendValues as d, legendIndex}
       <circle
-        cx="5%"
-        cy="{10 + legendIndex * 25 + 'px'}"
+        cx="10"
+        cy="{15 + 20*legendIndex + 'px'}"
         r="{d.r}"
         fill="{d.fill}"
         region="{d.region}"
         data-color="{d.text}"></circle>
-      <text class="legend__labels" x="10%" y="{14 + legendIndex * 25 + 'px'}"
+      <text class="legend__labels" x="25" y="{20 + 20*legendIndex + 'px'}"
         >{d.text}</text
       >
     {/each}
   </svg>
+  <Chart titles="yes" />
 </figure>
 
 <style type="text/scss" global>

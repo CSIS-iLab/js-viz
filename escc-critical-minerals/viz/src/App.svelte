@@ -58,15 +58,12 @@
   <header class="interactive__header">
     <h1>Chart Title</h1>
     <p>
-      Interactive header in lorem ipsum: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-      commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-      velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-      cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
-      est laborum.
+      This is a lil description thingy. Hello World!
     </p>
   </header>
+  <div class="interactive__legend-container">
+    <Legend />
+  </div>
 
   {#await allData}
   <div class="loading-container">
@@ -74,13 +71,11 @@
   </div>
   {:then allData}
     <!-- <Options allData="{allData}" /> -->
-  {#each allData as data}
-    <Chart data="{data}" isMobile="{isMobile}" />
-  {/each}
-
-  <!-- <div class="interactive__legend-container">
-    <Legend />
-  </div> -->
+  <div class="charts-container">
+    {#each allData as data}
+      <Chart data="{data}" isMobile="{isMobile}" />
+    {/each}
+  </div>
 
   <!-- <footer class="interactive__source">
       <a href="https://loremipsum.csis.org" class="source-holder"
@@ -106,4 +101,6 @@
   @import './scss/components/_header.scss';
   @import './scss/components/_chart.scss';
   @import './scss/components/_loading.scss';
+  @import './scss/components/_wrapper.scss';
+  @import './scss/components/_legend.scss';
 </style>

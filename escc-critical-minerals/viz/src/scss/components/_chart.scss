@@ -1,9 +1,4 @@
 @use '../abstracts' as *;
-
-p {
-  
-}
-
 figure {
   margin-inline-start: 0;
   margin-inline-end: 0;
@@ -18,6 +13,14 @@ figure {
 
     circle {
       fill: #005581;
+    }
+
+    .title {
+      text {
+        text-anchor: middle;
+        font-size: large;
+        font-weight: bold;
+      }
     }
 
     .axis {

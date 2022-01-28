@@ -1,0 +1,32 @@
+.interactive__legend-container {
+  width: 100%;
+  max-width: 500px;
+  margin: auto;
+
+  figcaption {
+    flex-basis: 100%;
+  }
+
+  form {
+    flex-basis: 100%;
+  }
+
+  .interactive__color-legend {
+    max-width: unset;
+    height: fit-content;
+    display: flex;
+    flex-wrap: wrap;
+
+
+    figure {
+      flex-basis: 50%;
+      height: unset !important;
+      max-width: 250px;
+    }
+
+    .legend__color-circles{
+      height: 200px;
+      flex-basis: 50%;
+    }
+  }
+}
