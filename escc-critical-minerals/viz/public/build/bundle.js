@@ -6341,7 +6341,7 @@ var app = (function () {
     			t = text$1(t_value);
     			attr_dev(text_1, "x", text_1_x_value = /*width*/ ctx[1] / 2);
     			attr_dev(text_1, "y", 15);
-    			attr_dev(text_1, "class", "svelte-12z2zjs");
+    			attr_dev(text_1, "class", "svelte-dwp4vv");
     			add_location(text_1, file$2, 88, 8, 3027);
     			attr_dev(g, "class", "title");
     			add_location(g, file$2, 87, 6, 3001);
@@ -6424,7 +6424,7 @@ var app = (function () {
     			? `${/*country*/ ctx[21].income_level}`
     			: `${/*country*/ ctx[21].region}`);
 
-    			attr_dev(circle, "class", "svelte-12z2zjs");
+    			attr_dev(circle, "class", "svelte-dwp4vv");
     			add_location(circle, file$2, 76, 8, 2674);
     		},
     		m: function mount(target, anchor) {
@@ -6490,13 +6490,13 @@ var app = (function () {
     			t = text$1(t_value);
     			attr_dev(line, "x1", /*padding*/ ctx[11].left - 3);
     			attr_dev(line, "x2", /*padding*/ ctx[11].left);
-    			attr_dev(line, "class", "svelte-12z2zjs");
+    			attr_dev(line, "class", "svelte-dwp4vv");
     			add_location(line, file$2, 97, 12, 3395);
     			attr_dev(text_1, "x", /*padding*/ ctx[11].left - 5);
     			attr_dev(text_1, "y", "+4");
-    			attr_dev(text_1, "class", "svelte-12z2zjs");
+    			attr_dev(text_1, "class", "svelte-dwp4vv");
     			add_location(text_1, file$2, 99, 12, 3555);
-    			attr_dev(g, "class", g_class_value = "tick tick-" + /*tick*/ ctx[16] + " svelte-12z2zjs");
+    			attr_dev(g, "class", g_class_value = "tick tick-" + /*tick*/ ctx[16] + " svelte-dwp4vv");
     			attr_dev(g, "transform", g_transform_value = "translate(0, " + /*yScale*/ ctx[8](/*tick*/ ctx[16]) + ")");
     			add_location(g, file$2, 96, 10, 3313);
     		},
@@ -6509,7 +6509,7 @@ var app = (function () {
     		p: function update(ctx, dirty) {
     			if (dirty & /*yTicks*/ 64 && t_value !== (t_value = /*tick*/ ctx[16] + "")) set_data_dev(t, t_value);
 
-    			if (dirty & /*yTicks*/ 64 && g_class_value !== (g_class_value = "tick tick-" + /*tick*/ ctx[16] + " svelte-12z2zjs")) {
+    			if (dirty & /*yTicks*/ 64 && g_class_value !== (g_class_value = "tick tick-" + /*tick*/ ctx[16] + " svelte-dwp4vv")) {
     				attr_dev(g, "class", g_class_value);
     			}
 
@@ -6554,12 +6554,12 @@ var app = (function () {
     			t = text$1(t_value);
     			attr_dev(line, "y1", line_y__value = /*height*/ ctx[2] - /*padding*/ ctx[11].bottom + 4);
     			attr_dev(line, "y2", line_y__value_1 = /*height*/ ctx[2] - /*padding*/ ctx[11].bottom);
-    			attr_dev(line, "class", "svelte-12z2zjs");
+    			attr_dev(line, "class", "svelte-dwp4vv");
     			add_location(line, file$2, 110, 12, 4029);
     			attr_dev(text_1, "y", text_1_y_value = /*height*/ ctx[2] - /*padding*/ ctx[11].bottom + 14);
-    			attr_dev(text_1, "class", "svelte-12z2zjs");
+    			attr_dev(text_1, "class", "svelte-dwp4vv");
     			add_location(text_1, file$2, 111, 12, 4121);
-    			attr_dev(g, "class", g_class_value = "tick tick-" + /*tick*/ ctx[16] + " svelte-12z2zjs");
+    			attr_dev(g, "class", g_class_value = "tick tick-" + /*tick*/ ctx[16] + " svelte-dwp4vv");
     			attr_dev(g, "transform", g_transform_value = "translate(" + /*xScale*/ ctx[9](/*tick*/ ctx[16]) + ",0)");
     			add_location(g, file$2, 109, 10, 3948);
     		},
@@ -6584,7 +6584,7 @@ var app = (function () {
     				attr_dev(text_1, "y", text_1_y_value);
     			}
 
-    			if (dirty & /*xTicks*/ 128 && g_class_value !== (g_class_value = "tick tick-" + /*tick*/ ctx[16] + " svelte-12z2zjs")) {
+    			if (dirty & /*xTicks*/ 128 && g_class_value !== (g_class_value = "tick tick-" + /*tick*/ ctx[16] + " svelte-dwp4vv")) {
     				attr_dev(g, "class", g_class_value);
     			}
 
@@ -6670,31 +6670,31 @@ var app = (function () {
 
     			text1 = svg_element("text");
     			t1 = text$1(/*xAxisTitle*/ ctx[5]);
-    			attr_dev(line0, "class", "axis-guideline svelte-12z2zjs");
+    			attr_dev(line0, "class", "axis-guideline svelte-dwp4vv");
     			attr_dev(line0, "x1", line0_x__value = /*xScale*/ ctx[9](0));
     			attr_dev(line0, "x2", line0_x__value_1 = /*xScale*/ ctx[9](100));
     			attr_dev(line0, "transform", line0_transform_value = "translate(0," + /*yScale*/ ctx[8](0) + ")");
     			add_location(line0, file$2, 94, 8, 3162);
-    			attr_dev(text0, "class", "yAxisTitle svelte-12z2zjs");
+    			attr_dev(text0, "class", "yAxisTitle svelte-dwp4vv");
     			attr_dev(text0, "x", text0_x_value = -/*height*/ ctx[2] / 2);
     			attr_dev(text0, "y", /*padding*/ ctx[11].left - 30);
     			add_location(text0, file$2, 102, 8, 3644);
     			attr_dev(g0, "class", "axis y-axis");
     			add_location(g0, file$2, 93, 6, 3130);
-    			attr_dev(line1, "class", "axis-guideline svelte-12z2zjs");
+    			attr_dev(line1, "class", "axis-guideline svelte-dwp4vv");
     			attr_dev(line1, "y1", line1_y__value = /*yScale*/ ctx[8](0));
     			attr_dev(line1, "y2", line1_y__value_1 = /*yScale*/ ctx[8](100));
     			attr_dev(line1, "transform", line1_transform_value = "translate(" + /*xScale*/ ctx[9](0) + ")");
     			add_location(line1, file$2, 107, 8, 3799);
-    			attr_dev(text1, "class", "xAxisTitle svelte-12z2zjs");
+    			attr_dev(text1, "class", "xAxisTitle svelte-dwp4vv");
     			attr_dev(text1, "x", text1_x_value = /*width*/ ctx[1] / 2);
     			attr_dev(text1, "y", text1_y_value = /*height*/ ctx[2] - 4);
     			add_location(text1, file$2, 114, 8, 4215);
     			attr_dev(g1, "class", "axis x-axis");
     			add_location(g1, file$2, 106, 6, 3767);
-    			attr_dev(svg, "class", "chart svelte-12z2zjs");
+    			attr_dev(svg, "class", "chart svelte-dwp4vv");
     			add_location(svg, file$2, 70, 4, 2493);
-    			attr_dev(figure_1, "class", "svelte-12z2zjs");
+    			attr_dev(figure_1, "class", "svelte-dwp4vv");
     			add_location(figure_1, file$2, 68, 2, 2407);
     		},
     		l: function claim(nodes) {

@@ -33,12 +33,14 @@ $size__max-width: 800px;
 $size__content-max-width: 1200px;
 
 $indicators: (
-  "Europe & North America": $color__dark-blue,
+  "North America": $color__dark-blue,
   "East Asia & Pacific": $color__light-blue,
   "Latin America & Caribbean": $color__light-red,
   "Sub-Saharan Africa": $color__yellow,
   "Middle East & North Africa": $color__green,
   "Central & South Asia": $color__purple,
+  "Western Europe": $color__dark-pink,
+  "Eastern Europe & Central Asia": $color__dark-pink,
   "High": $color__dark-pink,
   "Upper Middle": $color__green,
   "Lower Middle": $color__light-blue,
