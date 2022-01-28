@@ -5,21 +5,35 @@ figure {
   margin-block-end: 0;
   margin-block-start: 0;
   max-width: 400px;
-  height: 250px;
+  min-height: 190px;
 
   .chart {
     width: 100%;
     height: 100%;
+    isolation: isolate;
 
     circle {
-      fill: #005581;
+      mix-blend-mode: multiply;
+      // @for $i from 0 through length(colorScale){
+      //   &:nth-of-type(#{length($colorScale)}n+#{$i}) {
+      //     fill: $colorScale[$i];
+      //   }
+      // }
+
+      @each $indicator, $color in $indicators {
+        &[data-color='#{$indicator}'] {
+          fill: $color;
+          stroke: darken($color, 1);
+          stroke-width: 1.5px;
+        }
+      }
     }
 
     .title {
       text {
         text-anchor: middle;
-        font-size: large;
-        font-weight: bold;
+        @extend %chart__title;
+        fill: #00000099;
       }
     }
 
@@ -34,17 +48,16 @@ figure {
       }
     }
 
-    text {
-      @extend %axis__ticks;
-    }
-
     .axis {
       .tick {
         @extend %axis__ticks;
 
         line {
           z-index: 1;
-          stroke: $graph__lines-secondary;
+          stroke: $graph__lines-primary;
+        }
+        text {
+          fill: #585D60;
         }
       }
 
@@ -54,6 +67,9 @@ figure {
 
       &.y-axis {
         .tick {
+          .yGuides {
+            stroke: $graph__lines-secondary;
+          }
           text {
             text-anchor: end;
           }

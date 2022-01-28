@@ -1,10 +1,12 @@
 <script>
   import parseData from './data.js'
   // import { select, selectAll } from 'd3-selection'
-  // import Options from './components/Options.svelte'
+  import Options from './components/Options.svelte'
   import Chart from './components/Chart.svelte'
   // import SizeLegend from './components/sizeLegend.svelte'
   import Legend from './components/Legend.svelte'
+
+  let selectedIndicator = "region";
 
   const dataSrc = {
     scatter:
@@ -61,20 +63,26 @@
       This is a lil description thingy. Hello World!
     </p>
   </header>
-  <div class="interactive__legend-container">
-    <Legend />
-  </div>
 
   {#await allData}
   <div class="loading-container">
     <div class="loading"></div>
   </div>
   {:then allData}
-    <!-- <Options allData="{allData}" /> -->
-  <div class="charts-container">
-    {#each allData as data}
-      <Chart data="{data}" isMobile="{isMobile}" />
-    {/each}
+  <div class="main-container">
+    <div class="charts-container">
+      {#each allData as data}
+        {#if data.mineral === "Cobalt" || data.mineral === "Rare Earths"}
+          <Chart data="{data}" titles="yes" selectedIndicator="{selectedIndicator}" isMobile="{isMobile}" />
+        {:else}
+          <Chart data="{data}" selectedIndicator="{selectedIndicator}" isMobile="{isMobile}" />
+        {/if}
+      {/each}
+    </div>
+    <div class="interactive__legend-container">
+      <Options bind:selectedIndicator allData="{allData}" />
+      <Legend selectedIndicator="{selectedIndicator}"/>
+    </div>
   </div>
 
   <!-- <footer class="interactive__source">
@@ -102,5 +110,4 @@
   @import './scss/components/_chart.scss';
   @import './scss/components/_loading.scss';
   @import './scss/components/_wrapper.scss';
-  @import './scss/components/_legend.scss';
 </style>

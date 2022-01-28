@@ -60,6 +60,9 @@ var app = (function () {
     function space() {
         return text$1(' ');
     }
+    function empty$1() {
+        return text$1('');
+    }
     function listen(node, event, handler, options) {
         node.addEventListener(event, handler, options);
         return () => node.removeEventListener(event, handler, options);
@@ -70,25 +73,14 @@ var app = (function () {
         else if (node.getAttribute(attribute) !== value)
             node.setAttribute(attribute, value);
     }
-    function children(element) {
+    function children$1(element) {
         return Array.from(element.childNodes);
     }
     function set_style(node, key, value, important) {
         node.style.setProperty(key, value, important ? 'important' : '');
     }
-    function select_option(select, value) {
-        for (let i = 0; i < select.options.length; i += 1) {
-            const option = select.options[i];
-            if (option.__value === value) {
-                option.selected = true;
-                return;
-            }
-        }
-        select.selectedIndex = -1; // no option should be selected
-    }
-    function select_value(select) {
-        const selected_option = select.querySelector(':checked') || select.options[0];
-        return selected_option && selected_option.__value;
+    function toggle_class(element, name, toggle) {
+        element.classList[toggle ? 'add' : 'remove'](name);
     }
     function custom_event(type, detail, bubbles = false) {
         const e = document.createEvent('CustomEvent');
@@ -123,6 +115,9 @@ var app = (function () {
     }
     function add_render_callback(fn) {
         render_callbacks.push(fn);
+    }
+    function add_flush_callback(fn) {
+        flush_callbacks.push(fn);
     }
     // flush() calls callbacks in this order:
     // 1. All beforeUpdate callbacks, in order: parents before children
@@ -315,6 +310,14 @@ var app = (function () {
         : typeof globalThis !== 'undefined'
             ? globalThis
             : global);
+
+    function bind(component, name, callback) {
+        const index = component.$$.props[name];
+        if (index !== undefined) {
+            component.$$.bound[index] = callback;
+            callback(component.$$.ctx[index]);
+        }
+    }
     function create_component(block) {
         block && block.c();
     }
@@ -402,7 +405,7 @@ var app = (function () {
         $$.fragment = create_fragment ? create_fragment($$.ctx) : false;
         if (options.target) {
             if (options.hydrate) {
-                const nodes = children(options.target);
+                const nodes = children$1(options.target);
                 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                 $$.fragment && $$.fragment.l(nodes);
                 nodes.forEach(detach);
@@ -791,6 +794,1067 @@ var app = (function () {
       });
       
       return data
+    }
+
+    var xhtml = "http://www.w3.org/1999/xhtml";
+
+    var namespaces = {
+      svg: "http://www.w3.org/2000/svg",
+      xhtml: xhtml,
+      xlink: "http://www.w3.org/1999/xlink",
+      xml: "http://www.w3.org/XML/1998/namespace",
+      xmlns: "http://www.w3.org/2000/xmlns/"
+    };
+
+    function namespace(name) {
+      var prefix = name += "", i = prefix.indexOf(":");
+      if (i >= 0 && (prefix = name.slice(0, i)) !== "xmlns") name = name.slice(i + 1);
+      return namespaces.hasOwnProperty(prefix) ? {space: namespaces[prefix], local: name} : name; // eslint-disable-line no-prototype-builtins
+    }
+
+    function creatorInherit(name) {
+      return function() {
+        var document = this.ownerDocument,
+            uri = this.namespaceURI;
+        return uri === xhtml && document.documentElement.namespaceURI === xhtml
+            ? document.createElement(name)
+            : document.createElementNS(uri, name);
+      };
+    }
+
+    function creatorFixed(fullname) {
+      return function() {
+        return this.ownerDocument.createElementNS(fullname.space, fullname.local);
+      };
+    }
+
+    function creator(name) {
+      var fullname = namespace(name);
+      return (fullname.local
+          ? creatorFixed
+          : creatorInherit)(fullname);
+    }
+
+    function none() {}
+
+    function selector(selector) {
+      return selector == null ? none : function() {
+        return this.querySelector(selector);
+      };
+    }
+
+    function selection_select(select) {
+      if (typeof select !== "function") select = selector(select);
+
+      for (var groups = this._groups, m = groups.length, subgroups = new Array(m), j = 0; j < m; ++j) {
+        for (var group = groups[j], n = group.length, subgroup = subgroups[j] = new Array(n), node, subnode, i = 0; i < n; ++i) {
+          if ((node = group[i]) && (subnode = select.call(node, node.__data__, i, group))) {
+            if ("__data__" in node) subnode.__data__ = node.__data__;
+            subgroup[i] = subnode;
+          }
+        }
+      }
+
+      return new Selection(subgroups, this._parents);
+    }
+
+    function array(x) {
+      return typeof x === "object" && "length" in x
+        ? x // Array, TypedArray, NodeList, array-like
+        : Array.from(x); // Map, Set, iterable, string, or anything else
+    }
+
+    function empty() {
+      return [];
+    }
+
+    function selectorAll(selector) {
+      return selector == null ? empty : function() {
+        return this.querySelectorAll(selector);
+      };
+    }
+
+    function arrayAll(select) {
+      return function() {
+        var group = select.apply(this, arguments);
+        return group == null ? [] : array(group);
+      };
+    }
+
+    function selection_selectAll(select) {
+      if (typeof select === "function") select = arrayAll(select);
+      else select = selectorAll(select);
+
+      for (var groups = this._groups, m = groups.length, subgroups = [], parents = [], j = 0; j < m; ++j) {
+        for (var group = groups[j], n = group.length, node, i = 0; i < n; ++i) {
+          if (node = group[i]) {
+            subgroups.push(select.call(node, node.__data__, i, group));
+            parents.push(node);
+          }
+        }
+      }
+
+      return new Selection(subgroups, parents);
+    }
+
+    function matcher(selector) {
+      return function() {
+        return this.matches(selector);
+      };
+    }
+
+    function childMatcher(selector) {
+      return function(node) {
+        return node.matches(selector);
+      };
+    }
+
+    var find = Array.prototype.find;
+
+    function childFind(match) {
+      return function() {
+        return find.call(this.children, match);
+      };
+    }
+
+    function childFirst() {
+      return this.firstElementChild;
+    }
+
+    function selection_selectChild(match) {
+      return this.select(match == null ? childFirst
+          : childFind(typeof match === "function" ? match : childMatcher(match)));
+    }
+
+    var filter = Array.prototype.filter;
+
+    function children() {
+      return this.children;
+    }
+
+    function childrenFilter(match) {
+      return function() {
+        return filter.call(this.children, match);
+      };
+    }
+
+    function selection_selectChildren(match) {
+      return this.selectAll(match == null ? children
+          : childrenFilter(typeof match === "function" ? match : childMatcher(match)));
+    }
+
+    function selection_filter(match) {
+      if (typeof match !== "function") match = matcher(match);
+
+      for (var groups = this._groups, m = groups.length, subgroups = new Array(m), j = 0; j < m; ++j) {
+        for (var group = groups[j], n = group.length, subgroup = subgroups[j] = [], node, i = 0; i < n; ++i) {
+          if ((node = group[i]) && match.call(node, node.__data__, i, group)) {
+            subgroup.push(node);
+          }
+        }
+      }
+
+      return new Selection(subgroups, this._parents);
+    }
+
+    function sparse(update) {
+      return new Array(update.length);
+    }
+
+    function selection_enter() {
+      return new Selection(this._enter || this._groups.map(sparse), this._parents);
+    }
+
+    function EnterNode(parent, datum) {
+      this.ownerDocument = parent.ownerDocument;
+      this.namespaceURI = parent.namespaceURI;
+      this._next = null;
+      this._parent = parent;
+      this.__data__ = datum;
+    }
+
+    EnterNode.prototype = {
+      constructor: EnterNode,
+      appendChild: function(child) { return this._parent.insertBefore(child, this._next); },
+      insertBefore: function(child, next) { return this._parent.insertBefore(child, next); },
+      querySelector: function(selector) { return this._parent.querySelector(selector); },
+      querySelectorAll: function(selector) { return this._parent.querySelectorAll(selector); }
+    };
+
+    function constant$1(x) {
+      return function() {
+        return x;
+      };
+    }
+
+    function bindIndex(parent, group, enter, update, exit, data) {
+      var i = 0,
+          node,
+          groupLength = group.length,
+          dataLength = data.length;
+
+      // Put any non-null nodes that fit into update.
+      // Put any null nodes into enter.
+      // Put any remaining data into enter.
+      for (; i < dataLength; ++i) {
+        if (node = group[i]) {
+          node.__data__ = data[i];
+          update[i] = node;
+        } else {
+          enter[i] = new EnterNode(parent, data[i]);
+        }
+      }
+
+      // Put any non-null nodes that don’t fit into exit.
+      for (; i < groupLength; ++i) {
+        if (node = group[i]) {
+          exit[i] = node;
+        }
+      }
+    }
+
+    function bindKey(parent, group, enter, update, exit, data, key) {
+      var i,
+          node,
+          nodeByKeyValue = new Map,
+          groupLength = group.length,
+          dataLength = data.length,
+          keyValues = new Array(groupLength),
+          keyValue;
+
+      // Compute the key for each node.
+      // If multiple nodes have the same key, the duplicates are added to exit.
+      for (i = 0; i < groupLength; ++i) {
+        if (node = group[i]) {
+          keyValues[i] = keyValue = key.call(node, node.__data__, i, group) + "";
+          if (nodeByKeyValue.has(keyValue)) {
+            exit[i] = node;
+          } else {
+            nodeByKeyValue.set(keyValue, node);
+          }
+        }
+      }
+
+      // Compute the key for each datum.
+      // If there a node associated with this key, join and add it to update.
+      // If there is not (or the key is a duplicate), add it to enter.
+      for (i = 0; i < dataLength; ++i) {
+        keyValue = key.call(parent, data[i], i, data) + "";
+        if (node = nodeByKeyValue.get(keyValue)) {
+          update[i] = node;
+          node.__data__ = data[i];
+          nodeByKeyValue.delete(keyValue);
+        } else {
+          enter[i] = new EnterNode(parent, data[i]);
+        }
+      }
+
+      // Add any remaining nodes that were not bound to data to exit.
+      for (i = 0; i < groupLength; ++i) {
+        if ((node = group[i]) && (nodeByKeyValue.get(keyValues[i]) === node)) {
+          exit[i] = node;
+        }
+      }
+    }
+
+    function datum(node) {
+      return node.__data__;
+    }
+
+    function selection_data(value, key) {
+      if (!arguments.length) return Array.from(this, datum);
+
+      var bind = key ? bindKey : bindIndex,
+          parents = this._parents,
+          groups = this._groups;
+
+      if (typeof value !== "function") value = constant$1(value);
+
+      for (var m = groups.length, update = new Array(m), enter = new Array(m), exit = new Array(m), j = 0; j < m; ++j) {
+        var parent = parents[j],
+            group = groups[j],
+            groupLength = group.length,
+            data = array(value.call(parent, parent && parent.__data__, j, parents)),
+            dataLength = data.length,
+            enterGroup = enter[j] = new Array(dataLength),
+            updateGroup = update[j] = new Array(dataLength),
+            exitGroup = exit[j] = new Array(groupLength);
+
+        bind(parent, group, enterGroup, updateGroup, exitGroup, data, key);
+
+        // Now connect the enter nodes to their following update node, such that
+        // appendChild can insert the materialized enter node before this node,
+        // rather than at the end of the parent node.
+        for (var i0 = 0, i1 = 0, previous, next; i0 < dataLength; ++i0) {
+          if (previous = enterGroup[i0]) {
+            if (i0 >= i1) i1 = i0 + 1;
+            while (!(next = updateGroup[i1]) && ++i1 < dataLength);
+            previous._next = next || null;
+          }
+        }
+      }
+
+      update = new Selection(update, parents);
+      update._enter = enter;
+      update._exit = exit;
+      return update;
+    }
+
+    function selection_exit() {
+      return new Selection(this._exit || this._groups.map(sparse), this._parents);
+    }
+
+    function selection_join(onenter, onupdate, onexit) {
+      var enter = this.enter(), update = this, exit = this.exit();
+      enter = typeof onenter === "function" ? onenter(enter) : enter.append(onenter + "");
+      if (onupdate != null) update = onupdate(update);
+      if (onexit == null) exit.remove(); else onexit(exit);
+      return enter && update ? enter.merge(update).order() : update;
+    }
+
+    function selection_merge(selection) {
+      if (!(selection instanceof Selection)) throw new Error("invalid merge");
+
+      for (var groups0 = this._groups, groups1 = selection._groups, m0 = groups0.length, m1 = groups1.length, m = Math.min(m0, m1), merges = new Array(m0), j = 0; j < m; ++j) {
+        for (var group0 = groups0[j], group1 = groups1[j], n = group0.length, merge = merges[j] = new Array(n), node, i = 0; i < n; ++i) {
+          if (node = group0[i] || group1[i]) {
+            merge[i] = node;
+          }
+        }
+      }
+
+      for (; j < m0; ++j) {
+        merges[j] = groups0[j];
+      }
+
+      return new Selection(merges, this._parents);
+    }
+
+    function selection_order() {
+
+      for (var groups = this._groups, j = -1, m = groups.length; ++j < m;) {
+        for (var group = groups[j], i = group.length - 1, next = group[i], node; --i >= 0;) {
+          if (node = group[i]) {
+            if (next && node.compareDocumentPosition(next) ^ 4) next.parentNode.insertBefore(node, next);
+            next = node;
+          }
+        }
+      }
+
+      return this;
+    }
+
+    function selection_sort(compare) {
+      if (!compare) compare = ascending$1;
+
+      function compareNode(a, b) {
+        return a && b ? compare(a.__data__, b.__data__) : !a - !b;
+      }
+
+      for (var groups = this._groups, m = groups.length, sortgroups = new Array(m), j = 0; j < m; ++j) {
+        for (var group = groups[j], n = group.length, sortgroup = sortgroups[j] = new Array(n), node, i = 0; i < n; ++i) {
+          if (node = group[i]) {
+            sortgroup[i] = node;
+          }
+        }
+        sortgroup.sort(compareNode);
+      }
+
+      return new Selection(sortgroups, this._parents).order();
+    }
+
+    function ascending$1(a, b) {
+      return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
+    }
+
+    function selection_call() {
+      var callback = arguments[0];
+      arguments[0] = this;
+      callback.apply(null, arguments);
+      return this;
+    }
+
+    function selection_nodes() {
+      return Array.from(this);
+    }
+
+    function selection_node() {
+
+      for (var groups = this._groups, j = 0, m = groups.length; j < m; ++j) {
+        for (var group = groups[j], i = 0, n = group.length; i < n; ++i) {
+          var node = group[i];
+          if (node) return node;
+        }
+      }
+
+      return null;
+    }
+
+    function selection_size() {
+      let size = 0;
+      for (const node of this) ++size; // eslint-disable-line no-unused-vars
+      return size;
+    }
+
+    function selection_empty() {
+      return !this.node();
+    }
+
+    function selection_each(callback) {
+
+      for (var groups = this._groups, j = 0, m = groups.length; j < m; ++j) {
+        for (var group = groups[j], i = 0, n = group.length, node; i < n; ++i) {
+          if (node = group[i]) callback.call(node, node.__data__, i, group);
+        }
+      }
+
+      return this;
+    }
+
+    function attrRemove(name) {
+      return function() {
+        this.removeAttribute(name);
+      };
+    }
+
+    function attrRemoveNS(fullname) {
+      return function() {
+        this.removeAttributeNS(fullname.space, fullname.local);
+      };
+    }
+
+    function attrConstant(name, value) {
+      return function() {
+        this.setAttribute(name, value);
+      };
+    }
+
+    function attrConstantNS(fullname, value) {
+      return function() {
+        this.setAttributeNS(fullname.space, fullname.local, value);
+      };
+    }
+
+    function attrFunction(name, value) {
+      return function() {
+        var v = value.apply(this, arguments);
+        if (v == null) this.removeAttribute(name);
+        else this.setAttribute(name, v);
+      };
+    }
+
+    function attrFunctionNS(fullname, value) {
+      return function() {
+        var v = value.apply(this, arguments);
+        if (v == null) this.removeAttributeNS(fullname.space, fullname.local);
+        else this.setAttributeNS(fullname.space, fullname.local, v);
+      };
+    }
+
+    function selection_attr(name, value) {
+      var fullname = namespace(name);
+
+      if (arguments.length < 2) {
+        var node = this.node();
+        return fullname.local
+            ? node.getAttributeNS(fullname.space, fullname.local)
+            : node.getAttribute(fullname);
+      }
+
+      return this.each((value == null
+          ? (fullname.local ? attrRemoveNS : attrRemove) : (typeof value === "function"
+          ? (fullname.local ? attrFunctionNS : attrFunction)
+          : (fullname.local ? attrConstantNS : attrConstant)))(fullname, value));
+    }
+
+    function defaultView(node) {
+      return (node.ownerDocument && node.ownerDocument.defaultView) // node is a Node
+          || (node.document && node) // node is a Window
+          || node.defaultView; // node is a Document
+    }
+
+    function styleRemove(name) {
+      return function() {
+        this.style.removeProperty(name);
+      };
+    }
+
+    function styleConstant(name, value, priority) {
+      return function() {
+        this.style.setProperty(name, value, priority);
+      };
+    }
+
+    function styleFunction(name, value, priority) {
+      return function() {
+        var v = value.apply(this, arguments);
+        if (v == null) this.style.removeProperty(name);
+        else this.style.setProperty(name, v, priority);
+      };
+    }
+
+    function selection_style(name, value, priority) {
+      return arguments.length > 1
+          ? this.each((value == null
+                ? styleRemove : typeof value === "function"
+                ? styleFunction
+                : styleConstant)(name, value, priority == null ? "" : priority))
+          : styleValue(this.node(), name);
+    }
+
+    function styleValue(node, name) {
+      return node.style.getPropertyValue(name)
+          || defaultView(node).getComputedStyle(node, null).getPropertyValue(name);
+    }
+
+    function propertyRemove(name) {
+      return function() {
+        delete this[name];
+      };
+    }
+
+    function propertyConstant(name, value) {
+      return function() {
+        this[name] = value;
+      };
+    }
+
+    function propertyFunction(name, value) {
+      return function() {
+        var v = value.apply(this, arguments);
+        if (v == null) delete this[name];
+        else this[name] = v;
+      };
+    }
+
+    function selection_property(name, value) {
+      return arguments.length > 1
+          ? this.each((value == null
+              ? propertyRemove : typeof value === "function"
+              ? propertyFunction
+              : propertyConstant)(name, value))
+          : this.node()[name];
+    }
+
+    function classArray(string) {
+      return string.trim().split(/^|\s+/);
+    }
+
+    function classList(node) {
+      return node.classList || new ClassList(node);
+    }
+
+    function ClassList(node) {
+      this._node = node;
+      this._names = classArray(node.getAttribute("class") || "");
+    }
+
+    ClassList.prototype = {
+      add: function(name) {
+        var i = this._names.indexOf(name);
+        if (i < 0) {
+          this._names.push(name);
+          this._node.setAttribute("class", this._names.join(" "));
+        }
+      },
+      remove: function(name) {
+        var i = this._names.indexOf(name);
+        if (i >= 0) {
+          this._names.splice(i, 1);
+          this._node.setAttribute("class", this._names.join(" "));
+        }
+      },
+      contains: function(name) {
+        return this._names.indexOf(name) >= 0;
+      }
+    };
+
+    function classedAdd(node, names) {
+      var list = classList(node), i = -1, n = names.length;
+      while (++i < n) list.add(names[i]);
+    }
+
+    function classedRemove(node, names) {
+      var list = classList(node), i = -1, n = names.length;
+      while (++i < n) list.remove(names[i]);
+    }
+
+    function classedTrue(names) {
+      return function() {
+        classedAdd(this, names);
+      };
+    }
+
+    function classedFalse(names) {
+      return function() {
+        classedRemove(this, names);
+      };
+    }
+
+    function classedFunction(names, value) {
+      return function() {
+        (value.apply(this, arguments) ? classedAdd : classedRemove)(this, names);
+      };
+    }
+
+    function selection_classed(name, value) {
+      var names = classArray(name + "");
+
+      if (arguments.length < 2) {
+        var list = classList(this.node()), i = -1, n = names.length;
+        while (++i < n) if (!list.contains(names[i])) return false;
+        return true;
+      }
+
+      return this.each((typeof value === "function"
+          ? classedFunction : value
+          ? classedTrue
+          : classedFalse)(names, value));
+    }
+
+    function textRemove() {
+      this.textContent = "";
+    }
+
+    function textConstant(value) {
+      return function() {
+        this.textContent = value;
+      };
+    }
+
+    function textFunction(value) {
+      return function() {
+        var v = value.apply(this, arguments);
+        this.textContent = v == null ? "" : v;
+      };
+    }
+
+    function selection_text(value) {
+      return arguments.length
+          ? this.each(value == null
+              ? textRemove : (typeof value === "function"
+              ? textFunction
+              : textConstant)(value))
+          : this.node().textContent;
+    }
+
+    function htmlRemove() {
+      this.innerHTML = "";
+    }
+
+    function htmlConstant(value) {
+      return function() {
+        this.innerHTML = value;
+      };
+    }
+
+    function htmlFunction(value) {
+      return function() {
+        var v = value.apply(this, arguments);
+        this.innerHTML = v == null ? "" : v;
+      };
+    }
+
+    function selection_html(value) {
+      return arguments.length
+          ? this.each(value == null
+              ? htmlRemove : (typeof value === "function"
+              ? htmlFunction
+              : htmlConstant)(value))
+          : this.node().innerHTML;
+    }
+
+    function raise() {
+      if (this.nextSibling) this.parentNode.appendChild(this);
+    }
+
+    function selection_raise() {
+      return this.each(raise);
+    }
+
+    function lower() {
+      if (this.previousSibling) this.parentNode.insertBefore(this, this.parentNode.firstChild);
+    }
+
+    function selection_lower() {
+      return this.each(lower);
+    }
+
+    function selection_append(name) {
+      var create = typeof name === "function" ? name : creator(name);
+      return this.select(function() {
+        return this.appendChild(create.apply(this, arguments));
+      });
+    }
+
+    function constantNull() {
+      return null;
+    }
+
+    function selection_insert(name, before) {
+      var create = typeof name === "function" ? name : creator(name),
+          select = before == null ? constantNull : typeof before === "function" ? before : selector(before);
+      return this.select(function() {
+        return this.insertBefore(create.apply(this, arguments), select.apply(this, arguments) || null);
+      });
+    }
+
+    function remove() {
+      var parent = this.parentNode;
+      if (parent) parent.removeChild(this);
+    }
+
+    function selection_remove() {
+      return this.each(remove);
+    }
+
+    function selection_cloneShallow() {
+      var clone = this.cloneNode(false), parent = this.parentNode;
+      return parent ? parent.insertBefore(clone, this.nextSibling) : clone;
+    }
+
+    function selection_cloneDeep() {
+      var clone = this.cloneNode(true), parent = this.parentNode;
+      return parent ? parent.insertBefore(clone, this.nextSibling) : clone;
+    }
+
+    function selection_clone(deep) {
+      return this.select(deep ? selection_cloneDeep : selection_cloneShallow);
+    }
+
+    function selection_datum(value) {
+      return arguments.length
+          ? this.property("__data__", value)
+          : this.node().__data__;
+    }
+
+    function contextListener(listener) {
+      return function(event) {
+        listener.call(this, event, this.__data__);
+      };
+    }
+
+    function parseTypenames(typenames) {
+      return typenames.trim().split(/^|\s+/).map(function(t) {
+        var name = "", i = t.indexOf(".");
+        if (i >= 0) name = t.slice(i + 1), t = t.slice(0, i);
+        return {type: t, name: name};
+      });
+    }
+
+    function onRemove(typename) {
+      return function() {
+        var on = this.__on;
+        if (!on) return;
+        for (var j = 0, i = -1, m = on.length, o; j < m; ++j) {
+          if (o = on[j], (!typename.type || o.type === typename.type) && o.name === typename.name) {
+            this.removeEventListener(o.type, o.listener, o.options);
+          } else {
+            on[++i] = o;
+          }
+        }
+        if (++i) on.length = i;
+        else delete this.__on;
+      };
+    }
+
+    function onAdd(typename, value, options) {
+      return function() {
+        var on = this.__on, o, listener = contextListener(value);
+        if (on) for (var j = 0, m = on.length; j < m; ++j) {
+          if ((o = on[j]).type === typename.type && o.name === typename.name) {
+            this.removeEventListener(o.type, o.listener, o.options);
+            this.addEventListener(o.type, o.listener = listener, o.options = options);
+            o.value = value;
+            return;
+          }
+        }
+        this.addEventListener(typename.type, listener, options);
+        o = {type: typename.type, name: typename.name, value: value, listener: listener, options: options};
+        if (!on) this.__on = [o];
+        else on.push(o);
+      };
+    }
+
+    function selection_on(typename, value, options) {
+      var typenames = parseTypenames(typename + ""), i, n = typenames.length, t;
+
+      if (arguments.length < 2) {
+        var on = this.node().__on;
+        if (on) for (var j = 0, m = on.length, o; j < m; ++j) {
+          for (i = 0, o = on[j]; i < n; ++i) {
+            if ((t = typenames[i]).type === o.type && t.name === o.name) {
+              return o.value;
+            }
+          }
+        }
+        return;
+      }
+
+      on = value ? onAdd : onRemove;
+      for (i = 0; i < n; ++i) this.each(on(typenames[i], value, options));
+      return this;
+    }
+
+    function dispatchEvent(node, type, params) {
+      var window = defaultView(node),
+          event = window.CustomEvent;
+
+      if (typeof event === "function") {
+        event = new event(type, params);
+      } else {
+        event = window.document.createEvent("Event");
+        if (params) event.initEvent(type, params.bubbles, params.cancelable), event.detail = params.detail;
+        else event.initEvent(type, false, false);
+      }
+
+      node.dispatchEvent(event);
+    }
+
+    function dispatchConstant(type, params) {
+      return function() {
+        return dispatchEvent(this, type, params);
+      };
+    }
+
+    function dispatchFunction(type, params) {
+      return function() {
+        return dispatchEvent(this, type, params.apply(this, arguments));
+      };
+    }
+
+    function selection_dispatch(type, params) {
+      return this.each((typeof params === "function"
+          ? dispatchFunction
+          : dispatchConstant)(type, params));
+    }
+
+    function* selection_iterator() {
+      for (var groups = this._groups, j = 0, m = groups.length; j < m; ++j) {
+        for (var group = groups[j], i = 0, n = group.length, node; i < n; ++i) {
+          if (node = group[i]) yield node;
+        }
+      }
+    }
+
+    var root = [null];
+
+    function Selection(groups, parents) {
+      this._groups = groups;
+      this._parents = parents;
+    }
+
+    function selection_selection() {
+      return this;
+    }
+
+    Selection.prototype = {
+      constructor: Selection,
+      select: selection_select,
+      selectAll: selection_selectAll,
+      selectChild: selection_selectChild,
+      selectChildren: selection_selectChildren,
+      filter: selection_filter,
+      data: selection_data,
+      enter: selection_enter,
+      exit: selection_exit,
+      join: selection_join,
+      merge: selection_merge,
+      selection: selection_selection,
+      order: selection_order,
+      sort: selection_sort,
+      call: selection_call,
+      nodes: selection_nodes,
+      node: selection_node,
+      size: selection_size,
+      empty: selection_empty,
+      each: selection_each,
+      attr: selection_attr,
+      style: selection_style,
+      property: selection_property,
+      classed: selection_classed,
+      text: selection_text,
+      html: selection_html,
+      raise: selection_raise,
+      lower: selection_lower,
+      append: selection_append,
+      insert: selection_insert,
+      remove: selection_remove,
+      clone: selection_clone,
+      datum: selection_datum,
+      on: selection_on,
+      dispatch: selection_dispatch,
+      [Symbol.iterator]: selection_iterator
+    };
+
+    function select(selector) {
+      return typeof selector === "string"
+          ? new Selection([[document.querySelector(selector)]], [document.documentElement])
+          : new Selection([[selector]], root);
+    }
+
+    function selectAll(selector) {
+      return typeof selector === "string"
+          ? new Selection([document.querySelectorAll(selector)], [document.documentElement])
+          : new Selection([selector == null ? [] : array(selector)], root);
+    }
+
+    /* src/components/Options.svelte generated by Svelte v3.44.3 */
+    const file$3 = "src/components/Options.svelte";
+
+    function create_fragment$3(ctx) {
+    	let div1;
+    	let div0;
+    	let span;
+    	let t1;
+    	let button0;
+    	let t3;
+    	let button1;
+    	let mounted;
+    	let dispose;
+
+    	const block = {
+    		c: function create() {
+    			div1 = element("div");
+    			div0 = element("div");
+    			span = element("span");
+    			span.textContent = "Group By:";
+    			t1 = space();
+    			button0 = element("button");
+    			button0.textContent = "Income Level";
+    			t3 = space();
+    			button1 = element("button");
+    			button1.textContent = "Region";
+    			attr_dev(span, "class", "interactive__options--label interactive__options--group");
+    			add_location(span, file$3, 12, 4, 245);
+    			attr_dev(button0, "class", "btn btn--select btn-income");
+    			toggle_class(button0, "btn--active", /*selectedIndicator*/ ctx[0] === 'income_level');
+    			add_location(button0, file$3, 15, 4, 348);
+    			attr_dev(button1, "class", "btn btn--select btn-region");
+    			toggle_class(button1, "btn--active", /*selectedIndicator*/ ctx[0] === 'region');
+    			add_location(button1, file$3, 20, 4, 548);
+    			attr_dev(div0, "class", "interactive__indicators");
+    			add_location(div0, file$3, 11, 2, 203);
+    			attr_dev(div1, "class", "interactive__options");
+    			add_location(div1, file$3, 10, 0, 166);
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div1, anchor);
+    			append_dev(div1, div0);
+    			append_dev(div0, span);
+    			append_dev(div0, t1);
+    			append_dev(div0, button0);
+    			append_dev(div0, t3);
+    			append_dev(div0, button1);
+
+    			if (!mounted) {
+    				dispose = [
+    					listen_dev(button0, "click", /*click_handler*/ ctx[2], false, false, false),
+    					listen_dev(button1, "click", /*click_handler_1*/ ctx[3], false, false, false)
+    				];
+
+    				mounted = true;
+    			}
+    		},
+    		p: function update(ctx, [dirty]) {
+    			if (dirty & /*selectedIndicator*/ 1) {
+    				toggle_class(button0, "btn--active", /*selectedIndicator*/ ctx[0] === 'income_level');
+    			}
+
+    			if (dirty & /*selectedIndicator*/ 1) {
+    				toggle_class(button1, "btn--active", /*selectedIndicator*/ ctx[0] === 'region');
+    			}
+    		},
+    		i: noop,
+    		o: noop,
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div1);
+    			mounted = false;
+    			run_all(dispose);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_fragment$3.name,
+    		type: "component",
+    		source: "",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function instance$3($$self, $$props, $$invalidate) {
+    	let { $$slots: slots = {}, $$scope } = $$props;
+    	validate_slots('Options', slots, []);
+    	let { selectedIndicator } = $$props;
+
+    	const setIndicator = e => {
+    		$$invalidate(0, selectedIndicator = e);
+    	};
+
+    	const writable_props = ['selectedIndicator'];
+
+    	Object.keys($$props).forEach(key => {
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console.warn(`<Options> was created with unknown prop '${key}'`);
+    	});
+
+    	const click_handler = e => setIndicator('income_level');
+    	const click_handler_1 = e => setIndicator('region');
+
+    	$$self.$$set = $$props => {
+    		if ('selectedIndicator' in $$props) $$invalidate(0, selectedIndicator = $$props.selectedIndicator);
+    	};
+
+    	$$self.$capture_state = () => ({
+    		select,
+    		selectAll,
+    		selectedIndicator,
+    		setIndicator
+    	});
+
+    	$$self.$inject_state = $$props => {
+    		if ('selectedIndicator' in $$props) $$invalidate(0, selectedIndicator = $$props.selectedIndicator);
+    	};
+
+    	if ($$props && "$$inject" in $$props) {
+    		$$self.$inject_state($$props.$$inject);
+    	}
+
+    	return [selectedIndicator, setIndicator, click_handler, click_handler_1];
+    }
+
+    class Options extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$3, create_fragment$3, safe_not_equal, { selectedIndicator: 0 });
+
+    		dispatch_dev("SvelteRegisterComponent", {
+    			component: this,
+    			tagName: "Options",
+    			options,
+    			id: create_fragment$3.name
+    		});
+
+    		const { ctx } = this.$$;
+    		const props = options.props || {};
+
+    		if (/*selectedIndicator*/ ctx[0] === undefined && !('selectedIndicator' in props)) {
+    			console.warn("<Options> was created without expected prop 'selectedIndicator'");
+    		}
+    	}
+
+    	get selectedIndicator() {
+    		throw new Error("<Options>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set selectedIndicator(value) {
+    		throw new Error("<Options>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
     }
 
     function ascending(a, b) {
@@ -5235,24 +6299,24 @@ var app = (function () {
 
     function get_each_context$2(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[15] = list[i];
+    	child_ctx[16] = list[i];
     	return child_ctx;
     }
 
     function get_each_context_1(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[15] = list[i];
+    	child_ctx[16] = list[i];
     	return child_ctx;
     }
 
     function get_each_context_2(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[20] = list[i];
+    	child_ctx[21] = list[i];
     	return child_ctx;
     }
 
-    // (73:6) {#if data}
-    function create_if_block(ctx) {
+    // (75:6) {#if data}
+    function create_if_block$1(ctx) {
     	let g;
     	let text_1;
     	let t_value = /*data*/ ctx[0].mineral + "";
@@ -5277,10 +6341,10 @@ var app = (function () {
     			t = text$1(t_value);
     			attr_dev(text_1, "x", text_1_x_value = /*width*/ ctx[1] / 2);
     			attr_dev(text_1, "y", 15);
-    			attr_dev(text_1, "class", "svelte-1y5bkru");
-    			add_location(text_1, file$2, 78, 8, 2850);
+    			attr_dev(text_1, "class", "svelte-12z2zjs");
+    			add_location(text_1, file$2, 88, 8, 3027);
     			attr_dev(g, "class", "title");
-    			add_location(g, file$2, 77, 6, 2824);
+    			add_location(g, file$2, 87, 6, 3001);
     		},
     		m: function mount(target, anchor) {
     			for (let i = 0; i < each_blocks.length; i += 1) {
@@ -5292,7 +6356,7 @@ var app = (function () {
     			append_dev(text_1, t);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*xScale, data, yScale, formatTooltip*/ 2817) {
+    			if (dirty & /*xScale, data, yScale, selectedIndicator, formatTooltip*/ 5889) {
     				each_value_2 = /*data*/ ctx[0].mineralData;
     				validate_each_argument(each_value_2);
     				let i;
@@ -5330,20 +6394,21 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block.name,
+    		id: create_if_block$1.name,
     		type: "if",
-    		source: "(73:6) {#if data}",
+    		source: "(75:6) {#if data}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (74:6) {#each data.mineralData as country}
+    // (76:6) {#each data.mineralData as country}
     function create_each_block_2(ctx) {
     	let circle;
     	let circle_cx_value;
     	let circle_cy_value;
+    	let circle_data_color_value;
     	let tippy_action;
     	let mounted;
     	let dispose;
@@ -5351,32 +6416,43 @@ var app = (function () {
     	const block = {
     		c: function create() {
     			circle = svg_element("circle");
-    			attr_dev(circle, "cx", circle_cx_value = /*xScale*/ ctx[9](/*country*/ ctx[20].percentProduction));
-    			attr_dev(circle, "cy", circle_cy_value = "" + (/*yScale*/ ctx[8](/*country*/ ctx[20].percentReserves) + "px"));
+    			attr_dev(circle, "cx", circle_cx_value = /*xScale*/ ctx[9](/*country*/ ctx[21].percentProduction));
+    			attr_dev(circle, "cy", circle_cy_value = "" + (/*yScale*/ ctx[8](/*country*/ ctx[21].percentReserves) + "px"));
     			attr_dev(circle, "r", "3px");
-    			attr_dev(circle, "class", "svelte-1y5bkru");
-    			add_location(circle, file$2, 74, 8, 2660);
+
+    			attr_dev(circle, "data-color", circle_data_color_value = /*selectedIndicator*/ ctx[10] === 'income_level'
+    			? `${/*country*/ ctx[21].income_level}`
+    			: `${/*country*/ ctx[21].region}`);
+
+    			attr_dev(circle, "class", "svelte-12z2zjs");
+    			add_location(circle, file$2, 76, 8, 2674);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, circle, anchor);
 
     			if (!mounted) {
-    				dispose = action_destroyer(tippy_action = tippy.call(null, circle, /*formatTooltip*/ ctx[11](/*country*/ ctx[20])));
+    				dispose = action_destroyer(tippy_action = tippy.call(null, circle, /*formatTooltip*/ ctx[12](/*country*/ ctx[21])));
     				mounted = true;
     			}
     		},
     		p: function update(new_ctx, dirty) {
     			ctx = new_ctx;
 
-    			if (dirty & /*xScale, data*/ 513 && circle_cx_value !== (circle_cx_value = /*xScale*/ ctx[9](/*country*/ ctx[20].percentProduction))) {
+    			if (dirty & /*xScale, data*/ 513 && circle_cx_value !== (circle_cx_value = /*xScale*/ ctx[9](/*country*/ ctx[21].percentProduction))) {
     				attr_dev(circle, "cx", circle_cx_value);
     			}
 
-    			if (dirty & /*yScale, data*/ 257 && circle_cy_value !== (circle_cy_value = "" + (/*yScale*/ ctx[8](/*country*/ ctx[20].percentReserves) + "px"))) {
+    			if (dirty & /*yScale, data*/ 257 && circle_cy_value !== (circle_cy_value = "" + (/*yScale*/ ctx[8](/*country*/ ctx[21].percentReserves) + "px"))) {
     				attr_dev(circle, "cy", circle_cy_value);
     			}
 
-    			if (tippy_action && is_function(tippy_action.update) && dirty & /*data*/ 1) tippy_action.update.call(null, /*formatTooltip*/ ctx[11](/*country*/ ctx[20]));
+    			if (dirty & /*data*/ 1 && circle_data_color_value !== (circle_data_color_value = /*selectedIndicator*/ ctx[10] === 'income_level'
+    			? `${/*country*/ ctx[21].income_level}`
+    			: `${/*country*/ ctx[21].region}`)) {
+    				attr_dev(circle, "data-color", circle_data_color_value);
+    			}
+
+    			if (tippy_action && is_function(tippy_action.update) && dirty & /*data*/ 1) tippy_action.update.call(null, /*formatTooltip*/ ctx[12](/*country*/ ctx[21]));
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(circle);
@@ -5389,19 +6465,19 @@ var app = (function () {
     		block,
     		id: create_each_block_2.name,
     		type: "each",
-    		source: "(74:6) {#each data.mineralData as country}",
+    		source: "(76:6) {#each data.mineralData as country}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (86:8) {#each yTicks as tick}
+    // (96:8) {#each yTicks as tick}
     function create_each_block_1(ctx) {
     	let g;
     	let line;
     	let text_1;
-    	let t_value = /*tick*/ ctx[15] + "";
+    	let t_value = /*tick*/ ctx[16] + "";
     	let t;
     	let g_class_value;
     	let g_transform_value;
@@ -5412,17 +6488,17 @@ var app = (function () {
     			line = svg_element("line");
     			text_1 = svg_element("text");
     			t = text$1(t_value);
-    			attr_dev(line, "x1", /*padding*/ ctx[10].left - 3);
-    			attr_dev(line, "x2", /*padding*/ ctx[10].left);
-    			attr_dev(line, "class", "svelte-1y5bkru");
-    			add_location(line, file$2, 87, 12, 3218);
-    			attr_dev(text_1, "x", /*padding*/ ctx[10].left - 4);
+    			attr_dev(line, "x1", /*padding*/ ctx[11].left - 3);
+    			attr_dev(line, "x2", /*padding*/ ctx[11].left);
+    			attr_dev(line, "class", "svelte-12z2zjs");
+    			add_location(line, file$2, 97, 12, 3395);
+    			attr_dev(text_1, "x", /*padding*/ ctx[11].left - 5);
     			attr_dev(text_1, "y", "+4");
-    			attr_dev(text_1, "class", "svelte-1y5bkru");
-    			add_location(text_1, file$2, 88, 12, 3288);
-    			attr_dev(g, "class", g_class_value = "tick tick-" + /*tick*/ ctx[15] + " svelte-1y5bkru");
-    			attr_dev(g, "transform", g_transform_value = "translate(0, " + /*yScale*/ ctx[8](/*tick*/ ctx[15]) + ")");
-    			add_location(g, file$2, 86, 10, 3136);
+    			attr_dev(text_1, "class", "svelte-12z2zjs");
+    			add_location(text_1, file$2, 99, 12, 3555);
+    			attr_dev(g, "class", g_class_value = "tick tick-" + /*tick*/ ctx[16] + " svelte-12z2zjs");
+    			attr_dev(g, "transform", g_transform_value = "translate(0, " + /*yScale*/ ctx[8](/*tick*/ ctx[16]) + ")");
+    			add_location(g, file$2, 96, 10, 3313);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, g, anchor);
@@ -5431,13 +6507,13 @@ var app = (function () {
     			append_dev(text_1, t);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*yTicks*/ 64 && t_value !== (t_value = /*tick*/ ctx[15] + "")) set_data_dev(t, t_value);
+    			if (dirty & /*yTicks*/ 64 && t_value !== (t_value = /*tick*/ ctx[16] + "")) set_data_dev(t, t_value);
 
-    			if (dirty & /*yTicks*/ 64 && g_class_value !== (g_class_value = "tick tick-" + /*tick*/ ctx[15] + " svelte-1y5bkru")) {
+    			if (dirty & /*yTicks*/ 64 && g_class_value !== (g_class_value = "tick tick-" + /*tick*/ ctx[16] + " svelte-12z2zjs")) {
     				attr_dev(g, "class", g_class_value);
     			}
 
-    			if (dirty & /*yScale, yTicks*/ 320 && g_transform_value !== (g_transform_value = "translate(0, " + /*yScale*/ ctx[8](/*tick*/ ctx[15]) + ")")) {
+    			if (dirty & /*yScale, yTicks*/ 320 && g_transform_value !== (g_transform_value = "translate(0, " + /*yScale*/ ctx[8](/*tick*/ ctx[16]) + ")")) {
     				attr_dev(g, "transform", g_transform_value);
     			}
     		},
@@ -5450,21 +6526,21 @@ var app = (function () {
     		block,
     		id: create_each_block_1.name,
     		type: "each",
-    		source: "(86:8) {#each yTicks as tick}",
+    		source: "(96:8) {#each yTicks as tick}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (98:8) {#each xTicks as tick}
+    // (109:8) {#each xTicks as tick}
     function create_each_block$2(ctx) {
     	let g;
     	let line;
     	let line_y__value;
     	let line_y__value_1;
     	let text_1;
-    	let t_value = /*tick*/ ctx[15] + "";
+    	let t_value = /*tick*/ ctx[16] + "";
     	let t;
     	let text_1_y_value;
     	let g_class_value;
@@ -5476,16 +6552,16 @@ var app = (function () {
     			line = svg_element("line");
     			text_1 = svg_element("text");
     			t = text$1(t_value);
-    			attr_dev(line, "y1", line_y__value = /*height*/ ctx[2] - /*padding*/ ctx[10].bottom + 4);
-    			attr_dev(line, "y2", line_y__value_1 = /*height*/ ctx[2] - /*padding*/ ctx[10].bottom);
-    			attr_dev(line, "class", "svelte-1y5bkru");
-    			add_location(line, file$2, 99, 12, 3762);
-    			attr_dev(text_1, "y", text_1_y_value = /*height*/ ctx[2] - /*padding*/ ctx[10].bottom + 16);
-    			attr_dev(text_1, "class", "svelte-1y5bkru");
-    			add_location(text_1, file$2, 100, 12, 3854);
-    			attr_dev(g, "class", g_class_value = "tick tick-" + /*tick*/ ctx[15] + " svelte-1y5bkru");
-    			attr_dev(g, "transform", g_transform_value = "translate(" + /*xScale*/ ctx[9](/*tick*/ ctx[15]) + ",0)");
-    			add_location(g, file$2, 98, 10, 3681);
+    			attr_dev(line, "y1", line_y__value = /*height*/ ctx[2] - /*padding*/ ctx[11].bottom + 4);
+    			attr_dev(line, "y2", line_y__value_1 = /*height*/ ctx[2] - /*padding*/ ctx[11].bottom);
+    			attr_dev(line, "class", "svelte-12z2zjs");
+    			add_location(line, file$2, 110, 12, 4029);
+    			attr_dev(text_1, "y", text_1_y_value = /*height*/ ctx[2] - /*padding*/ ctx[11].bottom + 14);
+    			attr_dev(text_1, "class", "svelte-12z2zjs");
+    			add_location(text_1, file$2, 111, 12, 4121);
+    			attr_dev(g, "class", g_class_value = "tick tick-" + /*tick*/ ctx[16] + " svelte-12z2zjs");
+    			attr_dev(g, "transform", g_transform_value = "translate(" + /*xScale*/ ctx[9](/*tick*/ ctx[16]) + ",0)");
+    			add_location(g, file$2, 109, 10, 3948);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, g, anchor);
@@ -5494,25 +6570,25 @@ var app = (function () {
     			append_dev(text_1, t);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*height*/ 4 && line_y__value !== (line_y__value = /*height*/ ctx[2] - /*padding*/ ctx[10].bottom + 4)) {
+    			if (dirty & /*height*/ 4 && line_y__value !== (line_y__value = /*height*/ ctx[2] - /*padding*/ ctx[11].bottom + 4)) {
     				attr_dev(line, "y1", line_y__value);
     			}
 
-    			if (dirty & /*height*/ 4 && line_y__value_1 !== (line_y__value_1 = /*height*/ ctx[2] - /*padding*/ ctx[10].bottom)) {
+    			if (dirty & /*height*/ 4 && line_y__value_1 !== (line_y__value_1 = /*height*/ ctx[2] - /*padding*/ ctx[11].bottom)) {
     				attr_dev(line, "y2", line_y__value_1);
     			}
 
-    			if (dirty & /*xTicks*/ 128 && t_value !== (t_value = /*tick*/ ctx[15] + "")) set_data_dev(t, t_value);
+    			if (dirty & /*xTicks*/ 128 && t_value !== (t_value = /*tick*/ ctx[16] + "")) set_data_dev(t, t_value);
 
-    			if (dirty & /*height*/ 4 && text_1_y_value !== (text_1_y_value = /*height*/ ctx[2] - /*padding*/ ctx[10].bottom + 16)) {
+    			if (dirty & /*height*/ 4 && text_1_y_value !== (text_1_y_value = /*height*/ ctx[2] - /*padding*/ ctx[11].bottom + 14)) {
     				attr_dev(text_1, "y", text_1_y_value);
     			}
 
-    			if (dirty & /*xTicks*/ 128 && g_class_value !== (g_class_value = "tick tick-" + /*tick*/ ctx[15] + " svelte-1y5bkru")) {
+    			if (dirty & /*xTicks*/ 128 && g_class_value !== (g_class_value = "tick tick-" + /*tick*/ ctx[16] + " svelte-12z2zjs")) {
     				attr_dev(g, "class", g_class_value);
     			}
 
-    			if (dirty & /*xScale, xTicks*/ 640 && g_transform_value !== (g_transform_value = "translate(" + /*xScale*/ ctx[9](/*tick*/ ctx[15]) + ",0)")) {
+    			if (dirty & /*xScale, xTicks*/ 640 && g_transform_value !== (g_transform_value = "translate(" + /*xScale*/ ctx[9](/*tick*/ ctx[16]) + ",0)")) {
     				attr_dev(g, "transform", g_transform_value);
     			}
     		},
@@ -5525,7 +6601,7 @@ var app = (function () {
     		block,
     		id: create_each_block$2.name,
     		type: "each",
-    		source: "(98:8) {#each xTicks as tick}",
+    		source: "(109:8) {#each xTicks as tick}",
     		ctx
     	});
 
@@ -5554,7 +6630,7 @@ var app = (function () {
     	let text1_y_value;
     	let mounted;
     	let dispose;
-    	let if_block = /*data*/ ctx[0] && create_if_block(ctx);
+    	let if_block = /*data*/ ctx[0] && create_if_block$1(ctx);
     	let each_value_1 = /*yTicks*/ ctx[6];
     	validate_each_argument(each_value_1);
     	let each_blocks_1 = [];
@@ -5594,32 +6670,32 @@ var app = (function () {
 
     			text1 = svg_element("text");
     			t1 = text$1(/*xAxisTitle*/ ctx[5]);
-    			attr_dev(line0, "class", "axis-guideline svelte-1y5bkru");
+    			attr_dev(line0, "class", "axis-guideline svelte-12z2zjs");
     			attr_dev(line0, "x1", line0_x__value = /*xScale*/ ctx[9](0));
     			attr_dev(line0, "x2", line0_x__value_1 = /*xScale*/ ctx[9](100));
     			attr_dev(line0, "transform", line0_transform_value = "translate(0," + /*yScale*/ ctx[8](0) + ")");
-    			add_location(line0, file$2, 84, 8, 2985);
-    			attr_dev(text0, "class", "yAxisTitle svelte-1y5bkru");
+    			add_location(line0, file$2, 94, 8, 3162);
+    			attr_dev(text0, "class", "yAxisTitle svelte-12z2zjs");
     			attr_dev(text0, "x", text0_x_value = -/*height*/ ctx[2] / 2);
-    			attr_dev(text0, "y", /*padding*/ ctx[10].left - 30);
-    			add_location(text0, file$2, 91, 8, 3377);
+    			attr_dev(text0, "y", /*padding*/ ctx[11].left - 30);
+    			add_location(text0, file$2, 102, 8, 3644);
     			attr_dev(g0, "class", "axis y-axis");
-    			add_location(g0, file$2, 83, 6, 2953);
-    			attr_dev(line1, "class", "axis-guideline svelte-1y5bkru");
+    			add_location(g0, file$2, 93, 6, 3130);
+    			attr_dev(line1, "class", "axis-guideline svelte-12z2zjs");
     			attr_dev(line1, "y1", line1_y__value = /*yScale*/ ctx[8](0));
     			attr_dev(line1, "y2", line1_y__value_1 = /*yScale*/ ctx[8](100));
     			attr_dev(line1, "transform", line1_transform_value = "translate(" + /*xScale*/ ctx[9](0) + ")");
-    			add_location(line1, file$2, 96, 8, 3532);
-    			attr_dev(text1, "class", "xAxisTitle svelte-1y5bkru");
+    			add_location(line1, file$2, 107, 8, 3799);
+    			attr_dev(text1, "class", "xAxisTitle svelte-12z2zjs");
     			attr_dev(text1, "x", text1_x_value = /*width*/ ctx[1] / 2);
     			attr_dev(text1, "y", text1_y_value = /*height*/ ctx[2] - 4);
-    			add_location(text1, file$2, 103, 8, 3948);
+    			add_location(text1, file$2, 114, 8, 4215);
     			attr_dev(g1, "class", "axis x-axis");
-    			add_location(g1, file$2, 95, 6, 3500);
-    			attr_dev(svg, "class", "chart svelte-1y5bkru");
-    			add_location(svg, file$2, 68, 4, 2479);
-    			attr_dev(figure_1, "class", "svelte-1y5bkru");
-    			add_location(figure_1, file$2, 66, 2, 2393);
+    			add_location(g1, file$2, 106, 6, 3767);
+    			attr_dev(svg, "class", "chart svelte-12z2zjs");
+    			add_location(svg, file$2, 70, 4, 2493);
+    			attr_dev(figure_1, "class", "svelte-12z2zjs");
+    			add_location(figure_1, file$2, 68, 2, 2407);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -5646,10 +6722,10 @@ var app = (function () {
 
     			append_dev(g1, text1);
     			append_dev(text1, t1);
-    			/*figure_1_binding*/ ctx[14](figure_1);
+    			/*figure_1_binding*/ ctx[15](figure_1);
 
     			if (!mounted) {
-    				dispose = listen_dev(window, "resize", /*resize*/ ctx[12], false, false, false);
+    				dispose = listen_dev(window, "resize", /*resize*/ ctx[13], false, false, false);
     				mounted = true;
     			}
     		},
@@ -5658,7 +6734,7 @@ var app = (function () {
     				if (if_block) {
     					if_block.p(ctx, dirty);
     				} else {
-    					if_block = create_if_block(ctx);
+    					if_block = create_if_block$1(ctx);
     					if_block.c();
     					if_block.m(svg, g0);
     				}
@@ -5679,7 +6755,7 @@ var app = (function () {
     				attr_dev(line0, "transform", line0_transform_value);
     			}
 
-    			if (dirty & /*yTicks, yScale, padding*/ 1344) {
+    			if (dirty & /*yTicks, yScale, padding*/ 2368) {
     				each_value_1 = /*yTicks*/ ctx[6];
     				validate_each_argument(each_value_1);
     				let i;
@@ -5721,7 +6797,7 @@ var app = (function () {
     				attr_dev(line1, "transform", line1_transform_value);
     			}
 
-    			if (dirty & /*xTicks, xScale, height, padding*/ 1668) {
+    			if (dirty & /*xTicks, xScale, height, padding*/ 2692) {
     				each_value = /*xTicks*/ ctx[7];
     				validate_each_argument(each_value);
     				let i;
@@ -5762,7 +6838,7 @@ var app = (function () {
     			if (if_block) if_block.d();
     			destroy_each(each_blocks_1, detaching);
     			destroy_each(each_blocks, detaching);
-    			/*figure_1_binding*/ ctx[14](null);
+    			/*figure_1_binding*/ ctx[15](null);
     			mounted = false;
     			dispose();
     		}
@@ -5788,22 +6864,23 @@ var app = (function () {
     	validate_slots('Chart', slots, []);
     	let { data } = $$props;
     	let { titles } = $$props;
+    	let selectedIndicator;
 
     	// here, I am using a figure to hold my chart – it's interesting I'm using a figure for this and I'm not sure why. We are using it because we want to wrap the svg tag as well (bunch of small multiples, so it's easier to recognize)
     	let figure;
 
     	let width = 400;
-    	let height = 400;
+    	let height = 200;
     	let yAxisTitle = "";
     	let xAxisTitle = "";
 
     	if (titles) {
-    		yAxisTitle = "Reserves, % of World Total";
-    		xAxisTitle = "Production, % of World Total";
+    		yAxisTitle = "Reserves (% of World Total)";
+    		xAxisTitle = "Production (% of World Total)";
     	}
 
     	// add in padding on figure element, with one line structure
-    	const padding = { top: 25, right: 35, bottom: 35, left: 45 };
+    	const padding = { top: 25, right: 35, bottom: 45, left: 45 };
 
     	const formatTooltip = (data, selector) => {
     		const template = `
@@ -5839,7 +6916,7 @@ var app = (function () {
 
     	$$self.$$set = $$props => {
     		if ('data' in $$props) $$invalidate(0, data = $$props.data);
-    		if ('titles' in $$props) $$invalidate(13, titles = $$props.titles);
+    		if ('titles' in $$props) $$invalidate(14, titles = $$props.titles);
     	};
 
     	$$self.$capture_state = () => ({
@@ -5848,6 +6925,7 @@ var app = (function () {
     		tippy,
     		data,
     		titles,
+    		selectedIndicator,
     		figure,
     		width,
     		height,
@@ -5864,7 +6942,8 @@ var app = (function () {
 
     	$$self.$inject_state = $$props => {
     		if ('data' in $$props) $$invalidate(0, data = $$props.data);
-    		if ('titles' in $$props) $$invalidate(13, titles = $$props.titles);
+    		if ('titles' in $$props) $$invalidate(14, titles = $$props.titles);
+    		if ('selectedIndicator' in $$props) $$invalidate(10, selectedIndicator = $$props.selectedIndicator);
     		if ('figure' in $$props) $$invalidate(3, figure = $$props.figure);
     		if ('width' in $$props) $$invalidate(1, width = $$props.width);
     		if ('height' in $$props) $$invalidate(2, height = $$props.height);
@@ -5892,8 +6971,8 @@ var app = (function () {
     		}
     	};
 
-    	$$invalidate(7, xTicks = [0, 25, 50, 75, 100]);
-    	$$invalidate(6, yTicks = [0, 25, 50, 75, 100]);
+    	$$invalidate(7, xTicks = [0, 50, 100]);
+    	$$invalidate(6, yTicks = [0, 50, 100]);
 
     	return [
     		data,
@@ -5906,6 +6985,7 @@ var app = (function () {
     		xTicks,
     		yScale,
     		xScale,
+    		selectedIndicator,
     		padding,
     		formatTooltip,
     		resize,
@@ -5917,7 +6997,7 @@ var app = (function () {
     class Chart extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$2, create_fragment$2, safe_not_equal, { data: 0, titles: 13 });
+    		init(this, options, instance$2, create_fragment$2, safe_not_equal, { data: 0, titles: 14 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
@@ -5933,7 +7013,7 @@ var app = (function () {
     			console.warn("<Chart> was created without expected prop 'data'");
     		}
 
-    		if (/*titles*/ ctx[13] === undefined && !('titles' in props)) {
+    		if (/*titles*/ ctx[14] === undefined && !('titles' in props)) {
     			console.warn("<Chart> was created without expected prop 'titles'");
     		}
     	}
@@ -5960,8 +7040,8 @@ var app = (function () {
 
     function get_each_context$1(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[11] = list[i];
-    	child_ctx[13] = i;
+    	child_ctx[10] = list[i];
+    	child_ctx[12] = i;
     	return child_ctx;
     }
 
@@ -5973,7 +7053,7 @@ var app = (function () {
     	let circle_region_value;
     	let circle_data_color_value;
     	let text_1;
-    	let t_value = /*d*/ ctx[11].text + "";
+    	let t_value = /*d*/ ctx[10].text + "";
     	let t;
 
     	const block = {
@@ -5982,16 +7062,16 @@ var app = (function () {
     			text_1 = svg_element("text");
     			t = text$1(t_value);
     			attr_dev(circle, "cx", "10");
-    			attr_dev(circle, "cy", 15 + 20 * /*legendIndex*/ ctx[13] + 'px');
-    			attr_dev(circle, "r", circle_r_value = /*d*/ ctx[11].r);
-    			attr_dev(circle, "fill", circle_fill_value = /*d*/ ctx[11].fill);
-    			attr_dev(circle, "region", circle_region_value = /*d*/ ctx[11].region);
-    			attr_dev(circle, "data-color", circle_data_color_value = /*d*/ ctx[11].text);
-    			add_location(circle, file$1, 50, 6, 1689);
+    			attr_dev(circle, "cy", 15 + 20 * /*legendIndex*/ ctx[12] + 'px');
+    			attr_dev(circle, "r", circle_r_value = /*d*/ ctx[10].r);
+    			attr_dev(circle, "fill", circle_fill_value = /*d*/ ctx[10].fill);
+    			attr_dev(circle, "region", circle_region_value = /*d*/ ctx[10].region);
+    			attr_dev(circle, "data-color", circle_data_color_value = /*d*/ ctx[10].text);
+    			add_location(circle, file$1, 50, 6, 1724);
     			attr_dev(text_1, "class", "legend__labels");
     			attr_dev(text_1, "x", "25");
-    			attr_dev(text_1, "y", 20 + 20 * /*legendIndex*/ ctx[13] + 'px');
-    			add_location(text_1, file$1, 57, 6, 1871);
+    			attr_dev(text_1, "y", 20 + 20 * /*legendIndex*/ ctx[12] + 'px');
+    			add_location(text_1, file$1, 57, 6, 1906);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, circle, anchor);
@@ -5999,23 +7079,23 @@ var app = (function () {
     			append_dev(text_1, t);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*legendValues*/ 4 && circle_r_value !== (circle_r_value = /*d*/ ctx[11].r)) {
+    			if (dirty & /*legendValues*/ 2 && circle_r_value !== (circle_r_value = /*d*/ ctx[10].r)) {
     				attr_dev(circle, "r", circle_r_value);
     			}
 
-    			if (dirty & /*legendValues*/ 4 && circle_fill_value !== (circle_fill_value = /*d*/ ctx[11].fill)) {
+    			if (dirty & /*legendValues*/ 2 && circle_fill_value !== (circle_fill_value = /*d*/ ctx[10].fill)) {
     				attr_dev(circle, "fill", circle_fill_value);
     			}
 
-    			if (dirty & /*legendValues*/ 4 && circle_region_value !== (circle_region_value = /*d*/ ctx[11].region)) {
+    			if (dirty & /*legendValues*/ 2 && circle_region_value !== (circle_region_value = /*d*/ ctx[10].region)) {
     				attr_dev(circle, "region", circle_region_value);
     			}
 
-    			if (dirty & /*legendValues*/ 4 && circle_data_color_value !== (circle_data_color_value = /*d*/ ctx[11].text)) {
+    			if (dirty & /*legendValues*/ 2 && circle_data_color_value !== (circle_data_color_value = /*d*/ ctx[10].text)) {
     				attr_dev(circle, "data-color", circle_data_color_value);
     			}
 
-    			if (dirty & /*legendValues*/ 4 && t_value !== (t_value = /*d*/ ctx[11].text + "")) set_data_dev(t, t_value);
+    			if (dirty & /*legendValues*/ 2 && t_value !== (t_value = /*d*/ ctx[10].text + "")) set_data_dev(t, t_value);
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(circle);
@@ -6036,22 +7116,10 @@ var app = (function () {
 
     function create_fragment$1(ctx) {
     	let figure_1;
-    	let figcaption;
-    	let t1;
-    	let form;
-    	let label;
-    	let t3;
-    	let select;
-    	let option0;
-    	let option1;
-    	let t6;
     	let svg;
-    	let t7;
-    	let chart;
-    	let current;
     	let mounted;
     	let dispose;
-    	let each_value = /*legendValues*/ ctx[2];
+    	let each_value = /*legendValues*/ ctx[1];
     	validate_each_argument(each_value);
     	let each_blocks = [];
 
@@ -6059,95 +7127,41 @@ var app = (function () {
     		each_blocks[i] = create_each_block$1(get_each_context$1(ctx, each_value, i));
     	}
 
-    	chart = new Chart({ props: { titles: "yes" }, $$inline: true });
-
     	const block = {
     		c: function create() {
     			figure_1 = element("figure");
-    			figcaption = element("figcaption");
-    			figcaption.textContent = "Legend";
-    			t1 = space();
-    			form = element("form");
-    			label = element("label");
-    			label.textContent = "Select something";
-    			t3 = space();
-    			select = element("select");
-    			option0 = element("option");
-    			option0.textContent = "Income";
-    			option1 = element("option");
-    			option1.textContent = "Region";
-    			t6 = space();
     			svg = svg_element("svg");
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
     				each_blocks[i].c();
     			}
 
-    			t7 = space();
-    			create_component(chart.$$.fragment);
-    			attr_dev(figcaption, "class", "legend__title");
-    			add_location(figcaption, file$1, 38, 2, 1288);
-    			attr_dev(label, "for", "colors");
-    			add_location(label, file$1, 42, 4, 1373);
-    			option0.__value = "Income";
-    			option0.value = option0.__value;
-    			add_location(option0, file$1, 44, 6, 1494);
-    			option1.__value = "Region";
-    			option1.value = option1.__value;
-    			add_location(option1, file$1, 45, 6, 1539);
-    			attr_dev(select, "name", "colors");
-    			attr_dev(select, "id", "colors");
-    			if (/*selectedIndicator*/ ctx[0] === void 0) add_render_callback(() => /*select_change_handler*/ ctx[4].call(select));
-    			add_location(select, file$1, 43, 4, 1422);
-    			attr_dev(form, "action", "");
-    			add_location(form, file$1, 41, 2, 1352);
     			attr_dev(svg, "class", "legend__color-circles");
-    			add_location(svg, file$1, 48, 2, 1604);
+    			add_location(svg, file$1, 48, 2, 1639);
     			attr_dev(figure_1, "class", "interactive__color-legend legend");
-    			add_location(figure_1, file$1, 37, 0, 1215);
+    			add_location(figure_1, file$1, 37, 0, 1232);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, figure_1, anchor);
-    			append_dev(figure_1, figcaption);
-    			append_dev(figure_1, t1);
-    			append_dev(figure_1, form);
-    			append_dev(form, label);
-    			append_dev(form, t3);
-    			append_dev(form, select);
-    			append_dev(select, option0);
-    			append_dev(select, option1);
-    			select_option(select, /*selectedIndicator*/ ctx[0]);
-    			append_dev(figure_1, t6);
     			append_dev(figure_1, svg);
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
     				each_blocks[i].m(svg, null);
     			}
 
-    			append_dev(figure_1, t7);
-    			mount_component(chart, figure_1, null);
-    			/*figure_1_binding*/ ctx[5](figure_1);
-    			current = true;
+    			/*figure_1_binding*/ ctx[4](figure_1);
 
     			if (!mounted) {
-    				dispose = [
-    					listen_dev(window, "resize", /*resize*/ ctx[3], false, false, false),
-    					listen_dev(select, "change", /*select_change_handler*/ ctx[4])
-    				];
-
+    				dispose = listen_dev(window, "resize", /*resize*/ ctx[2], false, false, false);
     				mounted = true;
     			}
     		},
     		p: function update(ctx, [dirty]) {
-    			if (dirty & /*selectedIndicator*/ 1) {
-    				select_option(select, /*selectedIndicator*/ ctx[0]);
-    			}
-
-    			if (dirty & /*legendValues*/ 4) {
-    				each_value = /*legendValues*/ ctx[2];
+    			if (dirty & /*legendValues*/ 2) {
+    				each_value = /*legendValues*/ ctx[1];
     				validate_each_argument(each_value);
     				let i;
 
@@ -6170,22 +7184,14 @@ var app = (function () {
     				each_blocks.length = each_value.length;
     			}
     		},
-    		i: function intro(local) {
-    			if (current) return;
-    			transition_in(chart.$$.fragment, local);
-    			current = true;
-    		},
-    		o: function outro(local) {
-    			transition_out(chart.$$.fragment, local);
-    			current = false;
-    		},
+    		i: noop,
+    		o: noop,
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(figure_1);
     			destroy_each(each_blocks, detaching);
-    			destroy_component(chart);
-    			/*figure_1_binding*/ ctx[5](null);
+    			/*figure_1_binding*/ ctx[4](null);
     			mounted = false;
-    			run_all(dispose);
+    			dispose();
     		}
     	};
 
@@ -6205,7 +7211,7 @@ var app = (function () {
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('Legend', slots, []);
     	let { selectedIndicator } = $$props;
-    	let colorScale = ['#69518d', '#58a897', '#83badc', '#084d7c', '#e7ae3f', '#8cb561'];
+    	let colorScale = ['#1A6CC4', '#00B2E3', '#D84B29', '#F4BE43', '#45B166', '#C02EF3', '#881C44'];
 
     	let regionData = [
     		{
@@ -6288,20 +7294,15 @@ var app = (function () {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console.warn(`<Legend> was created with unknown prop '${key}'`);
     	});
 
-    	function select_change_handler() {
-    		selectedIndicator = select_value(this);
-    		$$invalidate(0, selectedIndicator);
-    	}
-
     	function figure_1_binding($$value) {
     		binding_callbacks[$$value ? 'unshift' : 'push'](() => {
     			figure = $$value;
-    			$$invalidate(1, figure);
+    			$$invalidate(0, figure);
     		});
     	}
 
     	$$self.$$set = $$props => {
-    		if ('selectedIndicator' in $$props) $$invalidate(0, selectedIndicator = $$props.selectedIndicator);
+    		if ('selectedIndicator' in $$props) $$invalidate(3, selectedIndicator = $$props.selectedIndicator);
     	};
 
     	$$self.$capture_state = () => ({
@@ -6319,14 +7320,14 @@ var app = (function () {
     	});
 
     	$$self.$inject_state = $$props => {
-    		if ('selectedIndicator' in $$props) $$invalidate(0, selectedIndicator = $$props.selectedIndicator);
+    		if ('selectedIndicator' in $$props) $$invalidate(3, selectedIndicator = $$props.selectedIndicator);
     		if ('colorScale' in $$props) colorScale = $$props.colorScale;
-    		if ('regionData' in $$props) $$invalidate(9, regionData = $$props.regionData);
-    		if ('incomeData' in $$props) $$invalidate(10, incomeData = $$props.incomeData);
-    		if ('figure' in $$props) $$invalidate(1, figure = $$props.figure);
+    		if ('regionData' in $$props) $$invalidate(8, regionData = $$props.regionData);
+    		if ('incomeData' in $$props) $$invalidate(9, incomeData = $$props.incomeData);
+    		if ('figure' in $$props) $$invalidate(0, figure = $$props.figure);
     		if ('width' in $$props) width = $$props.width;
     		if ('height' in $$props) height = $$props.height;
-    		if ('legendValues' in $$props) $$invalidate(2, legendValues = $$props.legendValues);
+    		if ('legendValues' in $$props) $$invalidate(1, legendValues = $$props.legendValues);
     	};
 
     	if ($$props && "$$inject" in $$props) {
@@ -6334,25 +7335,20 @@ var app = (function () {
     	}
 
     	$$self.$$.update = () => {
-    		if ($$self.$$.dirty & /*selectedIndicator*/ 1) {
-    			$$invalidate(2, legendValues = selectedIndicator === 'Income' ? incomeData : regionData);
+    		if ($$self.$$.dirty & /*selectedIndicator*/ 8) {
+    			$$invalidate(1, legendValues = selectedIndicator === 'income_level'
+    			? incomeData
+    			: regionData);
     		}
     	};
 
-    	return [
-    		selectedIndicator,
-    		figure,
-    		legendValues,
-    		resize,
-    		select_change_handler,
-    		figure_1_binding
-    	];
+    	return [figure, legendValues, resize, selectedIndicator, figure_1_binding];
     }
 
     class Legend extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance$1, create_fragment$1, safe_not_equal, { selectedIndicator: 0 });
+    		init(this, options, instance$1, create_fragment$1, safe_not_equal, { selectedIndicator: 3 });
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
@@ -6364,7 +7360,7 @@ var app = (function () {
     		const { ctx } = this.$$;
     		const props = options.props || {};
 
-    		if (/*selectedIndicator*/ ctx[0] === undefined && !('selectedIndicator' in props)) {
+    		if (/*selectedIndicator*/ ctx[3] === undefined && !('selectedIndicator' in props)) {
     			console.warn("<Legend> was created without expected prop 'selectedIndicator'");
     		}
     	}
@@ -6386,14 +7382,14 @@ var app = (function () {
 
     function get_each_context(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[7] = list[i];
+    	child_ctx[9] = list[i];
     	return child_ctx;
     }
 
-    // (92:2) {:catch error}
+    // (100:2) {:catch error}
     function create_catch_block(ctx) {
     	let p;
-    	let t_value = /*error*/ ctx[10].message + "";
+    	let t_value = /*error*/ ctx[12].message + "";
     	let t;
 
     	const block = {
@@ -6401,7 +7397,7 @@ var app = (function () {
     			p = element("p");
     			t = text$1(t_value);
     			set_style(p, "color", "red");
-    			add_location(p, file, 92, 2, 2147);
+    			add_location(p, file, 100, 2, 2547);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
@@ -6419,18 +7415,25 @@ var app = (function () {
     		block,
     		id: create_catch_block.name,
     		type: "catch",
-    		source: "(92:2) {:catch error}",
+    		source: "(100:2) {:catch error}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (72:2) {:then allData}
+    // (71:2) {:then allData}
     function create_then_block(ctx) {
-    	let div;
+    	let div2;
+    	let div0;
+    	let t0;
+    	let div1;
+    	let options;
+    	let updating_selectedIndicator;
+    	let t1;
+    	let legend;
     	let current;
-    	let each_value = /*allData*/ ctx[1];
+    	let each_value = /*allData*/ ctx[2];
     	validate_each_argument(each_value);
     	let each_blocks = [];
 
@@ -6442,29 +7445,65 @@ var app = (function () {
     		each_blocks[i] = null;
     	});
 
+    	function options_selectedIndicator_binding(value) {
+    		/*options_selectedIndicator_binding*/ ctx[3](value);
+    	}
+
+    	let options_props = { allData: /*allData*/ ctx[2] };
+
+    	if (/*selectedIndicator*/ ctx[0] !== void 0) {
+    		options_props.selectedIndicator = /*selectedIndicator*/ ctx[0];
+    	}
+
+    	options = new Options({ props: options_props, $$inline: true });
+    	binding_callbacks.push(() => bind(options, 'selectedIndicator', options_selectedIndicator_binding));
+
+    	legend = new Legend({
+    			props: {
+    				selectedIndicator: /*selectedIndicator*/ ctx[0]
+    			},
+    			$$inline: true
+    		});
+
     	const block = {
     		c: function create() {
-    			div = element("div");
+    			div2 = element("div");
+    			div0 = element("div");
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
     				each_blocks[i].c();
     			}
 
-    			attr_dev(div, "class", "charts-container");
-    			add_location(div, file, 73, 2, 1665);
+    			t0 = space();
+    			div1 = element("div");
+    			create_component(options.$$.fragment);
+    			t1 = space();
+    			create_component(legend.$$.fragment);
+    			attr_dev(div0, "class", "charts-container");
+    			add_location(div0, file, 72, 4, 1617);
+    			attr_dev(div1, "class", "interactive__legend-container");
+    			add_location(div1, file, 81, 4, 2016);
+    			attr_dev(div2, "class", "main-container");
+    			add_location(div2, file, 71, 2, 1584);
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, div, anchor);
+    			insert_dev(target, div2, anchor);
+    			append_dev(div2, div0);
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
-    				each_blocks[i].m(div, null);
+    				each_blocks[i].m(div0, null);
     			}
 
+    			append_dev(div2, t0);
+    			append_dev(div2, div1);
+    			mount_component(options, div1, null);
+    			append_dev(div1, t1);
+    			mount_component(legend, div1, null);
     			current = true;
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*allData, isMobile*/ 3) {
-    				each_value = /*allData*/ ctx[1];
+    			if (dirty & /*allData, selectedIndicator, isMobile*/ 7) {
+    				each_value = /*allData*/ ctx[2];
     				validate_each_argument(each_value);
     				let i;
 
@@ -6478,7 +7517,7 @@ var app = (function () {
     						each_blocks[i] = create_each_block(child_ctx);
     						each_blocks[i].c();
     						transition_in(each_blocks[i], 1);
-    						each_blocks[i].m(div, null);
+    						each_blocks[i].m(div0, null);
     					}
     				}
 
@@ -6490,6 +7529,19 @@ var app = (function () {
 
     				check_outros();
     			}
+
+    			const options_changes = {};
+
+    			if (!updating_selectedIndicator && dirty & /*selectedIndicator*/ 1) {
+    				updating_selectedIndicator = true;
+    				options_changes.selectedIndicator = /*selectedIndicator*/ ctx[0];
+    				add_flush_callback(() => updating_selectedIndicator = false);
+    			}
+
+    			options.$set(options_changes);
+    			const legend_changes = {};
+    			if (dirty & /*selectedIndicator*/ 1) legend_changes.selectedIndicator = /*selectedIndicator*/ ctx[0];
+    			legend.$set(legend_changes);
     		},
     		i: function intro(local) {
     			if (current) return;
@@ -6498,6 +7550,8 @@ var app = (function () {
     				transition_in(each_blocks[i]);
     			}
 
+    			transition_in(options.$$.fragment, local);
+    			transition_in(legend.$$.fragment, local);
     			current = true;
     		},
     		o: function outro(local) {
@@ -6507,11 +7561,15 @@ var app = (function () {
     				transition_out(each_blocks[i]);
     			}
 
+    			transition_out(options.$$.fragment, local);
+    			transition_out(legend.$$.fragment, local);
     			current = false;
     		},
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div);
+    			if (detaching) detach_dev(div2);
     			destroy_each(each_blocks, detaching);
+    			destroy_component(options);
+    			destroy_component(legend);
     		}
     	};
 
@@ -6519,22 +7577,23 @@ var app = (function () {
     		block,
     		id: create_then_block.name,
     		type: "then",
-    		source: "(72:2) {:then allData}",
+    		source: "(71:2) {:then allData}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (75:4) {#each allData as data}
-    function create_each_block(ctx) {
+    // (77:8) {:else}
+    function create_else_block(ctx) {
     	let chart;
     	let current;
 
     	chart = new Chart({
     			props: {
-    				data: /*data*/ ctx[7],
-    				isMobile: /*isMobile*/ ctx[0]
+    				data: /*data*/ ctx[9],
+    				selectedIndicator: /*selectedIndicator*/ ctx[0],
+    				isMobile: /*isMobile*/ ctx[1]
     			},
     			$$inline: true
     		});
@@ -6549,7 +7608,8 @@ var app = (function () {
     		},
     		p: function update(ctx, dirty) {
     			const chart_changes = {};
-    			if (dirty & /*isMobile*/ 1) chart_changes.isMobile = /*isMobile*/ ctx[0];
+    			if (dirty & /*selectedIndicator*/ 1) chart_changes.selectedIndicator = /*selectedIndicator*/ ctx[0];
+    			if (dirty & /*isMobile*/ 2) chart_changes.isMobile = /*isMobile*/ ctx[1];
     			chart.$set(chart_changes);
     		},
     		i: function intro(local) {
@@ -6568,16 +7628,126 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_each_block.name,
-    		type: "each",
-    		source: "(75:4) {#each allData as data}",
+    		id: create_else_block.name,
+    		type: "else",
+    		source: "(77:8) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (68:18)    <div class="loading-container">     <div class="loading"></div>   </div>   {:then allData}
+    // (75:8) {#if data.mineral === "Cobalt" || data.mineral === "Rare Earths"}
+    function create_if_block(ctx) {
+    	let chart;
+    	let current;
+
+    	chart = new Chart({
+    			props: {
+    				data: /*data*/ ctx[9],
+    				titles: "yes",
+    				selectedIndicator: /*selectedIndicator*/ ctx[0],
+    				isMobile: /*isMobile*/ ctx[1]
+    			},
+    			$$inline: true
+    		});
+
+    	const block = {
+    		c: function create() {
+    			create_component(chart.$$.fragment);
+    		},
+    		m: function mount(target, anchor) {
+    			mount_component(chart, target, anchor);
+    			current = true;
+    		},
+    		p: function update(ctx, dirty) {
+    			const chart_changes = {};
+    			if (dirty & /*selectedIndicator*/ 1) chart_changes.selectedIndicator = /*selectedIndicator*/ ctx[0];
+    			if (dirty & /*isMobile*/ 2) chart_changes.isMobile = /*isMobile*/ ctx[1];
+    			chart.$set(chart_changes);
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(chart.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(chart.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			destroy_component(chart, detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block.name,
+    		type: "if",
+    		source: "(75:8) {#if data.mineral === \\\"Cobalt\\\" || data.mineral === \\\"Rare Earths\\\"}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (74:6) {#each allData as data}
+    function create_each_block(ctx) {
+    	let current_block_type_index;
+    	let if_block;
+    	let if_block_anchor;
+    	let current;
+    	const if_block_creators = [create_if_block, create_else_block];
+    	const if_blocks = [];
+
+    	function select_block_type(ctx, dirty) {
+    		if (/*data*/ ctx[9].mineral === "Cobalt" || /*data*/ ctx[9].mineral === "Rare Earths") return 0;
+    		return 1;
+    	}
+
+    	current_block_type_index = select_block_type(ctx);
+    	if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
+
+    	const block = {
+    		c: function create() {
+    			if_block.c();
+    			if_block_anchor = empty$1();
+    		},
+    		m: function mount(target, anchor) {
+    			if_blocks[current_block_type_index].m(target, anchor);
+    			insert_dev(target, if_block_anchor, anchor);
+    			current = true;
+    		},
+    		p: function update(ctx, dirty) {
+    			if_block.p(ctx, dirty);
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(if_block);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(if_block);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if_blocks[current_block_type_index].d(detaching);
+    			if (detaching) detach_dev(if_block_anchor);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_each_block.name,
+    		type: "each",
+    		source: "(74:6) {#each allData as data}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (67:18)    <div class="loading-container">     <div class="loading"></div>   </div>   {:then allData}
     function create_pending_block(ctx) {
     	let div1;
     	let div0;
@@ -6587,9 +7757,9 @@ var app = (function () {
     			div1 = element("div");
     			div0 = element("div");
     			attr_dev(div0, "class", "loading");
-    			add_location(div0, file, 69, 4, 1563);
+    			add_location(div0, file, 68, 4, 1527);
     			attr_dev(div1, "class", "loading-container");
-    			add_location(div1, file, 68, 2, 1527);
+    			add_location(div1, file, 67, 2, 1491);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div1, anchor);
@@ -6607,7 +7777,7 @@ var app = (function () {
     		block,
     		id: create_pending_block.name,
     		type: "pending",
-    		source: "(68:18)    <div class=\\\"loading-container\\\">     <div class=\\\"loading\\\"></div>   </div>   {:then allData}",
+    		source: "(67:18)    <div class=\\\"loading-container\\\">     <div class=\\\"loading\\\"></div>   </div>   {:then allData}",
     		ctx
     	});
 
@@ -6621,11 +7791,7 @@ var app = (function () {
     	let t1;
     	let p;
     	let t3;
-    	let div;
-    	let legend;
-    	let t4;
     	let current;
-    	legend = new Legend({ $$inline: true });
 
     	let info = {
     		ctx,
@@ -6635,12 +7801,12 @@ var app = (function () {
     		pending: create_pending_block,
     		then: create_then_block,
     		catch: create_catch_block,
-    		value: 1,
-    		error: 10,
+    		value: 2,
+    		error: 12,
     		blocks: [,,,]
     	};
 
-    	handle_promise(/*allData*/ ctx[1], info);
+    	handle_promise(/*allData*/ ctx[2], info);
 
     	const block = {
     		c: function create() {
@@ -6652,18 +7818,13 @@ var app = (function () {
     			p = element("p");
     			p.textContent = "This is a lil description thingy. Hello World!";
     			t3 = space();
-    			div = element("div");
-    			create_component(legend.$$.fragment);
-    			t4 = space();
     			info.block.c();
-    			add_location(h1, file, 58, 4, 1332);
-    			add_location(p, file, 59, 4, 1357);
+    			add_location(h1, file, 60, 4, 1366);
+    			add_location(p, file, 61, 4, 1391);
     			attr_dev(header, "class", "interactive__header");
-    			add_location(header, file, 57, 2, 1291);
-    			attr_dev(div, "class", "interactive__legend-container");
-    			add_location(div, file, 63, 2, 1437);
+    			add_location(header, file, 59, 2, 1325);
     			attr_dev(main, "class", "interactive");
-    			add_location(main, file, 56, 0, 1262);
+    			add_location(main, file, 58, 0, 1296);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -6675,9 +7836,6 @@ var app = (function () {
     			append_dev(header, t1);
     			append_dev(header, p);
     			append_dev(main, t3);
-    			append_dev(main, div);
-    			mount_component(legend, div, null);
-    			append_dev(main, t4);
     			info.block.m(main, info.anchor = null);
     			info.mount = () => main;
     			info.anchor = null;
@@ -6689,13 +7847,10 @@ var app = (function () {
     		},
     		i: function intro(local) {
     			if (current) return;
-    			transition_in(legend.$$.fragment, local);
     			transition_in(info.block);
     			current = true;
     		},
     		o: function outro(local) {
-    			transition_out(legend.$$.fragment, local);
-
     			for (let i = 0; i < 3; i += 1) {
     				const block = info.blocks[i];
     				transition_out(block);
@@ -6705,7 +7860,6 @@ var app = (function () {
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(main);
-    			destroy_component(legend);
     			info.block.d();
     			info.token = null;
     			info = null;
@@ -6726,6 +7880,7 @@ var app = (function () {
     function instance($$self, $$props, $$invalidate) {
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('App', slots, []);
+    	let selectedIndicator = "region";
 
     	const dataSrc = {
     		scatter: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTxzv5D7cjQIQ4Wi6wFM1v_mUIB_Fef9d1KGL42xG_-THTfg5T4e8Ez11Ou63P4IE60DUV1XnMasEa0/pub?output=csv'
@@ -6747,9 +7902,9 @@ var app = (function () {
 
     	function resize(mediaQueryList) {
     		if (mediaQueryList.matches) {
-    			$$invalidate(0, isMobile = true);
+    			$$invalidate(1, isMobile = true);
     		} else {
-    			$$invalidate(0, isMobile = false);
+    			$$invalidate(1, isMobile = false);
     		}
     	}
 
@@ -6776,10 +7931,17 @@ var app = (function () {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console_1.warn(`<App> was created with unknown prop '${key}'`);
     	});
 
+    	function options_selectedIndicator_binding(value) {
+    		selectedIndicator = value;
+    		$$invalidate(0, selectedIndicator);
+    	}
+
     	$$self.$capture_state = () => ({
     		parseData,
+    		Options,
     		Chart,
     		Legend,
+    		selectedIndicator,
     		dataSrc,
     		allData,
     		loadData,
@@ -6790,7 +7952,8 @@ var app = (function () {
     	});
 
     	$$self.$inject_state = $$props => {
-    		if ('isMobile' in $$props) $$invalidate(0, isMobile = $$props.isMobile);
+    		if ('selectedIndicator' in $$props) $$invalidate(0, selectedIndicator = $$props.selectedIndicator);
+    		if ('isMobile' in $$props) $$invalidate(1, isMobile = $$props.isMobile);
     		if ('mq' in $$props) mq = $$props.mq;
     	};
 
@@ -6798,7 +7961,7 @@ var app = (function () {
     		$$self.$inject_state($$props.$$inject);
     	}
 
-    	return [isMobile, allData];
+    	return [selectedIndicator, isMobile, allData, options_selectedIndicator_binding];
     }
 
     class App extends SvelteComponentDev {

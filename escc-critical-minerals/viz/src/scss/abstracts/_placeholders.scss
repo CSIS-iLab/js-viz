@@ -28,10 +28,15 @@
   fill: $color__black;
   font-family: $font__hind;
   font-weight: 400;
-  @include font-size(12px);
+  @include font-size(10px);
   line-height: 1.4;
+}
 
-  @include breakpoint('medium') {
-    @include font-size(14px);
-  }
+%chart__title {
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 115%;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
 }

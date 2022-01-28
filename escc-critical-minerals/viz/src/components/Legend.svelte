@@ -3,7 +3,7 @@
   import Chart from './Chart.svelte'
   export let selectedIndicator
 
-  let colorScale = ['#69518d', '#58a897', '#83badc', '#084d7c', '#e7ae3f', '#8cb561'];
+  let colorScale = ['#1A6CC4', '#00B2E3', '#D84B29', '#F4BE43', '#45B166', '#C02EF3', '#881C44'];
 
   let regionData = [
     { x: 5, r: 7, fill: colorScale[0], text: 'Europe & North America' },
@@ -21,7 +21,7 @@
     { x: 60, r: 7, fill: colorScale[3], text: 'Low' },
   ]
 
-  $: legendValues = selectedIndicator === 'Income' ? incomeData : regionData
+  $: legendValues = selectedIndicator === 'income_level' ? incomeData : regionData
 
   let figure
   let width = 600
@@ -36,16 +36,16 @@
 
 <svelte:window on:resize="{resize}" />
 <figure class="interactive__color-legend legend" bind:this="{figure}">
-  <figcaption class="legend__title">
+  <!-- <figcaption class="legend__title">
     Legend
-  </figcaption>
-  <form action="">
+  </figcaption> -->
+  <!-- <form action="">
     <label for="colors">Select something</label>
     <select bind:value={selectedIndicator} name="colors" id="colors">
       <option value="Income">Income</option>
       <option value="Region">Region</option>
     </select>
-  </form>
+  </form> -->
   <svg class="legend__color-circles">
     {#each legendValues as d, legendIndex}
       <circle
@@ -60,7 +60,7 @@
       >
     {/each}
   </svg>
-  <Chart titles="yes" />
+  <!-- <Chart titles="yes" /> -->
 </figure>
 
 <style type="text/scss" global>
