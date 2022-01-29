@@ -91,7 +91,12 @@ Highcharts.chart("hcContainer", {
         align: 'left',
         enabled: true,
         formatter: function () {
-          return this.y.toFixed(1) + '%'
+          // hides datalabels when is not enough space on the bar
+          if (this.point.shapeArgs.height < this.point.name.length * 4) {
+            return
+          } else {
+            return this.y.toFixed(1) + '%'
+          }
         },
         style: {
           textOutline: 'none',
