@@ -10,8 +10,6 @@
   export let data
   export let titles
   export let selectedIndicator
-  console.log(data)
-  console.log(selectedIndicator)
 
   // here, I am using a figure to hold my chart – it's interesting I'm using a figure for this and I'm not sure why. We are using it because we want to wrap the svg tag as well (bunch of small multiples, so it's easier to recognize)
   let figure
@@ -106,7 +104,7 @@
           <text x="{padding.left - 5}" y="+4">{tick}</text>
         </g>
       {/each}
-      <text class="yAxisTitle" x="{-height / 2}" y="{padding.left - 30}"
+      <text class="yAxisTitle" x="{-height / 2}" y="{padding.left - 28}"
         >{yAxisTitle}</text
       >
     </g>
@@ -126,7 +124,7 @@
           <text y="{height - padding.bottom + 14}">{tick}</text>
         </g>
       {/each}
-      <text class="xAxisTitle" x="{width / 2}" y="{height - 4}"
+      <text class="xAxisTitle" x="{width / 2}" y="{height - 10}"
         >{xAxisTitle}</text
       >
     </g>

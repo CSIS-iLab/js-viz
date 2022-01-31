@@ -8,9 +8,7 @@ $color__light-blue: #00B2E3;
 $color__light-red: #D84B29;
 $color__yellow: #F4BE43;
 $color__green: #45B166;
-$color__purple: #C02EF3;
-$color__dark-pink: #881C44;
-$color__orange: #FF8A00;
+$color__gray: #C5c5c5;
 
 // colors
 $graph__lines-primary: #171717;
@@ -38,14 +36,12 @@ $size__max-width: 800px;
 $size__content-max-width: 1200px;
 
 $indicators: (
-  "North America": $color__dark-blue,
-  "East Asia & Pacific": $color__light-blue,
-  "Latin America & Caribbean": $color__yellow,
-  "Sub-Saharan Africa": $color__light-red,
-  "Middle East & North Africa": $color__green,
-  "Central & South Asia": $color__purple,
-  "Western Europe": $color__dark-pink,
-  "Eastern Europe & Central Asia": $color__orange,
+  "Americas": $color__dark-blue,
+  "Africa": $color__light-blue,
+  "Europe": $color__yellow,
+  "Asia": $color__light-red,
+  "Oceania": $color__green,
+  "N/A": $color__gray,
   "High": $color__dark-blue,
   "Upper Middle": $color__light-blue,
   "Lower Middle": $color__yellow,

@@ -1,13 +1,5 @@
 import * as d3Fetch from 'd3-fetch'
 
-const stringFields = [
-  'country',
-  'region',
-  'mineral',
-  'production2020',
-  'reserves2020'
-]
-
 function parseData({ src }) {
 
   const scatterPromise = d3Fetch.csv(src.scatter)
@@ -18,12 +10,12 @@ function parseData({ src }) {
     let table = [];
     let minerals = ['Cobalt', 'Lithium', 'Nickel', 'Rare Earths', 'Manganese', 'Graphite'];
 
-    // correct to input number strings as ints
+    // correct to input number strings as ints, then filter to remove nan values
     let correcteddata = initialdata.map((d) => {
       const checkNaN = a => {
         if (isNaN(a)) {
           d.isNan = true;
-          return 0;
+          return false;
         } else {
           d.isNan = false;
           return parseInt(a);
@@ -33,7 +25,9 @@ function parseData({ src }) {
       d.production2020 = checkNaN(d.production2020);
       d.reserves2020 = checkNaN(d.reserves2020);
       return d;
-    })
+    }).filter((d) => !d.isNan);
+
+
 
     let dataset = minerals.map((mineral) => ({
       mineral: mineral, 
@@ -42,6 +36,8 @@ function parseData({ src }) {
       totalReserves: 0
     }));
     
+
+
     for(let x = 0; x < minerals.length; x++) {
       dataset[x].mineralData.forEach(d => {
         dataset[x].totalProduction += d.production2020;
@@ -52,14 +48,16 @@ function parseData({ src }) {
         d.percentProduction = ((d.production2020 / dataset[x].totalProduction)*100);
       })
 
+// ----------------- code below this line was for creating the average line --------------
+
       // debugger;
-      table[x] = dataset[x].mineralData.map(function (country){
-        let col1 = country.percentProduction - average(dataset[x].mineralData, "percentProduction");
-        let col2 = country.percentReserves - average(dataset[x].mineralData, "percentReserves");
-        let col3 = col1 * col2;
-        let col4 = col1 * col1;
-        return ([col1, col2, col3, col4])
-      })
+      // table[x] = dataset[x].mineralData.map(function (country){
+      //   let col1 = country.percentProduction - average(dataset[x].mineralData, "percentProduction");
+      //   let col2 = country.percentReserves - average(dataset[x].mineralData, "percentReserves");
+      //   let col3 = col1 * col2;
+      //   let col4 = col1 * col1;
+      //   return ([col1, col2, col3, col4])
+      // })
     }
 
     // const trendline = (mineral, i) => {
@@ -82,6 +80,8 @@ function parseData({ src }) {
     // dataset.map((mineral, index) => trendline(mineral, index))
 
     // console.log("final data", dataset);
+
+    // ----------------------- end creating average line code -----------------
 
     return dataset
   })

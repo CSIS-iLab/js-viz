@@ -9,20 +9,16 @@
     '#F4BE43',
     '#D84B29',
     '#45B166',
-    '#C02EF3',
-    '#881C44',
-    '#FF8A00'
+    '#C5C5C5'
   ]
 
   let regionData = [
-    { x: 5, r: 5, fill: colorScale[0], text: 'North America' },
-    { x: 15, r: 5, fill: colorScale[1], text: 'East Asia & Pacific' },
-    { x: 20, r: 5, fill: colorScale[2], text: 'Latin America & Caribbean' },
-    { x: 25, r: 5, fill: colorScale[3], text: 'Sub-Saharan Africa' },
-    { x: 30, r: 5, fill: colorScale[4], text: 'Middle East & North Africa' },
-    { x: 35, r: 5, fill: colorScale[5], text: 'Central & South Asia' },
-    { x:40, r: 5, fill: colorScale[6], text: "Western Europe"},
-    { x:45, r: 5, fill: colorScale[7], text: "Eastern Europe & Central Asia"}
+    { x: 5, r: 5, fill: colorScale[0], text: 'Americas' },
+    { x: 15, r: 5, fill: colorScale[1], text: 'Africa' },
+    { x: 20, r: 5, fill: colorScale[2], text: 'Europe' },
+    { x: 25, r: 5, fill: colorScale[3], text: 'Asia' },
+    { x: 30, r: 5, fill: colorScale[4], text: 'Oceania' },
+    { x: 35, r: 5, fill: colorScale[5], text: 'N/A' }
   ]
 
   let incomeData = [
