@@ -13,12 +13,8 @@ figure {
     isolation: isolate;
 
     circle {
-      mix-blend-mode: multiply;
-      // @for $i from 0 through length(colorScale){
-      //   &:nth-of-type(#{length($colorScale)}n+#{$i}) {
-      //     fill: $colorScale[$i];
-      //   }
-      // }
+      mix-blend-mode: color;
+      fill-opacity: 0.8;
 
       @each $indicator, $color in $indicators {
         &[data-color='#{$indicator}'] {
@@ -85,3 +81,4 @@ figure {
     }
   }
 }
+

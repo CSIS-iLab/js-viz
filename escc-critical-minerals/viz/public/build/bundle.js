@@ -1,5 +1,5 @@
 
-(function(l, r) { if (!l || l.getElementById('livereloadscript')) return; r = l.createElement('script'); r.async = 1; r.src = '//' + (self.location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1'; r.id = 'livereloadscript'; l.getElementsByTagName('head')[0].appendChild(r) })(self.document);
+(function(l, r) { if (!l || l.getElementById('livereloadscript')) return; r = l.createElement('script'); r.async = 1; r.src = '//' + (self.location.host || 'localhost').split(':')[0] + ':35730/livereload.js?snipver=1'; r.id = 'livereloadscript'; l.getElementsByTagName('head')[0].appendChild(r) })(self.document);
 var app = (function () {
     'use strict';
 
@@ -6315,7 +6315,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (75:6) {#if data}
+    // (76:4) {#if data}
     function create_if_block$1(ctx) {
     	let g;
     	let text_1;
@@ -6341,10 +6341,9 @@ var app = (function () {
     			t = text$1(t_value);
     			attr_dev(text_1, "x", text_1_x_value = /*width*/ ctx[1] / 2);
     			attr_dev(text_1, "y", 15);
-    			attr_dev(text_1, "class", "svelte-dwp4vv");
-    			add_location(text_1, file$2, 88, 8, 3027);
+    			add_location(text_1, file$2, 88, 8, 3030);
     			attr_dev(g, "class", "title");
-    			add_location(g, file$2, 87, 6, 3001);
+    			add_location(g, file$2, 87, 6, 3004);
     		},
     		m: function mount(target, anchor) {
     			for (let i = 0; i < each_blocks.length; i += 1) {
@@ -6396,14 +6395,14 @@ var app = (function () {
     		block,
     		id: create_if_block$1.name,
     		type: "if",
-    		source: "(75:6) {#if data}",
+    		source: "(76:4) {#if data}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (76:6) {#each data.mineralData as country}
+    // (77:6) {#each data.mineralData as country}
     function create_each_block_2(ctx) {
     	let circle;
     	let circle_cx_value;
@@ -6418,14 +6417,13 @@ var app = (function () {
     			circle = svg_element("circle");
     			attr_dev(circle, "cx", circle_cx_value = /*xScale*/ ctx[9](/*country*/ ctx[21].percentProduction));
     			attr_dev(circle, "cy", circle_cy_value = "" + (/*yScale*/ ctx[8](/*country*/ ctx[21].percentReserves) + "px"));
-    			attr_dev(circle, "r", "3px");
+    			attr_dev(circle, "r", "4px");
 
     			attr_dev(circle, "data-color", circle_data_color_value = /*selectedIndicator*/ ctx[10] === 'income_level'
     			? `${/*country*/ ctx[21].income_level}`
     			: `${/*country*/ ctx[21].region}`);
 
-    			attr_dev(circle, "class", "svelte-dwp4vv");
-    			add_location(circle, file$2, 76, 8, 2674);
+    			add_location(circle, file$2, 77, 8, 2662);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, circle, anchor);
@@ -6465,14 +6463,14 @@ var app = (function () {
     		block,
     		id: create_each_block_2.name,
     		type: "each",
-    		source: "(76:6) {#each data.mineralData as country}",
+    		source: "(77:6) {#each data.mineralData as country}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (96:8) {#each yTicks as tick}
+    // (100:6) {#each yTicks as tick}
     function create_each_block_1(ctx) {
     	let g;
     	let line;
@@ -6490,15 +6488,13 @@ var app = (function () {
     			t = text$1(t_value);
     			attr_dev(line, "x1", /*padding*/ ctx[11].left - 3);
     			attr_dev(line, "x2", /*padding*/ ctx[11].left);
-    			attr_dev(line, "class", "svelte-dwp4vv");
-    			add_location(line, file$2, 97, 12, 3395);
+    			add_location(line, file$2, 101, 10, 3418);
     			attr_dev(text_1, "x", /*padding*/ ctx[11].left - 5);
     			attr_dev(text_1, "y", "+4");
-    			attr_dev(text_1, "class", "svelte-dwp4vv");
-    			add_location(text_1, file$2, 99, 12, 3555);
-    			attr_dev(g, "class", g_class_value = "tick tick-" + /*tick*/ ctx[16] + " svelte-dwp4vv");
+    			add_location(text_1, file$2, 103, 10, 3574);
+    			attr_dev(g, "class", g_class_value = "tick tick-" + /*tick*/ ctx[16]);
     			attr_dev(g, "transform", g_transform_value = "translate(0, " + /*yScale*/ ctx[8](/*tick*/ ctx[16]) + ")");
-    			add_location(g, file$2, 96, 10, 3313);
+    			add_location(g, file$2, 100, 8, 3338);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, g, anchor);
@@ -6509,7 +6505,7 @@ var app = (function () {
     		p: function update(ctx, dirty) {
     			if (dirty & /*yTicks*/ 64 && t_value !== (t_value = /*tick*/ ctx[16] + "")) set_data_dev(t, t_value);
 
-    			if (dirty & /*yTicks*/ 64 && g_class_value !== (g_class_value = "tick tick-" + /*tick*/ ctx[16] + " svelte-dwp4vv")) {
+    			if (dirty & /*yTicks*/ 64 && g_class_value !== (g_class_value = "tick tick-" + /*tick*/ ctx[16])) {
     				attr_dev(g, "class", g_class_value);
     			}
 
@@ -6526,14 +6522,14 @@ var app = (function () {
     		block,
     		id: create_each_block_1.name,
     		type: "each",
-    		source: "(96:8) {#each yTicks as tick}",
+    		source: "(100:6) {#each yTicks as tick}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (109:8) {#each xTicks as tick}
+    // (119:6) {#each xTicks as tick}
     function create_each_block$2(ctx) {
     	let g;
     	let line;
@@ -6554,14 +6550,12 @@ var app = (function () {
     			t = text$1(t_value);
     			attr_dev(line, "y1", line_y__value = /*height*/ ctx[2] - /*padding*/ ctx[11].bottom + 4);
     			attr_dev(line, "y2", line_y__value_1 = /*height*/ ctx[2] - /*padding*/ ctx[11].bottom);
-    			attr_dev(line, "class", "svelte-dwp4vv");
-    			add_location(line, file$2, 110, 12, 4029);
+    			add_location(line, file$2, 120, 10, 4080);
     			attr_dev(text_1, "y", text_1_y_value = /*height*/ ctx[2] - /*padding*/ ctx[11].bottom + 14);
-    			attr_dev(text_1, "class", "svelte-dwp4vv");
-    			add_location(text_1, file$2, 111, 12, 4121);
-    			attr_dev(g, "class", g_class_value = "tick tick-" + /*tick*/ ctx[16] + " svelte-dwp4vv");
+    			add_location(text_1, file$2, 123, 10, 4194);
+    			attr_dev(g, "class", g_class_value = "tick tick-" + /*tick*/ ctx[16]);
     			attr_dev(g, "transform", g_transform_value = "translate(" + /*xScale*/ ctx[9](/*tick*/ ctx[16]) + ",0)");
-    			add_location(g, file$2, 109, 10, 3948);
+    			add_location(g, file$2, 119, 8, 4001);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, g, anchor);
@@ -6584,7 +6578,7 @@ var app = (function () {
     				attr_dev(text_1, "y", text_1_y_value);
     			}
 
-    			if (dirty & /*xTicks*/ 128 && g_class_value !== (g_class_value = "tick tick-" + /*tick*/ ctx[16] + " svelte-dwp4vv")) {
+    			if (dirty & /*xTicks*/ 128 && g_class_value !== (g_class_value = "tick tick-" + /*tick*/ ctx[16])) {
     				attr_dev(g, "class", g_class_value);
     			}
 
@@ -6601,7 +6595,7 @@ var app = (function () {
     		block,
     		id: create_each_block$2.name,
     		type: "each",
-    		source: "(109:8) {#each xTicks as tick}",
+    		source: "(119:6) {#each xTicks as tick}",
     		ctx
     	});
 
@@ -6670,32 +6664,31 @@ var app = (function () {
 
     			text1 = svg_element("text");
     			t1 = text$1(/*xAxisTitle*/ ctx[5]);
-    			attr_dev(line0, "class", "axis-guideline svelte-dwp4vv");
+    			attr_dev(line0, "class", "axis-guideline");
     			attr_dev(line0, "x1", line0_x__value = /*xScale*/ ctx[9](0));
     			attr_dev(line0, "x2", line0_x__value_1 = /*xScale*/ ctx[9](100));
     			attr_dev(line0, "transform", line0_transform_value = "translate(0," + /*yScale*/ ctx[8](0) + ")");
-    			add_location(line0, file$2, 94, 8, 3162);
-    			attr_dev(text0, "class", "yAxisTitle svelte-dwp4vv");
+    			add_location(line0, file$2, 94, 6, 3159);
+    			attr_dev(text0, "class", "yAxisTitle");
     			attr_dev(text0, "x", text0_x_value = -/*height*/ ctx[2] / 2);
     			attr_dev(text0, "y", /*padding*/ ctx[11].left - 30);
-    			add_location(text0, file$2, 102, 8, 3644);
+    			add_location(text0, file$2, 106, 6, 3657);
     			attr_dev(g0, "class", "axis y-axis");
-    			add_location(g0, file$2, 93, 6, 3130);
-    			attr_dev(line1, "class", "axis-guideline svelte-dwp4vv");
+    			add_location(g0, file$2, 93, 4, 3129);
+    			attr_dev(line1, "class", "axis-guideline");
     			attr_dev(line1, "y1", line1_y__value = /*yScale*/ ctx[8](0));
     			attr_dev(line1, "y2", line1_y__value_1 = /*yScale*/ ctx[8](100));
     			attr_dev(line1, "transform", line1_transform_value = "translate(" + /*xScale*/ ctx[9](0) + ")");
-    			add_location(line1, file$2, 107, 8, 3799);
-    			attr_dev(text1, "class", "xAxisTitle svelte-dwp4vv");
+    			add_location(line1, file$2, 113, 6, 3824);
+    			attr_dev(text1, "class", "xAxisTitle");
     			attr_dev(text1, "x", text1_x_value = /*width*/ ctx[1] / 2);
     			attr_dev(text1, "y", text1_y_value = /*height*/ ctx[2] - 4);
-    			add_location(text1, file$2, 114, 8, 4215);
+    			add_location(text1, file$2, 126, 6, 4282);
     			attr_dev(g1, "class", "axis x-axis");
-    			add_location(g1, file$2, 106, 6, 3767);
-    			attr_dev(svg, "class", "chart svelte-dwp4vv");
-    			add_location(svg, file$2, 70, 4, 2493);
-    			attr_dev(figure_1, "class", "svelte-dwp4vv");
-    			add_location(figure_1, file$2, 68, 2, 2407);
+    			add_location(g1, file$2, 112, 4, 3794);
+    			attr_dev(svg, "class", "chart");
+    			add_location(svg, file$2, 72, 2, 2488);
+    			add_location(figure_1, file$2, 70, 0, 2406);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -6871,12 +6864,12 @@ var app = (function () {
 
     	let width = 400;
     	let height = 200;
-    	let yAxisTitle = "";
-    	let xAxisTitle = "";
+    	let yAxisTitle = '';
+    	let xAxisTitle = '';
 
     	if (titles) {
-    		yAxisTitle = "Reserves (% of World Total)";
-    		xAxisTitle = "Production (% of World Total)";
+    		yAxisTitle = 'Reserves (% of World Total)';
+    		xAxisTitle = 'Production (% of World Total)';
     	}
 
     	// add in padding on figure element, with one line structure
@@ -6884,7 +6877,7 @@ var app = (function () {
 
     	const formatTooltip = (data, selector) => {
     		const template = `
-      <p><span>Country:</span> ${data.country}</p>
+      <div>${data.country}</div>
       <p><span>Percent of World's Production:</span> ${parseFloat(data.percentProduction).toFixed(2)}%</p>
       <p><span>Percent of World's Reserves:</span> ${parseFloat(data.percentReserves).toFixed(2)}%</p>
     `;
@@ -6892,7 +6885,7 @@ var app = (function () {
     		return {
     			content: template,
     			allowHTML: true,
-    			placement: "top"
+    			placement: 'top'
     		};
     	};
 
@@ -7045,7 +7038,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (50:4) {#each legendValues as d, legendIndex}
+    // (59:4) {#each legendValues as d, legendIndex}
     function create_each_block$1(ctx) {
     	let circle;
     	let circle_r_value;
@@ -7067,11 +7060,11 @@ var app = (function () {
     			attr_dev(circle, "fill", circle_fill_value = /*d*/ ctx[10].fill);
     			attr_dev(circle, "region", circle_region_value = /*d*/ ctx[10].region);
     			attr_dev(circle, "data-color", circle_data_color_value = /*d*/ ctx[10].text);
-    			add_location(circle, file$1, 50, 6, 1724);
+    			add_location(circle, file$1, 59, 6, 1762);
     			attr_dev(text_1, "class", "legend__labels");
     			attr_dev(text_1, "x", "25");
     			attr_dev(text_1, "y", 20 + 20 * /*legendIndex*/ ctx[12] + 'px');
-    			add_location(text_1, file$1, 57, 6, 1906);
+    			add_location(text_1, file$1, 66, 6, 1946);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, circle, anchor);
@@ -7107,7 +7100,7 @@ var app = (function () {
     		block,
     		id: create_each_block$1.name,
     		type: "each",
-    		source: "(50:4) {#each legendValues as d, legendIndex}",
+    		source: "(59:4) {#each legendValues as d, legendIndex}",
     		ctx
     	});
 
@@ -7137,9 +7130,9 @@ var app = (function () {
     			}
 
     			attr_dev(svg, "class", "legend__color-circles");
-    			add_location(svg, file$1, 48, 2, 1639);
+    			add_location(svg, file$1, 57, 2, 1677);
     			attr_dev(figure_1, "class", "interactive__color-legend legend");
-    			add_location(figure_1, file$1, 37, 0, 1232);
+    			add_location(figure_1, file$1, 46, 0, 1270);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -7216,37 +7209,37 @@ var app = (function () {
     	let regionData = [
     		{
     			x: 5,
-    			r: 7,
+    			r: 5,
     			fill: colorScale[0],
     			text: 'Europe & North America'
     		},
     		{
     			x: 15,
-    			r: 7,
+    			r: 5,
     			fill: colorScale[1],
     			text: 'East Asia & Pacific'
     		},
     		{
     			x: 20,
-    			r: 7,
+    			r: 5,
     			fill: colorScale[2],
     			text: 'Latin America & Caribbean'
     		},
     		{
     			x: 25,
-    			r: 7,
+    			r: 5,
     			fill: colorScale[3],
     			text: 'Sub-Saharan Africa'
     		},
     		{
     			x: 30,
-    			r: 7,
+    			r: 5,
     			fill: colorScale[4],
     			text: 'Middle East & North Africa'
     		},
     		{
     			x: 35,
-    			r: 7,
+    			r: 5,
     			fill: colorScale[5],
     			text: 'Central & South Asia'
     		}
@@ -7386,7 +7379,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (100:2) {:catch error}
+    // (110:2) {:catch error}
     function create_catch_block(ctx) {
     	let p;
     	let t_value = /*error*/ ctx[12].message + "";
@@ -7397,7 +7390,7 @@ var app = (function () {
     			p = element("p");
     			t = text$1(t_value);
     			set_style(p, "color", "red");
-    			add_location(p, file, 100, 2, 2547);
+    			add_location(p, file, 110, 4, 2807);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
@@ -7415,14 +7408,14 @@ var app = (function () {
     		block,
     		id: create_catch_block.name,
     		type: "catch",
-    		source: "(100:2) {:catch error}",
+    		source: "(110:2) {:catch error}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (71:2) {:then allData}
+    // (72:2) {:then allData}
     function create_then_block(ctx) {
     	let div2;
     	let div0;
@@ -7480,11 +7473,11 @@ var app = (function () {
     			t1 = space();
     			create_component(legend.$$.fragment);
     			attr_dev(div0, "class", "charts-container");
-    			add_location(div0, file, 72, 4, 1617);
+    			add_location(div0, file, 73, 6, 1724);
     			attr_dev(div1, "class", "interactive__legend-container");
-    			add_location(div1, file, 81, 4, 2016);
+    			add_location(div1, file, 91, 6, 2263);
     			attr_dev(div2, "class", "main-container");
-    			add_location(div2, file, 71, 2, 1584);
+    			add_location(div2, file, 72, 4, 1689);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div2, anchor);
@@ -7577,14 +7570,14 @@ var app = (function () {
     		block,
     		id: create_then_block.name,
     		type: "then",
-    		source: "(71:2) {:then allData}",
+    		source: "(72:2) {:then allData}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (77:8) {:else}
+    // (83:10) {:else}
     function create_else_block(ctx) {
     	let chart;
     	let current;
@@ -7630,14 +7623,14 @@ var app = (function () {
     		block,
     		id: create_else_block.name,
     		type: "else",
-    		source: "(77:8) {:else}",
+    		source: "(83:10) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (75:8) {#if data.mineral === "Cobalt" || data.mineral === "Rare Earths"}
+    // (76:10) {#if data.mineral === 'Cobalt' || data.mineral === 'Rare Earths'}
     function create_if_block(ctx) {
     	let chart;
     	let current;
@@ -7684,14 +7677,14 @@ var app = (function () {
     		block,
     		id: create_if_block.name,
     		type: "if",
-    		source: "(75:8) {#if data.mineral === \\\"Cobalt\\\" || data.mineral === \\\"Rare Earths\\\"}",
+    		source: "(76:10) {#if data.mineral === 'Cobalt' || data.mineral === 'Rare Earths'}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (74:6) {#each allData as data}
+    // (75:8) {#each allData as data}
     function create_each_block(ctx) {
     	let current_block_type_index;
     	let if_block;
@@ -7701,7 +7694,7 @@ var app = (function () {
     	const if_blocks = [];
 
     	function select_block_type(ctx, dirty) {
-    		if (/*data*/ ctx[9].mineral === "Cobalt" || /*data*/ ctx[9].mineral === "Rare Earths") return 0;
+    		if (/*data*/ ctx[9].mineral === 'Cobalt' || /*data*/ ctx[9].mineral === 'Rare Earths') return 0;
     		return 1;
     	}
 
@@ -7740,14 +7733,14 @@ var app = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(74:6) {#each allData as data}",
+    		source: "(75:8) {#each allData as data}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (67:18)    <div class="loading-container">     <div class="loading"></div>   </div>   {:then allData}
+    // (68:18)      <div class="loading-container">       <div class="loading"></div>     </div>   {:then allData}
     function create_pending_block(ctx) {
     	let div1;
     	let div0;
@@ -7757,9 +7750,9 @@ var app = (function () {
     			div1 = element("div");
     			div0 = element("div");
     			attr_dev(div0, "class", "loading");
-    			add_location(div0, file, 68, 4, 1527);
+    			add_location(div0, file, 69, 6, 1628);
     			attr_dev(div1, "class", "loading-container");
-    			add_location(div1, file, 67, 2, 1491);
+    			add_location(div1, file, 68, 4, 1590);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div1, anchor);
@@ -7777,7 +7770,7 @@ var app = (function () {
     		block,
     		id: create_pending_block.name,
     		type: "pending",
-    		source: "(67:18)    <div class=\\\"loading-container\\\">     <div class=\\\"loading\\\"></div>   </div>   {:then allData}",
+    		source: "(68:18)      <div class=\\\"loading-container\\\">       <div class=\\\"loading\\\"></div>     </div>   {:then allData}",
     		ctx
     	});
 
@@ -7813,18 +7806,18 @@ var app = (function () {
     			main = element("main");
     			header = element("header");
     			h1 = element("h1");
-    			h1.textContent = "Chart Title";
+    			h1.textContent = "Critical Mineral";
     			t1 = space();
     			p = element("p");
-    			p.textContent = "This is a lil description thingy. Hello World!";
+    			p.textContent = "Hover over a bubble to reveal details about each mineral. Toggle between\n      coloring bubbles based on geographic region or income level.";
     			t3 = space();
     			info.block.c();
-    			add_location(h1, file, 60, 4, 1366);
-    			add_location(p, file, 61, 4, 1391);
+    			add_location(h1, file, 60, 4, 1365);
+    			add_location(p, file, 61, 4, 1395);
     			attr_dev(header, "class", "interactive__header");
-    			add_location(header, file, 59, 2, 1325);
+    			add_location(header, file, 59, 2, 1324);
     			attr_dev(main, "class", "interactive");
-    			add_location(main, file, 58, 0, 1296);
+    			add_location(main, file, 58, 0, 1295);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -7880,7 +7873,7 @@ var app = (function () {
     function instance($$self, $$props, $$invalidate) {
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('App', slots, []);
-    	let selectedIndicator = "region";
+    	let selectedIndicator = 'region';
 
     	const dataSrc = {
     		scatter: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTxzv5D7cjQIQ4Wi6wFM1v_mUIB_Fef9d1KGL42xG_-THTfg5T4e8Ez11Ou63P4IE60DUV1XnMasEa0/pub?output=csv'

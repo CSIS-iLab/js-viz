@@ -6,7 +6,7 @@
   // import SizeLegend from './components/sizeLegend.svelte'
   import Legend from './components/Legend.svelte'
 
-  let selectedIndicator = "region";
+  let selectedIndicator = 'region'
 
   const dataSrc = {
     scatter:
@@ -58,34 +58,44 @@
 
 <main class="interactive">
   <header class="interactive__header">
-    <h1>Chart Title</h1>
+    <h1>Critical Mineral</h1>
     <p>
-      This is a lil description thingy. Hello World!
+      Hover over a bubble to reveal details about each mineral. Toggle between
+      coloring bubbles based on geographic region or income level.
     </p>
   </header>
 
   {#await allData}
-  <div class="loading-container">
-    <div class="loading"></div>
-  </div>
+    <div class="loading-container">
+      <div class="loading"></div>
+    </div>
   {:then allData}
-  <div class="main-container">
-    <div class="charts-container">
-      {#each allData as data}
-        {#if data.mineral === "Cobalt" || data.mineral === "Rare Earths"}
-          <Chart data="{data}" titles="yes" selectedIndicator="{selectedIndicator}" isMobile="{isMobile}" />
-        {:else}
-          <Chart data="{data}" selectedIndicator="{selectedIndicator}" isMobile="{isMobile}" />
-        {/if}
-      {/each}
+    <div class="main-container">
+      <div class="charts-container">
+        {#each allData as data}
+          {#if data.mineral === 'Cobalt' || data.mineral === 'Rare Earths'}
+            <Chart
+              data="{data}"
+              titles="yes"
+              selectedIndicator="{selectedIndicator}"
+              isMobile="{isMobile}"
+            />
+          {:else}
+            <Chart
+              data="{data}"
+              selectedIndicator="{selectedIndicator}"
+              isMobile="{isMobile}"
+            />
+          {/if}
+        {/each}
+      </div>
+      <div class="interactive__legend-container">
+        <Options bind:selectedIndicator allData="{allData}" />
+        <Legend selectedIndicator="{selectedIndicator}" />
+      </div>
     </div>
-    <div class="interactive__legend-container">
-      <Options bind:selectedIndicator allData="{allData}" />
-      <Legend selectedIndicator="{selectedIndicator}"/>
-    </div>
-  </div>
 
-  <!-- <footer class="interactive__source">
+    <!-- <footer class="interactive__source">
       <a href="https://loremipsum.csis.org" class="source-holder"
         ><img
           src="./images/logo.svg"
@@ -98,7 +108,7 @@
       >
     </footer> -->
   {:catch error}
-  <p style="color: red">{error.message}</p>
+    <p style="color: red">{error.message}</p>
   {/await}
 </main>
 
