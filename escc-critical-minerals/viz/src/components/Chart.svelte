@@ -9,7 +9,9 @@
   // we are doing this to have a workflow of pulling in data and then pass it up and down the dom tree – app is the parent compoenent and we pass the data down as a prop and then the second step is export let data
   export let data
   export let titles
-  let selectedIndicator
+  export let selectedIndicator
+  console.log(data)
+  console.log(selectedIndicator)
 
   // here, I am using a figure to hold my chart – it's interesting I'm using a figure for this and I'm not sure why. We are using it because we want to wrap the svg tag as well (bunch of small multiples, so it's easier to recognize)
   let figure

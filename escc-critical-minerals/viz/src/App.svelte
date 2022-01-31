@@ -6,7 +6,8 @@
   // import SizeLegend from './components/sizeLegend.svelte'
   import Legend from './components/Legend.svelte'
 
-  let selectedIndicator = 'region'
+  let selectedIndicator = 'income_level';
+  console.log(selectedIndicator);
 
   const dataSrc = {
     scatter:
@@ -58,7 +59,7 @@
 
 <main class="interactive">
   <header class="interactive__header">
-    <h1>Critical Mineral</h1>
+    <h1>Critical Minerals</h1>
     <p>
       Hover over a bubble to reveal details about each mineral. Toggle between
       coloring bubbles based on geographic region or income level.
@@ -77,13 +78,13 @@
             <Chart
               data="{data}"
               titles="yes"
-              selectedIndicator="{selectedIndicator}"
+              selectedIndicator={selectedIndicator}
               isMobile="{isMobile}"
             />
           {:else}
             <Chart
               data="{data}"
-              selectedIndicator="{selectedIndicator}"
+              selectedIndicator={selectedIndicator}
               isMobile="{isMobile}"
             />
           {/if}
@@ -91,7 +92,7 @@
       </div>
       <div class="interactive__legend-container">
         <Options bind:selectedIndicator allData="{allData}" />
-        <Legend selectedIndicator="{selectedIndicator}" />
+        <Legend selectedIndicator={selectedIndicator} />
       </div>
     </div>
 
@@ -120,4 +121,5 @@
   @import './scss/components/_chart.scss';
   @import './scss/components/_loading.scss';
   @import './scss/components/_wrapper.scss';
+  @import './scss/components/_legend.scss';
 </style>

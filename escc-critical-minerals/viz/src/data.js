@@ -62,25 +62,24 @@ function parseData({ src }) {
       })
     }
 
-    const trendline = (mineral, i) => {
-      console.log(mineral);
-      console.log(i);
-      let element1 = table[i];
-      console.log(element1);
-      let totalX = table[i].reduce((acc, nextEl) => acc + nextEl[2], 0);
-      let totalY = table[i].reduce((acc, nextEl) => acc + nextEl[3], 0);
-      let slope = totalX/totalY;
-      console.log(slope);
-      let averageX = average(mineral.mineralData, "percentProduction");
-      let averageY = average(mineral.mineralData, "percentReserves");
-      // let yInt = 
-      mineral.slope = slope;
-      mineral.intercept = []
-      // let dats2 = table[i].reduce((acc, table[i][3]) => acc + table[i][3], 0);
-      // return x
-    }
-    // debugger;
-    dataset.map((mineral, index) => trendline(mineral, index))
+    // const trendline = (mineral, i) => {
+    //   console.log(mineral);
+    //   console.log(i);
+    //   let element1 = table[i];
+    //   console.log(element1);
+    //   let totalX = table[i].reduce((acc, nextEl) => acc + nextEl[2], 0);
+    //   let totalY = table[i].reduce((acc, nextEl) => acc + nextEl[3], 0);
+    //   let slope = totalX/totalY;
+    //   console.log(slope);
+    //   let averageX = average(mineral.mineralData, "percentProduction");
+    //   let averageY = average(mineral.mineralData, "percentReserves");
+    //   mineral.slope = slope;
+    //   mineral.intercept = []
+    //   // let dats2 = table[i].reduce((acc, table[i][3]) => acc + table[i][3], 0);
+    //   // return x
+    // }
+    // // debugger;
+    // dataset.map((mineral, index) => trendline(mineral, index))
 
     // console.log("final data", dataset);
 

@@ -15,6 +15,7 @@ figure {
     circle {
       mix-blend-mode: color;
       fill-opacity: 0.8;
+      transition: fill .5s ease-in-out, stroke .8s ease-in-out;
 
       @each $indicator, $color in $indicators {
         &[data-color='#{$indicator}'] {
@@ -36,7 +37,7 @@ figure {
     .axis {
       .xAxisTitle,
       .yAxisTitle {
-        text-anchor: middle;
+        @extend %chart__axis-labels;
       }
 
       .yAxisTitle {
