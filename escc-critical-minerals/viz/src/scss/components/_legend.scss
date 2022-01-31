@@ -1,0 +1,26 @@
+@use "../abstracts/" as *;
+
+.interactive__legend-container {
+  .interactive__color-legend {
+    height: 150px;
+    .legend__color-circles {
+      height: -webkit-fill-available;
+    }
+  }
+
+  .interactive__options {
+    padding-bottom: rem(10px);
+
+    .btn {
+      margin: 0;
+      @extend %chart__buttons;
+      border-radius: 0;
+      color: $color__black;
+
+      &--active {
+        background-color: $button__active-state;
+        color: $color__white;
+      }
+    }
+  }
+}

@@ -1,38 +1,48 @@
 @use '../abstracts' as *;
-
-p {
-  
-}
-
 figure {
   margin-inline-start: 0;
   margin-inline-end: 0;
   margin-block-end: 0;
   margin-block-start: 0;
   max-width: 400px;
-  height: 250px;
+  min-height: 190px;
 
   .chart {
     width: 100%;
     height: 100%;
+    isolation: isolate;
 
     circle {
-      fill: #005581;
+      mix-blend-mode: color;
+      fill-opacity: 0.8;
+      transition: fill .5s ease-in-out, stroke .8s ease-in-out;
+
+      @each $indicator, $color in $indicators {
+        &[data-color='#{$indicator}'] {
+          fill: $color;
+          stroke: darken($color, 1);
+          stroke-width: 1.5px;
+        }
+      }
+    }
+
+    .title {
+      text {
+        text-anchor: middle;
+        @extend %chart__title;
+        fill: #00000099;
+      }
     }
 
     .axis {
       .xAxisTitle,
       .yAxisTitle {
-        text-anchor: middle;
+        @extend %chart__axis-labels;
       }
 
       .yAxisTitle {
         transform: rotate(-90deg);
       }
-    }
-
-    text {
-      @extend %axis__ticks;
     }
 
     .axis {
@@ -41,7 +51,10 @@ figure {
 
         line {
           z-index: 1;
-          stroke: $graph__lines-secondary;
+          stroke: $graph__lines-primary;
+        }
+        text {
+          fill: #585D60;
         }
       }
 
@@ -51,6 +64,9 @@ figure {
 
       &.y-axis {
         .tick {
+          .yGuides {
+            stroke: $graph__lines-secondary;
+          }
           text {
             text-anchor: end;
           }
@@ -66,3 +82,4 @@ figure {
     }
   }
 }
+

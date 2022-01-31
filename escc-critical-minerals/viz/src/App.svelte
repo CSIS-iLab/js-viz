@@ -1,10 +1,13 @@
 <script>
   import parseData from './data.js'
   // import { select, selectAll } from 'd3-selection'
-  // import Options from './components/Options.svelte'
+  import Options from './components/Options.svelte'
   import Chart from './components/Chart.svelte'
   // import SizeLegend from './components/sizeLegend.svelte'
   import Legend from './components/Legend.svelte'
+
+  let selectedIndicator = 'income_level';
+  console.log(selectedIndicator);
 
   const dataSrc = {
     scatter:
@@ -56,33 +59,44 @@
 
 <main class="interactive">
   <header class="interactive__header">
-    <h1>Chart Title</h1>
+    <h1>Critical Minerals</h1>
     <p>
-      Interactive header in lorem ipsum: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-      commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-      velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-      cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
-      est laborum.
+      Hover over a bubble to reveal details about each mineral. Toggle between
+      coloring bubbles based on geographic region or income level.
     </p>
   </header>
 
   {#await allData}
-  <div class="loading-container">
-    <div class="loading"></div>
-  </div>
+    <div class="loading-container">
+      <div class="loading"></div>
+    </div>
   {:then allData}
-    <!-- <Options allData="{allData}" /> -->
-  {#each allData as data}
-    <Chart data="{data}" isMobile="{isMobile}" />
-  {/each}
+    <div class="main-container">
+      <div class="charts-container">
+        {#each allData as data}
+          {#if data.mineral === 'Cobalt' || data.mineral === 'Rare Earths'}
+            <Chart
+              data="{data}"
+              titles="yes"
+              selectedIndicator={selectedIndicator}
+              isMobile="{isMobile}"
+            />
+          {:else}
+            <Chart
+              data="{data}"
+              selectedIndicator={selectedIndicator}
+              isMobile="{isMobile}"
+            />
+          {/if}
+        {/each}
+      </div>
+      <div class="interactive__legend-container">
+        <Options bind:selectedIndicator allData="{allData}" />
+        <Legend selectedIndicator={selectedIndicator} />
+      </div>
+    </div>
 
-  <!-- <div class="interactive__legend-container">
-    <Legend />
-  </div> -->
-
-  <!-- <footer class="interactive__source">
+    <!-- <footer class="interactive__source">
       <a href="https://loremipsum.csis.org" class="source-holder"
         ><img
           src="./images/logo.svg"
@@ -95,7 +109,7 @@
       >
     </footer> -->
   {:catch error}
-  <p style="color: red">{error.message}</p>
+    <p style="color: red">{error.message}</p>
   {/await}
 </main>
 
@@ -106,4 +120,6 @@
   @import './scss/components/_header.scss';
   @import './scss/components/_chart.scss';
   @import './scss/components/_loading.scss';
+  @import './scss/components/_wrapper.scss';
+  @import './scss/components/_legend.scss';
 </style>
