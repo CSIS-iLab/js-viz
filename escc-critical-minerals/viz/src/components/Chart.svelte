@@ -2,6 +2,8 @@
 <script>
   // Import needed modules from packages
   import { onMount } from 'svelte'
+  import {fly} from 'svelte/transition';
+  import { cubicInOut, quintOut, sineInOut } from 'svelte/easing';
   import { scaleLinear } from 'd3-scale'
   import tippy from 'sveltejs-tippy'
 
@@ -77,6 +79,7 @@
       {#each data.mineralData as country}
         <circle
           use:tippy="{formatTooltip(country)}"
+          in:fly="{{x: -80, duration: (400 * (country.percentProduction/10)), opacity:.5, easing: quintOut}}"
           cx="{xScale(country.percentProduction)}"
           cy="{yScale(country.percentReserves)}px"
           r="4px"
