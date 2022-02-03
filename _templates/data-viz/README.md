@@ -1,6 +1,6 @@
-# China's Diplomatic Activity
+# Svelte Template
 
-A Svelte powered visualization showing Covid-19's impact on China's international image and diplomacy.
+A Svelte template for data visualizations with SASS integration.
 
 ## To Run
 

@@ -1,6 +1,6 @@
 {
-  "name": "covid-19-health-index",
-  "description": "A Svelte powered visualization showing Covid-19's impact on China's international image and diplomacy.",
+  "name": "svelte-template",
+  "description": "A Svelte template for data visualizations with SASS integration.",
   "version": "1.0.0",
   "private": true,
   "repository": {
