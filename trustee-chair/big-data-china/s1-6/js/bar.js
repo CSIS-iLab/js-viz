@@ -82,6 +82,9 @@ Highcharts.chart("hcContainer", {
       return '<span style="font-size: 14px;color:' + this.color + '">\u25A0</span> ' + this.series.name.slice(0, -2) + ': <b> ' + this.y.toFixed(1) + '%</b><br/>'
     },
     shared: true,
+    style: {
+      fontSize: '14px',
+    }
   },
   // Additional Plot Options
   plotOptions: {
