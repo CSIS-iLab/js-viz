@@ -1,3 +1,5 @@
+@use '../abstracts' as *;
+
 .main-container {
   display: flex;
   
@@ -11,5 +13,17 @@
 
   .interactive__legend-container{
     max-width: 100px;
+  }
+}
+
+.interactive__source {
+
+  p {
+    &:nth-of-type(1) {
+      color: $graph__lines-labels;
+      margin-left: auto;
+      text-align: right;
+      max-width: 300px;
+    }
   }
 }

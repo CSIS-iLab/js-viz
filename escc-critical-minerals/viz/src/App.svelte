@@ -99,16 +99,6 @@
     <footer class="interactive__source">
       <p>Data Sources: USGS Mineral Commodity Summaries 2021, World Bank</p>
       <p>Data Note: For some minerals, data represented does not include countries that had N/A data for production or reserves as reported by the USGS.</p>
-      <a href="https://loremipsum.csis.org" class="source-holder"
-        ><img
-          src="./images/logo.svg"
-          target="_blank"
-          alt="Some logo goes here"
-          title="Some logo goes here"
-          width="300"
-          height="31"
-        /></a
-      >
     </footer>
   {:catch error}
     <p style="color: red">{error.message}</p>

@@ -17,13 +17,12 @@
       border-radius: 3px;
       color: $color__black;
 
-      &--income {
+      &-income {
         margin-bottom: 4px;
-      }
-                                                           
+      }                                           
 
       &--active {
-        background-color: $button__active-state;
+        background-color: $graph__axis-labels;
         color: $color__white;
       }
     }
