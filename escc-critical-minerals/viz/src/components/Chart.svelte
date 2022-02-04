@@ -2,7 +2,7 @@
 <script>
   // Import needed modules from packages
   import { onMount } from 'svelte'
-  import {fly} from 'svelte/transition';
+  import {fly, slide} from 'svelte/transition';
   import { cubicInOut, quintOut, sineInOut } from 'svelte/easing';
   import { scaleLinear } from 'd3-scale'
   import tippy from 'sveltejs-tippy'
@@ -73,25 +73,6 @@
 <figure bind:this="{figure}">
   <!-- svelte-ignore component-name-lowercase -->
   <svg class="chart">
-    <!-- for each datapoint in our mineralData, we create a circle -->
-    <!-- data -->
-    {#if data}
-      {#each data.mineralData as country}
-        <circle
-          use:tippy="{formatTooltip(country)}"
-          in:fly="{{x: -80, duration: (400 * (country.percentProduction/10)), opacity:.5, easing: quintOut}}"
-          cx="{xScale(country.percentProduction)}"
-          cy="{yScale(country.percentReserves)}px"
-          r="4px"
-          data-color="{selectedIndicator === 'income_level'
-            ? `${country.income_level}`
-            : `${country.region}`}"></circle>
-      {/each}
-
-      <g class="title">
-        <text x="{width / 2}" y="{15}">{data.mineral}</text>
-      </g>
-    {/if}
 
     <!-- y axis -->
     <g class="axis y-axis">
@@ -131,6 +112,29 @@
         >{xAxisTitle}</text
       >
     </g>
+
+    
+    <!-- for each datapoint in our mineralData, we create a circle -->
+    <!-- data -->
+    {#if data}
+      {#key selectedIndicator}
+      {#each data.mineralData as country}
+        <circle
+          use:tippy="{formatTooltip(country)}"
+          in:fly="{{x: (-xScale(country.percentProduction)+padding.left), duration: 400+ (600 * (country.percentProduction/10)), opacity: .5, easing: quintOut}}"
+          cx="{xScale(country.percentProduction)}"
+          cy="{yScale(country.percentReserves)}px"
+          r="4px"
+          data-color="{selectedIndicator === 'income_level'
+            ? `${country.income_level}`
+            : `${country.region}`}"></circle>
+      {/each}
+      {/key}
+
+      <g class="title">
+        <text x="{width / 2}" y="{15}">{data.mineral}</text>
+      </g>
+    {/if}
   </svg>
 </figure>
 

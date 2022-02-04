@@ -9,7 +9,7 @@
     '#F4BE43',
     '#D84B29',
     '#45B166',
-    '#C5C5C5'
+    '#808081'
   ]
 
   let regionData = [
@@ -22,10 +22,11 @@
   ]
 
   let incomeData = [
-    { x: 0, r: 7, fill: colorScale[0], text: 'High' },
-    { x: 20, r: 7, fill: colorScale[1], text: 'Upper Middle' },
-    { x: 40, r: 7, fill: colorScale[2], text: 'Lower Middle' },
-    { x: 60, r: 7, fill: colorScale[3], text: 'Low' },
+    { x: 0, r: 5, fill: colorScale[0], text: 'High' },
+    { x: 20, r: 5, fill: colorScale[1], text: 'Upper Middle' },
+    { x: 40, r: 5, fill: colorScale[2], text: 'Lower Middle' },
+    { x: 60, r: 5, fill: colorScale[3], text: 'Low' },
+    { x: 80, r: 5, fill: colorScale[5], text: 'N/A' }
   ]
 
   $: legendValues =
@@ -63,7 +64,7 @@
         fill="{d.fill}"
         region="{d.region}"
         data-color="{d.text}"></circle>
-      <text class="legend__labels" x="25" y="{20 + 20 * legendIndex + 'px'}"
+      <text class="legend__labels" x="20" y="{20 + 20 * legendIndex + 'px'}"
         >{d.text}</text
       >
     {/each}

@@ -11,7 +11,7 @@
 <div class="interactive__options">
   <div class="interactive__indicators">
     <span class="interactive__options--label interactive__options--group"
-      >Group By:
+      >Color By:
     </span>
     <button
       class:btn--active="{selectedIndicator === 'income_level'}"

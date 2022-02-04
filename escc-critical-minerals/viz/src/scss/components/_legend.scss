@@ -14,8 +14,13 @@
     .btn {
       margin: 0;
       @extend %chart__buttons;
-      border-radius: 0;
+      border-radius: 3px;
       color: $color__black;
+
+      &--income {
+        margin-bottom: 4px;
+      }
+                                                           
 
       &--active {
         background-color: $button__active-state;

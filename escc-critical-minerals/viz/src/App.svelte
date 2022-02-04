@@ -73,8 +73,8 @@
   {:then allData}
     <div class="main-container">
       <div class="charts-container">
-        {#each allData as data}
-          {#if data.mineral === 'Cobalt' || data.mineral === 'Rare Earths'}
+        {#each allData as data, i}
+          {#if i%3 === 0}
             <Chart
               data="{data}"
               titles="yes"
@@ -96,18 +96,20 @@
       </div>
     </div>
 
-    <!-- <footer class="interactive__source">
+    <footer class="interactive__source">
+      <p>Data Sources: USGS Mineral Commodity Summaries 2021, World Bank</p>
+      <p>Data Note: For some minerals, data represented does not include countries that had N/A data for production or reserves as reported by the USGS.</p>
       <a href="https://loremipsum.csis.org" class="source-holder"
         ><img
           src="./images/logo.svg"
           target="_blank"
-          alt="Project Title"
-          title="Project Title"
+          alt="Some logo goes here"
+          title="Some logo goes here"
           width="300"
           height="31"
         /></a
       >
-    </footer> -->
+    </footer>
   {:catch error}
     <p style="color: red">{error.message}</p>
   {/await}
