@@ -18,6 +18,12 @@
   let width = 400
   let height = 200
 
+  let circles = false;
+  let time = 100;
+  onMount(() => setTimeout(() => {
+    circles = true;
+  }, time));
+
   let yAxisTitle = ''
   let xAxisTitle = ''
 
@@ -119,6 +125,7 @@
     <!-- for each datapoint in our mineralData, we create a circle -->
     <!-- data -->
     {#if data}
+      {#if circles}
       {#key selectedIndicator}
       {#each data.mineralData as country}
         <circle
@@ -132,6 +139,7 @@
             : `${country.region}`}"></circle>
       {/each}
       {/key}
+      {/if}
 
       <g class="title">
         <text x="{width / 2}" y="{15}">{data.mineral}</text>
