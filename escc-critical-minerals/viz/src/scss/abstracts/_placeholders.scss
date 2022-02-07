@@ -33,7 +33,7 @@
 %chart__title {
   font-style: normal;
   font-weight: bold;
-  font-size: 14px;
+  @include font-size(14px);
   line-height: 115%;
   letter-spacing: 0.03em;
   text-transform: uppercase;
@@ -41,7 +41,7 @@
 
 %chart__axis-labels {
   font-style: normal;
-  font-size: 12px;
+  @include font-size(12px);
   line-height: 115%;
   letter-spacing: 0.03em;
   fill: $graph__axis-labels;
@@ -50,7 +50,7 @@
 
 %chart__buttons {
   font-style: normal;
-  font-size: 12px;
+  @include font-size(12px);
   line-height: 115%;
   letter-spacing: 0.03em;
   fill: $color__white;
