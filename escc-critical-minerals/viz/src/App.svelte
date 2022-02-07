@@ -6,7 +6,7 @@
   // import SizeLegend from './components/sizeLegend.svelte'
   import Legend from './components/Legend.svelte'
 
-  let selectedIndicator = 'income_level';
+  let selectedIndicator = 'region';
   console.log(selectedIndicator);
 
   const dataSrc = {
@@ -74,7 +74,7 @@
     <div class="main-container">
       <div class="charts-container">
         {#each allData as data, i}
-          {#if i%3 === 0}
+          {#if i === 0}
             <Chart
               data="{data}"
               titles="yes"
@@ -97,7 +97,7 @@
     </div>
 
     <footer class="interactive__source">
-      <p>Data Sources: USGS Mineral Commodity Summaries 2021, World Bank</p>
+      <p>Mineral Data: USGS Mineral Commodity Summaries 2021 <br>Income Level Data: World Bank</p>
       <p>Data Note: For some minerals, data represented does not include countries that had N/A data for production or reserves as reported by the USGS.</p>
     </footer>
   {:catch error}

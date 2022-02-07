@@ -2,8 +2,8 @@
 <script>
   // Import needed modules from packages
   import { onMount } from 'svelte'
-  import {fly, slide} from 'svelte/transition';
-  import { cubicInOut, quintOut, sineInOut } from 'svelte/easing';
+  import { fly } from 'svelte/transition';
+  import { quintOut } from 'svelte/easing';
   import { scaleLinear } from 'd3-scale'
   import tippy from 'sveltejs-tippy'
 
@@ -81,10 +81,12 @@
         x1="{xScale(0)}"
         x2="{xScale(100)}"
         transform="translate(0,{yScale(0)})"></line>
-      {#each yTicks as tick}
+      {#each yTicks as tick, i}
         <g class="tick tick-{tick}" transform="translate(0, {yScale(tick)})">
           <line x1="{padding.left - 3}" x2="{padding.left}"></line>
-          <!-- <line class="yGuides" x1="{padding.left}" x2="{xScale(100)}"></line> -->
+          {#if i !== 0}
+          <line class="yGuides" x1="{padding.left}" x2="{xScale(100)}"></line>
+          {/if}
           <text x="{padding.left - 5}" y="+4">{tick}</text>
         </g>
       {/each}

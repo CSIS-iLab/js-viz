@@ -4,11 +4,11 @@
   export let selectedIndicator
 
   let colorScale = [
-    '#1A6CC4',
-    '#00B2E3',
-    '#F4BE43',
-    '#D84B29',
-    '#45B166',
+    '#004165',
+    '#4CC7E6',
+    '#0FAA91',
+    '#F9A914',
+    '#720C79',
     '#808081'
   ]
 
@@ -45,16 +45,6 @@
 
 <svelte:window on:resize="{resize}" />
 <figure class="interactive__color-legend legend" bind:this="{figure}">
-  <!-- <figcaption class="legend__title">
-    Legend
-  </figcaption> -->
-  <!-- <form action="">
-    <label for="colors">Select something</label>
-    <select bind:value={selectedIndicator} name="colors" id="colors">
-      <option value="Income">Income</option>
-      <option value="Region">Region</option>
-    </select>
-  </form> -->
   <svg class="legend__color-circles">
     {#each legendValues as d, legendIndex}
       <circle
@@ -69,7 +59,6 @@
       >
     {/each}
   </svg>
-  <!-- <Chart titles="yes" /> -->
 </figure>
 
 <style type="text/scss" global>

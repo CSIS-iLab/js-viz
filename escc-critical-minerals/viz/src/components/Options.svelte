@@ -14,15 +14,15 @@
       >Color By:
     </span>
     <button
-      class:btn--active="{selectedIndicator === 'income_level'}"
-      class="btn btn--select btn-income"
-      on:click="{(e) => setIndicator('income_level')}">Income Level
-    </button>
-    <button
     class:btn--active="{selectedIndicator === 'region'}"
     class="btn btn--select btn-region"
     on:click="{(e) => setIndicator('region')}">Region
-  </button>
+    </button>
+    <button
+    class:btn--active="{selectedIndicator === 'income_level'}"
+    class="btn btn--select btn-income"
+    on:click="{(e) => setIndicator('income_level')}">Income Level
+    </button>
   </div>
 </div>
 
