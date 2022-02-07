@@ -40,7 +40,7 @@ Highcharts.chart("hcContainer", {
   credits: {
     enabled: true,
     href: false,
-    text: "CSIS | Big Data China",
+    text: "CSIS",
     style: {
       fontSize: '11px'
     },
