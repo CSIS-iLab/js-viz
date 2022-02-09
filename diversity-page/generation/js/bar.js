@@ -18,7 +18,7 @@ Highcharts.chart('hcContainer', {
   ],
   // Chart Title and Subtitle
   title: {
-    text: "Generation, December 2020"
+    text: "Generation, December 2021"
   },
   // Credits
   credits: {

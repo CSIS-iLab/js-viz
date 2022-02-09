@@ -18,7 +18,7 @@ Highcharts.chart('hcContainer', {
   ],
   // Chart Title and Subtitle
   title: {
-    text: "Gender*, December 2020"
+    text: "Gender*, December 2021"
   },
   // Credits
   credits: {
