@@ -10,7 +10,6 @@ function parseData({ src }) {
     let minerals = [...new Set(allMinerals)];
     const average = (inputArray, target) => inputArray.reduce((acc, country) => acc + country[target], 0)/inputArray.length;
     let table = [];
-    // let minerals = ['Cobalt', 'Lithium', 'Nickel', 'Rare Earths', 'Manganese', 'Graphite'];
 
     // correct to input number strings as ints, then filter to remove nan values
     let correcteddata = initialdata.map((d) => {

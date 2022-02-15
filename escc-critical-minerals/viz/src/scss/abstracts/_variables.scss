@@ -26,7 +26,8 @@ $font__roboto: 'Roboto', sans-serif;
 
 /*----------  Structural  ----------*/
 $breakpoints: (
-  'small': 0,
+  'xsmall': 0,
+  'small': 32em,
   'medium': 48em,
   'large': 64em,
   'xlarge': 90em,

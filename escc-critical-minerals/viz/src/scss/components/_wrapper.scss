@@ -2,13 +2,19 @@
 
 .main-container {
   display: flex;
-  
 
   .charts-container {
     display: grid;
-    grid-template-columns: auto auto auto;
+    grid-template-columns: auto;
     row-gap: 30px;
     flex-basis: auto;
+
+      @include breakpoint(small) {
+        grid-template-columns: auto auto;
+      }
+      @include breakpoint(medium) {
+        grid-template-columns: auto auto auto;
+      }
   }
 
   .interactive__legend-container{
