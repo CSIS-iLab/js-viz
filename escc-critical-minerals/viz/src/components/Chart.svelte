@@ -96,7 +96,7 @@
           <text x="{padding.left - 5}" y="+4">{tick}</text>
         </g>
       {/each}
-      <text class="yAxisTitle" x="{-height / 2}" y="{padding.left - 28}"
+      <text class="yAxisTitle" x="{-height / 2}" y="{padding.left - 36}"
         >{yAxisTitle}</text
       >
     </g>

@@ -3,6 +3,11 @@
 .main-container {
   display: flex;
 
+  @include breakpoint(medium) {
+    display: grid;
+    grid-template-columns: auto auto;
+  }
+
   .charts-container {
     display: grid;
     grid-template-columns: auto;
@@ -18,14 +23,21 @@
   }
 
   .interactive__legend-container{
-    top: 0;
+    top: 10px;
+    overflow: hidden;
     position: sticky;
     max-width: 100px;
     height: 215px;
+
+    @include breakpoint(medium) {
+      position: relative;
+      height: unset;
+    }
   }
 }
 
 .interactive__source {
+  padding-bottom: rem(20px);
 
   p {
     &:nth-of-type(1) {

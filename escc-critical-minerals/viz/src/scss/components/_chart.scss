@@ -22,6 +22,17 @@ figure {
           fill: $color;
           stroke: darken($color, 1);
           stroke-width: 1.5px;
+          outline: none;
+
+          &:focus {
+            fill: darken($color, 1);
+            outline: darken($color, 1) auto 1px;
+
+            @include breakpoint(medium) {
+              fill: $color;
+              outline: none;
+            }
+          }
         }
       }
     }

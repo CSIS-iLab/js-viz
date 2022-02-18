@@ -5,9 +5,9 @@ $color__white: #fff;
 $color__black: #000;
 $color__dark-blue: #004165;
 $color__light-blue: #4CC7E6;
-$color__light-red: #0FAA91;
+$color__green: #0FAA91;
 $color__yellow: #F9A914;
-$color__green: #720C79;
+$color__purple: #720C79;
 $color__gray: #808081;
 
 // colors
@@ -39,13 +39,13 @@ $size__content-max-width: 1200px;
 $indicators: (
   "Americas": $color__dark-blue,
   "Africa": $color__light-blue,
-  "Europe": $color__light-red,
+  "Europe": $color__green,
   "Asia": $color__yellow,
-  "Oceania": $color__green,
+  "Oceania": $color__purple,
   "N/A": $color__gray,
   "High": $color__dark-blue,
   "Upper Middle": $color__light-blue,
-  "Lower Middle": $color__yellow,
-  "Low": $color__light-red,
+  "Lower Middle": $color__green,
+  "Low": $color__yellow,
 );
 
