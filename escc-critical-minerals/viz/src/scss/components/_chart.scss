@@ -11,6 +11,7 @@ figure {
     width: 100%;
     height: 100%;
     isolation: isolate;
+    overflow: visible;
 
     circle {
       mix-blend-mode: darken;
