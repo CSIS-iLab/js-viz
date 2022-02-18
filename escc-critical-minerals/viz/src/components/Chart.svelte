@@ -19,10 +19,10 @@
   let height = 200
 
   let circles = true;
-  // let time = 100;
-  // onMount(() => setTimeout(() => {
-  //   circles = true;
-  // }, time));
+  let time = 100;
+  onMount(() => setTimeout(() => {
+    circles = true;
+  }, time));
 
   let yAxisTitle = ''
   let xAxisTitle = ''
