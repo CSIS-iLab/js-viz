@@ -18,11 +18,11 @@
   let width = 400
   let height = 200
 
-  let circles = false;
-  let time = 100;
-  onMount(() => setTimeout(() => {
-    circles = true;
-  }, time));
+  let circles = true;
+  // let time = 100;
+  // onMount(() => setTimeout(() => {
+  //   circles = true;
+  // }, time));
 
   let yAxisTitle = ''
   let xAxisTitle = ''

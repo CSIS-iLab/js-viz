@@ -1,5 +1,4 @@
 <script>
-  import { select, selectAll } from 'd3-selection'
 
   export let selectedIndicator
 
@@ -27,7 +26,5 @@
 </div>
 
 <style type="text/scss">
-  /* @import '../scss/components/_buttons.scss'; */
   @import '../scss/components/_form-elements.scss';
-  /* @import '../scss/custom/_options.scss'; */
 </style>
