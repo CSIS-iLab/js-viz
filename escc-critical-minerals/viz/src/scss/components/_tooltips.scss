@@ -7,12 +7,12 @@
 .tippy-content {
   max-width: 200px;
   padding: 0.75rem;
-  color: #000;
+  color: $color__black;
   @include font-size(14px);
   line-height: 1.2;
   text-align: left;
   background-color: $color__white;
-  border: 1px solid #ccc;
+  border: 1px solid $tooltip_outline;
   border-radius: 3px;
   opacity: 0.95;
 }
@@ -26,19 +26,19 @@
 }
 
 .tippy-box[data-placement^="top"] > .tippy-arrow::before {
-  border-top-color: #ccc !important;
+  border-top-color: $tooltip_outline !important;
 }
 
 .tippy-box[data-placement^="bottom"].tippy-arrow::before {
-  border-bottom-color: #ccc !important;
+  border-bottom-color: $tooltip_outline !important;
 }
 
 .tippy-box[data-placement^="left"].tippy-arrow::before {
-  border-left-color: #ccc !important;
+  border-left-color: $tooltip_outline !important;
 }
 
 .tippy-box[data-placement^="right"].tippy-arrow::before {
-  border-right-color: #ccc !important;
+  border-right-color: $tooltip_outline !important;
 }
 
 .tippy-box {
