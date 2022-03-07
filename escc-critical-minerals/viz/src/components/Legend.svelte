@@ -1,6 +1,5 @@
 <script>
   import { onMount } from 'svelte'
-  import Chart from './Chart.svelte'
   export let selectedIndicator
 
   let colorScale = [
@@ -62,5 +61,4 @@
 </figure>
 
 <style type="text/scss" global>
-  // @import '../scss/custom/_legend.scss';
 </style>

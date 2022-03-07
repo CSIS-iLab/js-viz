@@ -1,4 +1,3 @@
-<!-- first, I am adding a script tag so that I can add in code -->
 <script>
   // Import needed modules from packages
   import { onMount } from 'svelte'
@@ -7,13 +6,10 @@
   import { scaleLinear } from 'd3-scale'
   import tippy from 'sveltejs-tippy'
 
-  // here, I am exporting the imported data from my app.svelte file. I am logging this data so that I can see what I need to change or adjust about the structure of the data.
-  // we are doing this to have a workflow of pulling in data and then pass it up and down the dom tree – app is the parent compoenent and we pass the data down as a prop and then the second step is export let data
   export let data
   export let titles
   export let selectedIndicator
 
-  // here, I am using a figure to hold my chart – it's interesting I'm using a figure for this and I'm not sure why. We are using it because we want to wrap the svg tag as well (bunch of small multiples, so it's easier to recognize)
   let figure
   let width = 400
   let height = 200
@@ -32,20 +28,16 @@
     xAxisTitle = 'Production (% of World Total)'
   }
 
-  // add in padding on figure element, with one line structure
   const padding = { top: 25, right: 35, bottom: 45, left: 45 }
 
-  // add in the x scale by including a preset domain and a physical range of the padding with width offset
   $: xScale = scaleLinear()
     .domain([0, 100])
     .range([padding.left, width - padding.right])
 
-  // similar to the Y scale, changes around the scaling via range based on preset domain range
   $: yScale = scaleLinear()
     .domain([0, 100])
     .range([height - padding.bottom, padding.top])
 
-  // x and y ticks are manually added – might be an issue for dynamic rendering later
   $: xTicks = [0, 50, 100]
 
   $: yTicks = [0, 50, 100]
@@ -122,8 +114,7 @@
     </g>
 
     
-    <!-- for each datapoint in our mineralData, we create a circle -->
-    <!-- data -->
+    <!-- check data exists, update on change to selectedIndicator -->
     {#if data}
       {#if circles}
       {#key selectedIndicator}

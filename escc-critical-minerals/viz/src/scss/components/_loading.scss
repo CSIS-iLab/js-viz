@@ -1,6 +1,8 @@
 /*===============================
 =            Loading            =
 ===============================*/
+@use "../abstracts/" as *;
+
 .loading-container {
   position: relative;
 }

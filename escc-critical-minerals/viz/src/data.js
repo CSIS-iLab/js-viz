@@ -7,6 +7,7 @@ function parseData({ src }) {
   let data = Promise.all([scatterPromise]).then(res => {
     let [initialdata] = res;
     let allMinerals = initialdata.map(d => d.mineral);
+    // get all unique minerals
     let minerals = [...new Set(allMinerals)];
 
     // correct to input number strings as ints, then filter to remove nan values
