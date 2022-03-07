@@ -24,7 +24,3 @@
     </button>
   </div>
 </div>
-
-<style type="text/scss">
-  @import '../scss/components/_form-elements.scss';
-</style>

@@ -1,13 +1,10 @@
 <script>
   import parseData from './data.js'
-  // import { select, selectAll } from 'd3-selection'
   import Options from './components/Options.svelte'
   import Chart from './components/Chart.svelte'
-  // import SizeLegend from './components/sizeLegend.svelte'
   import Legend from './components/Legend.svelte'
 
   let selectedIndicator = 'region';
-  console.log(selectedIndicator);
 
   const dataSrc = {
     scatter:
