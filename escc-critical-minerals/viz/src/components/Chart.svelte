@@ -1,5 +1,4 @@
 <script>
-  // Import needed modules from packages
   import { onMount } from 'svelte'
   import { fly } from 'svelte/transition';
   import { quintOut } from 'svelte/easing';
