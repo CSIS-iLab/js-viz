@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Unwrapped Energy Bubble</title>
+  <link rel="stylesheet" href="css/styles.css">
+
+</head>
+
+<body>
+  <label for="datasets" class="sr-only">Select year</label>
+  <select name="datasets" id="datasets"></select>
+  <figure class="highcharts-figure">
+    <div id="container"></div>
+  </figure>
+
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+  <script src="https://code.highcharts.com/highcharts-more.js"></script>
+  <script src="https://code.highcharts.com/modules/exporting.js"></script>
+  <script src="https://code.highcharts.com/modules/export-data.js"></script>
+  <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+  <script src="https://code.highcharts.com/modules/data.js"></script>
+
+  <!-- Include iFrame Resizer -->
+  <script src="//csis-ilab.github.io/cpower-viz/globaljs/iframeSizer.contentWindow.min.js"></script>
+  <!-- Include Project Specific Highcharts Theme
+  <script src="https://csis-ilab.github.io/cpower-viz/globaljs/hc-cpp-basic-theme.js"></script> -->
+  <!-- Include Project Specific Javascript Files -->
+  <script src="js/index.js"></script>
+</body>
+
+</html>
