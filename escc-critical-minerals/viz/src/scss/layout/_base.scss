@@ -1,0 +1,21 @@
+@use '../abstracts' as *;
+@use 'sass:map';
+
+:root {
+  --breakpoint: #{map-get($breakpoints, 'small')};
+  @each $size in ('medium', 'large') {
+    @include breakpoint($size) {
+      --breakpoint: #{map-get($breakpoints, $size)};
+    }
+  }
+}
+
+body {
+  margin: 0 auto;
+  padding: 0 1rem;
+  color: $color__black;
+  font-family: $font__hind;
+  @include font-size(14px);
+  background-color: $color_white_background;
+  font-family: 'Source Sans Pro', sans-serif;
+}

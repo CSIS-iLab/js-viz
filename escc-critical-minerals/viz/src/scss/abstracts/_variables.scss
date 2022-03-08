@@ -1,0 +1,56 @@
+@use 'sass:color';
+
+// Variables
+$color__white: #fff;
+$color_white_background: #F1F1F1;
+$color__black: #000;
+$color__dark-blue: #004165;
+$color__light-blue: #4CC7E6;
+$color__green: #0FAA91;
+$color__yellow: #F9A914;
+$color__purple: #720C79;
+$color__gray: #808081;
+
+// tooltips
+$tooltip_outline: #ccc;
+
+// colors
+$graph__lines-primary: #171717;
+$graph__lines-secondary: #dbdbdb;
+$graph__lines-labels: #585D60;
+$graph__axis-labels: #131313c0;
+$link_color: #ed392a;
+$title_text_color: #00000099;
+
+// buttons
+$button__active-state: #455A64;
+
+/*----------  Fonts  ----------*/
+$font__hind: 'Hind', sans-serif;
+$font__roboto: 'Roboto', sans-serif;
+
+/*----------  Structural  ----------*/
+$breakpoints: (
+  'xsmall': 0,
+  'small': 32em,
+  'medium': 48em,
+  'large': 64em,
+  'xlarge': 90em,
+);
+
+$size__max-width: 800px;
+$size__content-max-width: 1200px;
+
+$indicators: (
+  "Americas": $color__dark-blue,
+  "Africa": $color__light-blue,
+  "Europe": $color__green,
+  "Asia": $color__yellow,
+  "Oceania": $color__purple,
+  "N/A": $color__gray,
+  "High": $color__dark-blue,
+  "Upper Middle": $color__light-blue,
+  "Lower Middle": $color__green,
+  "Low": $color__yellow,
+);
+

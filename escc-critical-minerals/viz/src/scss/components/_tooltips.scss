@@ -1,0 +1,84 @@
+@use 'sass:color';
+@use '../abstracts/' as *;
+
+/*================================
+=            Tooltips            =
+================================*/
+.tippy-content {
+  max-width: 200px;
+  padding: 0.75rem;
+  color: $color__black;
+  @include font-size(14px);
+  line-height: 1.2;
+  text-align: left;
+  background-color: $color__white;
+  border: 1px solid $tooltip_outline;
+  border-radius: 3px;
+  opacity: 0.95;
+}
+
+.tippy-box {
+  background-color: transparent;
+}
+
+.tippy-backdrop {
+  background-color: $color__white;
+}
+
+.tippy-box[data-placement^="top"] > .tippy-arrow::before {
+  border-top-color: $tooltip_outline !important;
+}
+
+.tippy-box[data-placement^="bottom"].tippy-arrow::before {
+  border-bottom-color: $tooltip_outline !important;
+}
+
+.tippy-box[data-placement^="left"].tippy-arrow::before {
+  border-left-color: $tooltip_outline !important;
+}
+
+.tippy-box[data-placement^="right"].tippy-arrow::before {
+  border-right-color: $tooltip_outline !important;
+}
+
+.tippy-box {
+  position: relative;
+  top: -10px;
+}
+
+.tooltip-close {
+  position: absolute;
+  top: 0.25rem;
+  right: 0;
+  z-index: 25;
+  display: block;
+  width: 20px;
+  height: 20px;
+  color: $color__black;
+  text-align: right;
+  pointer-events: all;
+
+  @include breakpoint("medium") {
+    display: none;
+  }
+}
+
+.tippy-content {
+  div {
+    text-transform: uppercase;
+    color: $graph__lines-labels;
+  }
+
+  span {
+    color: $graph__lines-labels;
+  }
+
+  p {
+    color: $graph__lines-primary;
+    font-weight: 700;
+  }
+}
+
+.tooltip {
+  display: none;
+}

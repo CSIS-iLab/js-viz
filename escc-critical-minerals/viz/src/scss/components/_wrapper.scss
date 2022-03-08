@@ -1,0 +1,50 @@
+@use '../abstracts' as *;
+
+.main-container {
+  display: flex;
+
+  @include breakpoint(medium) {
+    display: grid;
+    grid-template-columns: auto auto;
+  }
+
+  .charts-container {
+    display: grid;
+    grid-template-columns: auto;
+    row-gap: 30px;
+    flex-basis: auto;
+
+      @include breakpoint(small) {
+        grid-template-columns: auto auto;
+      }
+      @include breakpoint(medium) {
+        grid-template-columns: auto auto auto;
+      }
+  }
+
+  .interactive__legend-container{
+    top: 50px;
+    overflow: hidden;
+    position: sticky;
+    max-width: 100px;
+    height: 215px;
+
+    @include breakpoint(medium) {
+      position: relative;
+      height: unset;
+    }
+  }
+}
+
+.interactive__source {
+  padding-bottom: rem(20px);
+
+  p {
+    &:nth-of-type(1) {
+      color: $graph__lines-labels;
+      margin-left: auto;
+      text-align: right;
+      max-width: 400px;
+    }
+  }
+}

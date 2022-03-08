@@ -1,0 +1,59 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+%label {
+  color: $color__black;
+  font-family: $font__hind;
+  @include font-size(16px);
+  line-height: 1.4;
+
+  @include breakpoint('medium') {
+    @include font-size(14px);
+  }
+}
+
+%form__label {
+  color: $color__black;
+  font-family: $font__hind;
+  font-weight: 400;
+  @include font-size(20px);
+  line-height: 1.4;
+
+  @include breakpoint('medium') {
+    @include font-size(14px);
+  }
+}
+
+%axis__ticks {
+  font-weight: 400;
+  @include font-size(12px);
+  line-height: 1.4;
+}
+
+%chart__title {
+  font-style: normal;
+  font-weight: bold;
+  @include font-size(14px);
+  line-height: 115%;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+%chart__axis-labels {
+  font-style: normal;
+  @include font-size(12px);
+  line-height: 115%;
+  letter-spacing: 0.03em;
+  fill: $graph__axis-labels;
+  text-anchor: middle;
+}
+
+%chart__buttons {
+  font-style: normal;
+  @include font-size(12px);
+  line-height: 115%;
+  letter-spacing: 0.03em;
+  fill: $color__white;
+  text-anchor: middle;
+  text-transform: uppercase;
+}
