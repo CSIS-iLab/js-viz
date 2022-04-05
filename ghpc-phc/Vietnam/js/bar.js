@@ -83,7 +83,11 @@ Highcharts.chart("hcContainer", {
       dataLabels: {
         enabled: true,
         formatter: function () {
-          return this.y.toFixed(1) + '%'
+          if (this.point.shapeArgs.height < this.point.name.length * 2) {
+            return
+          } else {
+            return this.y.toFixed(1) + '%'
+          }
         },
         style: {
           textOutline: 'none',
