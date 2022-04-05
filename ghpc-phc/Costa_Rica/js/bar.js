@@ -64,9 +64,9 @@ Highcharts.chart("hcContainer", {
   // Tooltip
   tooltip: {
     formatter: function() {
-      if (this.key == "Life expectancy at birth (2019)") {
+      if (this.key == "Life Expectancy at Birth (2019)") {
         tooltipText = "The number of years a newborn infant would live if the mortality patterns at the time of its birth were to stay the same throughout its life."
-      } else if (this.key == "UHC service coverage index (2019)") {
+      } else if (this.key == "UHC Service Coverage Index (2019)") {
         tooltipText = "Coverage index for essential health services (based on tracer interventions that include reproductive, maternal, newborn and child health, infectious diseases, noncommunicable diseases and service capacity and access). It is presented on a scale of 0 to 100."
       } else {
         tooltipText = "Child immunization, DPT, measures the percentage of children ages 12-23 months who received DPT vaccinations before 12 months or at any time before the survey. A child is considered adequately immunized against diphtheria, pertussis (or whooping cough), and tetanus (DPT) after receiving three doses of vaccine."
