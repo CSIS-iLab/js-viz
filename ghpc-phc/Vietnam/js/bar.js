@@ -74,7 +74,10 @@ Highcharts.chart("hcContainer", {
       return `<span style="font-size: 14px;color:${this.color}">\u25A0</span>
       ${this.series.name}: <b>${this.y.toFixed(1)}%</b><br/>
       <span style="font-size: 10px;">${tooltipText}</span>`;
-    }
+    },
+    style: {
+      width: '250px',
+    },
   },
   // Additional Plot Options
   plotOptions: {

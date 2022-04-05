@@ -1,0 +1,5 @@
+/* todo: remove margin before sending this into production */
+#hcContainer {
+  max-width: 800px;
+  margin: 0 auto;
+}
