@@ -15,11 +15,11 @@ Highcharts.chart("hcContainer", {
     }
   },
   // Colors
-  // colors: [
-  //   "#C52125", // Strongly Disagree
-  //   "#FD8A6D", // Disagree
-  //   "#FFF1B5", // Neutral
-  // ],
+  colors: [
+    "#004165", // Average
+    "#FD8A6D", // Upper middle income countries
+    "#FFF1B5", // Latin America & Caribbean
+  ],
   //Title
   title: {
     text: "Primary Health Care in Vietnam",
@@ -72,7 +72,7 @@ Highcharts.chart("hcContainer", {
         tooltipText = "Child immunization, DPT, measures the percentage of children ages 12-23 months who received DPT vaccinations before 12 months or at any time before the survey. A child is considered adequately immunized against diphtheria, pertussis (or whooping cough), and tetanus (DPT) after receiving three doses of vaccine."
       }
       return `<span style="font-size: 14px;color:${this.color}">\u25A0</span>
-      ${this.key}: <b>${this.y.toFixed(1)}%</b><br/>
+      ${this.series.name}: <b>${this.y.toFixed(1)}%</b><br/>
       <span style="font-size: 10px;">${tooltipText}</span>`;
     }
   },
