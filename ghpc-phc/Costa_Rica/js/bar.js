@@ -1,4 +1,5 @@
 let tooltipText = ''
+let unitOfMeasure = ''
 Highcharts.chart("hcContainer", {
   // Load Data in from Google Sheets
   data: {
@@ -66,13 +67,16 @@ Highcharts.chart("hcContainer", {
     formatter: function() {
       if (this.key == "Life Expectancy at Birth (2019)") {
         tooltipText = "The number of years a newborn infant would live if the mortality patterns at the time of its birth were to stay the same throughout its life."
+        unitOfMeasure = "years"
       } else if (this.key == "UHC Service Coverage Index (2019)") {
         tooltipText = "Coverage index for essential health services (based on tracer interventions that include reproductive, maternal, newborn and child health, infectious diseases, noncommunicable diseases and service capacity and access). It is presented on a scale of 0 to 100."
+        unitOfMeasure = ""
       } else {
         tooltipText = "Child immunization, DPT, measures the percentage of children ages 12-23 months who received DPT vaccinations before 12 months or at any time before the survey. A child is considered adequately immunized against diphtheria, pertussis (or whooping cough), and tetanus (DPT) after receiving three doses of vaccine."
+        unitOfMeasure = ""
       }
       return `<span style="font-size: 14px;color:${this.color}">\u25A0</span>
-      ${this.series.name}: <b>${this.y.toFixed(1)}</b><br/>
+      ${this.series.name}: <b>${this.y.toFixed(1)} ${unitOfMeasure}</b><br/>
       <span style="font-size: 10px;">${tooltipText}</span>`;
     },
     style: {
