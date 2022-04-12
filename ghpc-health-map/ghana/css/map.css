@@ -1,0 +1,125 @@
+body {
+  overflow: hidden;
+}
+
+.toolbox {
+  border-radius: 2px;
+  font-family: 'Spectral', serif;
+  max-width: 315px;
+  padding: 0.5rem 1.5rem;
+}
+
+.toolbox header h1{
+  line-height: 1.2;
+  color: #353535;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(0,0,0,0.5);
+  padding-bottom: 0.75rem;
+}
+
+.description {
+  color: #353535;
+}
+
+
+.panel {
+  position: absolute;
+  font-family: "Source Sans Pro", sans-serif;
+  top: 0;
+  right: -33%;
+  padding: 1rem 2.5rem;
+  height: 100vh;
+  width: 33%;
+  background: white;
+  box-shadow: 2px 2px 2px 7px rgba(0, 0, 0, 0.1);
+  transition: 0.5s all ease;
+  overflow-y: auto;
+  border-radius: 3px;
+  z-index: 3;
+}
+
+.panel-content {
+  max-height: 100%;
+}
+
+.panel-content h2 {
+  font-family: 'Spectral', serif;
+  text-transform: uppercase;
+  font-size: 1.15rem;
+  opacity: .8;
+}
+
+.panel-content span {
+  font-family: 'Spectral', serif;
+}
+
+.open {
+  right: 0%;
+}
+
+.close-btn {
+  position: absolute;
+  right: 36px;
+  top: 27px;
+  z-index: 1;
+  font-family: "Source Sans Pro", sans-serif;
+  color: #353535;
+  background-color: white;
+  transition: 0.3s all ease;
+  border: none;
+  opacity:0.8;
+  font-size: 1.5rem;
+}
+
+.close-btn:hover {
+  color: #077283;
+}
+
+
+.sidePanelHeaderStyle {
+  text-transform: uppercase;
+  color: #353535;
+  border-bottom: 1px solid rgba(0,0,0,0.5);
+  padding-bottom: 1rem;
+  margin-bottom: 2rem;
+}
+
+.side-panel-value {
+  text-transform: uppercase;
+  color:#077283;
+  font-size: 15px;
+}
+
+.side-panel-value span {
+  text-transform: none;
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 1.4;
+  color:  #353535;
+}
+
+.leaflet-top {
+  top: 1rem;
+}
+
+@media screen and (max-width: 768px) {
+  .panel {
+    width: 80%;
+    right: -80%
+  }
+
+  .open {
+    right: 0%
+  }
+}
+
+@media all and (min-width: 768px) and (max-width: 1024px) {
+  .panel {
+    width: 40%;
+    right: -40%
+  }
+
+  .open {
+    right: 0%
+  }
+}

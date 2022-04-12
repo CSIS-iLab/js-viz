@@ -1,6 +1,4 @@
 var basemap = L.tileLayer(
-  // "https://api.mapbox.com/styles/v1/ilabmedia/cl1v71wcz003g14qtjxx8fgoi/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw"
-  
   "https://api.mapbox.com/styles/v1/ilabmedia/ckvber5pm07gr14rq5v9ichdy/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw",
   {}
 );
@@ -45,16 +43,19 @@ client.addLayer(mapLayer);
 
 client.getLeafletLayer().bringToFront().addTo(map);
 
-const popup = L.popup({ closeButton: true });
+const sidePanel = L.popup({ closeButton: true });
 
-mapLayer.on(carto.layer.events.FEATURE_CLICKED, createPopup);
+mapLayer.on(carto.layer.events.FEATURE_CLICKED, createSidePanel);
 
-function createPopup(event) {
-  popup.setLatLng(event.latLng);
+function createSidePanel(event) {
+  sidePanel.setLatLng(event.latLng);
 
-  if (!popup.isOpen()) {
+  const panel = document.querySelector('.panel');
+  const panelContent = document.querySelector('.panel-content');
+  panel.classList.add('open');
+
+  if (!sidePanel.isOpen()) {
     var data = event.data;
-    console.log(event.data);
     var content = "<div>";
 
     content += `
@@ -71,10 +72,15 @@ function createPopup(event) {
       <span>Lower Middle Income:</span> ${data.lower_middle_income}
     </p>
     `;
-    popup.setContent("" + content);
-    popup.openOn(map);
+    panelContent.innerHTML = content;
   }
 }
+
+const closeBtn = document.querySelector('.close-btn');
+closeBtn.addEventListener('click', function(e) {
+  const panel = document.querySelector('.panel');
+  panel.classList.remove('open');
+})
 
 L.control
   .attribution({
