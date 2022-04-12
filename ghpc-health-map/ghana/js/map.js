@@ -56,19 +56,19 @@ function createSidePanel(event) {
 
   if (!sidePanel.isOpen()) {
     var data = event.data;
-    var content = "<div>";
+    var content = '';
 
     content += `
-    <div class="popupHeaderStyle">
+    <h2 class="sidePanelHeaderStyle">
       ${data.country}
-    </div>
-    <p class="popupEntryStyle">
+    </h2>
+    <p class="side-panel-value">
       <span>Ghana Overall:</span> ${data.ghana_overall}
     </p>
-    <p class="popupEntryStyle">
+    <p class="side-panel-value">
     <span>SubSaharan Africa:</span> ${data.sub_saharan_africa}
     </p>
-    <p class="popupEntryStyle">
+    <p class="side-panel-value">
       <span>Lower Middle Income:</span> ${data.lower_middle_income}
     </p>
     `;

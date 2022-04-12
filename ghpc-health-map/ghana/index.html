@@ -22,12 +22,17 @@
     />
 
     <script src="https://unpkg.com/babel-polyfill@6.26.0/dist/polyfill.js"></script>
-    <!-- Include Leaflet -->
-    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
-    <link
-      href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
-      rel="stylesheet"
-    />
+
+    <!-- Include new Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+    crossorigin=""/>
+    <!-- Include new Leaflet CSS -->
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+    crossorigin=""></script>
+    
     <!-- Include CARTO.js -->
     <script src="https://libs.cartocdn.com/carto.js/v4.1.11/carto.min.js"></script>
     <link
@@ -41,30 +46,31 @@
     />
 
     <link href="css/map.css" rel="stylesheet" />
+
+    <!-- Google font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Spectral:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   </head>
   
   <body>
     <div id="map" class="map" tabindex="0"></div>
 
-    <aside class="toolbox">
+    <section class="toolbox">
+      <header>
+        <h1 class="box-header">Primary HealthCare in Ghana</h1>
+      </header>
+      <p class="description">
+        Hover over the interactive map to learn more detail about henderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat.
+      </p>
+    </section>
 
-      <section class="box">
-        <header>
-          <h1>Primary HealthCare in Ghana</h1>
-        </header>
-        <section>
-        <p class="description open-sans">
-          Hover over the interactive map to learn more detail about henderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat.
-        </p>
-      </section>
+    <section class="panel">
+      <button class="close-btn">x</button>
+      <div class="panel-content"></div>
+    </section>
 
-      <section class="panel">
-        <button class="close-btn">x</button>
-        <div class="panel-content"></div>
-      </section>
-
-      <footer class="js-footer"></footer>
-    </aside>
+    <footer class="js-footer"></footer>
 
     <script src="js/map.js"></script>
   </body>
