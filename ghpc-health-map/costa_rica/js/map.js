@@ -4,8 +4,8 @@ var basemap = L.tileLayer(
 );
 
 var map = L.map("map", {
-  center: [8.5, -0.5],
-  zoom: 7,
+  center: [10, -84.5],
+  zoom: 8,
   maxZoom: 8,
   scrollWheelZoom: true,
   minZoom: 5,
@@ -16,19 +16,19 @@ var map = L.map("map", {
 });
 
 const client = new carto.Client({
-  apiKey: "DKPLqaEcXdj6bum5WnHO0g",
+  apiKey: "o3e4yrQW5gQWroesARMNZg",
   username: "csis",
 });
 
 const mapSource = new carto.source.SQL(`SELECT * FROM 
-phc_longform_map`);
+costa_rica_health_map`);
 
 const mapStyle = new carto.style.CartoCSS(`
   #layer {
-    polygon-fill: #C0311A;
+    polygon-fill: #B74D95;
     polygon-opacity: 0.6;
     ::outline {
-      line-color: #C0311A;
+      line-color: #B74D95;
       line-width: 1;
       line-opacity: 1;
     }
@@ -36,7 +36,7 @@ const mapStyle = new carto.style.CartoCSS(`
 `);
 
 const mapLayer = new carto.layer.Layer(mapSource, mapStyle, {
-  featureOverColumns: ['country', 'ghana_overall', 'lower_middle_income', 'sub_saharan_africa'],
+  featureOverColumns: ['country', 'costa_rica_overall', 'upper_middle_income', 'latin_america_and_caribbean'],
 });
 
 client.addLayer(mapLayer);
@@ -59,17 +59,17 @@ function createSidePanel(event) {
     var content = "<div>";
 
     content += `
-    <div class="popupHeaderStyle">
+    <div class="sidePanelHeaderStyle">
       ${data.country}
     </div>
-    <p class="popupEntryStyle">
-      <span>Ghana Overall:</span> ${data.ghana_overall}
+    <p class="side-panel-value">
+      <span>Costa Rica Overall:</span> ${data.costa_rica_overall}
     </p>
-    <p class="popupEntryStyle">
-    <span>SubSaharan Africa:</span> ${data.sub_saharan_africa}
+    <p class="side-panel-value">
+    <span>Upper Middle Income:</span> ${data.upper_middle_income}
     </p>
-    <p class="popupEntryStyle">
-      <span>Lower Middle Income:</span> ${data.lower_middle_income}
+    <p class="side-panel-value">
+      <span>Latin America & Caribbean:</span> ${data.latin_america_and_caribbean}
     </p>
     `;
     panelContent.innerHTML = content;

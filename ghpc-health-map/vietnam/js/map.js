@@ -4,8 +4,8 @@ var basemap = L.tileLayer(
 );
 
 var map = L.map("map", {
-  center: [8.5, -0.5],
-  zoom: 7,
+  center: [15.5, 105.4],
+  zoom: 6,
   maxZoom: 8,
   scrollWheelZoom: true,
   minZoom: 5,
@@ -16,19 +16,19 @@ var map = L.map("map", {
 });
 
 const client = new carto.Client({
-  apiKey: "DKPLqaEcXdj6bum5WnHO0g",
+  apiKey: "UmfpOJfsKpgmSGIsUOHerA",
   username: "csis",
 });
 
 const mapSource = new carto.source.SQL(`SELECT * FROM 
-phc_longform_map`);
+vietnam_health_map`);
 
 const mapStyle = new carto.style.CartoCSS(`
   #layer {
-    polygon-fill: #C0311A;
+    polygon-fill: #86AC20;
     polygon-opacity: 0.6;
     ::outline {
-      line-color: #C0311A;
+      line-color: #86AC20;
       line-width: 1;
       line-opacity: 1;
     }
@@ -36,7 +36,7 @@ const mapStyle = new carto.style.CartoCSS(`
 `);
 
 const mapLayer = new carto.layer.Layer(mapSource, mapStyle, {
-  featureOverColumns: ['country', 'ghana_overall', 'lower_middle_income', 'sub_saharan_africa'],
+  featureOverColumns: ['country', 'vietnam_overall', 'middle_income', 'east_asia_and_pacific'],
 });
 
 client.addLayer(mapLayer);
@@ -56,20 +56,20 @@ function createSidePanel(event) {
 
   if (!sidePanel.isOpen()) {
     var data = event.data;
-    var content = "<div>";
+    var content = '<div>';
 
     content += `
-    <div class="popupHeaderStyle">
+    <h2 class="sidePanelHeaderStyle">
       ${data.country}
-    </div>
-    <p class="popupEntryStyle">
-      <span>Ghana Overall:</span> ${data.ghana_overall}
+    </h2>
+    <p class="side-panel-value">
+      <span>Vietnam Overall:</span> ${data.vietnam_overall}
     </p>
-    <p class="popupEntryStyle">
-    <span>SubSaharan Africa:</span> ${data.sub_saharan_africa}
+    <p class="side-panel-value">
+    <span>Middle Income Countries:</span> ${data.middle_income}
     </p>
-    <p class="popupEntryStyle">
-      <span>Lower Middle Income:</span> ${data.lower_middle_income}
+    <p class="side-panel-value">
+      <span>East Asia & Pacific:</span> ${data.east_asia_and_pacific}
     </p>
     `;
     panelContent.innerHTML = content;
