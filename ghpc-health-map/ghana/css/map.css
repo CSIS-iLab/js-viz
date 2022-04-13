@@ -3,14 +3,21 @@ body {
 }
 
 .toolbox {
-  border-radius: 2px;
+  position: absolute;
+  left: 2rem;
+  top: 2rem;
+  border-radius: 3px;
   font-family: 'Spectral', serif;
   max-width: 315px;
+  min-width: 315px;
+  z-index: 2;
+  background-color: #fff;
   padding: 0.5rem 1.5rem;
+  box-shadow: -4px 4px 8px rgb(0 0 0 / 20%);
 }
 
 .toolbox header h1{
-  line-height: 1.2;
+  line-height: 1.1;
   color: #353535;
   font-weight: 600;
   border-bottom: 1px solid rgba(0,0,0,0.5);
@@ -85,21 +92,23 @@ body {
 }
 
 .side-panel-value {
-  text-transform: uppercase;
-  color:#077283;
+  text-transform: none;
+  font-weight: 400;
   font-size: 15px;
+  line-height: 1.4;
+  color:  #353535;
+
 }
 
 .side-panel-value span {
-  text-transform: none;
-  font-weight: 400;
+  text-transform: uppercase;
+  color:#077283;
   font-size: 17px;
-  line-height: 1.4;
-  color:  #353535;
 }
 
-.leaflet-top {
-  top: 1rem;
+.leaflet-left {
+  margin-top: 1.5rem;
+  border-radius: 3px;
 }
 
 @media screen and (max-width: 768px) {
@@ -122,4 +131,19 @@ body {
   .open {
     right: 0%
   }
+}
+
+/* Override leaflet default styles */
+.leaflet-top {
+  position: relative !important
+}
+
+.leaflet-left .leaflet-control {
+  margin-left: 0;
+}
+
+.leaflet-touch .leaflet-control-layers, .leaflet-touch .leaflet-bar {
+  position: fixed;
+  bottom: 20px;
+  left: 2rem;
 }
