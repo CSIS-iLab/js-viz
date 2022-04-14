@@ -36,7 +36,7 @@ const mapStyle = new carto.style.CartoCSS(`
 `);
 
 const mapLayer = new carto.layer.Layer(mapSource, mapStyle, {
-  featureOverColumns: ['country', 'costa_rica_overall', 'upper_middle_income', 'latin_america_and_caribbean'],
+  featureOverColumns: ['country', 'costa_rica_overall', 'upper_middle_income', 'Sources'],
 });
 
 client.addLayer(mapLayer);
@@ -68,9 +68,7 @@ function createSidePanel(event) {
     <p class="side-panel-value">
     <span>Upper Middle Income:</span> ${data.upper_middle_income}
     </p>
-    <p class="side-panel-value">
-      <span>Latin America & Caribbean:</span> ${data.latin_america_and_caribbean}
-    </p>
+    <p class="side-panel-value"><span class="source">${data.sources}</span> </p>
     `;
     panelContent.innerHTML = content;
   }

@@ -106,6 +106,24 @@ body {
   font-size: 17px;
 }
 
+.side-panel-value span.source{
+  display: block;
+  color:  #353535;
+  font-size: .7rem;
+  font-style: italic;
+  margin-top: .25rem;
+  opacity: 85%;
+}
+
+a {
+  color: #86AC20;
+}
+
+a:hover {
+  text-decoration: none;
+  color: #032A30;
+}
+
 .leaflet-left {
   margin-top: 1.5rem;
   border-radius: 3px;
