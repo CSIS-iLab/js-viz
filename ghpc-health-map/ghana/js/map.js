@@ -65,10 +65,15 @@ function createSidePanel(event) {
     <p class="side-panel-value">
       ${data.text}
     </p>
-    <p class="side-panel-value"><span class="source">${data.source_1}</span></p>
-    <p class="side-panel-value"><span class="source">${data.source_2}</span></p>
-    <p class="side-panel-value"><span class="source">${data.source_3}</span></p>
-    <p class="side-panel-value"><span class="source">${data.source_4}</span></p>
+    <div>
+      <h4 class="sidePanelHeaderStyle">
+        Sources
+      </h4>
+      <p class="side-panel-value"><span class="source">${data.source_1}</span></p>
+      <p class="side-panel-value"><span class="source">${data.source_2}</span></p>
+      <p class="side-panel-value"><span class="source">${data.source_3}</span></p>
+      <p class="side-panel-value"><span class="source">${data.source_4}</span></p>
+    </div>
     `;
     panelContent.innerHTML = content;
   }
