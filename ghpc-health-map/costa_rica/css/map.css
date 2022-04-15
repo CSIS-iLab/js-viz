@@ -31,7 +31,7 @@ body {
 
 .panel {
   position: absolute;
-  font-family: "Source Sans Pro", sans-serif;
+  font-family: 'Spectral', serif;
   top: 0;
   right: -33%;
   padding: 1rem 2.5rem;
@@ -57,7 +57,7 @@ body {
 }
 
 .panel-content span {
-  font-family: 'Spectral', serif;
+  font-family: "Source Sans Pro", sans-serif;
 }
 
 .open {
@@ -67,7 +67,7 @@ body {
 .close-btn {
   position: absolute;
   right: 36px;
-  top: 6px;
+  top: 27px;
   z-index: 1;
   font-family: "Source Sans Pro", sans-serif;
   color: #353535;
@@ -91,10 +91,19 @@ body {
   margin-bottom: 2rem;
 }
 
+h4.sidePanelHeaderStyle {
+  font-size: .8rem;
+  text-transform: uppercase;
+  color: #353535;
+  border-bottom: 1px solid rgba(0,0,0,0.5);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+  opacity: .8;
+}
 .side-panel-value {
   text-transform: none;
   font-weight: 400;
-  font-size: 15px;
+  font-size: 17px;
   line-height: 1.4;
   color:  #353535;
 
@@ -104,6 +113,26 @@ body {
   text-transform: uppercase;
   color:#B74D95;
   font-size: 17px;
+}
+
+.side-panel-value span.source{
+  display: block;
+  color:  #353535;
+  font-size: .7rem;
+  font-style: italic;
+  margin-top: .25rem;
+  opacity: 85%;
+}
+
+a {
+  color: #B74D95;
+  opacity: .6;
+}
+
+a:hover {
+  text-decoration: none;
+  color: #BB5F9E;
+  opacity: 1;
 }
 
 .leaflet-left {
