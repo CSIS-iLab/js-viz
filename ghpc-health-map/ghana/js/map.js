@@ -66,7 +66,7 @@ function createSidePanel(event) {
       ${data.text}
     </p>
     <div>
-      <h4 class="sidePanelHeaderStyle">
+      <h4 class="sidePanelSubheading">
         Sources
       </h4>
       <p class="side-panel-value"><span class="source">${data.source_1}</span></p>
