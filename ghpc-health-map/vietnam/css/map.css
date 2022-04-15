@@ -31,7 +31,7 @@ body {
 
 .panel {
   position: absolute;
-  font-family: "Source Sans Pro", sans-serif;
+  font-family: 'Spectral', serif;
   top: 0;
   right: -33%;
   padding: 1rem 2.5rem;
@@ -57,7 +57,7 @@ body {
 }
 
 .panel-content span {
-  font-family: 'Spectral', serif;
+  font-family: "Source Sans Pro", sans-serif;
 }
 
 .open {
@@ -94,7 +94,7 @@ body {
 .side-panel-value {
   text-transform: none;
   font-weight: 400;
-  font-size: 15px;
+  font-size: 17px;
   line-height: 1.4;
   color:  #353535;
 
@@ -117,11 +117,13 @@ body {
 
 a {
   color: #86AC20;
+  opacity: .6;
 }
 
 a:hover {
   text-decoration: none;
-  color: #032A30;
+  color: #9BB954;
+  opacity: 1;
 }
 
 .leaflet-left {

@@ -36,7 +36,7 @@ const mapStyle = new carto.style.CartoCSS(`
 `);
 
 const mapLayer = new carto.layer.Layer(mapSource, mapStyle, {
-  featureOverColumns: ['country', 'vietnam_overall', 'middle_income', 'sources'],
+  featureOverColumns: ['country', 'vietnam_overall', 'text', 'sources'],
 });
 
 client.addLayer(mapLayer);
@@ -62,11 +62,12 @@ function createSidePanel(event) {
     <h2 class="sidePanelHeaderStyle">
       ${data.country}
     </h2>
-    <p class="side-panel-value">
+    <!-- Todo: remove this commented block if not needed
+      <p class="side-panel-value">
       <span>Vietnam Overall:</span> ${data.vietnam_overall}
-    </p>
+    </p> -->
     <p class="side-panel-value">
-    <span>Middle Income Countries:</span> ${data.middle_income}
+    <span>Text:</span> ${data.text}
     </p>
     <p class="side-panel-value"><span class="source">${data.sources}</span> </p>
     `;
