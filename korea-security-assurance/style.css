@@ -1,0 +1,61 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Roboto:wght@400;700&display=swap');
+
+.tooltip {
+  display: none;
+}
+
+.statement-container {
+  transition: translatey 200ms ease-in-out;
+}
+
+.statement-container:hover {
+  margin-bottom: 20px;
+  transition: all 200ms ease-in-out;
+  cursor: -moz-zoom-in;
+  cursor: -webkit-zoom-in;
+  cursor: zoom-in;
+}
+body svg{
+  padding: 40px;
+  background: #EBEBEB;
+}
+
+body svg > rect:first-child {
+  fill: #EBEBEB;
+}
+
+body text {
+  font-family: 'Roboto', sans-serif;
+}
+.tippy-tooltip .tippy-arrow {
+  border-width: 12px 12px 0;
+  border-top-color: #fff;
+}
+/* Right placement tooltip arrow (arrow will be on left side of tooltip) */
+.tippy-popper[x-placement^=right] .tippy-tooltip .tippy-arrow {
+  border-right: 7px solid #fff; /* your color here */
+}
+
+/* Left placement tooltip arrow (arrow will be on right side of tooltip) */
+.tippy-popper[x-placement^=left] .tippy-tooltip .tippy-arrow {
+  border-left: 7px solid #fff; /* your color here */
+}
+
+/* Top placement tooltip arrow (arrow will be on bottom side of tooltip) */
+.tippy-popper[x-placement^=top] .tippy-tooltip .tippy-arrow {
+  border-top: 7px solid #fff; /* your color here */
+}
+
+/* Bottom placement tooltip arrow (arrow will be on top side of tooltip) */
+.tippy-popper[x-placement^=bottom] .tippy-tooltip .tippy-arrow {
+  border-bottom: 7px solid #fff; /* your color here */
+}
+
+.tippy-popper .tippy-tooltip {
+  text-align: left;
+  padding: 20px 20px 24px;
+}
+
+.statement-text path, .statement-text polygon {
+  fill: black;
+}
