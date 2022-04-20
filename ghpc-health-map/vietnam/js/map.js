@@ -16,12 +16,12 @@ var map = L.map("map", {
 });
 
 const client = new carto.Client({
-  apiKey: "UmfpOJfsKpgmSGIsUOHerA",
+  apiKey: "Dx6Jf67cD18zaEv2hJYH2Q",
   username: "csis",
 });
 
 const mapSource = new carto.source.SQL(`SELECT * FROM 
-vietnam_health_map`);
+ghpc_vietnam_1`);
 
 const mapStyle = new carto.style.CartoCSS(`
   #layer {

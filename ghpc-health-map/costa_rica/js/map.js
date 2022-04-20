@@ -16,12 +16,12 @@ var map = L.map("map", {
 });
 
 const client = new carto.Client({
-  apiKey: "o3e4yrQW5gQWroesARMNZg",
+  apiKey: "TvFFz-UVwUNvmq1nxhI7zQ",
   username: "csis",
 });
 
 const mapSource = new carto.source.SQL(`SELECT * FROM 
-costa_rica_health_map`);
+ghpc_costa_rica`);
 
 const mapStyle = new carto.style.CartoCSS(`
   #layer {

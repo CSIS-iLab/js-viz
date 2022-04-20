@@ -16,12 +16,12 @@ var map = L.map("map", {
 });
 
 const client = new carto.Client({
-  apiKey: "DKPLqaEcXdj6bum5WnHO0g",
+  apiKey: "Gfnghhva7YaUkvDOY4WdhA",
   username: "csis",
 });
 
 const mapSource = new carto.source.SQL(`SELECT * FROM 
-phc_longform_map`);
+ghpc_ghana`);
 
 const mapStyle = new carto.style.CartoCSS(`
   #layer {
