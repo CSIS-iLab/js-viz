@@ -7,7 +7,7 @@ body {
   left: 2rem;
   top: 2rem;
   border-radius: 3px;
-  font-family: 'Spectral', serif;
+  font-family: "Spectral", serif;
   max-width: 315px;
   min-width: 315px;
   z-index: 2;
@@ -16,11 +16,11 @@ body {
   box-shadow: -4px 4px 8px rgb(0 0 0 / 20%);
 }
 
-.toolbox header h1{
+.toolbox header h1 {
   line-height: 1.1;
   color: #353535;
   font-weight: 600;
-  border-bottom: 1px solid rgba(0,0,0,0.5);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.5);
   padding-bottom: 0.75rem;
 }
 
@@ -28,10 +28,9 @@ body {
   color: #353535;
 }
 
-
 .panel {
   position: absolute;
-  font-family: 'Spectral', serif;
+  font-family: "Spectral", serif;
   top: 0;
   right: -33%;
   padding: 1rem 2.5rem;
@@ -40,20 +39,21 @@ body {
   background: white;
   box-shadow: 2px 2px 2px 7px rgba(0, 0, 0, 0.1);
   transition: 0.5s all ease;
-  overflow-y: auto;
   border-radius: 3px;
   z-index: 3;
 }
 
 .panel-content {
+  padding-bottom: 4rem;
   max-height: 100%;
+  overflow-y: auto;
 }
 
 .panel-content h2 {
-  font-family: 'Spectral', serif;
+  font-family: "Spectral", serif;
   text-transform: uppercase;
   font-size: 1.15rem;
-  opacity: .8;
+  opacity: 0.8;
 }
 
 .panel-content span {
@@ -74,12 +74,12 @@ body {
   background-color: white;
   transition: 0.3s all ease;
   border: none;
-  opacity:0.8;
+  opacity: 0.8;
   font-size: 1.5rem;
 }
 
 .close-btn:hover {
-  color: #86AC20;
+  color: #86ac20;
 }
 
 .sidePanelHeaderStyle {
@@ -89,44 +89,44 @@ body {
 }
 
 .sidePanelSubheading {
-  font-size: .8rem;
+  font-size: 0.8rem;
   text-transform: uppercase;
   color: #353535;
-  opacity: .8;
+  opacity: 0.8;
 }
 
 .sidePanelHeaderStyle::after,
 .sidePanelSubheading::after {
-  content: '';
+  content: "";
   display: block;
-  border-bottom: 2px solid #86AC20;
+  border-bottom: 2px solid #86ac20;
   width: 34px;
   height: 6px;
 }
 
 .side-panel-value span {
   text-transform: uppercase;
-  color:#86AC20;
+  color: #86ac20;
   font-size: 17px;
 }
 
-.side-panel-value span.source{
+.side-panel-value span.source {
   display: block;
-  color:  #353535;
-  font-size: .7rem;
+  color: #353535;
+  font-size: 0.7rem;
   font-style: italic;
-  margin-top: .25rem;
+  margin-top: 0.25rem;
   opacity: 85%;
 }
 
 a {
-  color: #86AC20;
-  opacity: .6;
+  color: #86ac20;
+  opacity: 0.6;
 }
 
 a:hover {
   text-decoration: none;
-  color: #9BB954;
+  color: #9bb954;
   opacity: 1;
 }
 
@@ -138,35 +138,36 @@ a:hover {
 @media screen and (max-width: 768px) {
   .panel {
     width: 80%;
-    right: -80%
+    right: -80%;
   }
 
   .open {
-    right: 0%
+    right: 0%;
   }
 }
 
 @media all and (min-width: 768px) and (max-width: 1024px) {
   .panel {
     width: 40%;
-    right: -40%
+    right: -40%;
   }
 
   .open {
-    right: 0%
+    right: 0%;
   }
 }
 
 /* Override leaflet default styles */
 .leaflet-top {
-  position: relative !important
+  position: relative !important;
 }
 
 .leaflet-left .leaflet-control {
   margin-left: 0;
 }
 
-.leaflet-touch .leaflet-control-layers, .leaflet-touch .leaflet-bar {
+.leaflet-touch .leaflet-control-layers,
+.leaflet-touch .leaflet-bar {
   position: fixed;
   bottom: 20px;
   left: 2rem;
