@@ -1,5 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Roboto:wght@400;700&display=swap');
 
+.container {
+  min-width: 500px;
+  height: auto;
+  overflow: scroll;
+  border: 2px solid #000;
+}
+
+svg {
+  min-width: 1200px;
+}
+
 .tooltip {
   display: none;
 }
