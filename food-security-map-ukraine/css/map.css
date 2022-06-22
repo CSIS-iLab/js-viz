@@ -1,0 +1,184 @@
+body {
+  overflow: hidden;
+  /* color: #a0a0a0; */
+}
+
+.toolbox {
+  position: absolute;
+  left: 2rem;
+  top: 2rem;
+  border-radius: 3px;
+  font-family: 'Spectral', serif;
+  max-width: 315px;
+  min-width: 315px;
+  z-index: 2;
+  background-color: #fff;
+  padding: 0.5rem 1.5rem;
+  box-shadow: -4px 4px 8px rgb(0 0 0 / 20%);
+}
+
+.toolbox header h1{
+  line-height: 1.1;
+  color: #353535;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(0,0,0,0.5);
+  padding-bottom: 0.75rem;
+}
+
+.box-header {
+  margin-top: .5rem;
+  margin-bottom: .5rem;
+}
+
+.box-header span {
+  display: block;
+}
+
+.description {
+  color: #353535;
+}
+
+.panel {
+  position: absolute;
+  font-family: "Source Sans Pro", sans-serif;
+  top: 0;
+  right: -33%;
+  padding: 1rem 2.5rem;
+  height: 100vh;
+  width: 33%;
+  background: white;
+  box-shadow: 2px 2px 2px 7px rgba(0, 0, 0, 0.1);
+  transition: 0.5s all ease;
+  overflow-y: auto;
+  border-radius: 3px;
+  z-index: 3;
+}
+
+.panel-content {
+  max-height: 100%;
+}
+
+.panel-content h2 {
+  font-family: 'Spectral', serif;
+  text-transform: uppercase;
+  font-size: 1.15rem;
+  opacity: .8;
+}
+
+.panel-content span {
+  font-family: 'Spectral', serif;
+}
+
+.open {
+  right: 0%;
+}
+
+.close-btn {
+  position: absolute;
+  right: 36px;
+  top: 27px;
+  z-index: 1;
+  font-family: "Source Sans Pro", sans-serif;
+  color: #353535;
+  background-color: white;
+  transition: 0.3s all ease;
+  border: none;
+  opacity:0.8;
+  font-size: 1.5rem;
+}
+
+.close-btn:hover {
+  color: #077283;
+}
+
+
+.sidePanelHeaderStyle {
+  text-transform: uppercase;
+  color: #353535;
+  border-bottom: 1px solid rgba(0,0,0,0.5);
+  padding-bottom: 1rem;
+  margin-bottom: 2rem;
+}
+
+.side-panel-value {
+  text-transform: uppercase;
+  color:#077283;
+  font-size: 15px;
+}
+
+p.side-panel-link {
+  text-transform: none;
+  font-family: 'Spectral', serif;
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 1.4;
+  color:  #353535;
+}
+
+.side-panel-value span {
+  text-transform: none;
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 1.4;
+  color:  #353535;
+}
+
+.side-panel-value span.source{
+  display: block;
+  color:  #353535;
+  font-size: .9rem;
+  font-style: italic;
+  margin-top: .25rem;
+  opacity: 85%;
+}
+
+a {
+  color: #077283;
+}
+
+a:hover {
+  text-decoration: none;
+  color: #032A30;
+}
+
+.leaflet-left {
+  margin-top: 1.5rem;
+  border-radius: 3px;
+}
+
+@media screen and (max-width: 768px) {
+  .panel {
+    width: 80%;
+    right: -80%
+  }
+
+  .open {
+    right: 0%
+  }
+}
+
+@media all and (min-width: 768px) and (max-width: 1024px) {
+  .panel {
+    width: 40%;
+    right: -40%
+  }
+
+  .open {
+    right: 0%
+  }
+}
+
+/* Override leaflet default styles */
+.leaflet-top {
+  position: relative !important
+}
+
+.leaflet-left .leaflet-control {
+  margin-left: 0;
+}
+
+.leaflet-touch .leaflet-control-layers, .leaflet-touch .leaflet-bar {
+  position: fixed;
+  bottom: 20px;
+  left: 2rem;
+}
