@@ -1,14 +1,14 @@
 var basemap = L.tileLayer(
-  "https://api.mapbox.com/styles/v1/ilabmedia/cl0gx7j87000b14qv3eley6g7/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw",
+  "https://api.mapbox.com/styles/v1/ilabmedia/cl4r8xsu6000215p70wd971j7/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw",
   {}
 );
 
 var map = L.map("map", {
-  center: [11.02, 107.81],
-  zoom: 4,
-  maxZoom: 7,
+  center: [48.2, 32.6],
+  zoom: 6,
+  maxZoom: 8,
   scrollWheelZoom: true,
-  minZoom: 1,
+  minZoom: 2,
   zoomControl: true,
   scrollWheelZoom: true,
   layers: [basemap],
@@ -26,11 +26,11 @@ const mapStyle = new carto.style.CartoCSS(`
 #layer {
   marker-width: 20;
   marker-fill: ramp([marker_color], (#482d9e, #e32c31, #005e38, #376dc2, #3cc954, #444444, #cc1b15, #ffcc00), ("#482d9e", "#e32c31", "#005e38", "#376dc2", "#3cc954", "#444444", "#cc1b15", "#ffcc00"), "=");
-  marker-fill-opacity: 0.75;
+  marker-fill-opacity: 1;
   marker-file: ramp([marker_color], (url('https://s3.amazonaws.com/com.cartodb.users-assets.production/production/csis/assets/20220622193635location-pin.svg'), url('https://s3.amazonaws.com/com.cartodb.users-assets.production/production/csis/assets/20220622193635location-pin.svg'), url('https://s3.amazonaws.com/com.cartodb.users-assets.production/production/csis/assets/20220622193635location-pin.svg'), url('https://s3.amazonaws.com/com.cartodb.users-assets.production/production/csis/assets/20220622193635location-pin.svg'), url('https://s3.amazonaws.com/com.cartodb.users-assets.production/production/csis/assets/20220622193635location-pin.svg'), url('https://s3.amazonaws.com/com.cartodb.users-assets.production/production/csis/assets/20220622193635location-pin.svg'), url('https://s3.amazonaws.com/com.cartodb.users-assets.production/production/csis/assets/20220622193635location-pin.svg'), url('https://s3.amazonaws.com/com.cartodb.users-assets.production/production/csis/assets/20220622193635location-pin.svg')), ("#482d9e", "#e32c31", "#005e38", "#376dc2", "#3cc954", "#444444", "#cc1b15", "#ffcc00"), "=");
   marker-allow-overlap: true;
-  marker-line-width: 0;
-  marker-line-color: #000000;
+  marker-line-width: 2;
+  marker-line-color: #FFFFFF;
   marker-line-opacity: 1;
 }
 `);
@@ -53,6 +53,37 @@ const sidePanel = L.popup({ closeButton: true });
 
 mapLayer.on(carto.layer.events.FEATURE_CLICKED, createSidePanel);
 
+function getTweet(URLtweet) {
+  console.log(URLtweet)
+  const url = 'https://tweetic.io/api/tweet?url='+ URLtweet
+  console.log(url)
+  // var requestOptions = {
+  //   mode: 'no-cors',
+  //   method: 'GET'
+  // };
+
+  // fetch(url, requestOptions)
+  //   .then(res => res.text())
+  //   .then(result => console.log('res ', result))
+  //   .catch(error => console.log('error', error));
+var requestOptions = {
+  "access-control-allow-origin": '*',
+  method: 'GET',
+  redirect: 'follow'
+};
+
+fetch("https://tweetic.io/api/tweet?url=https://twitter.com/nexta_tv/status/1502576577032380417", requestOptions)
+  .then(response => response.json())
+  .then(result => console.log(result))
+  .catch(error => console.log('error', error));
+
+  // const response = fetch(`https://tweetic.io/api/tweet?url=${URL}`, {
+  //   mode: 'no-cors',
+  // })
+  // const test = response.json()
+  // console.log(test)
+}
+
 function createSidePanel(event) {
   sidePanel.setLatLng(event.latLng);
 
@@ -66,20 +97,22 @@ function createSidePanel(event) {
 
     content += `
     <h2 class="sidePanelHeaderStyle">
-      ${data.country}
+      Ukraine
     </h2>
+    <p class="side-panel-value">Title: <span>${data.title}</span> </p>
     <p class="side-panel-value">Description: <span>${data.description}</span> </p>
-    <p class="side-panel-value">Financial Support: <span>${data.financial_support}</span> </p>
     `
-    if (data.source) {
-      content += `<p class="side-panel-value"><span class="source">${data.source}</span> </p>`
+    // if (data.media_url) {
+    //   // console.log(data.media_url);
+    //   const tweet = getTweet(data.media_url)
+    //   content += `${tweet}`
+    // }
+    if (data.url) {
+      content +=
+      `
+      <p class="side-panel-link">For more details, click <a href="${data.url}" target="_blank">here</a>.</p>
+      `;
     }
-    content +=
-    `
-    <p class="side-panel-value">Focus Areas: <span>${data.focus_areas}</span> </p>
-    <p class="side-panel-value">Major Recipients: <span>${data.major_recipients}</span> </p>
-    <p class="side-panel-link">For more details, click <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vTxYNVcd_DsRaJzHo6c3dN78Y9uOypX2jX4VzEaJZpgX_t9qXFfCzNENobD7aFXB-HeVawqjFXtslKI/pubhtml" target="_blank">here</a>.</p>
-    `;
     panelContent.innerHTML = content;
   }
 }
@@ -95,6 +128,6 @@ L.control
     position: "bottomright",
   })
   .setPrefix(
-    '<a href="https://www.csis.org/programs/japan-chair">CSIS Japan Chair</a>, <a href="https://leafletjs.com/">Leaflet</a>'
+    '<a href="https://www.csis.org/programs/global-food-security-program">CSIS Global Food Security Program</a>, <a href="https://leafletjs.com/">Leaflet</a>'
   )
   .addTo(map);
