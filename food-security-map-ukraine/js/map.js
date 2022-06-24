@@ -41,7 +41,8 @@ const mapLayer = new carto.layer.Layer(mapSource, mapStyle, {
     "_group",
     "url",
     "media_url",
-    "marker_color"
+    "marker_color",
+    "tweethtml"
   ],
 });
 
@@ -67,12 +68,13 @@ function getTweet(URLtweet) {
   //   .then(result => console.log('res ', result))
   //   .catch(error => console.log('error', error));
 var requestOptions = {
-  "access-control-allow-origin": '*',
+  mode: 'no-cors',
   method: 'GET',
   redirect: 'follow'
 };
 
-fetch("https://tweetic.io/api/tweet?url=https://twitter.com/nexta_tv/status/1502576577032380417", requestOptions)
+// fetch("https://tweetic.io/api/tweet?url=https://twitter.com/nexta_tv/status/1502576577032380417", requestOptions)
+fetch("https://publish.twitter.com/oembed?url="+URLtweet)
   .then(response => response.json())
   .then(result => console.log(result))
   .catch(error => console.log('error', error));
@@ -102,11 +104,24 @@ function createSidePanel(event) {
     <p class="side-panel-value">Title: <span>${data.title}</span> </p>
     <p class="side-panel-value">Description: <span>${data.description}</span> </p>
     `
-    // if (data.media_url) {
-    //   // console.log(data.media_url);
-    //   const tweet = getTweet(data.media_url)
-    //   content += `${tweet}`
-    // }
+    console.log(data.media_url);
+    if (data.media_url) {
+      // const tweet = getTweet(data.media_url)
+      const tweet = fetch("https://publish.twitter.com/oembed?url="+data.media_url, {
+        mode: 'no-cors'
+      })
+        .then(res => res.text())
+        .then(data => console.log(data))
+      // const tweet = "https://publish.twitter.com/oembed?url="+data.media_url
+      console.log(tweet);
+      // const tweet = `<blockquote class="twitter-tweet"><p lang="en" dir="ltr"><a href="https://twitter.com/hashtag/UPDATE?src=hash&amp;ref_src=twsrc%5Etfw">#UPDATE</a>: Governor of Sumy in eastern Ukraine reports a ammonia leak at the Pat Sumykhimprom chemical plant as clashes continue in the area. The affected area is 5km wide and is classed as dangerous due to the leak <a href="https://t.co/R5vNRk2ilQ">pic.twitter.com/R5vNRk2ilQ</a></p>&mdash; ELINT News (@ELINTNews) <a href="https://twitter.com/ELINTNews/status/1505745445083090944?ref_src=twsrc%5Etfw">March 21, 2022</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>`
+      // content += `Insert tweet here: <a href="${tweet}">tweet</a>`
+      // content += `<div id="tweetContainer"></div>`
+    }
+    if (data.tweethtml) {
+      console.log(data.tweethtml)
+      content += `<div class="tweetContainer">${data.tweethtml}</div>`
+    }
     if (data.url) {
       content +=
       `

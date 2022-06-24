@@ -51,26 +51,47 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Spectral:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+ 
+    <!-- embed tweets -->
+  <!-- <script>
+    window.twttr = (function (d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0],
+        t = window.twttr || {};
+      if (d.getElementById(id)) return t;
+      js = d.createElement(s);
+      js.id = id;
+      js.src = "https://platform.twitter.com/widgets.js";
+      fjs.parentNode.insertBefore(js, fjs);
+
+      t._e = [];
+      t.ready = function (f) {
+        t._e.push(f);
+      };
+
+      return t;
+    }(document, "script", "twitter-wjs"));
+  </script> -->
   </head>
   
   <body>
-    <div id="map" class="map" tabindex="0"></div>
+    <div class="containerall">
+      <div id="map" class="map" tabindex="0"></div>
 
-    <section class="toolbox">
-      <header>
-        <h1 class="box-header"><span>Attacks on Ukraine Agriculture and Food Supply Chain</span></h1>
-      </header>
-      <p class="description">
-        Click to learn more.
-      </p>
-    </section>
+      <section class="toolbox">
+        <header>
+          <h1 class="box-header"><span>Attacks on Ukraine Agriculture and Food Supply Chain</span></h1>
+        </header>
+        <p class="description">
+          Click to learn more.
+        </p>
+      </section>
 
-    <section class="panel">
-      <button class="close-btn">x</button>
-      <div class="panel-content"></div>
-    </section>
-    <footer class="js-footer"></footer>
-
+      <section class="panel">
+        <button class="close-btn">&times;</button>
+        <div class="panel-content"></div>
+      </section>
+      <footer class="js-footer"></footer>
+    </div>
     <script src="js/map.js"></script>
   </body>
 </html>
