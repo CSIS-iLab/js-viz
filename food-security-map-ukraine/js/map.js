@@ -71,7 +71,6 @@ function createSidePanel(event) {
     <p class="side-panel-value"><span>${data.description}</span></p>
     `
     if (data.tweethtml) {
-      console.log(data.tweethtml)
       content += `<div class="tweetContainer">${data.tweethtml}</div>`
     }
     if (data.url) {
