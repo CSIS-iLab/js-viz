@@ -203,6 +203,7 @@ a {
   text-transform: uppercase;
   font-size: 1.15rem;
   opacity: .8;
+  width: 31.25rem;
 }
 
 .panel-content span {
@@ -216,7 +217,7 @@ a {
 .close-btn {
   position: absolute;
   right: 36px;
-  top: 27px;
+  top: 14px;
   z-index: 1;
   font-family: "Source Sans Pro", sans-serif;
   color: #353535;
@@ -235,15 +236,22 @@ a {
 .sidePanelHeaderStyle {
   text-transform: uppercase;
   color: #353535;
-  border-bottom: 1px solid rgba(0,0,0,0.5);
-  padding-bottom: 1rem;
   margin-bottom: 2rem;
+}
+
+.sidePanelHeaderStyle::after {
+  content: "";
+  display: block;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.5);
+  width: 34px;
+  height: 6px;
 }
 
 .side-panel-value {
   text-transform: uppercase;
   color:#077283;
   font-size: 15px;
+  margin-bottom: 1.25rem;
 }
 
 p.side-panel-link {
@@ -289,7 +297,7 @@ a:hover {
 .tweetContainer {
   display: flex;
   justify-content: center;
-  margin-top: 1rem;
+  padding-bottom: 1.25rem;
 }
 
 @media screen and (max-width: 768px) {

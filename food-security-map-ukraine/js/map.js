@@ -29,7 +29,7 @@ const mapStyle = new carto.style.CartoCSS(`
   marker-fill-opacity: 0.75;
   marker-file: ramp([marker_color], (url('https://s3.amazonaws.com/com.cartodb.users-assets.production/production/csis/assets/20220622193635location-pin.svg'), url('https://s3.amazonaws.com/com.cartodb.users-assets.production/production/csis/assets/20220622193635location-pin.svg'), url('https://s3.amazonaws.com/com.cartodb.users-assets.production/production/csis/assets/20220622193635location-pin.svg'), url('https://s3.amazonaws.com/com.cartodb.users-assets.production/production/csis/assets/20220622193635location-pin.svg'), url('https://s3.amazonaws.com/com.cartodb.users-assets.production/production/csis/assets/20220622193635location-pin.svg'), url('https://s3.amazonaws.com/com.cartodb.users-assets.production/production/csis/assets/20220622193635location-pin.svg'), url('https://s3.amazonaws.com/com.cartodb.users-assets.production/production/csis/assets/20220622193635location-pin.svg'), url('https://s3.amazonaws.com/com.cartodb.users-assets.production/production/csis/assets/20220622193635location-pin.svg')), ("#482d9e", "#e32c31", "#005e38", "#376dc2", "#3cc954", "#444444", "#cc1b15", "#ffcc00"), "=");
   marker-allow-overlap: true;
-  marker-line-width: 2;
+  marker-line-width: 0;
   marker-line-color: #FFFFFF;
   marker-line-opacity: 1;
 }
@@ -54,41 +54,8 @@ const sidePanel = L.popup({ closeButton: true });
 
 mapLayer.on(carto.layer.events.FEATURE_CLICKED, createSidePanel);
 
-function getTweet(URLtweet) {
-  console.log(URLtweet)
-  const url = 'https://tweetic.io/api/tweet?url='+ URLtweet
-  console.log(url)
-  // var requestOptions = {
-  //   mode: 'no-cors',
-  //   method: 'GET'
-  // };
-
-  // fetch(url, requestOptions)
-  //   .then(res => res.text())
-  //   .then(result => console.log('res ', result))
-  //   .catch(error => console.log('error', error));
-var requestOptions = {
-  mode: 'no-cors',
-  method: 'GET',
-  redirect: 'follow'
-};
-
-// fetch("https://tweetic.io/api/tweet?url=https://twitter.com/nexta_tv/status/1502576577032380417", requestOptions)
-fetch("https://publish.twitter.com/oembed?url="+URLtweet)
-  .then(response => response.json())
-  .then(result => console.log(result))
-  .catch(error => console.log('error', error));
-
-  // const response = fetch(`https://tweetic.io/api/tweet?url=${URL}`, {
-  //   mode: 'no-cors',
-  // })
-  // const test = response.json()
-  // console.log(test)
-}
-
 function createSidePanel(event) {
   sidePanel.setLatLng(event.latLng);
-
   const panel = document.querySelector('.panel');
   const panelContent = document.querySelector('.panel-content');
   panel.classList.add('open');
@@ -99,25 +66,10 @@ function createSidePanel(event) {
 
     content += `
     <h2 class="sidePanelHeaderStyle">
-      Ukraine
+      ${data.title}
     </h2>
-    <p class="side-panel-value">Title: <span>${data.title}</span> </p>
-    <p class="side-panel-value">Description: <span>${data.description}</span> </p>
+    <p class="side-panel-value"><span>${data.description}</span></p>
     `
-    console.log(data.media_url);
-    if (data.media_url) {
-      // const tweet = getTweet(data.media_url)
-      const tweet = fetch("https://publish.twitter.com/oembed?url="+data.media_url, {
-        mode: 'no-cors'
-      })
-        .then(res => res.text())
-        .then(data => console.log(data))
-      // const tweet = "https://publish.twitter.com/oembed?url="+data.media_url
-      console.log(tweet);
-      // const tweet = `<blockquote class="twitter-tweet"><p lang="en" dir="ltr"><a href="https://twitter.com/hashtag/UPDATE?src=hash&amp;ref_src=twsrc%5Etfw">#UPDATE</a>: Governor of Sumy in eastern Ukraine reports a ammonia leak at the Pat Sumykhimprom chemical plant as clashes continue in the area. The affected area is 5km wide and is classed as dangerous due to the leak <a href="https://t.co/R5vNRk2ilQ">pic.twitter.com/R5vNRk2ilQ</a></p>&mdash; ELINT News (@ELINTNews) <a href="https://twitter.com/ELINTNews/status/1505745445083090944?ref_src=twsrc%5Etfw">March 21, 2022</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>`
-      // content += `Insert tweet here: <a href="${tweet}">tweet</a>`
-      // content += `<div id="tweetContainer"></div>`
-    }
     if (data.tweethtml) {
       console.log(data.tweethtml)
       content += `<div class="tweetContainer">${data.tweethtml}</div>`
