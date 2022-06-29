@@ -29,7 +29,7 @@ let IconBase = L.Icon.extend({
     },
 });
 
-let ruAirborneInfantryDivisionHQTail = new IconBase({ iconUrl: "./images/RU_Airborne_Infantry_Division_HQ.svg" });
+let ruAirborneInfantryDivisionHQTail = new IconBase({ iconUrl: "./images/RU_Airborne Infantry_Division_HQ.svg" });
 
 
 

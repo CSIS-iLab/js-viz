@@ -10,9 +10,6 @@ xhr.onload = () => {
             if (x.href.match(/\.(svg)$/)) {
                 let img = document.createElement("img");
                 img.src = x.href;
-                console.log(x.href)
-
-                // let markerIcon = new IconBase({ iconUrl: x.href });
             }
         }
     } else {
@@ -21,24 +18,8 @@ xhr.onload = () => {
 };
 xhr.send();
 
-let IconBase = L.Icon.extend({
-    options: {
-        iconSize: [50, 95],
-        iconAnchor: [22, 94],
-        popupAnchor: [-3, -76],
-    },
-});
-
-let ruAirborneInfantryDivisionHQTail = new IconBase({ iconUrl: "./images/RU_Airborne_Infantry_Division_HQ.svg" });
-
-
-
-const client = new carto.Client({
-    apiKey: "moxuF6iP0jTe4tyXPtVK4Q",
-    username: "csis",
-});
-
 var basemap = L.tileLayer(
+    // "https://api.mapbox.com/styles/v1/ilabmedia/ckvber5pm07gr14rq5v9ichdy/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw",
     "https://api.mapbox.com/styles/v1/ilabmedia/cl2th2451004c16ni3f3t9v43/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw", {}
 );
 
@@ -54,34 +35,30 @@ var map = L.map("map", {
     attributionControl: false,
 });
 
+const client = new carto.Client({
+    apiKey: "moxuF6iP0jTe4tyXPtVK4Q",
+    username: "csis",
+});
+
 const mapSource = new carto.source.SQL(`SELECT * FROM csis.russia_btg_map_1`);
 
-function theData() {
-    var sql = new cartodb.SQL({ user: "csis" });
-    sql
-        .execute("SELECT * FROM csis.russia_btg_map_1")
-        .done(function(data) {
-            const rows = data.rows;
-            // Loop through lat/long - We need to get all the data before we loop through in leaflet
-            data.rows.forEach(row => {
-                // console.log(row)
+var sql = new cartodb.SQL({ user: "csis" });
+sql
+    .execute("SELECT * FROM csis.russia_btg_map_1")
+    .done(function(data) {
 
-                L.marker([row.lat, row.long], { icon: ruAirborneInfantryDivisionHQTail }).addTo(map).bindPopup(
-                    '<h2>' + row.short_form_name + '</h2>' +
-                    '<a href="' + row.source + '" target="_blank">Source</a>'
-                );
-            });
+        console.log(data.rows);
+        return data;
+    })
+    .error(function(errors) {
+        // errors contains a list of errors
+        console.log("errors:" + errors);
+    });
+// Loop through lat/long - We need to get all the data before we loop through in leaflet
 
-            // return rows;
-        })
-        .error(function(errors) {
-            // errors contains a list of errors
-            console.log("errors:" + errors);
-        });
-}
 
-const dataRows = theData();
-// console.log(dataRows)
+
+
 
 const mapStyle = new carto.style.CartoCSS(`
 #layer {
@@ -99,6 +76,20 @@ const mapLayer = new carto.layer.Layer(mapSource, mapStyle, {
     featureOverColumns: ["formal_name", "short_form_name", "type", "size", "hq_tail2", "country", "lat", "long", "source"],
 });
 
+
+
+
+let IconBase = L.Icon.extend({
+    options: {
+        iconSize: [50, 95],
+        iconAnchor: [22, 94],
+        popupAnchor: [-3, -76],
+    },
+});
+
+let ruAirborneInfantryDivisionHQTail = new IconBase({ iconUrl: "./images/RU_Airborne Infantry_Division_HQ.svg" });
+
+L.marker([47.646, 30.987], { icon: ruAirborneInfantryDivisionHQTail }).addTo(map).bindPopup("I am a green leaf.");
 
 
 

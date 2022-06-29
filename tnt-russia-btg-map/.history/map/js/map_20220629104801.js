@@ -11,8 +11,6 @@ xhr.onload = () => {
                 let img = document.createElement("img");
                 img.src = x.href;
                 console.log(x.href)
-
-                // let markerIcon = new IconBase({ iconUrl: x.href });
             }
         }
     } else {
@@ -20,18 +18,6 @@ xhr.onload = () => {
     }
 };
 xhr.send();
-
-let IconBase = L.Icon.extend({
-    options: {
-        iconSize: [50, 95],
-        iconAnchor: [22, 94],
-        popupAnchor: [-3, -76],
-    },
-});
-
-let ruAirborneInfantryDivisionHQTail = new IconBase({ iconUrl: "./images/RU_Airborne_Infantry_Division_HQ.svg" });
-
-
 
 const client = new carto.Client({
     apiKey: "moxuF6iP0jTe4tyXPtVK4Q",
@@ -64,8 +50,7 @@ function theData() {
             const rows = data.rows;
             // Loop through lat/long - We need to get all the data before we loop through in leaflet
             data.rows.forEach(row => {
-                // console.log(row)
-
+                console.log(row)
                 L.marker([row.lat, row.long], { icon: ruAirborneInfantryDivisionHQTail }).addTo(map).bindPopup(
                     '<h2>' + row.short_form_name + '</h2>' +
                     '<a href="' + row.source + '" target="_blank">Source</a>'
@@ -99,8 +84,15 @@ const mapLayer = new carto.layer.Layer(mapSource, mapStyle, {
     featureOverColumns: ["formal_name", "short_form_name", "type", "size", "hq_tail2", "country", "lat", "long", "source"],
 });
 
+let IconBase = L.Icon.extend({
+    options: {
+        iconSize: [50, 95],
+        iconAnchor: [22, 94],
+        popupAnchor: [-3, -76],
+    },
+});
 
-
+let ruAirborneInfantryDivisionHQTail = new IconBase({ iconUrl: "./images/RU_Airborne Infantry_Division_HQ.svg" });
 
 client.getLeafletLayer().bringToFront().addTo(map);
 

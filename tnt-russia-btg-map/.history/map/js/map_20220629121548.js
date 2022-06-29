@@ -12,7 +12,7 @@ xhr.onload = () => {
                 img.src = x.href;
                 console.log(x.href)
 
-                // let markerIcon = new IconBase({ iconUrl: x.href });
+                let markerIcon = new IconBase({ iconUrl: x.href });
             }
         }
     } else {
@@ -29,7 +29,7 @@ let IconBase = L.Icon.extend({
     },
 });
 
-let ruAirborneInfantryDivisionHQTail = new IconBase({ iconUrl: "./images/RU_Airborne_Infantry_Division_HQ.svg" });
+let ruAirborneInfantryDivisionHQTail = new IconBase({ iconUrl: "./images/RU_Airborne Infantry_Division_HQ.svg" });
 
 
 
@@ -64,7 +64,9 @@ function theData() {
             const rows = data.rows;
             // Loop through lat/long - We need to get all the data before we loop through in leaflet
             data.rows.forEach(row => {
-                // console.log(row)
+                console.log(row)
+                let icon = row.type + ".svg";
+                console.log(icon)
 
                 L.marker([row.lat, row.long], { icon: ruAirborneInfantryDivisionHQTail }).addTo(map).bindPopup(
                     '<h2>' + row.short_form_name + '</h2>' +
