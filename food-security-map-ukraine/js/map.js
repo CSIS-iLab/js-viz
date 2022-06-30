@@ -16,7 +16,7 @@ var map = L.map("map", {
 });
 
 const client = new carto.Client({
-  apiKey: "mLKZ_fUJ6GlelNbfkALecQ",
+  apiKey: "pOSAMV9KS76W7Pn-5OXeYQ",
   username: "csis",
 });
 
@@ -36,9 +36,11 @@ const mapStyle = new carto.style.CartoCSS(`
 `);
 
 const mapLayer = new carto.layer.Layer(mapSource, mapStyle, {
-  featureOverColumns: ["title",
+  featureOverColumns: [
+    "cartodb_id",
+    "the_geom",
+    "title",
     "description",
-    "_group",
     "url",
     "media_url",
     "marker_color",
@@ -53,6 +55,26 @@ client.getLeafletLayer().bringToFront().addTo(map);
 const sidePanel = L.popup({ closeButton: true });
 
 mapLayer.on(carto.layer.events.FEATURE_CLICKED, createSidePanel);
+
+// map.on('click', function(e) {
+//     console.log("Lat, Lon : " + e.latlng.lat + ", " + e.latlng.lng)
+// });
+
+mapLayer.on('featureClicked', featureEvent => {
+  let polygon_selected = featureEvent.data.cartodb_id;
+  // console.log(featureEvent.data.the_geom)
+  // console.log(featureEvent.data.cartodb_id);
+  // console.log(featureEvent.data.title);
+  console.log(featureEvent);
+  console.log("lat: ", featureEvent.latLng.lat);
+  console.log("long: ", featureEvent.latLng.lng);
+  // const content = `
+  //   <h3>${featureEvent.data.title.toUpperCase()}</h3>
+  //   <p class="open-sans">${featureEvent.data.description} <small>max inhabitants</small></p>
+  // `;
+
+  // document.getElementById('info').innerHTML = content;
+});
 
 function createSidePanel(event) {
   sidePanel.setLatLng(event.latLng);
