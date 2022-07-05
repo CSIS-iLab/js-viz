@@ -20,14 +20,36 @@ const client = new carto.Client({
   username: "csis",
 });
 
-const mapSource = new carto.source.SQL(`SELECT * FROM edodd_attacks_on_ukraine_agriculture_food_supply_chain_1`);
+var selectedMarkerId = -1;
+
+var sql = 'SELECT * FROM edodd_attacks_on_ukraine_agriculture_food_supply_chain_1';
+
+const mapSource = new carto.source.SQL(sql);   
+const filter = new carto.filter.Category('cartodb_id', { notEq: selectedMarkerId });
+mapSource.addFilter(filter);
+
+const mapSource2 = new carto.source.SQL(sql);
+const filter2 = new carto.filter.Category('cartodb_id', { eq: selectedMarkerId });
+mapSource2.addFilter(filter2);
 
 const mapStyle = new carto.style.CartoCSS(`
 #layer {
   marker-width: 20;
   marker-fill: ramp([marker_color], (#482d9e, #e32c31, #005e38, #376dc2, #3cc954, #444444, #cc1b15, #ffcc00), ("#482d9e", "#e32c31", "#005e38", "#376dc2", "#3cc954", "#444444", "#cc1b15", "#ffcc00"), "=");
   marker-fill-opacity: 0.75;
-  marker-file: ramp([marker_color], (url('https://s3.amazonaws.com/com.cartodb.users-assets.production/production/csis/assets/20220622193635location-pin.svg'), url('https://s3.amazonaws.com/com.cartodb.users-assets.production/production/csis/assets/20220622193635location-pin.svg'), url('https://s3.amazonaws.com/com.cartodb.users-assets.production/production/csis/assets/20220622193635location-pin.svg'), url('https://s3.amazonaws.com/com.cartodb.users-assets.production/production/csis/assets/20220622193635location-pin.svg'), url('https://s3.amazonaws.com/com.cartodb.users-assets.production/production/csis/assets/20220622193635location-pin.svg'), url('https://s3.amazonaws.com/com.cartodb.users-assets.production/production/csis/assets/20220622193635location-pin.svg'), url('https://s3.amazonaws.com/com.cartodb.users-assets.production/production/csis/assets/20220622193635location-pin.svg'), url('https://s3.amazonaws.com/com.cartodb.users-assets.production/production/csis/assets/20220622193635location-pin.svg')), ("#482d9e", "#e32c31", "#005e38", "#376dc2", "#3cc954", "#444444", "#cc1b15", "#ffcc00"), "=");
+  marker-file: url('https://s3.amazonaws.com/com.cartodb.users-assets.production/production/csis/assets/20220622193635location-pin.svg');
+  marker-allow-overlap: true;
+  marker-line-width: 0;
+  marker-line-color: #FFFFFF;
+  marker-line-opacity: 1;
+}
+`);
+const mapStyle2 = new carto.style.CartoCSS(`
+#layer {
+  marker-width: 40;
+  marker-fill: ramp([marker_color], (#482d9e, #e32c31, #005e38, #376dc2, #3cc954, #444444, #cc1b15, #ffcc00), ("#482d9e", "#e32c31", "#005e38", "#376dc2", "#3cc954", "#444444", "#cc1b15", "#ffcc00"), "=");
+  marker-fill-opacity: 0.75;
+  marker-file: url('https://s3.amazonaws.com/com.cartodb.users-assets.production/production/csis/assets/20220622193635location-pin.svg');
   marker-allow-overlap: true;
   marker-line-width: 0;
   marker-line-color: #FFFFFF;
@@ -38,7 +60,17 @@ const mapStyle = new carto.style.CartoCSS(`
 const mapLayer = new carto.layer.Layer(mapSource, mapStyle, {
   featureOverColumns: [
     "cartodb_id",
-    "the_geom",
+    "title",
+    "description",
+    "url",
+    "media_url",
+    "marker_color",
+    "tweethtml"
+  ],
+});
+const mapLayer2 = new carto.layer.Layer(mapSource2, mapStyle2, {
+  featureOverColumns: [
+    "cartodb_id",
     "title",
     "description",
     "url",
@@ -49,31 +81,25 @@ const mapLayer = new carto.layer.Layer(mapSource, mapStyle, {
 });
 
 client.addLayer(mapLayer);
+client.addLayer(mapLayer2);
 
-client.getLeafletLayer().bringToFront().addTo(map);
+var leafletLayer = client.getLeafletLayer();
+leafletLayer.bringToFront().addTo(map);
 
 const sidePanel = L.popup({ closeButton: true });
 
 mapLayer.on(carto.layer.events.FEATURE_CLICKED, createSidePanel);
 
-// map.on('click', function(e) {
-//     console.log("Lat, Lon : " + e.latlng.lat + ", " + e.latlng.lng)
-// });
+function showSelectedMarker(id) {
+  selectedMarkerId = id;
+  filter.set('notEq', selectedMarkerId);
+  filter2.set('eq', selectedMarkerId);
+}
 
 mapLayer.on('featureClicked', featureEvent => {
-  let polygon_selected = featureEvent.data.cartodb_id;
-  // console.log(featureEvent.data.the_geom)
-  // console.log(featureEvent.data.cartodb_id);
-  // console.log(featureEvent.data.title);
-  console.log(featureEvent);
-  console.log("lat: ", featureEvent.latLng.lat);
-  console.log("long: ", featureEvent.latLng.lng);
-  // const content = `
-  //   <h3>${featureEvent.data.title.toUpperCase()}</h3>
-  //   <p class="open-sans">${featureEvent.data.description} <small>max inhabitants</small></p>
-  // `;
-
-  // document.getElementById('info').innerHTML = content;
+  if (selectedMarkerId != featureEvent.data.cartodb_id) {
+    showSelectedMarker(featureEvent.data.cartodb_id);
+  }
 });
 
 function createSidePanel(event) {
@@ -109,6 +135,7 @@ const closeBtn = document.querySelector('.close-btn');
 closeBtn.addEventListener('click', function(e) {
   const panel = document.querySelector('.panel');
   panel.classList.remove('open');
+  showSelectedMarker(-1);
 })
 
 L.control
