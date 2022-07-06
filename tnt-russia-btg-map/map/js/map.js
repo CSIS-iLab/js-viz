@@ -1,37 +1,77 @@
 // Get all markers from images dir
 // https://stackoverflow.com/questions/18480550/how-to-load-all-the-images-from-one-of-my-folder-into-my-web-page-using-jquery
-var xhr = new XMLHttpRequest();
-xhr.open("GET", "./images/", true);
-xhr.responseType = "document";
-xhr.onload = () => {
-    if (xhr.status === 200) {
-        var elements = xhr.response.getElementsByTagName("a");
-        for (x of elements) {
-            if (x.href.match(/\.(svg)$/)) {
-                let img = document.createElement("img");
-                img.src = x.href;
-                console.log(x.href)
+function getImages() {
+    return new Promise((resolve, reject) => {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "./images/", true);
+        xhr.responseType = "document";
+        xhr.onload = () => {
+            let markerIcon = {}
 
-                // let markerIcon = new IconBase({ iconUrl: x.href });
-            }
-        }
-    } else {
-        // console.log("Request failed. Returned status of " + xhr.status);
-    }
+            if (xhr.status === 200) {
+                let elements = xhr.response.getElementsByTagName("a");
+                let allMarkers = [];
+                let IconBase = L.Icon.extend({
+                    options: {
+                        iconSize: [50, 95],
+                        iconAnchor: [22, 94],
+                        popupAnchor: [-3, -76],
+                    },
+                });
+
+                for (x of elements) {
+                    if (x.href.match(/\.(svg)$/)) {
+                        let img = document.createElement("img");
+                        let filename = '';
+                        let filename2 = '';
+
+                        img.src = x.href; // Full URL
+                        filename = x.href.substring(x.href.lastIndexOf('/') + 1); // File name w/ext
+                        filename2 = x.href.substring(x.href.lastIndexOf('/') + 1).replace(/\.[^/.]+$/, ""); // File name no ext
+
+                        markerIcon[filename2] = new IconBase({
+                            iconUrl: x.href,
+                        });
+
+                    }
+                }
+            } else {}
+            resolve(markerIcon);
+        };
+        xhr.send();
+    })
+
 };
-xhr.send();
 
-let IconBase = L.Icon.extend({
-    options: {
-        iconSize: [50, 95],
-        iconAnchor: [22, 94],
-        popupAnchor: [-3, -76],
-    },
+getImages().then((markerIcon) => {
+    const dataRows = theData(markerIcon);
+
+    function theData(markerIcon) {
+
+        var sql = new cartodb.SQL({ user: "csis" });
+        sql
+            .execute("SELECT * FROM csis.russia_btg_map_1")
+            .done(function(data) {
+                const rows = data.rows;
+                // Loop through lat/long - We need to get all the data before we loop through in leaflet
+                data.rows.forEach(row => {
+                    if (row.type !== '') {
+                        let iconName = row.type;
+                        if (iconName in markerIcon) {
+                            L.marker([row.lat, row.long], { icon: markerIcon[iconName] }).addTo(map).bindPopup(
+                                '<h2>' + row.short_form_name + '</h2>' +
+                                '<a href="' + row.source + '" target="_blank">Source</a>'
+                            );
+                        }
+                    } else {}
+                });
+            })
+            .error(function(errors) {
+                // errors contains a list of errors
+                console.log("errors:" + errors);
+            });
+    }
 });
-
-let ruAirborneInfantryDivisionHQTail = new IconBase({ iconUrl: "./images/RU_Airborne_Infantry_Division_HQ.svg" });
-
-
 
 const client = new carto.Client({
     apiKey: "moxuF6iP0jTe4tyXPtVK4Q",
@@ -56,31 +96,8 @@ var map = L.map("map", {
 
 const mapSource = new carto.source.SQL(`SELECT * FROM csis.russia_btg_map_1`);
 
-function theData() {
-    var sql = new cartodb.SQL({ user: "csis" });
-    sql
-        .execute("SELECT * FROM csis.russia_btg_map_1")
-        .done(function(data) {
-            const rows = data.rows;
-            // Loop through lat/long - We need to get all the data before we loop through in leaflet
-            data.rows.forEach(row => {
-                // console.log(row)
 
-                L.marker([row.lat, row.long], { icon: ruAirborneInfantryDivisionHQTail }).addTo(map).bindPopup(
-                    '<h2>' + row.short_form_name + '</h2>' +
-                    '<a href="' + row.source + '" target="_blank">Source</a>'
-                );
-            });
 
-            // return rows;
-        })
-        .error(function(errors) {
-            // errors contains a list of errors
-            console.log("errors:" + errors);
-        });
-}
-
-const dataRows = theData();
 // console.log(dataRows)
 
 const mapStyle = new carto.style.CartoCSS(`
@@ -98,8 +115,6 @@ const mapStyle = new carto.style.CartoCSS(`
 const mapLayer = new carto.layer.Layer(mapSource, mapStyle, {
     featureOverColumns: ["formal_name", "short_form_name", "type", "size", "hq_tail2", "country", "lat", "long", "source"],
 });
-
-
 
 
 client.getLeafletLayer().bringToFront().addTo(map);
