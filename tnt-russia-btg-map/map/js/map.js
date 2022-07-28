@@ -47,7 +47,6 @@ getImages().then((markerIcon) => {
     const dataRows = theData(markerIcon);
 
     function theData(markerIcon) {
-
         var sql = new cartodb.SQL({ user: "csis" });
         sql
             .execute("SELECT * FROM csis.russia_btg_map_1")
