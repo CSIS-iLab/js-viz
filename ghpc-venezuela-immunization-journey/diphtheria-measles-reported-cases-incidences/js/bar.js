@@ -4,14 +4,9 @@ Highcharts.chart("hcContainer", {
     googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
     googleSpreadsheetKey: "12_ks76ZrqO3NcqmqlLtBi9ynpX0Zy9RvsWaprU47u4c",
     googleSpreadsheetRange: "venezuela",
-    // complete: function () {
-    //   // DATA
-    //   console.log(this);
-    // },
   },
   // General Chart Options
   chart: {
-    // type: "column",
     type: "spline",
     spacingBottom: 60,
     style: {
@@ -34,7 +29,7 @@ Highcharts.chart("hcContainer", {
     },
   },
   subtitle: {
-    text: "From 2000 to 2021",
+    text: "We need a subtitle?",
     align: "left",
   },
   // Credits
@@ -106,20 +101,12 @@ Highcharts.chart("hcContainer", {
   // Additional Plot Options
   plotOptions: {
     series: {
-      // stacking: 'normal',
       borderWidth: 0,
       groupPadding: 0.1,
 
       dataLabels: {
         align: "left",
         enabled: true,
-        // formatter: function () {
-        //   if (this.point.shapeArgs.height < this.point.name.length * 2) {
-        //     return;
-        //   } else {
-        //     return this.y;
-        //   }
-        // },
         style: {
           textOutline: "none",
           fontWeight: "normal",
