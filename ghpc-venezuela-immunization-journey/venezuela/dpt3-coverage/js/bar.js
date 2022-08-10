@@ -3,7 +3,7 @@ Highcharts.chart("hcContainer", {
   data: {
     googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
     googleSpreadsheetKey: "12_ks76ZrqO3NcqmqlLtBi9ynpX0Zy9RvsWaprU47u4c",
-    googleSpreadsheetRange: "venezuela",
+    googleSpreadsheetRange: "venezuela-DTP3",
   },
   // General Chart Options
   chart: {
@@ -17,10 +17,10 @@ Highcharts.chart("hcContainer", {
   colors: ["#0050A4", "#00B2E3"],
   // Chart Title and Subtitle
   accessibility: {
-    description: "Diphteria & Measles reported cases and incidence in Venezuela.",
+    description: "Venezuela vs Americas Region",
   },
   title: {
-    text: "Diphteria & Measles reported cases and incidence in Venezuela.",
+    text: "Venezuela vs Americas Region.",
     align: "left",
     style: {
       color: "black",
@@ -29,7 +29,7 @@ Highcharts.chart("hcContainer", {
     },
   },
   subtitle: {
-    text: "We need a subtitle?",
+    text: "Diphtheria tetanus toxoid and pertussis (DTP) vaccination coverage, 3rd dose.",
     align: "left",
   },
   // Credits
@@ -62,14 +62,11 @@ Highcharts.chart("hcContainer", {
   // Y Axis
   yAxis: {
     title: {
-      text: "Reported Cases & Incidence",
+      text: "",
     },
-    max: 6000,
-    tickInterval: 1000,
+    max: 100,
+    tickInterval: 10,
     reversedStacks: false,
-    startOnTick: false,
-    endOnTick: false,
-    // visible: false,
   },
   xAxis: {
     type: "year",
@@ -89,7 +86,7 @@ Highcharts.chart("hcContainer", {
         '">\u25A0</span> ' +
         this.series.name +
         ": <b> " +
-        this.y +
+        this.y * 100 +
         "</b><br/>"
       );
     },

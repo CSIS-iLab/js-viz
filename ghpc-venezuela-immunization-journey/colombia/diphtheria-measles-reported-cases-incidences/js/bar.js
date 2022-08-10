@@ -3,7 +3,7 @@ Highcharts.chart("hcContainer", {
   data: {
     googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
     googleSpreadsheetKey: "12_ks76ZrqO3NcqmqlLtBi9ynpX0Zy9RvsWaprU47u4c",
-    googleSpreadsheetRange: "venezuela-mvc2",
+    googleSpreadsheetRange: "colombia",
   },
   // General Chart Options
   chart: {
@@ -17,11 +17,10 @@ Highcharts.chart("hcContainer", {
   colors: ["#0050A4", "#00B2E3"],
   // Chart Title and Subtitle
   accessibility: {
-    description:
-      "Diphtheria tetanus toxoid and pertussis (DTP) vaccination coverage, 3rd dose.",
+    description: "Measles reported cases and incidence in Colombia.",
   },
   title: {
-    text: "Measles vaccination 2nd dose coverage.",
+    text: "Measles reported cases and incidence in Colombia.",
     align: "left",
     style: {
       color: "black",
@@ -63,11 +62,15 @@ Highcharts.chart("hcContainer", {
   // Y Axis
   yAxis: {
     title: {
-      text: "",
+      text: "Reported Cases & Incidence",
     },
-    max: 100,
-    tickInterval: 10,
+    // max: 6000,
+    max: 300,
+    tickInterval: 50,
     reversedStacks: false,
+    startOnTick: false,
+    endOnTick: false,
+    // visible: false,
   },
   xAxis: {
     type: "year",
@@ -87,7 +90,7 @@ Highcharts.chart("hcContainer", {
         '">\u25A0</span> ' +
         this.series.name +
         ": <b> " +
-        this.y * 100 +
+        this.y +
         "</b><br/>"
       );
     },

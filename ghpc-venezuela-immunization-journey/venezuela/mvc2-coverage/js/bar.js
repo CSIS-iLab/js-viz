@@ -3,7 +3,7 @@ Highcharts.chart("hcContainer", {
   data: {
     googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
     googleSpreadsheetKey: "12_ks76ZrqO3NcqmqlLtBi9ynpX0Zy9RvsWaprU47u4c",
-    googleSpreadsheetRange: "venezuela-DTP3",
+    googleSpreadsheetRange: "venezuela-mvc2",
   },
   // General Chart Options
   chart: {
@@ -17,10 +17,11 @@ Highcharts.chart("hcContainer", {
   colors: ["#0050A4", "#00B2E3"],
   // Chart Title and Subtitle
   accessibility: {
-    description: "Measles vaccination 2nd dose coverage.",
+    description:
+      "Diphtheria tetanus toxoid and pertussis (DTP) vaccination coverage, 3rd dose.",
   },
   title: {
-    text: "Diphtheria tetanus toxoid and pertussis (DTP) vaccination coverage, 3rd dose.",
+    text: "Venezuela vs Americas Region",
     align: "left",
     style: {
       color: "black",
@@ -29,7 +30,7 @@ Highcharts.chart("hcContainer", {
     },
   },
   subtitle: {
-    text: "We need a subtitle?",
+    text: "Measles vaccination 2nd dose coverage.",
     align: "left",
   },
   // Credits
