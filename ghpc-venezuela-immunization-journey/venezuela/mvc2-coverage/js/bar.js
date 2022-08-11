@@ -1,3 +1,5 @@
+var categories = [];
+
 Highcharts.chart("hcContainer", {
   // Load Data in from Google Sheets
   data: {
@@ -7,7 +9,7 @@ Highcharts.chart("hcContainer", {
   },
   // General Chart Options
   chart: {
-    type: "spline",
+    type: "bar",
     spacingBottom: 60,
     style: {
       fontFamily: ["Source Sans Pro", "sans-serif"],
@@ -67,27 +69,62 @@ Highcharts.chart("hcContainer", {
     },
     max: 100,
     tickInterval: 10,
-    reversedStacks: false,
-  },
-  xAxis: {
-    type: "year",
-    tickInterval: 1,
-    accessibility: {
-      rangeDescription: "Range: 2000 to 2021",
+    labels: {
+      formatter: function () {
+        return Math.abs(this.value) + "%";
+      },
     },
-    crosshair: true,
+    accessibility: {
+      description: "Percentage population",
+      rangeDescription: "Range: 0 to 5%",
+    }
   },
+  xAxis: [
+    {
+      categories: categories,
+      reversed: false,
+      labels: {
+        step: 1,
+      },
+      accessibility: {
+        description: "Age (male)",
+      },
+    },
+    {
+      // mirror axis on right side
+      opposite: true,
+      reversed: false,
+      categories: categories,
+      linkedTo: 0,
+      labels: {
+        step: 1,
+      },
+      accessibility: {
+        description: "Age (female)",
+      },
+    },
+  ],
   // Tooltip
   tooltip: {
+    // formatter: function () {
+    //     return '<b>' + this.series.name + ', age ' + this.point.category + '</b><br/>' +
+    //         'Population: ' + Highcharts.numberFormat(Math.abs(this.point.y), 1) + '%';
+    // },
     headerFormat: "{point.key}<br/>",
     pointFormatter: function () {
+      let number = 0
+      if (this.y > 0) {
+        number = this.y
+      } else {
+        number = this.y * -1
+      }
       return (
         '<span style="font-size: 14px;color:' +
         this.color +
         '">\u25A0</span> ' +
         this.series.name +
         ": <b> " +
-        this.y * 100 +
+        number +
         "</b><br/>"
       );
     },
@@ -99,12 +136,26 @@ Highcharts.chart("hcContainer", {
   // Additional Plot Options
   plotOptions: {
     series: {
+      stacking: 'normal',
       borderWidth: 0,
-      groupPadding: 0.1,
+      // groupPadding: 0.1,
+      pointWidth: 6,
+      // spacing: 10,
+      pointPadding: 0.25,
 
       dataLabels: {
         align: "left",
         enabled: true,
+        formatter: function() {
+          let number = 0
+          // console.log(this.y);
+          if (this.y > 0) {
+            number = this.y
+          } else {
+            number = this.y * -1
+          }
+          return '<span> ' + number + '</span>'
+        },
         style: {
           textOutline: "none",
           fontWeight: "normal",
