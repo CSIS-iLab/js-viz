@@ -2,15 +2,12 @@
 // https://stackoverflow.com/questions/18480550/how-to-load-all-the-images-from-one-of-my-folder-into-my-web-page-using-jquery
 function getImages() {
     return new Promise((resolve, reject) => {
-        var xhr = new XMLHttpRequest();
-        xhr.open("GET", "./images/", true);
-        xhr.responseType = "document";
-        xhr.onload = () => {
-            let markerIcon = {}
-
-            if (xhr.status === 200) {
-                let elements = xhr.response.getElementsByTagName("a");
-                let allMarkers = [];
+        let url = 'http://127.0.0.1:5500/map/js/markers.json';
+        fetch(url)
+            .then(res => res.json())
+            .then((markers) => {
+                let markerIcon = "";
+                let elements = document.createElement('a');
                 let IconBase = L.Icon.extend({
                     options: {
                         iconSize: [50, 95],
@@ -18,58 +15,61 @@ function getImages() {
                         popupAnchor: [-3, -76],
                     },
                 });
-
-                for (x of elements) {
-                    if (x.href.match(/\.(svg)$/)) {
-                        let img = document.createElement("img");
-                        let filename = '';
-                        let filename2 = '';
-
-                        img.src = x.href; // Full URL
-                        filename = x.href.substring(x.href.lastIndexOf('/') + 1); // File name w/ext
-                        filename2 = x.href.substring(x.href.lastIndexOf('/') + 1).replace(/\.[^/.]+$/, ""); // File name no ext
-
-                        markerIcon[filename2] = new IconBase({
-                            iconUrl: x.href,
-                        });
-
-                    }
+                let markerArr = [];
+                for (let x in markers) {
+                    // X = icon name
+                    // fullUrl = icon url
+                    let fullUrl = "http://127.0.0.1:5500/map/images/" + x + ".svg";
+                    let filename2 = x.substring(x.lastIndexOf('/') + 1).replace(/\.[^/.]+$/, ""); // File name no ext
+                    markerIcon = new IconBase({
+                        iconUrl: fullUrl,
+                        iconName: filename2
+                    });
+                    markerArr.push(markerIcon)
                 }
-            } else {}
-            resolve(markerIcon);
-        };
-        xhr.send();
+
+                resolve(markerArr);
+            })
+            // .catch(err => { throw err });
     })
 
 };
 
-getImages().then((markerIcon) => {
-    const dataRows = theData(markerIcon);
+Promise.all([getImages()]).then(markerArr => {
+    const dataRows = theData(markerArr);
+    markerArr = markerArr.flatMap(options => options);
 
-    function theData(markerIcon) {
-        var sql = new cartodb.SQL({ user: "csis" });
+
+    function theData(markerArr) {
+        let sql = new cartodb.SQL({ user: "csis" });
         sql
             .execute("SELECT * FROM csis.russia_btg_map_1")
             .done(function(data) {
                 const rows = data.rows;
                 // Loop through lat/long - We need to get all the data before we loop through in leaflet
-                data.rows.forEach(row => {
-                    if (row.type !== '') {
-                        let iconName = row.type;
-                        if (iconName in markerIcon) {
-                            L.marker([row.lat, row.long], { icon: markerIcon[iconName] }).addTo(map).bindPopup(
+                rows.forEach((row) => {
+                        if (row.type !== '') {
+                            let markerName = row.type;
+                            // Get icon Name vs URL
+
+                            const foundItem = markerArr.find((marker) => {
+                                marker.options.iconName == markerName;
+                            })
+                            console.log(foundItem)
+                                // if (markerName == markerArr.options.markerName) {
+                            L.marker([row.lat, row.long], { icon: markerName }).addTo(map).bindPopup(
                                 '<h2>' + row.short_form_name + '</h2>' +
                                 '<a href="' + row.source + '" target="_blank">Source</a>'
                             );
-                        }
-                    } else {}
-                });
+                            // } else {}
+                        };
+                    })
+                    .error(function(errors) {
+                        // errors contains a list of errors
+                        console.log("errors:" + errors);
+                    });
             })
-            .error(function(errors) {
-                // errors contains a list of errors
-                console.log("errors:" + errors);
-            });
-    }
+    };
 });
 
 const client = new carto.Client({
@@ -148,4 +148,3 @@ L.control
         position: "bottomright",
     })
     .setPrefix('<a href="https://www.csis.org/programs/PROGRAMNAME">CSIS PROGRAM</a>, <a href="https://leafletjs.com/">Leaflet</a>')
-    .addTo(map);
