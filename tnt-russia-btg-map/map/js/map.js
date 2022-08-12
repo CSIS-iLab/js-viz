@@ -17,6 +17,7 @@ function getImages() {
 			let markerArr = [];
 			// Loop through the marker json file and create a marker object for each type
 			for (let x in markers) {
+				x = x.toLowerCase()
 				let fullUrl = "http://127.0.0.1:5503/tnt-russia-btg-map/map/images/" + x + ".svg";
 				let filename2 = x.substring(x.lastIndexOf('/') + 1).replace(/\.[^/.]+$/, ""); // File name no ext
 				markerIcon = new IconBase({
@@ -43,20 +44,17 @@ Promise.all([getImages()]).then(markerArr => {
 			const rows = data.rows;
 			// Loop through each battlement
 			rows.forEach((row) => {
-				if (row.type !== '') {
-					let markerName = row.type;
+					let markerName = row.type.toLowerCase();
 					// Get marker icon object for the specific battlement type
 					const foundItem = markerArr[0].find((marker) => {
 						return marker.options.iconName == markerName;
 					})
-					
 					// If we have a matching marker, use it to mark the battlement on the map
 					if(foundItem) {
 						L.marker([row.lat, row.long], { icon: foundItem }).addTo(map).bindPopup(
 							'<h2>' + row.short_form_name + '</h2>' +
 							'<a href="' + row.source + '" target="_blank">Source</a>'
 						);
-					}
 				};
 			})
 		})
