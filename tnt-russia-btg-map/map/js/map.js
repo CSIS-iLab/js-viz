@@ -1,96 +1,91 @@
 // Get all markers from images dir
 // https://stackoverflow.com/questions/18480550/how-to-load-all-the-images-from-one-of-my-folder-into-my-web-page-using-jquery
 function getImages() {
-    return new Promise((resolve, reject) => {
-        let url = 'http://127.0.0.1:5500/map/js/markers.json';
-        fetch(url)
-            .then(res => res.json())
-            .then((markers) => {
-                let markerIcon = "";
-                let elements = document.createElement('a');
-                let IconBase = L.Icon.extend({
-                    options: {
-                        iconSize: [50, 95],
-                        iconAnchor: [22, 94],
-                        popupAnchor: [-3, -76],
-                    },
-                });
-                let markerArr = [];
-                for (let x in markers) {
-                    // X = icon name
-                    // fullUrl = icon url
-                    let fullUrl = "http://127.0.0.1:5500/map/images/" + x + ".svg";
-                    let filename2 = x.substring(x.lastIndexOf('/') + 1).replace(/\.[^/.]+$/, ""); // File name no ext
-                    markerIcon = new IconBase({
-                        iconUrl: fullUrl,
-                        iconName: filename2
-                    });
-                    markerArr.push(markerIcon)
-                }
-
-                resolve(markerArr);
-            })
-            // .catch(err => { throw err });
-    })
+	return new Promise((resolve, reject) => {
+		let url = 'http://127.0.0.1:5503/tnt-russia-btg-map/map/js/markers.json';
+		fetch(url)
+		.then(res => res.json())
+		.then((markers) => {
+			let markerIcon = "";
+			let IconBase = L.Icon.extend({
+				options: {
+					iconSize: [50, 95],
+					iconAnchor: [22, 94],
+					popupAnchor: [-3, -76],
+				},
+			});
+			let markerArr = [];
+			// Loop through the marker json file and create a marker object for each type
+			for (let x in markers) {
+				let fullUrl = "http://127.0.0.1:5503/tnt-russia-btg-map/map/images/" + x + ".svg";
+				let filename2 = x.substring(x.lastIndexOf('/') + 1).replace(/\.[^/.]+$/, ""); // File name no ext
+				markerIcon = new IconBase({
+					iconUrl: fullUrl,
+					iconName: filename2
+				});
+				markerArr.push(markerIcon)
+			}
+			resolve(markerArr);
+		})
+		// .catch(err => { throw err });
+	})
 
 };
 
 Promise.all([getImages()]).then(markerArr => {
-    const dataRows = theData(markerArr);
-    markerArr = markerArr.flatMap(options => options);
+	const dataRows = theData(markerArr);
 
-
-    function theData(markerArr) {
-        let sql = new cartodb.SQL({ user: "csis" });
-        sql
-            .execute("SELECT * FROM csis.russia_btg_map_1")
-            .done(function(data) {
-                const rows = data.rows;
-                // Loop through lat/long - We need to get all the data before we loop through in leaflet
-                rows.forEach((row) => {
-                        if (row.type !== '') {
-                            let markerName = row.type;
-                            // Get icon Name vs URL
-
-                            const foundItem = markerArr.find((marker) => {
-                                marker.options.iconName == markerName;
-                            })
-                            console.log(foundItem)
-                                // if (markerName == markerArr.options.markerName) {
-                            L.marker([row.lat, row.long], { icon: markerName }).addTo(map).bindPopup(
-                                '<h2>' + row.short_form_name + '</h2>' +
-                                '<a href="' + row.source + '" target="_blank">Source</a>'
-                            );
-                            // } else {}
-                        };
-                    })
-                    .error(function(errors) {
-                        // errors contains a list of errors
-                        console.log("errors:" + errors);
-                    });
-            })
-    };
+	function theData(markerArr) {
+		let sql = new cartodb.SQL({ user: "csis" });
+		sql
+		.execute("SELECT * FROM csis.russia_btg_map_1")
+		.done(function(data) {
+			const rows = data.rows;
+			// Loop through each battlement
+			rows.forEach((row) => {
+				if (row.type !== '') {
+					let markerName = row.type;
+					// Get marker icon object for the specific battlement type
+					const foundItem = markerArr[0].find((marker) => {
+						return marker.options.iconName == markerName;
+					})
+					
+					// If we have a matching marker, use it to mark the battlement on the map
+					if(foundItem) {
+						L.marker([row.lat, row.long], { icon: foundItem }).addTo(map).bindPopup(
+							'<h2>' + row.short_form_name + '</h2>' +
+							'<a href="' + row.source + '" target="_blank">Source</a>'
+						);
+					}
+				};
+			})
+		})
+		.error(function(errors) {
+				// errors contains a list of errors
+				console.log("errors:" + errors);
+		});
+	};
 });
 
 const client = new carto.Client({
-    apiKey: "moxuF6iP0jTe4tyXPtVK4Q",
-    username: "csis",
+	apiKey: "oRyxq9fVX5mUbDKoOs8dpQ",
+	username: "csis",
 });
 
 var basemap = L.tileLayer(
-    "https://api.mapbox.com/styles/v1/ilabmedia/cl2th2451004c16ni3f3t9v43/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw", {}
+	"https://api.mapbox.com/styles/v1/ilabmedia/cl2th2451004c16ni3f3t9v43/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw", {}
 );
 
 var map = L.map("map", {
-    center: [47.646, 30.987],
-    zoom: 6.24,
-    maxZoom: 10,
-    scrollWheelZoom: true,
-    minZoom: 1,
-    zoomControl: true,
-    scrollWheelZoom: true,
-    layers: [basemap],
-    attributionControl: false,
+	center: [47.646, 30.987],
+	zoom: 6.24,
+	maxZoom: 10,
+	scrollWheelZoom: true,
+	minZoom: 1,
+	zoomControl: true,
+	scrollWheelZoom: true,
+	layers: [basemap],
+	attributionControl: false,
 });
 
 const mapSource = new carto.source.SQL(`SELECT * FROM csis.russia_btg_map_1`);
@@ -123,28 +118,29 @@ const popup = L.popup({ closeButton: true });
 mapLayer.on(carto.layer.events.FEATURE_CLICKED, createPopup);
 
 function createPopup(event) {
-    popup.setLatLng(event.latLng);
+	popup.setLatLng(event.latLng);
 
-    if (!popup.isOpen()) {
-        var data = event.data;
-        console.log(event.data);
-        var content = "<div>";
+	if (!popup.isOpen()) {
+		var data = event.data;
+		console.log(event.data);
+		var content = "<div>";
 
-        content += `
-    <div class="popupHeaderStyle">
-      ${data.short_form_name}
-    </div>
-    <div class="popupEntryStyle">
-      ${data.formal_name}
-    </div>
-    `;
-        popup.setContent("" + content);
-        popup.openOn(map);
-    }
+		content += `
+		<div class="popupHeaderStyle">
+		${data.short_form_name}
+		</div>
+		<div class="popupEntryStyle">
+		${data.formal_name}
+		</div>
+		`;
+
+		popup.setContent("" + content);
+		popup.openOn(map);
+	}
 }
 
 L.control
-    .attribution({
-        position: "bottomright",
-    })
-    .setPrefix('<a href="https://www.csis.org/programs/PROGRAMNAME">CSIS PROGRAM</a>, <a href="https://leafletjs.com/">Leaflet</a>')
+	.attribution({
+		position: "bottomright",
+	})
+	.setPrefix('<a href="https://www.csis.org/programs/PROGRAMNAME">CSIS PROGRAM</a>, <a href="https://leafletjs.com/">Leaflet</a>')
