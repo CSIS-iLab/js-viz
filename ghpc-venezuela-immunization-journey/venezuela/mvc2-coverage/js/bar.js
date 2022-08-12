@@ -3,11 +3,12 @@ Highcharts.chart("hcContainer", {
   data: {
     googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
     googleSpreadsheetKey: "12_ks76ZrqO3NcqmqlLtBi9ynpX0Zy9RvsWaprU47u4c",
-    googleSpreadsheetRange: "venezuela-mvc2",
+    googleSpreadsheetRange: "copy-venezuela-mvc2",
   },
   // General Chart Options
   chart: {
     type: "spline",
+    height: 600,
     spacingBottom: 60,
     style: {
       fontFamily: ["Source Sans Pro", "sans-serif"],
