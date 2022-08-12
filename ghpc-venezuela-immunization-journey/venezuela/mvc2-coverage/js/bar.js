@@ -10,6 +10,7 @@ Highcharts.chart("hcContainer", {
   // General Chart Options
   chart: {
     type: "bar",
+    height: 700,
     spacingBottom: 60,
     style: {
       fontFamily: ["Source Sans Pro", "sans-serif"],
@@ -77,7 +78,7 @@ Highcharts.chart("hcContainer", {
     accessibility: {
       description: "Percentage population",
       rangeDescription: "Range: 0 to 5%",
-    }
+    },
   },
   xAxis: [
     {
@@ -106,17 +107,13 @@ Highcharts.chart("hcContainer", {
   ],
   // Tooltip
   tooltip: {
-    // formatter: function () {
-    //     return '<b>' + this.series.name + ', age ' + this.point.category + '</b><br/>' +
-    //         'Population: ' + Highcharts.numberFormat(Math.abs(this.point.y), 1) + '%';
-    // },
     headerFormat: "{point.key}<br/>",
     pointFormatter: function () {
-      let number = 0
+      let number = 0;
       if (this.y > 0) {
-        number = this.y
+        number = this.y;
       } else {
-        number = this.y * -1
+        number = this.y * -1;
       }
       return (
         '<span style="font-size: 14px;color:' +
@@ -136,25 +133,23 @@ Highcharts.chart("hcContainer", {
   // Additional Plot Options
   plotOptions: {
     series: {
-      stacking: 'normal',
+      stacking: "normal",
       borderWidth: 0,
-      // groupPadding: 0.1,
-      pointWidth: 6,
-      // spacing: 10,
-      pointPadding: 0.25,
+      pointWidth: 14,
+      pointPadding: 0.3,
 
       dataLabels: {
-        align: "left",
+        align: "right",
         enabled: true,
-        formatter: function() {
-          let number = 0
+        formatter: function () {
+          let number = 0;
           // console.log(this.y);
-          if (this.y > 0) {
-            number = this.y
+          if (this.y >= 0) {
+            number = this.y;
           } else {
-            number = this.y * -1
+            number = this.y * -1;
           }
-          return '<span> ' + number + '</span>'
+          return number;
         },
         style: {
           textOutline: "none",
