@@ -3,26 +3,31 @@ Highcharts.chart("hcContainer", {
   data: {
     googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
     googleSpreadsheetKey: "12_ks76ZrqO3NcqmqlLtBi9ynpX0Zy9RvsWaprU47u4c",
-    googleSpreadsheetRange: "venezuela-mvc2",
+    googleSpreadsheetRange: "Share-of-People-Vaccinated-Against-covid19",
   },
+
   // General Chart Options
   chart: {
-    type: "spline",
-    height: 600,
+    type: "column",
+    // inverted: true,
     spacingBottom: 60,
     style: {
       fontFamily: ["Source Sans Pro", "sans-serif"],
     },
   },
+
   // Colors
-  colors: ["#0050A4", "#00B2E3"],
+  colors: [
+    "#E53E3A", // Venezuela
+    "#FFC728", // Colombia
+  ],
+
   // Chart Title and Subtitle
   accessibility: {
-    description:
-      "Diphtheria tetanus toxoid and pertussis (DTP) vaccination coverage, 3rd dose.",
+    description: "Share of People Vaccinated Against Covid-19.",
   },
   title: {
-    text: "Venezuela vs Americas Region",
+    text: "Share of People Vaccinated Against Covid-19.",
     align: "left",
     style: {
       color: "black",
@@ -31,7 +36,7 @@ Highcharts.chart("hcContainer", {
     },
   },
   subtitle: {
-    text: "Measles vaccination 2nd dose coverage.",
+    text: "We need a subtitle?",
     align: "left",
   },
   // Credits
@@ -67,17 +72,15 @@ Highcharts.chart("hcContainer", {
       text: "",
     },
     max: 100,
-    tickInterval: 10,
-    reversedStacks: false,
   },
   xAxis: {
     type: "year",
     tickInterval: 1,
     accessibility: {
-      rangeDescription: "Range: 2000 to 2021",
+      rangeDescription: "Countries: Venezuela and Colombia.",
     },
-    crosshair: true,
   },
+
   // Tooltip
   tooltip: {
     headerFormat: "{point.key}<br/>",
@@ -88,8 +91,8 @@ Highcharts.chart("hcContainer", {
         '">\u25A0</span> ' +
         this.series.name +
         ": <b> " +
-        this.y * 100 +
-        "</b><br/>"
+        this.y +
+        "%</b><br/>"
       );
     },
     shared: true,
@@ -104,7 +107,7 @@ Highcharts.chart("hcContainer", {
       groupPadding: 0.1,
 
       dataLabels: {
-        align: "left",
+        // align: "left",
         enabled: true,
         style: {
           textOutline: "none",
