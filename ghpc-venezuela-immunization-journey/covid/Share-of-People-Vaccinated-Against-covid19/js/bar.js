@@ -71,6 +71,11 @@ Highcharts.chart("hcContainer", {
     title: {
       text: "",
     },
+    labels: {
+      formatter: function () {
+        return this.value + "%";
+      },
+    },
     max: 100,
   },
   xAxis: {
