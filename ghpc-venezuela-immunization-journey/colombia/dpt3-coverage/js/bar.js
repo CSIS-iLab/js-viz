@@ -14,10 +14,14 @@ Highcharts.chart("hcContainer", {
     },
   },
   // Colors
-  colors: ["#0050A4", "#00B2E3"],
+  colors: [
+    "#FFC728", // Colombia
+    "#0050A4", // Americas
+  ],
   // Chart Title and Subtitle
   accessibility: {
-    description: "Measles vaccination 2nd dose coverage.",
+    description:
+      "Diphtheria tetanus toxoid and pertussis (DTP) vaccination coverage, 3rd dose.",
   },
   title: {
     text: "Colombia vs Americas Region",
@@ -64,7 +68,13 @@ Highcharts.chart("hcContainer", {
     title: {
       text: "",
     },
+    labels: {
+      formatter: function () {
+        return this.value + "%";
+      },
+    },
     max: 100,
+    min: 60,
     tickInterval: 10,
     reversedStacks: false,
   },
@@ -86,8 +96,8 @@ Highcharts.chart("hcContainer", {
         '">\u25A0</span> ' +
         this.series.name +
         ": <b> " +
-        this.y * 100 +
-        "</b><br/>"
+        this.y +
+        "%</b><br/>"
       );
     },
     shared: true,

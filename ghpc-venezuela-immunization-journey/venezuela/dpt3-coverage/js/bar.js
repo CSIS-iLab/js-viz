@@ -14,7 +14,10 @@ Highcharts.chart("hcContainer", {
     },
   },
   // Colors
-  colors: ["#0050A4", "#00B2E3"],
+  colors: [
+    "#E53E3A", // Venezuela
+    "#0050A4", // Americas
+  ],
   // Chart Title and Subtitle
   accessibility: {
     description: "Venezuela vs Americas Region",
@@ -64,6 +67,11 @@ Highcharts.chart("hcContainer", {
     title: {
       text: "",
     },
+    labels: {
+      formatter: function () {
+        return this.value + "%";
+      },
+    },
     max: 100,
     tickInterval: 10,
     reversedStacks: false,
@@ -86,8 +94,8 @@ Highcharts.chart("hcContainer", {
         '">\u25A0</span> ' +
         this.series.name +
         ": <b> " +
-        this.y * 100 +
-        "</b><br/>"
+        this.y +
+        "%</b><br/>"
       );
     },
     shared: true,
