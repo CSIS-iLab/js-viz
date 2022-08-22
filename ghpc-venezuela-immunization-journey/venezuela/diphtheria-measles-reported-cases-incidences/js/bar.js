@@ -1,3 +1,10 @@
+Highcharts.setOptions({
+  lang: {
+    thousandsSep: ",",
+    decimalPoint: ".",
+  },
+});
+
 Highcharts.chart("hcContainer", {
   // Load Data in from Google Sheets
   data: {
@@ -18,10 +25,10 @@ Highcharts.chart("hcContainer", {
   // Chart Title and Subtitle
   accessibility: {
     description:
-      "Diphteria & Measles reported cases and incidence in Venezuela.",
+      "Diphteria & Measles reported cases in Venezuela (2000 - 2021)",
   },
   title: {
-    text: "Diphteria & Measles reported cases and incidence in Venezuela.",
+    text: "Diphteria & Measles reported cases in Venezuela (2000 - 2021)",
     align: "left",
     style: {
       color: "black",
@@ -57,13 +64,29 @@ Highcharts.chart("hcContainer", {
       fontWeight: "normal",
     },
     labelFormatter: function () {
-      return this.name;
+      const legend = this.name
+      const legendsWords = legend.split(' ')
+      const legendsWordsLength = legendsWords.length
+      let modifiedLegend = ''
+      // find the last word and make it bold and recreate the sentence
+      legendsWords.map( (element, index) => {
+        // console.log(element)
+        if ( index === ( legendsWordsLength - 1 ) ) {
+          // console.log(element)
+          modifiedLegend += '<b>' + element + '<b/>'
+        } else {
+          modifiedLegend += element + ' '
+        }
+      })
+      // console.log(modifiedLegend)
+      return modifiedLegend
+      // return this.name + " (click to hide)"
     },
   },
   // Y Axis
   yAxis: {
     title: {
-      text: "Reported Cases & Incidence",
+      text: "Reported Disease Cases",
     },
     max: 6000,
     tickInterval: 1000,
@@ -84,11 +107,13 @@ Highcharts.chart("hcContainer", {
   tooltip: {
     headerFormat: "{point.key}<br/>",
     pointFormatter: function () {
+      let lastWord = this.series.name.split(" ");
       return (
         '<span style="font-size: 14px;color:' +
         this.color +
         '">\u25A0</span> ' +
-        this.series.name +
+        // this.series.name +
+        lastWord[lastWord.length - 1] +
         ": <b> " +
         this.y +
         "</b><br/>"
@@ -108,6 +133,10 @@ Highcharts.chart("hcContainer", {
       dataLabels: {
         align: "left",
         enabled: true,
+        // formatter: function() {
+        //   console.log(this.x );
+        //   return this.y + "<br/>(" + Math.round(((this.y / this.point.total) * 100) * 100) / 100 + " %)"
+        // },
         style: {
           textOutline: "none",
           fontWeight: "normal",
