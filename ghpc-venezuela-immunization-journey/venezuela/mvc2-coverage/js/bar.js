@@ -22,10 +22,10 @@ Highcharts.chart("hcContainer", {
   // Chart Title and Subtitle
   accessibility: {
     description:
-      "Diphtheria tetanus toxoid and pertussis (DTP) vaccination coverage, 3rd dose.",
+      "Full Measles Vaccination Coverage in Venezuela vs. the Americas Region (2000-2021)",
   },
   title: {
-    text: "Venezuela vs Americas Region",
+    text: "Full Measles Vaccination Coverage in Venezuela vs. the Americas Region (2000-2021)",
     align: "left",
     style: {
       color: "black",
@@ -67,7 +67,7 @@ Highcharts.chart("hcContainer", {
   // Y Axis
   yAxis: {
     title: {
-      text: "",
+      text: "Coverage",
     },
     labels: {
       formatter: function () {
@@ -90,15 +90,22 @@ Highcharts.chart("hcContainer", {
   tooltip: {
     headerFormat: "{point.key}<br/>",
     pointFormatter: function () {
-      return (
-        '<span style="font-size: 14px;color:' +
-        this.color +
-        '">\u25A0</span> ' +
-        this.series.name +
-        ": <b> " +
-        this.y +
-        "%</b><br/>"
-      );
+      let customSeriesName = ''
+      if (this.series.name == "Venezuela - Full Measles Vaccination Coverage") {
+        customSeriesName = 'Venezuela measles vaccination'
+      } else {
+        customSeriesName = 'Americas Region measles vaccination'
+      }
+        return (
+          '<span style="font-size: 14px;color:' +
+          this.color +
+          '">\u25A0</span> ' +
+          // this.series.name +
+          customSeriesName +
+          ": <b> " +
+          this.y +
+          "%</b><br/>"
+        );
     },
     shared: true,
     style: {
@@ -108,9 +115,11 @@ Highcharts.chart("hcContainer", {
   // Additional Plot Options
   plotOptions: {
     series: {
-      borderWidth: 0,
-      groupPadding: 0.1,
-
+      // borderWidth: 0,
+      // groupPadding: 0.1,
+      marker: {
+        symbol: "circle",
+      },
       dataLabels: {
         align: "left",
         enabled: true,

@@ -17,10 +17,10 @@ Highcharts.chart("hcContainer", {
   colors: ["#0050A4", "#00B2E3"],
   // Chart Title and Subtitle
   accessibility: {
-    description: "Measles reported cases and incidence in Colombia.",
+    description: "Measles reported cases in Colombia (2000 - 2021)",
   },
   title: {
-    text: "Measles reported cases and incidence in Colombia.",
+    text: "Measles reported cases in Colombia (2000 - 2021)",
     align: "left",
     style: {
       color: "black",
@@ -62,7 +62,7 @@ Highcharts.chart("hcContainer", {
   // Y Axis
   yAxis: {
     title: {
-      text: "Reported Cases & Incidence",
+      text: "Reported Disease Cases",
     },
     // max: 6000,
     max: 300,

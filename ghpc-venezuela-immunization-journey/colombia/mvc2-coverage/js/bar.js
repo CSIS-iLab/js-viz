@@ -20,10 +20,11 @@ Highcharts.chart("hcContainer", {
   ],
   // Chart Title and Subtitle
   accessibility: {
-    description: "Measles vaccination 2nd dose coverage.",
+    description:
+      "Full Measles Vaccination Coverage in Colombia vs. the Americas Region (2000-2021)",
   },
   title: {
-    text: "Colombia vs Americas Region",
+    text: "Full Measles Vaccination Coverage in Colombia vs. the Americas Region (2000-2021)",
     align: "left",
     style: {
       color: "black",
@@ -65,7 +66,7 @@ Highcharts.chart("hcContainer", {
   // Y Axis
   yAxis: {
     title: {
-      text: "",
+      text: "Coverage",
     },
     labels: {
       formatter: function () {
@@ -73,6 +74,7 @@ Highcharts.chart("hcContainer", {
       },
     },
     max: 100,
+    min: 0,
     tickInterval: 10,
     reversedStacks: false,
   },
@@ -88,11 +90,17 @@ Highcharts.chart("hcContainer", {
   tooltip: {
     headerFormat: "{point.key}<br/>",
     pointFormatter: function () {
+      let customSeriesName = "";
+      if (this.series.name == "Colombia - Full Measles Vaccination Coverage") {
+        customSeriesName = "Colombia measles vaccination";
+      } else {
+        customSeriesName = "Americas Region measles vaccination";
+      }
       return (
         '<span style="font-size: 14px;color:' +
         this.color +
         '">\u25A0</span> ' +
-        this.series.name +
+        customSeriesName +
         ": <b> " +
         this.y +
         "%</b><br/>"
@@ -106,12 +114,14 @@ Highcharts.chart("hcContainer", {
   // Additional Plot Options
   plotOptions: {
     series: {
-      borderWidth: 0,
-      groupPadding: 0.1,
-
+      // borderWidth: 0,
+      // groupPadding: 0.1,
+      marker: {
+        symbol: "circle",
+      },
       dataLabels: {
         align: "left",
-        enabled: true,
+        enabled: false,
         style: {
           textOutline: "none",
           fontWeight: "normal",

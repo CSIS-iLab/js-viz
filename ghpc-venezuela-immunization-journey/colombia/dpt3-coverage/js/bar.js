@@ -21,10 +21,10 @@ Highcharts.chart("hcContainer", {
   // Chart Title and Subtitle
   accessibility: {
     description:
-      "Diphtheria tetanus toxoid and pertussis (DTP) vaccination coverage, 3rd dose.",
+      "DPT Full Vaccination Coverage Colombia vs. Americas Region (2000-2021)",
   },
   title: {
-    text: "Colombia vs Americas Region",
+    text: "DPT Full Vaccination Coverage Colombia vs. Americas Region (2000-2021)",
     align: "left",
     style: {
       color: "black",
@@ -66,7 +66,7 @@ Highcharts.chart("hcContainer", {
   // Y Axis
   yAxis: {
     title: {
-      text: "",
+      text: "Coverage",
     },
     labels: {
       formatter: function () {
@@ -74,7 +74,7 @@ Highcharts.chart("hcContainer", {
       },
     },
     max: 100,
-    min: 60,
+    min: 0,
     tickInterval: 10,
     reversedStacks: false,
   },
@@ -108,12 +108,14 @@ Highcharts.chart("hcContainer", {
   // Additional Plot Options
   plotOptions: {
     series: {
-      borderWidth: 0,
-      groupPadding: 0.1,
-
+      // borderWidth: 0,
+      // groupPadding: 0.1,
+      marker: {
+        symbol: "circle",
+      },
       dataLabels: {
         align: "left",
-        enabled: true,
+        enabled: false,
         style: {
           textOutline: "none",
           fontWeight: "normal",
