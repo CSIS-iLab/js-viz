@@ -3,7 +3,7 @@ Highcharts.chart("hcContainer", {
   data: {
     googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
     googleSpreadsheetKey: "12_ks76ZrqO3NcqmqlLtBi9ynpX0Zy9RvsWaprU47u4c",
-    googleSpreadsheetRange: "cumulative-covid19-cases-confirmed",
+    googleSpreadsheetRange: "cumulative-covid19-deaths-confirmed",
   },
 
   // General Chart Options
@@ -24,10 +24,10 @@ Highcharts.chart("hcContainer", {
 
   // Chart Title and Subtitle
   accessibility: {
-    description: "Cumulative Number of Covid-19 Cases Confirmed.",
+    description: "Cumulative Number of Covid-19 Deaths Confirmed.",
   },
   title: {
-    text: "Cumulative Number of Covid-19 Cases Confirmed.",
+    text: "Cumulative Number of Covid-19 Deaths Confirmed.",
     align: "left",
     style: {
       color: "black",
@@ -63,7 +63,7 @@ Highcharts.chart("hcContainer", {
       fontWeight: "normal",
     },
     labelFormatter: function () {
-      return this.name
+      return this.name;
     },
   },
   // Y Axis
@@ -93,7 +93,7 @@ Highcharts.chart("hcContainer", {
         ": <b> " +
         this.y +
         "</b><br/>"
-      )
+      );
     },
     shared: true,
     style: {
