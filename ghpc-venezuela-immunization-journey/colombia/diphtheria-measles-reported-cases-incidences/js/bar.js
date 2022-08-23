@@ -1,3 +1,10 @@
+Highcharts.setOptions({
+  lang: {
+    thousandsSep: ",",
+    decimalPoint: ".",
+  },
+})
+
 Highcharts.chart("hcContainer", {
   // Load Data in from Google Sheets
   data: {
@@ -14,7 +21,9 @@ Highcharts.chart("hcContainer", {
     },
   },
   // Colors
-  colors: ["#0050A4", "#00B2E3"],
+  colors: [
+    "#44C07B", // Measles
+  ],
   // Chart Title and Subtitle
   accessibility: {
     description: "Measles reported cases in Colombia (2000 - 2021)",
@@ -36,7 +45,7 @@ Highcharts.chart("hcContainer", {
   credits: {
     enabled: true,
     href: false,
-    text: "GHPC | CSIS",
+    text: "GHPC, CSIS | Source: ???",
     style: {
       fontSize: "11px",
     },
@@ -56,7 +65,7 @@ Highcharts.chart("hcContainer", {
       fontWeight: "normal",
     },
     labelFormatter: function () {
-      return this.name;
+      return this.name
     },
   },
   // Y Axis
@@ -64,13 +73,11 @@ Highcharts.chart("hcContainer", {
     title: {
       text: "Reported Disease Cases",
     },
-    // max: 6000,
     max: 300,
     tickInterval: 50,
     reversedStacks: false,
     startOnTick: false,
     endOnTick: false,
-    // visible: false,
   },
   xAxis: {
     type: "year",
@@ -90,9 +97,9 @@ Highcharts.chart("hcContainer", {
         '">\u25A0</span> ' +
         this.series.name +
         ": <b> " +
-        this.y +
+        new Intl.NumberFormat().format(this.y) +
         "</b><br/>"
-      );
+      )
     },
     shared: true,
     style: {
@@ -115,4 +122,4 @@ Highcharts.chart("hcContainer", {
       },
     },
   },
-});
+})

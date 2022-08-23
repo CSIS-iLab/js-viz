@@ -21,10 +21,10 @@ Highcharts.chart("hcContainer", {
   // Chart Title and Subtitle
   accessibility: {
     description:
-      "DPT Full Vaccination Coverage Colombia vs. Americas Region (2000-2021)",
+      "DPT Full Vaccination Coverage Colombia vs. the Americas Region (2000-2021)",
   },
   title: {
-    text: "DPT Full Vaccination Coverage Colombia vs. Americas Region (2000-2021)",
+    text: "DPT Full Vaccination Coverage Colombia vs. the Americas Region (2000-2021)",
     align: "left",
     style: {
       color: "black",
@@ -40,7 +40,7 @@ Highcharts.chart("hcContainer", {
   credits: {
     enabled: true,
     href: false,
-    text: "GHPC | CSIS",
+    text: "GHPC, CSIS | Source: ???",
     style: {
       fontSize: "11px",
     },

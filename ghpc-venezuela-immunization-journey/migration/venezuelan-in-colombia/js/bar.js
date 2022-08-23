@@ -18,10 +18,10 @@ Highcharts.chart("hcContainer", {
   // Chart Title and Subtitle
   accessibility: {
     description:
-      "number of Venezuelan’s that ended up in Colombia.",
+      "number of Venezuelan’s that ended up in Colombia (2000 - 2021)",
   },
   title: {
-    text: "number of Venezuelan’s that ended up in Colombia.",
+    text: "Number of Venezuelan’s that ended up in Colombia (2000 - 2021)",
     align: "left",
     style: {
       color: "black",
@@ -37,7 +37,7 @@ Highcharts.chart("hcContainer", {
   credits: {
     enabled: true,
     href: false,
-    text: "GHPC | CSIS",
+    text: "GHPC, CSIS | Source: ???",
     style: {
       fontSize: "11px",
     },

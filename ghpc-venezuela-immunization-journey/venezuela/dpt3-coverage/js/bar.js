@@ -21,10 +21,10 @@ Highcharts.chart("hcContainer", {
   // Chart Title and Subtitle
   accessibility: {
     description:
-      "DPT Full Vaccination Coverage Venezuela vs. Americas Region (2000-2021)",
+      "DPT Full Vaccination Coverage Venezuela vs. the Americas Region (2000-2021)",
   },
   title: {
-    text: "DPT Full Vaccination Coverage Venezuela vs. Americas Region (2000-2021)",
+    text: "DPT Full Vaccination Coverage Venezuela vs. the Americas Region (2000-2021)",
     align: "left",
     style: {
       color: "black",
@@ -40,7 +40,7 @@ Highcharts.chart("hcContainer", {
   credits: {
     enabled: true,
     href: false,
-    text: "GHPC | CSIS",
+    text: "CSIS, GHPC | Source: ",
     style: {
       fontSize: "11px",
     },
@@ -66,7 +66,7 @@ Highcharts.chart("hcContainer", {
   // Y Axis
   yAxis: {
     title: {
-      text: "",
+      text: "Coverage",
     },
     labels: {
       formatter: function () {
@@ -108,14 +108,14 @@ Highcharts.chart("hcContainer", {
   // Additional Plot Options
   plotOptions: {
     series: {
-        // borderWidth: 0,
-        // groupPadding: 0.1,
+      // borderWidth: 0,
+      // groupPadding: 0.1,
       marker: {
         symbol: "circle",
       },
       dataLabels: {
         align: "left",
-        enabled: true,
+        enabled: false,
         style: {
           textOutline: "none",
           fontWeight: "normal",

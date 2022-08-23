@@ -1,3 +1,10 @@
+Highcharts.setOptions({
+  lang: {
+    thousandsSep: ",",
+    decimalPoint: ".",
+  },
+})
+
 Highcharts.chart("hcContainer", {
   // Load Data in from Google Sheets
   data: {
@@ -8,7 +15,7 @@ Highcharts.chart("hcContainer", {
 
   // General Chart Options
   chart: {
-    type: "pie",
+    type: "column",
     // inverted: true,
     spacingBottom: 60,
     style: {
@@ -36,14 +43,14 @@ Highcharts.chart("hcContainer", {
     },
   },
   subtitle: {
-    text: "We need a subtitle?",
+    text: "",
     align: "left",
   },
   // Credits
   credits: {
     enabled: true,
     href: false,
-    text: "GHPC | CSIS",
+    text: "GHPC, CSIS | Source: ???",
     style: {
       fontSize: "11px",
     },
@@ -69,15 +76,15 @@ Highcharts.chart("hcContainer", {
   // Y Axis
   yAxis: {
     title: {
-      text: "Cases Confirmed",
+      text: "Deaths Confirmed",
     },
-    max: 6500000,
+    max: 150000,
   },
   xAxis: {
     type: "year",
     tickInterval: 1,
     accessibility: {
-      rangeDescription: "Countries: Venezuela and Colombia.",
+      rangeDescription: "Countries: Venezuela and Colombia",
     },
   },
 
@@ -91,7 +98,7 @@ Highcharts.chart("hcContainer", {
         '">\u25A0</span> ' +
         this.series.name +
         ": <b> " +
-        this.y +
+        new Intl.NumberFormat().format(this.y) +
         "</b><br/>"
       );
     },
@@ -105,6 +112,7 @@ Highcharts.chart("hcContainer", {
     series: {
       borderWidth: 0,
       groupPadding: 0.1,
+      pointWidth: 130,
 
       dataLabels: {
         // align: "left",

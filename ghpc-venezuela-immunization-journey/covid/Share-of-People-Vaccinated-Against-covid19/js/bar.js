@@ -8,7 +8,7 @@ Highcharts.chart("hcContainer", {
 
   // General Chart Options
   chart: {
-    type: "column",
+    type: "pie",
     // inverted: true,
     spacingBottom: 60,
     style: {
@@ -24,10 +24,11 @@ Highcharts.chart("hcContainer", {
 
   // Chart Title and Subtitle
   accessibility: {
-    description: "Share of People Vaccinated Against Covid-19.",
+    description:
+      "Percent of Venezuelan and Colombian Populations Vaccinated Against COVID-19 (5/25/22)",
   },
   title: {
-    text: "Share of People Vaccinated Against Covid-19.",
+    text: "Percent of Venezuelan and Colombian Populations Vaccinated Against COVID-19 (5/25/22)",
     align: "left",
     style: {
       color: "black",
@@ -36,14 +37,14 @@ Highcharts.chart("hcContainer", {
     },
   },
   subtitle: {
-    text: "We need a subtitle?",
+    text: "Share of People Vaccinated Against COVID-19, Share of people with a complete initial protocol",
     align: "left",
   },
   // Credits
   credits: {
     enabled: true,
     href: false,
-    text: "GHPC | CSIS",
+    text: "GHPC, CSIS | Source: ???",
     style: {
       fontSize: "11px",
     },
@@ -107,9 +108,14 @@ Highcharts.chart("hcContainer", {
   },
   // Additional Plot Options
   plotOptions: {
+    // pie: {
+    //     shadow: false,
+    //     center: ['70%', '25%']
+    // },
     series: {
       borderWidth: 0,
       groupPadding: 0.1,
+      innerSize: "50%",
 
       dataLabels: {
         // align: "left",

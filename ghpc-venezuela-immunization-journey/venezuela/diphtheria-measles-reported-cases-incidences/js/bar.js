@@ -3,7 +3,7 @@ Highcharts.setOptions({
     thousandsSep: ",",
     decimalPoint: ".",
   },
-});
+})
 
 Highcharts.chart("hcContainer", {
   // Load Data in from Google Sheets
@@ -21,14 +21,17 @@ Highcharts.chart("hcContainer", {
     },
   },
   // Colors
-  colors: ["#0050A4", "#00B2E3"],
+  colors: [
+    "#0050A4", // Diphtheria
+    "#44C07B", // Measles
+  ],
   // Chart Title and Subtitle
   accessibility: {
     description:
-      "Diphteria & Measles reported cases in Venezuela (2000 - 2021)",
+      "Diphtheria & Measles reported cases in Venezuela (2000 - 2021)",
   },
   title: {
-    text: "Diphteria & Measles reported cases in Venezuela (2000 - 2021)",
+    text: "Diphtheria & Measles reported cases in Venezuela (2000 - 2021)",
     align: "left",
     style: {
       color: "black",
@@ -44,7 +47,7 @@ Highcharts.chart("hcContainer", {
   credits: {
     enabled: true,
     href: false,
-    text: "GHPC | CSIS",
+    text: "GHPC, CSIS | Source: ???",
     style: {
       fontSize: "11px",
     },
@@ -65,22 +68,18 @@ Highcharts.chart("hcContainer", {
     },
     labelFormatter: function () {
       const legend = this.name
-      const legendsWords = legend.split(' ')
+      const legendsWords = legend.split(" ")
       const legendsWordsLength = legendsWords.length
-      let modifiedLegend = ''
+      let modifiedLegend = ""
       // find the last word and make it bold and recreate the sentence
-      legendsWords.map( (element, index) => {
-        // console.log(element)
-        if ( index === ( legendsWordsLength - 1 ) ) {
-          // console.log(element)
-          modifiedLegend += '<b>' + element + '<b/>'
+      legendsWords.map((element, index) => {
+        if (index === legendsWordsLength - 1) {
+          modifiedLegend += "<b>" + element + "</b>"
         } else {
-          modifiedLegend += element + ' '
+          modifiedLegend += element + " "
         }
       })
-      // console.log(modifiedLegend)
-      return modifiedLegend
-      // return this.name + " (click to hide)"
+      return modifiedLegend + " (click to hide)"
     },
   },
   // Y Axis
@@ -93,7 +92,6 @@ Highcharts.chart("hcContainer", {
     reversedStacks: false,
     startOnTick: false,
     endOnTick: false,
-    // visible: false,
   },
   xAxis: {
     type: "year",
@@ -107,17 +105,16 @@ Highcharts.chart("hcContainer", {
   tooltip: {
     headerFormat: "{point.key}<br/>",
     pointFormatter: function () {
-      let lastWord = this.series.name.split(" ");
+      let lastWord = this.series.name.split(" ")
       return (
         '<span style="font-size: 14px;color:' +
         this.color +
         '">\u25A0</span> ' +
-        // this.series.name +
         lastWord[lastWord.length - 1] +
         ": <b> " +
-        this.y +
+        new Intl.NumberFormat().format(this.y) +
         "</b><br/>"
-      );
+      )
     },
     shared: true,
     style: {
@@ -129,14 +126,12 @@ Highcharts.chart("hcContainer", {
     series: {
       borderWidth: 0,
       groupPadding: 0.1,
-
+      marker: {
+        symbol: "circle",
+      },
       dataLabels: {
         align: "left",
         enabled: true,
-        // formatter: function() {
-        //   console.log(this.x );
-        //   return this.y + "<br/>(" + Math.round(((this.y / this.point.total) * 100) * 100) / 100 + " %)"
-        // },
         style: {
           textOutline: "none",
           fontWeight: "normal",
@@ -144,4 +139,4 @@ Highcharts.chart("hcContainer", {
       },
     },
   },
-});
+})

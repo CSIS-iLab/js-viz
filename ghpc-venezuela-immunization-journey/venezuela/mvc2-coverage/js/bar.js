@@ -41,7 +41,7 @@ Highcharts.chart("hcContainer", {
   credits: {
     enabled: true,
     href: false,
-    text: "GHPC | CSIS",
+    text: "GHPC, CSIS | Source: ???",
     style: {
       fontSize: "11px",
     },
@@ -90,22 +90,22 @@ Highcharts.chart("hcContainer", {
   tooltip: {
     headerFormat: "{point.key}<br/>",
     pointFormatter: function () {
-      let customSeriesName = ''
+      let customSeriesName = "";
       if (this.series.name == "Venezuela - Full Measles Vaccination Coverage") {
-        customSeriesName = 'Venezuela measles vaccination'
+        customSeriesName = "Venezuela measles vaccination";
       } else {
-        customSeriesName = 'Americas Region measles vaccination'
+        customSeriesName = "Americas Region measles vaccination";
       }
-        return (
-          '<span style="font-size: 14px;color:' +
-          this.color +
-          '">\u25A0</span> ' +
-          // this.series.name +
-          customSeriesName +
-          ": <b> " +
-          this.y +
-          "%</b><br/>"
-        );
+      return (
+        '<span style="font-size: 14px;color:' +
+        this.color +
+        '">\u25A0</span> ' +
+        // this.series.name +
+        customSeriesName +
+        ": <b> " +
+        this.y +
+        "%</b><br/>"
+      );
     },
     shared: true,
     style: {
@@ -122,7 +122,7 @@ Highcharts.chart("hcContainer", {
       },
       dataLabels: {
         align: "left",
-        enabled: true,
+        enabled: false,
         style: {
           textOutline: "none",
           fontWeight: "normal",

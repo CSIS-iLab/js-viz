@@ -1,3 +1,10 @@
+Highcharts.setOptions({
+  lang: {
+    thousandsSep: ",",
+    decimalPoint: ".",
+  },
+})
+
 Highcharts.chart("hcContainer", {
   // Load Data in from Google Sheets
   data: {
@@ -8,7 +15,7 @@ Highcharts.chart("hcContainer", {
 
   // General Chart Options
   chart: {
-    type: "pie",
+    type: "column",
     // inverted: true,
     spacingBottom: 60,
     style: {
@@ -24,10 +31,10 @@ Highcharts.chart("hcContainer", {
 
   // Chart Title and Subtitle
   accessibility: {
-    description: "Cumulative Number of Covid-19 Cases Confirmed.",
+    description: "Confirmed Covid-19 Cases in Venezuela and Colombia (7/21/22)",
   },
   title: {
-    text: "Cumulative Number of Covid-19 Cases Confirmed.",
+    text: "Confirmed Covid-19 Cases in Venezuela and Colombia (7/21/22)",
     align: "left",
     style: {
       color: "black",
@@ -36,14 +43,14 @@ Highcharts.chart("hcContainer", {
     },
   },
   subtitle: {
-    text: "We need a subtitle?",
+    text: "",
     align: "left",
   },
   // Credits
   credits: {
     enabled: true,
     href: false,
-    text: "GHPC | CSIS",
+    text: "GHPC, CSIS | Source: ???",
     style: {
       fontSize: "11px",
     },
@@ -63,7 +70,7 @@ Highcharts.chart("hcContainer", {
       fontWeight: "normal",
     },
     labelFormatter: function () {
-      return this.name
+      return this.name;
     },
   },
   // Y Axis
@@ -91,9 +98,9 @@ Highcharts.chart("hcContainer", {
         '">\u25A0</span> ' +
         this.series.name +
         ": <b> " +
-        this.y +
+        new Intl.NumberFormat().format(this.y) +
         "</b><br/>"
-      )
+      );
     },
     shared: true,
     style: {
@@ -105,6 +112,7 @@ Highcharts.chart("hcContainer", {
     series: {
       borderWidth: 0,
       groupPadding: 0.1,
+      pointWidth: 130,
 
       dataLabels: {
         // align: "left",

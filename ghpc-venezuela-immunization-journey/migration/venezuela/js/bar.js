@@ -17,8 +17,7 @@ Highcharts.chart("hcContainer", {
   colors: ["#004C7B", "#0065A4", "#5E9DBF", "#BFD6DB"],
   // Chart Title and Subtitle
   accessibility: {
-    description:
-      "Mass exodus of people living in Venezuela.",
+    description: "Mass exodus of people living in Venezuela.",
   },
   title: {
     text: "Mass exodus of people living in Venezuela.",
@@ -37,7 +36,7 @@ Highcharts.chart("hcContainer", {
   credits: {
     enabled: true,
     href: false,
-    text: "GHPC | CSIS",
+    text: "GHPC, CSIS | Source: ???",
     style: {
       fontSize: "11px",
     },
