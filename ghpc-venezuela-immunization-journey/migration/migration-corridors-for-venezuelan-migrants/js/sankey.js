@@ -10,11 +10,11 @@ Highcharts.chart("hcContainer", {
   data: {
     googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
     googleSpreadsheetKey: "12_ks76ZrqO3NcqmqlLtBi9ynpX0Zy9RvsWaprU47u4c",
-    googleSpreadsheetRange: "venezuela-migration",
+    googleSpreadsheetRange: "Migration-Corridors-for-Venezuelan-Migrants",
   },
   // General Chart Options
   chart: {
-    type: "spline",
+    type: "sankey",
     spacingBottom: 60,
     style: {
       fontFamily: ["Source Sans Pro", "sans-serif"],
@@ -24,10 +24,10 @@ Highcharts.chart("hcContainer", {
   colors: ["#004C7B", "#0065A4", "#5E9DBF", "#BFD6DB"],
   // Chart Title and Subtitle
   accessibility: {
-    description: "Mass exodus of people leaving in Venezuela (2000 - 2021)",
+    description: "Migration Corridors for Venezuelan Migrants",
   },
   title: {
-    text: "Mass exodus of people leaving in Venezuela (2000 - 2021)",
+    text: "Migration Corridors for Venezuelan Migrants",
     align: "left",
     style: {
       color: "black",

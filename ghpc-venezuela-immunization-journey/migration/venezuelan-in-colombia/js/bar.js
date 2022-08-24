@@ -1,3 +1,10 @@
+Highcharts.setOptions({
+  lang: {
+    thousandsSep: ",",
+    decimalPoint: ".",
+  },
+})
+
 Highcharts.chart("hcContainer", {
   // Load Data in from Google Sheets
   data: {
@@ -65,7 +72,7 @@ Highcharts.chart("hcContainer", {
     title: {
       text: "",
     },
-    // max: 100000,
+    max: 2000000,
     tickInterval: 250000,
     reversedStacks: false,
     startOnTick: false,
@@ -91,7 +98,7 @@ Highcharts.chart("hcContainer", {
         '">\u25A0</span> ' +
         this.series.name +
         ": <b> " +
-        this.y +
+        new Intl.NumberFormat().format(this.y) +
         "</b><br/>"
       );
     },

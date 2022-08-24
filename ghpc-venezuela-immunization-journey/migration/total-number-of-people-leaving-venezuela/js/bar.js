@@ -10,7 +10,7 @@ Highcharts.chart("hcContainer", {
   data: {
     googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
     googleSpreadsheetKey: "12_ks76ZrqO3NcqmqlLtBi9ynpX0Zy9RvsWaprU47u4c",
-    googleSpreadsheetRange: "venezuela-migration",
+    googleSpreadsheetRange: "total-number-of-people-leaving-venezuela",
   },
   // General Chart Options
   chart: {
@@ -21,13 +21,17 @@ Highcharts.chart("hcContainer", {
     },
   },
   // Colors
-  colors: ["#004C7B", "#0065A4", "#5E9DBF", "#BFD6DB"],
+  colors: [
+    "#E53E3A", // Venezuela
+    "#FFC728", // Colombia
+  ],
   // Chart Title and Subtitle
   accessibility: {
-    description: "Mass exodus of people leaving in Venezuela (2000 - 2021)",
+    description:
+      "number of Venezuelan’s that ended up in Colombia (2000 - 2021)",
   },
   title: {
-    text: "Mass exodus of people leaving in Venezuela (2000 - 2021)",
+    text: "Number of Venezuelan’s that ended up in Colombia (2000 - 2021)",
     align: "left",
     style: {
       color: "black",
@@ -69,7 +73,7 @@ Highcharts.chart("hcContainer", {
   // Y Axis
   yAxis: {
     title: {
-      text: "People",
+      text: "# of Venezuelans",
     },
     max: 6000000,
     tickInterval: 1000000,
