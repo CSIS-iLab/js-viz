@@ -24,10 +24,10 @@ Highcharts.chart("hcContainer", {
   colors: ["#004C7B", "#0065A4", "#5E9DBF", "#BFD6DB"],
   // Chart Title and Subtitle
   accessibility: {
-    description: "Mass exodus of people leaving in Venezuela (2000 - 2021)",
+    description: "Mass exodus of people living in Venezuela (2000 - 2021)",
   },
   title: {
-    text: "Mass exodus of people leaving in Venezuela (2000 - 2021)",
+    text: "Mass exodus of people living in Venezuela (2000 - 2021)",
     align: "left",
     style: {
       color: "black",
