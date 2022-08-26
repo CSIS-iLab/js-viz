@@ -19,14 +19,6 @@ Highcharts.chart("hcContainer", {
   // },
   series: [
     {
-      colors: [
-        "#535353", // Venezuela
-        // "#FFC728", // Colombia
-        // "#8B7B5A", // Peru
-        // "#44C07B", // Chile
-        // "#0050A4", // Americas
-        // "#7D4391", // Ecuador
-      ],
       keys: ["color", "from", "to", "weight"],
       data: [
         ["#FFC728", "Venezuela", "Colombia", 1780486],
@@ -34,6 +26,14 @@ Highcharts.chart("hcContainer", {
         ["#44C07B", "Venezuela", "Chile", 523553],
         ["#0050A4", "Venezuela", "United States of America", 505647],
         ["#7D4391", "Venezuela", "Ecuador", 388861],
+      ],
+      colors: [
+        "#535353", // Venezuela
+        "#FFC728", // Colombia
+        "#8B7B5A", // Peru
+        "#44C07B", // Chile
+        "#0050A4", // Americas
+        "#7D4391", // Ecuador
       ],
       type: "sankey",
     },
@@ -123,25 +123,25 @@ Highcharts.chart("hcContainer", {
   // },
   // Tooltip
   tooltip: {
-    //   headerFormat: "{point.key}<br/>",
-    // pointFormatter: function () {
-    //   console.log("tooltip formatter", this);
-    //   point = this;
-    //   from = countries[point.from] || point.from;
-    //   to = countries[point.to] || point.to;
-    //   console.log(point.weight);
-    //   weight = new Intl.NumberFormat().format(point.weight);
-    //   return (
-    //     // '<span style="font-size: 14px;color:' +
-    //     // this.color +
-    //     // '">\u25A0</span> ' +
-    //     // this.series.name +
-    //     // ": <b> " +
-    //     // new Intl.NumberFormat().format(this.y) +
-    //     // "</b><br/>"
-    //     from + " → " + to + ": " + weight
-    //   );
-    // },
+      headerFormat: "{series.name}<br/>",
+      pointFormatter: function () {
+      console.log("tooltip formatter", this);
+      point = this;
+      from = point.from;
+      to = point.to;
+      // console.log(point.weight);
+      weight = new Intl.NumberFormat().format(point.weight);
+      return (
+      //   '<span style="font-size: 14px;color:' +
+      //   this.color +
+      //   '">\u25A0</span> ' +
+      //   this.series.name +
+      //   ": <b> " +
+      //   new Intl.NumberFormat().format(this.y) +
+      //   "</b><br/>"
+        from + " → " + to + ": " + weight
+      );
+    },
     shared: true,
     style: {
       fontSize: "14px",

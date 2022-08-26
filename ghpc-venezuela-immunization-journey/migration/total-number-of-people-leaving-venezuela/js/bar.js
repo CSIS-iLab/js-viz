@@ -73,7 +73,7 @@ Highcharts.chart("hcContainer", {
   // Y Axis
   yAxis: {
     title: {
-      text: "# of Venezuelans",
+      text: "Number of People",
     },
     max: 6000000,
     tickInterval: 1000000,

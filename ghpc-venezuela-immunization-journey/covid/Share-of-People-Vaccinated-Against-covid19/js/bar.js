@@ -119,6 +119,7 @@ Highcharts.chart("hcContainer", {
 
       dataLabels: {
         // align: "left",
+        format: "<b>{point.name}</b><br>{point.y:.2f}%",
         enabled: true,
         style: {
           textOutline: "none",

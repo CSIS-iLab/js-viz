@@ -70,7 +70,7 @@ Highcharts.chart("hcContainer", {
   // Y Axis
   yAxis: {
     title: {
-      text: "",
+      text: "Venezuelans",
     },
     max: 2000000,
     tickInterval: 250000,
