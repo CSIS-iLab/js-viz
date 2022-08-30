@@ -25,10 +25,10 @@ Highcharts.chart("hcContainer", {
   // Chart Title and Subtitle
   accessibility: {
     description:
-      "number of Venezuelan’s that ended up in Colombia (2000 - 2021)",
+      "Number of Venezuelans that ended up in Colombia (2000 - 2021)",
   },
   title: {
-    text: "Number of Venezuelan’s that ended up in Colombia (2000 - 2021)",
+    text: "Number of Venezuelans that ended up in Colombia (2000 - 2021)",
     align: "left",
     style: {
       color: "black",

@@ -50,7 +50,7 @@ Highcharts.chart("hcContainer", {
   credits: {
     enabled: true,
     href: false,
-    text: "GHPC, CSIS | Source: ???",
+    text: "GHPC, CSIS | Source: Our World in Data",
     style: {
       fontSize: "11px",
     },

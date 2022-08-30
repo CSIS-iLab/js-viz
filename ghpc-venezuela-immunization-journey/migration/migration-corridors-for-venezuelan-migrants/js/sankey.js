@@ -56,14 +56,15 @@ function renderChart(keys, data, colors) {
       },
     },
     subtitle: {
-      text: "Total number of migrants from Venezuela and which countries they ended up.",
+      // text: "As of 2020, over 4,140,436 Venezuelans had fled to other countries. Hover over the color ribbons to see how many Venezuelan migrants ended up in each of the countries below"
+      text: "Migration corridors are represented as lines proportional to the number of migrants from Venezuela (on the left) who were residing in another country (on the right) in 2020",
       align: "left",
     },
     // Credits
     credits: {
       enabled: true,
       href: false,
-      text: "GHPC, CSIS | Source: ???",
+      text: "GHPC, CSIS | Source: IOM World Migration Report 2022",
       style: {
         fontSize: "11px",
       },

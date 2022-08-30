@@ -45,7 +45,7 @@ Highcharts.chart("hcContainer", {
   credits: {
     enabled: true,
     href: false,
-    text: "GHPC, CSIS | Source: ???",
+    text: "GHPC, CSIS | Source: WHO/UNICEF Joint Reporting Form on Immunization (JRF)",
     style: {
       fontSize: "11px",
     },
@@ -65,7 +65,7 @@ Highcharts.chart("hcContainer", {
       fontWeight: "normal",
     },
     labelFormatter: function () {
-      return this.name
+      return this.name;
     },
   },
   // Y Axis
@@ -99,7 +99,7 @@ Highcharts.chart("hcContainer", {
         ": <b> " +
         new Intl.NumberFormat().format(this.y) +
         "</b><br/>"
-      )
+      );
     },
     shared: true,
     style: {
@@ -122,4 +122,4 @@ Highcharts.chart("hcContainer", {
       },
     },
   },
-})
+});

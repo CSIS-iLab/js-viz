@@ -40,14 +40,14 @@ Highcharts.chart("hcContainer", {
     },
   },
   subtitle: {
-    text: "We need a subtitle?",
+    text: "Comparison between the total number of people who left Venezuela and the total number of people who left Venezuela and migrated to Colombia",
     align: "left",
   },
   // Credits
   credits: {
     enabled: true,
     href: false,
-    text: "GHPC, CSIS | Source: ???",
+    text: "GHPC, CSIS | Source: UNHCR Refugee Statistics",
     style: {
       fontSize: "11px",
     },

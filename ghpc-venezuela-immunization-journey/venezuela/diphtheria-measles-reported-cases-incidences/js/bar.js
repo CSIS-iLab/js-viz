@@ -47,7 +47,7 @@ Highcharts.chart("hcContainer", {
   credits: {
     enabled: true,
     href: false,
-    text: "GHPC, CSIS | Source: ???",
+    text: "GHPC, CSIS | Source: WHO/UNICEF Joint Reporting Form on Immunization (JRF)",
     style: {
       fontSize: "11px",
     },
@@ -67,19 +67,19 @@ Highcharts.chart("hcContainer", {
       fontWeight: "normal",
     },
     labelFormatter: function () {
-      const legend = this.name
-      const legendsWords = legend.split(" ")
-      const legendsWordsLength = legendsWords.length
-      let modifiedLegend = ""
+      const legend = this.name;
+      const legendsWords = legend.split(" ");
+      const legendsWordsLength = legendsWords.length;
+      let modifiedLegend = "";
       // find the last word and make it bold and recreate the sentence
       legendsWords.map((element, index) => {
         if (index === legendsWordsLength - 1) {
-          modifiedLegend += "<b>" + element + "</b>"
+          modifiedLegend += "<b>" + element + "</b>";
         } else {
-          modifiedLegend += element + " "
+          modifiedLegend += element + " ";
         }
-      })
-      return modifiedLegend + " (click to hide)"
+      });
+      return modifiedLegend + " (click to hide)";
     },
   },
   // Y Axis
@@ -105,16 +105,17 @@ Highcharts.chart("hcContainer", {
   tooltip: {
     headerFormat: "{point.key}<br/>",
     pointFormatter: function () {
-      let lastWord = this.series.name.split(" ")
+      let lastWord = this.series.name.split(" ");
       return (
         '<span style="font-size: 14px;color:' +
         this.color +
         '">\u25A0</span> ' +
-        lastWord[lastWord.length - 1] +
+        this.series.name +
+        // lastWord[lastWord.length - 1] +
         ": <b> " +
         new Intl.NumberFormat().format(this.y) +
         "</b><br/>"
-      )
+      );
     },
     shared: true,
     style: {
@@ -139,4 +140,4 @@ Highcharts.chart("hcContainer", {
       },
     },
   },
-})
+});

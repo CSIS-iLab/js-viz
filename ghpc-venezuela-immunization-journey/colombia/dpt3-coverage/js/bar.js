@@ -21,10 +21,10 @@ Highcharts.chart("hcContainer", {
   // Chart Title and Subtitle
   accessibility: {
     description:
-      "DPT Full Vaccination Coverage Colombia vs. the Americas Region (2000-2021)",
+      "DTP Full Vaccination Coverage Colombia vs. the Americas Region (2000-2021)",
   },
   title: {
-    text: "DPT Full Vaccination Coverage Colombia vs. the Americas Region (2000-2021)",
+    text: "DTP Full Vaccination Coverage Colombia vs. the Americas Region (2000-2021)",
     align: "left",
     style: {
       color: "black",
@@ -40,7 +40,7 @@ Highcharts.chart("hcContainer", {
   credits: {
     enabled: true,
     href: false,
-    text: "GHPC, CSIS | Source: ???",
+    text: "GHPC, CSIS | Source: WHO/UNICEF Estimates of National Immunization Coverage (WUENIC)",
     style: {
       fontSize: "11px",
     },

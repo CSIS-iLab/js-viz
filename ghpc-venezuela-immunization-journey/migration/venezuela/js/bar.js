@@ -24,10 +24,10 @@ Highcharts.chart("hcContainer", {
   colors: ["#004C7B", "#0065A4", "#5E9DBF", "#BFD6DB"],
   // Chart Title and Subtitle
   accessibility: {
-    description: "Mass exodus of people living in Venezuela (2000 - 2021)",
+    description: "Legal Status of Venezuelan Migrants in Their Host Countries (2000 - 2021)",
   },
   title: {
-    text: "Mass exodus of people living in Venezuela (2000 - 2021)",
+    text: "Legal Status of Venezuelan Migrants in Their Host Countries (2000 - 2021)",
     align: "left",
     style: {
       color: "black",
@@ -43,7 +43,7 @@ Highcharts.chart("hcContainer", {
   credits: {
     enabled: true,
     href: false,
-    text: "GHPC, CSIS | Source: ???",
+    text: "GHPC, CSIS | Source: UNHCR Refugee Statistics",
     style: {
       fontSize: "11px",
     },

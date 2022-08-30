@@ -41,7 +41,7 @@ Highcharts.chart("hcContainer", {
   credits: {
     enabled: true,
     href: false,
-    text: "GHPC, CSIS | Source: ???",
+    text: "GHPC, CSIS | Source: WHO/UNICEF Estimates of National Immunization Coverage (WUENIC)",
     style: {
       fontSize: "11px",
     },
