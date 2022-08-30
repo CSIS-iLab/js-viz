@@ -31,10 +31,10 @@ Highcharts.chart("hcContainer", {
 
   // Chart Title and Subtitle
   accessibility: {
-    description: "Confirmed Covid-19 Cases in Venezuela and Colombia (7/21/22)",
+    description: "Confirmed Covid-19 Cases in Venezuela and Colombia (8/28/22)",
   },
   title: {
-    text: "Confirmed Covid-19 Cases in Venezuela and Colombia (7/21/22)",
+    text: "Confirmed Covid-19 Cases in Venezuela and Colombia (8/28/22)",
     align: "left",
     style: {
       color: "black",

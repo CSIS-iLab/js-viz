@@ -31,10 +31,10 @@ Highcharts.chart("hcContainer", {
 
   // Chart Title and Subtitle
   accessibility: {
-    description: "Cumulative Number of Covid-19 Deaths Confirmed (7/21/2022)",
+    description: "Cumulative Number of Covid-19 Deaths Confirmed (8/28/22)",
   },
   title: {
-    text: "Cumulative Number of Covid-19 Deaths Confirmed (7/21/2022)",
+    text: "Cumulative Number of Covid-19 Deaths Confirmed (8/28/22)",
     align: "left",
     style: {
       color: "black",
