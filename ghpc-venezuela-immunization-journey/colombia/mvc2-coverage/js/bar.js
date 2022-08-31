@@ -15,8 +15,8 @@ Highcharts.chart("hcContainer", {
   },
   // Colors
   colors: [
-    "#FFC728", // Colombia
-    "#0050A4", // Americas
+    "#F3C11B", // Colombia
+    "#4881B5", // Americas
   ],
   // Chart Title and Subtitle
   accessibility: {

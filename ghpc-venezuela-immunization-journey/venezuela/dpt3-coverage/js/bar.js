@@ -15,8 +15,8 @@ Highcharts.chart("hcContainer", {
   },
   // Colors
   colors: [
-    "#E53E3A", // Venezuela
-    "#0050A4", // Americas
+    "#D92F5D", // Venezuela
+    "#4881B5", // Americas
   ],
   // Chart Title and Subtitle
   accessibility: {

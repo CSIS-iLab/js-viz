@@ -25,8 +25,8 @@ Highcharts.chart("hcContainer", {
 
   // Colors
   colors: [
-    "#E53E3A", // Venezuela
-    "#FFC728", // Colombia
+    "#D92F5D", // Venezuela
+    "#F3C11B", // Colombia
   ],
 
   // Chart Title and Subtitle

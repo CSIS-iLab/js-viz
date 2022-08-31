@@ -31,7 +31,7 @@ function renderChart(keys, data, colors) {
       {
         keys: keys,
         data: data,
-        colors: ["#000", ...colors],
+        colors: ["#D92F5D", ...colors],
         type: "sankey",
       },
     ],
