@@ -1,27 +1,105 @@
 
 
+let columnTitles = []
+let rowTitles = []
+let iconId = []
 function getData() {
   let newURL = `https://content-sheets.googleapis.com/v4/spreadsheets/1H5JH0nsefgXAkGE6VRLUi1H50d0m4IeZBfJNZ-avEaI/values/channels-to-deliver-G2P?key=AIzaSyBXuQRRw4K4W8E4eGHoSFUSrK-ZwpD4Zz4&majorDimension=ROWS`
     fetch(newURL)
     .then(res => res.json())
-    .then(data => data.values.forEach(element => {
-      let headers = element[0] 
-      tippy('#id', {
-        content: 
-        "<div class='tip-header'><img src='icons/" +
-       headers +
-      ".png' alt='Icon' class='tip-icon' /><h3>" +
+    .then(data => {
+      console.log("original:", data.values)
+      columnTitles = data.values.shift()
+      // console.log(columnTitles)
+      // console.log("after shift(): ", data.values)
+      // console.log("the first element its: ", data.values[0])
+      // console.log("grab the id: ", );
+      getRowTitles(data.values)
+    })
+    // We need to find the cash icon and add the content for the cash icon into the box when we click on the icon
+    
+    // .then(data => data.values.forEach(element => {
+      //   // console.log(data.values,"data values")
+      //   const arr = data.values[0]
+      //   const arr2 = data.values[1]
       
-       "</h3></div>"
-       
-      })
-      
-     }))
+      //   const obj = {}
+      //   arr.forEach((item, index) =>  {
+        //     obj[item] = arr2[index]
+        //   })
+        //   console.log(obj)
+        //   // const arr = data.values[0]
+        //   // const newObj = Object.fromEntries(arr)
+        //   // console.log(newObj)
+        //   // const headerArr = element
+        //   // const obj = {}
+        //   // headerArr.forEach(item => {
+          //   //   obj[item] = ''
+          //   //   console.log(obj)
+          //   // })
+          //   //  const newObj = data.values.reduce((accumulator, value, index) => {
+            
+            //   //  return {...accumulator, [value]: ''}
+            //   // })
+            //   // console.log(newObj)
+            //   tippy('.item', {
+              //     // content: "<div class='tip-header'> +<p> ${headers}</p> + <p>hiiiiiiiiii </p></div>",
+    //     content: "<div class='tip-header'><p>" + obj + "</p><p>hiiiiiiiiii </p></div>",
+    //     allowHTML: true,
+    //     arrow: "false",
+    //     interactive: "true",
+    //     placement: "auto",
+    //     trigger: "click",
+    
+    
+    //   })
+    //  }))
   }
-                                                                                                                    
+  
+  
+  
+  
+  function getRowTitles(data) {
+    data.forEach(element => {
+       rowTitles.push(element[0])
+       matchingRowTitlesToId(element[0])
+    });
+    // console.log(rowTitles)
+  }
 
-getData()
+  function matchingRowTitlesToId(rowTitle) {
+    iconId.push(rowTitle.toLowerCase().replaceAll(' ', '-'))
+    // console.log(iconId)
+   matchIds()
+  }
 
+  
+  getData()
+
+  function matchIds() {
+    // iconID is an array with IDs that we need to check on our HTML
+    iconId.forEach( id => {
+      console.log(id)
+      const imgElement = document.querySelector(`#${id}`)
+      // console.log(imgElement, "IMG ELEMENT")
+      // console.log(rowTitles, "row titles")
+      // console.log(iconId, "icon id")
+      if(id === imgElement.id) {
+        tippy(imgElement, {
+          content: "<div class='tip-header'><p>" + rowTitles +"</p><p>" + columnTitles +"</p></div>",
+          allowHTML: true,
+          arrow: "false",
+          interactive: "true",
+          placement: "auto",
+          // trigger: "click",
+        }) 
+        
+      }
+      
+    })
+  }
+
+//need to do if statment to find matching id to img.id then display content
 
 // const users = [
 //   {
