@@ -28,10 +28,10 @@ Highcharts.chart("hcContainer", {
   // Chart Title and Subtitle
   accessibility: {
     description:
-      "Diphtheria & Measles reported cases in Venezuela (2000 - 2021)",
+      "Reported Cases of Measles and Diptheria in Venezuela (2000-2021)",
   },
   title: {
-    text: "Diphtheria & Measles reported cases in Venezuela (2000 - 2021)",
+    text: "Reported Cases of Measles and Diptheria in Venezuela (2000-2021)",
     align: "left",
     style: {
       color: "black",
@@ -40,7 +40,7 @@ Highcharts.chart("hcContainer", {
     },
   },
   subtitle: {
-    text: "We need a subtitle?",
+    text: "From 2000 to 2021, gaps in health services for Venezuelans resulted in 2 major outbreaks of measles and diptheria. Concerns also abound about data collection gaps, especially during the Maduro presidency. Hover over the lines below to see how many reported cases there were of measles and diptheria in a given year in Venezuela. To focus only on one disease, click 'measles' or 'diptheria' in the legend below to hide that data.",
     align: "left",
   },
   // Credits
@@ -73,13 +73,13 @@ Highcharts.chart("hcContainer", {
       let modifiedLegend = "";
       // find the last word and make it bold and recreate the sentence
       legendsWords.map((element, index) => {
-        if (index === legendsWordsLength - 1) {
-          modifiedLegend += "<b>" + element + "</b>";
+        if (index === 0) {
+          modifiedLegend += "<b>" + element + "</b> "
         } else {
-          modifiedLegend += element + " ";
+          modifiedLegend += element + " "
         }
       });
-      return modifiedLegend + " (click to hide)";
+      return modifiedLegend
     },
   },
   // Y Axis

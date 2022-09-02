@@ -31,7 +31,9 @@ function renderChart(keys, data, colors) {
       {
         keys: keys,
         data: data,
-        colors: ["#D92F5D", ...colors],
+        // colors: ["#D92F5D", ...colors], //red color for Venezuela
+        colors: ["#000", ...colors], //black color for Venezuela
+
         type: "sankey",
       },
     ],
@@ -56,8 +58,7 @@ function renderChart(keys, data, colors) {
       },
     },
     subtitle: {
-      // text: "As of 2020, over 4,140,436 Venezuelans had fled to other countries. Hover over the color ribbons to see how many Venezuelan migrants ended up in each of the countries below"
-      text: "Migration corridors are represented as lines proportional to the number of migrants from Venezuela (on the left) who were residing in another country (on the right) in 2020",
+      text: "As of 2020, over 4,140,436 Venezuelans had fled to other countries. Hover over the color ribbons to see how many Venezuelan migrants ended up in each of the countries below.",
       align: "left",
     },
     // Credits
@@ -90,7 +91,7 @@ function renderChart(keys, data, colors) {
           //   ": <b> " +
           //   new Intl.NumberFormat().format(this.y) +
           //   "</b><br/>"
-          from + " → " + to + ": " + weight
+          "<b>" + from + " → " + to + "</b><br/>" + weight + " Venezuelans"
         );
       },
       shared: true,

@@ -28,10 +28,10 @@ Highcharts.chart("hcContainer", {
   // Chart Title and Subtitle
   accessibility: {
     description:
-      "Total number of people who left Venezuela and ended up in Colombia (2000 - 2021)",
+      "Number of People Who Fled Venezuela vs. Portion of Those People Who Ended Up in Colombia (2000 - 2021)",
   },
   title: {
-    text: "Total number of people who left Venezuela and ended up in Colombia (2000 - 2021)",
+    text: "Number of People Who Fled Venezuela vs. Portion of Those People Who Ended Up in Colombia (2000 - 2021)",
     align: "left",
     style: {
       color: "black",

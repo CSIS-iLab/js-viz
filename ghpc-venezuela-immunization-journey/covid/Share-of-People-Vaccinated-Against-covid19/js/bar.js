@@ -25,10 +25,10 @@ Highcharts.chart("hcContainer", {
   // Chart Title and Subtitle
   accessibility: {
     description:
-      "Percent of Venezuelan and Colombian Populations Vaccinated Against COVID-19 (5/25/22)",
+      "Percent of Venezuelan and Colombian populations vaccinated againts COVID-19",
   },
   title: {
-    text: "Percent of Venezuelan and Colombian Populations Vaccinated Against COVID-19 (5/25/22)",
+    text: "Percent of Venezuelan and Colombian populations vaccinated againts COVID-19",
     align: "left",
     style: {
       color: "black",
