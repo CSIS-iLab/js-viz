@@ -1,16 +1,17 @@
+// Use the one in the Venezuela folder
 Highcharts.setOptions({
   lang: {
     thousandsSep: ",",
     decimalPoint: ".",
   },
-})
+});
 
 Highcharts.chart("hcContainer", {
   // Load Data in from Google Sheets
   data: {
     googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
     googleSpreadsheetKey: "12_ks76ZrqO3NcqmqlLtBi9ynpX0Zy9RvsWaprU47u4c",
-    googleSpreadsheetRange: "venezuela",
+    googleSpreadsheetRange: "measles-reported-cases-colombia-venezuela",
   },
   // General Chart Options
   chart: {
@@ -27,11 +28,10 @@ Highcharts.chart("hcContainer", {
   ],
   // Chart Title and Subtitle
   accessibility: {
-    description:
-      "Reported Cases of Measles and Diptheria in Venezuela (2000-2021)",
+    description: "Reported Cases of Measles Colombia vs. Venezuela (2000-2021)",
   },
   title: {
-    text: "Reported Cases of Measles and Diptheria in Venezuela (2000-2021)",
+    text: "Reported Cases of Measles Colombia vs. Venezuela (2000-2021)",
     align: "left",
     style: {
       color: "black",
@@ -74,12 +74,12 @@ Highcharts.chart("hcContainer", {
       // find the last word and make it bold and recreate the sentence
       legendsWords.map((element, index) => {
         if (index === 0) {
-          modifiedLegend += "<b>" + element + "</b> "
+          modifiedLegend += "<b>" + element + "</b> ";
         } else {
-          modifiedLegend += element + " "
+          modifiedLegend += element + " ";
         }
       });
-      return modifiedLegend
+      return modifiedLegend;
     },
   },
   // Y Axis

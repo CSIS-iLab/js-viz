@@ -1,9 +1,10 @@
+// Use the one in the Venezuela folder
 Highcharts.chart("hcContainer", {
   // Load Data in from Google Sheets
   data: {
     googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
     googleSpreadsheetKey: "12_ks76ZrqO3NcqmqlLtBi9ynpX0Zy9RvsWaprU47u4c",
-    googleSpreadsheetRange: "venezuela-mvc2",
+    googleSpreadsheetRange: "mvc1-vax-coverage",
   },
   // General Chart Options
   chart: {
@@ -16,16 +17,17 @@ Highcharts.chart("hcContainer", {
   },
   // Colors
   colors: [
-    "#D92F5D", // Venezuela
+    "#F3C11B", // Colombia
     "#4881B5", // Americas
+    "#D92F5D", // Venezuela
   ],
   // Chart Title and Subtitle
   accessibility: {
     description:
-      "Full Measles Vaccination Coverage in Venezuela vs. the Americas Region (2000-2021)",
+      "Measles Vaccination Coverage 1st dose (MVC1) Colombia vs. the Americas Region vs. Venezuela (2000-2021)",
   },
   title: {
-    text: "Full Measles Vaccination Coverage in Venezuela vs. the Americas Region (2000-2021)",
+    text: "Measles Vaccination Coverage 1st dose (MVC1) Colombia vs. the Americas Region vs. Venezuela (2000-2021)",
     align: "left",
     style: {
       color: "black",
@@ -75,6 +77,7 @@ Highcharts.chart("hcContainer", {
       },
     },
     max: 100,
+    min: 10,
     tickInterval: 10,
     reversedStacks: false,
   },
