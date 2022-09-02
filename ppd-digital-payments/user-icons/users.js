@@ -1,103 +1,74 @@
-
-
 let columnTitles = []
 let rowTitles = []
 let iconId = []
+const newURL = `https://content-sheets.googleapis.com/v4/spreadsheets/1H5JH0nsefgXAkGE6VRLUi1H50d0m4IeZBfJNZ-avEaI/values/channels-to-deliver-G2P?key=AIzaSyBXuQRRw4K4W8E4eGHoSFUSrK-ZwpD4Zz4&majorDimension=ROWS`
+
 function getData() {
-  let newURL = `https://content-sheets.googleapis.com/v4/spreadsheets/1H5JH0nsefgXAkGE6VRLUi1H50d0m4IeZBfJNZ-avEaI/values/channels-to-deliver-G2P?key=AIzaSyBXuQRRw4K4W8E4eGHoSFUSrK-ZwpD4Zz4&majorDimension=ROWS`
-    fetch(newURL)
-    .then(res => res.json())
-    .then(data => {
-      console.log("original:", data.values)
-      columnTitles = data.values.shift()
-      // console.log(columnTitles)
-      // console.log("after shift(): ", data.values)
-      // console.log("the first element its: ", data.values[0])
-      // console.log("grab the id: ", );
-      getRowTitles(data.values)
-    })
-    // We need to find the cash icon and add the content for the cash icon into the box when we click on the icon
-    
-    // .then(data => data.values.forEach(element => {
-      //   // console.log(data.values,"data values")
-      //   const arr = data.values[0]
-      //   const arr2 = data.values[1]
+  fetch(newURL)
+  .then(res => res.json())
+  .then(data => {
+    //console.log("original:", data.values)
+    columnTitles = data.values.shift()
+    // console.log(columnTitles)
+    // console.log("after shift(): ", data.values)
+    // console.log("the first element its: ", data.values[0])
+    // console.log("grab the id: ", );
+    getRowTitles(data.values)
+  })
+  // We need to find the cash icon and add the content for the cash icon into the box when we click on the icon 
+}
+
+
+function getRowTitles(data) {
+  data.forEach(element => {
+      rowTitles.push(element[0])
+      matchingRowTitlesToId(element[0])
+  })
+  //console.log("row titles array", rowTitles)
+}
+
+  
+function matchingRowTitlesToId(rowTitle) {
+  iconId.push(rowTitle.toLowerCase().replaceAll(' ', '-'))
+  // console.log("Icon id: ", iconId)
+  matchIds(columnTitles)
+}
+  
+  
+getData()
+
+console.log("row titles: ", rowTitles)
+console.log("column titles: ", columnTitles)
+
+function matchIds() {
+  // iconID is an array with IDs that we need to check on our HTML
+  // console.log(columnTitles)
+  iconId.forEach( id => {
+  // console.log(id)
+  // let group = id
+  const imgElement = document.querySelector(`#${id}`)
+    // console.log(id === imgElement.id)
+    // if (group === imgElement.id) {
+
+    //   tippy("#" + "imgElement.id", {
+    //    content: "<div class='tip-header'><p>" + columnTitles +  " </p><p>hiiiiiiiiii </p></div>",
+    //    allowHTML: true,
+    //    arrow: "false",
+    //    interactive: "true",
+    //    placement: "auto",
+    //    // trigger: "click",
+    //  })
+    // }
       
-      //   const obj = {}
-      //   arr.forEach((item, index) =>  {
-        //     obj[item] = arr2[index]
-        //   })
-        //   console.log(obj)
-        //   // const arr = data.values[0]
-        //   // const newObj = Object.fromEntries(arr)
-        //   // console.log(newObj)
-        //   // const headerArr = element
-        //   // const obj = {}
-        //   // headerArr.forEach(item => {
-          //   //   obj[item] = ''
-          //   //   console.log(obj)
-          //   // })
-          //   //  const newObj = data.values.reduce((accumulator, value, index) => {
-            
-            //   //  return {...accumulator, [value]: ''}
-            //   // })
-            //   // console.log(newObj)
-            //   tippy('.item', {
-              //     // content: "<div class='tip-header'> +<p> ${headers}</p> + <p>hiiiiiiiiii </p></div>",
-    //     content: "<div class='tip-header'><p>" + obj + "</p><p>hiiiiiiiiii </p></div>",
-    //     allowHTML: true,
-    //     arrow: "false",
-    //     interactive: "true",
-    //     placement: "auto",
-    //     trigger: "click",
     
-    
-    //   })
-    //  }))
-  }
+    //console.log(imgElement.id, "IMG ELEMENT")
+    // console.log(rowTitles, "row titles")
+    // console.log(iconId, "icon id")
   
+  })
   
+}
   
-  
-  function getRowTitles(data) {
-    data.forEach(element => {
-       rowTitles.push(element[0])
-       matchingRowTitlesToId(element[0])
-    });
-    // console.log(rowTitles)
-  }
-
-  function matchingRowTitlesToId(rowTitle) {
-    iconId.push(rowTitle.toLowerCase().replaceAll(' ', '-'))
-    // console.log(iconId)
-   matchIds()
-  }
-
-  
-  getData()
-
-  function matchIds() {
-    // iconID is an array with IDs that we need to check on our HTML
-    iconId.forEach( id => {
-      console.log(id)
-      const imgElement = document.querySelector(`#${id}`)
-      // console.log(imgElement, "IMG ELEMENT")
-      // console.log(rowTitles, "row titles")
-      // console.log(iconId, "icon id")
-      if(id === imgElement.id) {
-        tippy(imgElement, {
-          content: "<div class='tip-header'><p>" + rowTitles +"</p><p>" + columnTitles +"</p></div>",
-          allowHTML: true,
-          arrow: "false",
-          interactive: "true",
-          placement: "auto",
-          // trigger: "click",
-        }) 
-        
-      }
-      
-    })
-  }
 
 //need to do if statment to find matching id to img.id then display content
 
@@ -168,3 +139,39 @@ function getData() {
 //   },
 // ];
 
+ // .then(data => data.values.forEach(element => {
+      //   // console.log(data.values,"data values")
+      //   const arr = data.values[0]
+      //   const arr2 = data.values[1]
+      
+      //   const obj = {}
+      //   arr.forEach((item, index) =>  {
+        //     obj[item] = arr2[index]
+        //   })
+        //   console.log(obj)
+        //   // const arr = data.values[0]
+        //   // const newObj = Object.fromEntries(arr)
+        //   // console.log(newObj)
+        //   // const headerArr = element
+        //   // const obj = {}
+        //   // headerArr.forEach(item => {
+          //   //   obj[item] = ''
+          //   //   console.log(obj)
+          //   // })
+          //   //  const newObj = data.values.reduce((accumulator, value, index) => {
+            
+            //   //  return {...accumulator, [value]: ''}
+            //   // })
+            //   // console.log(newObj)
+            //   tippy('.item', {
+              //     // content: "<div class='tip-header'> +<p> ${headers}</p> + <p>hiiiiiiiiii </p></div>",
+    //     content: "<div class='tip-header'><p>" + obj + "</p><p>hiiiiiiiiii </p></div>",
+    //     allowHTML: true,
+    //     arrow: "false",
+    //     interactive: "true",
+    //     placement: "auto",
+    //     trigger: "click",
+    
+    
+    //   })
+    //  }))
