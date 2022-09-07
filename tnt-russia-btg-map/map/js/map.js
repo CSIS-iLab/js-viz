@@ -10,9 +10,9 @@ function getImages() {
 			let markerIcon = "";
 			let IconBase = L.Icon.extend({
 				options: {
-					iconSize: [50, 95],
-					iconAnchor: [22, 94],
-					popupAnchor: [-3, -76],
+					iconSize: [50, 50],
+					iconAnchor: [25, 50],
+					popupAnchor: [3, 76],
 				},
 			});
 			let markerArr = [];
@@ -45,7 +45,23 @@ Promise.all([getImages()]).then(markerArr => {
 		.done(function(data) {
 			const rows = data.rows;
 			// Loop through each battlement
+			let latLngArr = []
 			rows.forEach((row) => {
+				let latLongObj = {
+					'rowLat': row.lat,
+					'rowLong': row.long
+				}
+				let latLong = row.lat + ', ' + row.long
+				// Check if lat long combo is a duplicate and add a small number if it is
+				if (!latLngArr.includes(latLong)) {
+					latLngArr.push(latLong)
+				} else {
+					row.lat = row.lat + .05
+					latLongObj.rowLat = row.lat
+					latLong = row.lat + ', ' + row.long
+
+					latLngArr.push(latLong)
+				}
 					let markerName = row.type.toLowerCase();
 					// Get marker icon object for the specific battlement type
 					const foundItem = markerArr[0].find((marker) => {
@@ -53,11 +69,27 @@ Promise.all([getImages()]).then(markerArr => {
 					})
 					// If we have a matching marker, use it to mark the battlement on the map
 					if(foundItem) {
-						L.marker([row.lat, row.long], { icon: foundItem }).addTo(map).bindPopup(
-							'<h2>' + row.short_form_name + '</h2>' +
-							'<a href="' + row.source + '" target="_blank">Source</a>'
-						);
-				};
+						let marker = L.marker([row.lat, row.long], { icon: foundItem, riseOnHover: true, riseOffset: 1000 })
+						marker.data = row
+						bounds.extend([row.lat, row.long])
+						// .bindPopup(
+						// 	'<h2>' + row.short_form_name + '</h2>' +
+						// 	'<a href="' + row.source + '" target="_blank">Source</a>'
+						// );
+						map.addLayer(marker)
+						oms.addMarker(marker)
+					};
+			})
+
+			oms.addListener('click', function(marker) {
+				console.log("bounds:" + bounds + "; marker latlng:" + marker.getLatLng())
+				popup.setContent(marker.data.short_form_name);
+				popup.setLatLng(marker.getLatLng());
+				map.openPopup(popup);
+			});
+
+			oms.addListener('spiderfy', function(markers) {
+				map.closePopup()
 			})
 		})
 		.error(function(errors) {
@@ -68,7 +100,7 @@ Promise.all([getImages()]).then(markerArr => {
 });
 
 const client = new carto.Client({
-	apiKey: "oRyxq9fVX5mUbDKoOs8dpQ",
+	apiKey: "moxuF6iP0jTe4tyXPtVK4Q",
 	username: "csis",
 });
 
@@ -77,11 +109,11 @@ var basemap = L.tileLayer(
 );
 
 var map = L.map("map", {
-	center: [47.646, 30.987],
-	zoom: 6.24,
-	maxZoom: 10,
+	center: [48.95569267478989, 33.69398277149277],
+	zoom: 7.5,
+	maxZoom: 20,
 	scrollWheelZoom: true,
-	minZoom: 1,
+	minZoom: 5,
 	zoomControl: true,
 	scrollWheelZoom: true,
 	layers: [basemap],
@@ -90,17 +122,10 @@ var map = L.map("map", {
 
 const mapSource = new carto.source.SQL(`SELECT * FROM csis.russia_btg_map_1`);
 
-
-
-// console.log(dataRows)
-
 const mapStyle = new carto.style.CartoCSS(`
 #layer {
   marker-width: 7;
-  marker-fill: ramp([type], (#5F4690, #e8777b, #38A6A5, #0F8554, #73AF48, #EDAD08, #E17C05, #CC503E, #94346E, #6F4070, #666666), (null, "RU_Mechanized-infantry_Brigade", "Mechanized Infantry", "UKR_Mechanized-infantry_Brigade", "RU_Mechanized-infantry_Regiment", "UKR_Light-infantry_Brigade", "RU_Airmobile-Infantry_Brigade", "RU_Mechanized-infantry_Corps_HQ", "RU_Mechanized-infantry_Task-Force", "UKR_Airmobile-Infantry_Brigade"), "=");
-  marker-fill-opacity: 1;
-  marker-file: ramp([type], (url('https://s3.amazonaws.com/com.cartodb.users-assets.production/production/csis/assets/20220628163711RU_Airborne%20Infantry_Division_HQ.svg')), ("RU_Mechanized-infantry_Brigade"), "=");
-  marker-allow-overlap: true;
+  marker-allow-overlap: false;
   marker-line-width: 1;
   marker-line-color: #FFFFFF;
   marker-line-opacity: 1;
@@ -113,9 +138,28 @@ const mapLayer = new carto.layer.Layer(mapSource, mapStyle, {
 
 client.getLeafletLayer().bringToFront().addTo(map);
 
+let omsOptions = {
+	circleFootSeparation: 30,
+	keepSpiderfied: true,
+	// nearbyDistance: 40,
+	circleSpiralSwitchover: 3
+}
+
+const oms = new OverlappingMarkerSpiderfier(map, omsOptions)
+let bounds = new L.LatLngBounds();
+
 const popup = L.popup({ closeButton: true });
 
-mapLayer.on(carto.layer.events.FEATURE_CLICKED, createPopup);
+// mapLayer.on(carto.layer.events.FEATURE_CLICKED, createPopup);
+// oms.addListener('click', createPopup);
+
+// var popup = new L.Popup();
+// oms.addListener('click', function(marker) {
+// 	console.log(marker)
+//   popup.setContent(marker.desc);
+//   popup.setLatLng(marker.getLatLng());
+//   map.openPopup(popup);
+// });
 
 function createPopup(event) {
 	popup.setLatLng(event.latLng);
