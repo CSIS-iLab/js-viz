@@ -3,24 +3,31 @@ const icons = []
 let columnTitles = []
 let rowTitles = []
 let iconId = []
+let data = []
 const URL = `https://content-sheets.googleapis.com/v4/spreadsheets/1H5JH0nsefgXAkGE6VRLUi1H50d0m4IeZBfJNZ-avEaI/values/channels-to-deliver-G2P?key=AIzaSyBXuQRRw4K4W8E4eGHoSFUSrK-ZwpD4Zz4&majorDimension=ROWS`
 
-function getData() {
+async function getData() {
   // function getPromise() {
-  fetch(URL)
-    .then((response) => {
-      // res.json()
-      // Our handler throws an error if the request did not succeed.
-      if (!response.ok) {
-        throw new Error(`HTTP error: ${response.status}`);
-      }
-      // Otherwise (if the response succeeded), our handler fetches the response
-      // as text by calling response.text(), and immediately returns the promise
-      // returned by `response.text()`.
-      return response.json();
-    })
-    .then( ( data ) => getRowTitles( data.values ) )
-    .catch( ( error ) => console.log( `Could not fetch the data. Error: ${error}`) )
+  const response = await fetch(URL)
+  if (!response.ok)
+    throw new Error(`HTTP error: ${response.status}`)
+  const data = await response.json()
+  // console.log(data.values)
+  return data.values
+  // fetch(URL)
+  //   .then((response) => {
+  //     // res.json()
+  //     // Our handler throws an error if the request did not succeed.
+  //     if (!response.ok) {
+  //       throw new Error(`HTTP error: ${response.status}`);
+  //     }
+  //     // Otherwise (if the response succeeded), our handler fetches the response
+  //     // as text by calling response.text(), and immediately returns the promise
+  //     // returned by `response.text()`.
+  //     return response.json();
+  //   })
+  //   .then( ( data ) => getRowTitles( data.values ) )
+  //   .catch( ( error ) => console.log( `Could not fetch the data. Error: ${error}`) )
   // We need to find the cash icon and add the content for the cash icon into the box when we click on the icon 
 }
 
@@ -32,7 +39,7 @@ function createKeys(data, columnTitles) {
     columnTitles.forEach( ( element ) => {
       console.log('test: ', test++)
       console.log(element)
-      icons.push({ [`${transformToLowerCaseRemoveSpaces(element)}`]: "", ...icons})
+      icons.push({[`${transformToLowerCaseRemoveSpaces(element)}`]: ""})
     })
   }
 }
@@ -74,8 +81,13 @@ function matchingRowTitlesToId(rowTitle) {
   // matchIds(columnTitles)
 }
   
-function init() {
-  getData()
+async function init() {
+  try {
+    data = await getData()
+  } catch (error) {
+    console.error("Error: ", error)
+  }
+  getRowTitles(data)
 }
 
 // console.log("row titles: ", rowTitles)
@@ -85,9 +97,6 @@ function matchIds() {
   // iconID is an array with IDs that we need to check on our HTML
   // console.log(columnTitles)
   iconId.forEach( id => {
-  // console.log(id)
-  // let group = id
-  const imgElement = document.querySelector(`#${id}`)
   })
   
 }
