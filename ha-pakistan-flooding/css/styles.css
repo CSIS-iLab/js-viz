@@ -1,0 +1,14 @@
+.juxtapose-wrapper {
+  max-width: 800px;
+  max-height: 800px;
+  margin: 0 auto;
+}
+
+.juxtapose-container {
+  max-width: 800px;
+  max-height: 800px;
+}
+
+.jx-knightlab {
+  opacity: 0 !important;
+}
