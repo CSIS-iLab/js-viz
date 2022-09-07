@@ -32,7 +32,7 @@ function createKeys(data, columnTitles) {
     columnTitles.forEach( ( element ) => {
       console.log('test: ', test++)
       console.log(element)
-      icons.push({ [`${transformToLowerCaseRemoveSpaces(element)}`]: "" })
+      icons.push({ [`${transformToLowerCaseRemoveSpaces(element)}`]: "", ...icons})
     })
   }
 }
