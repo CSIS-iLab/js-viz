@@ -75,22 +75,14 @@ function renderChart(keys, data, colors) {
     },
     // Tooltip
     tooltip: {
-      headerFormat: "{series.name}<br/>",
+      headerFormat: "",
       pointFormatter: function () {
         console.log("tooltip formatter", this);
         point = this;
         from = point.from;
         to = point.to;
-        // console.log(point.weight);
         weight = new Intl.NumberFormat().format(point.weight);
         return (
-          //   '<span style="font-size: 14px;color:' +
-          //   this.color +
-          //   '">\u25A0</span> ' +
-          //   this.series.name +
-          //   ": <b> " +
-          //   new Intl.NumberFormat().format(this.y) +
-          //   "</b><br/>"
           "<b>" + from + " → " + to + "</b><br/>" + weight + " Venezuelans"
         );
       },
