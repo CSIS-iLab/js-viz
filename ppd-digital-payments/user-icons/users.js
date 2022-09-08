@@ -31,25 +31,52 @@ async function getData() {
   // We need to find the cash icon and add the content for the cash icon into the box when we click on the icon 
 }
 
-function createKeys(data, columnTitles) {
-  let dataLength = data.length
-  for (let index = 0; index < dataLength; index++) {
-    console.log(index);
-    let test = 0
-    columnTitles.forEach( ( element ) => {
-      console.log('test: ', test++)
-      console.log(element)
-      icons.push({[`${transformToLowerCaseRemoveSpaces(element)}`]: ""})
-    })
+function formatTitle(title) {
+  return title.toLowerCase().replaceAll(" ", "-").replaceAll("/","-")
+}
+
+function createKeys(key, titlesLength) {
+  console.log(titlesLength)
+  console.log(key)
+  let test = []
+  for (let index = 0; index < titlesLength; index++) {
+    // test[index] = test.key || test.push({[key]: ''})
+  if( test[index] ) {
+     test[index] = [...test]
+  } else {
+    test.push({[key]: ''})
   }
+    // counts[x] = (counts[x] || 0) + 1;
+  }
+  console.log(test)
+  return test
+
+  // icons
+  // let dataLength = data.length
+  // for (let index = 0; index < dataLength; index++) {
+  //   console.log(index);
+  //   let test = 0
+  //   columnTitles.forEach( ( element ) => {
+  //     console.log('test: ', test++)
+  //     console.log(element)
+  //     icons.push({[`${transformToLowerCaseRemoveSpaces(element)}`]: ""})
+  //   })
+  // }
 }
 
 function getRowTitles( data ) {
   // console.log( data )
   columnTitles = data.shift()
-  console.log(columnTitles)
+  // console.log(columnTitles)
   // insert keys into each element of the array
-  createKeys(data, columnTitles)
+  const titles = columnTitles.map( title => formatTitle(title))
+  let test = []
+  const titlesLength = titles.length
+  test = titles.forEach( (key, titlesLength) => {
+    return createKeys(key, titlesLength)
+  })
+  console.log(test);
+  // createKeys(data, columnTitles)
   // console.log(data.length)
   // data.forEach( (element, index) => {
   //   // rowTitles.push( element[0] )
@@ -66,7 +93,7 @@ function getRowTitles( data ) {
   //   })
   // //   matchingRowTitlesToId(element[0])
   // } )
-  console.log(icons)
+  // console.log(icons)
   //console.log("row titles array", rowTitles)
 }
 
