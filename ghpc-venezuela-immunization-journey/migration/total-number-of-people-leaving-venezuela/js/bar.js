@@ -16,6 +16,7 @@ Highcharts.chart("hcContainer", {
   chart: {
     type: "spline",
     spacingBottom: 60,
+    height: 500,
     style: {
       fontFamily: ["Source Sans Pro", "sans-serif"],
     },

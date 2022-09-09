@@ -16,15 +16,23 @@ Highcharts.chart("hcContainer", {
   chart: {
     type: "spline",
     spacingBottom: 60,
+    height: 500,
     style: {
       fontFamily: ["Source Sans Pro", "sans-serif"],
     },
   },
   // Colors
-  colors: ["#004C7B", "#0065A4", "#5E9DBF", "#BFD6DB"],
+  colors: [
+    "#ffb3b3",
+    "#e28080",
+    "#c24c50",
+    "#9f0023",
+  ],
+  // maybe red for totals and then darker and lighter for the categories?
   // Chart Title and Subtitle
   accessibility: {
-    description: "Legal Status of Venezuelan Migrants in Their Host Countries (2000 - 2021)",
+    description:
+      "Legal Status of Venezuelan Migrants in Their Host Countries (2000 - 2021)",
   },
   title: {
     text: "Legal Status of Venezuelan Migrants in Their Host Countries (2000 - 2021)",

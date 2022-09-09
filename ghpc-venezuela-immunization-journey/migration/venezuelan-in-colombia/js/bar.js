@@ -1,3 +1,4 @@
+// remove this chart when we have confirmation from the program
 Highcharts.setOptions({
   lang: {
     thousandsSep: ",",
