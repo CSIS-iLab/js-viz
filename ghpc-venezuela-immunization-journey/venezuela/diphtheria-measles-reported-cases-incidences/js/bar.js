@@ -23,8 +23,8 @@ Highcharts.chart("hcContainer", {
   },
   // Colors
   colors: [
-    "#0050A4", // Diphtheria
-    "#44C07B", // Measles
+    "#F3C11B", // Colombia
+    "#4881B5", // Americas
   ],
   // Chart Title and Subtitle
   accessibility: {
