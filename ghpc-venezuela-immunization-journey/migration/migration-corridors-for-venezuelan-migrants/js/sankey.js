@@ -31,7 +31,6 @@ function renderChart(keys, data, colors) {
       {
         keys: keys,
         data: data,
-        // colors: ["#D92F5D", ...colors], //red color for Venezuela
         colors: ["#000", ...colors], //black color for Venezuela
 
         type: "sankey",
@@ -46,10 +45,10 @@ function renderChart(keys, data, colors) {
     },
     // Chart Title and Subtitle
     accessibility: {
-      description: "Migration Corridors for Venezuelan Migrants (2020)",
+      description: "Migration Corridors for Venezuelan Migrants (2021)",
     },
     title: {
-      text: "Migration Corridors for Venezuelan Migrants (2020)",
+      text: "Migration Corridors for Venezuelan Migrants (2021)",
       align: "left",
       style: {
         color: "black",
@@ -58,14 +57,14 @@ function renderChart(keys, data, colors) {
       },
     },
     subtitle: {
-      text: "As of 2020, over 4,140,436 Venezuelans had fled to other countries. Hover over the color ribbons to see how many Venezuelan migrants ended up in each of the countries below.",
+      text: "As of 2021, over 4,479,256 Venezuelans had fled to other countries. Hover over the color ribbons to see how many Venezuelan migrants ended up in each of the countries below.",
       align: "left",
     },
     // Credits
     credits: {
       enabled: true,
       href: false,
-      text: "GHPC, CSIS | Source: IOM World Migration Report 2022",
+      text: "GHPC, CSIS | Source: UNHR Refugee Statistics",
       style: {
         fontSize: "11px",
       },
@@ -75,7 +74,7 @@ function renderChart(keys, data, colors) {
     },
     // Tooltip
     tooltip: {
-      nodeFormat: '{point.name} <b>{point.sum:,.0f}</b>',
+      nodeFormat: "{point.name} <b>{point.sum:,.0f}</b>",
       headerFormat: "",
       pointFormatter: function () {
         console.log("tooltip formatter", this);
@@ -103,9 +102,9 @@ function renderChart(keys, data, colors) {
           enabled: true,
           style: {
             textOutline: "none",
-            fontWeight: "normal",
+            fontWeight: "bold",
             fontSize: "14px",
-            color: "#fff"
+            color: "#fff",
           },
         },
       },
