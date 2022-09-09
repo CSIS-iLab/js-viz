@@ -75,6 +75,7 @@ function renderChart(keys, data, colors) {
     },
     // Tooltip
     tooltip: {
+      nodeFormat: '{point.name} <b>{point.sum:,.0f}</b>',
       headerFormat: "",
       pointFormatter: function () {
         console.log("tooltip formatter", this);

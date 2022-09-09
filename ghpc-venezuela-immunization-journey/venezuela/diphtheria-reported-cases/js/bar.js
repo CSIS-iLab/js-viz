@@ -11,7 +11,7 @@ Highcharts.chart("hcContainer", {
   data: {
     googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
     googleSpreadsheetKey: "12_ks76ZrqO3NcqmqlLtBi9ynpX0Zy9RvsWaprU47u4c",
-    googleSpreadsheetRange: "diphtheria-reported-cases-venezuela",
+    googleSpreadsheetRange: "diphtheria-reported-cases-colombia-venezuela",
   },
   // General Chart Options
   chart: {
@@ -28,10 +28,10 @@ Highcharts.chart("hcContainer", {
   ],
   // Chart Title and Subtitle
   accessibility: {
-    description: "Reported Cases of Diphtheria in Venezuela (2000-2021)",
+    description: "Reported Cases of Diphtheria Colombia vs. Venezuela (2000-2021)",
   },
   title: {
-    text: "Reported Cases of Diphtheria in Venezuela (2000-2021)",
+    text: "Reported Cases of Diphtheria Colombia vs. Venezuela (2000-2021)",
     align: "left",
     style: {
       color: "black",
@@ -87,11 +87,11 @@ Highcharts.chart("hcContainer", {
     title: {
       text: "Reported Disease Cases",
     },
-    max: 6000,
-    tickInterval: 1000,
-    reversedStacks: false,
-    startOnTick: false,
-    endOnTick: false,
+    max: 800,
+    // tickInterval: 1000,
+    // reversedStacks: false,
+    // startOnTick: false,
+    // endOnTick: false,
   },
   xAxis: {
     type: "year",
