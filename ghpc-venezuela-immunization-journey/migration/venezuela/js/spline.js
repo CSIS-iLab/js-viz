@@ -10,7 +10,7 @@ Highcharts.chart("hcContainer", {
   data: {
     googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
     googleSpreadsheetKey: "12_ks76ZrqO3NcqmqlLtBi9ynpX0Zy9RvsWaprU47u4c",
-    googleSpreadsheetRange: "total-number-of-people-leaving-venezuela",
+    googleSpreadsheetRange: "venezuela-migration",
   },
   // General Chart Options
   chart: {
@@ -22,17 +22,14 @@ Highcharts.chart("hcContainer", {
     },
   },
   // Colors
-  colors: [
-    "#E53E3A", // Venezuela
-    "#FFC728", // Colombia
-  ],
+  colors: ["#ffb3b3", "#e28080", "#c24c50", "#9f0023"],
   // Chart Title and Subtitle
   accessibility: {
     description:
-      "Number of People Who Fled Venezuela vs. Portion of Those People Who Ended Up in Colombia (2000 - 2021)",
+      "Legal Status of Venezuelan Migrants in Their Host Countries (2000 - 2021)",
   },
   title: {
-    text: "Number of People Who Fled Venezuela vs. Portion of Those People Who Ended Up in Colombia (2000 - 2021)",
+    text: "Legal Status of Venezuelan Migrants in Their Host Countries (2000 - 2021)",
     align: "left",
     style: {
       color: "black",
@@ -41,7 +38,7 @@ Highcharts.chart("hcContainer", {
     },
   },
   subtitle: {
-    text: "Comparison between the total number of people who left Venezuela and the total number of people who left Venezuela and migrated to Colombia",
+    text: "We need a subtitle?",
     align: "left",
   },
   // Credits
@@ -74,18 +71,16 @@ Highcharts.chart("hcContainer", {
   // Y Axis
   yAxis: {
     title: {
-      text: "Number of People",
+      text: "People",
     },
     max: 6000000,
     tickInterval: 1000000,
     reversedStacks: false,
     startOnTick: false,
     endOnTick: false,
-    // visible: false,
   },
   xAxis: {
     type: "year",
-    // max: 2017,
     tickInterval: 1,
     accessibility: {
       rangeDescription: "Range: 2000 to 2021",
@@ -120,6 +115,7 @@ Highcharts.chart("hcContainer", {
       dataLabels: {
         align: "left",
         enabled: true,
+        zIndex: 2,
         style: {
           textOutline: "none",
           fontWeight: "normal",

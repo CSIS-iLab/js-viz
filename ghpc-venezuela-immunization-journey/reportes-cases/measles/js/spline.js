@@ -1,17 +1,16 @@
-// remove this chart when we have confirmation from the program
 Highcharts.setOptions({
   lang: {
     thousandsSep: ",",
     decimalPoint: ".",
   },
-})
+});
 
 Highcharts.chart("hcContainer", {
   // Load Data in from Google Sheets
   data: {
     googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
     googleSpreadsheetKey: "12_ks76ZrqO3NcqmqlLtBi9ynpX0Zy9RvsWaprU47u4c",
-    googleSpreadsheetRange: "venezuelan-in-colombia",
+    googleSpreadsheetRange: "measles-reported-cases-colombia-venezuela",
   },
   // General Chart Options
   chart: {
@@ -22,14 +21,16 @@ Highcharts.chart("hcContainer", {
     },
   },
   // Colors
-  colors: ["#004C7B", "#0065A4", "#5E9DBF", "#BFD6DB"],
+  colors: [
+    "#F3C11B", // Colombia
+    "#D92F5D", // Venezuela
+  ],
   // Chart Title and Subtitle
   accessibility: {
-    description:
-      "Number of Venezuelans that ended up in Colombia (2000 - 2021)",
+    description: "Reported Cases of Measles Colombia vs. Venezuela (2000-2021)",
   },
   title: {
-    text: "Number of Venezuelans that ended up in Colombia (2000 - 2021)",
+    text: "Reported Cases of Measles Colombia vs. Venezuela (2000-2021)",
     align: "left",
     style: {
       color: "black",
@@ -38,14 +39,14 @@ Highcharts.chart("hcContainer", {
     },
   },
   subtitle: {
-    text: "We need a subtitle?",
+    text: "From 2000 to 2021, gaps in health services for Venezuelans resulted in 2 major outbreaks of measles and diptheria. Concerns also abound about data collection gaps, especially during the Maduro presidency. Hover over the lines below to see how many reported cases there were of measles and diptheria in a given year in Venezuela. To focus only on one disease, click 'measles' or 'diptheria' in the legend below to hide that data.",
     align: "left",
   },
   // Credits
   credits: {
     enabled: true,
     href: false,
-    text: "GHPC, CSIS | Source: ???",
+    text: "GHPC, CSIS | Source: WHO/UNICEF Joint Reporting Form on Immunization (JRF)",
     style: {
       fontSize: "11px",
     },
@@ -65,24 +66,32 @@ Highcharts.chart("hcContainer", {
       fontWeight: "normal",
     },
     labelFormatter: function () {
-      return this.name;
+      const legend = this.name;
+      const legendsWords = legend.split(" ");
+      let modifiedLegend = "";
+      legendsWords.map((element, index) => {
+        if (index === 0) {
+          modifiedLegend += "<b>" + element + "</b> ";
+        } else {
+          modifiedLegend += element + " ";
+        }
+      });
+      return modifiedLegend;
     },
   },
   // Y Axis
   yAxis: {
     title: {
-      text: "Venezuelans",
+      text: "Reported Disease Cases",
     },
-    max: 2000000,
-    tickInterval: 250000,
+    max: 6000,
+    tickInterval: 1000,
     reversedStacks: false,
     startOnTick: false,
     endOnTick: false,
-    // visible: false,
   },
   xAxis: {
     type: "year",
-    // max: 2017,
     tickInterval: 1,
     accessibility: {
       rangeDescription: "Range: 2000 to 2021",
@@ -113,9 +122,10 @@ Highcharts.chart("hcContainer", {
     series: {
       borderWidth: 0,
       groupPadding: 0.1,
-
+      marker: {
+        symbol: "circle",
+      },
       dataLabels: {
-        align: "left",
         enabled: true,
         style: {
           textOutline: "none",

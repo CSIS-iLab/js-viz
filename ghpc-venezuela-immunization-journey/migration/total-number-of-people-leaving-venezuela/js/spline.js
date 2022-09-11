@@ -1,33 +1,38 @@
-// Use the one in the Venezuela folder
+Highcharts.setOptions({
+  lang: {
+    thousandsSep: ",",
+    decimalPoint: ".",
+  },
+})
+
 Highcharts.chart("hcContainer", {
   // Load Data in from Google Sheets
   data: {
     googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
     googleSpreadsheetKey: "12_ks76ZrqO3NcqmqlLtBi9ynpX0Zy9RvsWaprU47u4c",
-    googleSpreadsheetRange: "mvc1-vax-coverage",
+    googleSpreadsheetRange: "total-number-of-people-leaving-venezuela",
   },
   // General Chart Options
   chart: {
     type: "spline",
-    // height: 600,
     spacingBottom: 60,
+    height: 500,
     style: {
       fontFamily: ["Source Sans Pro", "sans-serif"],
     },
   },
   // Colors
   colors: [
-    "#F3C11B", // Colombia
-    "#4881B5", // Americas
-    "#D92F5D", // Venezuela
+    "#a4a5a5", // Venezuela
+    "#FFC728", // Colombia
   ],
   // Chart Title and Subtitle
   accessibility: {
     description:
-      "Measles Vaccination Coverage 1st dose (MVC1) Colombia vs. the Americas Region vs. Venezuela (2000-2021)",
+      "Number of People Who Fled Venezuela vs. Portion of Those People Who Ended Up in Colombia (2000 - 2021)",
   },
   title: {
-    text: "Measles Vaccination Coverage 1st dose (MVC1) Colombia vs. the Americas Region vs. Venezuela (2000-2021)",
+    text: "Number of People Who Fled Venezuela vs. Portion of Those People Who Ended Up in Colombia (2000 - 2021)",
     align: "left",
     style: {
       color: "black",
@@ -36,14 +41,14 @@ Highcharts.chart("hcContainer", {
     },
   },
   subtitle: {
-    text: "Measles vaccination 2nd dose coverage.",
+    text: "Comparison between the total number of people who left Venezuela and the total number of people who left Venezuela and migrated to Colombia",
     align: "left",
   },
   // Credits
   credits: {
     enabled: true,
     href: false,
-    text: "GHPC, CSIS | Source: WHO/UNICEF Estimates of National Immunization Coverage (WUENIC)",
+    text: "GHPC, CSIS | Source: UNHCR Refugee Statistics",
     style: {
       fontSize: "11px",
     },
@@ -69,17 +74,13 @@ Highcharts.chart("hcContainer", {
   // Y Axis
   yAxis: {
     title: {
-      text: "Coverage",
+      text: "Number of People",
     },
-    labels: {
-      formatter: function () {
-        return this.value + "%";
-      },
-    },
-    max: 100,
-    min: 10,
-    tickInterval: 10,
+    max: 6000000,
+    tickInterval: 1000000,
     reversedStacks: false,
+    startOnTick: false,
+    endOnTick: false,
   },
   xAxis: {
     type: "year",
@@ -93,21 +94,14 @@ Highcharts.chart("hcContainer", {
   tooltip: {
     headerFormat: "{point.key}<br/>",
     pointFormatter: function () {
-      let customSeriesName = "";
-      if (this.series.name == "Venezuela - Full Measles Vaccination Coverage") {
-        customSeriesName = "Venezuela measles vaccination";
-      } else {
-        customSeriesName = "Americas Region measles vaccination";
-      }
       return (
         '<span style="font-size: 14px;color:' +
         this.color +
         '">\u25A0</span> ' +
-        // this.series.name +
-        customSeriesName +
+        this.series.name +
         ": <b> " +
-        this.y +
-        "%</b><br/>"
+        new Intl.NumberFormat().format(this.y) +
+        "</b><br/>"
       );
     },
     shared: true,
@@ -118,14 +112,11 @@ Highcharts.chart("hcContainer", {
   // Additional Plot Options
   plotOptions: {
     series: {
-      // borderWidth: 0,
-      // groupPadding: 0.1,
-      marker: {
-        symbol: "circle",
-      },
+      borderWidth: 0,
+      groupPadding: 0.1,
+
       dataLabels: {
-        align: "left",
-        enabled: false,
+        enabled: true,
         style: {
           textOutline: "none",
           fontWeight: "normal",

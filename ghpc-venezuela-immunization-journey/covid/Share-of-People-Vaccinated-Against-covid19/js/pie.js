@@ -1,21 +1,14 @@
-Highcharts.setOptions({
-  lang: {
-    thousandsSep: ",",
-    decimalPoint: ".",
-  },
-})
-
 Highcharts.chart("hcContainer", {
   // Load Data in from Google Sheets
   data: {
     googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
     googleSpreadsheetKey: "12_ks76ZrqO3NcqmqlLtBi9ynpX0Zy9RvsWaprU47u4c",
-    googleSpreadsheetRange: "cumulative-covid19-cases-confirmed",
+    googleSpreadsheetRange: "Share-of-People-Vaccinated-Against-covid19",
   },
 
   // General Chart Options
   chart: {
-    type: "column",
+    type: "pie",
     spacingBottom: 60,
     style: {
       fontFamily: ["Source Sans Pro", "sans-serif"],
@@ -30,10 +23,11 @@ Highcharts.chart("hcContainer", {
 
   // Chart Title and Subtitle
   accessibility: {
-    description: "Confirmed Covid-19 Cases in Venezuela and Colombia (8/28/22)",
+    description:
+      "Percent of Venezuelan and Colombian populations vaccinated againts COVID-19",
   },
   title: {
-    text: "Confirmed Covid-19 Cases in Venezuela and Colombia (8/28/22)",
+    text: "Percent of Venezuelan and Colombian populations vaccinated againts COVID-19",
     align: "left",
     style: {
       color: "black",
@@ -42,14 +36,14 @@ Highcharts.chart("hcContainer", {
     },
   },
   subtitle: {
-    text: "",
+    text: "Share of People Vaccinated Against COVID-19, Share of people with a complete initial protocol",
     align: "left",
   },
   // Credits
   credits: {
     enabled: true,
     href: false,
-    text: "GHPC, CSIS | Source: Our World in Data",
+    text: "GHPC, CSIS | Source: ???",
     style: {
       fontSize: "11px",
     },
@@ -75,9 +69,14 @@ Highcharts.chart("hcContainer", {
   // Y Axis
   yAxis: {
     title: {
-      text: "Cases Confirmed",
+      text: "",
     },
-    max: 6500000,
+    labels: {
+      formatter: function () {
+        return this.value + "%";
+      },
+    },
+    max: 100,
   },
   xAxis: {
     type: "year",
@@ -97,8 +96,8 @@ Highcharts.chart("hcContainer", {
         '">\u25A0</span> ' +
         this.series.name +
         ": <b> " +
-        new Intl.NumberFormat().format(this.y) +
-        "</b><br/>"
+        this.y +
+        "%</b><br/>"
       );
     },
     shared: true,
@@ -111,9 +110,10 @@ Highcharts.chart("hcContainer", {
     series: {
       borderWidth: 0,
       groupPadding: 0.1,
-      pointWidth: 130,
+      innerSize: "50%",
 
       dataLabels: {
+        format: "<b>{point.name}</b><br>{point.y:.2f}%",
         enabled: true,
         style: {
           textOutline: "none",

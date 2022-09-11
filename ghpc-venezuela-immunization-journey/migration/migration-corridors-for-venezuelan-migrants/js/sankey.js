@@ -103,7 +103,7 @@ function renderChart(keys, data, colors) {
           style: {
             textOutline: "none",
             fontWeight: "bold",
-            fontSize: "14px",
+            fontSize: "13px",
             color: "#fff",
           },
         },

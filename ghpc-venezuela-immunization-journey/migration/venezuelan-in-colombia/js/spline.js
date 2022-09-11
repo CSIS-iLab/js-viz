@@ -1,3 +1,4 @@
+// remove this chart when we have confirmation from the program
 Highcharts.setOptions({
   lang: {
     thousandsSep: ",",
@@ -10,32 +11,25 @@ Highcharts.chart("hcContainer", {
   data: {
     googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
     googleSpreadsheetKey: "12_ks76ZrqO3NcqmqlLtBi9ynpX0Zy9RvsWaprU47u4c",
-    googleSpreadsheetRange: "venezuela-migration",
+    googleSpreadsheetRange: "venezuelan-in-colombia",
   },
   // General Chart Options
   chart: {
     type: "spline",
     spacingBottom: 60,
-    height: 500,
     style: {
       fontFamily: ["Source Sans Pro", "sans-serif"],
     },
   },
   // Colors
-  colors: [
-    "#ffb3b3",
-    "#e28080",
-    "#c24c50",
-    "#9f0023",
-  ],
-  // maybe red for totals and then darker and lighter for the categories?
+  colors: ["#004C7B", "#0065A4", "#5E9DBF", "#BFD6DB"],
   // Chart Title and Subtitle
   accessibility: {
     description:
-      "Legal Status of Venezuelan Migrants in Their Host Countries (2000 - 2021)",
+      "Number of Venezuelans that ended up in Colombia (2000 - 2021)",
   },
   title: {
-    text: "Legal Status of Venezuelan Migrants in Their Host Countries (2000 - 2021)",
+    text: "Number of Venezuelans that ended up in Colombia (2000 - 2021)",
     align: "left",
     style: {
       color: "black",
@@ -51,7 +45,7 @@ Highcharts.chart("hcContainer", {
   credits: {
     enabled: true,
     href: false,
-    text: "GHPC, CSIS | Source: UNHCR Refugee Statistics",
+    text: "GHPC, CSIS | Source: ???",
     style: {
       fontSize: "11px",
     },
@@ -77,10 +71,10 @@ Highcharts.chart("hcContainer", {
   // Y Axis
   yAxis: {
     title: {
-      text: "People",
+      text: "Venezuelans",
     },
-    max: 6000000,
-    tickInterval: 1000000,
+    max: 2000000,
+    tickInterval: 250000,
     reversedStacks: false,
     startOnTick: false,
     endOnTick: false,
@@ -121,7 +115,6 @@ Highcharts.chart("hcContainer", {
       groupPadding: 0.1,
 
       dataLabels: {
-        align: "left",
         enabled: true,
         style: {
           textOutline: "none",

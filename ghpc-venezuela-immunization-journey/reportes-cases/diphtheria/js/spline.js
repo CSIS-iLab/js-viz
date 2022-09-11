@@ -11,7 +11,7 @@ Highcharts.chart("hcContainer", {
   data: {
     googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
     googleSpreadsheetKey: "12_ks76ZrqO3NcqmqlLtBi9ynpX0Zy9RvsWaprU47u4c",
-    googleSpreadsheetRange: "measles-reported-cases-colombia-venezuela",
+    googleSpreadsheetRange: "diphtheria-reported-cases-colombia-venezuela",
   },
   // General Chart Options
   chart: {
@@ -24,14 +24,15 @@ Highcharts.chart("hcContainer", {
   // Colors
   colors: [
     "#F3C11B", // Colombia
-    "#4881B5", // Americas
+    "#D92F5D", // Venezuela
   ],
   // Chart Title and Subtitle
   accessibility: {
-    description: "Reported Cases of Measles Colombia vs. Venezuela (2000-2021)",
+    description:
+      "Reported Cases of Diphtheria Colombia vs. Venezuela (2000-2021)",
   },
   title: {
-    text: "Reported Cases of Measles Colombia vs. Venezuela (2000-2021)",
+    text: "Reported Cases of Diphtheria Colombia vs. Venezuela (2000-2021)",
     align: "left",
     style: {
       color: "black",
@@ -69,9 +70,7 @@ Highcharts.chart("hcContainer", {
     labelFormatter: function () {
       const legend = this.name;
       const legendsWords = legend.split(" ");
-      const legendsWordsLength = legendsWords.length;
       let modifiedLegend = "";
-      // find the last word and make it bold and recreate the sentence
       legendsWords.map((element, index) => {
         if (index === 0) {
           modifiedLegend += "<b>" + element + "</b> ";
@@ -87,11 +86,7 @@ Highcharts.chart("hcContainer", {
     title: {
       text: "Reported Disease Cases",
     },
-    max: 6000,
-    tickInterval: 1000,
-    reversedStacks: false,
-    startOnTick: false,
-    endOnTick: false,
+    max: 800
   },
   xAxis: {
     type: "year",
@@ -105,13 +100,11 @@ Highcharts.chart("hcContainer", {
   tooltip: {
     headerFormat: "{point.key}<br/>",
     pointFormatter: function () {
-      let lastWord = this.series.name.split(" ");
       return (
         '<span style="font-size: 14px;color:' +
         this.color +
         '">\u25A0</span> ' +
         this.series.name +
-        // lastWord[lastWord.length - 1] +
         ": <b> " +
         new Intl.NumberFormat().format(this.y) +
         "</b><br/>"
@@ -131,7 +124,6 @@ Highcharts.chart("hcContainer", {
         symbol: "circle",
       },
       dataLabels: {
-        align: "left",
         enabled: true,
         style: {
           textOutline: "none",

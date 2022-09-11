@@ -3,32 +3,29 @@ Highcharts.chart("hcContainer", {
   data: {
     googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
     googleSpreadsheetKey: "12_ks76ZrqO3NcqmqlLtBi9ynpX0Zy9RvsWaprU47u4c",
-    googleSpreadsheetRange: "Share-of-People-Vaccinated-Against-covid19",
+    googleSpreadsheetRange: "mvc1-vax-coverage",
   },
-
   // General Chart Options
   chart: {
-    type: "pie",
-    // inverted: true,
+    type: "spline",
     spacingBottom: 60,
     style: {
       fontFamily: ["Source Sans Pro", "sans-serif"],
     },
   },
-
   // Colors
   colors: [
-    "#D92F5D", // Venezuela
     "#F3C11B", // Colombia
+    "#4881B5", // Americas
+    "#D92F5D", // Venezuela
   ],
-
   // Chart Title and Subtitle
   accessibility: {
     description:
-      "Percent of Venezuelan and Colombian populations vaccinated againts COVID-19",
+      "Measles Vaccination Coverage 1st dose (MVC1) Colombia vs. the Americas Region vs. Venezuela (2000-2021)",
   },
   title: {
-    text: "Percent of Venezuelan and Colombian populations vaccinated againts COVID-19",
+    text: "Measles Vaccination Coverage 1st dose (MVC1) Colombia vs. the Americas Region vs. Venezuela (2000-2021)",
     align: "left",
     style: {
       color: "black",
@@ -37,14 +34,14 @@ Highcharts.chart("hcContainer", {
     },
   },
   subtitle: {
-    text: "Share of People Vaccinated Against COVID-19, Share of people with a complete initial protocol",
+    text: "Measles vaccination 1st dose coverage",
     align: "left",
   },
   // Credits
   credits: {
     enabled: true,
     href: false,
-    text: "GHPC, CSIS | Source: ???",
+    text: "GHPC, CSIS | Source: WHO/UNICEF Estimates of National Immunization Coverage (WUENIC)",
     style: {
       fontSize: "11px",
     },
@@ -70,7 +67,7 @@ Highcharts.chart("hcContainer", {
   // Y Axis
   yAxis: {
     title: {
-      text: "",
+      text: "Coverage",
     },
     labels: {
       formatter: function () {
@@ -78,24 +75,40 @@ Highcharts.chart("hcContainer", {
       },
     },
     max: 100,
+    min: 10,
+    tickInterval: 10,
+    reversedStacks: false,
   },
   xAxis: {
     type: "year",
     tickInterval: 1,
     accessibility: {
-      rangeDescription: "Countries: Venezuela and Colombia.",
+      rangeDescription: "Range: 2000 to 2021",
     },
+    crosshair: true,
   },
-
   // Tooltip
   tooltip: {
     headerFormat: "{point.key}<br/>",
     pointFormatter: function () {
+      let customSeriesName = "";
+      const seriesName = this.series.name
+      switch (seriesName) {
+        case "Colombia - Measles vaccination coverage, 1st dose (MCV1)":
+          customSeriesName = "Colombia measles vaccination"
+          break
+        case "Venezuela - Measles vaccination coverage, 1st dose (MCV1)":
+          customSeriesName = "Venezuela Region measles vaccination"
+          break
+        default:
+        customSeriesName = "Americas Region measles vaccination";
+          break
+      }
       return (
         '<span style="font-size: 14px;color:' +
         this.color +
         '">\u25A0</span> ' +
-        this.series.name +
+        customSeriesName +
         ": <b> " +
         this.y +
         "%</b><br/>"
@@ -108,19 +121,12 @@ Highcharts.chart("hcContainer", {
   },
   // Additional Plot Options
   plotOptions: {
-    // pie: {
-    //     shadow: false,
-    //     center: ['70%', '25%']
-    // },
     series: {
-      borderWidth: 0,
-      groupPadding: 0.1,
-      innerSize: "50%",
-
+      marker: {
+        symbol: "circle",
+      },
       dataLabels: {
-        // align: "left",
-        format: "<b>{point.name}</b><br>{point.y:.2f}%",
-        enabled: true,
+        enabled: false,
         style: {
           textOutline: "none",
           fontWeight: "normal",

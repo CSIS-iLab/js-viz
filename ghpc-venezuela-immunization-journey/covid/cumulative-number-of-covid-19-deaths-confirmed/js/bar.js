@@ -16,7 +16,6 @@ Highcharts.chart("hcContainer", {
   // General Chart Options
   chart: {
     type: "column",
-    // inverted: true,
     spacingBottom: 60,
     style: {
       fontFamily: ["Source Sans Pro", "sans-serif"],
@@ -115,7 +114,6 @@ Highcharts.chart("hcContainer", {
       pointWidth: 130,
 
       dataLabels: {
-        // align: "left",
         enabled: true,
         style: {
           textOutline: "none",

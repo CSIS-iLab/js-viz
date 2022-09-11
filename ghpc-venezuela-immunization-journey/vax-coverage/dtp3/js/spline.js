@@ -1,4 +1,3 @@
-// Use the one in the Venezuela folder
 Highcharts.chart("hcContainer", {
   // Load Data in from Google Sheets
   data: {
@@ -35,7 +34,7 @@ Highcharts.chart("hcContainer", {
     },
   },
   subtitle: {
-    text: "Diphtheria tetanus toxoid and pertussis (DTP) vaccination coverage, 3rd dose.",
+    text: "Diphtheria tetanus toxoid and pertussis (DTP) vaccination coverage, 3rd dose",
     align: "left",
   },
   // Credits
@@ -110,13 +109,10 @@ Highcharts.chart("hcContainer", {
   // Additional Plot Options
   plotOptions: {
     series: {
-      // borderWidth: 0,
-      // groupPadding: 0.1,
       marker: {
         symbol: "circle",
       },
       dataLabels: {
-        align: "left",
         enabled: false,
         style: {
           textOutline: "none",
