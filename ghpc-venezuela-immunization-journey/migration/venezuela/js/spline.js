@@ -117,7 +117,8 @@ Highcharts.chart("hcContainer", {
         },
         formatter: function() {
           const index = this.point.index,
-                totalsPoint = this.series.chart.series[3].data[index]
+                totalsPoint = this.series.chart.series[3].data[index];
+
           if ( this.x >= 2017 ) return new Intl.NumberFormat().format(this.y)
           
           if ( totalsPoint ) return new Intl.NumberFormat().format(totalsPoint.y)
