@@ -109,17 +109,20 @@ Highcharts.chart("hcContainer", {
   // Additional Plot Options
   plotOptions: {
     series: {
-      borderWidth: 0,
-      groupPadding: 0.1,
-
       dataLabels: {
-        align: "left",
         enabled: true,
-        zIndex: 2,
         style: {
           textOutline: "none",
           fontWeight: "normal",
         },
+        formatter: function() {
+          const index = this.point.index,
+                totalsPoint = this.series.chart.series[3].data[index]
+          if ( this.x >= 2017 ) return new Intl.NumberFormat().format(this.y)
+          
+          if ( totalsPoint ) return new Intl.NumberFormat().format(totalsPoint.y)
+          
+        }
       },
     },
   },
