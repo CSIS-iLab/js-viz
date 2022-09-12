@@ -1,3 +1,4 @@
+
 // const icons = [
 //   {
 //     id: 'cash',
@@ -75,10 +76,26 @@ async function getData() {
   function addTippy() {
     icons.forEach((icon) => {
       tippy("#" + icon.id, {
-        // content: `<h1 style="color:black;">${icon.format}</h1>`,
-        content: `<div class='tip-header' style="color:black;"><> Format: ${icon.format}</div>`,
+        content: 
+          `
+            <div class="icon-container">
+              <h3 class="header">${icon.format}</h3> 
+              <h3 class="title">How/Where to receive</h3>
+              <p  class="title">${icon.howWhereToReceive}</p>
+              <h3 class="title">Where to save</h3>
+              <p  class="title"> ${icon.whereToSave}</p>
+              <h3 class="title">Examples</h3>
+              <p  class="title"> ${icon.examples}</p>
+              <h3 class="title">Cons</h3>
+              <p  class="title"> ${icon.cons}</p>
+              <h3 class="title">Pros</h3>
+              <p  class="title"> ${icon.pros}</p> 
+            </div>
+          `,
         allowHTML: true,
-        arrow: "false",
+        arrow: "true",
+        arrowType: "round",
+        size: "large",
         interactive: "true",
         placement: "auto",
         trigger: "click",

@@ -1,5 +1,6 @@
 body * {
-  font-family: "Roboto", sans-serif;
+  /* font-family: "Roboto", sans-serif; */
+  font-size: "synthese", sans-serif;
   font-weight: 400;
 }
 
@@ -33,21 +34,10 @@ img {
   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
 }
 
-.tippy-content {
-  text-align: left;
+.icon-container {
+  color: black;
+  
 }
-
-.tip-header {
-  display: flex;
-  padding-top: 5px;
-  margin-bottom: 8px;
-}
-
-.tip-icon {
-  width: 25px;
-  height: 25px;
-}
-
 
 h1 {
   color: #000;
@@ -63,23 +53,39 @@ h2 {
 }
 
 h3 {
-  display: inline;
-  margin: 0 15px;
   font-size: 15px;
-  color: #004165;
-  align-self: center;
 }
 
 h4 {
   font-size: 10px;
   text-align: center;
-  margin: 5px 0;
 }
 
-.tippy-content p {
-  font-size: 10px;
-  margin-top: 0;
+ .title {
   color: #333333;
+  text-align: left;
+ } 
+
+ h3.header {
+  font-weight: bold;
+  font-size: 17px;
+  margin-bottom: 0;
+ 
+ }
+ h3.title {
+  color: rgba(0, 0, 0, 0.6);
+  margin-top: 12px;
+  margin-bottom: 2px;
+  font-size: 13px;
+ }
+
+ p.title {
+  margin: 0;
+  font-size: 13px!important;
+  
+ }
+p.title:last-of-type {
+  margin-bottom: 12px;
 }
 
 .credits {
@@ -102,6 +108,7 @@ h4 {
 
   .tip-header {
     padding-top: 10px;
+    font-weight: bold;
   }
 
   .tip-icon {
@@ -125,6 +132,7 @@ h4 {
   .tippy-content p {
     font-size: 12px;
   }
+
 
   .credits {
     padding-top: 150px;
