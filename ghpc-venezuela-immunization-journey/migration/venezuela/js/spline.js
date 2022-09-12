@@ -115,15 +115,11 @@ Highcharts.chart("hcContainer", {
           textOutline: "none",
           fontWeight: "normal",
         },
-        formatter: function() {
-          const index = this.point.index,
-                totalsPoint = this.series.chart.series[3].data[index];
+        formatter: function () {
+          if (this.x > 2017) return new Intl.NumberFormat().format(this.y);
 
-          if ( this.x >= 2017 ) return new Intl.NumberFormat().format(this.y)
-          
-          if ( totalsPoint ) return new Intl.NumberFormat().format(totalsPoint.y)
-          
-        }
+          if (this.series.index === 3) return new Intl.NumberFormat().format(this.y);
+        },
       },
     },
   },
