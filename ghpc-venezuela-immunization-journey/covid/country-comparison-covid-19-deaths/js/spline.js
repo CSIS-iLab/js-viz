@@ -16,7 +16,6 @@ Highcharts.chart("hcContainer", {
   // General Chart Options
   chart: {
     type: "spline",
-    // inverted: true,
     spacingBottom: 60,
     style: {
       fontFamily: ["Source Sans Pro", "sans-serif"],
@@ -27,16 +26,15 @@ Highcharts.chart("hcContainer", {
   colors: [
     "#D92F5D", // Venezuela
     "#F3C11B", // Colombia
-    "#4881B5", // Ecuador
-    "#44C07B", // Brazil
-    "#8B7B5A", // Guyana
-    "#7D4391", // Peru
+    "#7D4391", // Ecuador
+    "#428A7A", // Brazil
+    "#CF5B17", // Guyana
+    "#8B7B5A", // Peru
   ],
 
   // Chart Title and Subtitle
   accessibility: {
-    description:
-      "Cumulative COVID-19 Deaths (from 3/27/2020 to 8/31/2022)",
+    description: "Cumulative COVID-19 Deaths (from 3/27/2020 to 8/31/2022)",
   },
   title: {
     text: "Cumulative COVID-19 Deaths (from 3/27/2020 to 8/31/2022)",
@@ -83,7 +81,6 @@ Highcharts.chart("hcContainer", {
     title: {
       text: "Cumulative Deaths (per million people)",
     },
-    // max: 150000,
   },
   xAxis: {
     type: "days",
@@ -107,7 +104,6 @@ Highcharts.chart("hcContainer", {
         "</b><br/>"
       );
     },
-    // shared: true,
     style: {
       fontSize: "14px",
     },
@@ -120,7 +116,6 @@ Highcharts.chart("hcContainer", {
       pointWidth: 130,
 
       dataLabels: {
-        // align: "left",
         enabled: false,
         style: {
           textOutline: "none",
