@@ -58,29 +58,28 @@ async function getData() {
   function addTippy() {
     icons.forEach((icon) => {
       tippy("#" + icon.id, {
-        content: 
-          `  <div class="icon-container">
+        content: `  <div class="icon-container">
               <div class="tip-header">
                 <img src='icons/${icon.id}.png' alt='Icon' class='tip-icon' />
                 <h3 class="header">${icon.format}</h3>
               </div>
               <h3 class="title">How/Where to receive</h3>
-              <p  class="title">${icon.howWhereToReceive}</p>
+              <p class="info">${icon.howWhereToReceive}</p>
               <h3 class="title">Where to save</h3>
-              <p  class="title"> ${icon.whereToSave}</p>
+              <p class="info"> ${icon.whereToSave}</p>
               <h3 class="title">Examples</h3>
-              <p  class="title"> ${icon.examples}</p>
+              <p class="info"> ${icon.examples}</p>
               <h3 class="title">Cons</h3>
-              <p  class="title"> ${icon.cons}</p>
+              <p class="info"> ${icon.cons}</p>
               <h3 class="title">Pros</h3>
-              <p  class="title"> ${icon.pros}</p> 
+              <p class="info"> ${icon.pros}</p> 
             </div>
           `,
         allowHTML: true,
         arrow: true,
         interactive: true,
         placement: "auto",
-        followCursor: 'initial'
+        followCursor: "initial",
       });
     });
   }

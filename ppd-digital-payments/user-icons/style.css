@@ -4,7 +4,7 @@ body * {
 }
 
 .interactive {
-  background-color:white;
+  background-color: #ffffff;
   margin: 15px;
   padding: 20px;
   height: 470px;
@@ -38,7 +38,10 @@ img {
   color: #0054A4;;
 }
 
-
+.subtitle {
+  font-size: 15px;
+  font-family: source-sans-pro, sans-serif; 
+}
 
 h1 {
   color: #000;
@@ -95,19 +98,22 @@ h4 {
 
 }
 h3.title {
-  color: rgba(0, 0, 0, 0.6);
+  color: #767676;
   margin-top: 12px;
   margin-bottom: 2px;
   font-size: 13px;
+  font-weight: bold;
+  font-family: 'synthese', sans-serif;
 }
 
-p.title {
+p.info {
   margin: 0;
-  font-size: 13px!important;
+  font-size: 15px;
+  font-family: source-sans-pro, sans-serif;
   padding-left: 10px;
-  
+  color: #000;  
 }
-p.title:last-of-type {
+p.info:last-of-type {
   margin-bottom: 12px;
 }
 
