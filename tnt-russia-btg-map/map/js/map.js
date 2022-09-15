@@ -10,9 +10,9 @@ function getImages() {
 			let markerIcon = "";
 			let IconBase = L.Icon.extend({
 				options: {
-					iconSize: [50, 50],
-					iconAnchor: [25, 50],
-					popupAnchor: [3, 76],
+					iconSize: [40, 40],
+					iconAnchor: [20, 20],
+					popupAnchor: [3, 0],
 				},
 			});
 			let markerArr = [];
@@ -71,7 +71,6 @@ Promise.all([getImages()]).then(markerArr => {
 					if(foundItem) {
 						let marker = L.marker([row.lat, row.long], { icon: foundItem, riseOnHover: true, riseOffset: 1000 })
 						marker.data = row
-						bounds.extend([row.lat, row.long])
 						// .bindPopup(
 						// 	'<h2>' + row.short_form_name + '</h2>' +
 						// 	'<a href="' + row.source + '" target="_blank">Source</a>'
@@ -82,7 +81,7 @@ Promise.all([getImages()]).then(markerArr => {
 			})
 
 			oms.addListener('click', function(marker) {
-				console.log("bounds:" + bounds + "; marker latlng:" + marker.getLatLng())
+				// console.log("bounds:" + bounds + "; marker latlng:" + marker.getLatLng())
 				popup.setContent(marker.data.short_form_name);
 				popup.setLatLng(marker.getLatLng());
 				map.openPopup(popup);
@@ -110,7 +109,7 @@ var basemap = L.tileLayer(
 
 var map = L.map("map", {
 	center: [48.95569267478989, 33.69398277149277],
-	zoom: 7.5,
+	zoom: 7,
 	maxZoom: 20,
 	scrollWheelZoom: true,
 	minZoom: 5,
@@ -123,30 +122,29 @@ var map = L.map("map", {
 const mapSource = new carto.source.SQL(`SELECT * FROM csis.russia_btg_map_1`);
 
 const mapStyle = new carto.style.CartoCSS(`
-#layer {
-  marker-width: 7;
-  marker-allow-overlap: false;
-  marker-line-width: 1;
-  marker-line-color: #FFFFFF;
-  marker-line-opacity: 1;
-}
+// #layer {
+//   marker-width: 7;
+//   marker-allow-overlap: false;
+//   marker-line-width: 1;
+//   marker-line-color: #FFFFFF;
+//   marker-line-opacity: 1;
+// }
 `);
 const mapLayer = new carto.layer.Layer(mapSource, mapStyle, {
     featureOverColumns: ["formal_name", "short_form_name", "type", "size", "hq_tail2", "country", "lat", "long", "source"],
 });
 
 
-client.getLeafletLayer().bringToFront().addTo(map);
+// client.getLeafletLayer().bringToFront().addTo(map);
 
 let omsOptions = {
 	circleFootSeparation: 30,
 	keepSpiderfied: true,
-	// nearbyDistance: 40,
+	nearbyDistance: 40,
 	circleSpiralSwitchover: 3
 }
 
 const oms = new OverlappingMarkerSpiderfier(map, omsOptions)
-let bounds = new L.LatLngBounds();
 
 const popup = L.popup({ closeButton: true });
 
