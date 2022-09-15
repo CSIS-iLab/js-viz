@@ -97,6 +97,7 @@ h4 {
   align-self: center;
 
 }
+
 h3.title {
   color: #767676;
   margin-top: 12px;
@@ -113,6 +114,7 @@ p.info {
   padding-left: 10px;
   color: #000;  
 }
+
 p.info:last-of-type {
   margin-bottom: 12px;
 }
@@ -155,6 +157,4 @@ p.info:last-of-type {
     font-size: 15px;
     margin-bottom: 15px;
   }
-
- 
 }
