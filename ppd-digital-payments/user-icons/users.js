@@ -1,13 +1,13 @@
-const icons = [];
+const ICONS = [];
 
-let newURL = `https://content-sheets.googleapis.com/v4/spreadsheets/1H5JH0nsefgXAkGE6VRLUi1H50d0m4IeZBfJNZ-avEaI/values/channels-to-deliver-G2P?key=AIzaSyBXuQRRw4K4W8E4eGHoSFUSrK-ZwpD4Zz4&majorDimension=ROWS`;
+const URL = `https://content-sheets.googleapis.com/v4/spreadsheets/1H5JH0nsefgXAkGE6VRLUi1H50d0m4IeZBfJNZ-avEaI/values/channels-to-deliver-G2P?key=AIzaSyBXuQRRw4K4W8E4eGHoSFUSrK-ZwpD4Zz4&majorDimension=ROWS`;
 
 async function getData() {
-  const response = await fetch(newURL);
-  const data = await response.json();
+  const RESPONSE = await fetch(URL);
+  const DATA = await RESPONSE.json();
 
 let rowNames = [];
-  data.values.slice(1).forEach((element) => {
+  DATA.values.slice(1).forEach((element) => {
     rowNames.push(element[0]);
   });
 
@@ -16,30 +16,24 @@ let iconId = [];
     iconId.push(element.toLowerCase().replaceAll(" ", "-"));
   });
 
-for (let i = 1; i < 6; i++) {
-  for (let j = 0; j < 6; j++) {
-      console.log(i, j, data.values[i][j]);
-    }
-  }
-
-const makeFinalObject = () => {
+const MAKE_FINAL_OBJECT = () => {
   for (let i = 1; i < 6; i++) {
-    icons[i - 1] = {
+    ICONS[i - 1] = {
       id: iconId[i - 1],
-      format: data.values[i][0],
-      howWhereToReceive: data.values[i][1],
-      whereToSave: data.values[i][2],
-      pros: data.values[i][3],
-      cons: data.values[i][4],
-      examples: data.values[i][5],
+      format: DATA.values[i][0],
+      howWhereToReceive: DATA.values[i][1],
+      whereToSave: DATA.values[i][2],
+      pros: DATA.values[i][3],
+      cons: DATA.values[i][4],
+      examples: DATA.values[i][5],
     };
   }
 };
 
-makeFinalObject();
+MAKE_FINAL_OBJECT();
 
 function addTippy() {
-  icons.forEach((icon) => {
+  ICONS.forEach((icon) => {
     tippy("#" + icon.id, {
         content: `  <div class="icon-container">
               <div class="tip-header">
@@ -69,4 +63,7 @@ function addTippy() {
   addTippy();
 }
 
-getData();
+document.addEventListener("DOMContentLoaded", (event) => {
+  getData();
+});
+
