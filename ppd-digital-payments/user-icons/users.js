@@ -6,41 +6,41 @@ async function getData() {
   const RESPONSE = await fetch(URL);
   const DATA = await RESPONSE.json();
 
-let rowNames = [];
+  let rowNames = [];
   DATA.values.slice(1).forEach((element) => {
     rowNames.push(element[0]);
   });
 
-let iconId = [];
+  let iconId = [];
   rowNames.forEach((element) => {
     iconId.push(element.toLowerCase().replaceAll(" ", "-"));
   });
 
-const MAKE_FINAL_OBJECT = () => {
-  for (let i = 1; i < 6; i++) {
-    ICONS[i - 1] = {
-      id: iconId[i - 1],
-      format: DATA.values[i][0],
-      howWhereToReceive: DATA.values[i][1],
-      whereToSave: DATA.values[i][2],
-      pros: DATA.values[i][3],
-      cons: DATA.values[i][4],
-      examples: DATA.values[i][5],
-    };
-  }
-};
+  const MAKE_FINAL_OBJECT = () => {
+    for (let i = 1; i < 6; i++) {
+      ICONS[i - 1] = {
+        id: iconId[i - 1],
+        format: DATA.values[i][0],
+        howWhereToReceive: DATA.values[i][1],
+        whereToSave: DATA.values[i][2],
+        pros: DATA.values[i][3],
+        cons: DATA.values[i][4],
+        examples: DATA.values[i][5],
+      };
+    }
+  };
 
-MAKE_FINAL_OBJECT();
+  MAKE_FINAL_OBJECT();
 
-function addTippy() {
-  ICONS.forEach((icon) => {
-    tippy("#" + icon.id, {
+  function addTippy() {
+    ICONS.forEach((icon) => {
+      tippy("#" + icon.id, {
         content: `  <div class="icon-container">
               <div class="tip-header">
                 <img src='icons/${icon.id}.png' alt='Icon' class='tip-icon' />
                 <h3 class="header">${icon.format}</h3>
               </div>
-              <h3 class="title">How/Where to receive</h3>
+              <h3 class="title">How/where to receive</h3>
               <p class="info">${icon.howWhereToReceive}</p>
               <h3 class="title">Where to save</h3>
               <p class="info"> ${icon.whereToSave}</p>
@@ -66,4 +66,3 @@ function addTippy() {
 document.addEventListener("DOMContentLoaded", (event) => {
   getData();
 });
-
