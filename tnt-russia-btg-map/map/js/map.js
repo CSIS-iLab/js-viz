@@ -2,8 +2,8 @@
 // https://stackoverflow.com/questions/18480550/how-to-load-all-the-images-from-one-of-my-folder-into-my-web-page-using-jquery
 function getImages() {
 	return new Promise((resolve, reject) => {
-		// let url = 'http://127.0.0.1:5503/tnt-russia-btg-map/map/js/markers.json';
-		let url = 'https://feat-tnt-russia-ukraine-map--csis-js-viz.netlify.app/tnt-russia-btg-map/map/js/markers.json';
+		let url = 'http://127.0.0.1:5503/tnt-russia-btg-map/map/js/markers.json';
+		// let url = 'https://feat-tnt-russia-ukraine-map--csis-js-viz.netlify.app/tnt-russia-btg-map/map/js/markers.json';
 		fetch(url)
 		.then(res => res.json())
 		.then((markers) => {
@@ -19,8 +19,8 @@ function getImages() {
 			// Loop through the marker json file and create a marker object for each type
 			for (let x in markers) {
 				x = x.toLowerCase()
-				// let fullUrl = "http://127.0.0.1:5503/tnt-russia-btg-map/map/images/" + x + ".svg";
-				let fullUrl = "https://feat-tnt-russia-ukraine-map--csis-js-viz.netlify.app/tnt-russia-btg-map/map/images/" + x + ".svg";
+				let fullUrl = "http://127.0.0.1:5503/tnt-russia-btg-map/map/images/" + x + ".svg";
+				// let fullUrl = "https://feat-tnt-russia-ukraine-map--csis-js-viz.netlify.app/tnt-russia-btg-map/map/images/" + x + ".svg";
 				let filename2 = x.substring(x.lastIndexOf('/') + 1).replace(/\.[^/.]+$/, ""); // File name no ext
 				markerIcon = new IconBase({
 					iconUrl: fullUrl,
@@ -112,8 +112,8 @@ var map = L.map("map", {
 	zoom: 7,
 	maxZoom: 20,
 	scrollWheelZoom: true,
-	minZoom: 5,
-	zoomControl: true,
+	minZoom: 6,
+	zoomControl: false,
 	scrollWheelZoom: true,
 	layers: [basemap],
 	attributionControl: false,
@@ -135,7 +135,7 @@ const mapLayer = new carto.layer.Layer(mapSource, mapStyle, {
 });
 
 
-// client.getLeafletLayer().bringToFront().addTo(map);
+client.getLeafletLayer().bringToFront().addTo(map);
 
 let omsOptions = {
 	circleFootSeparation: 30,
@@ -159,27 +159,27 @@ const popup = L.popup({ closeButton: true });
 //   map.openPopup(popup);
 // });
 
-function createPopup(event) {
-	popup.setLatLng(event.latLng);
+// function createPopup(event) {
+// 	popup.setLatLng(event.latLng);
 
-	if (!popup.isOpen()) {
-		var data = event.data;
-		console.log(event.data);
-		var content = "<div>";
+// 	if (!popup.isOpen()) {
+// 		var data = event.data;
+// 		console.log(event.data);
+// 		var content = "<div>";
 
-		content += `
-		<div class="popupHeaderStyle">
-		${data.short_form_name}
-		</div>
-		<div class="popupEntryStyle">
-		${data.formal_name}
-		</div>
-		`;
+// 		content += `
+// 		<div class="popupHeaderStyle">
+// 		${data.short_form_name}
+// 		</div>
+// 		<div class="popupEntryStyle">
+// 		${data.formal_name}
+// 		</div>
+// 		`;
 
-		popup.setContent("" + content);
-		popup.openOn(map);
-	}
-}
+// 		popup.setContent("" + content);
+// 		popup.openOn(map);
+// 	}
+// }
 
 L.control
 	.attribution({
