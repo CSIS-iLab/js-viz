@@ -1,3 +1,7 @@
+html:root{
+  background-color: #FCFCFC;
+}
+
 body * {
   font-family: source-sans-pro, sans-serif;
   font-weight: 400;
