@@ -28,7 +28,7 @@ Highcharts.chart('hcContainer', {
     '#F3C11B', // Colombia
     '#7D4391', // Ecuador
     '#428A7A', // Brazil
-    '#CF5B17', // Guyana
+    '#0054A4', // Guyana
     '#8B7B5A', // Peru
   ],
 
