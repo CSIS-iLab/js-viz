@@ -1,53 +1,53 @@
 Highcharts.setOptions({
   lang: {
-    thousandsSep: ",",
-    decimalPoint: ".",
+    thousandsSep: ',',
+    decimalPoint: '.',
   },
 })
 
-Highcharts.chart("hcContainer", {
+Highcharts.chart('hcContainer', {
   // Load Data in from Google Sheets
   data: {
-    googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
-    googleSpreadsheetKey: "12_ks76ZrqO3NcqmqlLtBi9ynpX0Zy9RvsWaprU47u4c",
-    googleSpreadsheetRange: "venezuela-migration",
+    googleAPIKey: 'AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg',
+    googleSpreadsheetKey: '12_ks76ZrqO3NcqmqlLtBi9ynpX0Zy9RvsWaprU47u4c',
+    googleSpreadsheetRange: 'venezuela-migration',
   },
   // General Chart Options
   chart: {
-    type: "spline",
+    type: 'spline',
     spacingBottom: 60,
     height: 500,
     style: {
-      fontFamily: ["Source Sans Pro", "sans-serif"],
+      fontFamily: ['Source Sans Pro', 'sans-serif'],
     },
   },
   // Colors
-  colors: ["#ffb3b3", "#e28080", "#c24c50", "#9f0023"],
+  colors: ['#ffb3b3', '#e28080', '#c24c50', '#9f0023'],
   // Chart Title and Subtitle
   accessibility: {
     description:
-      "Legal Status of Venezuelan Migrants in Their Host Countries (2000 - 2021)",
+      'Legal Status of Venezuelan Migrants in Their Host Countries (2000 - 2021)',
   },
   title: {
-    text: "Legal Status of Venezuelan Migrants in Their Host Countries (2000 - 2021)",
-    align: "left",
+    text: 'Legal Status of Venezuelan Migrants in Their Host Countries (2000 - 2021)',
+    align: 'left',
     style: {
-      color: "black",
-      fontSize: "20px",
-      fontWeight: "bold",
+      color: 'black',
+      fontSize: '20px',
+      fontWeight: 'bold',
     },
   },
   subtitle: {
-    text: "We need a subtitle?",
-    align: "left",
+    text: "Venezuelans displaced abroad refers to persons of Venezuelan origin who are likely to be in need of international protection under the criteria contained in the Cartagena Declaration, but who have not applied for asylum in the country in which they are present. Asylum seekers are individuals who have sought international protection and whose claims for refugee status have not yet been determined. Refugees include individuals recognized under the 1951 Convention relating to the Status of Refugees, its 1967 Protocol, the 1969 Organization of African Unity (OAU) Convention Governing the Specific Aspects of Refugee Problems in Africa, the refugee definition contained in the 1984 Cartagena Declaration on Refugees as incorporated into national laws, those recognized in accordance with the UNHCR Statute, individuals granted complementary forms of protection, and those enjoying temporary protection.",
+    align: 'left',
   },
   // Credits
   credits: {
     enabled: true,
     href: false,
-    text: "GHPC, CSIS | Source: UNHCR Refugee Statistics",
+    text: 'GHPC, CSIS | Source: UNHCR Refugee Statistics',
     style: {
-      fontSize: "11px",
+      fontSize: '11px',
     },
     position: {
       y: -30,
@@ -55,23 +55,23 @@ Highcharts.chart("hcContainer", {
   },
   // Chart Legend
   legend: {
-    align: "left",
+    align: 'left',
     x: -10,
-    verticalAlign: "top",
-    layout: "horizontal",
+    verticalAlign: 'top',
+    layout: 'horizontal',
     symbolRadius: 0,
     itemStyle: {
-      color: "#333",
-      fontWeight: "normal",
+      color: '#333',
+      fontWeight: 'normal',
     },
     labelFormatter: function () {
-      return this.name;
+      return this.name
     },
   },
   // Y Axis
   yAxis: {
     title: {
-      text: "People",
+      text: 'People',
     },
     max: 6000000,
     tickInterval: 1000000,
@@ -80,30 +80,30 @@ Highcharts.chart("hcContainer", {
     endOnTick: false,
   },
   xAxis: {
-    type: "year",
+    type: 'year',
     tickInterval: 1,
     accessibility: {
-      rangeDescription: "Range: 2000 to 2021",
+      rangeDescription: 'Range: 2000 to 2021',
     },
     crosshair: true,
   },
   // Tooltip
   tooltip: {
-    headerFormat: "{point.key}<br/>",
+    headerFormat: '{point.key}<br/>',
     pointFormatter: function () {
       return (
         '<span style="font-size: 14px;color:' +
         this.color +
         '">\u25A0</span> ' +
         this.series.name +
-        ": <b> " +
+        ': <b> ' +
         new Intl.NumberFormat().format(this.y) +
-        "</b><br/>"
-      );
+        '</b><br/>'
+      )
     },
     shared: true,
     style: {
-      fontSize: "14px",
+      fontSize: '14px',
     },
   },
   // Additional Plot Options
@@ -112,15 +112,16 @@ Highcharts.chart("hcContainer", {
       dataLabels: {
         enabled: true,
         style: {
-          textOutline: "none",
-          fontWeight: "normal",
+          textOutline: 'none',
+          fontWeight: 'normal',
         },
         formatter: function () {
-          if (this.x > 2017) return new Intl.NumberFormat().format(this.y);
+          if (this.x > 2017) return new Intl.NumberFormat().format(this.y)
 
-          if (this.series.index === 3) return new Intl.NumberFormat().format(this.y);
+          if (this.series.index === 3)
+            return new Intl.NumberFormat().format(this.y)
         },
       },
     },
   },
-});
+})

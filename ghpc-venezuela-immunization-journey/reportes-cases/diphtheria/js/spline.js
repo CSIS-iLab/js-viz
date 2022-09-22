@@ -1,56 +1,56 @@
 // Use the one in the Venezuela folder
 Highcharts.setOptions({
   lang: {
-    thousandsSep: ",",
-    decimalPoint: ".",
+    thousandsSep: ',',
+    decimalPoint: '.',
   },
-});
+})
 
-Highcharts.chart("hcContainer", {
+Highcharts.chart('hcContainer', {
   // Load Data in from Google Sheets
   data: {
-    googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
-    googleSpreadsheetKey: "12_ks76ZrqO3NcqmqlLtBi9ynpX0Zy9RvsWaprU47u4c",
-    googleSpreadsheetRange: "diphtheria-reported-cases-colombia-venezuela",
+    googleAPIKey: 'AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg',
+    googleSpreadsheetKey: '12_ks76ZrqO3NcqmqlLtBi9ynpX0Zy9RvsWaprU47u4c',
+    googleSpreadsheetRange: 'diphtheria-reported-cases-colombia-venezuela',
   },
   // General Chart Options
   chart: {
-    type: "spline",
+    type: 'spline',
     spacingBottom: 60,
     style: {
-      fontFamily: ["Source Sans Pro", "sans-serif"],
+      fontFamily: ['Source Sans Pro', 'sans-serif'],
     },
   },
   // Colors
   colors: [
-    "#F3C11B", // Colombia
-    "#D92F5D", // Venezuela
+    '#F3C11B', // Colombia
+    '#D92F5D', // Venezuela
   ],
   // Chart Title and Subtitle
   accessibility: {
     description:
-      "Reported Cases of Diphtheria Colombia vs. Venezuela (2000-2021)",
+      'Reported Cases of Diphtheria Colombia vs. Venezuela (2000-2021)',
   },
   title: {
-    text: "Reported Cases of Diphtheria Colombia vs. Venezuela (2000-2021)",
-    align: "left",
+    text: 'Reported Cases of Diphtheria Colombia vs. Venezuela (2000-2021)',
+    align: 'left',
     style: {
-      color: "black",
-      fontSize: "20px",
-      fontWeight: "bold",
+      color: 'black',
+      fontSize: '20px',
+      fontWeight: 'bold',
     },
   },
   subtitle: {
-    text: "From 2000 to 2021, gaps in health services for Venezuelans resulted in 2 major outbreaks of measles and diptheria. Concerns also abound about data collection gaps, especially during the Maduro presidency. Hover over the lines below to see how many reported cases there were of measles and diptheria in a given year in Venezuela. To focus only on one disease, click 'measles' or 'diptheria' in the legend below to hide that data.",
-    align: "left",
+    text: "From 2000 to 2021, gaps in health services for Venezuelans resulted in a major outbreak of diphtheria. Concerns also abound about data collection gaps, especially during the Maduro presidency. Hover over the lines below to see how many reported cases there were of diphtheria in a given year in Venezuela and Colombia. To focus only on one country, click 'Diphtheria Reported Cases - Venezuela' or 'Diphtheria Reported Cases - Colombia' in the legend below to hide that data.",
+    align: 'left',
   },
   // Credits
   credits: {
     enabled: true,
     href: false,
-    text: "GHPC, CSIS | Source: WHO/UNICEF Joint Reporting Form on Immunization (JRF)",
+    text: 'GHPC, CSIS | Source: WHO/UNICEF Joint Reporting Form on Immunization (JRF)',
     style: {
-      fontSize: "11px",
+      fontSize: '11px',
     },
     position: {
       y: -30,
@@ -58,61 +58,78 @@ Highcharts.chart("hcContainer", {
   },
   // Chart Legend
   legend: {
-    align: "left",
+    align: 'left',
     x: -10,
-    verticalAlign: "top",
-    layout: "horizontal",
+    verticalAlign: 'top',
+    layout: 'horizontal',
     symbolRadius: 0,
     itemStyle: {
-      color: "#333",
-      fontWeight: "normal",
+      color: '#333',
+      fontWeight: 'normal',
     },
     labelFormatter: function () {
-      const legend = this.name;
-      const legendsWords = legend.split(" ");
-      let modifiedLegend = "";
+      const legend = this.name
+      const legendsWords = legend.split(' ')
+      let modifiedLegend = ''
       legendsWords.map((element, index) => {
         if (index === 0) {
-          modifiedLegend += "<b>" + element + "</b> ";
+          modifiedLegend += '<b>' + element + '</b> '
         } else {
-          modifiedLegend += element + " ";
+          modifiedLegend += element + ' '
         }
-      });
-      return modifiedLegend;
+      })
+      return modifiedLegend
     },
   },
   // Y Axis
   yAxis: {
     title: {
-      text: "Reported Disease Cases",
+      text: 'Reported Disease Cases',
     },
-    max: 800
+    max: 800,
   },
   xAxis: {
-    type: "year",
+    type: 'year',
     tickInterval: 1,
     accessibility: {
-      rangeDescription: "Range: 2000 to 2021",
+      rangeDescription: 'Range: 2000 to 2021',
     },
     crosshair: true,
   },
   // Tooltip
   tooltip: {
-    headerFormat: "{point.key}<br/>",
-    pointFormatter: function () {
-      return (
-        '<span style="font-size: 14px;color:' +
-        this.color +
-        '">\u25A0</span> ' +
-        this.series.name +
-        ": <b> " +
-        new Intl.NumberFormat().format(this.y) +
-        "</b><br/>"
-      );
+    formatter: function () {
+      var order = [],
+        i,
+        j,
+        temp = [],
+        points = this.points
+      for (i = 0; i < points.length; i++) {
+        j = 0
+        if (order.length) {
+          while (points[order[j]] && points[order[j]].y > points[i].y) j++
+        }
+        temp = order.splice(0, j)
+        temp.push(i)
+        order = temp.concat(order)
+      }
+      temp = ''
+      temp += '<span>' + points[0].x + '</span><br/>'
+      $(order).each(function (i, j) {
+        temp +=
+          '<span style="font-size: 14px;color:' +
+          points[j].series.color +
+          '">\u25A0</span> ' +
+          points[j].series.name +
+          ': <b> ' +
+          new Intl.NumberFormat().format(points[j].y) +
+          '</b><br/>'
+      })
+      return temp
     },
     shared: true,
     style: {
-      fontSize: "14px",
+      fontSize: '14px',
     },
   },
   // Additional Plot Options
@@ -121,15 +138,15 @@ Highcharts.chart("hcContainer", {
       borderWidth: 0,
       groupPadding: 0.1,
       marker: {
-        symbol: "circle",
+        symbol: 'circle',
       },
       dataLabels: {
         enabled: true,
         style: {
-          textOutline: "none",
-          fontWeight: "normal",
+          textOutline: 'none',
+          fontWeight: 'normal',
         },
       },
     },
   },
-});
+})

@@ -1,53 +1,53 @@
 // remove this chart when we have confirmation from the program
 Highcharts.setOptions({
   lang: {
-    thousandsSep: ",",
-    decimalPoint: ".",
+    thousandsSep: ',',
+    decimalPoint: '.',
   },
 })
 
-Highcharts.chart("hcContainer", {
+Highcharts.chart('hcContainer', {
   // Load Data in from Google Sheets
   data: {
-    googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
-    googleSpreadsheetKey: "12_ks76ZrqO3NcqmqlLtBi9ynpX0Zy9RvsWaprU47u4c",
-    googleSpreadsheetRange: "venezuelan-in-colombia",
+    googleAPIKey: 'AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg',
+    googleSpreadsheetKey: '12_ks76ZrqO3NcqmqlLtBi9ynpX0Zy9RvsWaprU47u4c',
+    googleSpreadsheetRange: 'venezuelan-in-colombia',
   },
   // General Chart Options
   chart: {
-    type: "spline",
+    type: 'spline',
     spacingBottom: 60,
     style: {
-      fontFamily: ["Source Sans Pro", "sans-serif"],
+      fontFamily: ['Source Sans Pro', 'sans-serif'],
     },
   },
   // Colors
-  colors: ["#004C7B", "#0065A4", "#5E9DBF", "#BFD6DB"],
+  colors: ['#004C7B', '#0065A4', '#5E9DBF', '#BFD6DB'],
   // Chart Title and Subtitle
   accessibility: {
     description:
-      "Number of Venezuelans that ended up in Colombia (2000 - 2021)",
+      'Number of Venezuelans that ended up in Colombia (2000 - 2021)',
   },
   title: {
-    text: "Number of Venezuelans that ended up in Colombia (2000 - 2021)",
-    align: "left",
+    text: 'Number of Venezuelans that ended up in Colombia (2000 - 2021)',
+    align: 'left',
     style: {
-      color: "black",
-      fontSize: "20px",
-      fontWeight: "bold",
+      color: 'black',
+      fontSize: '20px',
+      fontWeight: 'bold',
     },
   },
   subtitle: {
-    text: "We need a subtitle?",
-    align: "left",
+    text: 'We need a subtitle?',
+    align: 'left',
   },
   // Credits
   credits: {
     enabled: true,
     href: false,
-    text: "GHPC, CSIS | Source: ???",
+    text: 'GHPC, CSIS | Source: ???',
     style: {
-      fontSize: "11px",
+      fontSize: '11px',
     },
     position: {
       y: -30,
@@ -55,23 +55,23 @@ Highcharts.chart("hcContainer", {
   },
   // Chart Legend
   legend: {
-    align: "left",
+    align: 'left',
     x: -10,
-    verticalAlign: "top",
-    layout: "horizontal",
+    verticalAlign: 'top',
+    layout: 'horizontal',
     symbolRadius: 0,
     itemStyle: {
-      color: "#333",
-      fontWeight: "normal",
+      color: '#333',
+      fontWeight: 'normal',
     },
     labelFormatter: function () {
-      return this.name;
+      return this.name
     },
   },
   // Y Axis
   yAxis: {
     title: {
-      text: "Venezuelans",
+      text: 'Venezuelans',
     },
     max: 2000000,
     tickInterval: 250000,
@@ -81,31 +81,31 @@ Highcharts.chart("hcContainer", {
     // visible: false,
   },
   xAxis: {
-    type: "year",
+    type: 'year',
     // max: 2017,
     tickInterval: 1,
     accessibility: {
-      rangeDescription: "Range: 2000 to 2021",
+      rangeDescription: 'Range: 2000 to 2021',
     },
     crosshair: true,
   },
   // Tooltip
   tooltip: {
-    headerFormat: "{point.key}<br/>",
+    headerFormat: '{point.key}<br/>',
     pointFormatter: function () {
       return (
         '<span style="font-size: 14px;color:' +
         this.color +
         '">\u25A0</span> ' +
         this.series.name +
-        ": <b> " +
+        ': <b> ' +
         new Intl.NumberFormat().format(this.y) +
-        "</b><br/>"
-      );
+        '</b><br/>'
+      )
     },
     shared: true,
     style: {
-      fontSize: "14px",
+      fontSize: '14px',
     },
   },
   // Additional Plot Options
@@ -117,10 +117,10 @@ Highcharts.chart("hcContainer", {
       dataLabels: {
         enabled: true,
         style: {
-          textOutline: "none",
-          fontWeight: "normal",
+          textOutline: 'none',
+          fontWeight: 'normal',
         },
       },
     },
   },
-});
+})

@@ -1,57 +1,58 @@
 Highcharts.setOptions({
   lang: {
-    thousandsSep: ",",
-    decimalPoint: ".",
+    thousandsSep: ',',
+    decimalPoint: '.',
   },
 })
 
-Highcharts.chart("hcContainer", {
+Highcharts.chart('hcContainer', {
   // Load Data in from Google Sheets
   data: {
-    googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
-    googleSpreadsheetKey: "12_ks76ZrqO3NcqmqlLtBi9ynpX0Zy9RvsWaprU47u4c",
-    googleSpreadsheetRange: "cumulative-covid19-deaths-confirmed",
+    googleAPIKey: 'AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg',
+    googleSpreadsheetKey: '12_ks76ZrqO3NcqmqlLtBi9ynpX0Zy9RvsWaprU47u4c',
+    googleSpreadsheetRange: 'cumulative-covid19-deaths-confirmed',
   },
 
   // General Chart Options
   chart: {
-    type: "column",
+    type: 'column',
     spacingBottom: 60,
     style: {
-      fontFamily: ["Source Sans Pro", "sans-serif"],
+      fontFamily: ['Source Sans Pro', 'sans-serif'],
     },
   },
 
   // Colors
   colors: [
-    "#D92F5D", // Venezuela
-    "#F3C11B", // Colombia
+    '#D92F5D', // Venezuela
+    '#F3C11B', // Colombia
   ],
 
   // Chart Title and Subtitle
   accessibility: {
-    description: "Cumulative Confirmed Number of COVID-19 Deaths (as of 8/28/22)",
+    description:
+      'Cumulative Confirmed Number of COVID-19 Deaths (as of 8/28/22)',
   },
   title: {
-    text: "Cumulative Confirmed Number of COVID-19 Deaths (as of 8/28/22)",
-    align: "left",
+    text: 'Cumulative Confirmed Number of COVID-19 Deaths (as of 8/28/22)',
+    align: 'left',
     style: {
-      color: "black",
-      fontSize: "20px",
-      fontWeight: "bold",
+      color: 'black',
+      fontSize: '20px',
+      fontWeight: 'bold',
     },
   },
   subtitle: {
-    text: "",
-    align: "left",
+    text: '',
+    align: 'left',
   },
   // Credits
   credits: {
     enabled: true,
     href: false,
-    text: "GHPC, CSIS | Source: Our World in Data",
+    text: 'GHPC, CSIS | Source: Our World in Data',
     style: {
-      fontSize: "11px",
+      fontSize: '11px',
     },
     position: {
       y: -30,
@@ -59,51 +60,51 @@ Highcharts.chart("hcContainer", {
   },
   // Chart Legend
   legend: {
-    align: "left",
+    align: 'left',
     x: -10,
-    verticalAlign: "top",
-    layout: "horizontal",
+    verticalAlign: 'top',
+    layout: 'horizontal',
     symbolRadius: 0,
     itemStyle: {
-      color: "#333",
-      fontWeight: "normal",
+      color: '#333',
+      fontWeight: 'normal',
     },
     labelFormatter: function () {
-      return this.name;
+      return this.name
     },
   },
   // Y Axis
   yAxis: {
     title: {
-      text: "Deaths Confirmed",
+      text: 'Deaths Confirmed',
     },
     max: 150000,
   },
   xAxis: {
-    type: "year",
+    type: 'year',
     tickInterval: 1,
     accessibility: {
-      rangeDescription: "Countries: Venezuela and Colombia",
+      rangeDescription: 'Countries: Venezuela and Colombia',
     },
   },
 
   // Tooltip
   tooltip: {
-    headerFormat: "{point.key}<br/>",
+    headerFormat: '{point.key}<br/>',
     pointFormatter: function () {
       return (
         '<span style="font-size: 14px;color:' +
         this.color +
         '">\u25A0</span> ' +
         this.series.name +
-        ": <b> " +
+        ': <b> ' +
         new Intl.NumberFormat().format(this.y) +
-        "</b><br/>"
-      );
+        '</b><br/>'
+      )
     },
     // shared: true,
     style: {
-      fontSize: "14px",
+      fontSize: '14px',
     },
   },
   // Additional Plot Options
@@ -116,10 +117,10 @@ Highcharts.chart("hcContainer", {
       dataLabels: {
         enabled: true,
         style: {
-          textOutline: "none",
-          fontWeight: "normal",
+          textOutline: 'none',
+          fontWeight: 'normal',
         },
       },
     },
   },
-});
+})

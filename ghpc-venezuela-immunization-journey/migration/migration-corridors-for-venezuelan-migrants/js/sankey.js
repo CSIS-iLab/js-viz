@@ -4,15 +4,15 @@ let data = []
 let colors = []
 Highcharts.setOptions({
   lang: {
-    thousandsSep: ",",
-    decimalPoint: ".",
+    thousandsSep: ',',
+    decimalPoint: '.',
   },
 })
 
 Highcharts.data({
-  googleAPIKey: "AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg",
-  googleSpreadsheetKey: "12_ks76ZrqO3NcqmqlLtBi9ynpX0Zy9RvsWaprU47u4c",
-  googleSpreadsheetRange: "Migration-Corridors-for-Venezuelan-Migrants",
+  googleAPIKey: 'AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg',
+  googleSpreadsheetKey: '12_ks76ZrqO3NcqmqlLtBi9ynpX0Zy9RvsWaprU47u4c',
+  googleSpreadsheetRange: 'Migration-Corridors-for-Venezuelan-Migrants',
   switchRowsAndColumns: true,
   parsed: function (columns) {
     keys = columns.shift()
@@ -23,50 +23,50 @@ Highcharts.data({
     }
     renderChart(keys, data, colors)
   },
-});
+})
 
 function renderChart(keys, data, colors) {
-  Highcharts.chart("hcContainer", {
+  Highcharts.chart('hcContainer', {
     series: [
       {
         keys: keys,
         data: data,
-        colors: ["#000", ...colors], //black color for Venezuela
+        colors: ['#000', ...colors], //black color for Venezuela
 
-        type: "sankey",
+        type: 'sankey',
       },
     ],
     // General Chart Options
     chart: {
       spacingBottom: 60,
       style: {
-        fontFamily: ["Source Sans Pro", "sans-serif"],
+        fontFamily: ['Source Sans Pro', 'sans-serif'],
       },
     },
     // Chart Title and Subtitle
     accessibility: {
-      description: "Migration Corridors for Venezuelan Migrants (2021)",
+      description: 'Migration Corridors for Venezuelan Migrants (2021)',
     },
     title: {
-      text: "Migration Corridors for Venezuelan Migrants (2021)",
-      align: "left",
+      text: 'Migration Corridors for Venezuelan Migrants (2021)',
+      align: 'left',
       style: {
-        color: "black",
-        fontSize: "20px",
-        fontWeight: "bold",
+        color: 'black',
+        fontSize: '20px',
+        fontWeight: 'bold',
       },
     },
     subtitle: {
-      text: "As of 2021, over 4,479,256 Venezuelans had fled to other countries. Hover over the color ribbons to see how many Venezuelan migrants ended up in each of the countries below.",
-      align: "left",
+      text: 'As of 2021, over 4,479,256 Venezuelans had fled to other countries. Hover over the color ribbons to see how many Venezuelan migrants ended up in each of the countries below.',
+      align: 'left',
     },
     // Credits
     credits: {
       enabled: true,
       href: false,
-      text: "GHPC, CSIS | Source: UNHR Refugee Statistics",
+      text: 'GHPC, CSIS | Source: UNHCR Refugee Statistics',
       style: {
-        fontSize: "11px",
+        fontSize: '11px',
       },
       position: {
         y: -30,
@@ -74,21 +74,19 @@ function renderChart(keys, data, colors) {
     },
     // Tooltip
     tooltip: {
-      nodeFormat: "{point.name} <b>{point.sum:,.0f}</b>",
-      headerFormat: "",
+      nodeFormat: '{point.name} <b>{point.sum:,.0f}</b>',
+      headerFormat: '',
       pointFormatter: function () {
-        console.log("tooltip formatter", this);
-        point = this;
-        from = point.from;
-        to = point.to;
-        weight = new Intl.NumberFormat().format(point.weight);
-        return (
-          "<b>" + from + " → " + to + "</b><br/>" + weight + " Venezuelans"
-        );
+        console.log('tooltip formatter', this)
+        point = this
+        from = point.from
+        to = point.to
+        weight = new Intl.NumberFormat().format(point.weight)
+        return '<b>' + from + ' → ' + to + '</b><br/>' + weight + ' Venezuelans'
       },
       shared: true,
       style: {
-        fontSize: "14px",
+        fontSize: '14px',
       },
     },
     // Additional Plot Options
@@ -98,16 +96,16 @@ function renderChart(keys, data, colors) {
         groupPadding: 0.1,
 
         dataLabels: {
-          align: "left",
+          align: 'left',
           enabled: true,
           style: {
-            textOutline: "none",
-            fontWeight: "bold",
-            fontSize: "13px",
-            color: "#fff",
+            textOutline: 'none',
+            fontWeight: 'bold',
+            fontSize: '13px',
+            color: '#fff',
           },
         },
       },
     },
-  });
+  })
 }
