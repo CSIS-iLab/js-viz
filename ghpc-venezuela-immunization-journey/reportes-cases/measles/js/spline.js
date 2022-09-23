@@ -39,7 +39,7 @@ Highcharts.chart('hcContainer', {
     },
   },
   subtitle: {
-    text: "From 2000 to 2021, gaps in health services for Venezuelans resulted in a major outbreak of measles. Concerns also abound about data collection gaps, especially during the Maduro presidency. Hover over the lines below to see how many reported cases there were of measles and diptheria in a given year in Venezuela and Colombia. To focus only on one disease, click 'Measles Reported Cases - Venezuela' or 'Measles Reported Cases - Colombia' in the legend below to hide that data.",
+    text: "From 2000 to 2021, gaps in health services for Venezuelans resulted in a major outbreak of measles. Concerns also abound about data collection gaps, especially during the Maduro presidency. Hover over the lines below to see how many reported cases there were of measles in a given year in Venezuela and Colombia. To focus only on one disease, click 'Measles Reported Cases - Venezuela' or 'Measles Reported Cases - Colombia' in the legend below to hide that data.",
     align: 'left',
   },
   // Credits
