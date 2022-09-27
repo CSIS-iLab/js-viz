@@ -125,9 +125,18 @@ p.info:last-of-type {
 
 .credits {
   color: #757575;
-  font-size: 9px;
+  font-size: 11px;
   text-align: end;
   padding-top: 15px;
+}
+
+.credits a {
+  color: #0065a4;
+  text-decoration: none;
+}
+
+.credits a:hover {
+  text-decoration: underline;
 }
 
 @media only screen and (min-width: 600px) {
