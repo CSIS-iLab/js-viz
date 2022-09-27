@@ -14,9 +14,8 @@ Highcharts.chart('hcContainer', {
   },
   // General Chart Options
   chart: {
-    type: 'spline',
+    type: 'pie',
     spacingBottom: 60,
-    height: 500,
     style: {
       fontFamily: ['Source Sans Pro', 'sans-serif'],
     },
@@ -74,13 +73,14 @@ Highcharts.chart('hcContainer', {
   // Y Axis
   yAxis: {
     title: {
-      text: 'Number of People',
+      text: '',
     },
-    max: 6000000,
-    tickInterval: 1000000,
-    reversedStacks: false,
-    startOnTick: false,
-    endOnTick: false,
+    labels: {
+      formatter: function () {
+        return this.value + '%'
+      },
+    },
+    max: 100,
   },
   xAxis: {
     type: 'year',
@@ -100,8 +100,8 @@ Highcharts.chart('hcContainer', {
         '">\u25A0</span> ' +
         this.series.name +
         ': <b> ' +
-        new Intl.NumberFormat().format(this.y) +
-        '</b><br/>'
+        this.y +
+        '%</b><br/>'
       )
     },
     shared: true,
@@ -116,6 +116,7 @@ Highcharts.chart('hcContainer', {
       groupPadding: 0.1,
 
       dataLabels: {
+        format: '<b>{point.name}</b><br>{point.y:.2f}%',
         enabled: true,
         style: {
           textOutline: 'none',
