@@ -1,17 +1,11 @@
-Highcharts.setOptions({
-  lang: {
-    thousandsSep: ',',
-    decimalPoint: '.',
-  },
-})
-
 Highcharts.chart('hcContainer', {
   // Load Data in from Google Sheets
   data: {
     googleAPIKey: 'AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg',
     googleSpreadsheetKey: '12_ks76ZrqO3NcqmqlLtBi9ynpX0Zy9RvsWaprU47u4c',
-    googleSpreadsheetRange: 'total-number-of-people-leaving-venezuela-2018-2021',
+    googleSpreadsheetRange: 'total-number-of-people-leaving-venezuela-18-21',
   },
+
   // General Chart Options
   chart: {
     type: 'pie',
@@ -20,18 +14,20 @@ Highcharts.chart('hcContainer', {
       fontFamily: ['Source Sans Pro', 'sans-serif'],
     },
   },
+
   // Colors
   colors: [
-    '#a4a5a5', // Venezuela
     '#FFC728', // Colombia
+    '#a4a5a5', // Venezuela
   ],
+
   // Chart Title and Subtitle
   accessibility: {
     description:
-      'Number of People Who Fled Venezuela vs. Portion of Those People Who Ended Up in Colombia (2000 - 2021)',
+      'Number of People Who Fled Venezuela vs. Portion of Those People Who Ended Up in Colombia (2018 - 2021)',
   },
   title: {
-    text: 'Number of People Who Fled Venezuela vs. Portion of Those People Who Ended Up in Colombia (2000 - 2021)',
+    text: 'Number of People Who Fled Venezuela vs. Portion of Those People Who Ended Up in Colombia (2018 - 2021)',
     align: 'left',
     style: {
       color: 'black',
@@ -86,10 +82,10 @@ Highcharts.chart('hcContainer', {
     type: 'year',
     tickInterval: 1,
     accessibility: {
-      rangeDescription: 'Range: 2000 to 2021',
-    },
-    crosshair: true,
+      rangeDescription: 'Countries: Venezuela and Colombia.',
+    }
   },
+
   // Tooltip
   tooltip: {
     headerFormat: '{point.key}<br/>',
@@ -114,6 +110,7 @@ Highcharts.chart('hcContainer', {
     series: {
       borderWidth: 0,
       groupPadding: 0.1,
+      innerSize: '50%',
 
       dataLabels: {
         format: '<b>{point.name}</b><br>{point.y:.2f}%',
