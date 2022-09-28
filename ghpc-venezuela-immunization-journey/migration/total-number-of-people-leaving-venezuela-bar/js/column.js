@@ -29,10 +29,10 @@ Highcharts.chart('hcContainer', {
   // Chart Title and Subtitle
   accessibility: {
     description:
-      'Number of People Who Fled Venezuela vs. Portion of Those People Who Ended Up in Colombia (2018 - 2021)',
+      'Number of People Who Ended Up in Other Countries vs. Portion of Those People Who Ended Up in Colombia (2018 - 2021)',
   },
   title: {
-    text: 'Number of People Who Fled Venezuela vs. Portion of Those People Who Ended Up in Colombia (2018 - 2021)',
+    text: 'Number of People Who Ended Up in Other Countries vs. Portion of Those People Who Ended Up in Colombia (2018 - 2021)',
     align: 'left',
     style: {
       color: 'black',
@@ -41,7 +41,7 @@ Highcharts.chart('hcContainer', {
     },
   },
   subtitle: {
-    text: 'Comparison between the total number of people who left Venezuela and the total number of people who left Venezuela and migrated to Colombia',
+    text: 'Comparison between the people who left Venezuela and ended up in other countries vs. the people who left Venezuela and migrated to Colombia',
     align: 'left',
   },
   // Credits
