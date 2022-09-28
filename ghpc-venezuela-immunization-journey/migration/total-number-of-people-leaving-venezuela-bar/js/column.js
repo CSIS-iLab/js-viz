@@ -116,12 +116,9 @@ Highcharts.chart('hcContainer', {
 
       dataLabels: {
         enabled: true,
-        formatter: function () {
-          return this.percentage.toFixed(2) + '%'
-        },
         style: {
           textOutline: 'none',
-          fontWeight: 'normal',
+          fontWeight: 'bold',
         },
       },
     },
