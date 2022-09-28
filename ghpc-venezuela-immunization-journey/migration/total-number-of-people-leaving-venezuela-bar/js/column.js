@@ -74,7 +74,7 @@ Highcharts.chart('hcContainer', {
   // Y Axis
   yAxis: {
     title: {
-      text: 'Percentage of People',
+      text: 'Percentage of Migrants',
     },
     min: 0,
   },
