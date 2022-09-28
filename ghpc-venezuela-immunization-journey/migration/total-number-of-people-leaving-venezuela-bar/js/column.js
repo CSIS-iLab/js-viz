@@ -23,16 +23,16 @@ Highcharts.chart('hcContainer', {
   },
   // Colors
   colors: [
+    '#a4a5a5', // Other countrßies
     '#FFC728', // Colombia
-    '#a4a5a5', // Other countries
   ],
   // Chart Title and Subtitle
   accessibility: {
     description:
-      'Number of People Who Ended Up in Other Countries vs. Portion of Those People Who Ended Up in Colombia (2018 - 2021)',
+      'People Who Left Venezuela and Ended Up in Colombia vs. People Who Left Venezuela and Ended up in Other Countries (2018 - 2021)',
   },
   title: {
-    text: 'Number of People Who Ended Up in Other Countries vs. Portion of Those People Who Ended Up in Colombia (2018 - 2021)',
+    text: 'People Who Left Venezuela and Ended Up in Colombia vs. People Who Left Venezuela and Ended up in Other Countries (2018 - 2021)',
     align: 'left',
     style: {
       color: 'black',
@@ -41,7 +41,7 @@ Highcharts.chart('hcContainer', {
     },
   },
   subtitle: {
-    text: 'Comparison between the people who left Venezuela and ended up in other countries vs. the people who left Venezuela and migrated to Colombia',
+    text: 'Comparison between the percentage of people who ended who left Venezuela and migrated to Colombia vs. the percentage of people who left Venezuela and ended up in other countries. Hover over different percentages to see the total number of people in each category.',
     align: 'left',
   },
   // Credits
