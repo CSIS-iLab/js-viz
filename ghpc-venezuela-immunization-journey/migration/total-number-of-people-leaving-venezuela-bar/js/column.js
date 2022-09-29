@@ -74,7 +74,10 @@ Highcharts.chart('hcContainer', {
   // Y Axis
   yAxis: {
     title: {
-      text: 'Percentage of Migrants',
+      text: 'Number of Migrants',
+    },
+    stackLabels: {
+      enabled: true,
     },
     min: 0,
   },
@@ -108,7 +111,7 @@ Highcharts.chart('hcContainer', {
   // Additional Plot Options
   plotOptions: {
     column: {
-      stacking: 'percent'
+      stacking: 'normal',
     },
     series: {
       borderWidth: 0,
