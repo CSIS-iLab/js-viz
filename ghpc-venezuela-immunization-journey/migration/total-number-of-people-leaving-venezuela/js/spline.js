@@ -10,7 +10,8 @@ Highcharts.chart('hcContainer', {
   data: {
     googleAPIKey: 'AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg',
     googleSpreadsheetKey: '12_ks76ZrqO3NcqmqlLtBi9ynpX0Zy9RvsWaprU47u4c',
-    googleSpreadsheetRange: 'total-number-of-people-leaving-venezuela-2018-2021',
+    googleSpreadsheetRange:
+      'total-number-of-people-leaving-venezuela-2018-2021',
   },
   // General Chart Options
   chart: {

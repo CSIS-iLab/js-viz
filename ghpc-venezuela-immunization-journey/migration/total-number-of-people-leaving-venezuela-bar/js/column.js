@@ -99,7 +99,10 @@ Highcharts.chart('hcContainer', {
         '">\u25A0</span> ' +
         this.series.name +
         ': <b> ' +
-        new Intl.NumberFormat().format(this.y) + '</b> (' + this.percentage.toFixed(2) + '%)' +
+        new Intl.NumberFormat().format(this.y) +
+        '</b> (' +
+        this.percentage.toFixed(2) +
+        '%)' +
         '<br/>'
       )
     },

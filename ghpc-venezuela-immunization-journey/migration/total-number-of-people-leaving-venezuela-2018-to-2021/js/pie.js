@@ -83,7 +83,7 @@ Highcharts.chart('hcContainer', {
     tickInterval: 1,
     accessibility: {
       rangeDescription: 'Countries: Venezuela and Colombia.',
-    }
+    },
   },
 
   // Tooltip

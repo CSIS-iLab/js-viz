@@ -34,10 +34,10 @@ Highcharts.chart('hcContainer', {
 
   // Chart Title and Subtitle
   accessibility: {
-    description: 'Cumulative Covid-19 Deaths Per Million (3/27/2020-8/31/2022)',
+    description: 'Cumulative Covid-19 Deaths Per Million (3/27/2020 - 8/31/2022)',
   },
   title: {
-    text: 'Cumulative Covid-19 Deaths Per Million (3/27/2020-8/31/2022)',
+    text: 'Cumulative Covid-19 Deaths Per Million (3/27/2020 - 8/31/2022)',
     align: 'left',
     style: {
       color: 'black',
@@ -46,7 +46,7 @@ Highcharts.chart('hcContainer', {
     },
   },
   subtitle: {
-    text: "Daily country comparison between Venezuela, Colombia, Ecuador, Brazil, Guyana and Peru. Hover over the lines below to see the total deaths per millions per country. To hide a country data, click in the legend below.",
+    text: 'Daily country comparison between Venezuela, Colombia, Ecuador, Brazil, Guyana and Peru. Hover over the lines below to see the total deaths per millions per country. To hide a country data, click in the legend below.',
     align: 'left',
   },
   // Credits
