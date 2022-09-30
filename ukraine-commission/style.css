@@ -1,0 +1,85 @@
+.container {
+  position: relative;
+}
+
+.chart {
+  position: absolute;
+  visibility: hidden;
+  opacity: 0;
+  width: 100%;
+}
+
+.is-active {
+  position: relative;
+  visibility: visible;
+  opacity: 1;
+}
+
+.is-inactive {
+  position: relative;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.btn {
+  align-self: auto | flex-start;
+  display: block;
+  margin: 0;
+  padding: 0.25rem 0.75rem;
+  color: #000;
+  font-family: Roboto, sans-serif;
+  font-size: 13px;
+  font-size: 0.8125rem;
+  line-height: 1.69;
+  letter-spacing: 0.7px;
+  background: transparent;
+  border: 1px solid #d4d0cb;
+  border-radius: 2px 0 0 2px;
+  transition: all 0.3s ease-in-out;
+}
+
+.btn:not([disabled]) {
+  cursor: pointer;
+}
+
+.btn.is-selected {
+  color: #fff;
+  background-color: #0054a4;
+  border: 1px solid #303f46;
+}
+
+.btn-container {
+  position: absolute;
+  top: 40px;
+  display: flex;
+  box-sizing: border-box;
+  height: 30px;
+  margin: 0;
+  font-size: 15px;
+  font-size: 0.9375rem;
+  line-height: 1.28571em;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  background-repeat: no-repeat;
+  background-position: 100%;
+  background-size: 30px 30px, 30px 30px;
+  border: none;
+  border-radius: 2px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  pointer-events: auto;
+}
+
+.btn-container.freedom {
+  left: calc(50vw - 150px);
+}
+
+.btn-container.transparency {
+  left: calc(50vw - 130px);
+}
+
+@media only screen and (min-width: 700px) {
+  .btn-container {
+    top: 65px;
+  }
+}

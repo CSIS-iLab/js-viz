@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>Corruption and Freedom Scores</title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <!--Highcharts chart container and caption-->
+    <div class="container">
+      <div id="rank" class="chart"></div>
+      <div id="score" class="chart"></div>
+      <div id="freedom" class="chart is-active"></div>
+    </div>
+
+    <!--Buttons for switching between charts-->
+    <div id="btnContainer" class="btn-container freedom">
+      <button type="button" id="transparency" class="btn">
+        Transparency International
+      </button>
+      <button type="button" id="freedomHouse" class="btn is-selected">
+        Freedom House
+      </button>
+      <button type="button" id="corruptionScore" class="btn is-inactive">
+        Score
+      </button>
+      <button type="button" id="corruptionRank" class="btn is-inactive">
+        Rank
+      </button>
+    </div>
+
+    <!--Highcharts libraries-->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/highcharts-more.js"></script>
+    <script src="https://code.highcharts.com/modules/data.js"></script>
+    <script src="https://code.highcharts.com/maps/modules/exporting.js"></script>
+
+    <!-- Include Project Specific Javascript Files -->
+    <script src="js/column.js"></script>
+  </body>
+</html>
