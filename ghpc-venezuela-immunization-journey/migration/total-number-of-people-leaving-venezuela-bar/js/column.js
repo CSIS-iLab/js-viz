@@ -41,7 +41,7 @@ Highcharts.chart('hcContainer', {
     },
   },
   subtitle: {
-    text: 'Comparison between the percentage of people who ended who left Venezuela and migrated to Colombia vs. the percentage of people who left Venezuela and ended up in other countries. Hover over different percentages to see the total number of people in each category.',
+    text: 'Comparison between the number of people who ended who left Venezuela and migrated to Colombia vs. the number of people who left Venezuela and ended up in other countries. Hover over different percentages to see the total number of people in each category.',
     align: 'left',
   },
   // Credits
