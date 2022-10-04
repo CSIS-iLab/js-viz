@@ -26,10 +26,10 @@ Highcharts.chart('hcContainer', {
   // Chart Title and Subtitle
   accessibility: {
     description:
-      'Legal Status of Venezuelan Migrants in Their Host Countries (2000 - 2021)',
+      'Legal Status of Venezuelans in their Host Countries (2000 - 2021)',
   },
   title: {
-    text: 'Legal Status of Venezuelan Migrants in Their Host Countries (2000 - 2021)',
+    text: 'Legal Status of Venezuelans in their Host Countries (2000 - 2021)',
     align: 'left',
     style: {
       color: 'black',
@@ -71,7 +71,7 @@ Highcharts.chart('hcContainer', {
   // Y Axis
   yAxis: {
     title: {
-      text: 'People',
+      text: 'Number of Venezuelans',
     },
     max: 6000000,
     tickInterval: 1000000,

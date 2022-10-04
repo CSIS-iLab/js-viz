@@ -1,40 +1,31 @@
-Highcharts.setOptions({
-  lang: {
-    thousandsSep: ',',
-    decimalPoint: '.',
-  },
-})
-
 Highcharts.chart('hcContainer', {
   // Load Data in from Google Sheets
   data: {
     googleAPIKey: 'AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg',
     googleSpreadsheetKey: '12_ks76ZrqO3NcqmqlLtBi9ynpX0Zy9RvsWaprU47u4c',
-    googleSpreadsheetRange: 'cumulative-covid19-deaths-confirmed',
+    googleSpreadsheetRange: 'mvc1-vax-coverage',
   },
-
   // General Chart Options
   chart: {
-    type: 'column',
+    type: 'spline',
     spacingBottom: 60,
     style: {
       fontFamily: ['Source Sans Pro', 'sans-serif'],
     },
   },
-
   // Colors
   colors: [
-    '#D92F5D', // Venezuela
     '#F3C11B', // Colombia
+    '#4881B5', // Americas
+    '#D92F5D', // Venezuela
   ],
-
   // Chart Title and Subtitle
   accessibility: {
     description:
-      'Cumulative Confirmed Number of COVID-19 Deaths (as of 8/28/22)',
+      'MCV1 Vaccination Coverage - Colombia vs. the Americas Region vs. Venezuela (2000-2021)',
   },
   title: {
-    text: 'Cumulative Confirmed Number of COVID-19 Deaths (as of 8/28/22)',
+    text: 'MCV1 Vaccination Coverage - Colombia vs. the Americas Region vs. Venezuela (2000-2021)',
     align: 'left',
     style: {
       color: 'black',
@@ -43,14 +34,14 @@ Highcharts.chart('hcContainer', {
     },
   },
   subtitle: {
-    text: '',
+    text: 'Measles vaccination coverage, 1st dose. Hover over the lines below to see the coverage of the MCV1 in a given year in Venezuela, Colombia and the Americas Region. To hide a country data, click in the legend below.',
     align: 'left',
   },
   // Credits
   credits: {
     enabled: true,
     href: false,
-    text: 'GHPC, CSIS | Source: Our World in Data',
+    text: 'GHPC, CSIS | Source: WHO/UNICEF Estimates of National Immunization Coverage (WUENIC)',
     style: {
       fontSize: '11px',
     },
@@ -76,33 +67,54 @@ Highcharts.chart('hcContainer', {
   // Y Axis
   yAxis: {
     title: {
-      text: 'Deaths Confirmed',
+      text: 'Coverage',
     },
-    max: 150000,
+    labels: {
+      formatter: function () {
+        return this.value + '%'
+      },
+    },
+    max: 100,
+    min: 10,
+    tickInterval: 10,
+    reversedStacks: false,
   },
   xAxis: {
     type: 'year',
     tickInterval: 1,
     accessibility: {
-      rangeDescription: 'Countries: Venezuela and Colombia',
+      rangeDescription: 'Range: 2000 to 2021',
     },
+    crosshair: true,
   },
-
   // Tooltip
   tooltip: {
     headerFormat: '{point.key}<br/>',
     pointFormatter: function () {
+      let customSeriesName = ''
+      const seriesName = this.series.name
+      switch (seriesName) {
+        case 'Colombia - Measles vaccination coverage, 1st dose (MCV1)':
+          customSeriesName = 'Colombia MCV1 vaccination coverage'
+          break
+        case 'Venezuela - Measles vaccination coverage, 1st dose (MCV1)':
+          customSeriesName = 'Venezuela MCV1 vaccination coverage'
+          break
+        default:
+          customSeriesName = 'Americas Region MCV1 vaccination coverage'
+          break
+      }
       return (
         '<span style="font-size: 14px;color:' +
         this.color +
         '">\u25A0</span> ' +
-        this.series.name +
+        customSeriesName +
         ': <b> ' +
-        new Intl.NumberFormat().format(this.y) +
-        '</b><br/>'
+        this.y +
+        '%</b><br/>'
       )
     },
-    // shared: true,
+    shared: true,
     style: {
       fontSize: '14px',
     },
@@ -110,12 +122,11 @@ Highcharts.chart('hcContainer', {
   // Additional Plot Options
   plotOptions: {
     series: {
-      borderWidth: 0,
-      groupPadding: 0.1,
-      pointWidth: 130,
-
+      marker: {
+        symbol: 'circle',
+      },
       dataLabels: {
-        enabled: true,
+        enabled: false,
         style: {
           textOutline: 'none',
           fontWeight: 'normal',

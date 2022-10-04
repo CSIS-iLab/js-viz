@@ -29,10 +29,10 @@ Highcharts.chart('hcContainer', {
   // Chart Title and Subtitle
   accessibility: {
     description:
-      'People Who Left Venezuela and Ended Up in Colombia vs. People Who Left Venezuela and Ended up in Other Countries (2018 - 2021)',
+      'People Who Left Venezuela and Settled in Colombia vs. People Who Left Venezuela and Settled in Other Countries (2018 - 2021)',
   },
   title: {
-    text: 'People Who Left Venezuela and Ended Up in Colombia vs. People Who Left Venezuela and Ended up in Other Countries (2018 - 2021)',
+    text: 'People Who Left Venezuela and Settled in Colombia vs. People Who Left Venezuela and Settled in Other Countries (2018 - 2021)',
     align: 'left',
     style: {
       color: 'black',
@@ -41,7 +41,7 @@ Highcharts.chart('hcContainer', {
     },
   },
   subtitle: {
-    text: 'Comparison between the number of people who left Venezuela and ended up in Colombia vs. the number of people who left Venezuela and ended up in other countries. Hover over different percentages to see the total number of people in each category.',
+    text: 'Comparison between the number of people who left Venezuela and settled in Colombia vs. the number of people who left Venezuela and settled in other countries. Hover over different percentages to see the total number of people in each category.',
     align: 'left',
   },
   // Credits
@@ -74,7 +74,7 @@ Highcharts.chart('hcContainer', {
   // Y Axis
   yAxis: {
     title: {
-      text: 'Number of Migrants',
+      text: 'Number of Venezuelans',
     },
     stackLabels: {
       enabled: true,

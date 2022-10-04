@@ -45,10 +45,10 @@ function renderChart(keys, data, colors) {
     },
     // Chart Title and Subtitle
     accessibility: {
-      description: 'Migration Corridors for Venezuelan Migrants (2021)',
+      description: 'Migration Corridors for Venezuelans (2021)',
     },
     title: {
-      text: 'Migration Corridors for Venezuelan Migrants (2021)',
+      text: 'Migration Corridors for Venezuelans (2021)',
       align: 'left',
       style: {
         color: 'black',
@@ -57,7 +57,7 @@ function renderChart(keys, data, colors) {
       },
     },
     subtitle: {
-      text: 'As of 2021, over 4,479,256 Venezuelans had fled to other countries. Hover over the color ribbons to see how many Venezuelan migrants ended up in each of the countries below.',
+      text: 'As of 2021, over 4,479,256 Venezuelans had fled to other countries. Hover over the color ribbons to see how many Venezuelans ended up in each of the countries below.',
       align: 'left',
     },
     // Credits

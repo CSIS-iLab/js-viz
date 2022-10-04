@@ -29,10 +29,10 @@ Highcharts.chart('hcContainer', {
   // Chart Title and Subtitle
   accessibility: {
     description:
-      'Reported Cases of Diphtheria Colombia vs. Venezuela (2000-2021)',
+      'Reported Cases of Diphtheria - Colombia vs. Venezuela (2000-2021)',
   },
   title: {
-    text: 'Reported Cases of Diphtheria Colombia vs. Venezuela (2000-2021)',
+    text: 'Reported Cases of Diphtheria - Colombia vs. Venezuela (2000-2021)',
     align: 'left',
     style: {
       color: 'black',
