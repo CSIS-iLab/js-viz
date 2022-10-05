@@ -29,10 +29,10 @@ Highcharts.chart('hcContainer', {
   // Chart Title and Subtitle
   accessibility: {
     description:
-      'Reported Cases of Diphtheria - Colombia vs. Venezuela (2000-2021)',
+      'Reported Cases of Diphtheria, Colombia vs. Venezuela (2000–2021)',
   },
   title: {
-    text: 'Reported Cases of Diphtheria - Colombia vs. Venezuela (2000-2021)',
+    text: 'Reported Cases of Diphtheria, Colombia vs. Venezuela (2000–2021)',
     align: 'left',
     style: {
       color: 'black',
@@ -41,14 +41,14 @@ Highcharts.chart('hcContainer', {
     },
   },
   subtitle: {
-    text: "From 2000 to 2021, gaps in health services for Venezuelans resulted in a major outbreak of diphtheria. Concerns also abound about data collection gaps, especially during the Maduro presidency. Hover over the lines below to see how many reported cases there were of diphtheria in a given year in Venezuela and Colombia. To focus only on one country, click 'Diphtheria Reported Cases - Venezuela' or 'Diphtheria Reported Cases - Colombia' in the legend below to hide that data.",
+    text: 'From 2000 to 2021, gaps in health services for Venezuelans resulted in a major outbreak of diphtheria. Concerns also abound about data collection gaps, especially during the Maduro presidency. Hover over the lines below to see how many reported cases there were of diphtheria in a given year in Venezuela and Colombia. To focus only on one country, click "Diphtheria Reported Cases - Venezuela" or "Diphtheria Reported Cases - Colombia" in the legend below to hide that data.',
     align: 'left',
   },
   // Credits
   credits: {
     enabled: true,
     href: false,
-    text: 'GHPC, CSIS | Source: WHO/UNICEF Joint Reporting Form on Immunization (JRF)',
+    text: '<a href="https://www.csis.org/programs/global-health-policy-center" target="_blank">CSIS Global Health Policy Center (GHPC)</a> | Source: WHO/UNICEF Joint Reporting Form on Immunization (JRF)',
     style: {
       fontSize: '11px',
     },

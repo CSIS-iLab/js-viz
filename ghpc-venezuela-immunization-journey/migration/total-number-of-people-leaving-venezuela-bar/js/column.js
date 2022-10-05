@@ -29,10 +29,10 @@ Highcharts.chart('hcContainer', {
   // Chart Title and Subtitle
   accessibility: {
     description:
-      'People Who Left Venezuela and Settled in Colombia vs. People Who Left Venezuela and Settled in Other Countries (2018 - 2021)',
+      'People Who Left Venezuela and Settled in Colombia vs. People Who Left Venezuela and Settled in Other Countries (2018–2021)',
   },
   title: {
-    text: 'People Who Left Venezuela and Settled in Colombia vs. People Who Left Venezuela and Settled in Other Countries (2018 - 2021)',
+    text: 'People Who Left Venezuela and Settled in Colombia vs. People Who Left Venezuela and Settled in Other Countries (2018–2021)',
     align: 'left',
     style: {
       color: 'black',

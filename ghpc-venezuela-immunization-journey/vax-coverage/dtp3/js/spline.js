@@ -22,10 +22,10 @@ Highcharts.chart('hcContainer', {
   // Chart Title and Subtitle
   accessibility: {
     description:
-      'DTP3 Vaccination Coverage - Colombia vs. Venezuela vs. the Americas Region (2000-2021)',
+      'DTP3 Vaccination Coverage, Colombia vs. Venezuela vs. the Americas Region (2000–2021)',
   },
   title: {
-    text: 'DTP3 Vaccination Coverage - Colombia vs. Venezuela vs. the Americas Region (2000-2021)',
+    text: 'DTP3 Vaccination Coverage, Colombia vs. Venezuela vs. the Americas Region (2000–2021)',
     align: 'left',
     style: {
       color: 'black',
@@ -34,14 +34,14 @@ Highcharts.chart('hcContainer', {
     },
   },
   subtitle: {
-    text: 'Diphtheria tetanus toxoid and pertussis (DTP) vaccination coverage, 3rd dose. Hover over the lines below to see the coverage of the DPT3 in a given year in Venezuela, Colombia and the Americas Region. To hide a country data, click in the legend below.',
+    text: "Diphtheria tetanus toxoid and pertussis (DTP) vaccination coverage, third dose. Hover over the lines below to see the coverage of the DTP3 vaccine in a given year in Venezuela, Colombia, and the Americas region. To hide a region's data, click in the legend below.",
     align: 'left',
   },
   // Credits
   credits: {
     enabled: true,
     href: false,
-    text: 'CSIS, GHPC | Source: WHO/UNICEF Estimates of National Immunization Coverage (WUENIC)',
+    text: '<a href="https://www.csis.org/programs/global-health-policy-center" target="_blank">CSIS Global Health Policy Center (GHPC)</a> | Source: WHO/UNICEF Estimates of National Immunization Coverage (WUENIC)',
     style: {
       fontSize: '11px',
     },

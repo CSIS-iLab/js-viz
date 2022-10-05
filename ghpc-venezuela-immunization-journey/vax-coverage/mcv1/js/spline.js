@@ -22,10 +22,10 @@ Highcharts.chart('hcContainer', {
   // Chart Title and Subtitle
   accessibility: {
     description:
-      'MCV1 Vaccination Coverage - Colombia vs. the Americas Region vs. Venezuela (2000-2021)',
+      'MCV1 Vaccination Coverage, Colombia vs. the Americas Region vs. Venezuela (2000–2021)',
   },
   title: {
-    text: 'MCV1 Vaccination Coverage - Colombia vs. the Americas Region vs. Venezuela (2000-2021)',
+    text: 'MCV1 Vaccination Coverage, Colombia vs. the Americas Region vs. Venezuela (2000–2021)',
     align: 'left',
     style: {
       color: 'black',
@@ -34,14 +34,14 @@ Highcharts.chart('hcContainer', {
     },
   },
   subtitle: {
-    text: 'Measles vaccination coverage, 1st dose. Hover over the lines below to see the coverage of the MCV1 in a given year in Venezuela, Colombia and the Americas Region. To hide a country data, click in the legend below.',
+    text: "Measles vaccination coverage, first dose. Hover over the lines below to see the coverage of the MCV1 in a given year in Venezuela, Colombia, and the Americas region. To hide a region's data, click in the legend below.",
     align: 'left',
   },
   // Credits
   credits: {
     enabled: true,
     href: false,
-    text: 'GHPC, CSIS | Source: WHO/UNICEF Estimates of National Immunization Coverage (WUENIC)',
+    text: '<a href="https://www.csis.org/programs/global-health-policy-center" target="_blank">CSIS Global Health Policy Center (GHPC)</a> | Source: WHO/UNICEF Estimates of National Immunization Coverage (WUENIC)',
     style: {
       fontSize: '11px',
     },

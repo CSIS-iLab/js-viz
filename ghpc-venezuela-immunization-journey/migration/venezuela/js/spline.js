@@ -26,10 +26,10 @@ Highcharts.chart('hcContainer', {
   // Chart Title and Subtitle
   accessibility: {
     description:
-      'Legal Status of Venezuelans in their Host Countries (2000 - 2021)',
+      'Legal Status of Venezuelans in Their Host Countries (2000–2021)',
   },
   title: {
-    text: 'Legal Status of Venezuelans in their Host Countries (2000 - 2021)',
+    text: 'Legal Status of Venezuelans in Their Host Countries (2000–2021)',
     align: 'left',
     style: {
       color: 'black',
@@ -38,7 +38,7 @@ Highcharts.chart('hcContainer', {
     },
   },
   subtitle: {
-    text: '<b>Refugees</b> include individuals recognized under the 1951 Convention relating to the Status of Refugees, its 1967 Protocol, the 1969 Organization of African Unity (OAU) Convention Governing the Specific Aspects of Refugee Problems in Africa, the refugee definition contained in the 1984 Cartagena Declaration on Refugees as incorporated into national laws, those recognized in accordance with the UNHCR Statute, individuals granted complementary forms of protection, and those enjoying temporary protection.<br/><br/><b>Asylum seekers</b> are individuals who have sought international protection and whose claims for refugee status have not yet been determined.<br/><br/><b>Venezuelans displaced abroad</b> refers to persons of Venezuelan origin who are likely to be in need of international protection under the criteria contained in the Cartagena Declaration, but who have not applied for asylum in the country in which they are present.<br/><br/>Hover over the lines below to see the number for each category.',
+    text: '<b>Refugees</b> include individuals recognized under the 1951 Convention relating to the Status of Refugees, its 1967 Protocol, the 1969 Organization of African Unity (OAU) Convention Governing the Specific Aspects of Refugee Problems in Africa, and the refugee definition contained in the 1984 Cartagena Declaration on Refugees as incorporated into national laws; those recognized in accordance with the UNHCR Statute; individuals granted complementary forms of protection; and those enjoying temporary protection.<br/><br/><b>Asylum seekers</b> are individuals who have sought international protection and whose claims for refugee status have not yet been determined.<br/><br/><b>Venezuelans displaced abroad</b> refers to persons of Venezuelan origin who are likely to be in need of international protection under the criteria contained in the Cartagena Declaration but who have not applied for asylum in the country in which they are present.<br/><br/>Hover over the lines below to see the number for each category.',
     align: 'left',
   },
   // Credits
