@@ -23,16 +23,16 @@ Highcharts.chart('hcContainer', {
   },
   // Colors
   colors: [
-    '#F3C11B', // Colombia
     '#D92F5D', // Venezuela
+    '#F3C11B', // Colombia
   ],
   // Chart Title and Subtitle
   accessibility: {
     description:
-      'Reported Cases of Diphtheria, Colombia vs. Venezuela (2000–2021)',
+      'Reported Cases of Diphtheria, Venezuela vs. Colombia (2000–2021)',
   },
   title: {
-    text: 'Reported Cases of Diphtheria, Colombia vs. Venezuela (2000–2021)',
+    text: 'Reported Cases of Diphtheria, Venezuela vs. Colombia (2000–2021)',
     align: 'left',
     style: {
       color: 'black',
