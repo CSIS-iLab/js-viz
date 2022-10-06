@@ -19,6 +19,11 @@ var rank = Highcharts.chart("rank", {
     text: "Corruption Perceptions Index: Rank",
     margin: 75,
   },
+  credits: {
+    enabled: true,
+    href: false,
+    text: "CSIS | Source: Transparency International",
+  },
   subtitle: {
     text: "Highest possible rank: 1",
   },
@@ -64,6 +69,27 @@ var rank = Highcharts.chart("rank", {
         pointFormat: "{point.x} Ranking: {point.y}/{point.outOf}",
       },
     },
+  },
+  responsive: {
+    rules: [
+      {
+        condition: {
+          maxWidth: 600,
+        },
+        // Make the labels less space demanding on mobile
+        chartOptions: {
+          legend: {
+            y: -8,
+          },
+          credits: {
+            position: {
+              y: -15,
+            },
+            text: "CSIS | Source: Transparency International",
+          },
+        },
+      },
+    ],
   },
   series: [
     {
@@ -120,6 +146,9 @@ var score = Highcharts.chart("score", {
     enabled: true,
     href: false,
     text: "CSIS | Source: Transparency International",
+  },
+  subtitle: {
+    text: "Best possible score: 100",
   },
   xAxis: {
     categories: ["2015", "2018", "2021"],
@@ -195,6 +224,9 @@ var freedom = Highcharts.chart("freedom", {
     enabled: true,
     href: false,
     text: "CSIS | Source: Freedom House",
+  },
+  subtitle: {
+    text: "Best possible score: 100",
   },
   xAxis: {
     categories: ["2015", "2018", "2021"],
