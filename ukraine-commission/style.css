@@ -54,7 +54,7 @@
   display: flex;
   box-sizing: border-box;
   height: 30px;
-  margin: 0;
+  margin-top: 30px;
   font-size: 15px;
   font-size: 0.9375rem;
   line-height: 1.28571em;
@@ -75,7 +75,7 @@
 }
 
 .btn-container.transparency {
-  left: calc(50vw - 130px);
+  left: calc(50vw - 125px);
 }
 
 @media only screen and (min-width: 700px) {

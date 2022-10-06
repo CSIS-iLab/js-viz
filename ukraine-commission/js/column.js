@@ -1,6 +1,6 @@
 // Options for all charts: year colors, font
 Highcharts.setOptions({
-  colors: ["#edb21b", "#6dadd1", "#064265"],
+  colors: ["#edb21b", "#6dadd1", "#064265", "#6B806F"],
   chart: {
     style: {
       fontFamily: "'Source Sans Pro', sans-serif",
@@ -12,76 +12,99 @@ Highcharts.setOptions({
 // Corruption Perceptions Index: Score
 var rank = Highcharts.chart("rank", {
   chart: {
-    renderTo: "rank",
-    type: "column",
+    type: "scatter",
     zoomType: "xy",
   },
   title: {
     text: "Corruption Perceptions Index: Rank",
-    margin: 100,
+    margin: 75,
   },
-  credits: {
-    enabled: true,
-    href: false,
-    text: "CSIS | Source: Transparency International",
+  subtitle: {
+    text: "Highest possible rank: 1",
   },
   xAxis: {
-    categories: ["Ukraine", "Poland", "Czech Republic", "Romania"],
-    crosshair: true,
+    title: {
+      enabled: true,
+      text: "Year",
+    },
+    startOnTick: true,
+    endOnTick: true,
+    showLastLabel: true,
+    tickPositions: [2015, 2018, 2021],
   },
   yAxis: {
-    min: 0,
     title: {
       text: "Rank",
     },
-  },
-  tooltip: {
-    headerFormat: '<span style="font-size:14px">{point.key}</span><br>',
-    shared: true,
-    useHTML: true,
-    style: {
-      lineHeight: "21px",
-    },
-  },
-  legend: {
-    itemStyle: {
-      color: "#000",
-      opacity: 0.5,
-    },
+    reversed: true,
+    tickPositions: [1, 25, 50, 75, 100, 125, 150],
+    startOnTick: true,
   },
   plotOptions: {
-    column: {
-      pointPadding: 0.2,
-      borderWidth: 0,
-    },
-  },
-  responsive: {
-    rules: [
-      {
-        condition: {
-          maxWidth: 600,
-        },
-        // Make the labels less space demanding on mobile
-        chartOptions: {
-          legend: {
-            y: -8,
+    scatter: {
+      marker: {
+        radius: 5,
+        states: {
+          hover: {
+            enabled: true,
+            lineColor: "rgb(100,100,100)",
           },
-          credits: {
-            position: {
-              y: -15,
-            },
-            text: "CSIS | Source: Transparency International",
+        },
+        symbol: "circle",
+      },
+      states: {
+        hover: {
+          marker: {
+            enabled: false,
           },
         },
       },
-    ],
+      tooltip: {
+        headerFormat: "<b>{series.name}</b><br>",
+        pointFormat: "{point.x} Ranking: {point.y}/{point.outOf}",
+      },
+    },
   },
   series: [
-    { name: "2015", data: [130, 26, 38, 58] },
-    { name: "2018", data: [112, 42, 49, 66] },
-    { name: "2021", data: [120, 36, 38, 61] },
+    {
+      name: "Ukraine",
+      color: "#EDB21B",
+      data: [
+        { x: 2015, y: 130, outOf: 168 },
+        { x: 2018, y: 112, outOf: 180 },
+        { x: 2021, y: 120, outOf: 180 },
+      ],
+    },
+    {
+      name: "Poland",
+      color: "#6DADD1",
+      data: [
+        { x: 2015, y: 26, outOf: 168 },
+        { x: 2018, y: 42, outOf: 180 },
+        { x: 2021, y: 36, outOf: 180 },
+      ],
+    },
+    {
+      name: "Czech Republic",
+      color: "#064265",
+      data: [
+        { x: 2015, y: 38, outOf: 168 },
+        { x: 2018, y: 49, outOf: 180 },
+        { x: 2021, y: 38, outOf: 180 },
+      ],
+    },
+    {
+      name: "Romania",
+      color: "#6B806F",
+      data: [
+        { x: 2015, y: 58, outOf: 168 },
+        { x: 2018, y: 66, outOf: 180 },
+        { x: 2021, y: 61, outOf: 180 },
+      ],
+    },
   ],
 });
+
 // Corruption Perceptions Index: Rank
 var score = Highcharts.chart("score", {
   chart: {
@@ -99,7 +122,7 @@ var score = Highcharts.chart("score", {
     text: "CSIS | Source: Transparency International",
   },
   xAxis: {
-    categories: ["Ukraine", "Poland", "Czech Republic", "Romania"],
+    categories: ["2015", "2018", "2021"],
     crosshair: true,
   },
   yAxis: {
@@ -151,9 +174,10 @@ var score = Highcharts.chart("score", {
     ],
   },
   series: [
-    { name: "2015", data: [27, 63, 56, 46] },
-    { name: "2018", data: [32, 56, 54, 45] },
-    { name: "2021", data: [32, 60, 59, 47] },
+    { name: "Ukraine", data: [27, 32, 32] },
+    { name: "Poland", data: [63, 56, 60] },
+    { name: "Czech Republic", data: [56, 54, 59] },
+    { name: "Romania", data: [46, 45, 47] },
   ],
 });
 // Freedom House Score
@@ -173,7 +197,7 @@ var freedom = Highcharts.chart("freedom", {
     text: "CSIS | Source: Freedom House",
   },
   xAxis: {
-    categories: ["Ukraine", "Poland", "Czech Republic", "Romania"],
+    categories: ["2015", "2018", "2021"],
     crosshair: true,
   },
   yAxis: {
@@ -224,9 +248,10 @@ var freedom = Highcharts.chart("freedom", {
     ],
   },
   series: [
-    { name: "2015", data: [62, 93, 95, 83] },
-    { name: "2018", data: [62, 85, 93, 83] },
-    { name: "2021", data: [60, 82, 91, 83] },
+    { name: "Ukraine", data: [62, 62, 60] },
+    { name: "Poland", data: [93, 85, 82] },
+    { name: "Czech Republic", data: [95, 93, 91] },
+    { name: "Romania", data: [83, 83, 83] },
   ],
 });
 
@@ -285,6 +310,7 @@ btnFreedomHouse.addEventListener("click", function () {
   btnContainer.prepend(btnTransparency);
 
   // adjust container 'left' to account for fewer buttons
+  btnContainer.classList.remove("transparency");
   btnContainer.classList.add("freedom");
 
   /********Deal with Charts********/
