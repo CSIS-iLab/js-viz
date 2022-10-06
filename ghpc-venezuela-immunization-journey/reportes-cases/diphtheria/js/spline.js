@@ -20,6 +20,7 @@ Highcharts.chart('hcContainer', {
     style: {
       fontFamily: ['Source Sans Pro', 'sans-serif'],
     },
+    backgroundColor: '#FCFCFC'
   },
   // Colors
   colors: [

@@ -32,7 +32,6 @@ function renderChart(keys, data, colors) {
         keys: keys,
         data: data,
         colors: ['#000', ...colors], //black color for Venezuela
-
         type: 'sankey',
       },
     ],
@@ -42,6 +41,7 @@ function renderChart(keys, data, colors) {
       style: {
         fontFamily: ['Source Sans Pro', 'sans-serif'],
       },
+      backgroundColor: '#FCFCFC'
     },
     // Chart Title and Subtitle
     accessibility: {
