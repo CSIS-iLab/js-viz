@@ -67,7 +67,7 @@ Highcharts.chart("container", {
 
   series: [
     {
-      name: "Refugees",
+      name: "Total People",
       colorByPoint: true,
       data: [
         {
@@ -93,7 +93,7 @@ Highcharts.chart("container", {
   drilldown: {
     series: [
       {
-        name: "Europe",
+        name: "Refugees",
         id: "Europe",
         data: [
           ["Poland", 3251955],
