@@ -81,7 +81,7 @@ Highcharts.chart('hcContainer', {
   // Y Axis
   yAxis: {
     title: {
-      text: 'Cumulative Covid-19 Deaths (per million)',
+      text: 'Cumulative Covid-19 Deaths<br />(per million)',
     },
   },
   xAxis: {
