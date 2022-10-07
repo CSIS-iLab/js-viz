@@ -89,16 +89,34 @@
   }
 }
 
+// iframe in galaxy fold -- shorthand shrinks
+// it to 214px
+@media only screen and (max-width: 215px) {
+  .btn-container.freedom {
+    left: calc(50vw - 105px) !important;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    top: 65px;
+  }
+
+  .btn-container.transparency {
+    left: calc(50vw - 105px) !important;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    top: 75px;
+  }
+
+  .btn {
+    font-size: 0.7rem;
+  }
+}
+
 .btn-container.freedom {
   left: calc(50vw - 150px);
 }
 
 .btn-container.transparency {
   left: calc(50vw - 125px);
-}
-
-@media only screen and (min-width: 700px) {
-  .btn-container {
-    top: 65px;
-  }
 }
