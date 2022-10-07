@@ -319,6 +319,7 @@ btnTransparency.addEventListener("click", function () {
   btnContainer.prepend(btnScore);
   btnContainer.prepend(btnRank);
   btnContainer.classList.add("transparency");
+  btnContainer.classList.remove("freedom");
 
   /********Deal with Charts********/
   rank.classList.add("is-active");
