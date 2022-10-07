@@ -70,6 +70,25 @@
   pointer-events: auto;
 }
 
+@media only screen and (max-width: 350px) {
+  .btn-container.transparency {
+    top: 65px;
+  }
+
+  .btn-container.freedom {
+    left: calc(50vw - 162px) !important;
+  }
+}
+
+@media only screen and (max-width: 290px) {
+  .btn-container.freedom {
+    left: calc(50vw - 140px) !important;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
 .btn-container.freedom {
   left: calc(50vw - 150px);
 }
