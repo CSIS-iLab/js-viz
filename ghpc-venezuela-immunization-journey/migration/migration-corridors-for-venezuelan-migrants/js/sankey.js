@@ -31,7 +31,7 @@ function renderChart(keys, data, colors) {
       {
         keys: keys,
         data: data,
-        colors: ['#000', ...colors], //black color for Venezuela
+        colors: ['#D92F5D', ...colors], //black color for Venezuela
         type: 'sankey',
       },
     ],
@@ -41,7 +41,7 @@ function renderChart(keys, data, colors) {
       style: {
         fontFamily: ['Source Sans Pro', 'sans-serif'],
       },
-      backgroundColor: '#FCFCFC'
+      backgroundColor: '#080808'
     },
     // Chart Title and Subtitle
     accessibility: {
@@ -51,7 +51,7 @@ function renderChart(keys, data, colors) {
       text: 'Migration Corridors for Venezuelans (2021)',
       align: 'left',
       style: {
-        color: 'black',
+        color: 'white',
         fontSize: '20px',
         fontWeight: 'bold',
       },
@@ -59,6 +59,9 @@ function renderChart(keys, data, colors) {
     subtitle: {
       text: 'As of 2021, over 4,479,256 Venezuelans had fled to other countries. Hover over the color ribbons to see how many Venezuelans ended up in each of the countries below.',
       align: 'left',
+      style: {
+        color: 'white',
+      }
     },
     // Credits
     credits: {

@@ -12,7 +12,7 @@ Highcharts.chart('hcContainer', {
     style: {
       fontFamily: ['Source Sans Pro', 'sans-serif'],
     },
-    backgroundColor: '#FCFCFC'
+    backgroundColor: '#F6F6D8'
   },
   // Colors
   colors: [
@@ -95,10 +95,10 @@ Highcharts.chart('hcContainer', {
       let customSeriesName = ''
       const seriesName = this.series.name
       switch (seriesName) {
-        case 'Colombia - Measles vaccination coverage, 1st dose (MCV1)':
+        case 'Colombia - Measles vaccination coverage, first dose (MCV1)':
           customSeriesName = 'Colombia MCV1 vaccination coverage'
           break
-        case 'Venezuela - Measles vaccination coverage, 1st dose (MCV1)':
+        case 'Venezuela - Measles vaccination coverage, first dose (MCV1)':
           customSeriesName = 'Venezuela MCV1 vaccination coverage'
           break
         default:

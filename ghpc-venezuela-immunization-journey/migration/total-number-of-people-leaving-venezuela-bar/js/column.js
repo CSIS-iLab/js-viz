@@ -19,8 +19,9 @@ Highcharts.chart('hcContainer', {
     height: 500,
     style: {
       fontFamily: ['Source Sans Pro', 'sans-serif'],
+      color: 'white'
     },
-    backgroundColor: '#FCFCFC'
+    backgroundColor: '#080808'
   },
   // Colors
   colors: [
@@ -36,7 +37,7 @@ Highcharts.chart('hcContainer', {
     text: 'People Who Left Venezuela and Settled in Colombia vs. People Who Left Venezuela and Settled in Other Countries (2018–2021)',
     align: 'left',
     style: {
-      color: 'black',
+      color: 'white',
       fontSize: '20px',
       fontWeight: 'bold',
     },
@@ -44,6 +45,9 @@ Highcharts.chart('hcContainer', {
   subtitle: {
     text: 'Comparison between the number of people who left Venezuela and settled in Colombia vs. the number of people who left Venezuela and settled in other countries. Hover over different percentages to see the total number of people in each category.',
     align: 'left',
+    style: {
+      color: 'white'
+    }
   },
   // Credits
   credits: {
@@ -65,7 +69,7 @@ Highcharts.chart('hcContainer', {
     layout: 'horizontal',
     symbolRadius: 0,
     itemStyle: {
-      color: '#333',
+      color: '#fff',
       fontWeight: 'normal',
     },
     labelFormatter: function () {
@@ -76,9 +80,17 @@ Highcharts.chart('hcContainer', {
   yAxis: {
     title: {
       text: 'Number of Venezuelans',
+      style: {
+        color: 'white'
+      }
     },
     stackLabels: {
       enabled: true,
+    },
+    labels: {
+      style: {
+        color: 'white'
+      }
     },
     min: 0,
   },
@@ -87,6 +99,11 @@ Highcharts.chart('hcContainer', {
     tickInterval: 1,
     accessibility: {
       rangeDescription: 'Range: 2018 to 2021',
+    },
+    labels: {
+      style: {
+        color: 'white'
+      }
     },
     crosshair: true,
   },
@@ -126,6 +143,7 @@ Highcharts.chart('hcContainer', {
         style: {
           textOutline: 'none',
           fontWeight: 'bold',
+          color: 'white'
         },
       },
     },
