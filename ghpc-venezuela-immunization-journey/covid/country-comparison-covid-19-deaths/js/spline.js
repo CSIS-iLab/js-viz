@@ -97,8 +97,9 @@ Highcharts.chart('hcContainer', {
     }
   },
   xAxis: {
-    type: 'days',
-    tickInterval: 1,
+    type: "datetime",
+    tickInterval: 30 * 24 * 3600 * 1000,
+    // tickInterval: 1,
     accessibility: {
       rangeDescription: 'Days: ',
     },

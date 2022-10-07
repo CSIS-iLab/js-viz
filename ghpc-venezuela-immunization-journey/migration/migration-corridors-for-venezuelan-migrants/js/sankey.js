@@ -41,7 +41,8 @@ function renderChart(keys, data, colors) {
       style: {
         fontFamily: ['Source Sans Pro', 'sans-serif'],
       },
-      backgroundColor: '#080808'
+      backgroundColor: '#080808',
+      height: 500
     },
     // Chart Title and Subtitle
     accessibility: {

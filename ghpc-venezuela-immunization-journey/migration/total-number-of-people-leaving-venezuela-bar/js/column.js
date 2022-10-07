@@ -21,7 +21,8 @@ Highcharts.chart('hcContainer', {
       fontFamily: ['Source Sans Pro', 'sans-serif'],
       color: 'white'
     },
-    backgroundColor: '#080808'
+    backgroundColor: '#080808',
+    height: 500
   },
   // Colors
   colors: [
@@ -85,7 +86,7 @@ Highcharts.chart('hcContainer', {
       }
     },
     stackLabels: {
-      enabled: true,
+      enabled: false,
     },
     labels: {
       style: {
