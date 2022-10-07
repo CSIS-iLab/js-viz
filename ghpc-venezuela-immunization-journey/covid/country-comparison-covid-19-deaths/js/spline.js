@@ -20,7 +20,8 @@ Highcharts.chart('hcContainer', {
     style: {
       fontFamily: ['Source Sans Pro', 'sans-serif'],
     },
-    backgroundColor: '#F6F6D8'
+    backgroundColor: '#080808',
+    height: 500
   },
 
   // Colors
@@ -36,13 +37,13 @@ Highcharts.chart('hcContainer', {
   // Chart Title and Subtitle
   accessibility: {
     description:
-      'Cumulative Covid-19 Deaths per Million (3/27/2020–8/31/2022)',
+      'Cumulative Covid-19 Deaths per Million (3/27/2020–9/30/22)',
   },
   title: {
-    text: 'Cumulative Covid-19 Deaths per Million (3/27/2020–8/31/2022)',
+    text: 'Cumulative Covid-19 Deaths per Million (3/27/2020–9/30/22)',
     align: 'left',
     style: {
-      color: 'black',
+      color: 'white',
       fontSize: '20px',
       fontWeight: 'bold',
     },
@@ -50,6 +51,9 @@ Highcharts.chart('hcContainer', {
   subtitle: {
     text: "Daily country comparison of cumulative Covid-19 deaths per million between Venezuela, Colombia, Ecuador, Brazil, Guyana, and Peru. Hover over the lines below to see the total cumulative Covid-19 deaths per million per country. To hide a country's data, click in the legend below.",
     align: 'left',
+    style: {
+      color: 'white'
+    }
   },
   // Credits
   credits: {
@@ -71,7 +75,7 @@ Highcharts.chart('hcContainer', {
     layout: 'horizontal',
     symbolRadius: 0,
     itemStyle: {
-      color: '#333',
+      color: '#fff',
       fontWeight: 'normal',
     },
     labelFormatter: function () {
@@ -82,7 +86,15 @@ Highcharts.chart('hcContainer', {
   yAxis: {
     title: {
       text: 'Cumulative Covid-19<br />Deaths (per million)',
+      style: {
+        color: 'white'
+      }
     },
+    labels: {
+      style: {
+        color: 'white'
+      }
+    }
   },
   xAxis: {
     type: 'days',
@@ -91,6 +103,11 @@ Highcharts.chart('hcContainer', {
       rangeDescription: 'Days: ',
     },
     crosshair: true,
+    labels: {
+      style: {
+        color: 'white'
+      }
+    }
   },
 
   // Tooltip
@@ -128,4 +145,18 @@ Highcharts.chart('hcContainer', {
       },
     },
   },
+  responsive: {
+    rules: [{
+      condition: {
+        maxWidth: 500
+      },
+      chartOptions: {
+        legend: {
+          align: 'center',
+          verticalAlign: 'bottom',
+          layout: 'horizontal'
+        }
+      }
+    }]
+  }
 })

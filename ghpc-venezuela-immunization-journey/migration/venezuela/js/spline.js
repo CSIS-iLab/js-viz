@@ -20,7 +20,7 @@ Highcharts.chart('hcContainer', {
     style: {
       fontFamily: ['Source Sans Pro', 'sans-serif'],
     },
-    backgroundColor: '#FCFCFC'
+    backgroundColor: '#080808'
   },
   // Colors
   colors: ['#ffb3b3', '#e28080', '#c24c50', '#9f0023'],
@@ -33,7 +33,7 @@ Highcharts.chart('hcContainer', {
     text: 'Legal Status of Venezuelans in Their Host Countries (2000–2021)',
     align: 'left',
     style: {
-      color: 'black',
+      color: 'white',
       fontSize: '20px',
       fontWeight: 'bold',
     },
@@ -41,6 +41,9 @@ Highcharts.chart('hcContainer', {
   subtitle: {
     text: '<b>Refugees</b> include individuals recognized under the 1951 Convention relating to the Status of Refugees, its 1967 Protocol, the 1969 Organization of African Unity (OAU) Convention Governing the Specific Aspects of Refugee Problems in Africa, and the refugee definition contained in the 1984 Cartagena Declaration on Refugees as incorporated into national laws; those recognized in accordance with the UNHCR Statute; individuals granted complementary forms of protection; and those enjoying temporary protection.<br/><br/><b>Asylum seekers</b> are individuals who have sought international protection and whose claims for refugee status have not yet been determined.<br/><br/><b>Venezuelans displaced abroad</b> refers to persons of Venezuelan origin who are likely to be in need of international protection under the criteria contained in the Cartagena Declaration but who have not applied for asylum in the country in which they are present.<br/><br/>Hover over the lines below to see the number for each category.',
     align: 'left',
+    style: {
+      color: 'white'
+    }
   },
   // Credits
   credits: {
@@ -62,7 +65,7 @@ Highcharts.chart('hcContainer', {
     layout: 'horizontal',
     symbolRadius: 0,
     itemStyle: {
-      color: '#333',
+      color: '#fff',
       fontWeight: 'normal',
     },
     labelFormatter: function () {
@@ -73,12 +76,20 @@ Highcharts.chart('hcContainer', {
   yAxis: {
     title: {
       text: 'Number of Venezuelans',
+      style: {
+        color: 'white'
+      }
     },
     max: 6000000,
     tickInterval: 1000000,
     reversedStacks: false,
     startOnTick: false,
     endOnTick: false,
+    labels: {
+      style: {
+        color: 'white'
+      }
+    }
   },
   xAxis: {
     type: 'year',
@@ -87,6 +98,11 @@ Highcharts.chart('hcContainer', {
       rangeDescription: 'Range: 2000 to 2021',
     },
     crosshair: true,
+    labels: {
+      style: {
+        color: 'white'
+      }
+    }
   },
   // Tooltip
   tooltip: {

@@ -19,7 +19,9 @@ Highcharts.chart('hcContainer', {
     style: {
       fontFamily: ['Source Sans Pro', 'sans-serif'],
     },
-    backgroundColor: '#F6F6D8'
+    backgroundColor: '#080808',
+    // height: (9 / 16 * 100) + '%' 
+    height: 200,
   },
   // Colors
   colors: [
@@ -35,7 +37,7 @@ Highcharts.chart('hcContainer', {
     text: 'Reported Cases of Measles, Venezuela vs. Colombia (2000–2021)',
     align: 'left',
     style: {
-      color: 'black',
+      color: 'white',
       fontSize: '20px',
       fontWeight: 'bold',
     },
@@ -43,6 +45,9 @@ Highcharts.chart('hcContainer', {
   subtitle: {
     text: 'From 2000 to 2021, gaps in health services for Venezuelans resulted in a major outbreak of measles. Concerns also abound about data collection gaps, especially during the Maduro presidency. Hover over the lines below to see how many reported cases there were of measles in a given year in Venezuela and Colombia. To focus only on one disease, click "Measles Reported Cases - Venezuela" or "Measles Reported Cases - Colombia" in the legend below to hide that data.',
     align: 'left',
+    style: {
+      color: 'white'
+    }
   },
   // Credits
   credits: {
@@ -64,7 +69,7 @@ Highcharts.chart('hcContainer', {
     layout: 'horizontal',
     symbolRadius: 0,
     itemStyle: {
-      color: '#333',
+      color: '#fff',
       fontWeight: 'normal',
     },
     labelFormatter: function () {
@@ -85,12 +90,20 @@ Highcharts.chart('hcContainer', {
   yAxis: {
     title: {
       text: 'Reported Disease Cases',
+      style: {
+        color: 'white'
+      }
     },
     max: 6000,
     tickInterval: 1000,
     reversedStacks: false,
     startOnTick: false,
     endOnTick: false,
+    labels: {
+      style: {
+        color: 'white'
+      }
+    }
   },
   xAxis: {
     type: 'year',
@@ -99,6 +112,11 @@ Highcharts.chart('hcContainer', {
       rangeDescription: 'Range: 2000 to 2021',
     },
     crosshair: true,
+    labels: {
+      style: {
+        color: 'white'
+      }
+    }
   },
   // Tooltip
   tooltip: {
