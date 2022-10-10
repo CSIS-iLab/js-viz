@@ -137,6 +137,14 @@ Highcharts.chart('hcContainer', {
   // Additional Plot Options
   plotOptions: {
     series: {
+      marker: {
+        enabled: false,
+        states: {
+          hover: {
+            enabled: false
+          }
+        }
+      },
       borderWidth: 0,
       groupPadding: 0.1,
       pointWidth: 130,
