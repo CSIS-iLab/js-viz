@@ -53,7 +53,7 @@ Highcharts.chart('hcContainer', {
   credits: {
     enabled: true,
     href: false,
-    text: '<a href="https://www.csis.org/programs/global-health-policy-center" target="_blank">CSIS Global Health Policy Center</a> | Source: WHO/UNICEF Joint Reporting Form on Immunization (JRF)',
+    text: '<a href="https://www.csis.org/programs/global-health-policy-center" target="_blank">CSIS Global Health Policy Center</a><br />Source: WHO/UNICEF Joint Reporting Form on Immunization (JRF)',
     style: {
       fontSize: '11px',
     },
@@ -103,8 +103,8 @@ Highcharts.chart('hcContainer', {
     },
   },
   xAxis: {
-    type: 'year',
-    tickInterval: 1,
+    // type: 'year',
+    // tickInterval: 1,
     accessibility: {
       rangeDescription: 'Range: 2000 to 2021',
     },
