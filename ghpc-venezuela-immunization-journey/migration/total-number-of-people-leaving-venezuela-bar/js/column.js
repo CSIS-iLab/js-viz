@@ -109,7 +109,6 @@ Highcharts.chart('hcContainer', {
         color: 'white'
       }
     },
-    crosshair: true,
   },
   // Tooltip
   tooltip: {
