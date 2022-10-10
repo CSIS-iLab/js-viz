@@ -20,7 +20,7 @@ Highcharts.chart('hcContainer', {
       fontFamily: ['Source Sans Pro', 'sans-serif'],
     },
     backgroundColor: '#080808',
-    height: 500
+    height: 500,
   },
   // Colors
   colors: [
@@ -45,14 +45,14 @@ Highcharts.chart('hcContainer', {
     text: 'From 2000 to 2021, gaps in health services for Venezuelans resulted in a major outbreak of measles. Concerns also abound about data collection gaps, especially during the Maduro presidency. Hover over the lines below to see how many reported cases there were of measles in a given year in Venezuela and Colombia. To focus only on one disease, click "Measles Reported Cases - Venezuela" or "Measles Reported Cases - Colombia" in the legend below to hide that data.',
     align: 'left',
     style: {
-      color: 'white'
-    }
+      color: 'white',
+    },
   },
   // Credits
   credits: {
     enabled: true,
     href: false,
-    text: '<a href="https://www.csis.org/programs/global-health-policy-center" target="_blank">CSIS Global Health Policy Center (GHPC)</a> | Source: WHO/UNICEF Joint Reporting Form on Immunization (JRF)',
+    text: '<a href="https://www.csis.org/programs/global-health-policy-center" target="_blank">CSIS Global Health Policy Center</a> | Source: WHO/UNICEF Joint Reporting Form on Immunization (JRF)',
     style: {
       fontSize: '11px',
     },
@@ -90,9 +90,10 @@ Highcharts.chart('hcContainer', {
     title: {
       text: 'Reported Disease Cases',
       style: {
-        color: 'white'
-      }
+        color: 'white',
+      },
     },
+    gridLineColor: 'gray',
     max: 6000,
     tickInterval: 1000,
     reversedStacks: false,
@@ -100,12 +101,12 @@ Highcharts.chart('hcContainer', {
     endOnTick: false,
     labels: {
       style: {
-        color: 'white'
-      }
-    }
+        color: 'white',
+      },
+    },
   },
   xAxis: {
-    type: 'year',
+    // type: 'datetime',
     tickInterval: 1,
     accessibility: {
       rangeDescription: 'Range: 2000 to 2021',
@@ -113,9 +114,15 @@ Highcharts.chart('hcContainer', {
     crosshair: true,
     labels: {
       style: {
-        color: 'white'
-      }
-    }
+        color: 'white',
+      },
+    },
+    // reversedStacks: false,
+    // startOnTick: false,
+    // endOnTick: false,
+    // min: 2000,
+    // max: 2021,
+    tickInterval: 2,
   },
   // Tooltip
   tooltip: {
@@ -153,13 +160,27 @@ Highcharts.chart('hcContainer', {
       fontSize: '14px',
     },
   },
+  navigation: {
+    buttonOptions: {
+      theme: {
+        fill: 'black',
+        stroke: 'white',
+      },
+      symbolStroke: 'white',
+    },
+  },
   // Additional Plot Options
   plotOptions: {
     series: {
       borderWidth: 0,
       groupPadding: 0.1,
       marker: {
-        symbol: 'circle',
+        enabled: false,
+        states: {
+          hover: {
+            enabled: false,
+          },
+        },
       },
       dataLabels: {
         enabled: true,
