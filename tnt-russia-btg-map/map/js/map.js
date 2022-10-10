@@ -2,16 +2,16 @@
 // https://stackoverflow.com/questions/18480550/how-to-load-all-the-images-from-one-of-my-folder-into-my-web-page-using-jquery
 function getImages() {
 	return new Promise((resolve, reject) => {
-		let url = 'http://127.0.0.1:5503/tnt-russia-btg-map/map/js/markers.json';
-		// let url = 'https://feat-tnt-russia-ukraine-map--csis-js-viz.netlify.app/tnt-russia-btg-map/map/js/markers.json';
+		// let url = 'http://127.0.0.1:5503/tnt-russia-btg-map/map/js/markers.json';
+		let url = 'https://feat-tnt-russia-ukraine-map--csis-js-viz.netlify.app/tnt-russia-btg-map/map/js/markers.json';
 		fetch(url)
 		.then(res => res.json())
 		.then((markers) => {
 			let markerIcon = "";
 			let IconBase = L.Icon.extend({
 				options: {
-					iconSize: [40, 40],
-					iconAnchor: [20, 20],
+					iconSize: [60, 60],
+					iconAnchor: [30, 30],
 					popupAnchor: [3, 0],
 				},
 			});
@@ -19,8 +19,8 @@ function getImages() {
 			// Loop through the marker json file and create a marker object for each type
 			for (let x in markers) {
 				x = x.toLowerCase()
-				let fullUrl = "http://127.0.0.1:5503/tnt-russia-btg-map/map/images/" + x + ".svg";
-				// let fullUrl = "https://feat-tnt-russia-ukraine-map--csis-js-viz.netlify.app/tnt-russia-btg-map/map/images/" + x + ".svg";
+				// let fullUrl = "http://127.0.0.1:5503/tnt-russia-btg-map/map/images/" + x + ".svg";
+				let fullUrl = "https://feat-tnt-russia-ukraine-map--csis-js-viz.netlify.app/tnt-russia-btg-map/map/images/" + x + ".svg";
 				let filename2 = x.substring(x.lastIndexOf('/') + 1).replace(/\.[^/.]+$/, ""); // File name no ext
 				markerIcon = new IconBase({
 					iconUrl: fullUrl,
@@ -104,7 +104,7 @@ const client = new carto.Client({
 });
 
 var basemap = L.tileLayer(
-	"https://api.mapbox.com/styles/v1/ilabmedia/cl2th2451004c16ni3f3t9v43/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw", {}
+	"https://api.mapbox.com/styles/v1/ilabmedia/cl8aebndj003214oc83k3jncj/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw", {}
 );
 
 var map = L.map("map", {
