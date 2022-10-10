@@ -99,12 +99,14 @@ Highcharts.chart('hcContainer', {
   xAxis: {
     type: "datetime",
     tickInterval: 30 * 24 * 3600 * 1000,
-    // tickInterval: 1,
     accessibility: {
       rangeDescription: 'Days: ',
     },
     crosshair: true,
     labels: {
+      step: 3,
+      rotation: -45,
+      y: 25,
       style: {
         color: 'white'
       }
@@ -136,7 +138,6 @@ Highcharts.chart('hcContainer', {
       borderWidth: 0,
       groupPadding: 0.1,
       pointWidth: 130,
-
       dataLabels: {
         enabled: false,
         style: {
