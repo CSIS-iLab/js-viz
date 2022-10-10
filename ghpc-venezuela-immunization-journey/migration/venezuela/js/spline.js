@@ -99,6 +99,9 @@ Highcharts.chart('hcContainer', {
     },
     crosshair: true,
     labels: {
+      step: 3,
+      rotation: -45,
+      y: 25,
       style: {
         color: 'white'
       }
