@@ -22,6 +22,9 @@ Highcharts.chart('hcContainer', {
     backgroundColor: '#080808',
     height: 500,
   },
+  exporting: {
+    enabled: false,
+  },
   // Colors
   colors: [
     '#D92F5D', // Venezuela

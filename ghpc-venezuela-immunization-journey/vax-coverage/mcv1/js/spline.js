@@ -15,6 +15,9 @@ Highcharts.chart('hcContainer', {
     backgroundColor: '#080808',
     height: 500,
   },
+  exporting: {
+    enabled: false,
+  },
   // Colors
   colors: [
     '#F3C11B', // Colombia
