@@ -24,6 +24,9 @@ Highcharts.chart('hcContainer', {
     backgroundColor: '#080808',
     height: 500
   },
+  exporting: {
+    enabled: false
+  },
   // Colors
   colors: [
     '#a4a5a5', // Other countrßies

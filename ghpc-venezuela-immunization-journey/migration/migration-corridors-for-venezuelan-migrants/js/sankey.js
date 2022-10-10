@@ -44,6 +44,9 @@ function renderChart(keys, data, colors) {
       backgroundColor: '#080808',
       height: 500
     },
+    exporting: {
+      enabled: false
+    },
     // Chart Title and Subtitle
     accessibility: {
       description: 'Migration Corridors for Venezuelans (2021)',
