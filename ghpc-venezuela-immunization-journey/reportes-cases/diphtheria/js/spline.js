@@ -2,8 +2,8 @@
 Highcharts.setOptions({
   lang: {
     thousandsSep: ',',
-    decimalPoint: '.',
-  },
+    decimalPoint: '.'
+  }
 })
 
 Highcharts.chart('hcContainer', {
@@ -11,7 +11,7 @@ Highcharts.chart('hcContainer', {
   data: {
     googleAPIKey: 'AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg',
     googleSpreadsheetKey: '12_ks76ZrqO3NcqmqlLtBi9ynpX0Zy9RvsWaprU47u4c',
-    googleSpreadsheetRange: 'diphtheria-reported-cases-colombia-venezuela',
+    googleSpreadsheetRange: 'diphtheria-reported-cases-colombia-venezuela'
   },
   // General Chart Options
   chart: {
@@ -21,7 +21,7 @@ Highcharts.chart('hcContainer', {
       fontFamily: ['Source Sans Pro', 'sans-serif'],
     },
     backgroundColor: '#080808',
-    height: 500,
+    height: 500
   },
   exporting: {
     enabled: false
@@ -34,7 +34,7 @@ Highcharts.chart('hcContainer', {
   // Chart Title and Subtitle
   accessibility: {
     description:
-      'Reported Cases of Diphtheria, Venezuela vs. Colombia (2000–2021)',
+      'Reported Cases of Diphtheria, Venezuela vs. Colombia (2000–2021)'
   },
   title: {
     text: 'Reported Cases of Diphtheria, Venezuela vs. Colombia (2000–2021)',
@@ -42,14 +42,14 @@ Highcharts.chart('hcContainer', {
     style: {
       color: 'white',
       fontSize: '20px',
-      fontWeight: 'bold',
+      fontWeight: 'bold'
     },
   },
   subtitle: {
     text: 'From 2000 to 2021, gaps in health services for Venezuelans resulted in a major outbreak of diphtheria. Concerns also abound about data collection gaps, especially during the Maduro presidency. Hover over the lines below to see how many reported cases there were of diphtheria in a given year in Venezuela and Colombia. To focus only on one country, click "Diphtheria Reported Cases - Venezuela" or "Diphtheria Reported Cases - Colombia" in the legend below to hide that data.',
     align: 'left',
     style: {
-      color: 'white',
+      color: 'white'
     },
   },
   // Credits
@@ -58,10 +58,10 @@ Highcharts.chart('hcContainer', {
     href: false,
     text: '<a href="https://www.csis.org/programs/global-health-policy-center" target="_blank">CSIS Global Health Policy Center</a><br />Source: WHO/UNICEF Joint Reporting Form on Immunization (JRF)',
     style: {
-      fontSize: '11px',
+      fontSize: '11px'
     },
     position: {
-      y: -30,
+      y: -30
     },
   },
   // Chart Legend
@@ -73,7 +73,7 @@ Highcharts.chart('hcContainer', {
     symbolRadius: 0,
     itemStyle: {
       color: '#fff',
-      fontWeight: 'normal',
+      fontWeight: 'normal'
     },
     labelFormatter: function () {
       const legend = this.name
@@ -94,29 +94,32 @@ Highcharts.chart('hcContainer', {
     title: {
       text: 'Reported Disease Cases',
       style: {
-        color: 'white',
+        color: 'white'
       },
     },
     gridLineColor: 'gray',
     max: 800,
     labels: {
       style: {
-        color: 'white',
-      },
-    },
+        color: 'white'
+      }
+    }
   },
   xAxis: {
-    // type: 'year',
-    // tickInterval: 1,
+    type: 'year',
+    tickInterval: 1,
     accessibility: {
-      rangeDescription: 'Range: 2000 to 2021',
+      rangeDescription: 'Range: 2000 to 2021'
     },
     crosshair: true,
     labels: {
+      step: 3,
+      rotation: -45,
+      y: 25,
       style: {
-        color: 'white',
-      },
-    },
+        color: 'white'
+      }
+    }
   },
   // Tooltip
   tooltip: {
@@ -151,17 +154,8 @@ Highcharts.chart('hcContainer', {
     },
     shared: true,
     style: {
-      fontSize: '14px',
-    },
-  },
-  navigation: {
-    buttonOptions: {
-      theme: {
-        fill: 'black',
-        stroke: 'white',
-      },
-      symbolStroke: 'white',
-    },
+      fontSize: '14px'
+    }
   },
   // Additional Plot Options
   plotOptions: {
@@ -173,16 +167,16 @@ Highcharts.chart('hcContainer', {
         states: {
           hover: {
             enabled: false,
-          },
-        },
+          }
+        }
       },
       dataLabels: {
         enabled: true,
         style: {
           textOutline: 'none',
-          fontWeight: 'normal',
-        },
-      },
-    },
-  },
+          fontWeight: 'normal'
+        }
+      }
+    }
+  }
 })

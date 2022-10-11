@@ -3,20 +3,20 @@ Highcharts.chart('hcContainer', {
   data: {
     googleAPIKey: 'AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg',
     googleSpreadsheetKey: '12_ks76ZrqO3NcqmqlLtBi9ynpX0Zy9RvsWaprU47u4c',
-    googleSpreadsheetRange: 'mvc1-vax-coverage',
+    googleSpreadsheetRange: 'mvc1-vax-coverage'
   },
   // General Chart Options
   chart: {
     type: 'spline',
     spacingBottom: 60,
     style: {
-      fontFamily: ['Source Sans Pro', 'sans-serif'],
+      fontFamily: ['Source Sans Pro', 'sans-serif']
     },
     backgroundColor: '#080808',
-    height: 500,
+    height: 500
   },
   exporting: {
-    enabled: false,
+    enabled: false
   },
   // Colors
   colors: [
@@ -35,15 +35,15 @@ Highcharts.chart('hcContainer', {
     style: {
       color: 'white',
       fontSize: '20px',
-      fontWeight: 'bold',
-    },
+      fontWeight: 'bold'
+    }
   },
   subtitle: {
     text: "Measles vaccination coverage, first dose. Hover over the lines below to see the coverage of the MCV1 in a given year in Venezuela, Colombia, and the Americas region. To hide a region's data, click in the legend below.",
     align: 'left',
     style: {
-      color: 'white',
-    },
+      color: 'white'
+    }
   },
   // Credits
   credits: {
@@ -51,11 +51,11 @@ Highcharts.chart('hcContainer', {
     href: false,
     text: '<a href="https://www.csis.org/programs/global-health-policy-center" target="_blank">CSIS Global Health Policy Center</a><br />Source: WHO/UNICEF Estimates of National Immunization Coverage (WUENIC)',
     style: {
-      fontSize: '11px',
+      fontSize: '11px'
     },
     position: {
-      y: -30,
-    },
+      y: -30
+    }
   },
   // Chart Legend
   legend: {
@@ -66,18 +66,18 @@ Highcharts.chart('hcContainer', {
     symbolRadius: 0,
     itemStyle: {
       color: '#fff',
-      fontWeight: 'normal',
+      fontWeight: 'normal'
     },
     labelFormatter: function () {
       return this.name
-    },
+    }
   },
   // Y Axis
   yAxis: {
     title: {
       text: 'Coverage',
       style: {
-        color: 'white',
+        color: 'white'
       },
     },
     labels: {
@@ -92,20 +92,23 @@ Highcharts.chart('hcContainer', {
     max: 100,
     min: 20,
     tickInterval: 20,
-    reversedStacks: false,
+    reversedStacks: false
   },
   xAxis: {
-    // type: 'year',
-    // tickInterval: 1,
+    type: 'year',
+    tickInterval: 1,
     accessibility: {
-      rangeDescription: 'Range: 2000 to 2021',
+      rangeDescription: 'Range: 2000 to 2021'
     },
     crosshair: true,
     labels: {
+      step: 3,
+      rotation: -45,
+      y: 25,
       style: {
-        color: 'white',
-      },
-    },
+        color: 'white'
+      }
+    }
   },
   // Tooltip
   tooltip: {
@@ -136,16 +139,7 @@ Highcharts.chart('hcContainer', {
     },
     shared: true,
     style: {
-      fontSize: '14px',
-    },
-  },
-  navigation: {
-    buttonOptions: {
-      theme: {
-        fill: 'black',
-        stroke: 'white',
-      },
-      symbolStroke: 'white',
+      fontSize: '14px'
     },
   },
   // Additional Plot Options
@@ -155,17 +149,17 @@ Highcharts.chart('hcContainer', {
         enabled: false,
         states: {
           hover: {
-            enabled: false,
-          },
-        },
+            enabled: false
+          }
+        }
       },
       dataLabels: {
         enabled: false,
         style: {
           textOutline: 'none',
-          fontWeight: 'normal',
-        },
-      },
-    },
-  },
+          fontWeight: 'normal'
+        }
+      }
+    }
+  }
 })

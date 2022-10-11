@@ -1,8 +1,8 @@
 Highcharts.setOptions({
   lang: {
     thousandsSep: ',',
-    decimalPoint: '.',
-  },
+    decimalPoint: '.'
+  }
 })
 
 Highcharts.chart('hcContainer', {
@@ -10,20 +10,20 @@ Highcharts.chart('hcContainer', {
   data: {
     googleAPIKey: 'AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg',
     googleSpreadsheetKey: '12_ks76ZrqO3NcqmqlLtBi9ynpX0Zy9RvsWaprU47u4c',
-    googleSpreadsheetRange: 'measles-reported-cases-colombia-venezuela',
+    googleSpreadsheetRange: 'measles-reported-cases-colombia-venezuela'
   },
   // General Chart Options
   chart: {
     type: 'spline',
     spacingBottom: 60,
     style: {
-      fontFamily: ['Source Sans Pro', 'sans-serif'],
+      fontFamily: ['Source Sans Pro', 'sans-serif']
     },
     backgroundColor: '#080808',
-    height: 500,
+    height: 500
   },
   exporting: {
-    enabled: false,
+    enabled: false
   },
   // Colors
   colors: [
@@ -33,7 +33,7 @@ Highcharts.chart('hcContainer', {
   // Chart Title and Subtitle
   accessibility: {
     description:
-      'Reported Cases of Measles, Venezuela vs. Colombia (2000–2021)',
+      'Reported Cases of Measles, Venezuela vs. Colombia (2000–2021)'
   },
   title: {
     text: 'Reported Cases of Measles, Venezuela vs. Colombia (2000–2021)',
@@ -41,15 +41,15 @@ Highcharts.chart('hcContainer', {
     style: {
       color: 'white',
       fontSize: '20px',
-      fontWeight: 'bold',
-    },
+      fontWeight: 'bold'
+    }
   },
   subtitle: {
     text: 'From 2000 to 2021, gaps in health services for Venezuelans resulted in a major outbreak of measles. Concerns also abound about data collection gaps, especially during the Maduro presidency. Hover over the lines below to see how many reported cases there were of measles in a given year in Venezuela and Colombia. To focus only on one disease, click "Measles Reported Cases - Venezuela" or "Measles Reported Cases - Colombia" in the legend below to hide that data.',
     align: 'left',
     style: {
       color: 'white',
-    },
+    }
   },
   // Credits
   credits: {
@@ -57,11 +57,11 @@ Highcharts.chart('hcContainer', {
     href: false,
     text: '<a href="https://www.csis.org/programs/global-health-policy-center" target="_blank">CSIS Global Health Policy Center</a><br />Source: WHO/UNICEF Joint Reporting Form on Immunization (JRF)',
     style: {
-      fontSize: '11px',
+      fontSize: '11px'
     },
     position: {
-      y: -30,
-    },
+      y: -30
+    }
   },
   // Chart Legend
   legend: {
@@ -72,7 +72,7 @@ Highcharts.chart('hcContainer', {
     symbolRadius: 0,
     itemStyle: {
       color: '#fff',
-      fontWeight: 'normal',
+      fontWeight: 'normal'
     },
     labelFormatter: function () {
       const legend = this.name
@@ -86,15 +86,15 @@ Highcharts.chart('hcContainer', {
         }
       })
       return modifiedLegend
-    },
+    }
   },
   // Y Axis
   yAxis: {
     title: {
       text: 'Reported Disease Cases',
       style: {
-        color: 'white',
-      },
+        color: 'white'
+      }
     },
     gridLineColor: 'gray',
     max: 6000,
@@ -104,28 +104,25 @@ Highcharts.chart('hcContainer', {
     endOnTick: false,
     labels: {
       style: {
-        color: 'white',
-      },
-    },
+        color: 'white'
+      }
+    }
   },
   xAxis: {
-    // type: 'datetime',
+    type: 'year',
     tickInterval: 1,
     accessibility: {
-      rangeDescription: 'Range: 2000 to 2021',
+      rangeDescription: 'Range: 2000 to 2021'
     },
     crosshair: true,
     labels: {
+      step: 3,
+      rotation: -45,
+      y: 25,
       style: {
-        color: 'white',
-      },
-    },
-    // reversedStacks: false,
-    // startOnTick: false,
-    // endOnTick: false,
-    // min: 2000,
-    // max: 2021,
-    tickInterval: 2,
+        color: 'white'
+      }
+    }
   },
   // Tooltip
   tooltip: {
@@ -161,16 +158,7 @@ Highcharts.chart('hcContainer', {
     shared: true,
     style: {
       fontSize: '14px',
-    },
-  },
-  navigation: {
-    buttonOptions: {
-      theme: {
-        fill: 'black',
-        stroke: 'white',
-      },
-      symbolStroke: 'white',
-    },
+    }
   },
   // Additional Plot Options
   plotOptions: {
@@ -181,17 +169,17 @@ Highcharts.chart('hcContainer', {
         enabled: false,
         states: {
           hover: {
-            enabled: false,
-          },
-        },
+            enabled: false
+          }
+        }
       },
       dataLabels: {
         enabled: true,
         style: {
           textOutline: 'none',
-          fontWeight: 'normal',
-        },
-      },
-    },
-  },
+          fontWeight: 'normal'
+        }
+      }
+    }
+  }
 })
