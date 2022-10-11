@@ -10,7 +10,7 @@ Highcharts.chart('hcContainer', {
   data: {
     googleAPIKey: 'AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg',
     googleSpreadsheetKey: '12_ks76ZrqO3NcqmqlLtBi9ynpX0Zy9RvsWaprU47u4c',
-    googleSpreadsheetRange: 'venezuela-migration',
+    googleSpreadsheetRange: 'total-people-leaving-venezuela-line',
   },
   // General Chart Options
   chart: {
@@ -84,7 +84,7 @@ Highcharts.chart('hcContainer', {
         color: 'white'
       }
     },
-    max: 5000000,
+    max: 6000000,
     tickInterval: 1000000,
     reversedStacks: false,
     startOnTick: false,
@@ -97,7 +97,6 @@ Highcharts.chart('hcContainer', {
   },
   xAxis: {
     type: 'year',
-    min: 2015,
     tickInterval: 1,
     accessibility: {
       rangeDescription: 'Range: 2000 to 2021',
@@ -111,9 +110,6 @@ Highcharts.chart('hcContainer', {
         color: 'white'
       }
     }
-  },
-  caption: {
-    text: "* Under UNHCR's mandate"
   },
   // Tooltip
   tooltip: {
