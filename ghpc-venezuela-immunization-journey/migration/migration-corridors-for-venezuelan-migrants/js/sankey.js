@@ -61,7 +61,7 @@ function renderChart(keys, data, colors) {
       },
     },
     subtitle: {
-      text: 'As of 2021, over 4,479,256 Venezuelans had fled to the countries in the chart, the most common destinations.',
+      text: 'As of 2021, more than 5.5 million refugees, asylum seekers, and Venezuelans displaced abroad had left for other countries, with nearly 4.5 million settling in Colombia, Peru, Ecuador, Chile, United States. Hover over the color ribbons to see how many Venezuelans settled in each of the countries below.',
       align: 'left',
       style: {
         color: 'white',
@@ -71,7 +71,7 @@ function renderChart(keys, data, colors) {
     credits: {
       enabled: true,
       href: false,
-      text: '<a href="https://www.csis.org/programs/global-health-policy-center" target="_blank">CSIS Global Health Policy Center</a> | Source: UNHCR Refugee Statistics',
+      text: '<a href="https://www.csis.org/programs/global-health-policy-center" target="_blank">CSIS Global Health Policy Center</a><br />Source: UNHCR Refugee Statistics',
       style: {
         fontSize: '11px',
       },

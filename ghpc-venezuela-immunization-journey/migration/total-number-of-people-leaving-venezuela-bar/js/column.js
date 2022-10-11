@@ -35,10 +35,10 @@ Highcharts.chart('hcContainer', {
   // Chart Title and Subtitle
   accessibility: {
     description:
-      'People Who Left Venezuela and Settled in Colombia vs. People Who Left Venezuela and Settled in Other Countries (2018–2021)',
+      'Proportion of people who left Venezuela who settled in Colombia (2018–2021)',
   },
   title: {
-    text: 'People Who Left Venezuela and Settled in Colombia vs. People Who Left Venezuela and Settled in Other Countries (2018–2021)',
+    text: 'Proportion of people who left Venezuela who settled in Colombia (2018–2021)',
     align: 'left',
     style: {
       color: 'white',
@@ -47,7 +47,7 @@ Highcharts.chart('hcContainer', {
     },
   },
   subtitle: {
-    text: 'Comparison between the number of people who left Venezuela and settled in Colombia vs. the number of people who left Venezuela and settled in other countries. Hover over different percentages to see the total number of people in each category.',
+    text: 'Proportion of people who left Venezuela and settled in Colombia compared to the proportion who settled in other countries. Hover over different percentages to see the total number of people in each category.',
     align: 'left',
     style: {
       color: 'white'
@@ -57,7 +57,7 @@ Highcharts.chart('hcContainer', {
   credits: {
     enabled: true,
     href: false,
-    text: '<a href="https://www.csis.org/programs/global-health-policy-center" target="_blank">CSIS Global Health Policy Center</a> | Source: UNHCR Refugee Statistics',
+    text: '<a href="https://www.csis.org/programs/global-health-policy-center" target="_blank">CSIS Global Health Policy Center</a><br />Source: UNHCR Refugee Statistics',
     style: {
       fontSize: '11px',
     },
@@ -75,6 +75,9 @@ Highcharts.chart('hcContainer', {
     itemStyle: {
       color: '#fff',
       fontWeight: 'normal',
+    },
+    itemHoverStyle: {
+      color: '#fff'
     },
     labelFormatter: function () {
       return this.name

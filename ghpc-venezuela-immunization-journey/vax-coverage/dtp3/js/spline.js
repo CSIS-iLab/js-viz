@@ -27,10 +27,10 @@ Highcharts.chart('hcContainer', {
   // Chart Title and Subtitle
   accessibility: {
     description:
-      'DTP3 Vaccination Coverage, Colombia vs. Venezuela vs. the Americas Region (2000–2021)',
+      'DTP3 Coverage in Venezuela, Colombia, and the Americas Region (2000–2021)',
   },
   title: {
-    text: 'DTP3 Vaccination Coverage, Colombia vs. Venezuela vs. the Americas Region (2000–2021)',
+    text: 'DTP3 Coverage in Venezuela, Colombia, and the Americas Region (2000–2021)',
     align: 'left',
     style: {
       color: 'white',
@@ -67,6 +67,9 @@ Highcharts.chart('hcContainer', {
     itemStyle: {
       color: '#fff',
       fontWeight: 'normal'
+    },
+    itemHoverStyle: {
+      color: '#fff'
     },
     labelFormatter: function () {
       return this.name

@@ -33,10 +33,10 @@ Highcharts.chart('hcContainer', {
   // Chart Title and Subtitle
   accessibility: {
     description:
-      'Reported Cases of Measles, Venezuela vs. Colombia (2000–2021)'
+      'Reported Cases of Measles, Venezuela and Colombia (2000–2021)'
   },
   title: {
-    text: 'Reported Cases of Measles, Venezuela vs. Colombia (2000–2021)',
+    text: 'Reported Cases of Measles, Venezuela and Colombia (2000–2021)',
     align: 'left',
     style: {
       color: 'white',
@@ -45,7 +45,7 @@ Highcharts.chart('hcContainer', {
     }
   },
   subtitle: {
-    text: 'From 2000 to 2021, gaps in health services for Venezuelans resulted in a major outbreak of measles. Concerns also abound about data collection gaps, especially during the Maduro presidency. Hover over the lines below to see how many reported cases there were of measles in a given year in Venezuela and Colombia. To focus only on one disease, click "Measles Reported Cases - Venezuela" or "Measles Reported Cases - Colombia" in the legend below to hide that data.',
+    text: 'Low coverage of measles vaccine in Venezuela contributed to an outbreak in 2017 and 2018, with cases reported in Colombia in areas close to the Venezuela border. Hover over the lines below to see how many reported cases there were of measles in a given year in Venezuela and Colombia. To focus only on one disease, click "Measles Reported Cases - Venezuela" or "Measles Reported Cases - Colombia" in the legend below to hide that data.',
     align: 'left',
     style: {
       color: 'white',
@@ -73,6 +73,9 @@ Highcharts.chart('hcContainer', {
     itemStyle: {
       color: '#fff',
       fontWeight: 'normal'
+    },
+    itemHoverStyle: {
+      color: '#fff'
     },
     labelFormatter: function () {
       const legend = this.name
