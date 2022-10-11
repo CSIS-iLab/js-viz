@@ -10,7 +10,7 @@ Highcharts.chart('hcContainer', {
   data: {
     googleAPIKey: 'AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg',
     googleSpreadsheetKey: '12_ks76ZrqO3NcqmqlLtBi9ynpX0Zy9RvsWaprU47u4c',
-    googleSpreadsheetRange: 'total-people-leaving-venezuela-line',
+    googleSpreadsheetRange: 'breakdown-people-leaving-venezuela-2021',
   },
   // General Chart Options
   chart: {
@@ -30,10 +30,10 @@ Highcharts.chart('hcContainer', {
   // Chart Title and Subtitle
   accessibility: {
     description:
-      'Legal Status of Venezuelans in Their Host Countries (2000–2021)',
+      'Breakdown of Venezuelans in Other Countries by Legal Status (2021)',
   },
   title: {
-    text: 'Legal Status of Venezuelans in Their Host Countries (2000–2021)',
+    text: 'Breakdown of Venezuelans in Other Countries by Legal Status (2021)',
     align: 'left',
     style: {
       color: 'white',
@@ -42,7 +42,7 @@ Highcharts.chart('hcContainer', {
     },
   },
   subtitle: {
-    text: 'Hover over the lines below to see the number for each category.',
+    text: 'As of 2021, over 5,576,740 Venezuelans had settled in other countries. Hover over the pie pieces below to see the total number of people in each category.',
     align: 'left',
     style: {
       color: 'white'
