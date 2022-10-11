@@ -77,6 +77,7 @@ Highcharts.chart('hcContainer', {
   },
   // Y Axis
   yAxis: {
+    gridLineColor: 'gray',
     title: {
       text: 'Number of Venezuelans',
       style: {

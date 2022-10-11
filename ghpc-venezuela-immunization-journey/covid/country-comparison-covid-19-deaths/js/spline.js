@@ -86,6 +86,7 @@ Highcharts.chart('hcContainer', {
   },
   // Y Axis
   yAxis: {
+    gridLineColor: 'gray',
     title: {
       text: 'Cumulative Covid-19<br />Deaths (per million)',
       style: {
