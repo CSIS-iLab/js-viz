@@ -42,7 +42,7 @@ function renderChart(keys, data, colors) {
         fontFamily: ['Source Sans Pro', 'sans-serif'],
       },
       backgroundColor: '#080808',
-      height: 500
+      height: 600
     },
     exporting: {
       enabled: false
