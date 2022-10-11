@@ -61,7 +61,7 @@ function renderChart(keys, data, colors) {
       },
     },
     subtitle: {
-      text: 'As of 2021, over 4,479,256 Venezuelans had fled to other countries. Hover over the color ribbons to see how many Venezuelans ended up in each of the countries below.',
+      text: 'As of 2021, over 4,479,256 Venezuelans had fled to the countries in the chart, the most common destinations.',
       align: 'left',
       style: {
         color: 'white',
