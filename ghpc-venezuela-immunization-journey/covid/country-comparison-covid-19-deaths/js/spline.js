@@ -156,23 +156,9 @@ Highcharts.chart('hcContainer', {
         enabled: false,
         style: {
           textOutline: 'none',
-          fontWeight: 'normal',
-        },
-      },
-    },
-  },
-  responsive: {
-    rules: [{
-      condition: {
-        maxWidth: 500
-      },
-      chartOptions: {
-        legend: {
-          align: 'center',
-          verticalAlign: 'bottom',
-          layout: 'horizontal'
+          fontWeight: 'normal'
         }
       }
-    }]
+    }
   }
 })
