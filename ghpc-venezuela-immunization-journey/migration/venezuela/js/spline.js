@@ -30,10 +30,10 @@ Highcharts.chart('hcContainer', {
   // Chart Title and Subtitle
   accessibility: {
     description:
-      'Legal Status of Venezuelans in Host Countries (2014–2021)',
+      'Status of Forcibly Displaced Venezuelans (2014-2018)',
   },
   title: {
-    text: 'Legal Status of Venezuelans in Host Countries (2014–2021)',
+    text: 'Status of Forcibly Displaced Venezuelans (2014-2018)',
     align: 'left',
     style: {
       color: 'white',
