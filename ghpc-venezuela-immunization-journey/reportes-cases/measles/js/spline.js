@@ -45,7 +45,7 @@ Highcharts.chart('hcContainer', {
     }
   },
   subtitle: {
-    text: "Low coverage of measles vaccine in Venezuela contributed to an outbreak in 2017 and 2018, with cases reported in Colombia in areas close to the Venezuela border. Hover over the lines below to see how many reported cases there were of measles in a given year in Venezuela and Colombia. To hide a country's data, click in the legend below.",
+    text: "Low coverage of measles vaccine in Venezuela contributed to an outbreak in 2017 and 2018, with cases reported in Colombia in areas close to the Venezuela border. Hover over the lines to see the number of reported cases of measles in a given year in Venezuela and Colombia. To hide a country's data, click in the legend below.",
     align: 'left',
     style: {
       color: 'white',
