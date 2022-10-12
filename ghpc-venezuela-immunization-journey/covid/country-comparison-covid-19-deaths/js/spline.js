@@ -108,6 +108,7 @@ Highcharts.chart('hcContainer', {
     accessibility: {
       rangeDescription: 'Days: ',
     },
+    max: Date.UTC(2022, 8, 30),
     crosshair: true,
     labels: {
       step: 3,
