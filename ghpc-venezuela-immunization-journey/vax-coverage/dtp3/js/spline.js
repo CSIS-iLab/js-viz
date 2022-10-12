@@ -20,9 +20,9 @@ Highcharts.chart('hcContainer', {
   },
   // Colors
   colors: [
+    '#D92F5D', // Venezuela
     '#F3C11B', // Colombia
     '#4881B5', // Americas
-    '#D92F5D', // Venezuela
   ],
   // Chart Title and Subtitle
   accessibility: {
