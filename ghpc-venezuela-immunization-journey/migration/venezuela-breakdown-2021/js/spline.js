@@ -14,7 +14,7 @@ Highcharts.chart('hcContainer', {
   },
   // General Chart Options
   chart: {
-    type: 'pie',
+    type: 'spline',
     spacingBottom: 60,
     height: 500,
     style: {
