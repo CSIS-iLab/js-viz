@@ -87,7 +87,7 @@ Highcharts.chart('hcContainer', {
   yAxis: {
     gridLineColor: 'gray',
     title: {
-      text: 'Number of Venezuelans',
+      text: 'People Who Left Venezuela',
       style: {
         color: 'white'
       }

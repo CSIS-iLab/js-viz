@@ -49,7 +49,7 @@ Highcharts.chart('hcContainer', {
   credits: {
     enabled: true,
     href: false,
-    text: '<a href="https://www.csis.org/programs/global-health-policy-center" target="_blank">CSIS Global Health Policy Center</a><br />Source: WHO/UNICEF Estimates of National Immunization Coverage (WUENIC)',
+    text: '<a href="https://www.csis.org/programs/global-health-policy-center" target="_blank">CSIS Global Health Policy Center</a><br />Source: WHO/UNICEF Estimates of National Immunization Coverage',
     style: {
       fontSize: '11px'
     },
@@ -78,7 +78,7 @@ Highcharts.chart('hcContainer', {
   // Y Axis
   yAxis: {
     title: {
-      text: 'Coverage',
+      text: 'Vaccination Coverage',
       style: {
         color: 'white'
       },
