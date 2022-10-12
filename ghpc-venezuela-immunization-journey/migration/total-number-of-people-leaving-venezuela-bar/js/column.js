@@ -35,10 +35,10 @@ Highcharts.chart('hcContainer', {
   // Chart Title and Subtitle
   accessibility: {
     description:
-      'Proportion of people who left Venezuela who settled in Colombia (2018–2021)',
+      'Proportion of Forcibly Displaced Venezuelans who Settled in Colombia (2018-2021)',
   },
   title: {
-    text: 'Proportion of people who left Venezuela who settled in Colombia (2018–2021)',
+    text: 'Proportion of Forcibly Displaced Venezuelans who Settled in Colombia (2018-2021)',
     align: 'left',
     style: {
       color: 'white',
@@ -47,7 +47,7 @@ Highcharts.chart('hcContainer', {
     },
   },
   subtitle: {
-    text: 'Proportion of people who left Venezuela and settled in Colombia compared to the proportion who settled in other countries. Hover over the bars to see the percentage of people in each category.',
+    text: 'Proportion of forcibly displaced people who left Venezuela and settled in Colombia compared to the proportion who settled in other countries. Hover over the bars to see the percentage of people in each category.',
     align: 'left',
     style: {
       color: 'white'
