@@ -149,7 +149,7 @@ Highcharts.chart('hcContainer', {
         }
       },
       dataLabels: {
-        enabled: true,
+        enabled: false,
         style: {
           textOutline: 'none',
           fontWeight: 'normal',
