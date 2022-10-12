@@ -47,7 +47,7 @@ Highcharts.chart('hcContainer', {
     },
   },
   subtitle: {
-    text: 'Proportion of people who left Venezuela and settled in Colombia compared to the proportion who settled in other countries. Hover over different percentages to see the total number of people in each category.',
+    text: 'Proportion of people who left Venezuela and settled in Colombia compared to the proportion who settled in other countries. Hover over the bars to see the percentage of people in each category.',
     align: 'left',
     style: {
       color: 'white'
