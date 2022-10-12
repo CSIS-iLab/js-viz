@@ -25,18 +25,15 @@ Highcharts.chart('hcContainer', {
   exporting: {
     enabled: false
   },
-  caption: {
-    text: "* Under UNHCR's mandate"
-  },
   // Colors
   colors: ['#ffb3b3', '#e28080', '#c24c50', '#9f0023'],
   // Chart Title and Subtitle
   accessibility: {
     description:
-      'Breakdown of Venezuelans in Other Countries by Legal Status (2021)',
+      'Forcibly Displaced Venezuelans (2014-2021)',
   },
   title: {
-    text: 'Breakdown of Venezuelans in Other Countries by Legal Status (2021)',
+    text: 'Forcibly Displaced Venezuelans (2014-2021)',
     align: 'left',
     style: {
       color: 'white',
@@ -45,7 +42,7 @@ Highcharts.chart('hcContainer', {
     },
   },
   subtitle: {
-    text: 'As of 2021, over 5,576,740 Venezuelans had settled in other countries. Hover over the pie pieces below to see the total number of people in each category.',
+    text: 'Hover over the line to see the total number of forcibly displaced Venezuelans each year.',
     align: 'left',
     style: {
       color: 'white'
@@ -65,6 +62,7 @@ Highcharts.chart('hcContainer', {
   },
   // Chart Legend
   legend: {
+    enabled: false,
     align: 'left',
     x: -10,
     verticalAlign: 'top',
@@ -92,7 +90,6 @@ Highcharts.chart('hcContainer', {
     },
     max: 6000000,
     tickInterval: 1000000,
-    reversedStacks: false,
     startOnTick: false,
     endOnTick: false,
     labels: {
@@ -102,6 +99,7 @@ Highcharts.chart('hcContainer', {
     }
   },
   xAxis: {
+    min: 2014,
     type: 'year',
     tickInterval: 1,
     accessibility: {
@@ -109,7 +107,6 @@ Highcharts.chart('hcContainer', {
     },
     crosshair: true,
     labels: {
-      step: 3,
       rotation: -45,
       y: 25,
       style: {
@@ -148,7 +145,7 @@ Highcharts.chart('hcContainer', {
         }
       },
       dataLabels: {
-        enabled: true,
+        enabled: false,
         style: {
           textOutline: 'none',
           fontWeight: 'normal',
