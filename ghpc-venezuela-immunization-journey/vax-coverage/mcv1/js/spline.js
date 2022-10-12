@@ -39,7 +39,7 @@ Highcharts.chart('hcContainer', {
     }
   },
   subtitle: {
-    text: "Measles vaccination coverage, first dose. Hover over the lines below to see the coverage of the MCV1 in a given year in Venezuela, Colombia, and the Americas region. To hide a region's data, click in the legend below.",
+    text: "Measles vaccination coverage, first dose (MCV1). Hover over the lines below to see the coverage of the MCV1 in a given year in Venezuela, Colombia, and the Americas region. To hide a region's data, click in the legend below.",
     align: 'left',
     style: {
       color: 'white'
