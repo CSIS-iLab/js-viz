@@ -25,6 +25,9 @@ Highcharts.chart('hcContainer', {
   exporting: {
     enabled: false
   },
+  caption: {
+    text: "* Under UNHCR's mandate"
+  },
   // Colors
   colors: ['#ffb3b3', '#e28080', '#c24c50', '#9f0023'],
   // Chart Title and Subtitle
