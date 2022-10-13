@@ -117,24 +117,11 @@ Highcharts.chart('hcContainer', {
   tooltip: {
     headerFormat: '{point.key}<br/>',
     pointFormatter: function () {
-      let customSeriesName = ''
-      const seriesName = this.series.name
-      switch (seriesName) {
-        case 'Colombia - Measles vaccination coverage, first dose (MCV1)':
-          customSeriesName = 'Colombia MCV1 vaccination coverage'
-          break
-        case 'Venezuela - Measles vaccination coverage, first dose (MCV1)':
-          customSeriesName = 'Venezuela MCV1 vaccination coverage'
-          break
-        default:
-          customSeriesName = 'Americas Region MCV1 vaccination coverage'
-          break
-      }
       return (
         '<span style="font-size: 14px;color:' +
         this.color +
         '">\u25A0</span> ' +
-        customSeriesName +
+        this.series.name +
         ': <b> ' +
         this.y +
         '%</b><br/>'
