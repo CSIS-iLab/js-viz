@@ -39,7 +39,7 @@ Highcharts.chart('hcContainer', {
     }
   },
   subtitle: {
-    text: "Diphtheria tetanus toxoid and pertussis (DTP) vaccination coverage, third dose. Hover over the lines below to see the coverage of the DTP3 vaccine in a given year in Venezuela, Colombia, and the Americas region. To hide a region's data, click in the legend below.",
+    text: "Diphtheria tetanus toxoid and pertussis vaccination coverage, third dose (DTP3). Hover over the lines below to see the coverage of the DTP3 vaccine in a given year in Venezuela, Colombia, and the Americas region. To hide a region's data, click in the legend below.",
     align: 'left',
     style: {
       color: 'white'
