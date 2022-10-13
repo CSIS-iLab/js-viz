@@ -26,7 +26,7 @@ Highcharts.chart('hcContainer', {
     enabled: false
   },
   // Colors
-  colors: ['#ffb3b3', '#e28080', '#c24c50', '#9f0023'],
+  colors: ['#9f0023'],
   // Chart Title and Subtitle
   accessibility: {
     description:
