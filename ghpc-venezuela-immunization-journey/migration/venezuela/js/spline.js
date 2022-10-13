@@ -16,11 +16,23 @@ Highcharts.chart('hcContainer', {
   chart: {
     type: 'spline',
     spacingBottom: 60,
-    height: 500,
+    height: 700,
     style: {
       fontFamily: ['Source Sans Pro', 'sans-serif'],
     },
     backgroundColor: '#080808'
+  },
+  responsive: {
+    rules: [{
+      condition: {
+        maxWidth: 500
+      },
+      chartOptions: {
+        chart: {
+          height: 500
+        }
+      }
+    }]
   },
   exporting: {
     enabled: false
