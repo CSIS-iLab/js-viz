@@ -109,6 +109,7 @@ Highcharts.chart('hcContainer', {
       rangeDescription: 'Days: ',
     },
     max: Date.UTC(2022, 8, 30),
+    min: Date.UTC(2020, 3, 1),
     crosshair: true,
     labels: {
       step: 3,
