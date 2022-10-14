@@ -35,10 +35,10 @@ Highcharts.chart('hcContainer', {
   // Chart Title and Subtitle
   accessibility: {
     description:
-      'Proportion of Forcibly Displaced Venezuelans who Settled in Colombia (2018-2021)',
+      'Proportion of Forcibly Displaced Venezuelans Who Settled in Colombia (2018–2021)',
   },
   title: {
-    text: 'Proportion of Forcibly Displaced Venezuelans who Settled in Colombia (2018-2021)',
+    text: 'Proportion of Forcibly Displaced Venezuelans Who Settled in Colombia (2018–2021)',
     align: 'left',
     style: {
       color: 'white',

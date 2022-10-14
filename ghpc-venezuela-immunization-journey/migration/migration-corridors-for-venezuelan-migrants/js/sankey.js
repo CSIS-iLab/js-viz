@@ -61,7 +61,7 @@ function renderChart(keys, data, colors) {
       },
     },
     subtitle: {
-      text: 'As of 2021, more than 5.5 million refugees, asylum seekers, and Venezuelans displaced abroad have left for other countries, with nearly 4.5 million settling in Colombia, Peru, Ecuador, Chile, and the United States. Hover over the color ribbons to see how many Venezuelans settled in each of the countries below.',
+      text: 'As of 2021, more than 5.5 million refugees, asylum seekers, and Venezuelans displaced abroad had left for other countries, with nearly 4.5 million settling in Colombia, Peru, Ecuador, Chile, and the United States. Hover over the color ribbons to see how many Venezuelans settled in each of the countries below.',
       align: 'left',
       style: {
         color: 'white',

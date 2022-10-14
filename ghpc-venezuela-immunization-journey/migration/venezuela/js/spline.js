@@ -42,10 +42,10 @@ Highcharts.chart('hcContainer', {
   // Chart Title and Subtitle
   accessibility: {
     description:
-      'Status of Forcibly Displaced Venezuelans (2014-2021)',
+      'Status of Forcibly Displaced Venezuelans (2014–2021)',
   },
   title: {
-    text: 'Status of Forcibly Displaced Venezuelans (2014-2021)',
+    text: 'Status of Forcibly Displaced Venezuelans (2014–2021)',
     align: 'left',
     style: {
       color: 'white',
