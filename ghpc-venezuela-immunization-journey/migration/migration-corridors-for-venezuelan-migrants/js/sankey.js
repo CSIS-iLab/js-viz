@@ -109,10 +109,10 @@ function renderChart(keys, data, colors) {
             textOutline: 'none',
             fontWeight: 'bold',
             fontSize: '13px',
-            color: '#fff',
-          },
-        },
-      },
-    },
+            color: '#fff'
+          }
+        }
+      }
+    }
   })
 }

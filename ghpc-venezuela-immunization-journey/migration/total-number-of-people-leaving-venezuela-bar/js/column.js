@@ -151,8 +151,8 @@ Highcharts.chart('hcContainer', {
           textOutline: 'none',
           fontWeight: 'bold',
           color: 'white'
-        },
-      },
-    },
-  },
+        }
+      }
+    }
+  }
 })
