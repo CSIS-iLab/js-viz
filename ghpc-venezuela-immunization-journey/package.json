@@ -1,0 +1,20 @@
+{
+  "name": "ghpc-venezuela-immunization-journey",
+  "version": "1.0.0",
+  "description": "Venezuela health journey",
+  "main": "index.js",
+  "scripts": {
+    "formatCode": "prettier --write ."
+  },
+  "keywords": [
+    "Venezuela",
+    "health",
+    "journey",
+    "inmunization"
+  ],
+  "author": "Jose Romero",
+  "license": "ISC",
+  "devDependencies": {
+    "prettier": "2.7.1"
+  }
+}
