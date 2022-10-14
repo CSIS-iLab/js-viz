@@ -46,7 +46,7 @@ Highcharts.chart('hcContainer', {
     },
   },
   subtitle: {
-    text: "Low immunization coverage rates in Venezuela contributed to an outbreak of diphtheria between 2016 and 2019, with a small number of infections reported Colombia, as well. Hover over the lines to see the number of reported cases there were of diphtheria in a given year in Venezuela and Colombia. To hide a country's data, click in the legend below.",
+    text: "Low immunization coverage rates in Venezuela contributed to an outbreak of diphtheria between 2016 and 2019, with a small number of infections reported Colombia, as well. Hover over the lines to see the number of reported cases of diphtheria in a given year in Venezuela and Colombia. To hide a country's data, click in the legend below.",
     align: 'left',
     style: {
       color: 'white'
