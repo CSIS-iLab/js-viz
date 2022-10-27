@@ -1,20 +1,21 @@
 const ICONS = [];
 
-const URL = `https://content-sheets.googleapis.com/v4/spreadsheets/1H5JH0nsefgXAkGE6VRLUi1H50d0m4IeZBfJNZ-avEaI/values/channels-to-deliver-G2P?key=AIzaSyBXuQRRw4K4W8E4eGHoSFUSrK-ZwpD4Zz4&majorDimension=ROWS`;
+const URL = `https://content-sheets.googleapis.com/v4/spreadsheets/1YZ0D6cqMnk0kDCbtXcq2kp4hgUlGFCeUBnpjhbkgXAQ/values/Sheet1?key=AIzaSyBXuQRRw4K4W8E4eGHoSFUSrK-ZwpD4Zz4&majorDimension=ROWS`;
 
 async function getData() {
-  const RESPONSE = await fetch(URL);
-  const DATA = await RESPONSE.json();
+  const RESPONSE = await fetch(URL)
+  const DATA = await RESPONSE.json()
 
-  let rowNames = [];
-  DATA.values.slice(1).forEach((element) => {
-    rowNames.push(element[0]);
-  });
+  if (DATA) console.log(DATA)
+  // let rowNames = [];
+  // DATA.values.slice(1).forEach((element) => {
+  //   rowNames.push(element[0]);
+  // });
 
-  let iconId = [];
-  rowNames.forEach((element) => {
-    iconId.push(element.toLowerCase().replaceAll(" ", "-"));
-  });
+  // let iconId = [];
+  // rowNames.forEach((element) => {
+  //   iconId.push(element.toLowerCase().replaceAll(" ", "-"));
+  // });
 
   const MAKE_FINAL_OBJECT = () => {
     for (let i = 1; i < 6; i++) {
@@ -30,7 +31,7 @@ async function getData() {
     }
   };
 
-  MAKE_FINAL_OBJECT();
+  // MAKE_FINAL_OBJECT()
 
   function addTippy() {
     ICONS.forEach((icon) => {
@@ -60,7 +61,7 @@ async function getData() {
       });
     });
   }
-  addTippy();
+  // addTippy();
 }
 
 document.addEventListener("DOMContentLoaded", (event) => {
