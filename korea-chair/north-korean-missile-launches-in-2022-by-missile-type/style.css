@@ -24,8 +24,8 @@ img {
 
 .main-icon {
   margin: 0 auto;
-  width: 65px;
-  height: 65px;
+  /* width: 65px;
+  height: 65px; */
 }
 
 .tippy-svg-arrow {
@@ -153,10 +153,11 @@ p.info:last-of-type {
     width: 40px;
     height: 40px;
   }
-  .main-icon {
+
+  /* .main-icon {
     width: 180px;
     height: 180px;
-  }
+  } */
 
   h2 {
     font-size: 25px;
