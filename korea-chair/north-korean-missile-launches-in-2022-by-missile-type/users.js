@@ -16,6 +16,10 @@ async function getData() {
   // rowNames.forEach((element) => {
   //   iconId.push(element.toLowerCase().replaceAll(" ", "-"));
   // });
+  const missileChart = document.querySelector('#missileSVG')
+  // const svg = missileChart.contentDocument.querySelector("#Cruise6")
+  // console.log(svg)
+  
 
   const MAKE_FINAL_OBJECT = () => {
     for (let i = 1; i < 6; i++) {
@@ -30,6 +34,14 @@ async function getData() {
       };
     }
   };
+
+  if (missileChart) {
+    getMissileByID(DATA.values[2][2]);
+  }
+  function getMissileByID(id) {
+    const missile = missileChart.contentDocument.querySelector('#' + id)
+    console.log(missile)
+  }
 
   // MAKE_FINAL_OBJECT()
 
@@ -65,5 +77,5 @@ async function getData() {
 }
 
 document.addEventListener("DOMContentLoaded", (event) => {
-  getData();
+  getData()
 });
