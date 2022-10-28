@@ -7,13 +7,12 @@ async function getData() {
   const DATA = await RESPONSE.json()
 
   if (DATA) {
-    console.log(DATA)
+    // console.log(DATA)
     let rowNames = []
     const columnNames = DATA.values.shift()
     const columnNamesLength = columnNames.length
-    console.log(columnNamesLength)
     // console.log(columnNames)
-    console.log(DATA.values[0])
+    // console.log(DATA.values[0])
     DATA.values.forEach((element) => {
       ICONS.push({
         date: element[0],
@@ -22,8 +21,8 @@ async function getData() {
       })
       // console.log('im outsie now')
     })
-    console.log(rowNames)
-    console.log(ICONS)
+    // console.log(rowNames)
+    // console.log(ICONS)
   }
 
   // let iconId = [];
@@ -49,47 +48,52 @@ async function getData() {
     }
   };
 
-  if (missileChart) {
-    ICONS.forEach( icon => {
-      // getMissileByID(icon.id)
-      console.log(icon.id);
-      tippy("#" + icon.id, {
-        content: `
-          <div class="icon-container">
-              <div class="tip-header">
-                <h3 class="header">${icon.id}</h3>
-              </div>
-              <h3 class="title">Category</h3>
-              <p class="info">${icon.category}</p>
-              <h3 class="title">Date launched:</h3>
-              <p class="info"> ${icon.date}</p>
-            </div>
-        `,
-        allowHTML: true,
-        arrow: true,
-        interactive: true,
-        placement: "auto",
-        followCursor: "initial",
-      });
-    })
-  }
+  // if (missileChart) {
+  //   ICONS.forEach( icon => {
+  //     // getMissileByID(icon.id)
+  //     // console.log(icon.id);
+  //     tippy("#" + icon.id, {
+  //       // append to an Element
+  //       appendTo: icon,
+  //       content: `
+  //         <div class="icon-container">
+  //             <div class="tip-header">
+  //               <h3 class="header">${icon.id}</h3>
+  //             </div>
+  //             <h3 class="title">Category</h3>
+  //             <p class="info">${icon.category}</p>
+  //             <h3 class="title">Date launched:</h3>
+  //             <p class="info"> ${icon.date}</p>
+  //           </div>
+  //       `,
+  //       allowHTML: true,
+  //       arrow: true,
+  //       interactive: true,
+  //       placement: "auto",
+  //       followCursor: "initial",
+  //     });
+  //   })
+  // }
 
   function getMissileByID(id) {
     const missile = missileChart.contentDocument.querySelector('#' + id)
-    console.log(missile)
+    // console.log(missile)
+    return missile
   }
 
   // MAKE_FINAL_OBJECT()
 
   function addTippy() {
-    console.log('inside addTippy');
+    console.log('inside addTippy')
     if (missileChart) {
-      console.log('inside missileChart');
+      console.log('inside missileChart')
       
       ICONS.forEach((icon) => {
         // getMissileByID(icon.id)
-        console.log('inside icon');
+        // console.log('inside icon');
         tippy("#" + icon.id, {
+          // append to an Element
+          appendTo: () => getMissileByID(icon.id),
           content: `
             <div class="icon-container">
                 <div class="tip-header">
