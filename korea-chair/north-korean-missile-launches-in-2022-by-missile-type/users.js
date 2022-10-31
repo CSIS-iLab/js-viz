@@ -7,7 +7,7 @@ async function getData() {
   const DATA = await RESPONSE.json()
 
   if (DATA) {
-    // console.log(DATA)
+    console.log(DATA)
     let rowNames = []
     const columnNames = DATA.values.shift()
     const columnNamesLength = columnNames.length
@@ -22,7 +22,8 @@ async function getData() {
       // console.log('im outsie now')
     })
     // console.log(rowNames)
-    // console.log(ICONS)
+    // console.log(missileChart.document.querySelector("svg"));
+    console.log(ICONS)
   }
 
   // let iconId = [];
@@ -30,23 +31,9 @@ async function getData() {
   //   iconId.push(element.toLowerCase().replaceAll(" ", "-"));
   // });
   const missileChart = document.querySelector('#missileSVG')
+  const wrapper = document.querySelector(".wrapper")
   // const svg = missileChart.contentDocument.querySelector("#Cruise6")
   // console.log(svg)
-  
-
-  const MAKE_FINAL_OBJECT = () => {
-    for (let i = 1; i < 6; i++) {
-      ICONS[i - 1] = {
-        id: iconId[i - 1],
-        format: DATA.values[i][0],
-        howWhereToReceive: DATA.values[i][1],
-        whereToSave: DATA.values[i][2],
-        pros: DATA.values[i][3],
-        cons: DATA.values[i][4],
-        examples: DATA.values[i][5],
-      };
-    }
-  };
 
   // if (missileChart) {
   //   ICONS.forEach( icon => {
@@ -77,7 +64,7 @@ async function getData() {
 
   function getMissileByID(id) {
     const missile = missileChart.contentDocument.querySelector('#' + id)
-    // console.log(missile)
+    console.log(missile)
     return missile
   }
 
@@ -85,34 +72,33 @@ async function getData() {
 
   function addTippy() {
     console.log('inside addTippy')
-    if (missileChart) {
+    // if (missileChart) {
       console.log('inside missileChart')
       
       ICONS.forEach((icon) => {
         // getMissileByID(icon.id)
-        // console.log('inside icon');
-        tippy("#" + icon.id, {
+        console.log('inside icon');
+        tippy('#' + icon.id , {
           // append to an Element
-          appendTo: () => getMissileByID(icon.id),
+          appendTo: wrapper,
           content: `
             <div class="icon-container">
                 <div class="tip-header">
                   <h3 class="header">${icon.id}</h3>
                 </div>
-                <h3 class="title">Category</h3>
-                <p class="info">${icon.category}</p>
                 <h3 class="title">Date launched:</h3>
                 <p class="info"> ${icon.date}</p>
               </div>
           `,
           allowHTML: true,
+          // trigger: "mouseenter",
           arrow: true,
           interactive: true,
           placement: "auto",
           followCursor: "initial",
         });
       });
-    }
+    // }
     // ICONS.forEach((icon) => {
     //   tippy("#" + icon.id, {
     //     content: `  <div class="icon-container">
