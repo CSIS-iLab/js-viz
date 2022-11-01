@@ -12,8 +12,12 @@ body * {
   background-color: #d5e7f7;
   margin: 5px;
   padding: 5px;
-  height: 470px;
+  /* height: 470px; */
   font-weight: bold;
+}
+
+.wrapper {
+  font-size: 1.2rem;
 }
 
 img {
@@ -287,9 +291,9 @@ p.info:last-of-type {
   font-family: Synthese-Regular, Synthese;
 }
 
-.cls-13, .cls-23 {
+/* .cls-13, .cls-23 {
   font-size: 1.5rem;
-}
+} */
 
 .cls-30 {
   letter-spacing: -.09em;
