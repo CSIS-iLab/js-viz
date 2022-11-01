@@ -1,5 +1,5 @@
 html:root{
-  background-color: #FCFCFC;
+  background-color: #d5e7f7;
 }
 
 body * {
@@ -8,9 +8,9 @@ body * {
 }
 
 .interactive {
-  background-color: #FCFCFC;
-  margin: 15px;
-  padding: 20px;
+  background-color: #d5e7f7;
+  margin: 5px;
+  padding: 5px;
   height: 470px;
   font-weight: bold;
 }
@@ -58,9 +58,9 @@ h2 {
   font-family: 'synthese', sans-serif;
   margin: 0;
   text-align: center;
-  font-size: 20px;
-  color: #0054A4;
+  color: #080808;
   font-weight: bold;
+  font-size: 1.1rem;
 }
 
 h3 {
@@ -160,7 +160,7 @@ p.info:last-of-type {
   } */
 
   h2 {
-    font-size: 25px;
+    font-size: 1.2rem;
   }
 
   h3 {
