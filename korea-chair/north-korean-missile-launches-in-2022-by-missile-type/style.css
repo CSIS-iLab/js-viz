@@ -1,5 +1,6 @@
 html:root{
   background-color: #d5e7f7;
+  /* font-size: 1.875rem; */
 }
 
 body * {
@@ -249,9 +250,9 @@ p.info:last-of-type {
   letter-spacing: -.04em;
 }
 
-.cls-22 {
+/* .cls-22 {
   font-size: 48px;
-}
+} */
 
 .cls-22, .cls-23 {
   font-family: Synthese-Bold, Synthese;
@@ -287,7 +288,7 @@ p.info:last-of-type {
 }
 
 .cls-13, .cls-23 {
-  font-size: 21px;
+  font-size: 1.5rem;
 }
 
 .cls-30 {
