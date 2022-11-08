@@ -335,3 +335,14 @@ p.info:last-of-type {
   letter-spacing: .01em;
 }
 
+.btn {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+}
+
+.btn.default {
+  background-color: #0054A4;
+  color: #fff;
+  font-size: 18px;
+}
