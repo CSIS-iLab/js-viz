@@ -346,3 +346,7 @@ p.info:last-of-type {
   color: #fff;
   font-size: 18px;
 }
+
+.interactive-mobile {
+  display: none;
+}

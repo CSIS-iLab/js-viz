@@ -11,42 +11,19 @@ async function getData() {
   if (DATA) {
     const columnNames = DATA.values.shift()
     DATA.values.forEach((element) => {
-      // groupByCategory(element)
       ICONS.push({
-        date: element[0],
+        date: new Date(element[0]).toLocaleDateString("en-US"),
         category: element[1],
         id: element[2],
-        name: element[3]
-      })
+        name: element[3],
+      });
       CATEGORIES.push(element[1])
     })
     const categories = getCategories(CATEGORIES)
-    const dataFormatted = formatCategories(categories)
+    const dataFormatted = formatCategories('category')
     console.log(dataFormatted)
   }
 
-  function formatCategories(categories) {
-    const categoriesLength = categories.length
-    ICONS.forEach( element => {
-      for (let index = 0; index < categoriesLength; index++) {
-        console.log(element, " ", categories[index]);
-        if (element[1] == categories[index]) {
-          INFO.push({
-            category: element[1],
-            data: [
-              {
-                date: element[0],
-                id: element[2],
-                name: element[3],
-              },
-            ],
-          });
-        }
-      }
-    })
-    console.log(INFO)
-  }
-  // const missileChart = document.querySelector('#missileSVG')
   const wrapper = document.querySelector(".wrapper")
 
   function addTippy() {
@@ -79,10 +56,26 @@ async function getData() {
 function getCategories(categories) {
   return [...new Set(categories)]
 }
-// function groupByCategory(value) {
 
-//   console.log(value[1])
-// }
+function formatCategories(columnName) {
+  const iconsLength =  ICONS.length
+  const categoriesLength = columnName.length;
+  var sortedData = {};
+
+  for (var i = 0; i < iconsLength; i++) {
+    var object = ICONS[i]
+
+    if (Object.keys(sortedData).indexOf(object[columnName]) === -1) {
+      console.log(object.date)
+      sortedData[object[columnName]] = []
+    }
+
+    sortedData[object[columnName]].push(object)
+  }
+
+  return sortedData
+}
+
 document.addEventListener("DOMContentLoaded", (event) => {
   getData()
 });
