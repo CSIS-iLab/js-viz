@@ -347,6 +347,6 @@ p.info:last-of-type {
   font-size: 18px;
 }
 
-.interactive-mobile {
+.hide {
   display: none;
 }
