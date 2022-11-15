@@ -5,6 +5,7 @@ const sortedData = {}
 const URL = `https://content-sheets.googleapis.com/v4/spreadsheets/1YZ0D6cqMnk0kDCbtXcq2kp4hgUlGFCeUBnpjhbkgXAQ/values/Sheet1?key=AIzaSyBXuQRRw4K4W8E4eGHoSFUSrK-ZwpD4Zz4&majorDimension=ROWS`
 
 async function getData() {
+  windowWidthSize = window.innerWidth
   const RESPONSE = await fetch(URL)
   const DATA = await RESPONSE.json()
 
@@ -21,32 +22,15 @@ async function getData() {
     })
     const categories = getCategories(CATEGORIES)
     const dataFormatted = formatCategories('category')
-    // console.log(dataFormatted)
   }
 
   const wrapper = document.querySelector(".wrapper")
+  const wrapperMobile = document.querySelector(".wrapper-mobile")
   const interactive = document.querySelector(".interactive")
   const interactiveMobile = document.querySelector(".interactive-mobile")
 
   function addTippy() {
-    console.log(interactive.classList)
-    // const interactiveClassList = [...interactive.classList]
-    // const interaactiveMobileClassList = [...interactiveMobile.classList]
-    console.log(interactiveMobile.classList)
-    if (windowWidthSize < 800) {
-      console.log(window.innerWidth)
-      // interactiveMobile.classList.add("hide");
-      // interactive.classList.remove("hide");
-      // if (!interactiveMobile.includes("hide")) {
-      //   console.log(sortedData);
-      // }
-      // useData()
-    } else {
-
-      console.log("it's to big")
-      interactiveMobile.classList.remove("hide");
-      interactive.classList.add("hide");
-      // if (!interactiveClassList.includes("hide")) {
+    if (windowWidthSize > 799) {
         ICONS.forEach((icon) => {
           tippy("#" + icon.id, {
             // append to an Element
@@ -68,6 +52,48 @@ async function getData() {
             followCursor: "initial",
           })
         })
+      interactiveMobile.classList.add("hide");
+      interactive.classList.remove("hide");
+      // if (!interactiveMobile.includes("hide")) {
+      //   console.log(sortedData);
+      // }
+      // useData()
+    } else {
+      interactiveMobile.classList.remove("hide");
+      interactive.classList.add("hide");
+      const dates = []
+      for (let [key, value] of Object.entries(sortedData)) {
+          const dates = []
+          sortedData[key].forEach( el => {
+            dates.push(el.date)
+          })
+          Object.assign(sortedData[key], { dates:  [...new Set(dates)]})
+          let string = ''
+          const datesLength = sortedData[key].dates.length
+          for (let index = 0; index < datesLength; index++) {
+            string += sortedData[key].dates[index] + '</br>'
+          }
+          tippy("#" + key, {
+            // append to an Element
+            appendTo: wrapperMobile,
+            content: `
+              <div class="icon-container">
+                <div class="tip-header">
+                  <h3 class="header">${key}</h3>
+                </div>
+                <h3 class="title">Date launched:</h3>
+
+                <p class="info"> ${string}</p>
+              </div>
+            `,
+            allowHTML: true,
+            // trigger: "mouseenter",
+            arrow: true,
+            interactive: true,
+            placement: "auto",
+            followCursor: "initial",
+          });
+        }
       // }
     }
   }
@@ -78,11 +104,9 @@ function getCategories(categories) {
   return [...new Set(categories)]
 }
 
-
-
 function formatCategories(columnName) {
   const iconsLength =  ICONS.length
-  const categoriesLength = columnName.length;
+  const categoriesLength = columnName.length
 
   for (var i = 0; i < iconsLength; i++) {
     var object = ICONS[i]
@@ -101,8 +125,9 @@ function formatCategories(columnName) {
 
 document.addEventListener("DOMContentLoaded", (event) => {
   getData()
-});
+})
 
 window.addEventListener('resize', function(e) {
-  windowWidthSize = window.innerWidth
+  // windowWidthSize = window.innerWidth
+  getData()
 }) 
