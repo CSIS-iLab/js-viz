@@ -1,6 +1,6 @@
 const ICONS = []
 const CATEGORIES = []
-let windowWidthSize = 0;
+let windowWidthSize = 0
 const sortedData = {}
 const URL = `https://content-sheets.googleapis.com/v4/spreadsheets/1YZ0D6cqMnk0kDCbtXcq2kp4hgUlGFCeUBnpjhbkgXAQ/values/Sheet1?key=AIzaSyBXuQRRw4K4W8E4eGHoSFUSrK-ZwpD4Zz4&majorDimension=ROWS`
 
@@ -52,15 +52,11 @@ async function getData() {
             followCursor: "initial",
           })
         })
-      interactiveMobile.classList.add("hide");
-      interactive.classList.remove("hide");
-      // if (!interactiveMobile.includes("hide")) {
-      //   console.log(sortedData);
-      // }
-      // useData()
+      interactiveMobile.classList.add("hide")
+      interactive.classList.remove("hide")
     } else {
-      interactiveMobile.classList.remove("hide");
-      interactive.classList.add("hide");
+      interactiveMobile.classList.remove("hide")
+      interactive.classList.add("hide")
       const dates = []
       for (let [key, value] of Object.entries(sortedData)) {
           const dates = []
@@ -92,7 +88,7 @@ async function getData() {
             interactive: true,
             placement: "auto",
             followCursor: "initial",
-          });
+          })
         }
       // }
     }
@@ -128,6 +124,5 @@ document.addEventListener("DOMContentLoaded", (event) => {
 })
 
 window.addEventListener('resize', function(e) {
-  // windowWidthSize = window.innerWidth
   getData()
 }) 
