@@ -1,4 +1,4 @@
-html:root{
+html:root {
   background-color: #d5e7f7;
 }
 
@@ -37,17 +37,17 @@ img {
 
 .tippy-box {
   background-color: rgba(265, 265, 265);
-  border: 1px solid  #0054A4;
+  border: 1px solid #0054a4;
   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
 }
 
 .tippy-arrow {
-  color: #0054A4;
+  color: #0054a4;
 }
 
 .subtitle {
   font-size: 15px;
-  font-family: source-sans-pro, sans-serif; 
+  font-family: source-sans-pro, sans-serif;
 }
 
 h1 {
@@ -58,7 +58,7 @@ h1 {
 }
 
 h2 {
-  font-family: 'synthese', sans-serif;
+  font-family: "synthese", sans-serif;
   margin: 0;
   text-align: center;
   color: #080808;
@@ -80,10 +80,10 @@ h4 {
 .title {
   color: #333333;
   text-align: left;
-} 
+}
 
 .tip-header {
-  font-family: 'synthese', sans-serif;
+  font-family: "synthese", sans-serif;
   font-weight: bold;
   display: flex;
   padding-top: 5px;
@@ -96,13 +96,12 @@ h4 {
 }
 
 .header {
-  font-family: 'synthese', sans-serif;
-  color: #0054A4;
+  font-family: "synthese", sans-serif;
+  color: #0054a4;
   font-weight: bold;
   margin: 0 15px;
   display: inline;
   align-self: center;
-
 }
 
 h3.title {
@@ -111,7 +110,7 @@ h3.title {
   margin-bottom: 2px;
   font-size: 13px;
   font-weight: bold;
-  font-family: 'synthese', sans-serif;
+  font-family: "synthese", sans-serif;
 }
 
 p.info {
@@ -119,7 +118,7 @@ p.info {
   font-size: 15px;
   font-family: source-sans-pro, sans-serif;
   padding-left: 10px;
-  color: #000;  
+  color: #000;
 }
 
 p.info:last-of-type {
@@ -147,7 +146,7 @@ p.info:last-of-type {
     display: flex;
     justify-content: space-around;
   }
-  
+
   .tip-header {
     padding-top: 10px;
   }
@@ -176,64 +175,80 @@ p.info:last-of-type {
   }
 }
 
-.cls-1, .cls-2 {
-  fill: none;
+.cls-1 {
+  letter-spacing: -0.02em;
+}
+
+.cls-2 {
+  letter-spacing: -0.01em;
 }
 
 .cls-3 {
-  letter-spacing: 0em;
+  letter-spacing: 0.01em;
 }
 
 .cls-4 {
+  font-family: Synthese-Regular, Synthese;
+}
+
+.cls-4,
+.cls-5 {
+  font-size: 21px;
+}
+
+.cls-4,
+.cls-6 {
+  fill: #808285;
+}
+
+.cls-7 {
   letter-spacing: 0em;
 }
 
 .cls-5 {
-  fill: url(#linear-gradient);
+  fill: #383737;
 }
 
-.cls-6 {
-  letter-spacing: -.02em;
-}
-
-.cls-7 {
-  letter-spacing: -.02em;
-}
-
+.cls-5,
 .cls-8 {
-  letter-spacing: -.02em;
+  font-family: Synthese-Bold, Synthese;
+  font-weight: 700;
 }
 
 .cls-9 {
-  letter-spacing: 0em;
+  letter-spacing: -0.09em;
 }
 
 .cls-10 {
-  fill: #005581;
+  letter-spacing: -0.02em;
 }
 
 .cls-11 {
+  letter-spacing: 0em;
+}
+
+.cls-12 {
+  letter-spacing: 0em;
+}
+
+.cls-13 {
   fill: #d5e7f7;
 }
 
-.cls-12, .cls-13 {
-  fill: #808285;
-}
-
 .cls-14 {
-  letter-spacing: 0em;
+  letter-spacing: -0.04em;
 }
 
 .cls-15 {
-  letter-spacing: -.01em;
+  letter-spacing: 0em;
 }
 
 .cls-16 {
-  letter-spacing: 0em;
+  letter-spacing: -0.07em;
 }
 
 .cls-17 {
-  letter-spacing: 0em;
+  letter-spacing: -0.01em;
 }
 
 .cls-18 {
@@ -245,24 +260,27 @@ p.info:last-of-type {
 }
 
 .cls-20 {
-  letter-spacing: 0em;
+  fill: #005581;
+}
+
+.cls-8 {
+  font-size: 48px;
 }
 
 .cls-21 {
-  letter-spacing: -.04em;
+  letter-spacing: 0em;
 }
 
-/* .cls-22 {
-  font-size: 48px;
-} */
+.cls-22 {
+  letter-spacing: 0em;
+}
 
-.cls-22, .cls-23 {
-  font-family: Synthese-Bold, Synthese;
-  font-weight: 700;
+.cls-23 {
+  letter-spacing: 0em;
 }
 
 .cls-24 {
-  letter-spacing: -.1em;
+  letter-spacing: 0em;
 }
 
 .cls-25 {
@@ -270,11 +288,14 @@ p.info:last-of-type {
 }
 
 .cls-26 {
-  letter-spacing: 0em;
+  stroke: #36393a;
+  stroke-linejoin: round;
+  stroke-width: 0.5px;
 }
 
+.cls-26,
 .cls-27 {
-  letter-spacing: -.01em;
+  fill: none;
 }
 
 .cls-28 {
@@ -282,41 +303,23 @@ p.info:last-of-type {
 }
 
 .cls-29 {
-  letter-spacing: 0em;
+  letter-spacing: -0.02em;
 }
-
-.cls-13 {
-  font-family: Synthese-Regular, Synthese;
-}
-
-/* .cls-13, .cls-23 {
-  font-size: 1.5rem;
-} */
 
 .cls-30 {
-  letter-spacing: -.09em;
+  letter-spacing: -0.02em;
 }
 
 .cls-31 {
-  letter-spacing: -.07em;
+  letter-spacing: -0.02em;
 }
 
 .cls-32 {
   letter-spacing: 0em;
 }
 
-.cls-23 {
-  fill: #383737;
-}
-
 .cls-33 {
-  letter-spacing: -.06em;
-}
-
-.cls-2 {
-  stroke: #36393a;
-  stroke-linejoin: round;
-  stroke-width: .5px;
+  letter-spacing: -0.1em;
 }
 
 .cls-34 {
@@ -324,15 +327,15 @@ p.info:last-of-type {
 }
 
 .cls-35 {
-  letter-spacing: -.02em;
+  fill: url(#linear-gradient);
 }
 
 .cls-36 {
-  letter-spacing: -.02em;
+  letter-spacing: -0.06em;
 }
 
 .cls-37 {
-  letter-spacing: .01em;
+  letter-spacing: 0em;
 }
 
 .btn {
@@ -342,7 +345,7 @@ p.info:last-of-type {
 }
 
 .btn.default {
-  background-color: #0054A4;
+  background-color: #0054a4;
   color: #fff;
   font-size: 18px;
 }
