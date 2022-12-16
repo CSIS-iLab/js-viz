@@ -48,6 +48,9 @@ img {
 .subtitle {
   font-size: 15px;
   font-family: source-sans-pro, sans-serif;
+  text-align: center;
+  color: #757575;
+  margin-top: 5px;
 }
 
 h1 {
@@ -67,7 +70,7 @@ h2 {
 }
 
 h3 {
-  font-size: 15px;
+  font-size: 15px;  
 }
 
 h4 {
