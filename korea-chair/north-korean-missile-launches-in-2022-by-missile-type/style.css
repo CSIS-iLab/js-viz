@@ -1,0 +1,358 @@
+html:root {
+  background-color: #d5e7f7;
+}
+
+body * {
+  font-family: source-sans-pro, sans-serif;
+  font-weight: 400;
+}
+
+.interactive {
+  background-color: #d5e7f7;
+  margin: 5px;
+  padding: 5px;
+  font-weight: bold;
+}
+
+.wrapper {
+  font-size: 1.875rem;
+}
+
+img {
+  display: block;
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+.main-icon {
+  margin: 0 auto;
+  /* width: 65px;
+  height: 65px; */
+}
+
+.tippy-svg-arrow {
+  display: none; /* the arrow is displaying as "false" otherwise */
+}
+
+.tippy-box {
+  background-color: rgba(265, 265, 265);
+  border: 1px solid #0054a4;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+.tippy-arrow {
+  color: #0054a4;
+}
+
+.subtitle {
+  font-size: 15px;
+  font-family: source-sans-pro, sans-serif;
+  text-align: center;
+  color: #757575;
+  margin-top: 5px;
+}
+
+h1 {
+  color: #000;
+  margin: 0;
+  text-align: center;
+  font-size: 20px;
+}
+
+h2 {
+  font-family: "synthese", sans-serif;
+  margin: 0;
+  text-align: center;
+  color: #080808;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+h3 {
+  font-size: 15px;  
+}
+
+h4 {
+  font-size: 10px;
+  text-align: center;
+  color: black;
+  font-weight: normal;
+}
+
+.title {
+  color: #333333;
+  text-align: left;
+}
+
+.tip-header {
+  font-family: "synthese", sans-serif;
+  font-weight: bold;
+  display: flex;
+  padding-top: 5px;
+  margin-bottom: 8px;
+}
+
+.tip-icon {
+  width: 25px;
+  height: 25px;
+}
+
+.header {
+  font-family: "synthese", sans-serif;
+  color: #0054a4;
+  font-weight: bold;
+  margin: 0 15px;
+  display: inline;
+  align-self: center;
+}
+
+h3.title {
+  color: #767676;
+  margin-top: 12px;
+  margin-bottom: 2px;
+  font-size: 13px;
+  font-weight: bold;
+  font-family: "synthese", sans-serif;
+}
+
+p.info {
+  margin: 0;
+  font-size: 15px;
+  font-family: source-sans-pro, sans-serif;
+  padding-left: 10px;
+  color: #000;
+}
+
+p.info:last-of-type {
+  margin-bottom: 12px;
+}
+
+.credits {
+  color: #757575;
+  font-size: 11px;
+  text-align: end;
+  padding-top: 15px;
+}
+
+.credits a {
+  color: #0065a4;
+  text-decoration: none;
+}
+
+.credits a:hover {
+  text-decoration: underline;
+}
+
+@media only screen and (min-width: 600px) {
+  .wrapper {
+    display: flex;
+    justify-content: space-around;
+  }
+
+  .tip-header {
+    padding-top: 10px;
+  }
+
+  .tip-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  /* .main-icon {
+    width: 180px;
+    height: 180px;
+  } */
+
+  h2 {
+    font-size: 1.2rem;
+  }
+
+  h3 {
+    font-size: 18px;
+  }
+
+  h4 {
+    font-size: 15px;
+    margin-bottom: 15px;
+  }
+}
+
+.cls-1 {
+  letter-spacing: -0.02em;
+}
+
+.cls-2 {
+  letter-spacing: -0.01em;
+}
+
+.cls-3 {
+  letter-spacing: 0.01em;
+}
+
+.cls-4 {
+  font-family: Synthese-Regular, Synthese;
+}
+
+.cls-4,
+.cls-5 {
+  font-size: 21px;
+}
+
+.cls-4,
+.cls-6 {
+  fill: #808285;
+}
+
+.cls-7 {
+  letter-spacing: 0em;
+}
+
+.cls-5 {
+  fill: #383737;
+}
+
+.cls-5,
+.cls-8 {
+  font-family: Synthese-Bold, Synthese;
+  font-weight: 700;
+}
+
+.cls-9 {
+  letter-spacing: -0.09em;
+}
+
+.cls-10 {
+  letter-spacing: -0.02em;
+}
+
+.cls-11 {
+  letter-spacing: 0em;
+}
+
+.cls-12 {
+  letter-spacing: 0em;
+}
+
+.cls-13 {
+  fill: #d5e7f7;
+}
+
+.cls-14 {
+  letter-spacing: -0.04em;
+}
+
+.cls-15 {
+  letter-spacing: 0em;
+}
+
+.cls-16 {
+  letter-spacing: -0.07em;
+}
+
+.cls-17 {
+  letter-spacing: -0.01em;
+}
+
+.cls-18 {
+  letter-spacing: 0em;
+}
+
+.cls-19 {
+  letter-spacing: 0em;
+}
+
+.cls-20 {
+  fill: #005581;
+}
+
+.cls-8 {
+  font-size: 48px;
+}
+
+.cls-21 {
+  letter-spacing: 0em;
+}
+
+.cls-22 {
+  letter-spacing: 0em;
+}
+
+.cls-23 {
+  letter-spacing: 0em;
+}
+
+.cls-24 {
+  letter-spacing: 0em;
+}
+
+.cls-25 {
+  letter-spacing: 0em;
+}
+
+.cls-26 {
+  stroke: #36393a;
+  stroke-linejoin: round;
+  stroke-width: 0.5px;
+}
+
+.cls-26,
+.cls-27 {
+  fill: none;
+}
+
+.cls-28 {
+  letter-spacing: 0em;
+}
+
+.cls-29 {
+  letter-spacing: -0.02em;
+}
+
+.cls-30 {
+  letter-spacing: -0.02em;
+}
+
+.cls-31 {
+  letter-spacing: -0.02em;
+}
+
+.cls-32 {
+  letter-spacing: 0em;
+}
+
+.cls-33 {
+  letter-spacing: -0.1em;
+}
+
+.cls-34 {
+  letter-spacing: 0em;
+}
+
+.cls-35 {
+  fill: url(#linear-gradient);
+}
+
+.cls-36 {
+  letter-spacing: -0.06em;
+}
+
+.cls-37 {
+  letter-spacing: 0em;
+}
+
+.btn {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+}
+
+.btn.default {
+  background-color: #0054a4;
+  color: #fff;
+  font-size: 18px;
+}
+
+.hide {
+  display: none;
+}
