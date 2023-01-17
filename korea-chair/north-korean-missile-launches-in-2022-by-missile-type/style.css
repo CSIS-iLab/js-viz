@@ -178,168 +178,164 @@ p.info:last-of-type {
   }
 }
 
-.cls-1 {
-  letter-spacing: -0.02em;
-}
+      .cls-1, .cls-2 {
+        fill: none;
+      }
 
-.cls-2 {
-  letter-spacing: -0.01em;
-}
+      .cls-3 {
+        letter-spacing: 0em;
+      }
 
-.cls-3 {
-  letter-spacing: 0.01em;
-}
+      .cls-4 {
+        letter-spacing: 0em;
+      }
 
-.cls-4 {
-  font-family: Synthese-Regular, Synthese;
-}
+      .cls-5 {
+        fill: url(#linear-gradient);
+      }
 
-.cls-4,
-.cls-5 {
-  font-size: 21px;
-}
+      .cls-6 {
+        letter-spacing: -.02em;
+      }
 
-.cls-4,
-.cls-6 {
-  fill: #808285;
-}
+      .cls-7 {
+        letter-spacing: -.02em;
+      }
 
-.cls-7 {
-  letter-spacing: 0em;
-}
+      .cls-8 {
+        letter-spacing: -.02em;
+      }
 
-.cls-5 {
-  fill: #383737;
-}
+      .cls-9 {
+        letter-spacing: 0em;
+      }
 
-.cls-5,
-.cls-8 {
-  font-family: Synthese-Bold, Synthese;
-  font-weight: 700;
-}
+      .cls-10 {
+        fill: #005581;
+      }
 
-.cls-9 {
-  letter-spacing: -0.09em;
-}
+      .cls-11 {
+        fill: #d5e7f7;
+      }
 
-.cls-10 {
-  letter-spacing: -0.02em;
-}
+      .cls-12, .cls-13 {
+        fill: #808285;
+      }
 
-.cls-11 {
-  letter-spacing: 0em;
-}
+      .cls-14 {
+        letter-spacing: 0em;
+      }
 
-.cls-12 {
-  letter-spacing: 0em;
-}
+      .cls-15 {
+        letter-spacing: -.01em;
+      }
 
-.cls-13 {
-  fill: #d5e7f7;
-}
+      .cls-16 {
+        letter-spacing: 0em;
+      }
 
-.cls-14 {
-  letter-spacing: -0.04em;
-}
+      .cls-17 {
+        letter-spacing: 0em;
+      }
 
-.cls-15 {
-  letter-spacing: 0em;
-}
+      .cls-18 {
+        letter-spacing: 0em;
+      }
 
-.cls-16 {
-  letter-spacing: -0.07em;
-}
+      .cls-19 {
+        letter-spacing: 0em;
+      }
 
-.cls-17 {
-  letter-spacing: -0.01em;
-}
+      .cls-20 {
+        letter-spacing: 0em;
+      }
 
-.cls-18 {
-  letter-spacing: 0em;
-}
+      .cls-21 {
+        letter-spacing: -.04em;
+      }
 
-.cls-19 {
-  letter-spacing: 0em;
-}
+      .cls-22 {
+        font-size: 48px;
+      }
 
-.cls-20 {
-  fill: #005581;
-}
+      .cls-22, .cls-23 {
+        font-family: Synthese-Bold, Synthese;
+        font-weight: 700;
+      }
 
-.cls-8 {
-  font-size: 48px;
-}
+      .cls-24 {
+        letter-spacing: -.1em;
+      }
 
-.cls-21 {
-  letter-spacing: 0em;
-}
+      .cls-25 {
+        letter-spacing: 0em;
+      }
 
-.cls-22 {
-  letter-spacing: 0em;
-}
+      .cls-26 {
+        letter-spacing: 0em;
+      }
 
-.cls-23 {
-  letter-spacing: 0em;
-}
+      .cls-27 {
+        letter-spacing: -.01em;
+      }
 
-.cls-24 {
-  letter-spacing: 0em;
-}
+      .cls-28 {
+        letter-spacing: 0em;
+      }
 
-.cls-25 {
-  letter-spacing: 0em;
-}
+      .cls-29 {
+        letter-spacing: 0em;
+      }
 
-.cls-26 {
-  stroke: #36393a;
-  stroke-linejoin: round;
-  stroke-width: 0.5px;
-}
+      .cls-13 {
+        font-family: Synthese-Regular, Synthese;
+      }
 
-.cls-26,
-.cls-27 {
-  fill: none;
-}
+      .cls-13, .cls-23 {
+        font-size: 21px;
+      }
 
-.cls-28 {
-  letter-spacing: 0em;
-}
+      .cls-30 {
+        letter-spacing: -.09em;
+      }
 
-.cls-29 {
-  letter-spacing: -0.02em;
-}
+      .cls-31 {
+        letter-spacing: -.07em;
+      }
 
-.cls-30 {
-  letter-spacing: -0.02em;
-}
+      .cls-32 {
+        letter-spacing: 0em;
+      }
 
-.cls-31 {
-  letter-spacing: -0.02em;
-}
+      .cls-23 {
+        fill: #383737;
+      }
 
-.cls-32 {
-  letter-spacing: 0em;
-}
+      .cls-33 {
+        letter-spacing: -.06em;
+      }
 
-.cls-33 {
-  letter-spacing: -0.1em;
-}
+      .cls-2 {
+        stroke: #36393a;
+        stroke-linejoin: round;
+        stroke-width: .5px;
+      }
 
-.cls-34 {
-  letter-spacing: 0em;
-}
+      .cls-34 {
+        letter-spacing: 0em;
+      }
 
-.cls-35 {
-  fill: url(#linear-gradient);
-}
+      .cls-35 {
+        letter-spacing: -.02em;
+      }
 
-.cls-36 {
-  letter-spacing: -0.06em;
-}
+      .cls-36 {
+        letter-spacing: -.02em;
+      }
 
-.cls-37 {
-  letter-spacing: 0em;
-}
+      .cls-37 {
+        letter-spacing: .01em;
+      }
 
 .btn {
   padding: 5px 10px;
