@@ -41,9 +41,7 @@ Promise.all([getImages()]).then(markerArr => {
 	function theData(markerArr) {
 		let sql = new cartodb.SQL({ user: "csis" });
 		sql
-		.execute("SELECT * FROM csis.table_russia_btg_map_june_2022_data") // June 2022
-		// .execute("SELECT * FROM csis.russia_btg_map_1") // September 2022
-		// .execute("SELECT * FROM csis.russia_btg_map_february_2023_data") // February 2023
+		.execute("SELECT * FROM csis.russia_btg_map_1")
 		.done(function(data) {
 			const rows = data.rows;
 			// Loop through each battlement
@@ -101,21 +99,15 @@ Promise.all([getImages()]).then(markerArr => {
 });
 
 const client = new carto.Client({
-	apiKey: "pnZVz9LvA-eYA4tzJF6K5w", // June 2022
-	// apiKey: "moxuF6iP0jTe4tyXPtVK4Q", // September 2022
-	// apiKey: "zzhzybmAeI8PrGIOd4WHzg", // February 2023
+	apiKey: "moxuF6iP0jTe4tyXPtVK4Q",
 	username: "csis",
 });
 
 var basemap = L.tileLayer(
-	// June 22 Front Line
-	"https://api.mapbox.com/styles/v1/ilabmedia/cldou0qk3001o01p5dywaz1dt/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw", {} 
 	// September 22 Shaded Area
 	// "https://api.mapbox.com/styles/v1/ilabmedia/cl8aebndj003214oc83k3jncj/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw", {} 
 	// September 22 Front Line
-	// "https://api.mapbox.com/styles/v1/ilabmedia/cldotwx7e001v01phu3oui6te/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw", {}
-	// February 23 Front Line
-	// "https://api.mapbox.com/styles/v1/ilabmedia/cldov14wh001t01o3duhh9bbh/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw", {}
+	"https://api.mapbox.com/styles/v1/ilabmedia/cldotwx7e001v01phu3oui6te/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw", {}
 );
 
 var map = L.map("map", {
