@@ -105,7 +105,9 @@ const client = new carto.Client({
 
 var basemap = L.tileLayer(
 	// February 23 Front Line
-	"https://api.mapbox.com/styles/v1/ilabmedia/cldov14wh001t01o3duhh9bbh/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw", {}
+	"https://api.mapbox.com/styles/v1/ilabmedia/cldvy5ya3002201qfcqhyw53n/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw",
+  {}
+	//"https://api.mapbox.com/styles/v1/ilabmedia/cldov14wh001t01o3duhh9bbh/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw", {}
 );
 
 var map = L.map("map", {

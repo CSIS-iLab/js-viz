@@ -107,7 +107,7 @@ var basemap = L.tileLayer(
 	// September 22 Shaded Area
 	// "https://api.mapbox.com/styles/v1/ilabmedia/cl8aebndj003214oc83k3jncj/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw", {} 
 	// September 22 Front Line
-	"https://api.mapbox.com/styles/v1/ilabmedia/cldotwx7e001v01phu3oui6te/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw", {}
+  "https://api.mapbox.com/styles/v1/ilabmedia/cldvy0zjf001m01lbrz9ojrq0/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw"
 );
 
 var map = L.map("map", {
