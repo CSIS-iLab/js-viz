@@ -2,8 +2,8 @@
 // https://stackoverflow.com/questions/18480550/how-to-load-all-the-images-from-one-of-my-folder-into-my-web-page-using-jquery
 function getImages() {
 	return new Promise((resolve, reject) => {
-		// let url = 'http://127.0.0.1:5503/tnt-russia-btg-map/map/js/markers.json';
-		let url = 'https://feat-tnt-russia-ukraine-map--csis-js-viz.netlify.app/tnt-russia-btg-map/map/js/markers.json';
+		let url = 'http://127.0.0.1:5503/tnt-russia-btg-map/map/js/markers.json';
+		// let url = 'https://feat-tnt-russia-ukraine-map--csis-js-viz.netlify.app/tnt-russia-btg-map/map/js/markers.json';
 		fetch(url)
 		.then(res => res.json())
 		.then((markers) => {
@@ -19,8 +19,8 @@ function getImages() {
 			// Loop through the marker json file and create a marker object for each type
 			for (let x in markers) {
 				x = x.toLowerCase()
-				// let fullUrl = "http://127.0.0.1:5503/tnt-russia-btg-map/map/images/" + x + ".svg";
-				let fullUrl = "https://feat-tnt-russia-ukraine-map--csis-js-viz.netlify.app/tnt-russia-btg-map/map/images/" + x + ".svg";
+				let fullUrl = "http://127.0.0.1:5503/tnt-russia-btg-map/map/images/" + x + ".svg";
+				// let fullUrl = "https://feat-tnt-russia-ukraine-map--csis-js-viz.netlify.app/tnt-russia-btg-map/map/images/" + x + ".svg";
 				let filename2 = x.substring(x.lastIndexOf('/') + 1).replace(/\.[^/.]+$/, ""); // File name no ext
 				markerIcon = new IconBase({
 					iconUrl: fullUrl,
@@ -105,17 +105,18 @@ const client = new carto.Client({
 
 var basemap = L.tileLayer(
 	// June 22 Front Line
-	"https://api.mapbox.com/styles/v1/ilabmedia/cldou0qk3001o01p5dywaz1dt/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw", {} 
+	// "https://api.mapbox.com/styles/v1/ilabmedia/cldou0qk3001o01p5dywaz1dt/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw", {} 
+	// "https://api.mapbox.com/styles/v1/ilabmedia/clduiy4js00ar01p5fhusnfsg/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw", {} 
+	"https://api.mapbox.com/styles/v1/ilabmedia/cldutlowb000b01o0uj3m7yml/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw", {} 
 );
 
 var map = L.map("map", {
-	center: [48.95569267478989, 33.69398277149277],
-	zoom: 7,
+	center: [48.335, 33.993],
+	zoom: 7.5,
 	maxZoom: 20,
 	scrollWheelZoom: true,
-	minZoom: 6,
+	minZoom: 5,
 	zoomControl: false,
-	scrollWheelZoom: true,
 	layers: [basemap],
 	attributionControl: false,
 });
