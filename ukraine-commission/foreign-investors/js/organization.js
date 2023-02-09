@@ -1,7 +1,10 @@
 Highcharts.chart('container', {
   chart: {
     height: 600,
-    inverted: true
+    inverted: true,
+    style: {
+      fontFamily: "utopia-std",
+    },
   },
   title: {
     text: ''
