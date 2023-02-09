@@ -81,6 +81,7 @@ Highcharts.chart('container', {
     outside: true
   },
   exporting: {
+    enabled: false,
     allowHTML: true,
     sourceWidth: 800,
     sourceHeight: 600
