@@ -74,6 +74,7 @@ Highcharts.chart('container', {
     nodeWidth: 65
   }],
   tooltip: {
+    enabled: false,
     outside: true
   },
   exporting: {
