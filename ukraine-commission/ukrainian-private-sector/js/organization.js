@@ -25,7 +25,7 @@ Highcharts.chart('container', {
     name: 'Highsoft',
     keys: ['from', 'to'],
     data: [
-      ['Ukrainian Private Sector', 'Small and Medium Sized Enterprises (SMEs)'],
+      ['Ukrainian Private Sector', 'Small and Medium-Sized Enterprises (SMEs)'],
       ['Ukrainian Private Sector', 'Local Financial Institutions'],
       ['Local Financial Institutions', 'Investment Funds'],
       ['Local Financial Institutions', 'Banks'],
@@ -55,7 +55,7 @@ Highcharts.chart('container', {
     nodes: [{
       id: 'Ukrainian Private Sector'
     }, {
-      id: 'Small and Medium Sized Enterprises (SMEs)'
+      id: 'Small and Medium-Sized Enterprises (SMEs)'
     }, {
       id: 'Ukrainian Private Sector',
     }, {
