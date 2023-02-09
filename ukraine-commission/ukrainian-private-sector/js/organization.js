@@ -1,6 +1,6 @@
 Highcharts.chart('container', {
   chart: {
-    height: 600,
+    height: 450,
     inverted: true,
     style: {
       fontFamily: "utopia-std",
@@ -20,6 +20,9 @@ Highcharts.chart('container', {
       }
     }
   },
+  credits: {
+    enabled: false,
+    },
   series: [{
     type: 'organization',
     name: 'Highsoft',
@@ -80,6 +83,7 @@ Highcharts.chart('container', {
     outside: true
   },
   exporting: {
+    enabled: false,
     allowHTML: true,
     sourceWidth: 800,
     sourceHeight: 600

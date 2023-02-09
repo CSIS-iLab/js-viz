@@ -1,6 +1,6 @@
 Highcharts.chart('container', {
   chart: {
-    height: 600,
+    height: 450,
     inverted: true,
     style: {
       fontFamily: "utopia-std",
@@ -9,6 +9,9 @@ Highcharts.chart('container', {
   title: {
     text: ''
   },
+  credits: {
+    enabled: false,
+    },
   accessibility: {
     point: {
       descriptionFormatter: function(point) {
