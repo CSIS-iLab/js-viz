@@ -77,7 +77,10 @@ Promise.all([getImages()]).then(markerArr => {
 						// );
 						map.addLayer(marker)
 						oms.addMarker(marker)
-					};
+					}
+					else {
+						console.log("No marker for " + row.type)
+					}
 			})
 
 			oms.addListener('click', function(marker) {
