@@ -1,8 +1,5 @@
-const mapDate = 'jun22'
-// const mapDate = sep22
-// const mapDate = feb23
-
-const basemapURL = 'https://api.mapbox.com/styles/v1/ilabmedia/cldyt96dx001u01qwt6jptqgb/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw'
+const basemapURL = 'https://api.mapbox.com/styles/v1/ilabmedia/cldyvf17x007q01mtr5gwbo19/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw'
+// const basemapURL = 'https://api.mapbox.com/styles/v1/ilabmedia/cldyt96dx001u01qwt6jptqgb/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw'
 
 const cartoKey = '6KgYkqFnDfk6hEgC3TGvIw'
 
@@ -38,7 +35,6 @@ function getImages() {
 				});
 				markerArr.push(markerIcon)
 			}
-			console.log(cartoKey)
 			resolve(markerArr);
 		})
 		// .catch(err => { throw err });
@@ -82,20 +78,20 @@ Promise.all([getImages()]).then(markerArr => {
 						let marker = L.marker([row.lat, row.long], { icon: foundItem, riseOnHover: true, riseOffset: 1000 })
 						marker.data = row
 						// .bindPopup(
-						// 	'<h2>' + row.short_form_name + '</h2>' +
+						// 	'<h2>' + row.formal_name + '</h2>' +
 						// 	'<a href="' + row.source + '" target="_blank">Source</a>'
 						// );
 						map.addLayer(marker)
 						oms.addMarker(marker)
 					}
-					else {
-						console.log("No marker for " + row.type)
-					}
+					// else {
+					// 	console.log("No marker for " + row.type)
+					// }
 			})
 
 			oms.addListener('click', function(marker) {
 				// console.log("bounds:" + bounds + "; marker latlng:" + marker.getLatLng())
-				popup.setContent(marker.data.short_form_name);
+				popup.setContent(marker.data.formal_name + ' ' + marker.data.type);
 				popup.setLatLng(marker.getLatLng());
 				map.openPopup(popup);
 			});
@@ -111,6 +107,7 @@ Promise.all([getImages()]).then(markerArr => {
 	};
 });
 
+
 const client = new carto.Client({
 	apiKey: cartoKey,
 	username: "csis",
@@ -120,6 +117,16 @@ var basemap = L.tileLayer(
 	basemapURL, {} 
 );
 
+// let frontLineLayer = L.tileLayer('https://api.mapbox.com/v4/{tilesetId}/{z}/{x}/{y}.png?access_token={accessToken}', {
+//   maxZoom: 18,
+//   accessToken: 'pk.eyJ1IjoiY3Npc3RudCIsImEiOiJjbDgxdzhxaGwwazI5M3ZwODNwOXlvZnpkIn0.a52jV7qfM8GXEqCvkoM3MA',
+//   tilesetId: 'csistnt.cl833o32g01kx27ql6adys123-7l5eh',
+// 	'paint': {
+// 	'line-color': 'red',
+// 	'line-width': 1
+// }
+// })
+
 var map = L.map("map", {
 	center: [48.158, 33.69398277149277],
 	zoom: 7,
@@ -128,7 +135,7 @@ var map = L.map("map", {
 	minZoom: 6,
 	zoomControl: false,
 	scrollWheelZoom: true,
-	layers: [basemap],
+	layers: [basemap, /*frontLineLayer*/],
 	attributionControl: false,
 });
 
@@ -193,6 +200,17 @@ const popup = L.popup({ closeButton: true });
 // 		popup.openOn(map);
 // 	}
 // }
+
+
+// L.tileLayer('https://api.mapbox.com/v4/{tilesetId}/{z}/{x}/{y}.png?access_token={accessToken}', {
+//   maxZoom: 18,
+//   accessToken: 'pk.eyJ1IjoiY3Npc3RudCIsImEiOiJjbDgxdzhxaGwwazI5M3ZwODNwOXlvZnpkIn0.a52jV7qfM8GXEqCvkoM3MA',
+//   tilesetId: 'csistnt.cl833o32g01kx27ql6adys123-7l5eh',
+// 	'paint': {
+// 	'line-color': '#877b59',
+// 	'line-width': 1
+// }
+// }).addTo(map);
 
 L.control
 	.attribution({
