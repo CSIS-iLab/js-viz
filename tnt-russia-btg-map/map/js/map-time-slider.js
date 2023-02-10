@@ -1,9 +1,28 @@
 const basemapURL = 'https://api.mapbox.com/styles/v1/ilabmedia/cldyvf17x007q01mtr5gwbo19/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw'
-// const basemapURL = 'https://api.mapbox.com/styles/v1/ilabmedia/cldyt96dx001u01qwt6jptqgb/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw'
 
-const cartoKey = '6KgYkqFnDfk6hEgC3TGvIw'
+const cartoKeyMarkers = '6KgYkqFnDfk6hEgC3TGvIw'
 
-const cartoSource = 'russia_btg_map_all_time_data'
+const cartoSourceMarkers = 'russia_btg_map_all_time_data'
+
+const cartoLineCreds = {
+	jun22: {
+		cartoKeyLine: 'gICLO39dWYQi_l5UoPgp9A',
+		cartoSourceLine: 'tnt_front_line_jun_22'
+	},
+	sep22: {
+		cartoKeyLine: 'jrX_1lk57KE-Zi8cHXGdYA',
+		cartoSourceLine: 'tnt_front_line_sep_22'
+	},
+	feb23: {
+		cartoKeyLine: 'r5WQgBp1JyitwLiTV5_vMQ',
+		cartoSourceLine: 'tnt_front_line_feb_23'
+	}
+}
+
+let cartoLine = new carto.Client({
+  apiKey: cartoLineCreds.jun22.cartoKeyLine,
+  username: "csis",
+});
 
 // Get all markers from images dir
 // https://stackoverflow.com/questions/18480550/how-to-load-all-the-images-from-one-of-my-folder-into-my-web-page-using-jquery
@@ -47,7 +66,7 @@ Promise.all([getImages()]).then(markerArr => {
 	function theData(markerArr) {
 		let sql = new cartodb.SQL({ user: "csis" });
 		sql
-		.execute("SELECT * FROM csis." + cartoSource) 
+		.execute("SELECT * FROM csis." + cartoSourceMarkers) 
 		.done(function(data) {
 			const rows = data.rows;
 			// Loop through each battlement
@@ -109,9 +128,10 @@ Promise.all([getImages()]).then(markerArr => {
 
 
 const client = new carto.Client({
-	apiKey: cartoKey,
+	apiKey: cartoKeyMarkers,
 	username: "csis",
 });
+
 
 var basemap = L.tileLayer(
 	basemapURL, {} 
@@ -139,7 +159,7 @@ var map = L.map("map", {
 	attributionControl: false,
 });
 
-const mapSource = new carto.source.SQL(`SELECT * FROM csis.` + cartoSource);
+const mapSource = new carto.source.SQL(`SELECT * FROM csis.` + cartoSourceMarkers);
 
 const mapStyle = new carto.style.CartoCSS(`
 // #layer {
