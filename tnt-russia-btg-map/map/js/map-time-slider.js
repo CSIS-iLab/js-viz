@@ -36,8 +36,8 @@ function getImages() {
 			let markerIcon = "";
 			let IconBase = L.Icon.extend({
 				options: {
-					iconSize: [60, 60],
-					iconAnchor: [30, 30],
+					iconSize: [25, 25],
+					iconAnchor: [12, 12],
 					popupAnchor: [3, 0],
 				},
 			});
