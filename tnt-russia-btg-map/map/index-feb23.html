@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Title of Map | CSIS Program Name</title>
+    <meta name="viewport" content="initial-scale=1.0" />
+    <meta charset="utf-8" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700" rel="stylesheet" />
+
+    <!-- Share meta -->
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Title of Map - CSIS Program Title" />
+
+    <script src="https://unpkg.com/babel-polyfill@6.26.0/dist/polyfill.js"></script>
+    <!-- Include Leaflet -->
+    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
+    <link href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" rel="stylesheet" />
+    <!-- Include CARTO.js -->
+    <script src="https://cartodb-libs.global.ssl.fastly.net/cartodb.js/v3/3.15/cartodb.js"></script>
+    <!-- <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script> -->
+    <script src="https://libs.cartocdn.com/carto.js/v4.1.11/carto.min.js"></script>
+    <link href="https://carto.com/developers/carto-js/examples/maps/public/style.css" rel="stylesheet" />
+
+    <!-- Include Leaflet Spiderifier Plugin-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OverlappingMarkerSpiderfier-Leaflet/0.2.6/oms.min.js"></script>
+
+    <link rel="preconnect stylesheet" href="https://use.typekit.net/ats0hoc.css" />
+
+    <link href="css/map.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div id="map" class="map" tabindex="0"></div>
+<!-- 
+    <aside class="toolbox">
+
+        <section class="box">
+            <header>
+                <h1>Title of Map</h1>
+            </header>
+            <section>
+                <p class="description open-sans">
+                    Hover over the interactive map to learn more detail about xyz countries around the world
+                </p>
+                <hr />
+                <div class="button-container">
+                    <div class="button__title">Legend and options go here</div>
+                </div>
+                <!-- <ul id="legend" class="legend" data-type="total_cases">
+                    <li id="ramp1" class="legend__value"><span></span></li>
+                    <li id="ramp2" class="legend__value"><span>1k</span></li>
+                    <li id="ramp3" class="legend__value"><span>5k</span></li>
+                    <li id="ramp4" class="legend__value"><span>10k</span></li>
+                    <li id="ramp5" class="legend__value"><span>30k</span></li>
+                    <li id="ramp6" class="legend__value"><span>100k</span></li>
+                </ul> -->
+            <!-- </section> -->
+            <!-- </section> -->
+            <!-- <footer class="js-footer"></footer> -->
+    <!-- </aside> --> -->
+
+    <!-- * Comment in the map you want to see and comment the rest out -->
+    <script src="js/map-feb23.js"></script>
+    <!-- <script src="js/map-time-slider.js"></script> -->
+</body>
+
+</html>
