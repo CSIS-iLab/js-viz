@@ -93,12 +93,18 @@ Promise.all([getImages()]).then((markerArr) => {
             // 	'<a href="' + row.source + '" target="_blank">Source</a>'
             // );
 
-            if (row.date in markersByDate) {
-              markersByDate[row.date];
-            } else {
-              markersByDate[row.date] = [marker];
+            const date = new Date(row.date);
+
+            if (!dates.includes(date.getTime())) {
+              dates.push(date.getTime());
             }
-            markersByDate[row.date].push(marker);
+
+            if (row.date in markersByDate) {
+              markersByDate[date.getTime()];
+            } else {
+              markersByDate[date.getTime()] = [marker];
+            }
+            markersByDate[date.getTime()].push(marker);
 
             //map.addLayer(marker);
             oms.addMarker(marker);
@@ -107,7 +113,7 @@ Promise.all([getImages()]).then((markerArr) => {
           // 	console.log("No marker for " + row.type)
           // }
         });
-        console.log(dates);
+        console.log("dates", dates);
         for (array in markersByDate) {
           console.log(array);
           array = L.layerGroup(markersByDate[array]);
