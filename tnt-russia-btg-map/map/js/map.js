@@ -1,13 +1,14 @@
-const mapDate = 'jun22'
-// const mapDate = sep22
-// const mapDate = feb23
+// const mapDate = 'jun22'
+// const mapDate = 'sep22'
+const mapDate = 'feb23'
 
 const basemapURL = {
-	jun22: 'https://api.mapbox.com/styles/v1/ilabmedia/cldou0qk3001o01p5dywaz1dt/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw',
-	sep22: 'https://api.mapbox.com/styles/v1/ilabmedia/cldotwx7e001v01phu3oui6te/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw',
-	sep22shaded: 'https://api.mapbox.com/styles/v1/ilabmedia/cl8aebndj003214oc83k3jncj/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw',
-	feb23: 'https://api.mapbox.com/styles/v1/ilabmedia/cldov14wh001t01o3duhh9bbh/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw'
+	jun22: 'https://api.mapbox.com/styles/v1/ilabmedia/cldutlowb000b01o0uj3m7yml/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw',
+	sep22: 'https://api.mapbox.com/styles/v1/ilabmedia/cldvy0zjf001m01lbrz9ojrq0/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw',
+	sep22shaded: 'https://api.mapbox.com/styles/v1/ilabmedia/cldotxfrb001n01p5m7ku7k42/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw',
+	feb23: 'https://api.mapbox.com/styles/v1/ilabmedia/cldvy5ya3002201qfcqhyw53n/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw'
 }
+
 
 const cartoKey = {
 	jun22: 'pnZVz9LvA-eYA4tzJF6K5w',
@@ -33,7 +34,7 @@ function getImages() {
 			let markerIcon = "";
 			let IconBase = L.Icon.extend({
 				options: {
-					iconSize: [60, 60],
+					iconSize: [0, 60],
 					iconAnchor: [30, 30],
 					popupAnchor: [3, 0],
 				},
@@ -98,6 +99,7 @@ Promise.all([getImages()]).then(markerArr => {
 						// 	'<h2>' + row.short_form_name + '</h2>' +
 						// 	'<a href="' + row.source + '" target="_blank">Source</a>'
 						// );
+						console.log(marker)
 						map.addLayer(marker)
 						oms.addMarker(marker)
 					}
@@ -130,7 +132,7 @@ const client = new carto.Client({
 });
 
 var basemap = L.tileLayer(
-	basemapURL.mapDate, {} 
+	basemapURL[mapDate], {} 
 );
 
 var map = L.map("map", {
