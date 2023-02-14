@@ -52,7 +52,6 @@ function getImages() {
 				});
 				markerArr.push(markerIcon)
 			}
-			console.log(cartoKey[mapDate])
 			resolve(markerArr);
 		})
 		// .catch(err => { throw err });
@@ -99,7 +98,6 @@ Promise.all([getImages()]).then(markerArr => {
 						// 	'<h2>' + row.short_form_name + '</h2>' +
 						// 	'<a href="' + row.source + '" target="_blank">Source</a>'
 						// );
-						console.log(marker)
 						map.addLayer(marker)
 						oms.addMarker(marker)
 					}
