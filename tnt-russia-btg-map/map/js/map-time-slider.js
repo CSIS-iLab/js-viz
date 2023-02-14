@@ -1,3 +1,29 @@
+const basemapURL = 'https://api.mapbox.com/styles/v1/ilabmedia/cldyvf17x007q01mtr5gwbo19/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw'
+
+const cartoKeyMarkers = '6KgYkqFnDfk6hEgC3TGvIw'
+
+const cartoSourceMarkers = 'russia_btg_map_all_time_data'
+
+const cartoLineCreds = {
+	jun22: {
+		cartoKeyLine: 'gICLO39dWYQi_l5UoPgp9A',
+		cartoSourceLine: 'tnt_front_line_jun_22'
+	},
+	sep22: {
+		cartoKeyLine: 'jrX_1lk57KE-Zi8cHXGdYA',
+		cartoSourceLine: 'tnt_front_line_sep_22'
+	},
+	feb23: {
+		cartoKeyLine: 'r5WQgBp1JyitwLiTV5_vMQ',
+		cartoSourceLine: 'tnt_front_line_feb_23'
+	}
+}
+
+let cartoLine = new carto.Client({
+  apiKey: cartoLineCreds.jun22.cartoKeyLine,
+  username: "csis",
+});
+
 // Get all markers from images dir
 // https://stackoverflow.com/questions/18480550/how-to-load-all-the-images-from-one-of-my-folder-into-my-web-page-using-jquery
 function getImages() {
@@ -32,7 +58,6 @@ function getImages() {
 		})
 		// .catch(err => { throw err });
 	})
-
 };
 
 Promise.all([getImages()]).then(markerArr => {
@@ -41,7 +66,7 @@ Promise.all([getImages()]).then(markerArr => {
 	function theData(markerArr) {
 		let sql = new cartodb.SQL({ user: "csis" });
 		sql
-		.execute("SELECT * FROM csis.table_russia_btg_map_june_2022_data")
+		.execute("SELECT * FROM csis." + cartoSourceMarkers) 
 		.done(function(data) {
 			const rows = data.rows;
 			// Loop through each battlement
@@ -72,20 +97,20 @@ Promise.all([getImages()]).then(markerArr => {
 						let marker = L.marker([row.lat, row.long], { icon: foundItem, riseOnHover: true, riseOffset: 1000 })
 						marker.data = row
 						// .bindPopup(
-						// 	'<h2>' + row.short_form_name + '</h2>' +
+						// 	'<h2>' + row.formal_name + '</h2>' +
 						// 	'<a href="' + row.source + '" target="_blank">Source</a>'
 						// );
 						map.addLayer(marker)
 						oms.addMarker(marker)
 					}
-					else {
-						console.log("No marker for " + row.type)
-					}
+					// else {
+					// 	console.log("No marker for " + row.type)
+					// }
 			})
 
 			oms.addListener('click', function(marker) {
 				// console.log("bounds:" + bounds + "; marker latlng:" + marker.getLatLng())
-				popup.setContent(marker.data.short_form_name);
+				popup.setContent(marker.data.formal_name + ' ' + marker.data.type);
 				popup.setLatLng(marker.getLatLng());
 				map.openPopup(popup);
 			});
@@ -101,30 +126,40 @@ Promise.all([getImages()]).then(markerArr => {
 	};
 });
 
+
 const client = new carto.Client({
-	apiKey: "pnZVz9LvA-eYA4tzJF6K5w",
+	apiKey: cartoKeyMarkers,
 	username: "csis",
 });
 
+
 var basemap = L.tileLayer(
-	// June 22 Front Line
-	// "https://api.mapbox.com/styles/v1/ilabmedia/cldou0qk3001o01p5dywaz1dt/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw", {} 
-	// "https://api.mapbox.com/styles/v1/ilabmedia/clduiy4js00ar01p5fhusnfsg/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw", {} 
-	"https://api.mapbox.com/styles/v1/ilabmedia/cldutlowb000b01o0uj3m7yml/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw", {} 
+	basemapURL, {} 
 );
 
+// let frontLineLayer = L.tileLayer('https://api.mapbox.com/v4/{tilesetId}/{z}/{x}/{y}.png?access_token={accessToken}', {
+//   maxZoom: 18,
+//   accessToken: 'pk.eyJ1IjoiY3Npc3RudCIsImEiOiJjbDgxdzhxaGwwazI5M3ZwODNwOXlvZnpkIn0.a52jV7qfM8GXEqCvkoM3MA',
+//   tilesetId: 'csistnt.cl833o32g01kx27ql6adys123-7l5eh',
+// 	'paint': {
+// 	'line-color': 'red',
+// 	'line-width': 1
+// }
+// })
+
 var map = L.map("map", {
-	center: [48.335, 33.993],
-	zoom: 7.5,
+	center: [48.158, 33.69398277149277],
+	zoom: 7,
 	maxZoom: 20,
 	scrollWheelZoom: true,
-	minZoom: 5,
+	minZoom: 6,
 	zoomControl: false,
-	layers: [basemap],
+	scrollWheelZoom: true,
+	layers: [basemap, /*frontLineLayer*/],
 	attributionControl: false,
 });
 
-const mapSource = new carto.source.SQL(`SELECT * FROM csis.table_russia_btg_map_june_2022_data`);
+const mapSource = new carto.source.SQL(`SELECT * FROM csis.` + cartoSourceMarkers);
 
 const mapStyle = new carto.style.CartoCSS(`
 // #layer {
@@ -185,6 +220,17 @@ const popup = L.popup({ closeButton: true });
 // 		popup.openOn(map);
 // 	}
 // }
+
+
+// L.tileLayer('https://api.mapbox.com/v4/{tilesetId}/{z}/{x}/{y}.png?access_token={accessToken}', {
+//   maxZoom: 18,
+//   accessToken: 'pk.eyJ1IjoiY3Npc3RudCIsImEiOiJjbDgxdzhxaGwwazI5M3ZwODNwOXlvZnpkIn0.a52jV7qfM8GXEqCvkoM3MA',
+//   tilesetId: 'csistnt.cl833o32g01kx27ql6adys123-7l5eh',
+// 	'paint': {
+// 	'line-color': '#877b59',
+// 	'line-width': 1
+// }
+// }).addTo(map);
 
 L.control
 	.attribution({

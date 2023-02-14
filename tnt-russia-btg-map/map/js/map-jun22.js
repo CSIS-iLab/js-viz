@@ -1,3 +1,27 @@
+const mapDate = 'jun22'
+// const mapDate = 'sep22'
+// const mapDate = 'feb23'
+
+const basemapURL = {
+	jun22: 'https://api.mapbox.com/styles/v1/ilabmedia/cldutlowb000b01o0uj3m7yml/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw',
+	sep22: 'https://api.mapbox.com/styles/v1/ilabmedia/cldvy0zjf001m01lbrz9ojrq0/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw',
+	sep22shaded: 'https://api.mapbox.com/styles/v1/ilabmedia/cldotxfrb001n01p5m7ku7k42/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw',
+	feb23: 'https://api.mapbox.com/styles/v1/ilabmedia/cldvy5ya3002201qfcqhyw53n/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw'
+}
+
+
+const cartoKey = {
+	jun22: 'pnZVz9LvA-eYA4tzJF6K5w',
+	sep22: 'moxuF6iP0jTe4tyXPtVK4Q',
+	feb23: 'zzhzybmAeI8PrGIOd4WHzg'
+}
+
+const cartoSource = {
+	jun22: 'table_russia_btg_map_june_2022_data',
+	sep22: 'russia_btg_map_1',
+	feb23: 'russia_btg_map_february_2023_data'
+}
+
 // Get all markers from images dir
 // https://stackoverflow.com/questions/18480550/how-to-load-all-the-images-from-one-of-my-folder-into-my-web-page-using-jquery
 function getImages() {
@@ -10,8 +34,8 @@ function getImages() {
 			let markerIcon = "";
 			let IconBase = L.Icon.extend({
 				options: {
-					iconSize: [60, 60],
-					iconAnchor: [30, 30],
+					iconSize: [25, 25],
+					iconAnchor: [15, 15],
 					popupAnchor: [3, 0],
 				},
 			});
@@ -32,7 +56,6 @@ function getImages() {
 		})
 		// .catch(err => { throw err });
 	})
-
 };
 
 Promise.all([getImages()]).then(markerArr => {
@@ -41,7 +64,7 @@ Promise.all([getImages()]).then(markerArr => {
 	function theData(markerArr) {
 		let sql = new cartodb.SQL({ user: "csis" });
 		sql
-		.execute("SELECT * FROM csis.russia_btg_map_1")
+		.execute("SELECT * FROM csis." + cartoSource[mapDate]) 
 		.done(function(data) {
 			const rows = data.rows;
 			// Loop through each battlement
@@ -102,19 +125,16 @@ Promise.all([getImages()]).then(markerArr => {
 });
 
 const client = new carto.Client({
-	apiKey: "moxuF6iP0jTe4tyXPtVK4Q",
+	apiKey: cartoKey[mapDate],
 	username: "csis",
 });
 
 var basemap = L.tileLayer(
-	// September 22 Shaded Area
-	// "https://api.mapbox.com/styles/v1/ilabmedia/cl8aebndj003214oc83k3jncj/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw", {} 
-	// September 22 Front Line
-  "https://api.mapbox.com/styles/v1/ilabmedia/cldvy0zjf001m01lbrz9ojrq0/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw"
+	basemapURL[mapDate], {} 
 );
 
 var map = L.map("map", {
-	center: [48.95569267478989, 33.69398277149277],
+	center: [48.158, 33.69398277149277],
 	zoom: 7,
 	maxZoom: 20,
 	scrollWheelZoom: true,
@@ -125,7 +145,7 @@ var map = L.map("map", {
 	attributionControl: false,
 });
 
-const mapSource = new carto.source.SQL(`SELECT * FROM csis.russia_btg_map_1`);
+const mapSource = new carto.source.SQL(`SELECT * FROM csis.` + cartoSource[mapDate]);
 
 const mapStyle = new carto.style.CartoCSS(`
 // #layer {
