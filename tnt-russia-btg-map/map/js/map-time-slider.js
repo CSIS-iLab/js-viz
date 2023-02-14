@@ -4,26 +4,6 @@ const cartoKeyMarkers = '6KgYkqFnDfk6hEgC3TGvIw'
 
 const cartoSourceMarkers = 'russia_btg_map_all_time_data'
 
-const cartoLineCreds = {
-	jun22: {
-		cartoKeyLine: 'gICLO39dWYQi_l5UoPgp9A',
-		cartoSourceLine: 'tnt_front_line_jun_22'
-	},
-	sep22: {
-		cartoKeyLine: 'jrX_1lk57KE-Zi8cHXGdYA',
-		cartoSourceLine: 'tnt_front_line_sep_22'
-	},
-	feb23: {
-		cartoKeyLine: 'r5WQgBp1JyitwLiTV5_vMQ',
-		cartoSourceLine: 'tnt_front_line_feb_23'
-	}
-}
-
-let cartoLine = new carto.Client({
-  apiKey: cartoLineCreds.jun22.cartoKeyLine,
-  username: "csis",
-});
-
 // Get all markers from images dir
 // https://stackoverflow.com/questions/18480550/how-to-load-all-the-images-from-one-of-my-folder-into-my-web-page-using-jquery
 function getImages() {
@@ -132,6 +112,33 @@ const client = new carto.Client({
 	username: "csis",
 });
 
+const clientJun22Line = new carto.Client({
+  apiKey: 'gICLO39dWYQi_l5UoPgp9A',
+  username: "csis",
+});
+
+const clientSep22Line = new carto.Client({
+  apiKey: 'jrX_1lk57KE-Zi8cHXGdYA',
+  username: "csis",
+});
+
+const clientFeb23Line = new carto.Client({
+  apiKey: 'r5WQgBp1JyitwLiTV5_vMQ',
+  username: "csis",
+});
+
+const jun22LineSource = new carto.source.SQL(
+  `SELECT * FROM tnt_front_line_jun_22`
+);
+
+const sep22LineSource = new carto.source.SQL(
+  `SELECT * FROM tnt_front_line_sep_22`
+);
+
+const feb23LineSource = new carto.source.SQL(
+  `SELECT * FROM tnt_front_line_feb_23`
+);
+
 
 var basemap = L.tileLayer(
 	basemapURL, {} 
@@ -170,12 +177,27 @@ const mapStyle = new carto.style.CartoCSS(`
 //   marker-line-opacity: 1;
 // }
 `);
+
+const frontlineStyle = new carto.style.CartoCSS(`
+#layer {
+  line-width: 1.5;
+  line-color: #6d3738;
+  line-opacity: 1;
+}
+`);
+
 const mapLayer = new carto.layer.Layer(mapSource, mapStyle, {
     featureOverColumns: ["formal_name", "short_form_name", "type", "size", "hq_tail2", "country", "lat", "long", "source"],
 });
 
+const frontlineLayer = new carto.layer.Layer(feb23LineSource, frontlineStyle, {
+	featureOverColumns: [],
+});
+
+clientFeb23Line.addLayer(frontlineLayer)
 
 client.getLeafletLayer().bringToFront().addTo(map);
+clientFeb23Line.getLeafletLayer().bringToFront().addTo(map);
 
 let omsOptions = {
 	circleFootSeparation: 30,
