@@ -147,17 +147,17 @@ const client = new carto.Client({
 });
 
 const clientJun22Line = new carto.Client({
-  apiKey: "gICLO39dWYQi_l5UoPgp9A",
+  apiKey: "WYrccBydto49RIGwMrFkJg",
   username: "csis",
 });
 
 const clientSep22Line = new carto.Client({
-  apiKey: "jrX_1lk57KE-Zi8cHXGdYA",
+  apiKey: "bznw-odz3uV7GwQ7NuedQA",
   username: "csis",
 });
 
 const clientFeb23Line = new carto.Client({
-  apiKey: "r5WQgBp1JyitwLiTV5_vMQ",
+  apiKey: "DU8i5Tj1aDCJ47jAaye9Sw",
   username: "csis",
 });
 
@@ -230,11 +230,12 @@ const mapLayer = new carto.layer.Layer(mapSource, mapStyle, {
     "lat",
     "long",
     "source",
+		"date"
   ],
 });
 
 const frontlineLayer = new carto.layer.Layer(feb23LineSource, frontlineStyle, {
-  featureOverColumns: [],
+  featureOverColumns: ["date"],
 });
 
 clientFeb23Line.addLayer(frontlineLayer);
