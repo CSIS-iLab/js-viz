@@ -114,6 +114,7 @@ Promise.all([getImages()]).then((markerArr) => {
           // }
         });
         console.log("dates", dates);
+				dates.sort()
         for (array in markersByDate) {
           console.log(array);
           array = L.layerGroup(markersByDate[array]);
