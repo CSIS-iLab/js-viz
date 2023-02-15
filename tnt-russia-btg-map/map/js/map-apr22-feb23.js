@@ -9,7 +9,9 @@ const basemapURL = {
 	// Dashed lines
 	// feb23: 'https://api.mapbox.com/styles/v1/ilabmedia/cldz0u8x2001x01lgin3o9tr3/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw'
 	// Solid lines
-	feb23: 'https://api.mapbox.com/styles/v1/ilabmedia/cle5xtm05000601p2c2c02kdc/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw'
+	// feb23: 'https://api.mapbox.com/styles/v1/ilabmedia/cle5xtm05000601p2c2c02kdc/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw'
+	// February, April & June front lines
+	feb23: 'https://api.mapbox.com/styles/v1/ilabmedia/cle628xq7005n01pavfl86slk/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw'
 }
 
 const cartoKey = {
