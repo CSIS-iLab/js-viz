@@ -6,7 +6,10 @@ const basemapURL = {
 	jun22: 'https://api.mapbox.com/styles/v1/ilabmedia/cldutlowb000b01o0uj3m7yml/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw',
 	sep22: 'https://api.mapbox.com/styles/v1/ilabmedia/cldvy0zjf001m01lbrz9ojrq0/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw',
 	sep22shaded: 'https://api.mapbox.com/styles/v1/ilabmedia/cldotxfrb001n01p5m7ku7k42/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw',
-	feb23: 'https://api.mapbox.com/styles/v1/ilabmedia/cldz0u8x2001x01lgin3o9tr3/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw'
+	// Dashed lines
+	// feb23: 'https://api.mapbox.com/styles/v1/ilabmedia/cldz0u8x2001x01lgin3o9tr3/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw'
+	// Solid lines
+	feb23: 'https://api.mapbox.com/styles/v1/ilabmedia/cle5xtm05000601p2c2c02kdc/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw'
 }
 
 const cartoKey = {
@@ -25,8 +28,8 @@ const cartoSource = {
 // https://stackoverflow.com/questions/18480550/how-to-load-all-the-images-from-one-of-my-folder-into-my-web-page-using-jquery
 function getImages() {
 	return new Promise((resolve, reject) => {
-		// let url = 'http://127.0.0.1:5503/tnt-russia-btg-map/map/js/markers.json';
-		let url = 'https://csis-js-viz.netlify.app/tnt-russia-btg-map/map/js/markers.json';
+		let url = 'http://127.0.0.1:5503/tnt-russia-btg-map/map/js/markers.json';
+		// let url = 'https://csis-js-viz.netlify.app/tnt-russia-btg-map/map/js/markers.json';
 		fetch(url)
 		.then(res => res.json())
 		.then((markers) => {
@@ -42,8 +45,8 @@ function getImages() {
 			// Loop through the marker json file and create a marker object for each type
 			for (let x in markers) {
 				x = x.toLowerCase()
-				// let fullUrl = "http://127.0.0.1:5503/tnt-russia-btg-map/map/images/" + x + ".svg";
-				let fullUrl = "https://csis-js-viz.netlify.app/tnt-russia-btg-map/map/images/" + x + ".svg";
+				let fullUrl = "http://127.0.0.1:5503/tnt-russia-btg-map/map/images/" + x + ".svg";
+				// let fullUrl = "https://csis-js-viz.netlify.app/tnt-russia-btg-map/map/images/" + x + ".svg";
 				let filename2 = x.substring(x.lastIndexOf('/') + 1).replace(/\.[^/.]+$/, ""); // File name no ext
 				markerIcon = new IconBase({
 					iconUrl: fullUrl,
@@ -97,7 +100,7 @@ Promise.all([getImages()]).then(markerArr => {
 						// 	'<h2>' + row.short_form_name + '</h2>' +
 						// 	'<a href="' + row.source + '" target="_blank">Source</a>'
 						// );
-						map.addLayer(marker)
+						// map.addLayer(marker)
 						oms.addMarker(marker)
 					}
 					else {
