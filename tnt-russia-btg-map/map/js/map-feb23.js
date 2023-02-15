@@ -6,7 +6,7 @@ const basemapURL = {
 	// Dashed line
 	// feb23: 'https://api.mapbox.com/styles/v1/ilabmedia/cldvy5ya3002201qfcqhyw53n/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw'
 	// Solid line
-	feb23: 'https://api.mapbox.com/styles/v1/ilabmedia/cle5y69v5000i01ryvjao72wo/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw'
+	feb23: 'https://api.mapbox.com/styles/v1/ilabmedia/cle6397ai001j01rw5mkxudpf/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw'
 }
 
 const cartoKey = {
