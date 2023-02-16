@@ -113,16 +113,17 @@ Promise.all([getImages()]).then((markerArr) => {
           // 	console.log("No marker for " + row.type)
           // }
         });
-        console.log("dates", dates);
 				dates.sort()
+				len = dates.length;
+				timeline.setupTimeline({ start: dates[0], end: dates[len - 1] });
+
         for (array in markersByDate) {
-          console.log(markersByDate);
           array = L.layerGroup(markersByDate[array]);
           layerGroups.push(array);
         }
         console.log(markersByDate);
         console.log(layerGroups);
-        map.addLayer(layerGroups[1]);
+        map.addLayer(layerGroups[0]);
 
         oms.addListener("click", function (marker) {
           // console.log("bounds:" + bounds + "; marker latlng:" + marker.getLatLng())
@@ -176,15 +177,6 @@ const feb23LineSource = new carto.source.SQL(
 
 var basemap = L.tileLayer(basemapURL, {});
 
-// let frontLineLayer = L.tileLayer('https://api.mapbox.com/v4/{tilesetId}/{z}/{x}/{y}.png?access_token={accessToken}', {
-//   maxZoom: 18,
-//   accessToken: 'pk.eyJ1IjoiY3Npc3RudCIsImEiOiJjbDgxdzhxaGwwazI5M3ZwODNwOXlvZnpkIn0.a52jV7qfM8GXEqCvkoM3MA',
-//   tilesetId: 'csistnt.cl833o32g01kx27ql6adys123-7l5eh',
-// 	'paint': {
-// 	'line-color': 'red',
-// 	'line-width': 1
-// }
-// })
 
 var map = L.map("map", {
   center: [48.158, 33.69398277149277],
@@ -194,7 +186,7 @@ var map = L.map("map", {
   minZoom: 6,
   zoomControl: false,
   scrollWheelZoom: true,
-  layers: [basemap /*frontLineLayer*/],
+  layers: [basemap],
   attributionControl: false,
 });
 
@@ -255,49 +247,6 @@ const oms = new OverlappingMarkerSpiderfier(map, omsOptions);
 
 const popup = L.popup({ closeButton: true });
 
-// mapLayer.on(carto.layer.events.FEATURE_CLICKED, createPopup);
-// oms.addListener('click', createPopup);
-
-// var popup = new L.Popup();
-// oms.addListener('click', function(marker) {
-// 	console.log(marker)
-//   popup.setContent(marker.desc);
-//   popup.setLatLng(marker.getLatLng());
-//   map.openPopup(popup);
-// });
-
-// function createPopup(event) {
-// 	popup.setLatLng(event.latLng);
-
-// 	if (!popup.isOpen()) {
-// 		var data = event.data;
-// 		console.log(event.data);
-// 		var content = "<div>";
-
-// 		content += `
-// 		<div class="popupHeaderStyle">
-// 		${data.short_form_name}
-// 		</div>
-// 		<div class="popupEntryStyle">
-// 		${data.formal_name}
-// 		</div>
-// 		`;
-
-// 		popup.setContent("" + content);
-// 		popup.openOn(map);
-// 	}
-// }
-
-// L.tileLayer('https://api.mapbox.com/v4/{tilesetId}/{z}/{x}/{y}.png?access_token={accessToken}', {
-//   maxZoom: 18,
-//   accessToken: 'pk.eyJ1IjoiY3Npc3RudCIsImEiOiJjbDgxdzhxaGwwazI5M3ZwODNwOXlvZnpkIn0.a52jV7qfM8GXEqCvkoM3MA',
-//   tilesetId: 'csistnt.cl833o32g01kx27ql6adys123-7l5eh',
-// 	'paint': {
-// 	'line-color': '#877b59',
-// 	'line-width': 1
-// }
-// }).addTo(map);
-
 L.control
   .attribution({
     position: "bottomright",
@@ -305,3 +254,149 @@ L.control
   .setPrefix(
     '<a href="https://www.csis.org/programs/PROGRAMNAME">CSIS PROGRAM</a>, <a href="https://leafletjs.com/">Leaflet</a>'
   );
+
+	const timeline = {
+		el: document.querySelector(".timeline-bar"),
+		controlBtn: document.getElementById("timeline-btn"),
+		currentDateEl: document.querySelector(".timeline-current-date"),
+		playing: false,
+		timer: null,
+		transitionDuration: 1000,
+		end: null,
+		start: null,
+		step: 24 * 60 * 60 * 1000,
+		updateCurrentDate(date) {
+			this.currentDateEl.innerHTML = `${this.formatDate(date)}`;
+		},
+		onChange: function onChange() {
+			now = this.get();
+			timeline.updateCurrentDate(now);
+	
+			console.log(now)
+			// jammingIcons.forEach(icon => {
+			// 	const iconDate = +icon.getAttribute("data-timestamp");
+			// 	icon.classList.toggle("isActive", iconDate === now);
+			// 	icon.parentNode.classList.toggle("isActive", iconDate === now)
+			// });
+	
+			if (now == timeline.end) {
+				timeline.stopTimeline();
+				setTimeout(function () {
+					timeline.el.noUiSlider.set(timeline.start);
+				}, timeline.transitionDuration);
+			}
+		},
+		formatDate(date) {
+			date = new Date(date);
+			date = new Date(
+				date.getUTCFullYear(),
+				date.getUTCMonth(),
+				date.getUTCDate()
+			);
+			return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+		},
+		setupTimeline: function ({ start, end }) {
+			this.start = start;
+			this.end = end;
+	
+			this.setupBtnControls();
+	
+			noUiSlider.create(this.el, {
+				start: this.start,
+				connect: true,
+				behaviour: "tap-drag",
+				step: this.step,
+				range: {
+					min: this.start,
+					max: this.end
+				},
+				format: {
+					from: function from(v) {
+						return parseInt(v, 10);
+					},
+					to: function to(v) {
+						return parseInt(v, 10);
+					}
+				},
+				pips: {
+					mode: "range",
+					density: 30
+				}
+			});
+	
+			this.el.noUiSlider.set(this.start);
+			this.el.noUiSlider.on("update", this.onChange);
+			this.el.noUiSlider.on("slide", function (values, handle) {
+				let tempDate = new Date(values[handle]);
+				tempDate = new Date(
+					tempDate.getUTCFullYear(),
+					tempDate.getUTCMonth(),
+					tempDate.getUTCDate()
+				).getTime();
+	
+				timeline.el.noUiSlider.set(tempDate);
+			});
+	
+			this.el.querySelector(
+				"[data-value='" + this.start,
+				"']"
+			).innerHTML = this.formatDate(start);
+	
+			this.el.querySelector(
+				"[data-value='" + this.end,
+				"']"
+			).innerHTML = this.formatDate(end);
+		},
+		setupBtnControls: function () {
+			this.controlBtn.addEventListener("click", function () {
+				let currentDate = now;
+				if (now == timeline.end) {
+					timeline.el.noUiSlider.set(timeline.start);
+				}
+	
+				if (timeline.playing == true) {
+					timeline.stopTimeline();
+					return;
+				}
+	
+				let ints = []
+	
+				// jammingIcons.forEach(icon => {
+				// 	const iconDate = +icon.getAttribute("data-timestamp");
+				// 	ints.push(iconDate)
+				// })
+	
+				let i = 0
+	
+				function jamTimer() {
+	
+					if (i >= ints.length) {
+						i = 0
+					}
+	
+					let currentDate = now
+					now = ints[i]
+					timeline.el.noUiSlider.set(now)
+					i++
+				}
+	
+				timeline.timer = setInterval(jamTimer, timeline.transitionDuration)
+	
+				// timeline.timer = setInterval(function () {
+				//   let currentDate = now;
+				//   now += timeline.el.noUiSlider.options.step;
+				//   timeline.el.noUiSlider.set(now);
+				//   console.log(now)
+				// }, timeline.transitionDuration);
+				this.classList.remove("play-btn");
+				this.classList.add("pause-btn");
+				timeline.playing = true;
+			});
+		},
+		stopTimeline: function () {
+			clearInterval(timeline.timer);
+			timeline.playing = false;
+			timeline.controlBtn.classList.remove("pause-btn");
+			timeline.controlBtn.classList.add("play-btn");
+		}
+	};
