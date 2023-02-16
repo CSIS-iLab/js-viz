@@ -94,17 +94,17 @@ Promise.all([getImages()]).then((markerArr) => {
             // );
 
             const date = new Date(row.date);
+						const dateInSec = date.getTime()
 
-            if (!dates.includes(date.getTime())) {
-              dates.push(date.getTime());
+            if (!dates.includes(dateInSec)) {
+              dates.push(dateInSec);
             }
 
-            if (row.date in markersByDate) {
-              markersByDate[date.getTime()];
+						if (dateInSec in markersByDate) {
+              markersByDate[dateInSec].push(marker);
             } else {
-              markersByDate[date.getTime()] = [marker];
+              markersByDate[dateInSec] = [marker];
             }
-            markersByDate[date.getTime()].push(marker);
 
             //map.addLayer(marker);
             oms.addMarker(marker);
@@ -116,7 +116,7 @@ Promise.all([getImages()]).then((markerArr) => {
         console.log("dates", dates);
 				dates.sort()
         for (array in markersByDate) {
-          console.log(array);
+          console.log(markersByDate);
           array = L.layerGroup(markersByDate[array]);
           layerGroups.push(array);
         }
