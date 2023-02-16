@@ -3,15 +3,17 @@
 const mapDate = 'feb23'
 
 const basemapURL = {
-	// Dashed line
-	// feb23: 'https://api.mapbox.com/styles/v1/ilabmedia/cldvy5ya3002201qfcqhyw53n/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw'
-	// Solid line
-	// feb23: 'https://api.mapbox.com/styles/v1/ilabmedia/cle6397ai001j01rw5mkxudpf/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw'
-	// Solid line, no labels
-	feb23: 'https://api.mapbox.com/styles/v1/ilabmedia/cle64bm7u006001oabtujhwge/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw'
+	jun22: 'https://api.mapbox.com/styles/v1/ilabmedia/cldutlowb000b01o0uj3m7yml/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw',
+	sep22: 'https://api.mapbox.com/styles/v1/ilabmedia/cldvy0zjf001m01lbrz9ojrq0/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw',
+	sep22shaded: 'https://api.mapbox.com/styles/v1/ilabmedia/cldotxfrb001n01p5m7ku7k42/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw',
+	// Dashed lines
+	// feb23: 'https://api.mapbox.com/styles/v1/ilabmedia/cldz0u8x2001x01lgin3o9tr3/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw'
+	// Solid lines
+	// feb23: 'https://api.mapbox.com/styles/v1/ilabmedia/cle5xtm05000601p2c2c02kdc/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw'
+	// February, March & June front lines
+	feb23: 'https://api.mapbox.com/styles/v1/ilabmedia/cle65k97j006501pabq5dt3br/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw'
+	// feb23: 'https://api.mapbox.com/styles/v1/ilabmedia/cle65mbi7006801paaeop8c44/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw'
 }
-
-
 const cartoKey = {
 	jun22: 'pnZVz9LvA-eYA4tzJF6K5w',
 	sep22: 'moxuF6iP0jTe4tyXPtVK4Q',
@@ -36,7 +38,7 @@ function getImages() {
 			let markerIcon = "";
 			let IconBase = L.Icon.extend({
 				options: {
-					iconSize: [40, 40],
+					iconSize: [45, 45],
 					iconAnchor: [15, 15],
 					popupAnchor: [3, 0],
 				},
@@ -136,6 +138,8 @@ var basemap = L.tileLayer(
 );
 
 var map = L.map("map", {
+	// center: [48.636,31.646],
+	// zoom: 7,
 	center: [48.612,34.586],
 	zoom: 7.5,
 	maxZoom: 20,

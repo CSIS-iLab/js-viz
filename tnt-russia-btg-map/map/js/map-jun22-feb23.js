@@ -3,19 +3,10 @@
 const mapDate = 'feb23'
 
 const basemapURL = {
-	jun22: 'https://api.mapbox.com/styles/v1/ilabmedia/cldutlowb000b01o0uj3m7yml/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw',
-	sep22: 'https://api.mapbox.com/styles/v1/ilabmedia/cldvy0zjf001m01lbrz9ojrq0/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw',
-	sep22shaded: 'https://api.mapbox.com/styles/v1/ilabmedia/cldotxfrb001n01p5m7ku7k42/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw',
-	// Dashed lines
-	// feb23: 'https://api.mapbox.com/styles/v1/ilabmedia/cldz0u8x2001x01lgin3o9tr3/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw'
-	// Solid lines
-	// feb23: 'https://api.mapbox.com/styles/v1/ilabmedia/cle5xtm05000601p2c2c02kdc/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw'
-	// February, April & June front lines
-	// feb23: 'https://api.mapbox.com/styles/v1/ilabmedia/cle65k97j006501pabq5dt3br/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw'
-	// feb23: 'https://api.mapbox.com/styles/v1/ilabmedia/cle65mbi7006801paaeop8c44/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw'
-	// February & June front lines
-	feb23: 'https://api.mapbox.com/styles/v1/ilabmedia/cle66c4r8008801qgqk6pf6le/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw'
+	// Feb & Jun lines
+	feb23: 'https://api.mapbox.com/styles/v1/ilabmedia/cle7k45pq00bv01qgcvx6ot7i/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw'
 }
+
 const cartoKey = {
 	jun22: 'pnZVz9LvA-eYA4tzJF6K5w',
 	sep22: 'moxuF6iP0jTe4tyXPtVK4Q',
@@ -32,15 +23,15 @@ const cartoSource = {
 // https://stackoverflow.com/questions/18480550/how-to-load-all-the-images-from-one-of-my-folder-into-my-web-page-using-jquery
 function getImages() {
 	return new Promise((resolve, reject) => {
-		let url = 'http://127.0.0.1:5503/tnt-russia-btg-map/map/js/markers.json';
-		// let url = 'https://csis-js-viz.netlify.app/tnt-russia-btg-map/map/js/markers.json';
+		// let url = 'http://127.0.0.1:5503/tnt-russia-btg-map/map/js/markers.json';
+		let url = 'https://csis-js-viz.netlify.app/tnt-russia-btg-map/map/js/markers.json';
 		fetch(url)
 		.then(res => res.json())
 		.then((markers) => {
 			let markerIcon = "";
 			let IconBase = L.Icon.extend({
 				options: {
-					iconSize: [45, 45],
+					iconSize: [40, 40],
 					iconAnchor: [15, 15],
 					popupAnchor: [3, 0],
 				},
@@ -49,8 +40,8 @@ function getImages() {
 			// Loop through the marker json file and create a marker object for each type
 			for (let x in markers) {
 				x = x.toLowerCase()
-				let fullUrl = "http://127.0.0.1:5503/tnt-russia-btg-map/map/images/" + x + ".svg";
-				// let fullUrl = "https://csis-js-viz.netlify.app/tnt-russia-btg-map/map/images/" + x + ".svg";
+				// let fullUrl = "http://127.0.0.1:5503/tnt-russia-btg-map/map/images/" + x + ".svg";
+				let fullUrl = "https://csis-js-viz.netlify.app/tnt-russia-btg-map/map/images/" + x + ".svg";
 				let filename2 = x.substring(x.lastIndexOf('/') + 1).replace(/\.[^/.]+$/, ""); // File name no ext
 				markerIcon = new IconBase({
 					iconUrl: fullUrl,
@@ -140,8 +131,6 @@ var basemap = L.tileLayer(
 );
 
 var map = L.map("map", {
-	// center: [48.636,31.646],
-	// zoom: 7,
 	center: [48.612,34.586],
 	zoom: 7.5,
 	maxZoom: 20,
