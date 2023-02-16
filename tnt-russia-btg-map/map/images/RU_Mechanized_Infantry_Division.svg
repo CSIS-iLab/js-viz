@@ -1,1 +1,35 @@
-<svg enable-background="new 0 0 50 50" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg"><path d="m8.1 18.26h22.83v22.83h-22.83z" fill="#e8777b" stroke="#232323" transform="matrix(.7071 .7071 -.7071 .7071 26.6996 -5.1123)"/><ellipse cx="19.52" cy="29.67" fill="none" rx="9.81" ry="4.82" stroke="#232323" stroke-miterlimit="10"/><path d="m11.45 37.75 16.14-16.15" fill="none" stroke="#232323"/><path d="m11.45 21.6 16.14 16.15" fill="none" stroke="#232323"/><g fill="#232323"><path d="m15.77 8.18-1.7-3.17h1.64l.57 1.23c.15.3.29.64.47 1.05h.04c.15-.41.29-.75.42-1.05l.52-1.23h1.57l-1.69 3.24 1.8 3.28h-1.64l-.65-1.33c-.16-.34-.31-.67-.49-1.07h-.04c-.15.4-.3.73-.44 1.07l-.61 1.33h-1.58z"/><path d="m21.44 8.18-1.7-3.17h1.64l.57 1.23c.15.3.29.64.47 1.05h.04c.15-.41.29-.75.42-1.05l.52-1.23h1.57l-1.69 3.24 1.8 3.28h-1.64l-.65-1.33c-.16-.34-.31-.67-.49-1.07h-.04c-.15.4-.3.73-.44 1.07l-.61 1.33h-1.58z"/><path d="m36.39 8.75c0-1.76.48-3.2 1.32-4.57l.92.38c-.73 1.3-1.05 2.77-1.05 4.19s.32 2.89 1.05 4.19l-.92.38c-.84-1.37-1.32-2.81-1.32-4.57z"/><path d="m39.54 8.53h3.94v.94h-3.94z"/><path d="m44.39 12.94c.74-1.3 1.06-2.77 1.06-4.19s-.32-2.89-1.06-4.19l.92-.38c.84 1.37 1.32 2.81 1.32 4.57s-.48 3.2-1.32 4.57z"/></g></svg>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 27.2.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#E8777B;stroke:#232323;}
+	.st1{fill:none;stroke:#232323;}
+	.st2{fill:#232323;}
+	.st3{fill:none;stroke:#232323;stroke-miterlimit:10;}
+	.st4{fill:none;stroke:#232323;stroke-linejoin:round;stroke-miterlimit:10;}
+	.st5{fill:none;stroke:#232323;stroke-linecap:round;stroke-linejoin:round;}
+	.st6{fill:#7891C9;stroke:#232323;}
+</style>
+<g id="Russia">
+	<g>
+		<g>
+			
+				<rect x="13.58" y="17.49" transform="matrix(0.7071 0.7071 -0.7071 0.7071 27.7611 -9.2117)" class="st0" width="22.83" height="22.83"/>
+			<ellipse class="st3" cx="25" cy="28.9" rx="9.81" ry="4.82"/>
+			<line class="st1" x1="16.93" y1="36.98" x2="33.07" y2="20.83"/>
+			<line class="st1" x1="16.93" y1="20.83" x2="33.07" y2="36.98"/>
+			<g>
+				<path class="st2" d="M21.25,7.41l-1.7-3.17h1.64l0.57,1.23c0.15,0.3,0.29,0.64,0.47,1.05h0.04c0.15-0.41,0.29-0.75,0.42-1.05
+					l0.52-1.23h1.57l-1.69,3.24l1.8,3.28h-1.64L22.6,9.43c-0.16-0.34-0.31-0.67-0.49-1.07h-0.04c-0.15,0.4-0.3,0.73-0.44,1.07
+					l-0.61,1.33h-1.58L21.25,7.41z"/>
+				<path class="st2" d="M26.92,7.41l-1.7-3.17h1.64l0.57,1.23c0.15,0.3,0.29,0.64,0.47,1.05h0.04c0.15-0.41,0.29-0.75,0.42-1.05
+					l0.52-1.23h1.57l-1.69,3.24l1.8,3.28h-1.64l-0.65-1.33c-0.16-0.34-0.31-0.67-0.49-1.07h-0.04c-0.15,0.4-0.3,0.73-0.44,1.07
+					l-0.61,1.33h-1.58L26.92,7.41z"/>
+			</g>
+		</g>
+	</g>
+</g>
+<g id="Ukraine">
+</g>
+</svg>
