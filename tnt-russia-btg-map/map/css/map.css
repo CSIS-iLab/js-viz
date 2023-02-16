@@ -153,3 +153,143 @@ div#results {
   position: absolute;
   right: 15px;
 }
+
+/* Timeline */
+.timeline {
+  display: flex;
+}
+
+.timeline .timeline-controls {
+  flex: 0 1 auto;
+}
+
+.timeline .timeline-btn {
+  margin: 0 auto;
+  padding: 0.3rem 0.5rem;
+  width: 25px;
+  height: 21px;
+  background-color: #b5bdc1;
+  border: 0;
+  font-family: "Abel", "Arial", sans-serif;
+  font-size: 12px;
+  font-size: 0.75rem;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  transition: all 0.3s ease-in-out;
+}
+
+.timeline .timeline-btn::after {
+  content: "";
+  display: inline-block;
+}
+
+.timeline .timeline-btn.play-btn::after {
+  border-top: 0.3rem solid transparent;
+  border-left: 0.5rem solid #000;
+  border-bottom: 0.3rem solid transparent;
+}
+
+.timeline .timeline-btn.pause-btn {
+  color: #fff;
+  background-color: #d66e42;
+}
+
+.timeline .timeline-btn.pause-btn::after {
+  width: 0.3em;
+  height: 0.8em;
+  border-left: 0.2em solid #fff;
+  border-right: 0.2em solid #fff;
+}
+
+.timeline .timeline-container {
+  flex: 1 1 auto;
+  width: 100%;
+  padding: 0.5rem 0 0.5rem 1rem;
+}
+
+/* Timeline: Slider */
+.noUi-pips.noUi-pips-horizontal {
+  cursor: default;
+  height: unset;
+}
+
+.noUi-handle,
+.timeline-bar,
+.timeline-btn {
+  cursor: pointer;
+}
+
+.timeline .noUi-marker ~ .noUi-value {
+  left: 50% !important;
+  width: 100%;
+  text-align: left;
+}
+
+.timeline .noUi-marker ~ .noUi-value:last-of-type {
+  text-align: right;
+}
+
+.noUi-target {
+  height: 3px;
+  background-color: #44545f;
+  border: 0;
+  box-shadow: none;
+}
+
+.noUi-target::before,
+.noUi-target::after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: -4px;
+  width: 3px;
+  height: 12px;
+  background-color: #44545f;
+}
+
+.noUi-target::before {
+  left: 0;
+}
+
+.noUi-target::after {
+  right: 0;
+}
+
+.noUi-horizontal .noUi-handle {
+  right: -8px !important;
+}
+
+.noUi-handle {
+  width: 1rem !important;
+  height: 1rem !important;
+  background-color: #f9bc65;
+  border: 0;
+  border-radius: 50%;
+  box-shadow: none;
+}
+
+.noUi-handle::before,
+.noUi-handle::after {
+  display: none;
+}
+
+.noUi-value {
+  top: 0;
+  font-family: "Abel";
+  font-size: 14px;
+  color: #44545f;
+}
+
+.noUi-marker ~ .noUi-value {
+  left: 10% !important;
+}
+
+.noUi-marker-large {
+  display: none;
+}
+
+.noUi-marker-normal {
+  top: 0;
+  background-color: #44545f;
+}
