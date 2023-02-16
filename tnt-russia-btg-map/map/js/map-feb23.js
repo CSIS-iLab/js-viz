@@ -6,8 +6,10 @@ const basemapURL = {
 	// Dashed line
 	// feb23: 'https://api.mapbox.com/styles/v1/ilabmedia/cldvy5ya3002201qfcqhyw53n/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw'
 	// Solid line
-	feb23: 'https://api.mapbox.com/styles/v1/ilabmedia/cle6397ai001j01rw5mkxudpf/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw'
+	// feb23: 'https://api.mapbox.com/styles/v1/ilabmedia/cle6397ai001j01rw5mkxudpf/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw'
+	feb23: 'https://api.mapbox.com/styles/v1/ilabmedia/cle64bm7u006001oabtujhwge/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw'
 }
+
 
 const cartoKey = {
 	jun22: 'pnZVz9LvA-eYA4tzJF6K5w',
@@ -33,7 +35,7 @@ function getImages() {
 			let markerIcon = "";
 			let IconBase = L.Icon.extend({
 				options: {
-					iconSize: [25, 25],
+					iconSize: [40, 40],
 					iconAnchor: [15, 15],
 					popupAnchor: [3, 0],
 				},
@@ -133,8 +135,8 @@ var basemap = L.tileLayer(
 );
 
 var map = L.map("map", {
-	center: [48.158, 33.69398277149277],
-	zoom: 7,
+	center: [48.612,34.586],
+	zoom: 7.5,
 	maxZoom: 20,
 	scrollWheelZoom: true,
 	minZoom: 6,

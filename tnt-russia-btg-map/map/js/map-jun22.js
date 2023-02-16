@@ -6,7 +6,7 @@ const basemapURL = {
 	// Dashed line
 	// jun22: 'https://api.mapbox.com/styles/v1/ilabmedia/cldutlowb000b01o0uj3m7yml/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw',
 	// Solid line
-	jun22: 'https://api.mapbox.com/styles/v1/ilabmedia/cle63aq2t001n01k60w9z197e/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw',
+	jun22: 'https://api.mapbox.com/styles/v1/ilabmedia/cle64dpje000x01k1eznjoojx/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw',
 }
 
 
@@ -34,7 +34,7 @@ function getImages() {
 			let markerIcon = "";
 			let IconBase = L.Icon.extend({
 				options: {
-					iconSize: [25, 25],
+					iconSize: [40, 40],
 					iconAnchor: [15, 15],
 					popupAnchor: [3, 0],
 				},
@@ -134,8 +134,8 @@ var basemap = L.tileLayer(
 );
 
 var map = L.map("map", {
-	center: [48.158, 33.69398277149277],
-	zoom: 7,
+	center: [48.612,34.586],
+	zoom: 7.5,
 	maxZoom: 20,
 	scrollWheelZoom: true,
 	minZoom: 6,
