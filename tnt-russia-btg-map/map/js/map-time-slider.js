@@ -39,8 +39,8 @@ function getImages() {
           markerArr.push(markerIcon);
         }
         resolve(markerArr);
-      });
-    // .catch(err => { throw err });
+      })
+    .catch(err => console.log(`Error in promises ${error}`));
   });
 }
 
@@ -118,12 +118,11 @@ Promise.all([getImages()]).then((markerArr) => {
 				timeline.setupTimeline({ start: dates[0], end: dates[len - 1] });
 
         for (array in markersByDate) {
-          array = L.layerGroup(markersByDate[array]);
-          layerGroups.push(array);
+          layerArray = L.layerGroup(markersByDate[array])
+          layerGroups.push(layerArray);
         }
-        console.log(markersByDate);
-        console.log(layerGroups);
-        map.addLayer(layerGroups[0]);
+
+				map.addLayer(layerGroups[0]);
 
         oms.addListener("click", function (marker) {
           // console.log("bounds:" + bounds + "; marker latlng:" + marker.getLatLng())
@@ -142,6 +141,21 @@ Promise.all([getImages()]).then((markerArr) => {
       });
   }
 });
+
+
+
+function addLayerGroup(group) {
+	return new Promise(function(resolve, reject) {
+		resolve(map.addLayer(group))
+	})
+}
+
+function removeLayerGroup(group) {
+	return new Promise(function(resolve, reject) {
+		resolve(map.removeLayer(group))
+	})
+}
+
 
 const client = new carto.Client({
   apiKey: cartoKeyMarkers,
@@ -264,7 +278,7 @@ L.control
 		transitionDuration: 1000,
 		end: null,
 		start: null,
-		step: 24 * 60 * 60 * 1000,
+		step: 30 * 24 * 60 * 60 * 1000,
 		updateCurrentDate(date) {
 			this.currentDateEl.innerHTML = `${this.formatDate(date)}`;
 		},
@@ -272,16 +286,28 @@ L.control
 			now = this.get();
 			timeline.updateCurrentDate(now);
 	
-			console.log(now)
 			// jammingIcons.forEach(icon => {
 			// 	const iconDate = +icon.getAttribute("data-timestamp");
 			// 	icon.classList.toggle("isActive", iconDate === now);
 			// 	icon.parentNode.classList.toggle("isActive", iconDate === now)
 			// });
+
+
+			// Get the index of the date from the dates array that matches now
+			let dateIndex = dates.indexOf(now)
+
+			// Remove the layer group with the index of the date minus 1 from the map
+			removeLayerGroup(layerGroups[dateIndex - 1]);
+			// Add the layer group with the same index of the date to the map
+			addLayerGroup(layerGroups[dateIndex]);
+
+			// Add the front line layer with the same date of now to the map
 	
 			if (now == timeline.end) {
 				timeline.stopTimeline();
 				setTimeout(function () {
+					const lastDateIndex = dates.length - 1
+					removeLayerGroup(layerGroups[lastDateIndex]);
 					timeline.el.noUiSlider.set(timeline.start);
 				}, timeline.transitionDuration);
 			}
@@ -293,7 +319,7 @@ L.control
 				date.getUTCMonth(),
 				date.getUTCDate()
 			);
-			return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+			return `${date.getMonth() + 1}/${date.getFullYear()}`;
 		},
 		setupTimeline: function ({ start, end }) {
 			this.start = start;
@@ -306,8 +332,10 @@ L.control
 				connect: true,
 				behaviour: "tap-drag",
 				step: this.step,
+				snap: true,
 				range: {
 					min: this.start,
+					'50%': 1661990400000,
 					max: this.end
 				},
 				format: {
@@ -320,10 +348,11 @@ L.control
 				},
 				pips: {
 					mode: "range",
-					density: 30
+					// values: dates,
+					density: 10,
+					// stepped: true
 				}
 			});
-	
 			this.el.noUiSlider.set(this.start);
 			this.el.noUiSlider.on("update", this.onChange);
 			this.el.noUiSlider.on("slide", function (values, handle) {
@@ -337,6 +366,11 @@ L.control
 				timeline.el.noUiSlider.set(tempDate);
 			});
 	
+			this.el.querySelector(
+				"[data-value='" + 1661990400000,
+				"']"
+			).innerHTML = this.formatDate(1661990400000);
+
 			this.el.querySelector(
 				"[data-value='" + this.start,
 				"']"
@@ -359,9 +393,9 @@ L.control
 					return;
 				}
 	
-				let ints = []
+				let ints = dates
 	
-				// jammingIcons.forEach(icon => {
+				// dates.forEach(date => {
 				// 	const iconDate = +icon.getAttribute("data-timestamp");
 				// 	ints.push(iconDate)
 				// })
