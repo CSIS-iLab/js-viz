@@ -5,7 +5,7 @@ const cartoKeyMarkers = "6KgYkqFnDfk6hEgC3TGvIw";
 
 const cartoSourceMarkers = "russia_btg_map_all_time_data";
 const cartoSourceLines = "tnt_front_lines_time_slider";
-const linesApiKey = "SMgzGpUrfgPT5Fg25t9XNw"
+const linesApiKey = "SMgzGpUrfgPT5Fg25t9XNw";
 const username = "csis";
 
 // Get all markers from images dir
@@ -43,7 +43,7 @@ function getImages() {
         }
         resolve(markerArr);
       })
-    .catch(err => console.log(`Error in promises ${error}`));
+      .catch((err) => console.log(`Error in promises ${error}`));
   });
 }
 
@@ -97,13 +97,13 @@ Promise.all([getImages()]).then((markerArr) => {
             // );
 
             const date = new Date(row.date);
-						const dateInSec = date.getTime()
+            const dateInSec = date.getTime();
 
             if (!dates.includes(dateInSec)) {
               dates.push(dateInSec);
             }
 
-						if (dateInSec in markersByDate) {
+            if (dateInSec in markersByDate) {
               markersByDate[dateInSec].push(marker);
             } else {
               markersByDate[dateInSec] = [marker];
@@ -116,16 +116,16 @@ Promise.all([getImages()]).then((markerArr) => {
           // 	console.log("No marker for " + row.type)
           // }
         });
-				dates.sort()
-				len = dates.length;
-				timeline.setupTimeline({ start: dates[0], end: dates[len - 1] });
+        dates.sort();
+        len = dates.length;
+        timeline.setupTimeline({ start: dates[0], end: dates[len - 1] });
 
         for (array in markersByDate) {
-          layerArray = L.layerGroup(markersByDate[array])
+          layerArray = L.layerGroup(markersByDate[array]);
           layerGroups.push(layerArray);
         }
 
-				map.addLayer(layerGroups[0]);
+        map.addLayer(layerGroups[0]);
 
         oms.addListener("click", function (marker) {
           // console.log("bounds:" + bounds + "; marker latlng:" + marker.getLatLng())
@@ -145,20 +145,17 @@ Promise.all([getImages()]).then((markerArr) => {
   }
 });
 
-
-
 function addLayerGroup(group) {
-	return new Promise(function(resolve, reject) {
-		resolve(map.addLayer(group))
-	})
+  return new Promise(function (resolve, reject) {
+    resolve(map.addLayer(group));
+  });
 }
 
 function removeLayerGroup(group) {
-	return new Promise(function(resolve, reject) {
-		resolve(map.removeLayer(group))
-	})
+  return new Promise(function (resolve, reject) {
+    resolve(map.removeLayer(group));
+  });
 }
-
 
 const client = new carto.Client({
   apiKey: cartoKeyMarkers,
@@ -166,9 +163,9 @@ const client = new carto.Client({
 });
 
 const clientLines = new carto.Client({
-	apiKey: "SMgzGpUrfgPT5Fg25t9XNw",
-	username: "csis"
-})
+  apiKey: "SMgzGpUrfgPT5Fg25t9XNw",
+  username: "csis",
+});
 
 const linesSource = new carto.source.SQL(
   `SELECT * FROM tnt_front_lines_time_slider`
@@ -202,7 +199,6 @@ const feb23LineSource = new carto.source.SQL(
 );
 
 var basemap = L.tileLayer(basemapURL, {});
-
 
 var map = L.map("map", {
   center: [48.158, 33.69398277149277],
@@ -249,7 +245,7 @@ const mapLayer = new carto.layer.Layer(mapSource, mapStyle, {
     "lat",
     "long",
     "source",
-		"date"
+    "date",
   ],
 });
 
@@ -262,21 +258,19 @@ clientLines.addLayer(frontlineLayer);
 client.getLeafletLayer().bringToFront().addTo(map);
 clientLines.getLeafletLayer().bringToFront().addTo(map);
 
-
-
-fetch(`https://${username}.carto.com/api/v2/sql?api_key=${linesApiKey}&q=SELECT * FROM ${cartoSourceLines}`)
-	.then((res) => res.json())
-	.then((response) => {
-		// Loop through the marker json file and create a marker object for each type
-		response.rows.forEach((row, i) => {
-			const date = new Date(row.date);
-			const dateInSec = date.getTime()
-			row.dateInSec = dateInSec
-			console.log(row)
-		})
-	})
-
-
+fetch(
+  `https://${username}.carto.com/api/v2/sql?api_key=${linesApiKey}&q=SELECT * FROM ${cartoSourceLines}`
+)
+  .then((res) => res.json())
+  .then((response) => {
+    // Loop through the marker json file and create a marker object for each type
+    response.rows.forEach((row, i) => {
+      const date = new Date(row.date);
+      const dateInSec = date.getTime();
+      row.dateInSec = dateInSec;
+      console.log(row);
+    });
+  });
 
 let omsOptions = {
   circleFootSeparation: 30,
@@ -297,173 +291,189 @@ L.control
     '<a href="https://www.csis.org/programs/PROGRAMNAME">CSIS PROGRAM</a>, <a href="https://leafletjs.com/">Leaflet</a>'
   );
 
-	const timeline = {
-		el: document.querySelector(".timeline-bar"),
-		controlBtn: document.getElementById("timeline-btn"),
-		currentDateEl: document.querySelector(".timeline-current-date"),
-		playing: false,
-		timer: null,
-		transitionDuration: 1000,
-		end: null,
-		start: null,
-		// step: 30 * 24 * 60 * 60 * 1000,
-		updateCurrentDate(date) {
-			this.currentDateEl.innerHTML = `${this.formatDate(date)}`;
-		},
-		onChange: function onChange() {
-			now = this.get();
-			timeline.updateCurrentDate(now);
-	
-			// jammingIcons.forEach(icon => {
-			// 	const iconDate = +icon.getAttribute("data-timestamp");
-			// 	icon.classList.toggle("isActive", iconDate === now);
-			// 	icon.parentNode.classList.toggle("isActive", iconDate === now)
-			// });
+const timeline = {
+  el: document.querySelector(".timeline-bar"),
+  controlBtn: document.getElementById("timeline-btn"),
+  currentDateEl: document.querySelector(".timeline-current-date"),
+  playing: false,
+  timer: null,
+  transitionDuration: 1000,
+  end: null,
+  start: null,
+  // step: 30 * 24 * 60 * 60 * 1000,
+  updateCurrentDate(date) {
+    this.currentDateEl.innerHTML = `${this.formatDate(date)}`;
+  },
+  onChange: function onChange() {
+    now = this.get();
+    timeline.updateCurrentDate(now);
 
-			console.log(now)
+    // jammingIcons.forEach(icon => {
+    // 	const iconDate = +icon.getAttribute("data-timestamp");
+    // 	icon.classList.toggle("isActive", iconDate === now);
+    // 	icon.parentNode.classList.toggle("isActive", iconDate === now)
+    // });
 
-			// Get the index of the date from the dates array that matches now
-			let dateIndex = dates.indexOf(now)
+    console.log(now);
 
-			// Remove the layer group with the index of the date minus 1 from the map
-			removeLayerGroup(layerGroups[dateIndex - 1]);
-			// Add the layer group with the same index of the date to the map
-			addLayerGroup(layerGroups[dateIndex]);
+    // Get the index of the date from the dates array that matches now
+    let dateIndex = dates.indexOf(now);
 
-			// Add the front line layer with the same date of now to the map
-	
-			if (now == timeline.end) {
-				timeline.stopTimeline();
-				setTimeout(function () {
-					const lastDateIndex = dates.length - 1
-					removeLayerGroup(layerGroups[lastDateIndex]);
-					timeline.el.noUiSlider.set(timeline.start);
-				}, timeline.transitionDuration);
-			}
-		},
-		formatDate(date) {
-			date = new Date(date);
-			date = new Date(
-				date.getUTCFullYear(),
-				date.getUTCMonth(),
-				date.getUTCDate()
-			);
-			return `${date.getMonth() + 1}/${date.getFullYear()}`;
-		},
-		setupTimeline: function ({ start, end }) {
-			this.start = start;
-			this.end = end;
-	
-			this.setupBtnControls();
+    // Remove the layer group with the index of the date minus 1 from the map
+    removeLayerGroup(layerGroups[dateIndex - 1]);
+    // Add the layer group with the same index of the date to the map
+    addLayerGroup(layerGroups[dateIndex]);
 
-			// console.log(((dates[1] - dates[0]) / (dates[len - 1] - dates[0]) * 100))
+    // Add the front line layer with the same date of now to the map
 
-			let midRange = ((dates[1] - dates[0]) / (dates[len - 1] - dates[0]) * 100)
-	
-			noUiSlider.create(this.el, {
-				start: this.start,
-				connect: true,
-				behaviour: "tap-drag",
-				// step: this.step,
-				snap: true,
-				range: {
-					min: this.start,
-					'50%': [1661990400000],
-					max: this.end
-				},
-				format: {
-					from: function from(v) {
-						return parseInt(v, 10);
-					},
-					to: function to(v) {
-						return parseInt(v, 10);
-					}
-				},
-				pips: {
-					mode: "range",
-					// values: dates,
-					density: 25,
-					stepped: true
-				}
-			});
-			this.el.noUiSlider.set(this.start);
-			this.el.noUiSlider.on("update", this.onChange);
-			this.el.noUiSlider.on("slide", function (values, handle) {
-				let tempDate = new Date(values[handle]);
-				tempDate = new Date(
-					tempDate.getUTCFullYear(),
-					tempDate.getUTCMonth(),
-					tempDate.getUTCDate()
-				).getTime();
-	
-				timeline.el.noUiSlider.set(tempDate);
-			});
-	
-			this.el.querySelector(
-				"[data-value='" + 1661990400000,
-				"']"
-			).innerHTML = this.formatDate(1661990400000);
+    if (now == timeline.end) {
+      timeline.stopTimeline();
+      setTimeout(function () {
+        const lastDateIndex = dates.length - 1;
+        removeLayerGroup(layerGroups[lastDateIndex]);
+        timeline.el.noUiSlider.set(timeline.start);
+      }, timeline.transitionDuration);
+    }
+  },
+  formatDate(date) {
+    date = new Date(date);
+    date = new Date(
+      date.getUTCFullYear(),
+      date.getUTCMonth(),
+      date.getUTCDate()
+    );
+    return `${date.getMonth() + 1}/${date.getFullYear()}`;
+  },
+  setupTimeline: function ({ start, end }) {
+    this.start = start;
+    this.end = end;
 
-			this.el.querySelector(
-				"[data-value='" + this.start,
-				"']"
-			).innerHTML = this.formatDate(start);
-	
-			this.el.querySelector(
-				"[data-value='" + this.end,
-				"']"
-			).innerHTML = this.formatDate(end);
-		},
-		setupBtnControls: function () {
-			this.controlBtn.addEventListener("click", function () {
-				let currentDate = now;
-				if (now == timeline.end) {
-					timeline.el.noUiSlider.set(timeline.start);
-				}
-	
-				if (timeline.playing == true) {
-					timeline.stopTimeline();
-					return;
-				}
-	
-				let ints = dates
-	
-				// dates.forEach(date => {
-				// 	const iconDate = +icon.getAttribute("data-timestamp");
-				// 	ints.push(iconDate)
-				// })
-	
-				let i = 0
-	
-				function jamTimer() {
-	
-					if (i >= ints.length) {
-						i = 0
-					}
-	
-					let currentDate = now
-					now = ints[i]
-					timeline.el.noUiSlider.set(now)
-					i++
-				}
-	
-				timeline.timer = setInterval(jamTimer, timeline.transitionDuration)
-	
-				// timeline.timer = setInterval(function () {
-				//   let currentDate = now;
-				//   now += timeline.el.noUiSlider.options.step;
-				//   timeline.el.noUiSlider.set(now);
-				//   console.log(now)
-				// }, timeline.transitionDuration);
-				this.classList.remove("play-btn");
-				this.classList.add("pause-btn");
-				timeline.playing = true;
-			});
-		},
-		stopTimeline: function () {
-			clearInterval(timeline.timer);
-			timeline.playing = false;
-			timeline.controlBtn.classList.remove("pause-btn");
-			timeline.controlBtn.classList.add("play-btn");
-		}
-	};
+    this.setupBtnControls();
+
+    // console.log(((dates[1] - dates[0]) / (dates[len - 1] - dates[0]) * 100))
+
+    let midRange = ((dates[1] - dates[0]) / (dates[len - 1] - dates[0])) * 100;
+
+    noUiSlider.create(this.el, {
+      start: this.start,
+      connect: true,
+      behaviour: "tap-drag",
+      // step: this.step,
+      snap: true,
+      range: {
+        min: this.start,
+        "37%": [1661990400000],
+        max: this.end,
+      },
+      format: {
+        from: function from(v) {
+          return parseInt(v, 10);
+        },
+        to: function to(v) {
+          return parseInt(v, 10);
+        },
+      },
+      pips: {
+        //mode: "range",
+        //mode: "positions",
+        //mode: "values",
+        mode: "count",
+        values: dates.length,
+        //values: [0, midRange, 100],
+        //values: dates,
+        //density: midRange,
+        density: 100,
+        stepped: true,
+        format: {
+          to: toFormat,
+        },
+      },
+    });
+    this.el.noUiSlider.set(this.start);
+    this.el.noUiSlider.on("update", this.onChange);
+    this.el.noUiSlider.on("slide", function (values, handle) {
+      let tempDate = new Date(values[handle]);
+      tempDate = new Date(
+        tempDate.getUTCFullYear(),
+        tempDate.getUTCMonth(),
+        tempDate.getUTCDate()
+      ).getTime();
+
+      timeline.el.noUiSlider.set(tempDate);
+    });
+
+    function toFormat(seconds) {
+      console.log("seconds", seconds);
+      date = new Date(seconds);
+      date = new Date(
+        date.getUTCFullYear(),
+        date.getUTCMonth(),
+        date.getUTCDate()
+      );
+      return `${date.getMonth() + 1}/${date.getFullYear()}`;
+      //return new Date(seconds);
+      //return seconds.formatDate();
+      //return this.formatDate(seconds);
+    }
+
+    /*this.el.querySelector("[data-value='" + 1661990400000, "']").innerHTML =
+      this.formatDate(1661990400000);*/
+
+    /*this.el.querySelector("[data-value='" + this.start, "']").innerHTML =
+      this.formatDate(start);
+
+    this.el.querySelector("[data-value='" + this.end, "']").innerHTML =
+      this.formatDate(end);*/
+  },
+  setupBtnControls: function () {
+    this.controlBtn.addEventListener("click", function () {
+      let currentDate = now;
+      if (now == timeline.end) {
+        timeline.el.noUiSlider.set(timeline.start);
+      }
+
+      if (timeline.playing == true) {
+        timeline.stopTimeline();
+        return;
+      }
+
+      let ints = dates;
+
+      // dates.forEach(date => {
+      // 	const iconDate = +icon.getAttribute("data-timestamp");
+      // 	ints.push(iconDate)
+      // })
+
+      let i = 0;
+
+      function jamTimer() {
+        if (i >= ints.length) {
+          i = 0;
+        }
+
+        let currentDate = now;
+        now = ints[i];
+        timeline.el.noUiSlider.set(now);
+        i++;
+      }
+
+      timeline.timer = setInterval(jamTimer, timeline.transitionDuration);
+
+      // timeline.timer = setInterval(function () {
+      //   let currentDate = now;
+      //   now += timeline.el.noUiSlider.options.step;
+      //   timeline.el.noUiSlider.set(now);
+      //   console.log(now)
+      // }, timeline.transitionDuration);
+      this.classList.remove("play-btn");
+      this.classList.add("pause-btn");
+      timeline.playing = true;
+    });
+  },
+  stopTimeline: function () {
+    clearInterval(timeline.timer);
+    timeline.playing = false;
+    timeline.controlBtn.classList.remove("pause-btn");
+    timeline.controlBtn.classList.add("play-btn");
+  },
+};

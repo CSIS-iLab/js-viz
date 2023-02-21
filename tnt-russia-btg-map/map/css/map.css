@@ -285,11 +285,12 @@ div#results {
   left: 10% !important;
 } */
 
-.noUi-marker-large {
+/*.noUi-marker-large {
   display: none;
-}
+}*/
 
 .noUi-marker-normal {
   top: 0;
   background-color: #44545f;
+  //display: none;
 }
