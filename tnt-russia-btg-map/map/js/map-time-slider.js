@@ -4,6 +4,9 @@ const basemapURL =
 const cartoKeyMarkers = "6KgYkqFnDfk6hEgC3TGvIw";
 
 const cartoSourceMarkers = "russia_btg_map_all_time_data";
+const cartoSourceLines = "tnt_front_lines_time_slider";
+const linesApiKey = "SMgzGpUrfgPT5Fg25t9XNw"
+const username = "csis";
 
 // Get all markers from images dir
 // https://stackoverflow.com/questions/18480550/how-to-load-all-the-images-from-one-of-my-folder-into-my-web-page-using-jquery
@@ -17,7 +20,7 @@ function getImages() {
         let markerIcon = "";
         let IconBase = L.Icon.extend({
           options: {
-            iconSize: [25, 25],
+            iconSize: [45, 45],
             iconAnchor: [12, 12],
             popupAnchor: [3, 0],
           },
@@ -162,6 +165,15 @@ const client = new carto.Client({
   username: "csis",
 });
 
+const clientLines = new carto.Client({
+	apiKey: "SMgzGpUrfgPT5Fg25t9XNw",
+	username: "csis"
+})
+
+const linesSource = new carto.source.SQL(
+  `SELECT * FROM tnt_front_lines_time_slider`
+);
+
 const clientJun22Line = new carto.Client({
   apiKey: "WYrccBydto49RIGwMrFkJg",
   username: "csis",
@@ -241,14 +253,30 @@ const mapLayer = new carto.layer.Layer(mapSource, mapStyle, {
   ],
 });
 
-const frontlineLayer = new carto.layer.Layer(feb23LineSource, frontlineStyle, {
+const frontlineLayer = new carto.layer.Layer(linesSource, frontlineStyle, {
   featureOverColumns: ["date"],
 });
 
-clientFeb23Line.addLayer(frontlineLayer);
+clientLines.addLayer(frontlineLayer);
 
 client.getLeafletLayer().bringToFront().addTo(map);
-clientFeb23Line.getLeafletLayer().bringToFront().addTo(map);
+clientLines.getLeafletLayer().bringToFront().addTo(map);
+
+
+
+fetch(`https://${username}.carto.com/api/v2/sql?api_key=${linesApiKey}&q=SELECT * FROM ${cartoSourceLines}`)
+	.then((res) => res.json())
+	.then((response) => {
+		// Loop through the marker json file and create a marker object for each type
+		response.rows.forEach((row, i) => {
+			const date = new Date(row.date);
+			const dateInSec = date.getTime()
+			row.dateInSec = dateInSec
+			console.log(row)
+		})
+	})
+
+
 
 let omsOptions = {
   circleFootSeparation: 30,
@@ -278,7 +306,7 @@ L.control
 		transitionDuration: 1000,
 		end: null,
 		start: null,
-		step: 30 * 24 * 60 * 60 * 1000,
+		// step: 30 * 24 * 60 * 60 * 1000,
 		updateCurrentDate(date) {
 			this.currentDateEl.innerHTML = `${this.formatDate(date)}`;
 		},
@@ -292,6 +320,7 @@ L.control
 			// 	icon.parentNode.classList.toggle("isActive", iconDate === now)
 			// });
 
+			console.log(now)
 
 			// Get the index of the date from the dates array that matches now
 			let dateIndex = dates.indexOf(now)
@@ -326,16 +355,20 @@ L.control
 			this.end = end;
 	
 			this.setupBtnControls();
+
+			// console.log(((dates[1] - dates[0]) / (dates[len - 1] - dates[0]) * 100))
+
+			let midRange = ((dates[1] - dates[0]) / (dates[len - 1] - dates[0]) * 100)
 	
 			noUiSlider.create(this.el, {
 				start: this.start,
 				connect: true,
 				behaviour: "tap-drag",
-				step: this.step,
+				// step: this.step,
 				snap: true,
 				range: {
 					min: this.start,
-					'50%': 1661990400000,
+					'50%': [1661990400000],
 					max: this.end
 				},
 				format: {
@@ -349,8 +382,8 @@ L.control
 				pips: {
 					mode: "range",
 					// values: dates,
-					density: 10,
-					// stepped: true
+					density: 25,
+					stepped: true
 				}
 			});
 			this.el.noUiSlider.set(this.start);
@@ -366,10 +399,10 @@ L.control
 				timeline.el.noUiSlider.set(tempDate);
 			});
 	
-			this.el.querySelector(
-				"[data-value='" + 1661990400000,
-				"']"
-			).innerHTML = this.formatDate(1661990400000);
+			// this.el.querySelector(
+			// 	"[data-value='" + 1661990400000,
+			// 	"']"
+			// ).innerHTML = this.formatDate(1661990400000);
 
 			this.el.querySelector(
 				"[data-value='" + this.start,
