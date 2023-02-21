@@ -399,10 +399,10 @@ L.control
 				timeline.el.noUiSlider.set(tempDate);
 			});
 	
-			// this.el.querySelector(
-			// 	"[data-value='" + 1661990400000,
-			// 	"']"
-			// ).innerHTML = this.formatDate(1661990400000);
+			this.el.querySelector(
+				"[data-value='" + 1661990400000,
+				"']"
+			).innerHTML = this.formatDate(1661990400000);
 
 			this.el.querySelector(
 				"[data-value='" + this.start,

@@ -220,7 +220,7 @@ div#results {
   cursor: pointer;
 }
 
-.timeline .noUi-marker ~ .noUi-value {
+/* .timeline .noUi-marker ~ .noUi-value {
   left: 50% !important;
   width: 100%;
   text-align: left;
@@ -228,7 +228,7 @@ div#results {
 
 .timeline .noUi-marker ~ .noUi-value:last-of-type {
   text-align: right;
-}
+} */
 
 .noUi-target {
   height: 3px;
@@ -281,9 +281,9 @@ div#results {
   color: #44545f;
 }
 
-.noUi-marker ~ .noUi-value {
+/* .noUi-marker ~ .noUi-value {
   left: 10% !important;
-}
+} */
 
 .noUi-marker-large {
   display: none;
