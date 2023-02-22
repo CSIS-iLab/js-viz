@@ -259,21 +259,12 @@ const timeline = {
   transitionDuration: 1000,
   end: null,
   start: null,
-  // step: 30 * 24 * 60 * 60 * 1000,
   updateCurrentDate(date) {
     this.currentDateEl.innerHTML = `${this.formatDate(date)}`;
   },
   onChange: function onChange() {
     now = this.get();
     timeline.updateCurrentDate(now);
-
-    // jammingIcons.forEach(icon => {
-    // 	const iconDate = +icon.getAttribute("data-timestamp");
-    // 	icon.classList.toggle("isActive", iconDate === now);
-    // 	icon.parentNode.classList.toggle("isActive", iconDate === now)
-    // });
-
-    console.log(now);
 
     // Get the index of the date from the dates array that matches now
     let dateIndex = dates.indexOf(now);
@@ -295,13 +286,17 @@ const timeline = {
     }
   },
   formatDate(date) {
-    date = new Date(date);
-    date = new Date(
-      date.getUTCFullYear(),
-      date.getUTCMonth(),
-      date.getUTCDate()
-    );
-    return `${date.getMonth() + 1}/${date.getFullYear()}`;
+		const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+			"Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+		];
+
+		date = new Date(date);
+		date = new Date(
+			date.getUTCFullYear(),
+			date.getUTCMonth(),
+			date.getUTCDate()
+		);
+		return `${monthNames[date.getMonth()]} ${date.getFullYear()}`;
   },
   setupTimeline: function ({ start, end }) {
     this.start = start;
@@ -361,27 +356,18 @@ const timeline = {
     });
 
     function toFormat(seconds) {
-      console.log("seconds", seconds);
+			const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+				"Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+			];
+
       date = new Date(seconds);
       date = new Date(
         date.getUTCFullYear(),
         date.getUTCMonth(),
         date.getUTCDate()
       );
-      return `${date.getMonth() + 1}/${date.getFullYear()}`;
-      //return new Date(seconds);
-      //return seconds.formatDate();
-      //return this.formatDate(seconds);
+      return `${monthNames[date.getMonth()]} ${date.getFullYear()}`;
     }
-
-    /*this.el.querySelector("[data-value='" + 1661990400000, "']").innerHTML =
-      this.formatDate(1661990400000);*/
-
-    /*this.el.querySelector("[data-value='" + this.start, "']").innerHTML =
-      this.formatDate(start);
-
-    this.el.querySelector("[data-value='" + this.end, "']").innerHTML =
-      this.formatDate(end);*/
   },
   setupBtnControls: function () {
     this.controlBtn.addEventListener("click", function () {
@@ -396,11 +382,6 @@ const timeline = {
       }
 
       let ints = dates;
-
-      // dates.forEach(date => {
-      // 	const iconDate = +icon.getAttribute("data-timestamp");
-      // 	ints.push(iconDate)
-      // })
 
       let i = 0;
 
@@ -417,12 +398,6 @@ const timeline = {
 
       timeline.timer = setInterval(jamTimer, timeline.transitionDuration);
 
-      // timeline.timer = setInterval(function () {
-      //   let currentDate = now;
-      //   now += timeline.el.noUiSlider.options.step;
-      //   timeline.el.noUiSlider.set(now);
-      //   console.log(now)
-      // }, timeline.transitionDuration);
       this.classList.remove("play-btn");
       this.classList.add("pause-btn");
       timeline.playing = true;

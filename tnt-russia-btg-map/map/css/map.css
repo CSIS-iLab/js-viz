@@ -1,5 +1,5 @@
 body {
-  font-family: "Source Sans Pro", sans-serif;
+  font-family: "Utopia Std", 'Times New Roman', Times, serif;
 }
 
 div#searchbox input {
@@ -10,31 +10,48 @@ div#results {
   background: #fff;
 }
 
+.toolbox {
+  left: 24px;
+  right: auto;
+}
+
 .box header h1 {
   display: inline-block;
-  color: #2e3c43;
-  line-height: 26px;
-  font-family: "Source Sans Pro", sans-serif;
-  font-size: 21px;
+  color: #080808;
+  line-height: 28px;
+  font-family: "Synthese", Arial, Helvetica, sans-serif;
+  font-size: 26px;
   font-weight: 700;
   width: calc(100% - 67px);
 }
 
 .description {
-  color: #747d82;
+  color: #757575;
   font-size: 12px;
   line-height: 16px;
-  font-family: "Open Sans", Arial, Helvetica, sans-serif;
+  font-family: "Synthese", Arial, Helvetica, sans-serif;
 }
 
 .button__title {
   font-size: 12px !important;
 }
 
-.ul {
-  font-family: "Source Sans Pro", sans-serif;
+.indicator {
+  text-transform: uppercase;
+  font-family: "Synthese", Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  color: #080808;
+  opacity: 0.9;
 }
 
+.timeline-current-date {
+  color: #0054A4;
+}
+
+
+/* -------------------------------------------------------------------------- */
+/*                                   Tooltip                                  */
+/* -------------------------------------------------------------------------- */
 .leaflet-popup-content-wrapper {
   background-color: white;
   box-shadow: 0 3px 14px rgba(0, 0, 0, 0.4);
@@ -42,7 +59,7 @@ div#results {
 }
 
 .popupHeaderStyle {
-  font-family: "Source Sans Pro", sans-serif;
+  font-family: "Synthese", Arial, Helvetica, sans-serif;
   font-weight: 600;
   text-transform: uppercase;
   text-align: center;
@@ -64,7 +81,7 @@ div#results {
 }
 
 #controls #info h3 {
-  font-family: "Source Sans Pro", sans-serif;
+  font-family: "Synthese", Arial, Helvetica, sans-serif;
   font-weight: 700;
   text-transform: uppercase;
   font-size: 20px;
@@ -72,13 +89,51 @@ div#results {
   margin: 16px 0 4px;
 }
 
+/* -------------------------------------------------------------------------- */
+/*                                   Legend                                   */
+/* -------------------------------------------------------------------------- */
 .legend {
   position: relative;
   top: 5px;
-  display: flex;
   margin: 0;
   padding: 0;
-  list-style: none;
+  font-family: "Synthese", Arial, Helvetica, sans-serif;
+}
+
+.legend .legend__title {
+  margin-top: 32px;
+  margin-bottom: 0;
+  font-size: 22px;
+  color: #383737;
+}
+
+.legend__list {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  margin: 0;
+}
+
+.legend__entry {
+  flex: 0 1 20%;
+  width: 100%;
+  max-width: 45px;
+  text-align: right;
+}
+
+.legend__entry img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+dd {
+  flex-basis: 70%;
+  flex-grow: 1;
+  margin: 0;
+  color: #383737;
+  font-size: 14px;
+  font-weight: 300;
 }
 
 .legend[data-type="total_cases"] {
@@ -154,7 +209,9 @@ div#results {
   right: 15px;
 }
 
-/* Timeline */
+/* -------------------------------------------------------------------------- */
+/*                                  Timeline                                  */
+/* -------------------------------------------------------------------------- */
 .timeline {
   display: flex;
 }
@@ -168,9 +225,9 @@ div#results {
   padding: 0.3rem 0.5rem;
   width: 25px;
   height: 21px;
-  background-color: #b5bdc1;
+  background-color: #3DD5FF;
   border: 0;
-  font-family: "Abel", "Arial", sans-serif;
+  font-family: "Synthese", Arial, Helvetica, sans-serif;
   font-size: 12px;
   font-size: 0.75rem;
   line-height: 1;
@@ -186,13 +243,13 @@ div#results {
 
 .timeline .timeline-btn.play-btn::after {
   border-top: 0.3rem solid transparent;
-  border-left: 0.5rem solid #000;
+  border-left: 0.5rem solid #080808;
   border-bottom: 0.3rem solid transparent;
 }
 
 .timeline .timeline-btn.pause-btn {
   color: #fff;
-  background-color: #d66e42;
+  background-color: #0054A4;
 }
 
 .timeline .timeline-btn.pause-btn::after {
@@ -208,7 +265,9 @@ div#results {
   padding: 0.5rem 0 0.5rem 1rem;
 }
 
-/* Timeline: Slider */
+/* -------------------------------------------------------------------------- */
+/*                              Timeline: Slider                              */
+/* -------------------------------------------------------------------------- */
 .noUi-pips.noUi-pips-horizontal {
   cursor: default;
   height: unset;
@@ -219,16 +278,6 @@ div#results {
 .timeline-btn {
   cursor: pointer;
 }
-
-/* .timeline .noUi-marker ~ .noUi-value {
-  left: 50% !important;
-  width: 100%;
-  text-align: left;
-}
-
-.timeline .noUi-marker ~ .noUi-value:last-of-type {
-  text-align: right;
-} */
 
 .noUi-target {
   height: 3px;
@@ -263,7 +312,7 @@ div#results {
 .noUi-handle {
   width: 1rem !important;
   height: 1rem !important;
-  background-color: #f9bc65;
+  background-color: #0054A4;
   border: 0;
   border-radius: 50%;
   box-shadow: none;
@@ -276,21 +325,35 @@ div#results {
 
 .noUi-value {
   top: 0;
-  font-family: "Abel";
-  font-size: 14px;
-  color: #44545f;
+  font-family: "Synthese", Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  color: #383737;
 }
 
-/* .noUi-marker ~ .noUi-value {
-  left: 10% !important;
-} */
+.noUi-marker-large {
+  top: 0;
+  height: 8px;
+  background-color: #44545f;
+}
 
-/*.noUi-marker-large {
+.noUi-value-large:not(:nth-child(2)):not(:last-child) {
+  padding-left: 40px;
+}
+
+.noUi-marker-large:first-child,
+.noUi-marker-large:nth-last-child(2) {
   display: none;
-}*/
+}
+
+.noUi-marker-large:first-child + .noUi-value {
+  left: 10% !important;
+}
+
+.noUi-marker-large:nth-last-child(2) + .noUi-value {
+  left: 90% !important;
+}
 
 .noUi-marker-normal {
   top: 0;
   background-color: #44545f;
-  //display: none;
 }
