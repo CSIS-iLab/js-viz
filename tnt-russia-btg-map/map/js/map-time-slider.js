@@ -222,8 +222,8 @@ fetch(
 
 function removeLayerGroup(group) {
   return new Promise(function (resolve, reject) {
-    // resolve(map.removeLayer(layerGroups[group]).removeLayer(lineArr[group]));
-    resolve(console.log(layerGroups));
+     resolve(map.removeLayer(layerGroups[group]).removeLayer(lineArr[group]));
+    //resolve(console.log(layerGroups));
   });
 }
 
@@ -271,8 +271,13 @@ const timeline = {
     // Get the index of the date from the dates array that matches now
     let dateIndex = dates.indexOf(now);
 
-    // Remove the layer group with the index of the date minus 1 from the map
-    removeLayerGroup(dateIndex - 1);
+    // Remove layer groups that DONT have the current dateIndex
+    for (i = 0; i < dates.length; i++) {
+      if (i != dateIndex) {
+        removeLayerGroup(i);
+      }
+    }
+
     // Add the layer group with the same index of the date to the map
     addLayerGroup(dateIndex);
 
