@@ -200,14 +200,7 @@ fetch(
 )
   .then((res) => res.json())
   .then((response) => {
-		const frontlineStyle = new carto.style.CartoCSS(`
-			#layer {
-				line-width: 1.5;
-				line-color: #6d3738;
-				line-opacity: 1;
-			}
-		`);
-    // Loop through the front line json file and create an object for each line
+    // Loop through the front line json file and create a layer for each line
     response.features.forEach((row, i) => {
       const date = new Date(row.properties.date);
       const dateInSec = date.getTime();
