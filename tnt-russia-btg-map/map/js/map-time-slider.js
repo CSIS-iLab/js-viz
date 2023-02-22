@@ -112,12 +112,13 @@ Promise.all([getImages()]).then((markerArr) => {
             //map.addLayer(marker);
             oms.addMarker(marker);
           }
-          // else {
-          // 	console.log("No marker for " + row.type)
-          // }
+          else {
+          	console.log("No marker for " + row.type)
+          }
         });
         dates.sort();
         len = dates.length;
+
         timeline.setupTimeline({ start: dates[0], end: dates[len - 1] });
 
         for (array in markersByDate) {
