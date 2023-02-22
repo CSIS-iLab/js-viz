@@ -109,7 +109,6 @@ Promise.all([getImages()]).then((markerArr) => {
               markersByDate[dateInSec] = [marker];
             }
 
-            //map.addLayer(marker);
             oms.addMarker(marker);
           }
           else {
@@ -127,7 +126,6 @@ Promise.all([getImages()]).then((markerArr) => {
         }
 
         map.addLayer(layerGroups[0]);
-
         oms.addListener("click", function (marker) {
           // console.log("bounds:" + bounds + "; marker latlng:" + marker.getLatLng())
           popup.setContent(marker.data.formal_name + " " + marker.data.type);
@@ -224,7 +222,8 @@ fetch(
 
 function removeLayerGroup(group) {
   return new Promise(function (resolve, reject) {
-    resolve(map.removeLayer(layerGroups[group]).removeLayer(lineArr[group]));
+    // resolve(map.removeLayer(layerGroups[group]).removeLayer(lineArr[group]));
+    resolve(console.log(layerGroups));
   });
 }
 
@@ -267,6 +266,8 @@ const timeline = {
     now = this.get();
     timeline.updateCurrentDate(now);
 
+		console.log(now)
+
     // Get the index of the date from the dates array that matches now
     let dateIndex = dates.indexOf(now);
 
@@ -275,15 +276,15 @@ const timeline = {
     // Add the layer group with the same index of the date to the map
     addLayerGroup(dateIndex);
 
-    // Add the front line layer with the same date of now to the map
+
 
     if (now == timeline.end) {
       timeline.stopTimeline();
-      setTimeout(function () {
-        const lastDateIndex = dates.length - 1;
-        removeLayerGroup(lastDateIndex);
-        timeline.el.noUiSlider.set(timeline.start);
-      }, timeline.transitionDuration);
+      // setTimeout(function () {
+      //   const lastDateIndex = dates.length - 1;
+      //   removeLayerGroup(lastDateIndex);
+      //   timeline.el.noUiSlider.set(timeline.start);
+      // }, timeline.transitionDuration);
     }
   },
   formatDate(date) {
@@ -328,14 +329,8 @@ const timeline = {
         },
       },
       pips: {
-        //mode: "range",
-        //mode: "positions",
-        //mode: "values",
         mode: "count",
         values: dates.length,
-        //values: [0, midRange, 100],
-        //values: dates,
-        //density: midRange,
         density: 100,
         stepped: true,
         format: {
@@ -374,6 +369,8 @@ const timeline = {
     this.controlBtn.addEventListener("click", function () {
       let currentDate = now;
       if (now == timeline.end) {
+				const lastDateIndex = dates.length - 1;
+        removeLayerGroup(lastDateIndex);
         timeline.el.noUiSlider.set(timeline.start);
       }
 
