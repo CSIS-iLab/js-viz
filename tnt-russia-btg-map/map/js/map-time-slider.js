@@ -200,7 +200,6 @@ fetch(
 )
   .then((res) => res.json())
   .then((response) => {
-		console.log(response)
 		const frontlineStyle = new carto.style.CartoCSS(`
 			#layer {
 				line-width: 1.5;
@@ -213,7 +212,11 @@ fetch(
       const date = new Date(row.properties.date);
       const dateInSec = date.getTime();
       row.properties.dateInSec = dateInSec;
-			lineArr.push(L.geoJSON(row, frontlineStyle))
+			lineArr.push(L.geoJSON(row, {
+				style: function (feature) {
+						return {weight: 3, color: '#6d3738', opacity: 1};
+				}
+				}))
     });
 		map.addLayer(lineArr[0]);
   });
@@ -313,7 +316,6 @@ const timeline = {
 
     this.setupBtnControls();
 
-    // console.log(((dates[1] - dates[0]) / (dates[len - 1] - dates[0]) * 100))
 
     let midRange = ((dates[1] - dates[0]) / (dates[len - 1] - dates[0])) * 100;
 
