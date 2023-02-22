@@ -162,15 +162,6 @@ const client = new carto.Client({
   username: "csis",
 });
 
-const clientLines = new carto.Client({
-  apiKey: "SMgzGpUrfgPT5Fg25t9XNw",
-  username: "csis",
-});
-
-const linesSource = new carto.source.SQL(
-  `SELECT * FROM tnt_front_lines_time_slider`
-);
-
 const clientJun22Line = new carto.Client({
   apiKey: "WYrccBydto49RIGwMrFkJg",
   username: "csis",
@@ -249,28 +240,61 @@ const mapLayer = new carto.layer.Layer(mapSource, mapStyle, {
   ],
 });
 
+const clientLines = new carto.Client({
+  apiKey: "SMgzGpUrfgPT5Fg25t9XNw",
+  username: "csis",
+});
+
+let linesSource = new carto.source.SQL(
+  `SELECT * FROM tnt_front_lines_time_slider`
+  // `SELECT * FROM tnt_front_lines_time_slider WHERE \"date\" = '2022-06-01'`
+);
+
+console.log(linesSource)
+
 const frontlineLayer = new carto.layer.Layer(linesSource, frontlineStyle, {
   featureOverColumns: ["date"],
 });
 
+fetch(
+  `https://${username}.carto.com/api/v2/sql?api_key=${linesApiKey}&q=SELECT * FROM ${cartoSourceLines} WHERE \"date\" >= '2022-09-01' and \"date\" < '2023-01-01'`
+)
+  .then((res) => res.json())
+  .then((response) => {
+		console.log(response)
+    // Loop through the front line json file and create an object for each line
+    // response.rows.forEach((row, i) => {
+    //   const date = new Date(row.date);
+    //   const dateInSec = date.getTime();
+    //   row.dateInSec = dateInSec;
+    //   console.log(row);
+    // });
+  });
+
+
 clientLines.addLayer(frontlineLayer);
+
+var lineLayer = L.geoJson(null).addTo(map);
 
 client.getLeafletLayer().bringToFront().addTo(map);
 clientLines.getLeafletLayer().bringToFront().addTo(map);
 
-fetch(
-  `https://${username}.carto.com/api/v2/sql?api_key=${linesApiKey}&q=SELECT * FROM ${cartoSourceLines}`
-)
-  .then((res) => res.json())
-  .then((response) => {
-    // Loop through the marker json file and create a marker object for each type
-    response.rows.forEach((row, i) => {
-      const date = new Date(row.date);
-      const dateInSec = date.getTime();
-      row.dateInSec = dateInSec;
-      console.log(row);
-    });
-  });
+//     // the endpoint to make SQL calls to
+//     var endpoint = `https://${username}.carto.com/api/v2/sql?api_key=${linesApiKey}&q=`;
+//     // sample query for our Tornado table
+//     var query = `SELECT * FROM ${cartoSourceLines} WHERE \"timestamp\" >= '2012-01-01' and \"timestamp\" < '2013-01-01'`;
+//     // using getJSON we concatenate these two strings to create the target URL
+//     var url = endpoint + query;
+
+// 		let sql = new cartodb.SQL({ user: "csis" });
+
+// sql.execute(query, null, { format: 'geojson' })
+// .done(function(data) {
+// 	console.log(data);
+// 	// add the tornado data to our tornadoLayer
+// 	lineLayer.addData(data);
+// });
+
 
 let omsOptions = {
   circleFootSeparation: 30,
