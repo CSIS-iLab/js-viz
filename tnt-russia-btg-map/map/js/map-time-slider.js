@@ -145,49 +145,10 @@ Promise.all([getImages()]).then((markerArr) => {
   }
 });
 
-function addLayerGroup(group) {
-  return new Promise(function (resolve, reject) {
-    resolve(map.addLayer(group));
-  });
-}
-
-function removeLayerGroup(group) {
-  return new Promise(function (resolve, reject) {
-    resolve(map.removeLayer(group));
-  });
-}
-
 const client = new carto.Client({
   apiKey: cartoKeyMarkers,
   username: "csis",
 });
-
-const clientJun22Line = new carto.Client({
-  apiKey: "WYrccBydto49RIGwMrFkJg",
-  username: "csis",
-});
-
-const clientSep22Line = new carto.Client({
-  apiKey: "bznw-odz3uV7GwQ7NuedQA",
-  username: "csis",
-});
-
-const clientFeb23Line = new carto.Client({
-  apiKey: "DU8i5Tj1aDCJ47jAaye9Sw",
-  username: "csis",
-});
-
-const jun22LineSource = new carto.source.SQL(
-  `SELECT * FROM tnt_front_line_jun_22`
-);
-
-const sep22LineSource = new carto.source.SQL(
-  `SELECT * FROM tnt_front_line_sep_22`
-);
-
-const feb23LineSource = new carto.source.SQL(
-  `SELECT * FROM tnt_front_line_feb_23`
-);
 
 var basemap = L.tileLayer(basemapURL, {});
 
@@ -217,14 +178,6 @@ const mapStyle = new carto.style.CartoCSS(`
 // }
 `);
 
-const frontlineStyle = new carto.style.CartoCSS(`
-#layer {
-  line-width: 1.5;
-  line-color: #6d3738;
-  line-opacity: 1;
-}
-`);
-
 const mapLayer = new carto.layer.Layer(mapSource, mapStyle, {
   featureOverColumns: [
     "formal_name",
@@ -240,60 +193,46 @@ const mapLayer = new carto.layer.Layer(mapSource, mapStyle, {
   ],
 });
 
-const clientLines = new carto.Client({
-  apiKey: "SMgzGpUrfgPT5Fg25t9XNw",
-  username: "csis",
-});
-
-let linesSource = new carto.source.SQL(
-  `SELECT * FROM tnt_front_lines_time_slider`
-  // `SELECT * FROM tnt_front_lines_time_slider WHERE \"date\" = '2022-06-01'`
-);
-
-console.log(linesSource)
-
-const frontlineLayer = new carto.layer.Layer(linesSource, frontlineStyle, {
-  featureOverColumns: ["date"],
-});
+let lineArr = []
 
 fetch(
-  `https://${username}.carto.com/api/v2/sql?api_key=${linesApiKey}&q=SELECT * FROM ${cartoSourceLines} WHERE \"date\" >= '2022-09-01' and \"date\" < '2023-01-01'`
+  `https://${username}.carto.com/api/v2/sql?format=GeoJSON&api_key=${linesApiKey}&q=SELECT * FROM ${cartoSourceLines} ORDER BY date ASC`
 )
   .then((res) => res.json())
   .then((response) => {
 		console.log(response)
+		const frontlineStyle = new carto.style.CartoCSS(`
+			#layer {
+				line-width: 1.5;
+				line-color: #6d3738;
+				line-opacity: 1;
+			}
+		`);
     // Loop through the front line json file and create an object for each line
-    // response.rows.forEach((row, i) => {
-    //   const date = new Date(row.date);
-    //   const dateInSec = date.getTime();
-    //   row.dateInSec = dateInSec;
-    //   console.log(row);
-    // });
+    response.features.forEach((row, i) => {
+      const date = new Date(row.properties.date);
+      const dateInSec = date.getTime();
+      row.properties.dateInSec = dateInSec;
+			lineArr.push(L.geoJSON(row, frontlineStyle))
+    });
+		map.addLayer(lineArr[0]);
   });
+	
+	
+	function addLayerGroup(group) {
+		return new Promise(function (resolve, reject) {
+    resolve(map.addLayer(layerGroups[group]).addLayer(lineArr[group]));
+  });
+}
 
+function removeLayerGroup(group) {
+  return new Promise(function (resolve, reject) {
+    resolve(map.removeLayer(layerGroups[group]).removeLayer(lineArr[group]));
+  });
+}
 
-clientLines.addLayer(frontlineLayer);
-
-var lineLayer = L.geoJson(null).addTo(map);
 
 client.getLeafletLayer().bringToFront().addTo(map);
-clientLines.getLeafletLayer().bringToFront().addTo(map);
-
-//     // the endpoint to make SQL calls to
-//     var endpoint = `https://${username}.carto.com/api/v2/sql?api_key=${linesApiKey}&q=`;
-//     // sample query for our Tornado table
-//     var query = `SELECT * FROM ${cartoSourceLines} WHERE \"timestamp\" >= '2012-01-01' and \"timestamp\" < '2013-01-01'`;
-//     // using getJSON we concatenate these two strings to create the target URL
-//     var url = endpoint + query;
-
-// 		let sql = new cartodb.SQL({ user: "csis" });
-
-// sql.execute(query, null, { format: 'geojson' })
-// .done(function(data) {
-// 	console.log(data);
-// 	// add the tornado data to our tornadoLayer
-// 	lineLayer.addData(data);
-// });
 
 
 let omsOptions = {
@@ -344,9 +283,9 @@ const timeline = {
     let dateIndex = dates.indexOf(now);
 
     // Remove the layer group with the index of the date minus 1 from the map
-    removeLayerGroup(layerGroups[dateIndex - 1]);
+    removeLayerGroup(dateIndex - 1);
     // Add the layer group with the same index of the date to the map
-    addLayerGroup(layerGroups[dateIndex]);
+    addLayerGroup(dateIndex);
 
     // Add the front line layer with the same date of now to the map
 
@@ -354,7 +293,7 @@ const timeline = {
       timeline.stopTimeline();
       setTimeout(function () {
         const lastDateIndex = dates.length - 1;
-        removeLayerGroup(layerGroups[lastDateIndex]);
+        removeLayerGroup(lastDateIndex);
         timeline.el.noUiSlider.set(timeline.start);
       }, timeline.transitionDuration);
     }
