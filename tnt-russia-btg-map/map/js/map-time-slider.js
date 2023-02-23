@@ -271,7 +271,7 @@ const timeline = {
     let dateIndex = dates.indexOf(now);
 
     // Remove layer groups that DONT have the current dateIndex
-    for (i = 0; i < dates.length; i++) {
+    for (i = 0; i < len; i++) {
       if (i != dateIndex) {
         removeLayerGroup(i);
       }
@@ -280,12 +280,10 @@ const timeline = {
     // Add the layer group with the same index of the date to the map
     addLayerGroup(dateIndex);
 
-
-
     if (now == timeline.end) {
       timeline.stopTimeline();
       // setTimeout(function () {
-      //   const lastDateIndex = dates.length - 1;
+      //   const lastDateIndex = len - 1;
       //   removeLayerGroup(lastDateIndex);
       //   timeline.el.noUiSlider.set(timeline.start);
       // }, timeline.transitionDuration);
@@ -310,20 +308,29 @@ const timeline = {
 
     this.setupBtnControls();
 
+let range = {}
 
-    let midRange = ((dates[1] - dates[0]) / (dates[len - 1] - dates[0])) * 100;
-
+// Build range object
+dates.forEach((date, i) => {
+  // Since the dates array was sorted above, the first and last date are the start and end date
+  if(i === 0) {
+    range['min'] = date
+  } else if(i === len - 1) {
+    range['max'] = date
+  } else {
+    // For all dates that aren't the first or last, get percentage of where that date falls between the start and end dates, then pass percent: date as key: value to the range object. Used to place the date in the correct position on the timeline.
+    let rangePercent = Math.floor(((date - dates[0]) / (dates[len - 1] - dates[0])) * 100 + 0.5) + "%"
+    range[rangePercent] = date
+  }
+})
+    
     noUiSlider.create(this.el, {
       start: this.start,
       connect: true,
       behaviour: "tap-drag",
       // step: this.step,
       snap: true,
-      range: {
-        min: this.start,
-        "37%": [1661990400000],
-        max: this.end,
-      },
+      range: range,
       format: {
         from: function from(v) {
           return parseInt(v, 10);
@@ -334,7 +341,7 @@ const timeline = {
       },
       pips: {
         mode: "count",
-        values: dates.length,
+        values: len,
         density: 100,
         stepped: true,
         format: {
@@ -355,9 +362,7 @@ const timeline = {
       timeline.el.noUiSlider.set(tempDate);
     });
     
-    /* -------------------------------------------------------------------------- */
-    /*                             Make pips clickable                            */
-    /* -------------------------------------------------------------------------- */
+  // Make pips clickable
     // Get all pips with values
     let pips = timeline.el.querySelectorAll('.noUi-value')
 
@@ -389,7 +394,7 @@ const timeline = {
     this.controlBtn.addEventListener("click", function () {
       let currentDate = now;
       if (now == timeline.end) {
-				const lastDateIndex = dates.length - 1;
+				const lastDateIndex = len - 1;
         removeLayerGroup(lastDateIndex);
         timeline.el.noUiSlider.set(timeline.start);
       }
