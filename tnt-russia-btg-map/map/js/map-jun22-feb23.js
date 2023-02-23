@@ -24,7 +24,8 @@ const cartoSource = {
 function getImages() {
 	return new Promise((resolve, reject) => {
 		// let url = 'http://127.0.0.1:5503/tnt-russia-btg-map/map/js/markers.json';
-		let url = 'https://csis-js-viz.netlify.app/tnt-russia-btg-map/map/js/markers.json';
+		// let url = 'https://csis-js-viz.netlify.app/tnt-russia-btg-map/map/js/markers.json';
+		let url = 'https://csis-ilab.github.io/js-viz/tnt-russia-btg-map/map/js/markers.json';
 		fetch(url)
 		.then(res => res.json())
 		.then((markers) => {
@@ -41,7 +42,8 @@ function getImages() {
 			for (let x in markers) {
 				x = x.toLowerCase()
 				// let fullUrl = "http://127.0.0.1:5503/tnt-russia-btg-map/map/images/" + x + ".svg";
-				let fullUrl = "https://csis-js-viz.netlify.app/tnt-russia-btg-map/map/images/" + x + ".svg";
+				// let fullUrl = "https://csis-js-viz.netlify.app/tnt-russia-btg-map/map/images/" + x + ".svg";
+				let fullUrl = "https://csis-ilab.github.io/js-viz/tnt-russia-btg-map/map/images/" + x + ".svg";
 				let filename2 = x.substring(x.lastIndexOf('/') + 1).replace(/\.[^/.]+$/, ""); // File name no ext
 				markerIcon = new IconBase({
 					iconUrl: fullUrl,
