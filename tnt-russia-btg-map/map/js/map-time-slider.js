@@ -162,9 +162,14 @@ var map = L.map("map", {
   minZoom: 6,
   zoomControl: false,
   scrollWheelZoom: true,
+  zoomSnap: 0,
+  zoomDelta: 0.5,
   layers: [basemap],
   attributionControl: false,
 });
+
+
+
 
 const mapSource = new carto.source.SQL(
   `SELECT * FROM csis.` + cartoSourceMarkers
@@ -217,16 +222,15 @@ fetch(
   });
 	
 	
-	function addLayerGroup(group) {
-		return new Promise(function (resolve, reject) {
+function addLayerGroup(group) {
+  return new Promise(function (resolve, reject) {
     resolve(map.addLayer(layerGroups[group]).addLayer(lineArr[group]));
   });
 }
 
 function removeLayerGroup(group) {
   return new Promise(function (resolve, reject) {
-     resolve(map.removeLayer(layerGroups[group]).removeLayer(lineArr[group]));
-    //resolve(console.log(layerGroups));
+    resolve(map.removeLayer(layerGroups[group]).removeLayer(lineArr[group]));
   });
 }
 
@@ -251,7 +255,12 @@ L.control
   })
   .setPrefix(
     '<a href="https://www.csis.org/programs/PROGRAMNAME">CSIS PROGRAM</a>, <a href="https://leafletjs.com/">Leaflet</a>'
-  );
+  )
+  
+  
+L.control.zoom({
+  position: "topright"
+}).addTo(map)
 
 const timeline = {
   el: document.querySelector(".timeline-bar"),
