@@ -12,9 +12,9 @@ const username = "csis";
 // https://stackoverflow.com/questions/18480550/how-to-load-all-the-images-from-one-of-my-folder-into-my-web-page-using-jquery
 function getImages() {
   return new Promise((resolve, reject) => {
-    // let url = "http://127.0.0.1:5503/tnt-russia-btg-map/map/js/markers.json";
+    let url = "http://127.0.0.1:5503/tnt-russia-btg-map/map/js/markers.json";
     // let url = 'https://feat-tnt-russia-ukraine-map--csis-js-viz.netlify.app/tnt-russia-btg-map/map/js/markers.json';
-    let url = 'https://feat-tnt-ukraine-time-slider-map--csis-js-viz.netlify.app//tnt-russia-btg-map/map/js/markers.json';
+    // let url = 'https://feat-tnt-ukraine-time-slider-map--csis-js-viz.netlify.app//tnt-russia-btg-map/map/js/markers.json';
     fetch(url)
       .then((res) => res.json())
       .then((markers) => {
@@ -30,9 +30,9 @@ function getImages() {
         // Loop through the marker json file and create a marker object for each type
         for (let x in markers) {
           x = x.toLowerCase();
-          // let fullUrl = "http://127.0.0.1:5503/tnt-russia-btg-map/map/images/" + x + ".svg";
+          let fullUrl = "http://127.0.0.1:5503/tnt-russia-btg-map/map/images/" + x + ".svg";
           // let fullUrl = "https://feat-tnt-russia-ukraine-map--csis-js-viz.netlify.app/tnt-russia-btg-map/map/images/" + x + ".svg";
-          let fullUrl = "https://feat-tnt-ukraine-time-slider-map--csis-js-viz.netlify.app//tnt-russia-btg-map/map/images/" + x + ".svg";
+          // let fullUrl = "https://feat-tnt-ukraine-time-slider-map--csis-js-viz.netlify.app//tnt-russia-btg-map/map/images/" + x + ".svg";
           let filename2 = x
             .substring(x.lastIndexOf("/") + 1)
             .replace(/\.[^/.]+$/, ""); // File name no ext
@@ -354,6 +354,22 @@ const timeline = {
 
       timeline.el.noUiSlider.set(tempDate);
     });
+    
+    /* -------------------------------------------------------------------------- */
+    /*                             Make pips clickable                            */
+    /* -------------------------------------------------------------------------- */
+    // Get all pips with values
+    let pips = timeline.el.querySelectorAll('.noUi-value')
+
+    // Set slider value to the data-value of the clicked pip
+    function clickOnPip() {
+      var value = Number(this.getAttribute('data-value'));
+      timeline.el.noUiSlider.set(value);
+    }
+    // Add event listener to the pips
+    for (var i = 0; i < pips.length; i++) {
+      pips[i].addEventListener('click', clickOnPip);
+    }
 
     function toFormat(seconds) {
 			const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
