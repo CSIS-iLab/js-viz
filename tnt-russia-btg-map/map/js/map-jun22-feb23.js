@@ -134,13 +134,14 @@ var basemap = L.tileLayer(
 );
 
 var map = L.map("map", {
-	center: [48.612,34.586],
-	zoom: 7.5,
+	center: [48.3,34.586],
+	zoom: 7.15,
 	maxZoom: 20,
 	scrollWheelZoom: true,
 	minZoom: 6,
 	zoomControl: false,
 	scrollWheelZoom: true,
+	zoomSnap: 0,
 	layers: [basemap],
 	attributionControl: false,
 });
