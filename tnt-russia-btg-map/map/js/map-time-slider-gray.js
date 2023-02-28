@@ -138,7 +138,7 @@ Promise.all([getImages()]).then((markerArr) => {
         map.addLayer(layerGroups[0]);
         oms.addListener("click", function (marker) {
           // console.log("bounds:" + bounds + "; marker latlng:" + marker.getLatLng())
-          popup.setContent(marker.data.formal_name + " " + marker.data.type);
+          popup.setContent(marker.data.formal_name);
           popup.setLatLng(marker.getLatLng());
           map.openPopup(popup);
         });
