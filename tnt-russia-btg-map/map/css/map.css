@@ -151,7 +151,7 @@ body {
 }
 
 .legend__shape-boundary {
-  border-bottom: 2px solid #ababab;
+  border-bottom: 2px solid rgba(95, 121, 129, .78);
 }
 
 .legend__shape-disputed {
