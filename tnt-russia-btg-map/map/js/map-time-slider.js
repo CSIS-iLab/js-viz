@@ -81,10 +81,9 @@ Promise.all([getImages()]).then((markerArr) => {
           if (!latLngArr.includes(latLong)) {
             latLngArr.push(latLong);
           } else {
-            row.lat = row.lat + 0.05;
+            row.lat = row.lat + (Math.random() * (0.15 - 0.05) + 0.05);
             latLongObj.rowLat = row.lat;
             latLong = row.lat + ", " + row.long;
-
             latLngArr.push(latLong);
           }
           let markerName = row.type.toLowerCase();
