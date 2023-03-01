@@ -76,6 +76,12 @@ body {
 /*                                   Legend                                   */
 /* -------------------------------------------------------------------------- */
 
+.separator {
+  min-height: 1px;
+  background-color: rgba(46, 60, 67, 0.08);
+  margin: 32px 0 20px;
+}
+
 .legend {
   position: relative;
   top: 5px;
@@ -84,28 +90,27 @@ body {
   font-family: "Synthese", Arial, Helvetica, sans-serif;
 }
 
-.legend .legend__title {
+/* .legend .legend__title {
   margin-top: 32px;
   margin-bottom: 8px;
   font-size: 12px;
   font-weight: 600;
   text-transform: uppercase;
   color: #080808;
-}
+} */
 
 .legend__list {
   display: grid;
-  grid-template-areas: 
-  'term1 list1'
-  'term2 list2'
-  'term3 list3'
-  'term4 list4'
-  'term5 list5';
   grid-template-columns: minmax(5px, max-content) auto;
   row-gap: 8px;
-  align-items: start;
+  align-items: center;
   margin: 0;
-  line-height: 1.8;
+}
+
+.legend__list:first-child {
+  /* margin-top: 40px; */
+  /* padding-top: 22px; */
+  /* border-top: 1px solid rgba(46, 60, 67, 0.08); */
 }
 
 .legend__list-forces {
@@ -113,7 +118,7 @@ body {
 }
 
 .legend__list:not(:last-child) {
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 
 .legend__list:not(:last-child) .legend__entry {
@@ -122,53 +127,10 @@ body {
 }
 
 .legend__entry {
+  grid-column: 1;
   width: 100%;
-  max-width: 28px;
-}
-
-.legend__entry-disputed {
-  display: flex;
-  justify-content: center;
-}
-
-.legend__entry:nth-of-type(1) {
-  grid-area: term1;
-}
-
-dd:nth-of-type(1) {
-  grid-area: list1;
-}
-
-.legend__entry:nth-of-type(2) {
-  grid-area: term2;
-}
-
-dd:nth-of-type(2) {
-  grid-area: list2;
-}
-
-.legend__entry:nth-of-type(3) {
-  grid-area: term3;
-}
-
-dd:nth-of-type(3) {
-  grid-area: list3;
-}
-
-.legend__entry:nth-of-type(4) {
-  grid-area: term4;
-}
-
-dd:nth-of-type(4) {
-  grid-area: list4;
-}
-
-.legend__entry:nth-of-type(5) {
-  grid-area: term5;
-}
-
-dd:nth-of-type(5) {
-  grid-area: list5;
+  max-width: 16px;
+  max-height: 16px;
 }
 
 .legend__entry img {
@@ -200,25 +162,18 @@ dd:nth-of-type(5) {
 }
 
 dd {
+  grid-column: 2;
   width: 100%;
   margin: 0 0 0 8px;
-  color: #383737;
+  /* color: #383737; */
   font-size: 12px;
-  font-weight: 300;
+  /* font-weight: 600; */
   line-height: 1.2;
-}
-
-.legend__list-lines dd {
-  font-weight: 600;
-  font-size: 12px;
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
   color: #080808;
   opacity: 0.9;
 }
 
-.legend__list-lines dt {
-  margin-top: 7px;
-}
 
 /* -------------------------------------------------------------------------- */
 /*                                  Timeline                                  */
