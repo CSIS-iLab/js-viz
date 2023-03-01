@@ -45,40 +45,26 @@ body {
 /* -------------------------------------------------------------------------- */
 
 .leaflet-popup-content-wrapper {
-  background-color: white;
-  box-shadow: 0 3px 14px rgba(0, 0, 0, 0.4);
+  padding: 1px;
+  text-align: left;
   color: #333;
 }
 
-.popupHeaderStyle {
-  font-family: "Synthese", Arial, Helvetica, sans-serif;
-  font-weight: 600;
-  text-transform: uppercase;
-  text-align: center;
-}
-
-.popupEntryStyle {
+.leaflet-popup-content {
   padding: 0;
-  margin: 0;
-  font: 14px "Source Sans Pro", sans-serif;
+  margin: 13px 19px;
+  font: 14px "Synthese", Arial, Helvetica, sans-serif;
+  letter-spacing: .3px;
+  line-height: 1.4;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   text-align: center;
 }
 
 .leaflet-popup-content-wrapper,
 .leaflet-popup-tip {
-  background-color: #e4e3e3;
+  background-color: #fff;
   box-shadow: 0 3px 14px rgba(0, 0, 0, 0.4);
   border-radius: 3px;
-}
-
-#controls #info h3 {
-  font-family: "Synthese", Arial, Helvetica, sans-serif;
-  font-weight: 700;
-  text-transform: uppercase;
-  font-size: 20px;
-  line-height: 24px;
-  margin: 16px 0 4px;
 }
 
 /* -------------------------------------------------------------------------- */
