@@ -30,8 +30,7 @@ function getImages() {
         let IconBase = L.Icon.extend({
           options: {
             iconSize: [45, 45],
-            iconAnchor: [12, 12],
-            popupAnchor: [3, 0],
+            iconAnchor: [22, 40],
           },
         });
         let markerArr = [];
@@ -97,14 +96,9 @@ Promise.all([getImages()]).then((markerArr) => {
           if (foundItem) {
             let marker = L.marker([row.lat, row.long], {
               icon: foundItem,
-              riseOnHover: true,
-              riseOffset: 1000,
+              riseOnHover: false,
             });
             marker.data = row;
-            // .bindPopup(
-            // 	'<h2>' + row.formal_name + '</h2>' +
-            // 	'<a href="' + row.source + '" target="_blank">Source</a>'
-            // );
 
             const date = new Date(row.date);
             const dateInSec = date.getTime();
@@ -125,6 +119,7 @@ Promise.all([getImages()]).then((markerArr) => {
           	console.log("No marker for " + row.type)
           }
         });
+
         dates.sort();
         len = dates.length;
 
@@ -136,8 +131,8 @@ Promise.all([getImages()]).then((markerArr) => {
         }
 
         map.addLayer(layerGroups[0]);
+
         oms.addListener("click", function (marker) {
-          // console.log("bounds:" + bounds + "; marker latlng:" + marker.getLatLng())
           if(marker.data.formal_name === "") {
             popup.setContent("<p class='leaflet-popup-content--no-name'>Name not available</p>")
           } else {
@@ -178,9 +173,6 @@ var map = L.map("map", {
   layers: [basemap],
   attributionControl: false,
 });
-
-
-
 
 const mapSource = new carto.source.SQL(
   `SELECT * FROM csis.` + cartoSourceMarkers
@@ -245,20 +237,18 @@ function removeLayerGroup(group) {
   });
 }
 
-
 client.getLeafletLayer().bringToFront().addTo(map);
 
-
 let omsOptions = {
-  circleFootSeparation: 30,
+  circleFootSeparation: 50,
   keepSpiderfied: true,
-  nearbyDistance: 20,
+  nearbyDistance: 35,
   circleSpiralSwitchover: 3,
 };
 
 const oms = new OverlappingMarkerSpiderfier(map, omsOptions);
 
-const popup = L.popup({ closeButton: true });
+const popup = L.popup({ closeButton: true, offset: new L.Point(0, -20) });
 
 L.control
   .attribution({

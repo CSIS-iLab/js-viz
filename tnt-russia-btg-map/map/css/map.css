@@ -100,11 +100,6 @@ body {
   color: #080808;
 }
 
-.legend__content {
-  display: grid;
-  grid-template-columns: minmax(30px, 1fr) auto;
-}
-
 .legend__list {
   display: grid;
   grid-template-areas: 
