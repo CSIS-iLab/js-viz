@@ -268,7 +268,7 @@ const timeline = {
   currentDateEl: document.querySelector(".timeline-current-date"),
   playing: false,
   timer: null,
-  transitionDuration: 1000,
+  transitionDuration: 2000,
   end: null,
   start: null,
   updateCurrentDate(date) {
@@ -293,11 +293,6 @@ const timeline = {
 
     if (now == timeline.end) {
       timeline.stopTimeline();
-      // setTimeout(function () {
-      //   const lastDateIndex = len - 1;
-      //   removeLayerGroup(lastDateIndex);
-      //   timeline.el.noUiSlider.set(timeline.start);
-      // }, timeline.transitionDuration);
     }
   },
   formatDate(date) {
@@ -403,7 +398,6 @@ dates.forEach((date, i) => {
   },
   setupBtnControls: function () {
     this.controlBtn.addEventListener("click", function () {
-      let currentDate = now;
       if (now == timeline.end) {
 				const lastDateIndex = len - 1;
         removeLayerGroup(lastDateIndex);
@@ -417,21 +411,19 @@ dates.forEach((date, i) => {
 
       let ints = dates;
 
-      let i = 0;
+      let i = ints.indexOf(now);
 
       function jamTimer() {
         if (i >= ints.length) {
           i = 0;
         }
 
-        let currentDate = now;
         now = ints[i];
         timeline.el.noUiSlider.set(now);
         i++;
       }
-
+      jamTimer()
       timeline.timer = setInterval(jamTimer, timeline.transitionDuration);
-
       this.classList.remove("play-btn");
       this.classList.add("pause-btn");
       timeline.playing = true;
