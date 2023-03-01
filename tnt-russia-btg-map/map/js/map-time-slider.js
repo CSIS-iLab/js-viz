@@ -138,7 +138,11 @@ Promise.all([getImages()]).then((markerArr) => {
         map.addLayer(layerGroups[0]);
         oms.addListener("click", function (marker) {
           // console.log("bounds:" + bounds + "; marker latlng:" + marker.getLatLng())
-          popup.setContent(marker.data.formal_name);
+          if(marker.data.formal_name === "") {
+            popup.setContent("<p class='leaflet-popup-content--no-name'>Name not available</p>")
+          } else {
+            popup.setContent(marker.data.formal_name);
+          }
           popup.setLatLng(marker.getLatLng());
           map.openPopup(popup);
         });
@@ -248,7 +252,7 @@ client.getLeafletLayer().bringToFront().addTo(map);
 let omsOptions = {
   circleFootSeparation: 30,
   keepSpiderfied: true,
-  nearbyDistance: 40,
+  nearbyDistance: 20,
   circleSpiralSwitchover: 3,
 };
 
