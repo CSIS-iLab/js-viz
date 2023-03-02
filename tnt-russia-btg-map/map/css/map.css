@@ -3,6 +3,7 @@ body {
 }
 
 .toolbox {
+  top: 80px !important;
   left: 24px;
   right: auto;
 }
@@ -40,6 +41,10 @@ body {
   min-height: 1px;
   background-color: rgba(46, 60, 67, 0.08);
   margin: 32px 0 20px;
+}
+
+.leaflet-top.leaflet-right {
+  top: 75px;
 }
 
 /* -------------------------------------------------------------------------- */
