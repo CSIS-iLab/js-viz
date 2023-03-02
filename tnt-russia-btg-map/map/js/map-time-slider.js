@@ -148,7 +148,7 @@ const client = new carto.Client({
 var basemap = L.tileLayer(basemapURL, {});
 
 var map = L.map("map", {
-  center: [48.981,30.561],
+  center: [48.981,32.839],
   zoom: 6.5,
   maxZoom: 20,
   scrollWheelZoom: true,
