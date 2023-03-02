@@ -320,11 +320,14 @@ dd {
 }
 
 .contact a {
+  transition: all 0.3s ease-in-out;
   color: #0054A4;
+  border-bottom: 1px solid #0054A400;
   text-decoration: none;
 }
 
 .contact a:hover {
-  color: #0054A48A;
-  border-bottom: 1px solid #0054A48A;
+  outline: 0;
+  color: #0054A48F;
+  border-bottom: 1px solid #0054A48F;
 }
