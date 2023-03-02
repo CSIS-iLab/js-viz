@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 <html>
-
-<head>
+  <head>
     <title>Title of Map | CSIS Program Name</title>
     <meta name="viewport" content="initial-scale=1.0" />
     <meta charset="utf-8" />
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700" rel="stylesheet" />
+    <link rel="stylesheet" href="https://use.typekit.net/hjr4awy.css">
 
     <!-- Share meta -->
     <meta property="og:locale" content="en_US" />
@@ -16,54 +14,95 @@
     <script src="https://unpkg.com/babel-polyfill@6.26.0/dist/polyfill.js"></script>
     <!-- Include Leaflet -->
     <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
-    <link href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" rel="stylesheet" />
+    <link
+      href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+      rel="stylesheet"
+    />
     <!-- Include CARTO.js -->
     <script src="https://cartodb-libs.global.ssl.fastly.net/cartodb.js/v3/3.15/cartodb.js"></script>
     <!-- <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script> -->
     <script src="https://libs.cartocdn.com/carto.js/v4.1.11/carto.min.js"></script>
-    <link href="https://carto.com/developers/carto-js/examples/maps/public/style.css" rel="stylesheet" />
+    <link
+      href="https://carto.com/developers/carto-js/examples/maps/public/style.css"
+      rel="stylesheet"
+    />
 
     <!-- Include Leaflet Spiderifier Plugin-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OverlappingMarkerSpiderfier-Leaflet/0.2.6/oms.min.js"></script>
 
-    <link rel="preconnect stylesheet" href="https://use.typekit.net/ats0hoc.css" />
-
+    <link
+      rel="preconnect stylesheet"
+      href="https://use.typekit.net/ats0hoc.css"
+    />
+    <link rel="stylesheet" href="css/nouislider.css">
     <link href="css/map.css" rel="stylesheet" />
-</head>
+  </head>
 
-<body>
+  <body>
     <div id="map" class="map" tabindex="0"></div>
-<!-- 
     <aside class="toolbox">
-
-        <section class="box">
-            <header>
-                <h1>Title of Map</h1>
-            </header>
-            <section>
-                <p class="description open-sans">
-                    Hover over the interactive map to learn more detail about xyz countries around the world
-                </p>
-                <hr />
-                <div class="button-container">
-                    <div class="button__title">Legend and options go here</div>
-                </div>
-                <!-- <ul id="legend" class="legend" data-type="total_cases">
-                    <li id="ramp1" class="legend__value"><span></span></li>
-                    <li id="ramp2" class="legend__value"><span>1k</span></li>
-                    <li id="ramp3" class="legend__value"><span>5k</span></li>
-                    <li id="ramp4" class="legend__value"><span>10k</span></li>
-                    <li id="ramp5" class="legend__value"><span>30k</span></li>
-                    <li id="ramp6" class="legend__value"><span>100k</span></li>
-                </ul> -->
-            <!-- </section> -->
-            <!-- </section> -->
-            <!-- <footer class="js-footer"></footer> -->
-    <!-- </aside> --> -->
+      <div class="box">
+        <header>
+          <h1>Russian and Ukrainian Force Disposition</h1>
+        </header>
+        <p class="description">
+          Use the timeline to see how the force disposition and front line have changed over time. Click on a unit to learn more.
+        </p>
+        <section id="time">
+          <div class="indicator">
+            <p>
+              Force disposition:
+              <span
+                class="date timeline-current-date timeline-header__value"
+              ></span>
+            </p>
+            <p><span></span></p>
+          </div>
+          <div class="timeline">
+            <div class="timeline-controls">
+              <button
+                id="timeline-btn"
+                class="timeline-btn play-btn control-btn"
+                aria-pressed="false"
+                aria-label="Play timeline"
+              ></button>
+            </div>
+            <div class="timeline-container">
+              <div class="timeline-bar"></div>
+            </div>
+          </div>
+        </section>
+        <div class="separator"></div>
+        <section class="legend">
+          <!-- <h2 class="legend__title">Forces</h2> -->
+          <dl class="legend__list">
+            <dt class="legend__entry legend__entry-ukraine"><img src="images/UKR_Blank.svg" alt="Ukrainian battlement marker"></dt>
+            <dd>Ukrainian Unit</dd>
+            <dt class="legend__entry legend__entry-russia"><img src="images/RU_Blank.svg" alt="Russian battlement marker"></dt>
+            <dd>Russian Unit</dd>
+            <dt class="legend__entry legend__entry-line legend__entry-frontline"><div class="legend__shape legend__shape-frontline"></div></dt>
+            <dd>Front Line</dd>
+            <dt class="legend__entry legend__entry-line legend__entry-rail"><div class="legend__shape legend__shape-rail"></div></dt>
+            <dd>Major Rail Line</dd>
+            <dt class="legend__entry legend__entry-line legend__entry-road"><div class="legend__shape legend__shape-road"></div></dt>
+            <dd>Major Road</dd>
+            <dt class="legend__entry legend__entry-line legend__entry-boundary"><div class="legend__shape legend__shape-boundary"></div></dt>
+            <dd>Ukrainian Border</dd>
+            <dt class="legend__entry legend__entry-line legend__entry-disputed"><div class="legend__shape legend__shape-disputed"></div></dt>
+            <dd>Controlled by Russia Before the February 2022 Invasion</dd>
+          </dl>
+        </section>
+        <!-- <div class="separator"></div> -->
+        <section class="contact">
+          <p>See methodology <a href="https://csis-website-prod.s3.amazonaws.com/s3fs-public/2023-02/230227_Jones_Ukraine_Methodology.pdf?VersionId=d9Ru3bb5NzJxgHQ.wFPobxnQZJ6FbJF7">here</a></p>
+          <p>Contact <a href="mailto:tnt@csis.org">tnt@csis.org</a></p>
+        </section>
+      </div>
+    </aside>
 
     <!-- * Comment in the map you want to see and comment the rest out -->
-    <script src="js/map.js"></script>
-    <!-- <script src="js/map-time-slider.js"></script> -->
-</body>
-
+    <!-- <script src="js/map.js"></script> -->
+    <script src="js/map-time-slider.js"></script>
+    <script src="js/vendor/nouislider.min.js"></script>
+  </body>
 </html>
