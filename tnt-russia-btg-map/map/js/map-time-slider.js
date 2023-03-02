@@ -251,11 +251,11 @@ const popup = L.popup({ closeButton: true, offset: new L.Point(0, -20) });
 
 L.control
   .attribution({
-    position: "bottomright",
+    position: "bottomleft",
   })
   .setPrefix(
-    '<a href="https://www.csis.org/programs/PROGRAMNAME">CSIS PROGRAM</a>, <a href="https://leafletjs.com/">Leaflet</a>'
-  )
+    'Data by <a href="https://www.csis.org/programs/transnational-threats-project">CSIS Transnational Threats Program</a> | <a href="https://leafletjs.com/">Leaflet</a>'
+  ).addTo(map)
   
   
 L.control.zoom({
