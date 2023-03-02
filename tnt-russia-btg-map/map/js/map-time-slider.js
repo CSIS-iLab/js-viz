@@ -1,10 +1,4 @@
 const basemapURL =
-// Satellite
-  // "https://api.mapbox.com/styles/v1/ilabmedia/clen1wwxj001s01mz6oph9hne/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw";
-  // Original
-  // "https://api.mapbox.com/styles/v1/ilabmedia/cldyvf17x007q01mtr5gwbo19/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw";
-  // Points of interest
-  // "https://api.mapbox.com/styles/v1/ilabmedia/clen4ivn4002w01qeq0agxmur/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw";
   "https://api.mapbox.com/styles/v1/ilabmedia/clepve6hq000301p7txwaq4cq/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw";
 
 
@@ -20,9 +14,6 @@ const username = "csis";
 function getImages() {
   return new Promise((resolve, reject) => {
     let url = "./js/markers.json";
-    // let url = "http://127.0.0.1:5503/tnt-russia-btg-map/map/js/markers.json";
-    // let url = 'https://feat-tnt-russia-ukraine-map--csis-js-viz.netlify.app/tnt-russia-btg-map/map/js/markers.json';
-    // let url = 'https://feat-tnt-ukraine-time-slider-map--csis-js-viz.netlify.app//tnt-russia-btg-map/map/js/markers.json';
     fetch(url)
       .then((res) => res.json())
       .then((markers) => {
@@ -37,9 +28,6 @@ function getImages() {
         // Loop through the marker json file and create a marker object for each type
         for (let x in markers) {
           x = x.toLowerCase();
-          // let fullUrl = "http://127.0.0.1:5503/tnt-russia-btg-map/map/images/" + x + ".svg";
-          // let fullUrl = "https://feat-tnt-russia-ukraine-map--csis-js-viz.netlify.app/tnt-russia-btg-map/map/images/" + x + ".svg";
-          // let fullUrl = "https://feat-tnt-ukraine-time-slider-map--csis-js-viz.netlify.app//tnt-russia-btg-map/map/images/" + x + ".svg";
           let fullUrl = "./images/" + x + ".svg";
           let filename2 = x
             .substring(x.lastIndexOf("/") + 1)
@@ -239,7 +227,6 @@ function removeLayerGroup(group) {
 client.getLeafletLayer().bringToFront().addTo(map);
 
 let omsOptions = {
-  circleFootSeparation: 50,
   keepSpiderfied: true,
   nearbyDistance: 35,
   circleSpiralSwitchover: 3,
