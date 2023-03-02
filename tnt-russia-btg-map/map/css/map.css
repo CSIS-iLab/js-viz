@@ -276,10 +276,6 @@ dd {
   background-color: #44545f;
 }
 
-.noUi-value-large:not(:nth-child(2)):not(:last-child) {
-  padding-left: 40px;
-}
-
 .noUi-marker-large:first-child,
 .noUi-marker-large:nth-last-child(2) {
   display: none;
