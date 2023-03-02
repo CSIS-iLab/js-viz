@@ -44,11 +44,11 @@ body {
 }
 
 .leaflet-top.leaflet-right {
-  top: 60px;
+  top: 75px;
 }
 
 .leaflet-bottom.leaflet-left {
-  bottom: 40px;
+  bottom: 10px;
 }
 
 /* -------------------------------------------------------------------------- */
