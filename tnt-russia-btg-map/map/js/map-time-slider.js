@@ -217,12 +217,12 @@ fetch(
 			lineArr.push(L.geoJSON(row, {
 				style: function (feature) {
 						return {weight: 3, color: '#6d3738', opacity: 1};
-				}
+				},
+        interactive: false,
 				}))
     });
 		map.addLayer(lineArr[0]);
   });
-	
 	
 function addLayerGroup(group) {
   return new Promise(function (resolve, reject) {
