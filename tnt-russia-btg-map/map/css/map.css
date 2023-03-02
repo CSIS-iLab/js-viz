@@ -3,7 +3,7 @@ body {
 }
 
 .toolbox {
-  top: 60px !important;
+  top: 75px !important;
   left: 24px;
   right: auto;
 }
@@ -44,7 +44,7 @@ body {
 }
 
 .leaflet-top.leaflet-right {
-  top: 75px;
+  top: 60px;
 }
 
 .leaflet-bottom.leaflet-left {
