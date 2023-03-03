@@ -22,6 +22,13 @@ body {
   line-height: 16px;
 }
 
+.description a {
+  transition: all 0.3s ease-in-out;
+  color: #0054A4;
+  border-bottom: 1px solid #0054A400;
+  text-decoration: none;
+}
+
 .button__title {
   font-size: 12px !important;
 }
@@ -34,7 +41,7 @@ body {
 }
 
 .timeline-current-date {
-  color: #0054A4;
+  color: #0A2458;
 }
 
 .separator {
