@@ -243,7 +243,7 @@ L.control
     position: "bottomleft",
   })
   .setPrefix(
-    'Data by <a href="https://www.csis.org/programs/transnational-threats-project">CSIS Transnational Threats Program</a> | <a href="https://leafletjs.com/">Leaflet</a>'
+    'Data by <a target="_blank" href="https://www.csis.org/programs/transnational-threats-project">CSIS Transnational Threats Program</a> | <a href="https://leafletjs.com/">Leaflet</a>'
   ).addTo(map)
   
   

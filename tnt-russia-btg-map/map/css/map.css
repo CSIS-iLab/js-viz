@@ -22,12 +22,19 @@ body {
   line-height: 16px;
 }
 
-.description a {
+.description-link {
   transition: all 0.3s ease-in-out;
   color: #0054A4;
   border-bottom: 1px solid #0054A400;
   text-decoration: none;
 }
+
+.description-link:hover {
+  outline: 0;
+  color: #0054A48F;
+  border-bottom: 1px solid #0054A48F;
+}
+
 
 .button__title {
   font-size: 12px !important;
