@@ -1,155 +1,39 @@
-//  TNT_Russia_Ukraine_map-timeline-WORKING-POI-labels-updated-masks
+/* -------------------------------------------------------------------------- */
+/*                     Connecting to Carto to get our data                    */
+/* -------------------------------------------------------------------------- */
+
+//  Basemap being used: TNT_Russia_Ukraine_map-timeline-WORKING-POI-labels-updated-masks
 const basemapURL =
   "https://api.mapbox.com/styles/v1/ilabmedia/clesm3yxm000a01mtyumq5sp4/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw";
 
-//  TNT_Russia_Ukraine_map-timeline-WORKING-POI-labels-no-mask
-//  "https://api.mapbox.com/styles/v1/ilabmedia/clepve6hq000301p7txwaq4cq/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw";
+//  Carto dataset being used for markers
 const cartoKeyMarkers = "6KgYkqFnDfk6hEgC3TGvIw";
-
 const cartoSourceMarkers = "russia_btg_map_all_time_data";
-const cartoSourceLines = "tnt_front_lines_time_slider";
+
+// Carto dataset being used for frontlines
 const linesApiKey = "SMgzGpUrfgPT5Fg25t9XNw";
+const cartoSourceLines = "tnt_front_lines_time_slider";
+
+// Name to use with carto.Client
 const username = "csis";
 
-// Get all markers from images dir
-// https://stackoverflow.com/questions/18480550/how-to-load-all-the-images-from-one-of-my-folder-into-my-web-page-using-jquery
-function getImages() {
-  return new Promise((resolve, reject) => {
-    let url = "./js/markers.json";
-    fetch(url)
-      .then((res) => res.json())
-      .then((markers) => {
-        let markerIcon = "";
-        let IconBase = L.Icon.extend({
-          options: {
-            iconSize: [45, 45],
-            iconAnchor: [22, 40],
-          },
-        });
-        let markerArr = [];
-        // Loop through the marker json file and create a marker object for each type
-        for (let x in markers) {
-          x = x.toLowerCase();
-          let fullUrl = "./images/" + x + ".svg";
-          let filename2 = x
-            .substring(x.lastIndexOf("/") + 1)
-            .replace(/\.[^/.]+$/, ""); // File name no ext
-          markerIcon = new IconBase({
-            iconUrl: fullUrl,
-            iconName: filename2,
-          });
-          markerArr.push(markerIcon);
-        }
-        resolve(markerArr);
-      })
-      .catch((err) => console.log(`Error in promises ${error}`));
-  });
-}
-
-let markersByDate = {};
-let layerGroups = [];
-let dates = [];
-
-Promise.all([getImages()]).then((markerArr) => {
-  const dataRows = theData(markerArr);
-
-  function theData(markerArr) {
-    let sql = new cartodb.SQL({ user: "csis" });
-    sql
-      .execute("SELECT * FROM csis." + cartoSourceMarkers)
-      .done(function (data) {
-        const rows = data.rows;
-        // Loop through each battlement
-        let latLngArr = [];
-        rows.forEach((row) => {
-          let latLongObj = {
-            rowLat: row.lat,
-            rowLong: row.long,
-          };
-          let latLong = row.lat + ", " + row.long;
-          // Check if lat long combo is a duplicate and add a small number if it is
-          if (!latLngArr.includes(latLong)) {
-            latLngArr.push(latLong);
-          } else {
-            row.lat = row.lat + (Math.random() * (0.15 - 0.05) + 0.05);
-            latLongObj.rowLat = row.lat;
-            latLong = row.lat + ", " + row.long;
-            latLngArr.push(latLong);
-          }
-          let markerName = row.type.toLowerCase();
-          // Get marker icon object for the specific battlement type
-          const foundItem = markerArr[0].find((marker) => {
-            return marker.options.iconName == markerName;
-          });
-          // If we have a matching marker, use it to mark the battlement on the map
-          if (foundItem) {
-            let marker = L.marker([row.lat, row.long], {
-              icon: foundItem,
-              riseOnHover: false,
-            });
-            marker.data = row;
-
-            const date = new Date(row.date);
-            const dateInSec = date.getTime();
-
-            if (!dates.includes(dateInSec)) {
-              dates.push(dateInSec);
-            }
-
-            if (dateInSec in markersByDate) {
-              markersByDate[dateInSec].push(marker);
-            } else {
-              markersByDate[dateInSec] = [marker];
-            }
-
-            oms.addMarker(marker);
-          } else {
-            console.log("No marker for " + row.type);
-          }
-        });
-
-        dates.sort();
-        len = dates.length;
-
-        timeline.setupTimeline({ start: dates[0], end: dates[len - 1] });
-
-        for (array in markersByDate) {
-          layerArray = L.layerGroup(markersByDate[array]);
-          layerGroups.push(layerArray);
-        }
-
-        map.addLayer(layerGroups[0]);
-
-        oms.addListener("click", function (marker) {
-          if (marker.data.formal_name === "") {
-            popup.setContent(
-              "<p class='leaflet-popup-content--no-name'>Name not available</p>"
-            );
-          } else {
-            popup.setContent(marker.data.formal_name);
-          }
-          popup.setLatLng(marker.getLatLng());
-          map.openPopup(popup);
-        });
-
-        oms.addListener("spiderfy", function (markers) {
-          map.closePopup();
-        });
-      })
-      .error(function (errors) {
-        // errors contains a list of errors
-        console.log("errors:" + errors);
-      });
-  }
-});
-
+// entry point for Carto.js
+// reference: https://carto.com/developers/carto-js/reference/#cartoclient
 const client = new carto.Client({
   apiKey: cartoKeyMarkers,
-  username: "csis",
+  username: username,
 });
 
+/* -------------------------------------------------------------------------- */
+/*                                Build the map                               */
+/* -------------------------------------------------------------------------- */
+
+// Used to load and display tile layers on the map
+// Reference: https://leafletjs.com/reference.html#tilelayer
 var basemap = L.tileLayer(basemapURL, {});
 
+// Creates a map on the page
+// Reference: https://leafletjs.com/reference.html#map
 var map = L.map("map", {
   center: [48.981, 32.839],
   zoom: 6.5,
@@ -164,10 +48,14 @@ var map = L.map("map", {
   attributionControl: false,
 });
 
+// SQL query of Carto datasource - here, it's the markers
+// Reference: https://carto.com/developers/carto-js/reference/#cartosourcesql
 const mapSource = new carto.source.SQL(
   `SELECT * FROM csis.` + cartoSourceMarkers
 );
 
+// Apply CartoCSS to a layer
+// Reference: https://carto.com/developers/carto-js/reference/#cartostylecartocss
 const mapStyle = new carto.style.CartoCSS(`
 // #layer {
 //   marker-width: 7;
@@ -178,6 +66,8 @@ const mapStyle = new carto.style.CartoCSS(`
 // }
 `);
 
+// Use data from sqlQuery and CartoCSS style settings to create a layer
+// Reference: https://carto.com/developers/carto-js/reference/#cartolayerlayer
 const mapLayer = new carto.layer.Layer(mapSource, mapStyle, {
   featureOverColumns: [
     "formal_name",
@@ -193,6 +83,171 @@ const mapLayer = new carto.layer.Layer(mapSource, mapStyle, {
   ],
 });
 
+/* -------------------------------------------------------------------------- */
+/*                             Leaflet Spiderfier                             */
+/* -------------------------------------------------------------------------- */
+let omsOptions = {
+  keepSpiderfied: true,
+  nearbyDistance: 35,
+  circleSpiralSwitchover: 3,
+};
+
+// relies on map being instantiated, can't put this code before it
+const oms = new OverlappingMarkerSpiderfier(map, omsOptions);
+
+/* -------------------------------------------------------------------------- */
+/*                           Build the marker icons                           */
+/* -------------------------------------------------------------------------- */
+
+// Get all markers from images directoy
+// Reference: https://stackoverflow.com/questions/18480550/how-to-load-all-the-images-from-one-of-my-folder-into-my-web-page-using-jquery
+function getImages() {
+  return new Promise((resolve, reject) => {
+    let url = "./js/markers.json";
+    fetch(url)
+      .then((res) => res.json())
+      .then((markers) => {
+        let markerIcon = "";
+
+        // https://leafletjs.com/examples/custom-icons/
+        let IconBase = L.Icon.extend({
+          options: {
+            iconSize: [45, 45],
+            iconAnchor: [22, 40],
+          },
+        });
+
+        let markerArr = [];
+
+        // Loop through the marker json file and create a marker object for each type
+        for (let x in markers) {
+          x = x.toLowerCase();
+          let fullUrl = "./images/" + x + ".svg";
+          let filename2 = x
+            .substring(x.lastIndexOf("/") + 1)
+            .replace(/\.[^/.]+$/, ""); // File name no ext
+
+          markerIcon = new IconBase({
+            iconUrl: fullUrl,
+            iconName: filename2,
+          });
+
+          markerArr.push(markerIcon);
+        }
+
+        resolve(markerArr);
+      })
+      .catch((err) => console.log(`Error in promises ${error}`));
+  });
+}
+
+/* -------------------------------------------------------------------------- */
+/*                  Sort marker icons by date and add to map                  */
+/* -------------------------------------------------------------------------- */
+
+// markersByDate is an object of {String date: Array markers}
+let markersByDate = {};
+
+// the markers for each date are added to a group of layers, each marker is one layer
+// there is a group of layers for each date, added to layerGroups
+let layerGroups = [];
+
+// dates is extracted from the markers, to use with both markers and front lines
+let dates = [];
+
+// run getImages() above, then create/use markersByDate and layerGroups
+Promise.all([getImages()]).then((markerArr) => {
+  let sql = new cartodb.SQL({ user: "csis" });
+  sql
+    .execute("SELECT * FROM csis." + cartoSourceMarkers)
+    .done(function (data) {
+      const rows = data.rows;
+      // Loop through each battlement
+      let latLngArr = [];
+      rows.forEach((row) => {
+        let latLongObj = {
+          rowLat: row.lat,
+          rowLong: row.long,
+        };
+        let latLong = row.lat + ", " + row.long;
+        // Check if lat long combo is a duplicate and add a small number if it is
+        if (!latLngArr.includes(latLong)) {
+          latLngArr.push(latLong);
+        } else {
+          row.lat = row.lat + (Math.random() * (0.15 - 0.05) + 0.05);
+          latLongObj.rowLat = row.lat;
+          latLong = row.lat + ", " + row.long;
+          latLngArr.push(latLong);
+        }
+        let markerName = row.type.toLowerCase();
+        // Get marker icon object for the specific battlement type
+        const foundItem = markerArr[0].find((marker) => {
+          return marker.options.iconName == markerName;
+        });
+        // If we have a matching marker, use it to mark the battlement on the map
+        if (foundItem) {
+          let marker = L.marker([row.lat, row.long], {
+            icon: foundItem,
+            riseOnHover: false,
+          });
+          marker.data = row;
+
+          const date = new Date(row.date);
+          const dateInSec = date.getTime();
+
+          if (!dates.includes(dateInSec)) {
+            dates.push(dateInSec);
+          }
+
+          if (dateInSec in markersByDate) {
+            markersByDate[dateInSec].push(marker);
+          } else {
+            markersByDate[dateInSec] = [marker];
+          }
+
+          oms.addMarker(marker);
+        } else {
+          console.log("No marker for " + row.type);
+        }
+      });
+
+      dates.sort();
+      len = dates.length;
+
+      timeline.setupTimeline({ start: dates[0], end: dates[len - 1] });
+
+      for (array in markersByDate) {
+        layerArray = L.layerGroup(markersByDate[array]);
+        layerGroups.push(layerArray);
+      }
+
+      map.addLayer(layerGroups[0]);
+
+      oms.addListener("click", function (marker) {
+        if (marker.data.formal_name === "") {
+          popup.setContent(
+            "<p class='leaflet-popup-content--no-name'>Name not available</p>"
+          );
+        } else {
+          popup.setContent(marker.data.formal_name);
+        }
+        popup.setLatLng(marker.getLatLng());
+        map.openPopup(popup);
+      });
+
+      oms.addListener("spiderfy", function (markers) {
+        map.closePopup();
+      });
+    })
+    .error(function (errors) {
+      // errors contains a list of errors
+      console.log("errors:" + errors);
+    });
+});
+
+/* -------------------------------------------------------------------------- */
+/*                         Create and add front lines                         */
+/* -------------------------------------------------------------------------- */
 let lineArr = [];
 
 fetch(
@@ -231,14 +286,9 @@ function removeLayerGroup(group) {
 
 client.getLeafletLayer().bringToFront().addTo(map);
 
-let omsOptions = {
-  keepSpiderfied: true,
-  nearbyDistance: 35,
-  circleSpiralSwitchover: 3,
-};
-
-const oms = new OverlappingMarkerSpiderfier(map, omsOptions);
-
+/* -------------------------------------------------------------------------- */
+/*                     Popups, attribution, zoom position                     */
+/* -------------------------------------------------------------------------- */
 const popup = L.popup({ closeButton: true, offset: new L.Point(0, -20) });
 
 L.control
@@ -256,6 +306,9 @@ L.control
   })
   .addTo(map);
 
+/* -------------------------------------------------------------------------- */
+/*                       Legend Timeline and Play Button                      */
+/* -------------------------------------------------------------------------- */
 const timeline = {
   el: document.querySelector(".timeline-bar"),
   controlBtn: document.getElementById("timeline-btn"),
