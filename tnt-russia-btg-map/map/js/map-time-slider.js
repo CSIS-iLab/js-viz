@@ -19,6 +19,54 @@ const client = new carto.Client({
   username: "csis",
 });
 
+/* -------------------------------------------------------------------------- */
+/*                                Build the map                               */
+/* -------------------------------------------------------------------------- */
+var basemap = L.tileLayer(basemapURL, {});
+
+var map = L.map("map", {
+  center: [48.981, 32.839],
+  zoom: 6.5,
+  maxZoom: 20,
+  scrollWheelZoom: true,
+  minZoom: 6,
+  zoomControl: false,
+  scrollWheelZoom: true,
+  zoomSnap: 0,
+  zoomDelta: 0.5,
+  layers: [basemap],
+  attributionControl: false,
+});
+
+const mapSource = new carto.source.SQL(
+  `SELECT * FROM csis.` + cartoSourceMarkers
+);
+
+const mapStyle = new carto.style.CartoCSS(`
+// #layer {
+//   marker-width: 7;
+//   marker-allow-overlap: false;
+//   marker-line-width: 1;
+//   marker-line-color: #FFFFFF;
+//   marker-line-opacity: 1;
+// }
+`);
+
+const mapLayer = new carto.layer.Layer(mapSource, mapStyle, {
+  featureOverColumns: [
+    "formal_name",
+    "short_form_name",
+    "type",
+    "size",
+    "hq_tail2",
+    "country",
+    "lat",
+    "long",
+    "source",
+    "date",
+  ],
+});
+
 // Get all markers from images dir
 // https://stackoverflow.com/questions/18480550/how-to-load-all-the-images-from-one-of-my-folder-into-my-web-page-using-jquery
 function getImages() {
@@ -149,51 +197,6 @@ Promise.all([getImages()]).then((markerArr) => {
         console.log("errors:" + errors);
       });
   }
-});
-
-var basemap = L.tileLayer(basemapURL, {});
-
-var map = L.map("map", {
-  center: [48.981, 32.839],
-  zoom: 6.5,
-  maxZoom: 20,
-  scrollWheelZoom: true,
-  minZoom: 6,
-  zoomControl: false,
-  scrollWheelZoom: true,
-  zoomSnap: 0,
-  zoomDelta: 0.5,
-  layers: [basemap],
-  attributionControl: false,
-});
-
-const mapSource = new carto.source.SQL(
-  `SELECT * FROM csis.` + cartoSourceMarkers
-);
-
-const mapStyle = new carto.style.CartoCSS(`
-// #layer {
-//   marker-width: 7;
-//   marker-allow-overlap: false;
-//   marker-line-width: 1;
-//   marker-line-color: #FFFFFF;
-//   marker-line-opacity: 1;
-// }
-`);
-
-const mapLayer = new carto.layer.Layer(mapSource, mapStyle, {
-  featureOverColumns: [
-    "formal_name",
-    "short_form_name",
-    "type",
-    "size",
-    "hq_tail2",
-    "country",
-    "lat",
-    "long",
-    "source",
-    "date",
-  ],
 });
 
 let lineArr = [];
