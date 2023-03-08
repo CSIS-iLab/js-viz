@@ -2,8 +2,8 @@
 const basemapURL =
   "https://api.mapbox.com/styles/v1/ilabmedia/clesm3yxm000a01mtyumq5sp4/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw";
 
-  //  TNT_Russia_Ukraine_map-timeline-WORKING-POI-labels-no-mask
-  //  "https://api.mapbox.com/styles/v1/ilabmedia/clepve6hq000301p7txwaq4cq/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw";
+//  TNT_Russia_Ukraine_map-timeline-WORKING-POI-labels-no-mask
+//  "https://api.mapbox.com/styles/v1/ilabmedia/clepve6hq000301p7txwaq4cq/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw";
 const cartoKeyMarkers = "6KgYkqFnDfk6hEgC3TGvIw";
 
 const cartoSourceMarkers = "russia_btg_map_all_time_data";
@@ -103,9 +103,8 @@ Promise.all([getImages()]).then((markerArr) => {
             }
 
             oms.addMarker(marker);
-          }
-          else {
-          	console.log("No marker for " + row.type)
+          } else {
+            console.log("No marker for " + row.type);
           }
         });
 
@@ -122,8 +121,10 @@ Promise.all([getImages()]).then((markerArr) => {
         map.addLayer(layerGroups[0]);
 
         oms.addListener("click", function (marker) {
-          if(marker.data.formal_name === "") {
-            popup.setContent("<p class='leaflet-popup-content--no-name'>Name not available</p>")
+          if (marker.data.formal_name === "") {
+            popup.setContent(
+              "<p class='leaflet-popup-content--no-name'>Name not available</p>"
+            );
           } else {
             popup.setContent(marker.data.formal_name);
           }
@@ -150,7 +151,7 @@ const client = new carto.Client({
 var basemap = L.tileLayer(basemapURL, {});
 
 var map = L.map("map", {
-  center: [48.981,32.839],
+  center: [48.981, 32.839],
   zoom: 6.5,
   maxZoom: 20,
   scrollWheelZoom: true,
@@ -192,7 +193,7 @@ const mapLayer = new carto.layer.Layer(mapSource, mapStyle, {
   ],
 });
 
-let lineArr = []
+let lineArr = [];
 
 fetch(
   `https://${username}.carto.com/api/v2/sql?format=GeoJSON&api_key=${linesApiKey}&q=SELECT * FROM ${cartoSourceLines} ORDER BY date ASC`
@@ -204,16 +205,18 @@ fetch(
       const date = new Date(row.properties.date);
       const dateInSec = date.getTime();
       row.properties.dateInSec = dateInSec;
-			lineArr.push(L.geoJSON(row, {
-				style: function (feature) {
-						return {weight: 3, color: '#6d3738', opacity: 1};
-				},
-        interactive: false,
-				}))
+      lineArr.push(
+        L.geoJSON(row, {
+          style: function (feature) {
+            return { weight: 3, color: "#6d3738", opacity: 1 };
+          },
+          interactive: false,
+        })
+      );
     });
-		map.addLayer(lineArr[0]);
+    map.addLayer(lineArr[0]);
   });
-	
+
 function addLayerGroup(group) {
   return new Promise(function (resolve, reject) {
     resolve(map.addLayer(layerGroups[group]).addLayer(lineArr[group]));
@@ -244,12 +247,14 @@ L.control
   })
   .setPrefix(
     'Data by <a target="_blank" href="https://www.csis.org/programs/transnational-threats-project">CSIS Transnational Threats Program</a> | <a href="https://leafletjs.com/">Leaflet</a>'
-  ).addTo(map)
-  
-  
-L.control.zoom({
-  position: "topright"
-}).addTo(map)
+  )
+  .addTo(map);
+
+L.control
+  .zoom({
+    position: "topright",
+  })
+  .addTo(map);
 
 const timeline = {
   el: document.querySelector(".timeline-bar"),
@@ -285,17 +290,28 @@ const timeline = {
     }
   },
   formatDate(date) {
-		const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-			"Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-		];
+    const monthNames = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
 
-		date = new Date(date);
-		date = new Date(
-			date.getUTCFullYear(),
-			date.getUTCMonth(),
-			date.getUTCDate()
-		);
-		return `${monthNames[date.getMonth()]} ${date.getFullYear()}`;
+    date = new Date(date);
+    date = new Date(
+      date.getUTCFullYear(),
+      date.getUTCMonth(),
+      date.getUTCDate()
+    );
+    return `${monthNames[date.getMonth()]} ${date.getFullYear()}`;
   },
   setupTimeline: function ({ start, end }) {
     this.start = start;
@@ -303,22 +319,25 @@ const timeline = {
 
     this.setupBtnControls();
 
-let range = {}
+    let range = {};
 
-// Build range object
-dates.forEach((date, i) => {
-  // Since the dates array was sorted above, the first and last date are the start and end date
-  if(i === 0) {
-    range['min'] = date
-  } else if(i === len - 1) {
-    range['max'] = date
-  } else {
-    // For all dates that aren't the first or last, get percentage of where that date falls between the start and end dates, then pass percent: date as key: value to the range object. Used to place the date in the correct position on the timeline.
-    let rangePercent = Math.floor(((date - dates[0]) / (dates[len - 1] - dates[0])) * 100 + 0.5) + "%"
-    range[rangePercent] = date
-  }
-})
-    
+    // Build range object
+    dates.forEach((date, i) => {
+      // Since the dates array was sorted above, the first and last date are the start and end date
+      if (i === 0) {
+        range["min"] = date;
+      } else if (i === len - 1) {
+        range["max"] = date;
+      } else {
+        // For all dates that aren't the first or last, get percentage of where that date falls between the start and end dates, then pass percent: date as key: value to the range object. Used to place the date in the correct position on the timeline.
+        let rangePercent =
+          Math.floor(
+            ((date - dates[0]) / (dates[len - 1] - dates[0])) * 100 + 0.5
+          ) + "%";
+        range[rangePercent] = date;
+      }
+    });
+
     noUiSlider.create(this.el, {
       start: this.start,
       connect: true,
@@ -356,25 +375,36 @@ dates.forEach((date, i) => {
 
       timeline.el.noUiSlider.set(tempDate);
     });
-    
-  // Make pips clickable
+
+    // Make pips clickable
     // Get all pips with values
-    let pips = timeline.el.querySelectorAll('.noUi-value')
+    let pips = timeline.el.querySelectorAll(".noUi-value");
 
     // Set slider value to the data-value of the clicked pip
     function clickOnPip() {
-      var value = Number(this.getAttribute('data-value'));
+      var value = Number(this.getAttribute("data-value"));
       timeline.el.noUiSlider.set(value);
     }
     // Add event listener to the pips
     for (var i = 0; i < pips.length; i++) {
-      pips[i].addEventListener('click', clickOnPip);
+      pips[i].addEventListener("click", clickOnPip);
     }
 
     function toFormat(seconds) {
-			const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-				"Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-			];
+      const monthNames = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+      ];
 
       date = new Date(seconds);
       date = new Date(
@@ -388,7 +418,7 @@ dates.forEach((date, i) => {
   setupBtnControls: function () {
     this.controlBtn.addEventListener("click", function () {
       if (now == timeline.end) {
-				const lastDateIndex = len - 1;
+        const lastDateIndex = len - 1;
         removeLayerGroup(lastDateIndex);
         timeline.el.noUiSlider.set(timeline.start);
       }
@@ -411,7 +441,7 @@ dates.forEach((date, i) => {
         timeline.el.noUiSlider.set(now);
         i++;
       }
-      jamTimer()
+      jamTimer();
       timeline.timer = setInterval(jamTimer, timeline.transitionDuration);
       this.classList.remove("play-btn");
       this.classList.add("pause-btn");
