@@ -38,35 +38,6 @@ var map = L.map("map", {
   attributionControl: false,
 });
 
-const mapSource = new carto.source.SQL(
-  `SELECT * FROM csis.` + cartoSourceMarkers
-);
-
-const mapStyle = new carto.style.CartoCSS(`
-// #layer {
-//   marker-width: 7;
-//   marker-allow-overlap: false;
-//   marker-line-width: 1;
-//   marker-line-color: #FFFFFF;
-//   marker-line-opacity: 1;
-// }
-`);
-
-const mapLayer = new carto.layer.Layer(mapSource, mapStyle, {
-  featureOverColumns: [
-    "formal_name",
-    "short_form_name",
-    "type",
-    "size",
-    "hq_tail2",
-    "country",
-    "lat",
-    "long",
-    "source",
-    "date",
-  ],
-});
-
 /* -------------------------------------------------------------------------- */
 /*            Instantiate Overlapping Marker Spiderfier for Leaflet           */
 /* -------------------------------------------------------------------------- */
