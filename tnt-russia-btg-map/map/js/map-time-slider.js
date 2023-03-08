@@ -67,6 +67,18 @@ const mapLayer = new carto.layer.Layer(mapSource, mapStyle, {
   ],
 });
 
+/* -------------------------------------------------------------------------- */
+/*            Instantiate Overlapping Marker Spiderfier for Leaflet           */
+/* -------------------------------------------------------------------------- */
+
+let omsOptions = {
+  keepSpiderfied: true,
+  nearbyDistance: 35,
+  circleSpiralSwitchover: 3,
+};
+
+const oms = new OverlappingMarkerSpiderfier(map, omsOptions);
+
 // Get all markers from images dir
 // https://stackoverflow.com/questions/18480550/how-to-load-all-the-images-from-one-of-my-folder-into-my-web-page-using-jquery
 function getImages() {
@@ -236,14 +248,6 @@ function removeLayerGroup(group) {
 }
 
 client.getLeafletLayer().bringToFront().addTo(map);
-
-let omsOptions = {
-  keepSpiderfied: true,
-  nearbyDistance: 35,
-  circleSpiralSwitchover: 3,
-};
-
-const oms = new OverlappingMarkerSpiderfier(map, omsOptions);
 
 const popup = L.popup({ closeButton: true, offset: new L.Point(0, -20) });
 
