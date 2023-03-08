@@ -1,15 +1,23 @@
+/* -------------------------------------------------------------------------- */
+/*                     Connecting to Carto to get our data                    */
+/* -------------------------------------------------------------------------- */
+
 //  TNT_Russia_Ukraine_map-timeline-WORKING-POI-labels-updated-masks
 const basemapURL =
   "https://api.mapbox.com/styles/v1/ilabmedia/clesm3yxm000a01mtyumq5sp4/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw";
 
-//  TNT_Russia_Ukraine_map-timeline-WORKING-POI-labels-no-mask
-//  "https://api.mapbox.com/styles/v1/ilabmedia/clepve6hq000301p7txwaq4cq/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw";
 const cartoKeyMarkers = "6KgYkqFnDfk6hEgC3TGvIw";
-
 const cartoSourceMarkers = "russia_btg_map_all_time_data";
-const cartoSourceLines = "tnt_front_lines_time_slider";
+
 const linesApiKey = "SMgzGpUrfgPT5Fg25t9XNw";
+const cartoSourceLines = "tnt_front_lines_time_slider";
+
 const username = "csis";
+
+const client = new carto.Client({
+  apiKey: cartoKeyMarkers,
+  username: "csis",
+});
 
 // Get all markers from images dir
 // https://stackoverflow.com/questions/18480550/how-to-load-all-the-images-from-one-of-my-folder-into-my-web-page-using-jquery
@@ -141,11 +149,6 @@ Promise.all([getImages()]).then((markerArr) => {
         console.log("errors:" + errors);
       });
   }
-});
-
-const client = new carto.Client({
-  apiKey: cartoKeyMarkers,
-  username: "csis",
 });
 
 var basemap = L.tileLayer(basemapURL, {});
