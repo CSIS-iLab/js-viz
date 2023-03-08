@@ -291,6 +291,10 @@ L.control
   })
   .addTo(map);
 
+/* -------------------------------------------------------------------------- */
+/*                       Legend Timeline and Play Button                      */
+/* -------------------------------------------------------------------------- */
+
 const timeline = {
   el: document.querySelector(".timeline-bar"),
   controlBtn: document.getElementById("timeline-btn"),
