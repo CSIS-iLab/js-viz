@@ -118,6 +118,10 @@ function getImages() {
   });
 }
 
+/* -------------------------------------------------------------------------- */
+/*         Sort marker icons by date and add to map; set up spiderfier        */
+/* -------------------------------------------------------------------------- */
+
 let markersByDate = {};
 let layerGroups = [];
 let dates = [];
@@ -133,6 +137,8 @@ Promise.all([getImages()]).then((markerArr) => {
         const rows = data.rows;
         // Loop through each battlement
         let latLngArr = [];
+
+        /* ---- Build markers, markersByDate, dates; add each marker to spiderfier --- */
         rows.forEach((row) => {
           let latLongObj = {
             rowLat: row.lat,
@@ -180,11 +186,13 @@ Promise.all([getImages()]).then((markerArr) => {
           }
         });
 
+        /* -------------------- Setup timeline in the map legend -------------------- */
         dates.sort();
         len = dates.length;
 
         timeline.setupTimeline({ start: dates[0], end: dates[len - 1] });
 
+        /* ---------------------- Build the marker layer groups --------------------- */
         for (array in markersByDate) {
           layerArray = L.layerGroup(markersByDate[array]);
           layerGroups.push(layerArray);
@@ -192,6 +200,7 @@ Promise.all([getImages()]).then((markerArr) => {
 
         map.addLayer(layerGroups[0]);
 
+        /* -------------------- Set up spiderfier event listeners ------------------- */
         oms.addListener("click", function (marker) {
           if (marker.data.formal_name === "") {
             popup.setContent(
