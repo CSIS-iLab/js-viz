@@ -66,7 +66,7 @@ const mapStyle = new carto.style.CartoCSS(`
 // }
 `);
 
-// Use data from sqlQuery and CartoCSS style settings to create a layer
+// Use data from SQL query and CartoCSS style settings to create a layer
 // Reference: https://carto.com/developers/carto-js/reference/#cartolayerlayer
 const mapLayer = new carto.layer.Layer(mapSource, mapStyle, {
   featureOverColumns: [
@@ -84,7 +84,7 @@ const mapLayer = new carto.layer.Layer(mapSource, mapStyle, {
 });
 
 /* -------------------------------------------------------------------------- */
-/*                             Leaflet Spiderfier                             */
+/*            Instantiate Overlapping Marker Spiderfier for Leaflet           */
 /* -------------------------------------------------------------------------- */
 let omsOptions = {
   keepSpiderfied: true,
@@ -93,6 +93,7 @@ let omsOptions = {
 };
 
 // relies on map being instantiated, can't put this code before it
+// this creates the OverlappingMarkerSpiderfier instance
 const oms = new OverlappingMarkerSpiderfier(map, omsOptions);
 
 /* -------------------------------------------------------------------------- */
@@ -142,87 +143,120 @@ function getImages() {
 }
 
 /* -------------------------------------------------------------------------- */
-/*                  Sort marker icons by date and add to map                  */
+/*         Sort marker icons by date and add to map; set up spiderfier        */
 /* -------------------------------------------------------------------------- */
+
+/* Note: markerLayerGroups, dates, and the array of front lines will be created
+in the same date-order, so if the index fo 2/1/23 is [0], the matching 
+markerLayerGroup and frontline will also have index [0]. This is important
+for the timeline slider to function properly. */
 
 // markersByDate is an object of {String date: Array markers}
 let markersByDate = {};
 
 // the markers for each date are added to a group of layers, each marker is one layer
-// there is a group of layers for each date, added to layerGroups
-let layerGroups = [];
+// there is a group of layers for each date, added to markerLayerGroups
+let markerLayerGroups = [];
 
 // dates is extracted from the markers, to use with both markers and front lines
 let dates = [];
 
-// run getImages() above, then create/use markersByDate and layerGroups
+// run getImages() from above, then create/use markersByDate and markerLayerGroups
+// then also set up the spiderfier
 Promise.all([getImages()]).then((markerArr) => {
   let sql = new cartodb.SQL({ user: "csis" });
   sql
     .execute("SELECT * FROM csis." + cartoSourceMarkers)
     .done(function (data) {
+      // all rows of Carto spreadsheet
       const rows = data.rows;
-      // Loop through each battlement
+      // array of all lat/long pairs to help find duplicates
       let latLngArr = [];
+
+      /* ---- Build markers, markersByDate, dates; add each marker to spiderfier --- */
       rows.forEach((row) => {
-        let latLongObj = {
-          rowLat: row.lat,
-          rowLong: row.long,
-        };
         let latLong = row.lat + ", " + row.long;
-        // Check if lat long combo is a duplicate and add a small number if it is
+        let markerName = row.type.toLowerCase();
+
+        // Check if lat/long is a duplicate, add a small number if it is
+        // This keeps markers from sitting directly on top of one another
         if (!latLngArr.includes(latLong)) {
           latLngArr.push(latLong);
         } else {
           row.lat = row.lat + (Math.random() * (0.15 - 0.05) + 0.05);
-          latLongObj.rowLat = row.lat;
           latLong = row.lat + ", " + row.long;
           latLngArr.push(latLong);
         }
-        let markerName = row.type.toLowerCase();
-        // Get marker icon object for the specific battlement type
-        const foundItem = markerArr[0].find((marker) => {
+
+        // Check the markerArr from getImages(), which used our JSON file --
+        // if it has a marker with a name that matches the name in the
+        // row we're checking, save it as "foundMarkerIcon"
+        const foundMarkerIcon = markerArr[0].find((marker) => {
           return marker.options.iconName == markerName;
         });
-        // If we have a matching marker, use it to mark the battlement on the map
-        if (foundItem) {
+
+        // If we have a matching marker icon, use it to mark the map
+        // at the lat/long of the row we're checking
+        if (foundMarkerIcon) {
+          // create a marker object with the icon you found and a placeholder
+          // for the rest of the data from the row
           let marker = L.marker([row.lat, row.long], {
-            icon: foundItem,
+            icon: foundMarkerIcon,
             riseOnHover: false,
+            data: null,
           });
+
+          // add all row information to the marker -- can't add at the same time marker
+          // object is being created
           marker.data = row;
 
-          const date = new Date(row.date);
-          const dateInSec = date.getTime();
+          // convert date Carto pulls from the google sheet to seconds
+          // to normalize between the markers and the frontlines
+          const dateInSec = new Date(marker.data.date).getTime();
 
+          // if the dates array doesn't have the date of the row we're checking, add it
+          // we're only pulling out the unique dates -- this array will be used for both
+          // markers and front lines
           if (!dates.includes(dateInSec)) {
             dates.push(dateInSec);
           }
 
+          // if the markersByDate object doesn't have our date, (1) add it
+          // and (2) add the marker to its array or markers, else, add
+          // the marker to its array of markers
           if (dateInSec in markersByDate) {
             markersByDate[dateInSec].push(marker);
           } else {
             markersByDate[dateInSec] = [marker];
           }
 
+          // tell the OMS instance about each marker as we add it
+          // Reference: https://github.com/jawj/OverlappingMarkerSpiderfier-Leaflet
           oms.addMarker(marker);
         } else {
           console.log("No marker for " + row.type);
         }
       });
 
+      /* -------------------- Setup timeline in the map legend -------------------- */
       dates.sort();
       len = dates.length;
 
+      // setupTimeline is a property on the timeline object, below
       timeline.setupTimeline({ start: dates[0], end: dates[len - 1] });
 
+      /* ---------------------- Build the marker layer groups --------------------- */
       for (array in markersByDate) {
+        // remember each marker is its own layer
         layerArray = L.layerGroup(markersByDate[array]);
-        layerGroups.push(layerArray);
+        markerLayerGroups.push(layerArray);
       }
 
-      map.addLayer(layerGroups[0]);
+      // add the first group to the map to start with
+      map.addLayer(markerLayerGroups[0]);
 
+      /* -------------------- Set up spiderfier event listeners ------------------- */
+      // Reference: https://github.com/jawj/OverlappingMarkerSpiderfier-Leaflet
       oms.addListener("click", function (marker) {
         if (marker.data.formal_name === "") {
           popup.setContent(
@@ -248,6 +282,7 @@ Promise.all([getImages()]).then((markerArr) => {
 /* -------------------------------------------------------------------------- */
 /*                         Create and add front lines                         */
 /* -------------------------------------------------------------------------- */
+
 let lineArr = [];
 
 fetch(
@@ -255,11 +290,15 @@ fetch(
 )
   .then((res) => res.json())
   .then((response) => {
-    // Loop through the front line json file and create a layer for each line
-    response.features.forEach((row, i) => {
-      const date = new Date(row.properties.date);
-      const dateInSec = date.getTime();
+    // Loop through the front line Carter spreadsheet and create a layer for each line
+    response.features.forEach((row) => {
+      // normalize date to match markers by putting in seconds
+      const dateInSec = new Date(row.properties.date).getTime();
+
+      // the rows come with the date -- *add* dateInSeconds as add'l property
       row.properties.dateInSec = dateInSec;
+
+      // convert the row into geojson, style it, and add it to the line array
       lineArr.push(
         L.geoJSON(row, {
           style: function (feature) {
@@ -269,28 +308,37 @@ fetch(
         })
       );
     });
+
+    // add the first line in the array to the map to begin with
     map.addLayer(lineArr[0]);
   });
 
+/* -------------------------------------------------------------------------- */
+/*      Functions to add/remove marker and layer groups at the same time      */
+/* -------------------------------------------------------------------------- */
 function addLayerGroup(group) {
-  return new Promise(function (resolve, reject) {
-    resolve(map.addLayer(layerGroups[group]).addLayer(lineArr[group]));
+  return new Promise(function (resolve, _reject) {
+    resolve(map.addLayer(markerLayerGroups[group]).addLayer(lineArr[group]));
   });
 }
 
 function removeLayerGroup(group) {
-  return new Promise(function (resolve, reject) {
-    resolve(map.removeLayer(layerGroups[group]).removeLayer(lineArr[group]));
+  return new Promise(function (resolve, _reject) {
+    resolve(
+      map.removeLayer(markerLayerGroups[group]).removeLayer(lineArr[group])
+    );
   });
 }
-
-client.getLeafletLayer().bringToFront().addTo(map);
 
 /* -------------------------------------------------------------------------- */
 /*                     Popups, attribution, zoom position                     */
 /* -------------------------------------------------------------------------- */
+
+// popups for markers
+// Reference: https://leafletjs.com/reference.html#popup
 const popup = L.popup({ closeButton: true, offset: new L.Point(0, -20) });
 
+// Attribution reference: https://leafletjs.com/reference.html#control-attribution
 L.control
   .attribution({
     position: "bottomleft",
@@ -300,6 +348,7 @@ L.control
   )
   .addTo(map);
 
+// Zoom reference: https://leafletjs.com/reference.html#control-zoom
 L.control
   .zoom({
     position: "topright",
@@ -318,15 +367,23 @@ const timeline = {
   transitionDuration: 2000,
   end: null,
   start: null,
-  updateCurrentDate(date) {
-    this.currentDateEl.innerHTML = `${this.formatDate(date)}`;
-  },
-  onChange: function onChange() {
-    now = this.get();
-    timeline.updateCurrentDate(now);
 
-    // Get the index of the date from the dates array that matches now
-    let dateIndex = dates.indexOf(now);
+  updateCurrentDate: function (currentDate) {
+    this.currentDateEl.innerHTML = `${this.formatDate(currentDate)}`;
+  },
+
+  onChange: function onChange() {
+    // use nouislider get() to grab current slider value
+    // reference: https://refreshless.com/nouislider/slider-read-write/
+    currentDate = this.get();
+    timeline.updateCurrentDate(currentDate);
+
+    // close any open popups before timeline starts playing
+    map.closePopup();
+
+    // Get the index of the date from the dates array that matches
+    // the current timeline/slider value
+    let dateIndex = dates.indexOf(currentDate);
 
     // Remove layer groups that DONT have the current dateIndex
     for (i = 0; i < len; i++) {
@@ -335,14 +392,16 @@ const timeline = {
       }
     }
 
-    // Add the layer group with the same index of the date to the map
+    // Add the layer groups with the same index of the current date to the map
     addLayerGroup(dateIndex);
 
-    if (now == timeline.end) {
+    // stop playing the timeline at the last date; don't auto restart
+    if (currentDate == timeline.end) {
       timeline.stopTimeline();
     }
   },
-  formatDate(date) {
+
+  formatDate: function (currentDate) {
     const monthNames = [
       "Jan",
       "Feb",
@@ -358,14 +417,19 @@ const timeline = {
       "Dec",
     ];
 
-    date = new Date(date);
-    date = new Date(
-      date.getUTCFullYear(),
-      date.getUTCMonth(),
-      date.getUTCDate()
+    dateInSec = new Date(currentDate);
+
+    formattedDate = new Date(
+      dateInSec.getUTCFullYear(),
+      dateInSec.getUTCMonth(),
+      dateInSec.getUTCDate()
     );
-    return `${monthNames[date.getMonth()]} ${date.getFullYear()}`;
+
+    return `${
+      monthNames[formattedDate.getMonth()]
+    } ${formattedDate.getFullYear()}`;
   },
+
   setupTimeline: function ({ start, end }) {
     this.start = start;
     this.end = end;
@@ -373,8 +437,7 @@ const timeline = {
     this.setupBtnControls();
 
     let range = {};
-
-    // Build range object
+    // Build range object to use below in slider creation
     dates.forEach((date, i) => {
       // Since the dates array was sorted above, the first and last date are the start and end date
       if (i === 0) {
@@ -382,7 +445,9 @@ const timeline = {
       } else if (i === len - 1) {
         range["max"] = date;
       } else {
-        // For all dates that aren't the first or last, get percentage of where that date falls between the start and end dates, then pass percent: date as key: value to the range object. Used to place the date in the correct position on the timeline.
+        // For all dates that aren't the first or last, get percentage of where that date falls between the start and end dates, then pass percent:date as key:value to the range object. Used to place the date in the correct position on the timeline.
+        // Reference: https://math.stackexchange.com/questions/754130/find-what-percent-x-is-between-two-numbers
+        // Reference: https://refreshless.com/nouislider/examples/#section-values
         let rangePercent =
           Math.floor(
             ((date - dates[0]) / (dates[len - 1] - dates[0])) * 100 + 0.5
@@ -391,13 +456,15 @@ const timeline = {
       }
     });
 
+    // Reference: https://refreshless.com/nouislider/
     noUiSlider.create(this.el, {
       start: this.start,
       connect: true,
+      // behaviour reference: https://refreshless.com/nouislider/behaviour-option/
       behaviour: "tap-drag",
-      // step: this.step,
       snap: true,
       range: range,
+      // format reference: https://refreshless.com/nouislider/number-formatting/
       format: {
         from: function from(v) {
           return parseInt(v, 10);
@@ -406,6 +473,7 @@ const timeline = {
           return parseInt(v, 10);
         },
       },
+      // pips reference: https://refreshless.com/nouislider/pips
       pips: {
         mode: "count",
         values: len,
@@ -416,7 +484,10 @@ const timeline = {
         },
       },
     });
+
+    // .set() reference: https://refreshless.com/nouislider/slider-read-write/
     this.el.noUiSlider.set(this.start);
+    // .on(event) reference: https://refreshless.com/nouislider/events-callbacks/
     this.el.noUiSlider.on("update", this.onChange);
     this.el.noUiSlider.on("slide", function (values, handle) {
       let tempDate = new Date(values[handle]);
@@ -429,8 +500,7 @@ const timeline = {
       timeline.el.noUiSlider.set(tempDate);
     });
 
-    // Make pips clickable
-    // Get all pips with values
+    // Make pips with values clickable
     let pips = timeline.el.querySelectorAll(".noUi-value");
 
     // Set slider value to the data-value of the clicked pip
@@ -443,6 +513,7 @@ const timeline = {
       pips[i].addEventListener("click", clickOnPip);
     }
 
+    // used above to format pip labels
     function toFormat(seconds) {
       const monthNames = [
         "Jan",
@@ -468,34 +539,44 @@ const timeline = {
       return `${monthNames[date.getMonth()]} ${date.getFullYear()}`;
     }
   },
+
   setupBtnControls: function () {
     this.controlBtn.addEventListener("click", function () {
-      if (now == timeline.end) {
+      // if slider is at last date, remove its layers and set to start
+      if (currentDate == timeline.end) {
         const lastDateIndex = len - 1;
         removeLayerGroup(lastDateIndex);
         timeline.el.noUiSlider.set(timeline.start);
       }
 
+      // if the timeline is playing, stop it (don't auto-repeat)
       if (timeline.playing == true) {
         timeline.stopTimeline();
         return;
       }
 
-      let ints = dates;
-
-      let i = ints.indexOf(now);
-
-      function jamTimer() {
-        if (i >= ints.length) {
+      // get where the timeine currently is, increment it by 1
+      // if it's at the end, start over at 0 (this lets user
+      // hit play again when timeline stops)
+      let i = dates.indexOf(currentDate);
+      function timelinePosition() {
+        if (i >= dates.length) {
           i = 0;
         }
 
-        now = ints[i];
-        timeline.el.noUiSlider.set(now);
+        currentDate = dates[i];
+        timeline.el.noUiSlider.set(currentDate);
         i++;
       }
-      jamTimer();
-      timeline.timer = setInterval(jamTimer, timeline.transitionDuration);
+      // call function to get current TL position -- otherwise
+      // there's a delay when you hit play
+      timelinePosition();
+
+      timeline.timer = setInterval(
+        timelinePosition,
+        timeline.transitionDuration
+      );
+
       this.classList.remove("play-btn");
       this.classList.add("pause-btn");
       timeline.playing = true;
@@ -508,3 +589,5 @@ const timeline = {
     timeline.controlBtn.classList.add("play-btn");
   },
 };
+
+//console.log("timeline", timeline);
