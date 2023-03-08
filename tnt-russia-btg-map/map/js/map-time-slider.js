@@ -252,6 +252,10 @@ fetch(
     map.addLayer(lineArr[0]);
   });
 
+/* -------------------------------------------------------------------------- */
+/*      Functions to add/remove marker and layer groups at the same time      */
+/* -------------------------------------------------------------------------- */
+
 function addLayerGroup(group) {
   return new Promise(function (resolve, reject) {
     resolve(map.addLayer(layerGroups[group]).addLayer(lineArr[group]));
