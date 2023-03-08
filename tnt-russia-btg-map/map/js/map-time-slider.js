@@ -79,6 +79,10 @@ let omsOptions = {
 
 const oms = new OverlappingMarkerSpiderfier(map, omsOptions);
 
+/* -------------------------------------------------------------------------- */
+/*                           Build the marker icons                           */
+/* -------------------------------------------------------------------------- */
+
 // Get all markers from images dir
 // https://stackoverflow.com/questions/18480550/how-to-load-all-the-images-from-one-of-my-folder-into-my-web-page-using-jquery
 function getImages() {
