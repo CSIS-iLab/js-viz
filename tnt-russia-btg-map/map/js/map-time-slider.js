@@ -46,8 +46,6 @@ const oms = new OverlappingMarkerSpiderfier(map, omsOptions);
 /*                           Build the marker icons                           */
 /* -------------------------------------------------------------------------- */
 
-// Get all markers from images dir
-// https://stackoverflow.com/questions/18480550/how-to-load-all-the-images-from-one-of-my-folder-into-my-web-page-using-jquery
 function getImages() {
   return new Promise((resolve, reject) => {
     let url = "./js/markers.json";
@@ -63,7 +61,6 @@ function getImages() {
         });
         let markerArr = [];
 
-        // Loop through the marker json file and create a marker object for each type
         for (let x in markers) {
           x = x.toLowerCase();
           let fullUrl = "./images/" + x + ".svg";
