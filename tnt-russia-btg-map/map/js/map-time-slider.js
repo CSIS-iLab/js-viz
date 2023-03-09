@@ -1,5 +1,5 @@
 /* -------------------------------------------------------------------------- */
-/*                     Connecting to Carto to get our data                    */
+/*               Mapbox URL, info to connect to Carto datasets              */
 /* -------------------------------------------------------------------------- */
 
 //  TNT_Russia_Ukraine_map-timeline-WORKING-POI-labels-updated-masks
