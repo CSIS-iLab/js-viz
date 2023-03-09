@@ -282,6 +282,9 @@ const timeline = {
     currentDate = this.get();
     timeline.updateCurrentDate(currentDate);
 
+    // close any open popups before timeline starts playing
+    map.closePopup();
+
     // Get the index of the date from the dates array that matches now
     let dateIndex = dates.indexOf(currentDate);
 
@@ -316,13 +319,17 @@ const timeline = {
       "Dec",
     ];
 
-    date = new Date(currentDate);
-    date = new Date(
-      date.getUTCFullYear(),
-      date.getUTCMonth(),
-      date.getUTCDate()
+    dateInSec = new Date(currentDate);
+
+    formattedDate = new Date(
+      dateInSec.getUTCFullYear(),
+      dateInSec.getUTCMonth(),
+      dateInSec.getUTCDate()
     );
-    return `${monthNames[date.getMonth()]} ${date.getFullYear()}`;
+
+    return `${
+      monthNames[formattedDate.getMonth()]
+    } ${formattedDate.getFullYear()}`;
   },
 
   setupTimeline: function ({ start, end }) {
