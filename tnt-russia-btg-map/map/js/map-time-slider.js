@@ -98,7 +98,7 @@ function getImages() {
 /* -------------------------------------------------------------------------- */
 
 let markersByDate = {};
-let layerGroups = [];
+let markerLayerGroups = [];
 let dates = [];
 
 Promise.all([getImages()]).then((markerArr) => {
@@ -165,10 +165,10 @@ Promise.all([getImages()]).then((markerArr) => {
       /* ---------------------- Build the marker layer groups --------------------- */
       for (array in markersByDate) {
         layerArray = L.layerGroup(markersByDate[array]);
-        layerGroups.push(layerArray);
+        markerLayerGroups.push(layerArray);
       }
 
-      map.addLayer(layerGroups[0]);
+      map.addLayer(markerLayerGroups[0]);
 
       /* -------------------- Set up spiderfier event listeners ------------------- */
       oms.addListener("click", function (marker) {
@@ -227,13 +227,15 @@ fetch(
 
 function addLayerGroup(group) {
   return new Promise(function (resolve, reject) {
-    resolve(map.addLayer(layerGroups[group]).addLayer(lineArr[group]));
+    resolve(map.addLayer(markerLayerGroups[group]).addLayer(lineArr[group]));
   });
 }
 
 function removeLayerGroup(group) {
   return new Promise(function (resolve, reject) {
-    resolve(map.removeLayer(layerGroups[group]).removeLayer(lineArr[group]));
+    resolve(
+      map.removeLayer(markerLayerGroups[group]).removeLayer(lineArr[group])
+    );
   });
 }
 
