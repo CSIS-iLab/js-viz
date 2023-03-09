@@ -274,16 +274,16 @@ const timeline = {
   end: null,
   start: null,
 
-  updateCurrentDate: function (date) {
-    this.currentDateEl.innerHTML = `${this.formatDate(date)}`;
+  updateCurrentDate: function (currentDate) {
+    this.currentDateEl.innerHTML = `${this.formatDate(currentDate)}`;
   },
 
   onChange: function onChange() {
-    now = this.get();
-    timeline.updateCurrentDate(now);
+    currentDate = this.get();
+    timeline.updateCurrentDate(currentDate);
 
     // Get the index of the date from the dates array that matches now
-    let dateIndex = dates.indexOf(now);
+    let dateIndex = dates.indexOf(currentDate);
 
     // Remove layer groups that DONT have the current dateIndex
     for (i = 0; i < len; i++) {
@@ -295,12 +295,12 @@ const timeline = {
     // Add the layer group with the same index of the date to the map
     addLayerGroup(dateIndex);
 
-    if (now == timeline.end) {
+    if (currentDate == timeline.end) {
       timeline.stopTimeline();
     }
   },
 
-  formatDate: function (date) {
+  formatDate: function (currentDate) {
     const monthNames = [
       "Jan",
       "Feb",
@@ -316,7 +316,7 @@ const timeline = {
       "Dec",
     ];
 
-    date = new Date(date);
+    date = new Date(currentDate);
     date = new Date(
       date.getUTCFullYear(),
       date.getUTCMonth(),
@@ -430,7 +430,7 @@ const timeline = {
 
   setupBtnControls: function () {
     this.controlBtn.addEventListener("click", function () {
-      if (now == timeline.end) {
+      if (currentDate == timeline.end) {
         const lastDateIndex = len - 1;
         removeLayerGroup(lastDateIndex);
         timeline.el.noUiSlider.set(timeline.start);
@@ -443,15 +443,15 @@ const timeline = {
 
       let ints = dates;
 
-      let i = ints.indexOf(now);
+      let i = ints.indexOf(currentDate);
 
       function jamTimer() {
         if (i >= ints.length) {
           i = 0;
         }
 
-        now = ints[i];
-        timeline.el.noUiSlider.set(now);
+        currentDate = ints[i];
+        timeline.el.noUiSlider.set(currentDate);
         i++;
       }
       jamTimer();
