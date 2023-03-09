@@ -70,6 +70,7 @@ function getImages() {
           },
         });
         let markerArr = [];
+
         // Loop through the marker json file and create a marker object for each type
         for (let x in markers) {
           x = x.toLowerCase();
@@ -77,15 +78,18 @@ function getImages() {
           let filename2 = x
             .substring(x.lastIndexOf("/") + 1)
             .replace(/\.[^/.]+$/, ""); // File name no ext
+
           markerIcon = new IconBase({
             iconUrl: fullUrl,
             iconName: filename2,
           });
+
           markerArr.push(markerIcon);
         }
+
         resolve(markerArr);
       })
-      .catch((err) => console.log(`Error in promises ${error}`));
+      .catch((error) => console.log("Error in getImages()! -->", error));
   });
 }
 
