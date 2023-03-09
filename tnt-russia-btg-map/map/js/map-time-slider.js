@@ -273,9 +273,11 @@ const timeline = {
   transitionDuration: 2000,
   end: null,
   start: null,
+
   updateCurrentDate(date) {
     this.currentDateEl.innerHTML = `${this.formatDate(date)}`;
   },
+
   onChange: function onChange() {
     now = this.get();
     timeline.updateCurrentDate(now);
@@ -297,6 +299,7 @@ const timeline = {
       timeline.stopTimeline();
     }
   },
+
   formatDate(date) {
     const monthNames = [
       "Jan",
@@ -321,6 +324,7 @@ const timeline = {
     );
     return `${monthNames[date.getMonth()]} ${date.getFullYear()}`;
   },
+
   setupTimeline: function ({ start, end }) {
     this.start = start;
     this.end = end;
@@ -423,6 +427,7 @@ const timeline = {
       return `${monthNames[date.getMonth()]} ${date.getFullYear()}`;
     }
   },
+
   setupBtnControls: function () {
     this.controlBtn.addEventListener("click", function () {
       if (now == timeline.end) {
@@ -456,6 +461,7 @@ const timeline = {
       timeline.playing = true;
     });
   },
+
   stopTimeline: function () {
     clearInterval(timeline.timer);
     timeline.playing = false;
