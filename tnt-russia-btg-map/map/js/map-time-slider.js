@@ -205,9 +205,9 @@ fetch(
   .then((res) => res.json())
   .then((response) => {
     // Loop through the front line json file and create a layer for each line
-    response.features.forEach((row, i) => {
-      const date = new Date(row.properties.date);
-      const dateInSec = date.getTime();
+    response.features.forEach((row) => {
+      const dateInSec = new Date(row.properties.date).getTime();
+
       row.properties.dateInSec = dateInSec;
       lineArr.push(
         L.geoJSON(row, {
