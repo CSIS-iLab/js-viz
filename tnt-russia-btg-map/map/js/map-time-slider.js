@@ -243,8 +243,6 @@ function removeLayerGroup(group) {
 /*                     Popups, attribution, zoom position                     */
 /* -------------------------------------------------------------------------- */
 
-client.getLeafletLayer().bringToFront().addTo(map);
-
 const popup = L.popup({ closeButton: true, offset: new L.Point(0, -20) });
 
 L.control
