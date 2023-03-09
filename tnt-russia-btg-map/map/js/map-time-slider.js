@@ -14,11 +14,6 @@ const cartoSourceLines = "tnt_front_lines_time_slider";
 
 const username = "csis";
 
-const client = new carto.Client({
-  apiKey: cartoKeyMarkers,
-  username: "csis",
-});
-
 /* -------------------------------------------------------------------------- */
 /*                                Build the map                               */
 /* -------------------------------------------------------------------------- */
