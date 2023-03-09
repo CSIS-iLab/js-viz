@@ -448,21 +448,22 @@ const timeline = {
         return;
       }
 
-      let ints = dates;
+      let i = dates.indexOf(currentDate);
 
-      let i = ints.indexOf(currentDate);
-
-      function jamTimer() {
-        if (i >= ints.length) {
+      function timelinePosition() {
+        if (i >= dates.length) {
           i = 0;
         }
 
-        currentDate = ints[i];
+        currentDate = dates[i];
         timeline.el.noUiSlider.set(currentDate);
         i++;
       }
-      jamTimer();
-      timeline.timer = setInterval(jamTimer, timeline.transitionDuration);
+      timelinePosition();
+      timeline.timer = setInterval(
+        timelinePosition,
+        timeline.transitionDuration
+      );
       this.classList.remove("play-btn");
       this.classList.add("pause-btn");
       timeline.playing = true;
