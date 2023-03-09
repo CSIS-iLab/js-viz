@@ -102,101 +102,97 @@ let layerGroups = [];
 let dates = [];
 
 Promise.all([getImages()]).then((markerArr) => {
-  const dataRows = theData(markerArr);
+  let sql = new cartodb.SQL({ user: "csis" });
+  sql
+    .execute("SELECT * FROM csis." + cartoSourceMarkers)
+    .done(function (data) {
+      const rows = data.rows;
+      // Loop through each battlement
+      let latLngArr = [];
 
-  function theData(markerArr) {
-    let sql = new cartodb.SQL({ user: "csis" });
-    sql
-      .execute("SELECT * FROM csis." + cartoSourceMarkers)
-      .done(function (data) {
-        const rows = data.rows;
-        // Loop through each battlement
-        let latLngArr = [];
-
-        /* ---- Build markers, markersByDate, dates; add each marker to spiderfier --- */
-        rows.forEach((row) => {
-          let latLongObj = {
-            rowLat: row.lat,
-            rowLong: row.long,
-          };
-          let latLong = row.lat + ", " + row.long;
-          // Check if lat long combo is a duplicate and add a small number if it is
-          if (!latLngArr.includes(latLong)) {
-            latLngArr.push(latLong);
-          } else {
-            row.lat = row.lat + (Math.random() * (0.15 - 0.05) + 0.05);
-            latLongObj.rowLat = row.lat;
-            latLong = row.lat + ", " + row.long;
-            latLngArr.push(latLong);
-          }
-          let markerName = row.type.toLowerCase();
-          // Get marker icon object for the specific battlement type
-          const foundItem = markerArr[0].find((marker) => {
-            return marker.options.iconName == markerName;
-          });
-          // If we have a matching marker, use it to mark the battlement on the map
-          if (foundItem) {
-            let marker = L.marker([row.lat, row.long], {
-              icon: foundItem,
-              riseOnHover: false,
-            });
-            marker.data = row;
-
-            const date = new Date(row.date);
-            const dateInSec = date.getTime();
-
-            if (!dates.includes(dateInSec)) {
-              dates.push(dateInSec);
-            }
-
-            if (dateInSec in markersByDate) {
-              markersByDate[dateInSec].push(marker);
-            } else {
-              markersByDate[dateInSec] = [marker];
-            }
-
-            oms.addMarker(marker);
-          } else {
-            console.log("No marker for " + row.type);
-          }
-        });
-
-        /* -------------------- Setup timeline in the map legend -------------------- */
-        dates.sort();
-        len = dates.length;
-
-        timeline.setupTimeline({ start: dates[0], end: dates[len - 1] });
-
-        /* ---------------------- Build the marker layer groups --------------------- */
-        for (array in markersByDate) {
-          layerArray = L.layerGroup(markersByDate[array]);
-          layerGroups.push(layerArray);
+      /* ---- Build markers, markersByDate, dates; add each marker to spiderfier --- */
+      rows.forEach((row) => {
+        let latLongObj = {
+          rowLat: row.lat,
+          rowLong: row.long,
+        };
+        let latLong = row.lat + ", " + row.long;
+        // Check if lat long combo is a duplicate and add a small number if it is
+        if (!latLngArr.includes(latLong)) {
+          latLngArr.push(latLong);
+        } else {
+          row.lat = row.lat + (Math.random() * (0.15 - 0.05) + 0.05);
+          latLongObj.rowLat = row.lat;
+          latLong = row.lat + ", " + row.long;
+          latLngArr.push(latLong);
         }
+        let markerName = row.type.toLowerCase();
+        // Get marker icon object for the specific battlement type
+        const foundItem = markerArr[0].find((marker) => {
+          return marker.options.iconName == markerName;
+        });
+        // If we have a matching marker, use it to mark the battlement on the map
+        if (foundItem) {
+          let marker = L.marker([row.lat, row.long], {
+            icon: foundItem,
+            riseOnHover: false,
+          });
+          marker.data = row;
 
-        map.addLayer(layerGroups[0]);
+          const date = new Date(row.date);
+          const dateInSec = date.getTime();
 
-        /* -------------------- Set up spiderfier event listeners ------------------- */
-        oms.addListener("click", function (marker) {
-          if (marker.data.formal_name === "") {
-            popup.setContent(
-              "<p class='leaflet-popup-content--no-name'>Name not available</p>"
-            );
-          } else {
-            popup.setContent(marker.data.formal_name);
+          if (!dates.includes(dateInSec)) {
+            dates.push(dateInSec);
           }
-          popup.setLatLng(marker.getLatLng());
-          map.openPopup(popup);
-        });
 
-        oms.addListener("spiderfy", function (markers) {
-          map.closePopup();
-        });
-      })
-      .error(function (errors) {
-        // errors contains a list of errors
-        console.log("errors:" + errors);
+          if (dateInSec in markersByDate) {
+            markersByDate[dateInSec].push(marker);
+          } else {
+            markersByDate[dateInSec] = [marker];
+          }
+
+          oms.addMarker(marker);
+        } else {
+          console.log("No marker for " + row.type);
+        }
       });
-  }
+
+      /* -------------------- Setup timeline in the map legend -------------------- */
+      dates.sort();
+      len = dates.length;
+
+      timeline.setupTimeline({ start: dates[0], end: dates[len - 1] });
+
+      /* ---------------------- Build the marker layer groups --------------------- */
+      for (array in markersByDate) {
+        layerArray = L.layerGroup(markersByDate[array]);
+        layerGroups.push(layerArray);
+      }
+
+      map.addLayer(layerGroups[0]);
+
+      /* -------------------- Set up spiderfier event listeners ------------------- */
+      oms.addListener("click", function (marker) {
+        if (marker.data.formal_name === "") {
+          popup.setContent(
+            "<p class='leaflet-popup-content--no-name'>Name not available</p>"
+          );
+        } else {
+          popup.setContent(marker.data.formal_name);
+        }
+        popup.setLatLng(marker.getLatLng());
+        map.openPopup(popup);
+      });
+
+      oms.addListener("spiderfy", function (markers) {
+        map.closePopup();
+      });
+    })
+    .error(function (errors) {
+      // errors contains a list of errors
+      console.log("errors:" + errors);
+    });
 });
 
 /* -------------------------------------------------------------------------- */
