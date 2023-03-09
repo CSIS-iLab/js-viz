@@ -274,7 +274,7 @@ const timeline = {
   end: null,
   start: null,
 
-  updateCurrentDate(date) {
+  updateCurrentDate: function (date) {
     this.currentDateEl.innerHTML = `${this.formatDate(date)}`;
   },
 
@@ -300,7 +300,7 @@ const timeline = {
     }
   },
 
-  formatDate(date) {
+  formatDate: function (date) {
     const monthNames = [
       "Jan",
       "Feb",
