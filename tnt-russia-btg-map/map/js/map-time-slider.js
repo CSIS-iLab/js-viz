@@ -2,15 +2,12 @@
 /*               Mapbox URL, info to connect to Carto datasets              */
 /* -------------------------------------------------------------------------- */
 
-//  Basemap being used: TNT_Russia_Ukraine_map-timeline-WORKING-POI-labels-updated-masks
 const basemapURL =
   "https://api.mapbox.com/styles/v1/ilabmedia/clesm3yxm000a01mtyumq5sp4/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw";
 
-//  Carto dataset being used for markers
 const cartoKeyMarkers = "6KgYkqFnDfk6hEgC3TGvIw";
 const cartoSourceMarkers = "russia_btg_map_all_time_data";
 
-// Carto dataset being used for frontlines
 const cartoKeyLines = "SMgzGpUrfgPT5Fg25t9XNw";
 const cartoSourceLines = "tnt_front_lines_time_slider";
 
