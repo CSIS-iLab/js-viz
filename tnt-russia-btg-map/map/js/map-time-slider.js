@@ -112,35 +112,33 @@ Promise.all([getImages()]).then((markerArr) => {
 
       /* ---- Build markers, markersByDate, dates; add each marker to spiderfier --- */
       rows.forEach((row) => {
-        let latLongObj = {
-          rowLat: row.lat,
-          rowLong: row.long,
-        };
         let latLong = row.lat + ", " + row.long;
+        let markerName = row.type.toLowerCase();
+
         // Check if lat long combo is a duplicate and add a small number if it is
         if (!latLngArr.includes(latLong)) {
           latLngArr.push(latLong);
         } else {
           row.lat = row.lat + (Math.random() * (0.15 - 0.05) + 0.05);
-          latLongObj.rowLat = row.lat;
           latLong = row.lat + ", " + row.long;
           latLngArr.push(latLong);
         }
-        let markerName = row.type.toLowerCase();
+
         // Get marker icon object for the specific battlement type
-        const foundItem = markerArr[0].find((marker) => {
+        const foundMarkerIcon = markerArr[0].find((marker) => {
           return marker.options.iconName == markerName;
         });
         // If we have a matching marker, use it to mark the battlement on the map
-        if (foundItem) {
+        if (foundMarkerIcon) {
           let marker = L.marker([row.lat, row.long], {
-            icon: foundItem,
+            icon: foundMarkerIcon,
             riseOnHover: false,
+            data: null,
           });
+
           marker.data = row;
 
-          const date = new Date(row.date);
-          const dateInSec = date.getTime();
+          const dateInSec = new Date(marker.data.date).getTime();
 
           if (!dates.includes(dateInSec)) {
             dates.push(dateInSec);
