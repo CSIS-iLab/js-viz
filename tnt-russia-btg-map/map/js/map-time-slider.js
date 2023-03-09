@@ -12,8 +12,6 @@ const cartoSourceMarkers = "russia_btg_map_all_time_data";
 const cartoKeyLines = "SMgzGpUrfgPT5Fg25t9XNw";
 const cartoSourceLines = "tnt_front_lines_time_slider";
 
-const username = "csis";
-
 /* -------------------------------------------------------------------------- */
 /*                                Build the map                               */
 /* -------------------------------------------------------------------------- */
@@ -195,7 +193,7 @@ Promise.all([getImages()]).then((markerArr) => {
 let lineArr = [];
 
 fetch(
-  `https://${username}.carto.com/api/v2/sql?format=GeoJSON&api_key=${cartoKeyLines}&q=SELECT * FROM ${cartoSourceLines} ORDER BY date ASC`
+  `https://csis.carto.com/api/v2/sql?format=GeoJSON&api_key=${cartoKeyLines}&q=SELECT * FROM ${cartoSourceLines} ORDER BY date ASC`
 )
   .then((res) => res.json())
   .then((response) => {
