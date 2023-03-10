@@ -366,7 +366,7 @@ const timeline = {
         density: 100,
         stepped: true,
         format: {
-          to: toFormat,
+          to: this.formatDate,
         },
       },
     });
@@ -395,31 +395,6 @@ const timeline = {
     // Add event listener to the pips
     for (var i = 0; i < pips.length; i++) {
       pips[i].addEventListener("click", clickOnPip);
-    }
-
-    function toFormat(seconds) {
-      const monthNames = [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec",
-      ];
-
-      date = new Date(seconds);
-      date = new Date(
-        date.getUTCFullYear(),
-        date.getUTCMonth(),
-        date.getUTCDate()
-      );
-      return `${monthNames[date.getMonth()]} ${date.getFullYear()}`;
     }
   },
 
