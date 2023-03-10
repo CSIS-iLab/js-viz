@@ -96,7 +96,6 @@ Promise.all([getImages()]).then((markerArr) => {
     .execute("SELECT * FROM csis." + cartoSourceMarkers)
     .done(function (data) {
       const rows = data.rows;
-      // Loop through each battlement
       let latLngArr = [];
 
       /* ---- Build markers, markersByDate, dates; add each marker to spiderfier --- */
