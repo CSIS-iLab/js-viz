@@ -103,7 +103,6 @@ Promise.all([getImages()]).then((markerArr) => {
         let latLong = row.lat + ", " + row.long;
         let markerName = row.type.toLowerCase();
 
-        // Check if lat long combo is a duplicate and add a small number if it is
         if (!latLngArr.includes(latLong)) {
           latLngArr.push(latLong);
         } else {
@@ -112,11 +111,10 @@ Promise.all([getImages()]).then((markerArr) => {
           latLngArr.push(latLong);
         }
 
-        // Get marker icon object for the specific battlement type
         const foundMarkerIcon = markerArr[0].find((marker) => {
           return marker.options.iconName == markerName;
         });
-        // If we have a matching marker, use it to mark the battlement on the map
+
         if (foundMarkerIcon) {
           let marker = L.marker([row.lat, row.long], {
             icon: foundMarkerIcon,
@@ -176,7 +174,6 @@ Promise.all([getImages()]).then((markerArr) => {
       });
     })
     .error(function (errors) {
-      // errors contains a list of errors
       console.log("errors:" + errors);
     });
 });
@@ -192,7 +189,6 @@ fetch(
 )
   .then((res) => res.json())
   .then((response) => {
-    // Loop through the front line json file and create a layer for each line
     response.features.forEach((row) => {
       const dateInSec = new Date(row.properties.date).getTime();
 
@@ -270,20 +266,16 @@ const timeline = {
     currentDate = this.get();
     timeline.updateCurrentDate(currentDate);
 
-    // close any open popups before timeline starts playing
     map.closePopup();
 
-    // Get the index of the date from the dates array that matches now
     let dateIndex = dates.indexOf(currentDate);
 
-    // Remove layer groups that DONT have the current dateIndex
     for (i = 0; i < len; i++) {
       if (i != dateIndex) {
         removeLayerGroup(i);
       }
     }
 
-    // Add the layer group with the same index of the date to the map
     addLayerGroup(dateIndex);
 
     if (currentDate == timeline.end) {
@@ -328,15 +320,12 @@ const timeline = {
 
     let range = {};
 
-    // Build range object
     dates.forEach((date, i) => {
-      // Since the dates array was sorted above, the first and last date are the start and end date
       if (i === 0) {
         range["min"] = date;
       } else if (i === len - 1) {
         range["max"] = date;
       } else {
-        // For all dates that aren't the first or last, get percentage of where that date falls between the start and end dates, then pass percent: date as key: value to the range object. Used to place the date in the correct position on the timeline.
         let rangePercent =
           Math.floor(
             ((date - dates[0]) / (dates[len - 1] - dates[0])) * 100 + 0.5
@@ -349,7 +338,6 @@ const timeline = {
       start: this.start,
       connect: true,
       behaviour: "tap-drag",
-      // step: this.step,
       snap: true,
       range: range,
       format: {
