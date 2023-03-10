@@ -371,16 +371,13 @@ const timeline = {
       timeline.el.noUiSlider.set(tempDate);
     });
 
-    // Make pips clickable
-    // Get all pips with values
     let pips = timeline.el.querySelectorAll(".noUi-value");
 
-    // Set slider value to the data-value of the clicked pip
     function clickOnPip() {
       var value = Number(this.getAttribute("data-value"));
       timeline.el.noUiSlider.set(value);
     }
-    // Add event listener to the pips
+
     for (var i = 0; i < pips.length; i++) {
       pips[i].addEventListener("click", clickOnPip);
     }
