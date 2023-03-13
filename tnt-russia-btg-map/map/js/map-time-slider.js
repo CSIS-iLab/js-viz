@@ -425,3 +425,21 @@ const timeline = {
     timeline.controlBtn.classList.add("play-btn");
   },
 };
+
+/* -------------------------------------------------------------------------- */
+/*                         Make legend mobile friendly                        */
+/* -------------------------------------------------------------------------- */
+
+let toolbox = document.querySelector(".toolbox")
+let toolboxButton = document.querySelector(".toolbox-button")
+
+function toolboxButtonHandler() {
+  console.log("hide")
+  toolbox.style.display = "inline"
+  toolbox.style.top = "75px !important"
+  toolbox.style.left = "24px";
+  toolbox.style.right = "auto"
+
+  toolboxButton.style.display = "none"
+  
+}

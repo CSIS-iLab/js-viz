@@ -2,10 +2,60 @@ body {
   font-family: "Synthese", Arial, Helvetica, sans-serif;
 }
 
-.toolbox {
+@media (max-width: 900px) {
+  .toolbox {
+    display: none;
+  }
+
+  .toolbox-button {
+    display: inline-block;
+  }
+}
+
+@media (min-width: 900px) {
+  .toolbox {
+    top: 75px !important;
+    left: 24px;
+    right: auto;
+  }
+
+  .toolbox-button {
+    display: none;
+  }
+}
+
+.hide {
+  display:none;
+}
+
+.toolbox-button {
   top: 75px !important;
   left: 24px;
   right: auto;
+  background-color: #222;
+  border-radius: 4px;
+  border-style: none;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.5;
+  margin: 0;
+  max-width: 150px;
+  min-height: 44px;
+  min-width: 10px;
+  outline: none;
+  overflow: hidden;
+  padding: 9px 20px 8px;
+  position: relative;
+  text-align: center;
+  text-transform: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  width: 100%;
+  z-index: 999;
 }
 
 .box header h1 {
