@@ -433,12 +433,19 @@ let toolbox = document.getElementById("toolbox");
 let viewLegendButton = document.querySelector(".view-legend");
 let hideLegendButton = document.querySelector(".hide-legend");
 let viewFullScreenButton = document.querySelector(".full-screen");
+let mapFrame = document.getElementById("map-frame");
 
 function viewLegendHandler() {
   console.log("view");
   toolbox.classList.remove("display-none");
+  viewLegendButton.classList.remove("display-block");
   viewLegendButton.classList.add("display-none");
   hideLegendButton.classList.remove("display-none");
+
+  if (typeof mapFrame != "undefined" && mapFrame != null) {
+    viewFullScreenButton.classList.remove("display-block");
+    viewFullScreenButton.classList.add("display-none");
+  }
 }
 
 function hideLegendHandler() {
@@ -446,6 +453,11 @@ function hideLegendHandler() {
   hideLegendButton.classList.add("display-none");
   toolbox.classList.add("display-none");
   viewLegendButton.classList.remove("display-none");
+  viewLegendButton.classList.add("display-block");
+
+  if (typeof mapFrame != "undefined" && mapFrame != null) {
+    viewFullScreenButton.classList.add("display-block");
+  }
 }
 
 /* ------------------------- Handle Window Resizing ------------------------- */
@@ -468,11 +480,55 @@ function resizeHandler() {
     console.log("desktop");
     toolbox.classList.remove("display-none");
     viewLegendButton.classList.add("display-none");
+    viewLegendButton.classList.remove("display-block");
     hideLegendButton.classList.add("display-none");
+
+    if (
+      typeof mapFrame != "undefined" &&
+      mapFrame != null &&
+      $("iframe")[0].clientWidth >= desktop
+    ) {
+      viewFullScreenButton.classList.remove("full-screen-mobile");
+      viewFullScreenButton.classList.remove("display-none");
+      viewFullScreenButton.classList.add("display-block");
+      viewFullScreenButton.classList.add("iframe");
+    }
   }
 
   if (windowInnerWidth < desktop) {
     viewLegendButton.classList.remove("display-none");
     toolbox.classList.add("display-none");
+    console.log("mobile");
+    if (
+      typeof mapFrame != "undefined" &&
+      mapFrame != null &&
+      $("iframe")[0].clientWidth >= desktop
+    ) {
+      viewFullScreenButton.classList.remove("display-none");
+      viewFullScreenButton.classList.add("display-block");
+      viewFullScreenButton.classList.add("full-screen-mobile");
+      viewFullScreenButton.classList.remove("iframe");
+    }
   }
+
+  /*if (typeof mapFrame != "undefined" && mapFrame != null) {
+    console.log(true);
+    viewFullScreenButton.classList.remove("display-none");
+    viewFullScreenButton.classList.add("display-block");
+
+    let frame = $("iframe");
+    console.log(frame[0].clientWidth);
+  }*/
 }
+
+/*if (document.getElementsByID("#map-frame")) {
+  console.log(true);
+
+  let frame = $("iframe");
+  console.log(frame[0].clientWidth);
+  console.log();
+
+  viewFullScreenButton.classList.remove("display-none");
+  viewFullScreenButton.classList.add("display-block");
+  viewLegendButton.classList.add("display-block");
+}*/

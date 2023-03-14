@@ -40,8 +40,14 @@
 
   <body>
     <div id="map" class="map" tabindex="0"></div>
-    <button class="view-legend" onclick="viewLegendHandler()">
+    <button
+      class="view-legend view-legend-desktop display-none"
+      onclick="viewLegendHandler()"
+    >
       View legend
+    </button>
+    <button class="full-screen display-none" onclick="fullScreenHandler()">
+      View full-screen
     </button>
     <aside class="toolbox" id="toolbox">
       <div class="box">
