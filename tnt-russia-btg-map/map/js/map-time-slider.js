@@ -510,25 +510,4 @@ function resizeHandler() {
       viewFullScreenButton.classList.remove("iframe");
     }
   }
-
-  /*if (typeof mapFrame != "undefined" && mapFrame != null) {
-    console.log(true);
-    viewFullScreenButton.classList.remove("display-none");
-    viewFullScreenButton.classList.add("display-block");
-
-    let frame = $("iframe");
-    console.log(frame[0].clientWidth);
-  }*/
 }
-
-/*if (document.getElementsByID("#map-frame")) {
-  console.log(true);
-
-  let frame = $("iframe");
-  console.log(frame[0].clientWidth);
-  console.log();
-
-  viewFullScreenButton.classList.remove("display-none");
-  viewFullScreenButton.classList.add("display-block");
-  viewLegendButton.classList.add("display-block");
-}*/
