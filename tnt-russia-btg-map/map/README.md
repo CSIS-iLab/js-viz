@@ -6,7 +6,7 @@ The base style map was made in [Mapbox Studio](https://www.mapbox.com/mapbox-stu
 
 # Where does this live
 
-[The live map is on Netlify](https://csis-js-viz.netlify.app/tnt-russia-btg-map/map/), with the rest of the `js-viz` repo. The map has been added to a [Shorthand](https://shorthand.com/) story and added to the `[features.csis.org](http://features.csis.org)` subdomain. It can be found at [https://features.csis.org/ukraine-war-map/](https://features.csis.org/ukraine-war-map/). This is the version that should be linked to in related posts and stories and treated as the “full size” version.
+[The live map is on Netlify](https://csis-js-viz.netlify.app/tnt-russia-btg-map/map/), with the rest of the `js-viz` repo. The map has been added to a [Shorthand](https://shorthand.com/) story and added to the [`features.csis.org`](http://features.csis.org) subdomain. It can be found at [https://features.csis.org/ukraine-war-map/](https://features.csis.org/ukraine-war-map/). This is the version that should be linked to in related posts and stories and treated as the “full size” version.
 
 # How to work on development
 
