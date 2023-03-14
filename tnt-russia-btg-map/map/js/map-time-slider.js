@@ -427,19 +427,52 @@ const timeline = {
 };
 
 /* -------------------------------------------------------------------------- */
-/*                         Make legend mobile friendly                        */
+/*                         Show/Hide Legend on Mobile                         */
 /* -------------------------------------------------------------------------- */
+let toolbox = document.getElementById("toolbox");
+let viewLegendButton = document.querySelector(".view-legend");
+let hideLegendButton = document.querySelector(".hide-legend");
+let viewFullScreenButton = document.querySelector(".full-screen");
 
-let toolbox = document.querySelector(".toolbox")
-let toolboxButton = document.querySelector(".toolbox-button")
+function viewLegendHandler() {
+  console.log("view");
+  toolbox.classList.remove("display-none");
+  viewLegendButton.classList.add("display-none");
+  hideLegendButton.classList.remove("display-none");
+}
 
-function toolboxButtonHandler() {
-  console.log("hide")
-  toolbox.style.display = "inline"
-  toolbox.style.top = "75px !important"
-  toolbox.style.left = "24px";
-  toolbox.style.right = "auto"
+function hideLegendHandler() {
+  console.log("hide");
+  hideLegendButton.classList.add("display-none");
+  toolbox.classList.add("display-none");
+  viewLegendButton.classList.remove("display-none");
+}
 
-  toolboxButton.style.display = "none"
-  
+/* ------------------------- Handle Window Resizing ------------------------- */
+
+// window width for using desktop CSS
+const desktop = 900;
+
+// observe window resize
+window.addEventListener("resize", resizeHandler);
+
+// initial call
+resizeHandler();
+
+// calculate size
+function resizeHandler() {
+  // get window width
+  const windowInnerWidth = window.innerWidth;
+
+  if (windowInnerWidth >= desktop) {
+    console.log("desktop");
+    toolbox.classList.remove("display-none");
+    viewLegendButton.classList.add("display-none");
+    hideLegendButton.classList.add("display-none");
+  }
+
+  if (windowInnerWidth < desktop) {
+    viewLegendButton.classList.remove("display-none");
+    toolbox.classList.add("display-none");
+  }
 }

@@ -4,7 +4,7 @@
     <title>Russian and Ukrainian Force Disposition | CSIS Program Name</title>
     <meta name="viewport" content="initial-scale=1.0" />
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="https://use.typekit.net/hjr4awy.css">
+    <link rel="stylesheet" href="https://use.typekit.net/hjr4awy.css" />
 
     <!-- Share meta -->
     <meta property="og:locale" content="en_US" />
@@ -34,22 +34,34 @@
       rel="preconnect stylesheet"
       href="https://use.typekit.net/ats0hoc.css"
     />
-    <link rel="stylesheet" href="css/nouislider.css">
+    <link rel="stylesheet" href="css/nouislider.css" />
     <link href="css/map.css" rel="stylesheet" />
   </head>
 
   <body>
     <div id="map" class="map" tabindex="0"></div>
-    <button class="toolbox-button" onclick="toolboxButtonHandler()">View legend</button>
-    <aside class="toolbox">
+    <button class="view-legend" onclick="viewLegendHandler()">
+      View legend
+    </button>
+    <aside class="toolbox" id="toolbox">
       <div class="box">
         <header>
           <h1>Russian and Ukrainian Force Disposition</h1>
         </header>
         <p class="description">
-          Use the timeline to see how the force disposition and front line have changed over time. Click on a unit to learn more.
+          Use the timeline to see how the force disposition and front line have
+          changed over time. Click on a unit to learn more.
         </p>
-        <p class="description">Read CSIS analysis on the war in Ukraine <a class="description-link" rel="noopener" href="https://www.csis.org/analysis/ukrainian-innovation-war-attrition" target="_blank">here</a>.</p>
+        <p class="description">
+          Read CSIS analysis on the war in Ukraine
+          <a
+            class="description-link"
+            rel="noopener"
+            href="https://www.csis.org/analysis/ukrainian-innovation-war-attrition"
+            target="_blank"
+            >here</a
+          >.
+        </p>
         <section id="time">
           <div class="indicator">
             <p>
@@ -77,29 +89,59 @@
         <div class="separator"></div>
         <section class="legend">
           <dl class="legend__list">
-            <dt class="legend__entry legend__entry-ukraine"><img src="images/UKR_Blank.svg" alt="Ukrainian battlement marker"></dt>
+            <dt class="legend__entry legend__entry-ukraine">
+              <img
+                src="images/UKR_Blank.svg"
+                alt="Ukrainian battlement marker"
+              />
+            </dt>
             <dd>Ukrainian Unit</dd>
-            <dt class="legend__entry legend__entry-russia"><img src="images/RU_Blank.svg" alt="Russian battlement marker"></dt>
+            <dt class="legend__entry legend__entry-russia">
+              <img src="images/RU_Blank.svg" alt="Russian battlement marker" />
+            </dt>
             <dd>Russian Unit</dd>
-            <dt class="legend__entry legend__entry-line legend__entry-frontline"><div class="legend__shape legend__shape-frontline"></div></dt>
+            <dt
+              class="legend__entry legend__entry-line legend__entry-frontline"
+            >
+              <div class="legend__shape legend__shape-frontline"></div>
+            </dt>
             <dd>Front Line</dd>
-            <dt class="legend__entry legend__entry-line legend__entry-rail"><div class="legend__shape legend__shape-rail"></div></dt>
+            <dt class="legend__entry legend__entry-line legend__entry-rail">
+              <div class="legend__shape legend__shape-rail"></div>
+            </dt>
             <dd>Major Rail Line</dd>
-            <dt class="legend__entry legend__entry-line legend__entry-road"><div class="legend__shape legend__shape-road"></div></dt>
+            <dt class="legend__entry legend__entry-line legend__entry-road">
+              <div class="legend__shape legend__shape-road"></div>
+            </dt>
             <dd>Major Road</dd>
-            <dt class="legend__entry legend__entry-line legend__entry-boundary"><div class="legend__shape legend__shape-boundary"></div></dt>
+            <dt class="legend__entry legend__entry-line legend__entry-boundary">
+              <div class="legend__shape legend__shape-boundary"></div>
+            </dt>
             <dd>Ukrainian Border</dd>
-            <dt class="legend__entry legend__entry-line legend__entry-disputed"><div class="legend__shape legend__shape-disputed"></div></dt>
+            <dt class="legend__entry legend__entry-line legend__entry-disputed">
+              <div class="legend__shape legend__shape-disputed"></div>
+            </dt>
             <dd>Controlled by Russia Before the February 2022 Invasion</dd>
           </dl>
         </section>
         <section class="contact">
-          <p>See methodology <a target="_blank" href="https://csis-website-prod.s3.amazonaws.com/s3fs-public/2023-02/230227_Jones_Ukraine_Methodology.pdf?VersionId=d9Ru3bb5NzJxgHQ.wFPobxnQZJ6FbJF7">here</a></p>
+          <p>
+            See methodology
+            <a
+              target="_blank"
+              href="https://csis-website-prod.s3.amazonaws.com/s3fs-public/2023-02/230227_Jones_Ukraine_Methodology.pdf?VersionId=d9Ru3bb5NzJxgHQ.wFPobxnQZJ6FbJF7"
+              >here</a
+            >
+          </p>
           <p>Contact: <a href="mailto:tnt@csis.org">tnt@csis.org</a></p>
         </section>
       </div>
+      <div class="button-container">
+        <button class="hide-legend display-none" onclick="hideLegendHandler()">
+          Hide legend
+        </button>
+      </div>
     </aside>
-
     <!-- * Comment in the map you want to see and comment the rest out -->
     <!-- <script src="js/map.js"></script> -->
     <script src="js/map-time-slider.js"></script>
