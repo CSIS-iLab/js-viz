@@ -463,7 +463,7 @@ function hideLegendHandler() {
 /* ------------------------- Handle Window Resizing ------------------------- */
 
 // window width for using desktop CSS
-const desktop = 900;
+const desktop = 1075;
 
 // observe window resize
 window.addEventListener("resize", resizeHandler);
