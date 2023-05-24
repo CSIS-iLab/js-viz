@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>Column</title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Include Project Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <main>
+      <div class="cards">
+        <!----------------------------------------- card 1 ----------------------------------------->
+        <div class="card">
+          <div class="dropdown">
+            <label for="dropdown" id="dropdown-label"
+              >Select exports or imports:</label
+            >
+            <select id="dropdown">
+              <option value="export">Exports</option>
+              <option value="import">Imports</option>
+            </select>
+          </div>
+          <button class="button active" id="zoom" type="button">Zoom In</button>
+          <button class="button inactive" id="reset" type="button">
+            Zoom Out
+          </button>
+        </div>
+        <!----------------------------------------- card 2 ----------------------------------------->
+        <div class="card">
+          <div id="container"></div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Include jQuery & Highcharts Libraries; Adjust per project -->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/data.js"></script>
+    <script src="https://code.highcharts.com/maps/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/drilldown.js"></script>
+    <script src="https://code.highcharts.com/modules/broken-axis.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+    <!-- Include iFrame Resizer -->
+    <script src="//csis-ilab.github.io/cpower-viz/globaljs/iframeSizer.contentWindow.min.js"></script>
+
+    <!-- Include Project Specific Javascript Files -->
+    <script type="module" src="js/bar.js"></script>
+  </body>
+</html>
