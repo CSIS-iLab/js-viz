@@ -344,7 +344,7 @@ function renderChart(regionData, dataPoints, regionArray) {
     },
     series: [{
       type: 'xrange',
-      pointWidth: 2,
+      pointWidth: 2.5,
       id: 'main',
       name: "Region",
       data: regionData,
