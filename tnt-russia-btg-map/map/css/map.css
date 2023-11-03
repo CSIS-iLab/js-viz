@@ -24,9 +24,19 @@ body {
 }
 
 .toolbox {
-  top: 75px !important;
+  top: 75px;
   left: 24px;
   right: auto;
+}
+
+@media only screen and (max-width: 280px) {
+  .box {
+    max-width: 250px;
+  }
+
+  .toolbox {
+    left: 15px;
+  }
 }
 
 .view-legend,
