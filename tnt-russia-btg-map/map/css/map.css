@@ -69,12 +69,10 @@ body {
   font-weight: 700;
   line-height: 1.5;
   margin-bottom: 10px;
-  //max-width: 150px;
   min-height: 44px;
   min-width: 10px;
   overflow: hidden;
   padding: 9px 20px 8px;
-  //position: relative;
   text-align: center;
   text-transform: none;
   user-select: none;
