@@ -436,7 +436,6 @@ let viewFullScreenButton = document.querySelector(".full-screen");
 let mapFrame = document.getElementById("map-frame");
 
 function viewLegendHandler() {
-  console.log("view");
   toolbox.classList.remove("display-none");
   viewLegendButton.classList.remove("display-block");
   viewLegendButton.classList.add("display-none");
@@ -449,7 +448,6 @@ function viewLegendHandler() {
 }
 
 function hideLegendHandler() {
-  console.log("hide");
   hideLegendButton.classList.add("display-none");
   toolbox.classList.add("display-none");
   viewLegendButton.classList.remove("display-none");
@@ -487,8 +485,6 @@ function resizeHandler() {
       mapFrame != null &&
       $("iframe")[0].clientWidth >= desktop
     ) {
-      console.log("desktop");
-      console.log($("iframe")[0].clientWidth);
       viewFullScreenButton.classList.remove("full-screen-mobile");
       viewFullScreenButton.classList.remove("display-none");
       viewFullScreenButton.classList.add("display-block");
@@ -499,13 +495,11 @@ function resizeHandler() {
   if (windowInnerWidth < desktop) {
     viewLegendButton.classList.remove("display-none");
     toolbox.classList.add("display-none");
-    console.log("mobile");
     if (
       typeof mapFrame != "undefined" &&
       mapFrame != null &&
       $("iframe")[0].clientWidth < desktop
     ) {
-      console.log($("iframe")[0].clientWidth);
       viewFullScreenButton.classList.remove("display-none");
       viewFullScreenButton.classList.add("display-block");
       viewFullScreenButton.classList.add("full-screen-mobile");
