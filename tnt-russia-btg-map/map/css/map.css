@@ -113,10 +113,6 @@ body {
   border-bottom: 1px solid #0054a48f;
 }
 
-.button__title {
-  font-size: 12px !important;
-}
-
 .indicator {
   text-transform: uppercase;
   font-size: 12px;
