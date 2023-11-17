@@ -1,6 +1,6 @@
 # What is this
 
-This is an interactive map used to illustrate how the location of Ukrainian and Russian military units and the frontline of the conflict have changed since the ongoing conflict began in early 2022. Military units are represented by blue and red icons (icons along with the associated geojson information comprise the map markers), the svgs for which can be found in this repo. The detail for the markers and the frontlines is kept in Carto and accessed via `cartodb.SQL`.
+This is an interactive map used to illustrate how the location of Ukrainian and Russian military units and the frontline of the conflict have changed since the ongoing conflict began in early 2022. Military units are represented by blue and red icons (icons along with the associated geojson information comprise the map markers), the svgs for which can be found in this repo. The detail for the markers and the frontlines is kept in a [Google Sheet](https://docs.google.com/spreadsheets/d/1N9CReVCcffwbqt_mskZCugSGN9oVOZDwIEgGcFaU65k/edit#gid=1679214547) that feeds Carto and accessed via `cartodb.SQL`.
 
 The base style map was made in [Mapbox Studio](https://www.mapbox.com/mapbox-studio), and we use [Leaflet](https://leafletjs.com/), [Overlapping Marker Spiderfier for Leaflet](https://github.com/jawj/OverlappingMarkerSpiderfier-Leaflet), and [noUiSlider](https://refreshless.com/nouislider/) to make the rest of the map and its functionality.
 
@@ -13,6 +13,10 @@ The base style map was made in [Mapbox Studio](https://www.mapbox.com/mapbox-stu
 It’s powered by a single `index.html` file and a single JavaScript file. The easiest option is to fire up [the Live Server extension in VS Code](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer).
 
 # How to add new icons
+
+To add new icons, update both the [Google Sheet](https://docs.google.com/spreadsheets/d/1N9CReVCcffwbqt_mskZCugSGN9oVOZDwIEgGcFaU65k/edit#gid=1679214547) and the `/images` directory.
+
+In the "Options" tab of the Google Sheet, the "Type/Symbol" name should match the name of the svg inside the `/images` directory.
 
 Add the `.svg` for the new icon to the `/images` directory. In `/js/markers.json`, add the name of the icon from the Carto dataset (or the Google Sheet that feeds it) as a key. For that key’s value, add the path to the related `.svg` you just added.
 
