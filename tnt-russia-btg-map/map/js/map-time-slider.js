@@ -16,18 +16,36 @@ const cartoSourceLines = "tnt_front_lines_time_slider";
 /* -------------------------------------------------------------------------- */
 var basemap = L.tileLayer(basemapURL, {});
 
-var map = L.map("map", {
-  center: [48.981, 32.839],
-  zoom: 6.5,
+var commonMapOptions = {
   maxZoom: 20,
   scrollWheelZoom: true,
-  minZoom: 6,
   zoomControl: false,
   scrollWheelZoom: true,
   zoomSnap: 0,
   zoomDelta: 0.5,
   layers: [basemap],
   attributionControl: false,
+};
+
+var mapOptions;
+
+if (L.Browser.mobile) {
+  mapOptions = {
+    center: [48.21327, 34.74274],
+    zoom: 5.7,
+    minZoom: 5,
+  };
+} else {
+  mapOptions = {
+    center: [48.981, 32.839],
+    zoom: 6.5,
+    minZoom: 6,
+  };
+}
+
+var map = L.map("map", {
+  ...commonMapOptions,
+  ...mapOptions,
 });
 
 /* -------------------------------------------------------------------------- */
