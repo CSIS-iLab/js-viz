@@ -196,6 +196,11 @@ Promise.all([getImages()]).then((markerArr) => {
     });
 });
 
+function clearSpiderficationAndPopups() {
+  oms.unspiderfy(); // Clears the spiderfication state
+  map.closePopup(); // Closes any open popups
+}
+
 /* -------------------------------------------------------------------------- */
 /*                         Create and add front lines                         */
 /* -------------------------------------------------------------------------- */
@@ -413,6 +418,8 @@ const timeline = {
         timeline.stopTimeline();
         return;
       }
+
+      clearSpiderficationAndPopups();
 
       let i = dates.indexOf(currentDate);
 
