@@ -116,7 +116,7 @@ Promise.all([getImages()]).then((markerArr) => {
       const rows = data.rows;
       let latLngArr = [];
 
-      /* ---- Build markers, markersByDate, dates; add each marker to spiderfier --- */
+      /* Build markers, markersByDate, dates; add each marker to spiderfier */
       rows.forEach((row) => {
         let latLong = row.lat + ", " + row.long;
         let markerName = row.type.toLowerCase();
@@ -160,13 +160,13 @@ Promise.all([getImages()]).then((markerArr) => {
         }
       });
 
-      /* -------------------- Setup timeline in the map legend -------------------- */
+      /* ----------------- Setup timeline in the map legend ----------------- */
       dates.sort();
       len = dates.length;
 
       timeline.setupTimeline({ start: dates[0], end: dates[len - 1] });
 
-      /* ---------------------- Build the marker layer groups --------------------- */
+      /* ------------------- Build the marker layer groups ------------------ */
       for (array in markersByDate) {
         layerArray = L.layerGroup(markersByDate[array]);
         markerLayerGroups.push(layerArray);
@@ -174,7 +174,7 @@ Promise.all([getImages()]).then((markerArr) => {
 
       map.addLayer(markerLayerGroups[0]);
 
-      /* -------------------- Set up spiderfier event listeners ------------------- */
+      /* ----------------- Set up spiderfier event listeners ---------------- */
       oms.addListener("click", function (marker) {
         if (marker.data.formal_name === "") {
           popup.setContent(
