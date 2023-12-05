@@ -2,11 +2,89 @@ body {
   font-family: "Synthese", Arial, Helvetica, sans-serif;
 }
 
+/* -------------------------------------------------------------------------- */
+/*                           Handle Legend on Mobile                          */
+/* -------------------------------------------------------------------------- */
+
+.display-none {
+  display: none;
+}
+
+.display-block {
+  display: block;
+}
+
+.iframe {
+  top: 0;
+  right: 11px;
+  position: absolute;
+  margin-top: 20px;
+  display: block;
+  max-width: 180px;
+}
+
 .toolbox {
-  top: 75px !important;
+  top: 75px;
   left: 24px;
   right: auto;
 }
+
+@media only screen and (max-width: 280px) {
+  .box {
+    max-width: 250px;
+  }
+
+  .toolbox {
+    left: 15px;
+  }
+}
+
+.view-legend,
+.full-screen-mobile {
+  top: 75px !important;
+  left: 24px;
+  right: auto;
+  position: relative;
+  max-width: 150px;
+}
+
+.hide-legend {
+  right: auto;
+  position: absolute;
+  top: 100%;
+  position: relative;
+  max-width: 150px;
+}
+
+.view-legend,
+.hide-legend,
+.full-screen {
+  background-color: #222;
+  border-radius: 4px;
+  border-style: none;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.5;
+  margin-bottom: 10px;
+  min-height: 44px;
+  min-width: 10px;
+  overflow: hidden;
+  padding: 9px 20px 8px;
+  text-align: center;
+  text-transform: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  width: 100%;
+  z-index: 999;
+}
+
+/* -------------------------------------------------------------------------- */
+/*                                 Description                                */
+/* -------------------------------------------------------------------------- */
 
 .box header h1 {
   display: inline-block;
@@ -24,20 +102,15 @@ body {
 
 .description-link {
   transition: all 0.3s ease-in-out;
-  color: #0054A4;
-  border-bottom: 1px solid #0054A400;
+  color: #0054a4;
+  border-bottom: 1px solid #0054a400;
   text-decoration: none;
 }
 
 .description-link:hover {
   outline: 0;
-  color: #0054A48F;
-  border-bottom: 1px solid #0054A48F;
-}
-
-
-.button__title {
-  font-size: 12px !important;
+  color: #0054a48f;
+  border-bottom: 1px solid #0054a48f;
 }
 
 .indicator {
@@ -48,7 +121,7 @@ body {
 }
 
 .timeline-current-date {
-  color: #0A2458;
+  color: #0a2458;
 }
 
 .separator {
@@ -79,7 +152,7 @@ body {
   padding: 0;
   margin: 13px 19px;
   font-size: 14px;
-  letter-spacing: .3px;
+  letter-spacing: 0.3px;
   line-height: 1.4;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   text-align: center;
@@ -98,80 +171,6 @@ body {
 }
 
 /* -------------------------------------------------------------------------- */
-/*                                   Legend                                   */
-/* -------------------------------------------------------------------------- */
-
-.legend {
-  position: relative;
-  top: 5px;
-  margin: 0;
-  padding: 0;
-}
-
-.legend__list {
-  display: grid;
-  grid-template-columns: minmax(5px, max-content) auto;
-  row-gap: 8px;
-  align-items: center;
-  margin: 0 0 0 10px;
-}
-
-.legend__list:not(:last-child) .legend__entry {
-  display: flex;
-  justify-content: flex-start;
-}
-
-.legend__entry {
-  grid-column: 1;
-  width: 100%;
-  max-width: 16px;
-  max-height: 16px;
-}
-
-.legend__entry:not(.legend__entry-line) {
-  display: flex;
-  align-items: center;
-}
-
-.legend__entry img {
-  width: 100%;
-}
-
-.legend__shape-frontline {
-  border-bottom: 3px solid #6d3738;
-}
-
-.legend__shape-rail {
-  border-bottom: 2px solid #fab038;
-}
-
-.legend__shape-road {
-  border-bottom: 2px solid rgba(116, 53, 161, 0.29);
-}
-
-.legend__shape-boundary {
-  border-bottom: 2px solid rgba(95, 121, 129, .78);
-}
-
-.legend__shape-disputed {
-  height: 12px;
-  width: 12px;
-  border-radius: 50px;
-  background-color: #9ba380;
-}
-
-dd {
-  grid-column: 2;
-  width: 100%;
-  margin: 0 0 0 8px;
-  font-size: 12px;
-  line-height: 1.2;
-  color: #080808;
-  opacity: 0.9;
-}
-
-
-/* -------------------------------------------------------------------------- */
 /*                                  Timeline                                  */
 /* -------------------------------------------------------------------------- */
 
@@ -188,7 +187,7 @@ dd {
   padding: 0.3rem 0.5rem;
   width: 25px;
   height: 21px;
-  background-color: #3DD5FF;
+  background-color: #3dd5ff;
   border: 0;
   font-size: 12px;
   font-size: 0.75rem;
@@ -211,7 +210,7 @@ dd {
 
 .timeline .timeline-btn.pause-btn {
   color: #fff;
-  background-color: #0054A4;
+  background-color: #0054a4;
 }
 
 .timeline .timeline-btn.pause-btn::after {
@@ -275,7 +274,7 @@ dd {
 .noUi-handle {
   width: 1rem !important;
   height: 1rem !important;
-  background-color: #0054A4;
+  background-color: #0054a4;
   border: 0;
   border-radius: 50%;
   box-shadow: none;
@@ -318,6 +317,79 @@ dd {
 }
 
 /* -------------------------------------------------------------------------- */
+/*                                   Legend                                   */
+/* -------------------------------------------------------------------------- */
+
+.legend {
+  position: relative;
+  top: 5px;
+  margin: 0;
+  padding: 0;
+}
+
+.legend__list {
+  display: grid;
+  grid-template-columns: minmax(5px, max-content) auto;
+  row-gap: 8px;
+  align-items: center;
+  margin: 0 0 0 10px;
+}
+
+.legend__list:not(:last-child) .legend__entry {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.legend__entry {
+  grid-column: 1;
+  width: 100%;
+  max-width: 16px;
+  max-height: 16px;
+}
+
+.legend__entry:not(.legend__entry-line) {
+  display: flex;
+  align-items: center;
+}
+
+.legend__entry img {
+  width: 100%;
+}
+
+.legend__shape-frontline {
+  border-bottom: 3px solid #6d3738;
+}
+
+.legend__shape-rail {
+  border-bottom: 2px solid #fab038;
+}
+
+.legend__shape-road {
+  border-bottom: 2px solid rgba(116, 53, 161, 0.29);
+}
+
+.legend__shape-boundary {
+  border-bottom: 2px solid rgba(95, 121, 129, 0.78);
+}
+
+.legend__shape-disputed {
+  height: 12px;
+  width: 12px;
+  border-radius: 50px;
+  background-color: #9ba380;
+}
+
+dd {
+  grid-column: 2;
+  width: 100%;
+  margin: 0 0 0 8px;
+  font-size: 12px;
+  line-height: 1.2;
+  color: #080808;
+  opacity: 0.9;
+}
+
+/* -------------------------------------------------------------------------- */
 /*                                   Contact                                  */
 /* -------------------------------------------------------------------------- */
 
@@ -340,13 +412,13 @@ dd {
 
 .contact a {
   transition: all 0.3s ease-in-out;
-  color: #0054A4;
-  border-bottom: 1px solid #0054A400;
+  color: #0054a4;
+  border-bottom: 1px solid #0054a400;
   text-decoration: none;
 }
 
 .contact a:hover {
   outline: 0;
-  color: #0054A48F;
-  border-bottom: 1px solid #0054A48F;
+  color: #0054a48f;
+  border-bottom: 1px solid #0054a48f;
 }

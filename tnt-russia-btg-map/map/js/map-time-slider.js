@@ -1,18 +1,69 @@
-//  TNT_Russia_Ukraine_map-timeline-WORKING-POI-labels-updated-masks
+/* -------------------------------------------------------------------------- */
+/*               Mapbox URL, info to connect to Carto datasets              */
+/* -------------------------------------------------------------------------- */
+
 const basemapURL =
   "https://api.mapbox.com/styles/v1/ilabmedia/clesm3yxm000a01mtyumq5sp4/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw";
 
-  //  TNT_Russia_Ukraine_map-timeline-WORKING-POI-labels-no-mask
-  //  "https://api.mapbox.com/styles/v1/ilabmedia/clepve6hq000301p7txwaq4cq/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw";
 const cartoKeyMarkers = "6KgYkqFnDfk6hEgC3TGvIw";
-
 const cartoSourceMarkers = "russia_btg_map_all_time_data";
-const cartoSourceLines = "tnt_front_lines_time_slider";
-const linesApiKey = "SMgzGpUrfgPT5Fg25t9XNw";
-const username = "csis";
 
-// Get all markers from images dir
-// https://stackoverflow.com/questions/18480550/how-to-load-all-the-images-from-one-of-my-folder-into-my-web-page-using-jquery
+const cartoKeyLines = "SMgzGpUrfgPT5Fg25t9XNw";
+const cartoSourceLines = "tnt_front_lines_time_slider";
+
+/* -------------------------------------------------------------------------- */
+/*                                Build the map                               */
+/* -------------------------------------------------------------------------- */
+var basemap = L.tileLayer(basemapURL, {});
+
+var commonMapOptions = {
+  maxZoom: 20,
+  scrollWheelZoom: true,
+  zoomControl: false,
+  scrollWheelZoom: true,
+  zoomSnap: 0,
+  zoomDelta: 0.5,
+  layers: [basemap],
+  attributionControl: false,
+};
+
+var mapOptions;
+
+if (L.Browser.mobile) {
+  mapOptions = {
+    center: [48.21327, 34.74274],
+    zoom: 5.7,
+    minZoom: 5,
+  };
+} else {
+  mapOptions = {
+    center: [48.981, 32.839],
+    zoom: 6.5,
+    minZoom: 6,
+  };
+}
+
+var map = L.map("map", {
+  ...commonMapOptions,
+  ...mapOptions,
+});
+
+/* -------------------------------------------------------------------------- */
+/*            Instantiate Overlapping Marker Spiderfier for Leaflet           */
+/* -------------------------------------------------------------------------- */
+
+let omsOptions = {
+  keepSpiderfied: true,
+  nearbyDistance: 35,
+  circleSpiralSwitchover: 3,
+};
+
+const oms = new OverlappingMarkerSpiderfier(map, omsOptions);
+
+/* -------------------------------------------------------------------------- */
+/*                           Build the marker icons                           */
+/* -------------------------------------------------------------------------- */
+
 function getImages() {
   return new Promise((resolve, reject) => {
     let url = "./js/markers.json";
@@ -27,214 +78,177 @@ function getImages() {
           },
         });
         let markerArr = [];
-        // Loop through the marker json file and create a marker object for each type
+
         for (let x in markers) {
           x = x.toLowerCase();
           let fullUrl = "./images/" + x + ".svg";
           let filename2 = x
             .substring(x.lastIndexOf("/") + 1)
             .replace(/\.[^/.]+$/, ""); // File name no ext
+
           markerIcon = new IconBase({
             iconUrl: fullUrl,
             iconName: filename2,
           });
+
           markerArr.push(markerIcon);
         }
+
         resolve(markerArr);
       })
-      .catch((err) => console.log(`Error in promises ${error}`));
+      .catch((error) => console.log("Error in getImages()! -->", error));
   });
 }
 
+/* -------------------------------------------------------------------------- */
+/*         Sort marker icons by date and add to map; set up spiderfier        */
+/* -------------------------------------------------------------------------- */
+
 let markersByDate = {};
-let layerGroups = [];
+let markerLayerGroups = [];
 let dates = [];
 
 Promise.all([getImages()]).then((markerArr) => {
-  const dataRows = theData(markerArr);
+  let sql = new cartodb.SQL({ user: "csis" });
+  sql
+    .execute("SELECT * FROM csis." + cartoSourceMarkers)
+    .done(function (data) {
+      const rows = data.rows;
+      let latLngArr = [];
 
-  function theData(markerArr) {
-    let sql = new cartodb.SQL({ user: "csis" });
-    sql
-      .execute("SELECT * FROM csis." + cartoSourceMarkers)
-      .done(function (data) {
-        const rows = data.rows;
-        // Loop through each battlement
-        let latLngArr = [];
-        rows.forEach((row) => {
-          let latLongObj = {
-            rowLat: row.lat,
-            rowLong: row.long,
-          };
-          let latLong = row.lat + ", " + row.long;
-          // Check if lat long combo is a duplicate and add a small number if it is
-          if (!latLngArr.includes(latLong)) {
-            latLngArr.push(latLong);
-          } else {
-            row.lat = row.lat + (Math.random() * (0.15 - 0.05) + 0.05);
-            latLongObj.rowLat = row.lat;
-            latLong = row.lat + ", " + row.long;
-            latLngArr.push(latLong);
-          }
-          let markerName = row.type.toLowerCase();
-          // Get marker icon object for the specific battlement type
-          const foundItem = markerArr[0].find((marker) => {
-            return marker.options.iconName == markerName;
-          });
-          // If we have a matching marker, use it to mark the battlement on the map
-          if (foundItem) {
-            let marker = L.marker([row.lat, row.long], {
-              icon: foundItem,
-              riseOnHover: false,
-            });
-            marker.data = row;
+      /* Build markers, markersByDate, dates; add each marker to spiderfier */
+      rows.forEach((row) => {
+        let latLong = row.lat + ", " + row.long;
+        let markerName = row.type.toLowerCase();
 
-            const date = new Date(row.date);
-            const dateInSec = date.getTime();
-
-            if (!dates.includes(dateInSec)) {
-              dates.push(dateInSec);
-            }
-
-            if (dateInSec in markersByDate) {
-              markersByDate[dateInSec].push(marker);
-            } else {
-              markersByDate[dateInSec] = [marker];
-            }
-
-            oms.addMarker(marker);
-          }
-          else {
-          	console.log("No marker for " + row.type)
-          }
-        });
-
-        dates.sort();
-        len = dates.length;
-
-        timeline.setupTimeline({ start: dates[0], end: dates[len - 1] });
-
-        for (array in markersByDate) {
-          layerArray = L.layerGroup(markersByDate[array]);
-          layerGroups.push(layerArray);
+        if (!latLngArr.includes(latLong)) {
+          latLngArr.push(latLong);
+        } else {
+          row.lat = row.lat + (Math.random() * (0.15 - 0.05) + 0.05);
+          latLong = row.lat + ", " + row.long;
+          latLngArr.push(latLong);
         }
 
-        map.addLayer(layerGroups[0]);
+        const foundMarkerIcon = markerArr[0].find((marker) => {
+          return marker.options.iconName == markerName;
+        });
 
-        oms.addListener("click", function (marker) {
-          if(marker.data.formal_name === "") {
-            popup.setContent("<p class='leaflet-popup-content--no-name'>Name not available</p>")
-          } else {
-            popup.setContent(marker.data.formal_name);
+        if (foundMarkerIcon) {
+          let marker = L.marker([row.lat, row.long], {
+            icon: foundMarkerIcon,
+            riseOnHover: false,
+            data: null,
+          });
+
+          marker.data = row;
+
+          const dateInSec = new Date(marker.data.date).getTime();
+
+          if (!dates.includes(dateInSec)) {
+            dates.push(dateInSec);
           }
-          popup.setLatLng(marker.getLatLng());
-          map.openPopup(popup);
-        });
 
-        oms.addListener("spiderfy", function (markers) {
-          map.closePopup();
-        });
-      })
-      .error(function (errors) {
-        // errors contains a list of errors
-        console.log("errors:" + errors);
+          if (dateInSec in markersByDate) {
+            markersByDate[dateInSec].push(marker);
+          } else {
+            markersByDate[dateInSec] = [marker];
+          }
+
+          oms.addMarker(marker);
+        } else {
+          console.log("No marker for " + row.type);
+        }
       });
-  }
+
+      /* ----------------- Setup timeline in the map legend ----------------- */
+      dates.sort();
+      len = dates.length;
+
+      timeline.setupTimeline({ start: dates[0], end: dates[len - 1] });
+
+      /* ------------------- Build the marker layer groups ------------------ */
+      for (array in markersByDate) {
+        layerArray = L.layerGroup(markersByDate[array]);
+        markerLayerGroups.push(layerArray);
+      }
+
+      map.addLayer(markerLayerGroups[0]);
+
+      /* ----------------- Set up spiderfier event listeners ---------------- */
+      oms.addListener("click", function (marker) {
+        if (marker.data.formal_name === "") {
+          popup.setContent(
+            "<p class='leaflet-popup-content--no-name'>Name not available</p>"
+          );
+        } else {
+          popup.setContent(marker.data.formal_name);
+        }
+        popup.setLatLng(marker.getLatLng());
+        map.openPopup(popup);
+      });
+
+      oms.addListener("spiderfy", function (markers) {
+        map.closePopup();
+      });
+    })
+    .error(function (errors) {
+      console.log("errors:" + errors);
+    });
 });
 
-const client = new carto.Client({
-  apiKey: cartoKeyMarkers,
-  username: "csis",
-});
+function clearSpiderficationAndPopups() {
+  oms.unspiderfy(); // Clears the spiderfication state
+  map.closePopup(); // Closes any open popups
+}
 
-var basemap = L.tileLayer(basemapURL, {});
+/* -------------------------------------------------------------------------- */
+/*                         Create and add front lines                         */
+/* -------------------------------------------------------------------------- */
 
-var map = L.map("map", {
-  center: [48.981,32.839],
-  zoom: 6.5,
-  maxZoom: 20,
-  scrollWheelZoom: true,
-  minZoom: 6,
-  zoomControl: false,
-  scrollWheelZoom: true,
-  zoomSnap: 0,
-  zoomDelta: 0.5,
-  layers: [basemap],
-  attributionControl: false,
-});
-
-const mapSource = new carto.source.SQL(
-  `SELECT * FROM csis.` + cartoSourceMarkers
-);
-
-const mapStyle = new carto.style.CartoCSS(`
-// #layer {
-//   marker-width: 7;
-//   marker-allow-overlap: false;
-//   marker-line-width: 1;
-//   marker-line-color: #FFFFFF;
-//   marker-line-opacity: 1;
-// }
-`);
-
-const mapLayer = new carto.layer.Layer(mapSource, mapStyle, {
-  featureOverColumns: [
-    "formal_name",
-    "short_form_name",
-    "type",
-    "size",
-    "hq_tail2",
-    "country",
-    "lat",
-    "long",
-    "source",
-    "date",
-  ],
-});
-
-let lineArr = []
+let lineArr = [];
 
 fetch(
-  `https://${username}.carto.com/api/v2/sql?format=GeoJSON&api_key=${linesApiKey}&q=SELECT * FROM ${cartoSourceLines} ORDER BY date ASC`
+  `https://csis.carto.com/api/v2/sql?format=GeoJSON&api_key=${cartoKeyLines}&q=SELECT * FROM ${cartoSourceLines} ORDER BY date ASC`
 )
   .then((res) => res.json())
   .then((response) => {
-    // Loop through the front line json file and create a layer for each line
-    response.features.forEach((row, i) => {
-      const date = new Date(row.properties.date);
-      const dateInSec = date.getTime();
+    response.features.forEach((row) => {
+      const dateInSec = new Date(row.properties.date).getTime();
+
       row.properties.dateInSec = dateInSec;
-			lineArr.push(L.geoJSON(row, {
-				style: function (feature) {
-						return {weight: 3, color: '#6d3738', opacity: 1};
-				},
-        interactive: false,
-				}))
+      lineArr.push(
+        L.geoJSON(row, {
+          style: function (feature) {
+            return { weight: 3, color: "#6d3738", opacity: 1 };
+          },
+          interactive: false,
+        })
+      );
     });
-		map.addLayer(lineArr[0]);
+    map.addLayer(lineArr[0]);
   });
-	
+
+/* -------------------------------------------------------------------------- */
+/*      Functions to add/remove marker and layer groups at the same time      */
+/* -------------------------------------------------------------------------- */
+
 function addLayerGroup(group) {
   return new Promise(function (resolve, reject) {
-    resolve(map.addLayer(layerGroups[group]).addLayer(lineArr[group]));
+    resolve(map.addLayer(markerLayerGroups[group]).addLayer(lineArr[group]));
   });
 }
 
 function removeLayerGroup(group) {
   return new Promise(function (resolve, reject) {
-    resolve(map.removeLayer(layerGroups[group]).removeLayer(lineArr[group]));
+    resolve(
+      map.removeLayer(markerLayerGroups[group]).removeLayer(lineArr[group])
+    );
   });
 }
 
-client.getLeafletLayer().bringToFront().addTo(map);
-
-let omsOptions = {
-  keepSpiderfied: true,
-  nearbyDistance: 35,
-  circleSpiralSwitchover: 3,
-};
-
-const oms = new OverlappingMarkerSpiderfier(map, omsOptions);
+/* -------------------------------------------------------------------------- */
+/*                     Popups, attribution, zoom position                     */
+/* -------------------------------------------------------------------------- */
 
 const popup = L.popup({ closeButton: true, offset: new L.Point(0, -20) });
 
@@ -244,12 +258,18 @@ L.control
   })
   .setPrefix(
     'Data by <a target="_blank" href="https://www.csis.org/programs/transnational-threats-project">CSIS Transnational Threats Program</a> | <a href="https://leafletjs.com/">Leaflet</a>'
-  ).addTo(map)
-  
-  
-L.control.zoom({
-  position: "topright"
-}).addTo(map)
+  )
+  .addTo(map);
+
+L.control
+  .zoom({
+    position: "topright",
+  })
+  .addTo(map);
+
+/* -------------------------------------------------------------------------- */
+/*                       Legend Timeline and Play Button                      */
+/* -------------------------------------------------------------------------- */
 
 const timeline = {
   el: document.querySelector(".timeline-bar"),
@@ -260,70 +280,87 @@ const timeline = {
   transitionDuration: 2000,
   end: null,
   start: null,
-  updateCurrentDate(date) {
-    this.currentDateEl.innerHTML = `${this.formatDate(date)}`;
+
+  updateCurrentDate: function (currentDate) {
+    this.currentDateEl.innerHTML = `${this.formatDate(currentDate)}`;
   },
+
   onChange: function onChange() {
-    now = this.get();
-    timeline.updateCurrentDate(now);
+    currentDate = this.get();
+    timeline.updateCurrentDate(currentDate);
 
-    // Get the index of the date from the dates array that matches now
-    let dateIndex = dates.indexOf(now);
+    map.closePopup();
 
-    // Remove layer groups that DONT have the current dateIndex
+    let dateIndex = dates.indexOf(currentDate);
+
     for (i = 0; i < len; i++) {
       if (i != dateIndex) {
         removeLayerGroup(i);
       }
     }
 
-    // Add the layer group with the same index of the date to the map
     addLayerGroup(dateIndex);
 
-    if (now == timeline.end) {
+    if (currentDate == timeline.end) {
       timeline.stopTimeline();
     }
   },
-  formatDate(date) {
-		const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-			"Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-		];
 
-		date = new Date(date);
-		date = new Date(
-			date.getUTCFullYear(),
-			date.getUTCMonth(),
-			date.getUTCDate()
-		);
-		return `${monthNames[date.getMonth()]} ${date.getFullYear()}`;
+  formatDate: function (currentDate) {
+    const monthNames = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+
+    dateInSec = new Date(currentDate);
+
+    formattedDate = new Date(
+      dateInSec.getUTCFullYear(),
+      dateInSec.getUTCMonth(),
+      dateInSec.getUTCDate()
+    );
+
+    return `${
+      monthNames[formattedDate.getMonth()]
+    } ${formattedDate.getFullYear()}`;
   },
+
   setupTimeline: function ({ start, end }) {
     this.start = start;
     this.end = end;
 
     this.setupBtnControls();
 
-let range = {}
+    let range = {};
 
-// Build range object
-dates.forEach((date, i) => {
-  // Since the dates array was sorted above, the first and last date are the start and end date
-  if(i === 0) {
-    range['min'] = date
-  } else if(i === len - 1) {
-    range['max'] = date
-  } else {
-    // For all dates that aren't the first or last, get percentage of where that date falls between the start and end dates, then pass percent: date as key: value to the range object. Used to place the date in the correct position on the timeline.
-    let rangePercent = Math.floor(((date - dates[0]) / (dates[len - 1] - dates[0])) * 100 + 0.5) + "%"
-    range[rangePercent] = date
-  }
-})
-    
+    dates.forEach((date, i) => {
+      if (i === 0) {
+        range["min"] = date;
+      } else if (i === len - 1) {
+        range["max"] = date;
+      } else {
+        let rangePercent =
+          Math.floor(
+            ((date - dates[0]) / (dates[len - 1] - dates[0])) * 100 + 0.5
+          ) + "%";
+        range[rangePercent] = date;
+      }
+    });
+
     noUiSlider.create(this.el, {
       start: this.start,
       connect: true,
       behaviour: "tap-drag",
-      // step: this.step,
       snap: true,
       range: range,
       format: {
@@ -340,7 +377,7 @@ dates.forEach((date, i) => {
         density: 100,
         stepped: true,
         format: {
-          to: toFormat,
+          to: this.formatDate,
         },
       },
     });
@@ -356,39 +393,23 @@ dates.forEach((date, i) => {
 
       timeline.el.noUiSlider.set(tempDate);
     });
-    
-  // Make pips clickable
-    // Get all pips with values
-    let pips = timeline.el.querySelectorAll('.noUi-value')
 
-    // Set slider value to the data-value of the clicked pip
+    let pips = timeline.el.querySelectorAll(".noUi-value");
+
     function clickOnPip() {
-      var value = Number(this.getAttribute('data-value'));
+      var value = Number(this.getAttribute("data-value"));
       timeline.el.noUiSlider.set(value);
     }
-    // Add event listener to the pips
+
     for (var i = 0; i < pips.length; i++) {
-      pips[i].addEventListener('click', clickOnPip);
-    }
-
-    function toFormat(seconds) {
-			const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-				"Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-			];
-
-      date = new Date(seconds);
-      date = new Date(
-        date.getUTCFullYear(),
-        date.getUTCMonth(),
-        date.getUTCDate()
-      );
-      return `${monthNames[date.getMonth()]} ${date.getFullYear()}`;
+      pips[i].addEventListener("click", clickOnPip);
     }
   },
+
   setupBtnControls: function () {
     this.controlBtn.addEventListener("click", function () {
-      if (now == timeline.end) {
-				const lastDateIndex = len - 1;
+      if (currentDate == timeline.end) {
+        const lastDateIndex = len - 1;
         removeLayerGroup(lastDateIndex);
         timeline.el.noUiSlider.set(timeline.start);
       }
@@ -398,26 +419,30 @@ dates.forEach((date, i) => {
         return;
       }
 
-      let ints = dates;
+      clearSpiderficationAndPopups();
 
-      let i = ints.indexOf(now);
+      let i = dates.indexOf(currentDate);
 
-      function jamTimer() {
-        if (i >= ints.length) {
+      function timelinePosition() {
+        if (i >= dates.length) {
           i = 0;
         }
 
-        now = ints[i];
-        timeline.el.noUiSlider.set(now);
+        currentDate = dates[i];
+        timeline.el.noUiSlider.set(currentDate);
         i++;
       }
-      jamTimer()
-      timeline.timer = setInterval(jamTimer, timeline.transitionDuration);
+      timelinePosition();
+      timeline.timer = setInterval(
+        timelinePosition,
+        timeline.transitionDuration
+      );
       this.classList.remove("play-btn");
       this.classList.add("pause-btn");
       timeline.playing = true;
     });
   },
+
   stopTimeline: function () {
     clearInterval(timeline.timer);
     timeline.playing = false;
@@ -425,3 +450,85 @@ dates.forEach((date, i) => {
     timeline.controlBtn.classList.add("play-btn");
   },
 };
+
+/* -------------------------------------------------------------------------- */
+/*                         Show/Hide Legend on Mobile                         */
+/* -------------------------------------------------------------------------- */
+let toolbox = document.getElementById("toolbox");
+let viewLegendButton = document.querySelector(".view-legend");
+let hideLegendButton = document.querySelector(".hide-legend");
+let viewFullScreenButton = document.querySelector(".full-screen");
+let mapFrame = document.getElementById("map-frame");
+
+function viewLegendHandler() {
+  toolbox.classList.remove("display-none");
+  viewLegendButton.classList.remove("display-block");
+  viewLegendButton.classList.add("display-none");
+  hideLegendButton.classList.remove("display-none");
+
+  if (typeof mapFrame != "undefined" && mapFrame != null) {
+    viewFullScreenButton.classList.remove("display-block");
+    viewFullScreenButton.classList.add("display-none");
+  }
+}
+
+function hideLegendHandler() {
+  hideLegendButton.classList.add("display-none");
+  toolbox.classList.add("display-none");
+  viewLegendButton.classList.remove("display-none");
+  viewLegendButton.classList.add("display-block");
+
+  if (typeof mapFrame != "undefined" && mapFrame != null) {
+    viewFullScreenButton.classList.add("display-block");
+  }
+}
+
+/* ------------------------- Handle Window Resizing ------------------------- */
+
+// window width for using desktop CSS
+const desktop = 1075;
+
+// observe window resize
+window.addEventListener("resize", resizeHandler);
+
+// initial call
+resizeHandler();
+
+// calculate size
+function resizeHandler() {
+  // get window width
+  const windowInnerWidth = window.innerWidth;
+
+  if (windowInnerWidth >= desktop) {
+    toolbox.classList.remove("display-none");
+    viewLegendButton.classList.add("display-none");
+    viewLegendButton.classList.remove("display-block");
+    hideLegendButton.classList.add("display-none");
+
+    if (
+      typeof mapFrame != "undefined" &&
+      mapFrame != null &&
+      $("iframe")[0].clientWidth >= desktop
+    ) {
+      viewFullScreenButton.classList.remove("full-screen-mobile");
+      viewFullScreenButton.classList.remove("display-none");
+      viewFullScreenButton.classList.add("display-block");
+      viewFullScreenButton.classList.add("iframe");
+    }
+  }
+
+  if (windowInnerWidth < desktop) {
+    viewLegendButton.classList.remove("display-none");
+    toolbox.classList.add("display-none");
+    if (
+      typeof mapFrame != "undefined" &&
+      mapFrame != null &&
+      $("iframe")[0].clientWidth < desktop
+    ) {
+      viewFullScreenButton.classList.remove("display-none");
+      viewFullScreenButton.classList.add("display-block");
+      viewFullScreenButton.classList.add("full-screen-mobile");
+      viewFullScreenButton.classList.remove("iframe");
+    }
+  }
+}
