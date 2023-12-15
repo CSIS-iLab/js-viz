@@ -51,8 +51,8 @@ img {
 
 /* Caption text */
 .text {
-  color: #021729;
-  font-size: 15px;
+  color: #333;
+  font-size: 0.8em;
   padding: 8px 12px;
   /* position: absolute; */
   bottom: 8px;
@@ -159,8 +159,8 @@ img {
 
 /* Caption text */
 .text {
-  color: #050f27;
-  font-size: 15px;
+  color: #333;
+  font-size: 0.8em;
   padding: 8px 12px;
   /* position: absolute; */
   bottom: 8px;
