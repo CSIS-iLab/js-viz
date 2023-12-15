@@ -114,7 +114,8 @@ img {
 }
 /* Slideshow container */
 .slideshow-container {
-  max-width: 400px;
+  max-width: 330px;
+  max-height: 520px;
   position: relative;
   margin: auto;
 }
