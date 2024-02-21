@@ -16,7 +16,7 @@ Highcharts.chart('hcContainer', {
   ],
   // Chart Title and Subtitle
   title: {
-    text: "Race/Ethnicity*, December 2022"
+    text: "Race/Ethnicity*, December 2023"
   },
   // Credits
   credits: {
