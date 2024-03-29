@@ -1,0 +1,78 @@
+.tableTitle {
+  text-align: center;
+  background: #808080;
+  color: #fff;
+  font-weight: bold;
+  padding: 2px;
+}
+
+table {
+  border-collapse: collapse;
+  margin-top: 5px;
+  margon-bottom: 5px;
+}
+
+tr {
+  border-bottom: 1px solid #ddd;
+  line-height: 1.6;
+}
+
+.issue1 {
+  color:#928263; 
+  font-weight: bold;
+}
+
+.issue2 {
+  color: #720c79;
+  font-weight: bold;
+}
+
+.issue3 {
+  color: #b74d95;
+  font-weight: bold;
+}
+
+.issue4 {
+  color: #c1577F;
+  font-weight: bold;
+}
+
+.issue5 {
+  color: #004165;
+  font-weight: bold;
+}
+
+.issue6 {
+  color: #0065a4;
+  font-weight: bold;
+}
+
+.issue7 {
+  color: #4cc7e6;
+  font-weight: bold;
+}
+
+.issue8 {
+  color: #0faa91;
+  font-weight: bold;
+}
+
+.issue9 {
+  color: #86Ac20;
+  font-weight: bold;
+}
+
+.issue10 {
+  color: #F9a914;
+  font-weight: bold;
+}
+
+.issue11 {
+  color: #CF5B17;
+  font-weight: bold;
+}
+
+.issue12 {
+  color: #E6332E;
+  font-weight: bold;
+}
