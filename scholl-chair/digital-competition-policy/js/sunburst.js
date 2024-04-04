@@ -411,6 +411,26 @@ const data = [{
   coverage12: "Not addressed"
 },
 {
+  id: "3.55",
+  parent: "2.55", // United States
+  name: "Imposes fines on turnover basis",
+  value: 1,
+  color: '#720c79', // 1
+  country: "United States",
+  coverage1: "Directly addresses",
+  coverage2: "Directly addresses",
+  coverage3: "Directly addresses",
+  coverage4: "Not addressed",
+  coverage5: "Directly addresses",
+  coverage6: "Directly addresses",
+  coverage7: "Not addressed",
+  coverage8: "Not addressed",
+  coverage9: "Directly addresses",
+  coverage10: "Partially addressed",
+  coverage11: "Directly addresses",
+  coverage12: "Not addressed"
+},
+{
   id: "3.6",
   parent: "2.6", // India
   name: "Imposes fines on turnover basis",
