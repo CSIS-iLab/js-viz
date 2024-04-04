@@ -712,6 +712,26 @@ const data = [{
   coverage12: "Not addressed"
 },
 {
+  id: "4.55",
+  parent: "3.55", // United States
+  name: "Prohibits presumed self-preferencing",
+  value: 1,
+  color: '#b74d95',
+  country: "United States",
+  coverage1: "Directly addresses",
+  coverage2: "Directly addresses",
+  coverage3: "Directly addresses",
+  coverage4: "Not addressed",
+  coverage5: "Directly addresses",
+  coverage6: "Directly addresses",
+  coverage7: "Not addressed",
+  coverage8: "Not addressed",
+  coverage9: "Directly addresses",
+  coverage10: "Partially addressed",
+  coverage11: "Directly addresses",
+  coverage12: "Not addressed"
+},
+{
   id: "4.6",
   parent: "3.6", // India
   name: "Prohibits presumed self-preferencing",
@@ -990,6 +1010,26 @@ const data = [{
   coverage9: "Directly addresses",
   coverage10: "Partially addressed",
   coverage11: "Not addressed",
+  coverage12: "Not addressed"
+},
+{
+  id: "5.55",
+  parent: "4.55", // United States
+  name: "Prohibits killer acquisitions",
+  value: 1,
+  color: '#dadedf',
+  country: "United States",
+  coverage1: "Directly addresses",
+  coverage2: "Directly addresses",
+  coverage3: "Directly addresses",
+  coverage4: "Not addressed",
+  coverage5: "Directly addresses",
+  coverage6: "Directly addresses",
+  coverage7: "Not addressed",
+  coverage8: "Not addressed",
+  coverage9: "Directly addresses",
+  coverage10: "Partially addressed",
+  coverage11: "Directly addresses",
   coverage12: "Not addressed"
 },
 {
@@ -1275,6 +1315,26 @@ const data = [{
   coverage12: "Not addressed"
 },
 {
+  id: "6.55",
+  parent: "5.55", // United States
+  name: "Prohibits tying and bundling",
+  value: 1,
+  color: '#004165', // 1
+  country: "United States",
+  coverage1: "Directly addresses",
+  coverage2: "Directly addresses",
+  coverage3: "Directly addresses",
+  coverage4: "Not addressed",
+  coverage5: "Directly addresses",
+  coverage6: "Directly addresses",
+  coverage7: "Not addressed",
+  coverage8: "Not addressed",
+  coverage9: "Directly addresses",
+  coverage10: "Partially addressed",
+  coverage11: "Directly addresses",
+  coverage12: "Not addressed"
+},
+{
   id: "6.6",
   parent: "5.6", // India
   name: "Prohibits tying and bundling",
@@ -1553,6 +1613,26 @@ const data = [{
   coverage9: "Directly addresses",
   coverage10: "Partially addressed",
   coverage11: "Not addressed",
+  coverage12: "Not addressed"
+},
+{
+  id: "7.55",
+  parent: "6.55", // United States
+  name: "Promotes use of third-party apps, software, etc.",
+  value: 1,
+  color: '#0065a4', // 1
+  country: "United States",
+  coverage1: "Directly addresses",
+  coverage2: "Directly addresses",
+  coverage3: "Directly addresses",
+  coverage4: "Not addressed",
+  coverage5: "Directly addresses",
+  coverage6: "Directly addresses",
+  coverage7: "Not addressed",
+  coverage8: "Not addressed",
+  coverage9: "Directly addresses",
+  coverage10: "Partially addressed",
+  coverage11: "Directly addresses",
   coverage12: "Not addressed"
 },
 {
@@ -1838,6 +1918,26 @@ const data = [{
   coverage12: "Not addressed"
 },
 {
+  id: "8.55",
+  parent: "7.55", // United States
+  name: "Requires user consent to use data, for example for personalized ads",
+  value: 1,
+  color: '#dadedf', // 0
+  country: "United States",
+  coverage1: "Directly addresses",
+  coverage2: "Directly addresses",
+  coverage3: "Directly addresses",
+  coverage4: "Not addressed",
+  coverage5: "Directly addresses",
+  coverage6: "Directly addresses",
+  coverage7: "Not addressed",
+  coverage8: "Not addressed",
+  coverage9: "Directly addresses",
+  coverage10: "Partially addressed",
+  coverage11: "Directly addresses",
+  coverage12: "Not addressed"
+},
+{
   id: "8.6",
   parent: "7.6", // India
   name: "Requires user consent to use data, for example for personalized ads",
@@ -2117,6 +2217,26 @@ const data = [{
   coverage9: "Directly addresses",
   coverage10: "Partially addressed",
   coverage11: "Not addressed",
+  coverage12: "Not addressed"
+},
+{
+  id: "9.55",
+  parent: "8.55", // United States
+  name: "Prohibits combining pieces of information without user consent",
+  value: 1,
+  color: '#dadedf', // 0
+  country: "United States",
+  coverage1: "Directly addresses",
+  coverage2: "Directly addresses",
+  coverage3: "Directly addresses",
+  coverage4: "Not addressed",
+  coverage5: "Directly addresses",
+  coverage6: "Directly addresses",
+  coverage7: "Not addressed",
+  coverage8: "Not addressed",
+  coverage9: "Directly addresses",
+  coverage10: "Partially addressed",
+  coverage11: "Directly addresses",
   coverage12: "Not addressed"
 },
 {
@@ -2402,6 +2522,26 @@ const data = [{
   coverage12: "Not addressed"
 },
 {
+  id: "10.55",
+  parent: "9.55", // United States
+  name: "Requires interoperability with third-party providers",
+  value: 1,
+  color: '#86Ac20', // 1
+  country: "United States",
+  coverage1: "Directly addresses",
+  coverage2: "Directly addresses",
+  coverage3: "Directly addresses",
+  coverage4: "Not addressed",
+  coverage5: "Directly addresses",
+  coverage6: "Directly addresses",
+  coverage7: "Not addressed",
+  coverage8: "Not addressed",
+  coverage9: "Directly addresses",
+  coverage10: "Partially addressed",
+  coverage11: "Directly addresses",
+  coverage12: "Not addressed"
+},
+{
   id: "10.6",
   parent: "9.6", // India
   name: "Requires interoperability with third-party providers",
@@ -2683,6 +2823,26 @@ const data = [{
   coverage12: "Not addressed"
 },
 {
+  id: "11.55",
+  parent: "10.55", // United States
+  name: "Requires business users like advertisers and publishers to access data",
+  value: 1,
+  color: '#F9a91488', // .5
+  country: "United States",
+  coverage1: "Directly addresses",
+  coverage2: "Directly addresses",
+  coverage3: "Directly addresses",
+  coverage4: "Not addressed",
+  coverage5: "Directly addresses",
+  coverage6: "Directly addresses",
+  coverage7: "Not addressed",
+  coverage8: "Not addressed",
+  coverage9: "Directly addresses",
+  coverage10: "Partially addressed",
+  coverage11: "Directly addresses",
+  coverage12: "Not addressed"
+},
+{
   id: "11.6",
   parent: "10.6", // India
   name: "Requires business users like advertisers and publishers to access data",
@@ -2951,6 +3111,26 @@ const data = [{
   value: 1,
   color: '#dadedf', // 0
   country: "UK",
+  coverage1: "Directly addresses",
+  coverage2: "Directly addresses",
+  coverage3: "Directly addresses",
+  coverage4: "Directly addresses",
+  coverage5: "Directly addresses",
+  coverage6: "Directly addresses",
+  coverage7: "Directly addresses",
+  coverage8: "Not addressed",
+  coverage9: "Directly addresses",
+  coverage10: "Partially addressed",
+  coverage11: "Not addressed",
+  coverage12: "Not addressed"
+},
+{
+  id: "12.55",
+  parent: "11.55", // United States
+  name: "Requires allowing business users to comunicate with end users",
+  value: 1,
+  color: '#CF5B1780', // 0
+  country: "United States",
   coverage1: "Directly addresses",
   coverage2: "Directly addresses",
   coverage3: "Directly addresses",
@@ -3246,6 +3426,26 @@ const data = [{
   coverage12: "Not addressed"
 },
 {
+  id: "13.55",
+  parent: "12.55", // United States
+  name: "Prohibits preventing business users from working with competitors",
+  value: 1,
+  color: '#dadedf', // 0
+  country: "United States",
+  coverage1: "Directly addresses",
+  coverage2: "Directly addresses",
+  coverage3: "Directly addresses",
+  coverage4: "Not addressed",
+  coverage5: "Directly addresses",
+  coverage6: "Directly addresses",
+  coverage7: "Not addressed",
+  coverage8: "Not addressed",
+  coverage9: "Directly addresses",
+  coverage10: "Partially addressed",
+  coverage11: "Directly addresses",
+  coverage12: "Not addressed"
+},
+{
   id: "13.6",
   parent: "12.6", // India
   name: "Prohibits preventing business users from working with competitors",
@@ -3526,6 +3726,26 @@ const data = [{
   coverage9: "Directly addresses",
   coverage10: "Partially addressed",
   coverage11: "Not addressed",
+  coverage12: "Not addressed"
+},
+{
+  id: "14.55",
+  parent: "13.55", // United States
+  name: "United States",
+  value: 1,
+  color: '#c1c7c9',
+  country: "United States",
+  coverage1: "Directly addresses",
+  coverage2: "Directly addresses",
+  coverage3: "Directly addresses",
+  coverage4: "Not addressed",
+  coverage5: "Directly addresses",
+  coverage6: "Directly addresses",
+  coverage7: "Not addressed",
+  coverage8: "Not addressed",
+  coverage9: "Directly addresses",
+  coverage10: "Partially addressed",
+  coverage11: "Directly addresses",
   coverage12: "Not addressed"
 },
 {
@@ -3814,6 +4034,27 @@ const data = [{
   coverage9: "Directly addresses",
   coverage10: "Partially addressed",
   coverage11: "Not addressed",
+  coverage12: "Not addressed"
+},
+{
+  id: "15.55",
+  parent: "14.55", // United States
+  name: "Bill, draft regulations, guidelines",
+  value: 1,
+  // color: '#999999',
+  color: '#646262',
+  country: "United States",
+  coverage1: "Directly addresses",
+  coverage2: "Directly addresses",
+  coverage3: "Directly addresses",
+  coverage4: "Not addressed",
+  coverage5: "Directly addresses",
+  coverage6: "Directly addresses",
+  coverage7: "Not addressed",
+  coverage8: "Not addressed",
+  coverage9: "Directly addresses",
+  coverage10: "Partially addressed",
+  coverage11: "Directly addresses",
   coverage12: "Not addressed"
 },
 {
