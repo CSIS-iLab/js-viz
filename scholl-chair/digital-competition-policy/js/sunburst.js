@@ -109,6 +109,25 @@ const data = [{
   coverage10: "Partially addressed",
   coverage11: "Not addressed",
   coverage12: "Not addressed"
+},{
+  id: "2.55",
+  parent: "0.0", // United States
+  name: "Targets specific types of digital service providers",
+  value: 1,
+  color: '#928263', // 1
+  country: "United States",
+  coverage1: "Directly addresses",
+  coverage2: "Directly addresses",
+  coverage3: "Directly addresses",
+  coverage4: "Not addressed",
+  coverage5: "Directly addresses",
+  coverage6: "Directly addresses",
+  coverage7: "Not addressed",
+  coverage8: "Not addressed",
+  coverage9: "Directly addresses",
+  coverage10: "Partially addressed",
+  coverage11: "Directly addresses",
+  coverage12: "Not addressed"
 },
 {
   id: "2.6",
