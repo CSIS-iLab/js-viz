@@ -4263,7 +4263,7 @@ Highcharts.chart("hcContainer", {
   colors: ["transparent"].concat(Highcharts.getOptions().colors),
 
   title: {
-    text: "Elements covered in full or part, by jurisdiction",
+    text: "Elements Covered in Full or Part, by Jurisdiction",
     y: 50,
     style: {
       fontSize: '28px'
