@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <title>CodePen - A Pen by Tucker</title>
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+
+   <link rel="stylesheet" href="https://unpkg.com/tippy.js@5/themes/light.css" />
+   <link rel="stylesheet" href="https://unpkg.com/tippy.js@5/dist/svg-arrow.css" />
+   <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+   
+   <div class="statement-body">
+      <div class="header">
+         <img src="assets/legend.svg">
+         <img class="legend-topics" src="assets/legend-topics.svg">
+      </div>
+      
+      <div class="admin" data-admin="Bush">
+         <div class="admin__heading">
+            <div class="admin__name">H.W. Bush</div>
+            <div class="count">2</div>
+         </div>
+         <div class="admin__timeline-container">
+            <div class="admin__timeline" data-year="1989">
+               <div class="statements">
+                  <picture class="statement" data-object="0">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Bush-1989-01.svg">
+                     <img src="assets/Bush-1989-01.svg">
+                  </picture>
+               </div>
+            </div>
+            <div class="admin__timeline" data-year="1992">
+               <div class="statements">
+                  <picture class="statement" data-object="1">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Bush-1992-01.svg">
+                     <img src="assets/Bush-1992-01.svg">
+                  </picture>
+               </div>
+            </div>
+         </div>
+      </div>
+
+      <div class="admin" data-admin="Clinton">
+         <div class="admin__heading">
+            <div class="admin__name">Clinton </div>
+            <div class="count">9</div>
+         </div>
+         <div class="admin__timeline-container">
+
+            <div class="admin__timeline" data-year="1993">
+               <div class="statements">
+                  <picture class="statement" data-object="2">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Clinton-1993-01.svg">
+                     <img src="assets/Clinton-1993-01.svg">
+                  </picture>
+                  <picture class="statement" data-object="3">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Clinton-1993-02.svg">
+                     <img src="assets/Clinton-1993-02.svg">
+                  </picture>
+               </div>
+            </div>
+            <div class="admin__timeline" data-year="1994">
+               <div class="statements">
+                  <picture class="statement" data-object="4">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Clinton-1994-01.svg">
+                     <img src="assets/Clinton-1994-01.svg">
+                  </picture>
+                  <picture class="statement" data-object="5">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Clinton-1994-02.svg">
+                     <img src="assets/Clinton-1994-02.svg">
+                  </picture>
+                  <picture class="statement" data-object="6">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Clinton-1994-03.svg">
+                     <img src="assets/Clinton-1994-03.svg">
+                  </picture>
+               </div>
+            </div>
+            <div class="admin__timeline" data-year="1996">
+               <div class="statements">
+                  <picture class="statement" data-object="7">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Clinton-1996-01.svg">
+                     <img src="assets/Clinton-1996-01.svg">
+                  </picture>
+               </div>
+            </div>
+            <div class="admin__timeline" data-year="1999">
+               <div class="statements">
+                  <picture class="statement" data-object="8">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Clinton-1999-01.svg">
+                     <img src="assets/Clinton-1999-01.svg">
+                  </picture>
+               </div>
+            </div>
+            <div class="admin__timeline" data-year="2000">
+               <div class="statements">
+                  <picture class="statement" data-object="9">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Clinton-2000-01.svg">
+                     <img src="assets/Clinton-2000-01.svg">
+                  </picture>
+                  <picture class="statement" data-object="10">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Clinton-2000-02.svg">
+                     <img src="assets/Clinton-2000-02.svg">
+                  </picture>
+               </div>
+
+            </div>
+         </div>
+      </div>
+
+      <div class="admin" data-admin="Bushjr">
+         <div class="admin__heading">
+            <div class="admin__name">W. BUSH </div>
+            <div class="count">15</div>
+         </div>
+         <div class="admin__timeline-container">
+
+            <div class="admin__timeline" data-year="2002">
+               <div class="statements">
+                  <picture class="statement" data-object="11">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Bushjr-2002-01.svg">
+                     <img src="assets/Bushjr-2002-01.svg">
+                  </picture>
+                  <picture class="statement" data-object="12">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Bushjr-2002-02.svg">
+                     <img src="assets/Bushjr-2002-02.svg">
+                  </picture>
+                  <picture class="statement" data-object="13">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Bushjr-2002-03.svg">
+                     <img src="assets/Bushjr-2002-03.svg">
+                  </picture>
+                  <picture class="statement" data-object="14">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Bushjr-2002-04.svg">
+                     <img src="assets/Bushjr-2002-04.svg">
+                  </picture>
+               </div>
+            </div>
+            <div class="admin__timeline" data-year="2003">
+               <div class="statements">
+                  <picture class="statement" data-object="15">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Bushjr-2003-01.svg">
+                     <img src="assets/Bushjr-2003-01.svg">
+                  </picture>
+                  <picture class="statement" data-object="16">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Bushjr-2003-02.svg">
+                     <img src="assets/Bushjr-2003-02.svg">
+                  </picture>
+                  <picture class="statement" data-object="17">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Bushjr-2003-03.svg">
+                     <img src="assets/Bushjr-2003-03.svg">
+                  </picture>
+               </div>
+            </div>
+            <div class="admin__timeline" data-year="2005">
+               <div class="statements">
+                  <picture class="statement" data-object="18">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Bushjr-2005-01.svg">
+                     <img src="assets/Bushjr-2005-01.svg">
+                  </picture>
+                  <picture class="statement" data-object="19">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Bushjr-2005-02.svg">
+                     <img src="assets/Bushjr-2005-02.svg">
+                  </picture>
+                  <picture class="statement" data-object="20">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Bushjr-2005-03.svg">
+                     <img src="assets/Bushjr-2005-03.svg">
+                  </picture>
+               </div>
+            </div>
+            <div class="admin__timeline" data-year="2006">
+               <div class="statements">
+                  <picture class="statement" data-object="21">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Bushjr-2006-01.svg">
+                     <img src="assets/Bushjr-2006-01.svg">
+                  </picture>
+                  <picture class="statement" data-object="22">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Bushjr-2006-02.svg">
+                     <img src="assets/Bushjr-2006-02.svg">
+                  </picture>
+                  <picture class="statement" data-object="23">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Bushjr-2006-03.svg">
+                     <img src="assets/Bushjr-2006-03.svg">
+                  </picture>
+               </div>
+            </div>
+            <div class="admin__timeline" data-year="2008">
+               <div class="statements">
+                  <picture class="statement" data-object="24">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Bushjr-2008-01.svg">
+                     <img src="assets/Bushjr-2008-01.svg">
+                  </picture>
+                  <picture class="statement" data-object="25">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Bushjr-2008-02.svg">
+                     <img src="assets/Bushjr-2008-02.svg">
+                  </picture>
+               </div>
+
+            </div>
+         </div>
+      </div>
+
+      <div class="admin" data-admin="Obama">
+         <div class="admin__heading">
+            <div class="admin__name">Obama</div>
+            <div class="count">29</div>
+         </div>
+         <div class="admin__timeline-container">
+
+            <div class="admin__timeline" data-year="2009">
+               <div class="statements">
+                  <picture class="statement" data-object="26">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Obama-2009-01.svg">
+                     <img src="assets/Obama-2009-01.svg">
+                  </picture>
+                  <picture class="statement" data-object="27">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Obama-2009-02.svg">
+                     <img src="assets/Obama-2009-02.svg">
+                  </picture>
+                  <picture class="statement" data-object="28">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Obama-2009-03.svg">
+                     <img src="assets/Obama-2009-03.svg">
+                  </picture>
+                  <picture class="statement" data-object="29">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Obama-2009-04.svg">
+                     <img src="assets/Obama-2009-04.svg">
+                  </picture>
+                  <picture class="statement" data-object="30">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Obama-2009-05.svg">
+                     <img src="assets/Obama-2009-05.svg">
+                  </picture>
+                  <picture class="statement" data-object="31">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Obama-2009-06.svg">
+                     <img src="assets/Obama-2009-06.svg">
+                  </picture>
+               </div>
+            </div>
+            <div class="admin__timeline" data-year="2010">
+               <div class="statements">
+                  <picture class="statement" data-object="32">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Obama-2010-01.svg">
+                     <img src="assets/Obama-2010-01.svg">
+                  </picture>
+               </div>
+            </div>
+            <div class="admin__timeline" data-year="2011">
+               <div class="statements">
+                  <picture class="statement" data-object="33">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Obama-2011-01.svg">
+                     <img src="assets/Obama-2011-01.svg">
+                  </picture>
+               </div>
+            </div>
+            <div class="admin__timeline" data-year="2012">
+               <div class="statements">
+                  <picture class="statement" data-object="34">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Obama-2012-01.svg">
+                     <img src="assets/Obama-2012-01.svg">
+                  </picture>
+                  <picture class="statement" data-object="35">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Obama-2012-02.svg">
+                     <img src="assets/Obama-2012-02.svg">
+                  </picture>
+               </div>
+            </div>
+            <div class="admin__timeline" data-year="2013">
+               <div class="statements">
+                  <picture class="statement" data-object="36">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Obama-2013-01.svg">
+                     <img src="assets/Obama-2013-01.svg">
+                  </picture>
+                  <picture class="statement" data-object="37">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Obama-2013-02.svg">
+                     <img src="assets/Obama-2013-02.svg">
+                  </picture>
+                  <picture class="statement" data-object="38">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Obama-2013-03.svg">
+                     <img src="assets/Obama-2013-03.svg">
+                  </picture>
+                  <picture class="statement" data-object="39">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Obama-2013-04.svg">
+                     <img src="assets/Obama-2013-04.svg">
+                  </picture>
+                  <picture class="statement" data-object="40">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Obama-2013-05.svg">
+                     <img src="assets/Obama-2013-05.svg">
+                  </picture>
+                  <picture class="statement" data-object="41">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Obama-2013-06.svg">
+                     <img src="assets/Obama-2013-06.svg">
+                  </picture>
+                  <picture class="statement" data-object="42">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Obama-2013-07.svg">
+                     <img src="assets/Obama-2013-07.svg">
+                  </picture>
+               </div>
+            </div>
+            <div class="admin__timeline" data-year="2014">
+               <div class="statements">
+                  <picture class="statement" data-object="43">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Obama-2014-01.svg">
+                     <img src="assets/Obama-2014-01.svg">
+                  </picture>
+                  <picture class="statement" data-object="44">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Obama-2014-02.svg">
+                     <img src="assets/Obama-2014-02.svg">
+                  </picture>
+                  <picture class="statement" data-object="45">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Obama-2014-03.svg">
+                     <img src="assets/Obama-2014-03.svg">
+                  </picture>
+               </div>
+            </div>
+            <div class="admin__timeline" data-year="2015">
+               <div class="statements">
+                  <picture class="statement" data-object="46">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Obama-2015-01.svg">
+                     <img src="assets/Obama-2015-01.svg">
+                  </picture>
+                  <picture class="statement" data-object="47">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Obama-2015-02.svg">
+                     <img src="assets/Obama-2015-02.svg">
+                  </picture>
+                  <picture class="statement" data-object="48">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Obama-2015-03.svg">
+                     <img src="assets/Obama-2015-03.svg">
+                  </picture>
+                  <picture class="statement" data-object="49">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Obama-2015-04.svg">
+                     <img src="assets/Obama-2015-04.svg">
+                  </picture>
+                  <picture class="statement" data-object="50">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Obama-2015-05.svg">
+                     <img src="assets/Obama-2015-05.svg">
+                  </picture>
+               </div>
+            </div>
+            <div class="admin__timeline" data-year="2016">
+               <div class="statements">
+                  <picture class="statement" data-object="51">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Obama-2016-01.svg">
+                     <img src="assets/Obama-2016-01.svg">
+                  </picture>
+                  <picture class="statement" data-object="52">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Obama-2016-02.svg">
+                     <img src="assets/Obama-2016-02.svg">
+                  </picture>
+                  <picture class="statement" data-object="53">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Obama-2016-03.svg">
+                     <img src="assets/Obama-2016-03.svg">
+                  </picture>
+                  <picture class="statement" data-object="54">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Obama-2016-04.svg">
+                     <img src="assets/Obama-2016-04.svg">
+                  </picture>
+               </div>
+
+            </div>
+         </div>
+      </div>
+
+      <div class="admin" data-admin="Trump">
+         <div class="admin__heading">
+            <div class="admin__name">Trump</div>
+            <div class="count">15</div>
+         </div>
+         <div class="admin__timeline-container">
+
+            <div class="admin__timeline" data-year="2017">
+               <div class="statements">
+                  <picture class="statement" data-object="55">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Trump-2017-01.svg">
+                     <img src="assets/Trump-2017-01.svg">
+                  </picture>
+                  <picture class="statement" data-object="56">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Trump-2017-02.svg">
+                     <img src="assets/Trump-2017-02.svg">
+                  </picture>
+               </div>
+            </div>
+            <div class="admin__timeline" data-year="2018">
+               <div class="statements">
+                  <picture class="statement" data-object="57">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Trump-2018-01.svg">
+                     <img src="assets/Trump-2018-01.svg">
+                  </picture>
+                  <picture class="statement" data-object="58">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Trump-2018-02.svg">
+                     <img src="assets/Trump-2018-02.svg">
+                  </picture>
+                  <picture class="statement" data-object="59">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Trump-2018-03.svg">
+                     <img src="assets/Trump-2018-03.svg">
+                  </picture>
+                  <picture class="statement" data-object="60">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Trump-2018-04.svg">
+                     <img src="assets/Trump-2018-04.svg">
+                  </picture>
+                  <picture class="statement" data-object="61">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Trump-2018-05.svg">
+                     <img src="assets/Trump-2018-05.svg">
+                  </picture>
+                  <picture class="statement" data-object="62">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Trump-2018-06.svg">
+                     <img src="assets/Trump-2018-06.svg">
+                  </picture>
+                  <picture class="statement" data-object="63">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Trump-2018-07.svg">
+                     <img src="assets/Trump-2018-07.svg">
+                  </picture>
+               </div>
+            </div>
+            <div class="admin__timeline" data-year="2019">
+               <div class="statements">
+                  <picture class="statement" data-object="64">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Trump-2019-01.svg">
+                     <img src="assets/Trump-2019-01.svg">
+                  </picture>
+                  <picture class="statement" data-object="65">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Trump-2019-02.svg">
+                     <img src="assets/Trump-2019-02.svg">
+                  </picture>
+                  <picture class="statement" data-object="66">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Trump-2019-03.svg">
+                     <img src="assets/Trump-2019-03.svg">
+                  </picture>
+                  <picture class="statement" data-object="67">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Trump-2019-04.svg">
+                     <img src="assets/Trump-2019-04.svg">
+                  </picture>
+               </div>
+            </div>
+            <div class="admin__timeline" data-year="2020">
+               <div class="statements">
+                  <picture class="statement" data-object="68">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Trump-2020-01.svg">
+                     <img src="assets/Trump-2020-01.svg">
+                  </picture>
+                  <picture class="statement" data-object="69">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Trump-2020-02.svg">
+                     <img src="assets/Trump-2020-02.svg">
+                  </picture>
+               </div>
+
+            </div>
+         </div>
+      </div>
+
+      <div class="admin" data-admin="Biden">
+         <div class="admin__heading">
+            <div class="admin__name">Biden</div>
+            <div class="count">9</div>
+         </div>
+         <div class="admin__timeline-container">
+
+            <div class="admin__timeline" data-year="2021">
+               <div class="statements">
+                  <picture class="statement" data-object="70">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Biden-2021-01.svg">
+                     <img src="assets/Biden-2021-01.svg">
+                  </picture>
+                  <picture class="statement" data-object="71">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Biden-2021-02.svg">
+                     <img src="assets/Biden-2021-02.svg">
+                  </picture>
+                  <picture class="statement" data-object="72">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Biden-2021-03.svg">
+                     <img src="assets/Biden-2021-03.svg">
+                  </picture>
+                  <picture class="statement" data-object="73">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Biden-2021-04.svg">
+                     <img src="assets/Biden-2021-04.svg">
+                  </picture>
+                  <picture class="statement" data-object="74">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Biden-2021-05.svg">
+                     <img src="assets/Biden-2021-05.svg">
+                  </picture>
+               </div>
+            </div>
+            <div class="admin__timeline" data-year="2022">
+               <div class="statements">
+                  <picture class="statement" data-object="75">
+                     <source media="(max-width: 600px)" srcset="assets/mobile/Biden-2022-01.svg">
+                     <img src="assets/Biden-2022-01.svg">
+                  </picture>
+               </div>
+
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- partial -->
+   <script src='https://unpkg.com/popper.js@1'></script>
+   <script src='https://unpkg.com/tippy.js@4'></script>
+   <script src="./index.js"></script>
+
+</body>
+
+</html>
