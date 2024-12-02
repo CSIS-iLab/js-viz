@@ -1,0 +1,338 @@
+:root {
+  --border: rgb(234, 234, 234);
+  --bg-primary: white;
+  --text-primary: rgb(35 35 35);
+  --text-secondary: rgb(31, 155, 240);
+}
+
+body {
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  overflow: hidden;
+}
+
+h1,
+h2,
+h4,
+hr,
+p {
+  margin: 0
+}
+
+a {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+.tweet-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.tweet-author-image {
+  width: 48px;
+  height: 48px;
+  border-radius: 9999px;
+}
+
+.tweet-author-info {
+  margin-left: 1rem;
+}
+
+.tweet-author-name {
+  line-height: 1rem;
+  font-weight: 500;
+}
+
+.tweet-author-handler {
+  line-height: 1.8rem;
+  color: var(--text-secondary);
+}
+
+.tweet-content {
+  margin-top: 1rem;
+}
+
+.tweet-content a {
+  color: var(--text-secondary);
+}
+
+.tweet-content .emoji {
+  display: inline-block;
+  height: 1.2em;
+  width: 1.2em;
+  margin: 0 0.05em 0 0.1em;
+  vertical-align: -0.1em;
+}
+
+.tweet-media {
+  margin-top: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+.tweet-summary-card-text {
+  border-top: 1px solid var(--border);
+  padding: 0.75rem;
+  font-size: 0.95rem;
+  color: var(--subtext-primary);
+}
+
+.tweet-summary-card-text span {
+  font-size: 0.9rem;
+}
+
+.tweet-summary-card-text h2 {
+  color: var(--text-primary);
+}
+
+.tweet-summary {
+  display: flex;
+}
+
+.tweet-summary img {
+  width: 130px;
+  height: 130px;
+}
+
+.tweet-summary>div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-left: 1px solid var(--border);
+  border-top: 0px !important;
+}
+
+.tweet-image {
+  width: 100%;
+}
+
+.tweet-quoted .tweet {
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.tweet {
+  width: 500px;
+  padding: 2rem;
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  background: var(--bg-primary);
+}
+
+.tweet-author {
+  display: flex;
+  align-items: center;
+}
+
+.tweet-author-title {
+  display: flex;
+  align-items: center;
+}
+
+.tweet-author-verified {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-left: 0.25rem;
+  color: var(--text-secondary);
+}
+
+.tweet-logo {
+  color: var(--text-secondary);
+}
+
+.toolbox {
+  position: absolute;
+  left: 2rem;
+  top: 2rem;
+  border-radius: 3px;
+  font-family: 'Spectral', serif;
+  max-width: 315px;
+  min-width: 315px;
+  z-index: 2;
+  background-color: #fff;
+  padding: 0.5rem 1.5rem;
+  box-shadow: -4px 4px 8px rgb(0 0 0 / 20%);
+}
+
+.toolbox header h1{
+  line-height: 1.1;
+  color: #353535;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(0,0,0,0.5);
+  padding-bottom: 0.75rem;
+}
+
+.box-header {
+  margin-top: .5rem;
+  margin-bottom: .5rem;
+}
+
+.box-header span {
+  display: block;
+}
+
+.description {
+  color: #353535;
+}
+
+.panel {
+  position: absolute;
+  font-family: "Source Sans Pro", sans-serif;
+  top: 0;
+  right: -33%;
+  padding: 1rem 2.5rem;
+  height: 100vh;
+  width: 33%;
+  background: white;
+  box-shadow: 2px 2px 2px 7px rgba(0, 0, 0, 0.1);
+  transition: 0.5s all ease;
+  overflow-y: auto;
+  border-radius: 3px;
+  z-index: 3;
+}
+
+.panel-content {
+  max-height: 100%;
+}
+
+.panel-content h2 {
+  font-family: 'Spectral', serif;
+  text-transform: uppercase;
+  font-size: 1.15rem;
+  opacity: .8;
+}
+
+.panel-content span {
+  font-family: 'Spectral', serif;
+}
+
+.open {
+  right: 0%;
+}
+
+.close-btn {
+  position: absolute;
+  right: 20px;
+  top: 14px;
+  z-index: 1;
+  font-family: "Source Sans Pro", sans-serif;
+  color: #353535;
+  background-color: transparent;
+  transition: 0.3s all ease;
+  border: none;
+  opacity:0.8;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.close-btn:hover {
+  color: #077283;
+}
+
+
+.sidePanelHeaderStyle {
+  text-transform: uppercase;
+  color: #353535;
+  margin-bottom: 2rem;
+}
+
+.sidePanelHeaderStyle::after {
+  content: "";
+  display: block;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.5);
+  width: 34px;
+  height: 6px;
+}
+
+.side-panel-value {
+  text-transform: uppercase;
+  color:#077283;
+  font-size: 15px;
+  margin-bottom: 1.25rem;
+}
+
+p.side-panel-link {
+  text-transform: none;
+  font-family: 'Spectral', serif;
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 1.4;
+  color:  #353535;
+}
+
+.side-panel-value span {
+  text-transform: none;
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 1.4;
+  color:  #353535;
+}
+
+.side-panel-value span.source{
+  display: block;
+  color:  #353535;
+  font-size: .9rem;
+  font-style: italic;
+  margin-top: .25rem;
+  opacity: 85%;
+}
+
+a {
+  color: #077283;
+}
+
+a:hover {
+  text-decoration: none;
+  color: #032A30;
+}
+
+.leaflet-left {
+  margin-top: 1.5rem;
+  border-radius: 3px;
+}
+
+.tweetContainer {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 1.25rem;
+}
+
+@media screen and (max-width: 768px) {
+  .panel {
+    width: 80%;
+    right: -80%
+  }
+
+  .open {
+    right: 0%
+  }
+}
+
+@media all and (min-width: 768px) and (max-width: 1024px) {
+  .panel {
+    width: 40%;
+    right: -40%
+  }
+
+  .open {
+    right: 0%
+  }
+}
+
+/* Override leaflet default styles */
+.leaflet-top {
+  position: relative !important
+}
+
+.leaflet-left .leaflet-control {
+  margin-left: 0;
+}
+
+.leaflet-touch .leaflet-control-layers, .leaflet-touch .leaflet-bar {
+  position: fixed;
+  bottom: 20px;
+  left: 2rem;
+}
