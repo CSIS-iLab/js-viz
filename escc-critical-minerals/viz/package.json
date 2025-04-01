@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "d3-fetch": "^1.1.2",
-    "d3-scale": "^3.2.3",
+    "d3-scale": "^4.0.2",
     "install": "^0.13.0",
     "npm": "^7.23.0",
     "sirv-cli": "^1.0.0",
