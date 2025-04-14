@@ -1,0 +1,254 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Open+Sans:wght@400;700&display=swap");
+
+.tooltip {
+  display: none;
+}
+
+.statement-body {
+  width: 100%;
+  background: #ebebeb;
+  padding-bottom: 2rem;
+}
+
+.statement-container {
+  transition: translatey 200ms ease-in-out;
+}
+
+.statements img {
+  width: 50px;
+  height: auto;
+}
+
+
+
+.statement:hover {
+  cursor: -moz-zoom-in;
+  cursor: -webkit-zoom-in;
+  cursor: zoom-in;
+}
+
+
+
+body {
+  width: 100vw;
+  overflow-x: hidden;
+}
+
+.admin__heading {
+  font-family: "Open Sans", sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 19px;
+  letter-spacing: 0.95px;
+  text-transform: uppercase;
+  font-feature-settings: "tnum" on, "lnum" on;
+  color: #1d1a1b;
+  position: relative;
+}
+
+.admin__name {
+  position: relative;
+  z-index: 5;
+  border-top: 1px solid black;
+  padding-top: 12px;
+}
+
+@media only screen and (min-width: 600px) {
+  .admin__heading {
+    margin-right: 24px;
+  }
+}
+
+body text {
+  font-family: "Roboto", sans-serif;
+}
+
+.tippy-tooltip .tippy-arrow {
+  border-width: 12px 12px 0;
+  border-top-color: #fff;
+}
+
+/* Right placement tooltip arrow (arrow will be on left side of tooltip) */
+.tippy-popper[x-placement^="right"] .tippy-tooltip .tippy-arrow {
+  border-right: 7px solid #fff;
+  /* your color here */
+}
+
+/* Left placement tooltip arrow (arrow will be on right side of tooltip) */
+.tippy-popper[x-placement^="left"] .tippy-tooltip .tippy-arrow {
+  border-left: 7px solid #fff;
+  /* your color here */
+}
+
+/* Top placement tooltip arrow (arrow will be on bottom side of tooltip) */
+.tippy-popper[x-placement^="top"] .tippy-tooltip .tippy-arrow {
+  border-top: 7px solid #fff;
+  /* your color here */
+}
+
+/* Bottom placement tooltip arrow (arrow will be on top side of tooltip) */
+.tippy-popper[x-placement^="bottom"] .tippy-tooltip .tippy-arrow {
+  border-bottom: 7px solid #fff;
+  /* your color here */
+}
+
+.tippy-popper .tippy-tooltip {
+  text-align: left;
+  padding: 20px 20px 24px;
+}
+
+.tippy-popper p {
+  margin-top: 0;
+}
+
+.statement-text path,
+.statement-text polygon {
+  fill: black;
+}
+
+.admin__timeline,
+.statements {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+}
+
+.admin__timeline {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  margin: 16px 0 0;
+  align-items: center;
+}
+
+.admin__timeline:not(:last-child) {
+  margin-right: 32px;
+}
+
+.admin__timeline-container {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: flex-start;
+  z-index: 2;
+  float: right;
+}
+
+.admin__timeline:before {
+  display: block;
+  content: attr(data-year);
+  font-family: "Open Sans", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 100%;
+  justify-self: flex-start;
+  width: calc(100% - 12px);
+  color: #464646;
+  border-bottom: 1px solid rgba(161, 161, 161, 0.7);
+  margin-top: 4px;
+  padding: 8px 6px 4px;
+  margin-bottom: 8px;
+}
+
+.admin {
+  padding: 0 24px;
+  display: flex;
+  background: #ebebeb;
+  flex-direction: column;
+  margin-top: 32px;
+}
+
+.statement-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.statements img {
+  margin: 0 2px;
+}
+
+.count {
+  font-size: 80px;
+  font-family: "Open Sans", sans-serif;
+  font-weight: bold;
+  color: white;
+  line-height: 0.5;
+  text-align: right;
+  top: 0px;
+  position: absolute;
+  z-index: 2;
+  width: 100%;
+}
+.header {
+  margin: 0 24px;
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  position: relative;
+}
+
+.header img:first-child {
+  margin-right: 32px;
+}
+
+.header img {
+  margin: 24px 0;
+  max-width: 100%;
+}
+
+.legend-topics {
+  position: absolute;
+    top: 0;
+    right: 0;
+}
+
+@media only screen and (min-width: 600px) {
+  .admin {
+    flex-direction: row;
+  }
+
+  .admin__heading {
+    display: block;
+    width: 120px;
+    margin-top: 40px;
+    flex: 0 0 auto;
+    position: relative;
+  }
+
+  .admin__timeline:before {
+    order: 1;
+    margin-top: 4px;
+    border-bottom: 0px solid transparent;
+    border-top: 1px solid rgba(161, 161, 161, 0.7);
+    padding: 4px 6px 8px;
+  }
+
+  .statements {
+    flex-wrap: nowrap;
+  }
+
+  .admin__timeline-container {
+    align-items: flex-end;
+  }
+
+  .header {
+    flex-direction: row;
+  }
+
+  .count {
+    top: 20px;
+  }
+
+  .admin__name {
+    border-top: 0px solid black;
+  }
+}
+
+@media only screen and (max-width: 1050px) {
+  .legend-topics {
+    position: relative;
+  }
+}
