@@ -1,0 +1,237 @@
+html {
+  font-family: 'Lato', 'Lucida Grande', 'Lucida Sans Unicode', Tahoma, Sans-Serif;
+  line-height: 1.5;
+  font-size: 15px;
+  font-weight: 400;
+}
+
+body {
+  background: #fbfbfb;
+  color: #0a0a0a;
+  font-family: "PT Sans", sans-serif;
+}
+
+button {
+  /* Position */
+  margin: 0 1rem 1rem 0;
+  /* Size */
+  font-weight: 700;
+  padding: 0.875em 2em;
+  /* Style */
+  background: transparent;
+  border: 2px solid;
+  border-radius: 3px;
+  color: #c1590c;
+  cursor: pointer;
+  /* Animation */
+  transition: 300ms;
+}
+
+button:hover {
+  /* Style */
+  background: #c1590c;
+  border-color: #c1590c;
+  color: hsl(0, 0%, 100%);
+  /* Animation */
+  transform: translateY(-2px) rotate(0.02deg);
+  box-shadow: 0 2px 2px hsla(0, 0%, 0%, 0.2);
+}
+
+button[disabled] {
+  opacity: 0.5;
+}
+
+button:focus {
+  transform: translateY(0);
+}
+
+button.icon-button {
+  border-color: transparent !important;
+  font-size: 1.3rem;
+  padding: 0 16px;
+  line-height: 36.33px;
+}
+
+a {
+  border-bottom: 1px solid;
+  color: #254f9d;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #05446b;
+}
+
+.card {
+  /* Position */
+  margin: 0 auto;
+  z-index: 1;
+  /* Size */
+  overflow: hidden;
+  width: 50%;
+  min-width: 300px;
+  /* Style */
+  background: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 2px hsla(0, 0%, 0%, 0.2);
+  /* Animation */
+  transition: position 300ms ease-out;
+}
+
+.card-header {
+  /* Position */
+  position: relative;
+  margin: 0;
+  /* Size */
+  line-height: 43.33px;
+  padding: 1rem;
+  padding-right: 76px;
+  /* Style */
+  background: #254f9d;
+  color: hsl(0, 0%, 100%);
+}
+
+.card-header button {
+  /* Position */
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  margin: 0;
+  /* Style */
+  color: white;
+  border: 2px solid white;
+  /* Animation */
+  transition: 0;
+}
+
+.card-header button:hover {
+  /* Style */
+  background: white;
+  color: #254f9d;
+  /* Animation */
+  transform: translateY(0);
+}
+
+.card-content {
+  /* Size */
+  padding: 1rem;
+}
+
+.card-content > p:nth-of-type(1) {
+  margin-top: 0;
+}
+
+@media only screen and (max-width: 700px) {
+  .card-content > button {
+    width: 100%;
+  }
+}
+
+.card-2 {
+  width: 50%;
+  margin: 0 auto;
+}
+
+.card-2 .card-header {
+  background: transparent;
+  color: #254f9d;
+  padding: 0;
+}
+
+.card-2 .card-header button {
+  color: #254f9d;
+  border-color: #254f9d;
+}
+
+.card-2 .card-header button:hover {
+  color: white;
+  background: #254f9d;
+}
+
+.card-2 .card-content {
+  padding: 0;
+}
+
+.card-2 .card-content button {
+  background: #c1590c;
+  border-color: #c1590c;
+  color: white;
+}
+
+#history {
+  /* Position */
+  margin: 0 auto;
+  margin-bottom: 16px;
+  /*position: absolute;*/
+  top: 0;
+  right: 5%;
+  z-index: 0;
+  /* Size */
+  padding: 0;
+  width: 50%;
+  min-width: 300px;
+  /* Style */
+  list-style-type: none;
+}
+
+#history li {
+  /* Style */
+  border-bottom: #ddd 1px solid;
+  /* Size */
+  overflow: hidden;
+  /* Animation */
+  animation-name: expand;
+  animation-duration: 300ms;
+  animation-timing-function: ease-in;
+}
+
+#history p:nth-of-type(1) {
+  /* Position */
+  margin-top: 16px;
+  /* Style */
+  color: #c1590c;
+  font-weight: bold;
+}
+
+#history p:nth-of-type(2) {
+  /* Size */
+  line-height: 43.33px;
+}
+
+#history button {
+  /* Position */
+  float: right;
+  margin-bottom: 16px;
+  /* Style */
+  color: #c1590c;
+  background: transparent;
+  box-shadow: none;
+}
+
+.squish {
+  /* Animation */
+  animation-name: squish !important;
+  animation-duration: 300ms !important;
+  animation-timing-function: ease-out !important;
+  animation-fill-mode: both !important;
+}
+
+@keyframes squish {
+  from {
+    max-height: 1000px;
+  }
+  to { 
+    max-height: 0;
+    opacity: 0;
+  }
+}
+
+@keyframes expand {
+  to {
+    max-height: 1000px;
+  }
+  from { 
+    max-height: 0;
+    opacity: 0;
+  }
+}
