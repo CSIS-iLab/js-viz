@@ -202,6 +202,60 @@ body {
   }
 }
 
+.profile {
+  display: grid;
+  gap: 14px;
+}
+.profile-head {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.profile-flag {
+  width: 28px;
+  height: 20px;
+  object-fit: cover;
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px var(--border) inset;
+}
+.profile-title {
+  margin: 0;
+  font-size: 1.25rem;
+  line-height: 1.2;
+}
+.profile-terms {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.5rem;
+}
+.chip {
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  background: var(--surface-2);
+}
+.profile-bullets {
+  padding-left: 1.1rem;
+  margin: 0;
+  display: grid;
+  gap: 0.4rem;
+}
+.profile-chart {
+  margin-top: 0.25rem;
+}
+.profile-similar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.profile-similar .muted {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
 .squish {
   /* Animation */
   animation-name: squish !important;

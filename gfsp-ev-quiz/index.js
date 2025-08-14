@@ -1,12 +1,18 @@
 // Modified from https://codepen.io/jnsmith/pen/vYBzEOP
 
 // === CONFIG: your published CSV URLs ===
-// const NODES_CSV_URL = "https://docs.google.com/spreadsheets/d/1Kl_MfQDnUxDnkfEQXFRxmpmPod9wiPV4NQlqR6eEhIM/gviz/tq?tqx=out:csv&sheet=Nodes";
-// const OPTIONS_CSV_URL = "https://docs.google.com/spreadsheets/d/1Kl_MfQDnUxDnkfEQXFRxmpmPod9wiPV4NQlqR6eEhIM/gviz/tq?tqx=out:csv&sheet=Options";
 const NODES_CSV_URL =
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vRgOfHh9YCuNrgBcjl2rx0QzROSTi7qnWBFmmY3UBeWVmqy_AFvCLafTHw3pDvtexoEyGwqa6DFkSOB/pub?gid=0&single=true&output=csv";
 const OPTIONS_CSV_URL =
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vRgOfHh9YCuNrgBcjl2rx0QzROSTi7qnWBFmmY3UBeWVmqy_AFvCLafTHw3pDvtexoEyGwqa6DFkSOB/pub?gid=474949223&single=true&output=csv";
+const PROFILES_CSV_URL =
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vRgOfHh9YCuNrgBcjl2rx0QzROSTi7qnWBFmmY3UBeWVmqy_AFvCLafTHw3pDvtexoEyGwqa6DFkSOB/pub?gid=1726675466&single=true&output=csv";
+const TERMS_CSV_URL =
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vRgOfHh9YCuNrgBcjl2rx0QzROSTi7qnWBFmmY3UBeWVmqy_AFvCLafTHw3pDvtexoEyGwqa6DFkSOB/pub?gid=1457210827&single=true&output=csv";
+const BULLETS_CSV_URL =
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vRgOfHh9YCuNrgBcjl2rx0QzROSTi7qnWBFmmY3UBeWVmqy_AFvCLafTHw3pDvtexoEyGwqa6DFkSOB/pub?gid=1276069821&single=true&output=csv";
+const SIMILAR_CSV_URL =
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vRgOfHh9YCuNrgBcjl2rx0QzROSTi7qnWBFmmY3UBeWVmqy_AFvCLafTHw3pDvtexoEyGwqa6DFkSOB/pub?gid=23026962&single=true&output=csv";
 
 // Fetch + parse a CSV to array of objects
 function fetchCsv(url) {
@@ -26,9 +32,20 @@ function fetchCsv(url) {
 
 // Build the `data` array in the exact shape your DecisionTree expects
 async function loadDecisionTreeData() {
-  const [nodesRows, optionsRows] = await Promise.all([
+  const [
+    nodesRows,
+    optionsRows,
+    profilesRows,
+    termsRows,
+    bulletsRows,
+    similarRows,
+  ] = await Promise.all([
     fetchCsv(NODES_CSV_URL),
     fetchCsv(OPTIONS_CSV_URL),
+    fetchCsv(PROFILES_CSV_URL),
+    fetchCsv(TERMS_CSV_URL),
+    fetchCsv(BULLETS_CSV_URL),
+    fetchCsv(SIMILAR_CSV_URL),
   ]);
 
   // Normalize parentId and coerce empty -> null
@@ -38,7 +55,7 @@ async function loadDecisionTreeData() {
     return trimmed === "" || trimmed.toLowerCase() === "null" ? null : trimmed;
   };
 
-  // Build a map of nodeId -> node skeleton
+  // Build nodes
   const nodesMap = new Map();
   nodesRows.forEach((row) => {
     const id = String(row.id).trim();
@@ -48,8 +65,9 @@ async function loadDecisionTreeData() {
     nodesMap.set(id, {
       id, // keep as string for consistency
       parentId, // null or string
-      data: { content }, // as you had
+      data: { content },
       children: [], // will fill from options
+      profileId: row.profileId ? String(row.profileId).trim() : null,
     });
   });
 
@@ -75,8 +93,67 @@ async function loadDecisionTreeData() {
     }
   }
 
-  // Return as an array, but ensure the root is first (optional)
-  // Find the root by parentId === null
+  // ----- Build Profiles (normalized) -----
+  const profiles = new Map();
+  const profileNameById = new Map(); // for "Similar" button labels
+
+  profilesRows.forEach((row) => {
+    const pid = String(row.profileId).trim();
+    const iso2 = (row.iso2 || "").trim().toLowerCase();
+    const flagUrl =
+      (row.flagUrl || "").trim() ||
+      (iso2 ? `https://flagcdn.com/48/${iso2}.png` : "");
+    const flourishSrc = (row.flourishSrc || "").trim();
+
+    const profile = {
+      profileId: pid,
+      name: row.name ?? pid,
+      iso2,
+      flagUrl,
+      terms: [],
+      bullets: [],
+      flourishSrc,
+      similar: [],
+    };
+
+    profiles.set(pid, profile);
+    profileNameById.set(pid, profile.name);
+  });
+
+  termsRows.forEach((row) => {
+    const pid = String(row.profileId).trim();
+    const p = profiles.get(pid);
+    if (p && row.term) p.terms.push(String(row.term).trim());
+  });
+
+  bulletsRows.forEach((row) => {
+    const pid = String(row.profileId).trim();
+    const p = profiles.get(pid);
+    if (p && row.bullet) p.bullets.push(String(row.bullet).trim());
+  });
+
+  similarRows.forEach((row) => {
+    const pid = String(row.profileId).trim();
+    const sid = String(row.similarId).trim();
+    const p = profiles.get(pid);
+    if (p && sid) p.similar.push(sid);
+  });
+
+  // ----- Link profiles to leaf nodes -----
+  // Also build profileId -> nodeId map for similar links.
+  const profileIdToNodeId = new Map();
+  for (const node of nodesMap.values()) {
+    const isLeaf = !node.children || node.children.length === 0;
+    if (isLeaf && node.profileId) {
+      const prof = profiles.get(node.profileId);
+      if (prof) {
+        node.profile = prof;
+        profileIdToNodeId.set(node.profileId, node.id);
+      }
+    }
+  }
+
+  // Package everything (nodes array first element is root)
   const nodesArray = Array.from(nodesMap.values());
   nodesArray.sort((a, b) => {
     const aIsRoot = a.parentId === null ? -1 : 0;
@@ -84,14 +161,24 @@ async function loadDecisionTreeData() {
     return aIsRoot - bIsRoot;
   });
 
-  return nodesArray;
+  return { nodesArray, profileIdToNodeId, profileNameById };
 }
 
 // load data, then init tree
 (async function init() {
-  const data = await loadDecisionTreeData();
+  const { nodesArray, profileIdToNodeId, profileNameById } =
+    await loadDecisionTreeData();
 
-  // 1) Make ids comparable regardless of type
+  console.table(
+    nodesArray
+      .filter((n) => (!n.children || n.children.length === 0) && n.profileId)
+      .map((n) => ({
+        nodeId: n.id,
+        profileId: n.profileId,
+        hasProfile: !!n.profile,
+      }))
+  );
+
   const DecisionTree = function (nodes) {
     var _history = [];
     var _nodes = nodes;
@@ -134,8 +221,11 @@ async function loadDecisionTreeData() {
     };
   };
 
-  // 2) compare root by string "0" OR by parentId === null
-  var DecisionTreeUI = function (decisionTree) {
+  var DecisionTreeUI = function (
+    decisionTree,
+    profileIdToNodeId,
+    profileNameById
+  ) {
     var tree = decisionTree;
     var state = { history: { index: 0 } };
 
@@ -318,12 +408,114 @@ async function loadDecisionTreeData() {
       addHistory(title);
     };
 
+    function escapeHtml(s) {
+      return String(s).replace(
+        /[&<>"']/g,
+        (c) =>
+          ({
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#39;",
+          }[c])
+      );
+    }
+
+    // Build the profile HTML for leaf nodes
+    function renderProfile(node, profileNameById, profileIdToNodeId) {
+      const p = node.profile;
+      if (!p) return node.data.content || "";
+
+      const termsHtml = p.terms.length
+        ? `<div class="profile-terms">${p.terms
+            .map((t) => `<span class="chip">${escapeHtml(t)}</span>`)
+            .join("")}</div>`
+        : "";
+
+      const bulletsHtml = p.bullets.length
+        ? `<ul class="profile-bullets">${p.bullets
+            .map((b) => `<li>${escapeHtml(b)}</li>`)
+            .join("")}</ul>`
+        : "";
+
+      let chartHtml = "";
+      if (p.flourishSrc) {
+        const base = p.flourishSrc.split("?")[0]; // for thumbnail
+        chartHtml = `
+    <div class="profile-chart">
+      <div class="flourish-embed flourish-chart" data-src="${escapeHtml(
+        p.flourishSrc
+      )}"></div>
+      <script src="https://public.flourish.studio/resources/embed.js"></script>
+      <noscript>
+        <img src="https://public.flourish.studio/${escapeHtml(
+          base
+        )}/thumbnail" width="100%" alt="chart visualization" />
+      </noscript>
+    </div>
+  `;
+      }
+
+      const similarHtml = p.similar.length
+        ? `<div class="profile-similar"><span class="muted">Similar:</span> ${p.similar
+            .map((sid) => {
+              const nodeId = profileIdToNodeId.get(sid);
+              const label = profileNameById.get(sid) || sid;
+              return nodeId
+                ? `<button class="btn__quiz btn__quiz--nav" data-go="${nodeId}">${escapeHtml(
+                    label
+                  )}</button>`
+                : "";
+            })
+            .join("")}</div>`
+        : "";
+
+      return `
+    <section class="profile">
+      <header class="profile-head">
+        ${
+          p.flagUrl
+            ? `<img class="profile-flag" src="${p.flagUrl}" alt="" />`
+            : ""
+        }
+        <h2 class="profile-title">${escapeHtml(p.name)}</h2>
+      </header>
+      ${termsHtml}
+      ${bulletsHtml}
+      ${chartHtml}
+      ${similarHtml}
+    </section>
+  `;
+    }
+
+    // Hook similar-country buttons (delegated)
+    cardContent.addEventListener("click", (e) => {
+      const btn = e.target.closest("button[data-go]");
+      if (!btn) return;
+      const nodeId = btn.getAttribute("data-go");
+      const next = tree.getNode(nodeId);
+      if (!next) return;
+      // Push current node to history so Back works
+      tree.updateHistory(card.dataset.id);
+      displayNode(next);
+    });
+
     var displayNode = function (node) {
-      var data = node.data;
       card.dataset.id = node.id;
 
-      cardContent.innerHTML = data.content;
-      createOptionButtons(node.children);
+      const isLeaf = !node.children || node.children.length === 0;
+
+      if (isLeaf && node.profile) {
+        cardContent.innerHTML = renderProfile(
+          node,
+          profileNameById,
+          profileIdToNodeId
+        );
+      } else {
+        cardContent.innerHTML = node.data.content;
+        createOptionButtons(node.children);
+      }
       updateNavUI(node);
     };
 
@@ -339,6 +531,6 @@ async function loadDecisionTreeData() {
   };
 
   // Instantiate with sheet-driven data
-  var tree = new DecisionTree(data);
-  var ui = new DecisionTreeUI(tree);
+  const tree = new DecisionTree(nodesArray);
+  const ui = new DecisionTreeUI(tree, profileIdToNodeId, profileNameById);
 })();
