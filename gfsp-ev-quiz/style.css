@@ -11,7 +11,7 @@ body {
   font-family: "PT Sans", sans-serif;
 }
 
-button {
+.btn__quiz {
   /* Position */
   margin: 0 1rem 1rem 0;
   /* Size */
@@ -27,7 +27,7 @@ button {
   transition: 300ms;
 }
 
-button:hover {
+.btn__quiz:hover {
   /* Style */
   background: #c1590c;
   border-color: #c1590c;
@@ -37,15 +37,15 @@ button:hover {
   box-shadow: 0 2px 2px hsla(0, 0%, 0%, 0.2);
 }
 
-button[disabled] {
+.btn__quiz[disabled] {
   opacity: 0.5;
 }
 
-button:focus {
+.btn__quiz:focus {
   transform: translateY(0);
 }
 
-button.icon-button {
+.btn__quiz.icon-button {
   border-color: transparent !important;
   font-size: 1.3rem;
   padding: 0 16px;

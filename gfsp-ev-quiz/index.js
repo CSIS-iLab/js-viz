@@ -97,6 +97,10 @@ async function loadDecisionTreeData() {
     var _history = [];
     var _nodes = nodes;
 
+    var _resetHistory = function () {
+      _history.length = 0;
+    };
+
     var _getRootNode = function () {
       return _nodes[0];
     };
@@ -127,6 +131,7 @@ async function loadDecisionTreeData() {
       getPreviousNode: _getPreviousNode,
       getRootNode: _getRootNode,
       updateHistory: _updateHistory,
+      resetHistory: _resetHistory,
     };
   };
 
@@ -138,9 +143,53 @@ async function loadDecisionTreeData() {
     var card = document.getElementById("question");
     var cardHeader = card.querySelector(".card-header");
     var cardContent = card.querySelector(".card-content");
+    var cardNav = card.querySelector(".card-nav");
+    var backButton = createBackButton();
+    var restartBtn = createRestartButton();
     var selectionHistory = document.getElementById("history");
     var SHOW_HISTORY = false; // set to true if you ever want the list visible again
     var animationDelay = 300;
+
+    function getNodeMeta(node) {
+      return {
+        isRoot: node?.parentId === null,
+        isLeaf: !node?.children || node.children.length === 0,
+      };
+    }
+
+    function updateNavUI(node) {
+      const { isRoot, isLeaf } = getNodeMeta(node);
+
+      // Ensure buttons live in the nav container exactly once
+      if (!cardNav.contains(backButton)) cardNav.append(backButton);
+      if (!cardNav.contains(restartBtn)) cardNav.append(restartBtn);
+
+      // Restart button
+      if (restartBtn) {
+        restartBtn.textContent = isLeaf ? "Retake" : "Restart";
+        restartBtn.hidden = !!isRoot; // hide on the first question
+      }
+
+      // Back button
+      if (backButton) {
+        if (!isRoot && !isLeaf) {
+          backButton.hidden = false;
+          backButton.setAttribute("disabled", "");
+          setTimeout(
+            () => backButton.removeAttribute("disabled"),
+            animationDelay
+          );
+        } else {
+          backButton.hidden = true; // hide on root and on leaf
+        }
+      }
+    }
+
+    function clearHistoryUI() {
+      // If you removed the <ul>, this safely no-ops
+      if (selectionHistory) selectionHistory.innerHTML = "";
+      state.history.index = 0;
+    }
 
     var createOptionButtons = function (children) {
       children.forEach(function (child) {
@@ -151,6 +200,7 @@ async function loadDecisionTreeData() {
 
     var createOptionButton = function (child) {
       var button = document.createElement("button");
+      button.classList.add("btn__quiz", "btn__quiz--opt");
       button.innerText = child.text;
       button.addEventListener("click", function (event) {
         event.preventDefault();
@@ -166,20 +216,17 @@ async function loadDecisionTreeData() {
       return button;
     };
 
-    var createBackButton = function () {
+    function createBackButton() {
       var button = document.createElement("button");
       button.setAttribute("aria-label", "Back");
       button.innerHTML =
         '<span class="fa fa-chevron-left" aria-hidden="true"></span>';
-      button.classList.add("icon-button");
+      button.classList.add("btn__quiz", "btn__quiz--nav", "icon-button");
       button.setAttribute("disabled", "");
       button.addEventListener("click", function (event) {
         event.preventDefault();
         var node = tree.getPreviousNode();
-        // var itemIndex = selectionHistory.firstChild?.dataset?.id;
         if (node) displayNode(node);
-        // if (node && itemIndex !== undefined)
-        //   removeHistoryItemByIndex(itemIndex);
         if (SHOW_HISTORY && selectionHistory) {
           var itemIndex = selectionHistory.firstChild?.dataset?.id;
           if (node && itemIndex !== undefined) {
@@ -188,7 +235,28 @@ async function loadDecisionTreeData() {
         }
       });
       return button;
-    };
+    }
+
+    function restartQuiz() {
+      tree.resetHistory(); // clear logical history (for Back)
+      clearHistoryUI(); // clear visible history if present
+      const root = tree.getRootNode();
+      displayNode(root); // show first question again
+      updateNavUI(root);
+    }
+
+    function createRestartButton() {
+      var button = document.createElement("button");
+      button.type = "button";
+      button.classList.add("btn__quiz", "btn__quiz--nav");
+      button.hidden = true; // start hidden; no flash
+      button.textContent = "Restart";
+      button.addEventListener("click", function (e) {
+        e.preventDefault();
+        restartQuiz();
+      });
+      return button;
+    }
 
     var addHistory = function (optionText) {
       if (!SHOW_HISTORY || !selectionHistory) return;
@@ -216,35 +284,35 @@ async function loadDecisionTreeData() {
       --state.history.index;
     };
 
-var createChangeButton = function () {
-  if (!SHOW_HISTORY || !selectionHistory) {
-    // When history UI is hidden, we still need to bump the index
-    state.history.index++;
-    // Return a dummy element so callers can append without errors
-    var dummy = document.createElement("span");
-    dummy.style.display = "none";
-    return dummy;
-  }
-  var button = document.createElement("button");
-  button.dataset.id = state.history.index;
-  state.history.index++;
-  button.setAttribute("aria-label", "Change");
-  button.innerHTML = '<span class="fas fa-edit" aria-hidden="true"></span>';
-  button.classList.add("icon-button");
-  button.addEventListener("click", function (event) {
-    event.preventDefault();
-    var buttonIndex = parseInt(this.dataset.id, 10);
-    var numberOfButtonsToRemove = -1 * (buttonIndex - state.history.index);
-    var node = null;
-    while (numberOfButtonsToRemove > 0) {
-      node = tree.getPreviousNode();
-      removeHistoryItemByIndex(state.history.index - 1);
-      numberOfButtonsToRemove--;
-    }
-    if (node) displayNode(node);
-  });
-  return button;
-};
+    var createChangeButton = function () {
+      if (!SHOW_HISTORY || !selectionHistory) {
+        // When history UI is hidden, we still need to bump the index
+        state.history.index++;
+        // Return a dummy element so callers can append without errors
+        var dummy = document.createElement("span");
+        dummy.style.display = "none";
+        return dummy;
+      }
+      var button = document.createElement("button");
+      button.dataset.id = state.history.index;
+      state.history.index++;
+      button.setAttribute("aria-label", "Change");
+      button.innerHTML = '<span class="fas fa-edit" aria-hidden="true"></span>';
+      button.classList.add("icon-button");
+      button.addEventListener("click", function (event) {
+        event.preventDefault();
+        var buttonIndex = parseInt(this.dataset.id, 10);
+        var numberOfButtonsToRemove = -1 * (buttonIndex - state.history.index);
+        var node = null;
+        while (numberOfButtonsToRemove > 0) {
+          node = tree.getPreviousNode();
+          removeHistoryItemByIndex(state.history.index - 1);
+          numberOfButtonsToRemove--;
+        }
+        if (node) displayNode(node);
+      });
+      return button;
+    };
 
     var createHistoryItem = function (id, title) {
       tree.updateHistory(id);
@@ -254,21 +322,13 @@ var createChangeButton = function () {
     var displayNode = function (node) {
       var data = node.data;
       var title = data.title;
-      var backButton = createBackButton();
       card.dataset.id = node.id;
       cardHeader.innerText = title;
       state.card.title = title;
 
-      // Show back button if not the root (root has parentId === null)
-      if (node.parentId !== null) {
-        cardHeader.append(backButton);
-        setTimeout(function () {
-          backButton.removeAttribute("disabled");
-        }, animationDelay);
-      }
-
       cardContent.innerHTML = data.content;
       createOptionButtons(node.children);
+      updateNavUI(node);
     };
 
     var fadeOutElement = function (element) {
