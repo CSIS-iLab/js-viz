@@ -43,13 +43,12 @@ async function loadDecisionTreeData() {
   nodesRows.forEach((row) => {
     const id = String(row.id).trim();
     const parentId = normalizeParent(row.parentId);
-    const title = row.title ?? "";
     const content = row.content ?? "";
 
     nodesMap.set(id, {
       id, // keep as string for consistency
       parentId, // null or string
-      data: { title, content }, // as you had
+      data: { content }, // as you had
       children: [], // will fill from options
     });
   });
@@ -138,10 +137,10 @@ async function loadDecisionTreeData() {
   // 2) compare root by string "0" OR by parentId === null
   var DecisionTreeUI = function (decisionTree) {
     var tree = decisionTree;
-    var state = { card: { title: null }, history: { index: 0 } };
+    var state = { history: { index: 0 } };
 
     var card = document.getElementById("question");
-    var cardHeader = card.querySelector(".card-header");
+    // var cardHeader = card.querySelector(".card-header");
     var cardContent = card.querySelector(".card-content");
     var cardNav = card.querySelector(".card-nav");
     var backButton = createBackButton();
@@ -321,10 +320,7 @@ async function loadDecisionTreeData() {
 
     var displayNode = function (node) {
       var data = node.data;
-      var title = data.title;
       card.dataset.id = node.id;
-      cardHeader.innerText = title;
-      state.card.title = title;
 
       cardContent.innerHTML = data.content;
       createOptionButtons(node.children);
