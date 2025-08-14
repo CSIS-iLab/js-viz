@@ -174,11 +174,11 @@ async function loadDecisionTreeData() {
       if (backButton) {
         if (!isRoot && !isLeaf) {
           backButton.hidden = false;
-          backButton.setAttribute("disabled", "");
-          setTimeout(
-            () => backButton.removeAttribute("disabled"),
-            animationDelay
-          );
+          // backButton.setAttribute("disabled", "");
+          // setTimeout(
+          //   () => backButton.removeAttribute("disabled"),
+          //   animationDelay
+          // );
         } else {
           backButton.hidden = true; // hide on root and on leaf
         }
@@ -206,7 +206,6 @@ async function loadDecisionTreeData() {
         event.preventDefault();
         var id = child.id;
         var node = tree.getNode(id);
-        // createHistoryItem(node.parentId, this.innerText);
         tree.updateHistory(node.parentId);
         if (SHOW_HISTORY && selectionHistory) {
           addHistory(this.innerText);
@@ -220,9 +219,10 @@ async function loadDecisionTreeData() {
       var button = document.createElement("button");
       button.setAttribute("aria-label", "Back");
       button.innerHTML =
-        '<span class="fa fa-chevron-left" aria-hidden="true"></span>';
+        '<span class="fa fa-chevron-left" aria-hidden="true"></span> Back';
       button.classList.add("btn__quiz", "btn__quiz--nav", "icon-button");
-      button.setAttribute("disabled", "");
+      button.hidden = true;
+      // button.setAttribute("disabled", "");
       button.addEventListener("click", function (event) {
         event.preventDefault();
         var node = tree.getPreviousNode();
@@ -249,7 +249,7 @@ async function loadDecisionTreeData() {
       var button = document.createElement("button");
       button.type = "button";
       button.classList.add("btn__quiz", "btn__quiz--nav");
-      button.hidden = true; // start hidden; no flash
+      button.hidden = true;
       button.textContent = "Restart";
       button.addEventListener("click", function (e) {
         e.preventDefault();
