@@ -1,3 +1,5 @@
+// Modified from https://codepen.io/jnsmith/pen/vYBzEOP
+
 // === CONFIG: your published CSV URLs ===
 // const NODES_CSV_URL = "https://docs.google.com/spreadsheets/d/1Kl_MfQDnUxDnkfEQXFRxmpmPod9wiPV4NQlqR6eEhIM/gviz/tq?tqx=out:csv&sheet=Nodes";
 // const OPTIONS_CSV_URL = "https://docs.google.com/spreadsheets/d/1Kl_MfQDnUxDnkfEQXFRxmpmPod9wiPV4NQlqR6eEhIM/gviz/tq?tqx=out:csv&sheet=Options";
@@ -137,6 +139,7 @@ async function loadDecisionTreeData() {
     var cardHeader = card.querySelector(".card-header");
     var cardContent = card.querySelector(".card-content");
     var selectionHistory = document.getElementById("history");
+    var SHOW_HISTORY = false; // set to true if you ever want the list visible again
     var animationDelay = 300;
 
     var createOptionButtons = function (children) {
@@ -153,7 +156,11 @@ async function loadDecisionTreeData() {
         event.preventDefault();
         var id = child.id;
         var node = tree.getNode(id);
-        createHistoryItem(node.parentId, this.innerText);
+        // createHistoryItem(node.parentId, this.innerText);
+        tree.updateHistory(node.parentId);
+        if (SHOW_HISTORY && selectionHistory) {
+          addHistory(this.innerText);
+        }
         displayNode(node);
       });
       return button;
@@ -169,15 +176,22 @@ async function loadDecisionTreeData() {
       button.addEventListener("click", function (event) {
         event.preventDefault();
         var node = tree.getPreviousNode();
-        var itemIndex = selectionHistory.firstChild?.dataset?.id;
+        // var itemIndex = selectionHistory.firstChild?.dataset?.id;
         if (node) displayNode(node);
-        if (node && itemIndex !== undefined)
-          removeHistoryItemByIndex(itemIndex);
+        // if (node && itemIndex !== undefined)
+        //   removeHistoryItemByIndex(itemIndex);
+        if (SHOW_HISTORY && selectionHistory) {
+          var itemIndex = selectionHistory.firstChild?.dataset?.id;
+          if (node && itemIndex !== undefined) {
+            removeHistoryItemByIndex(itemIndex);
+          }
+        }
       });
       return button;
     };
 
     var addHistory = function (optionText) {
+      if (!SHOW_HISTORY || !selectionHistory) return;
       var choice = document.createElement("li");
       choice.dataset.id = state.history.index;
       choice.classList.add("active");
@@ -191,6 +205,10 @@ async function loadDecisionTreeData() {
     };
 
     var removeHistoryItemByIndex = function (index) {
+      if (!SHOW_HISTORY || !selectionHistory) {
+        --state.history.index; // keep the counter sane even if hidden
+        return;
+      }
       var item = selectionHistory.querySelector('li[data-id="' + index + '"]');
       if (!item) return;
       item.classList.remove("active");
@@ -198,27 +216,35 @@ async function loadDecisionTreeData() {
       --state.history.index;
     };
 
-    var createChangeButton = function () {
-      var button = document.createElement("button");
-      button.dataset.id = state.history.index;
-      state.history.index++;
-      button.setAttribute("aria-label", "Change");
-      button.innerHTML = '<span class="fas fa-edit" aria-hidden="true"></span>';
-      button.classList.add("icon-button");
-      button.addEventListener("click", function (event) {
-        event.preventDefault();
-        var buttonIndex = parseInt(this.dataset.id, 10);
-        var numberOfButtonsToRemove = -1 * (buttonIndex - state.history.index);
-        var node = null;
-        while (numberOfButtonsToRemove > 0) {
-          node = tree.getPreviousNode();
-          removeHistoryItemByIndex(state.history.index - 1);
-          numberOfButtonsToRemove--;
-        }
-        if (node) displayNode(node);
-      });
-      return button;
-    };
+var createChangeButton = function () {
+  if (!SHOW_HISTORY || !selectionHistory) {
+    // When history UI is hidden, we still need to bump the index
+    state.history.index++;
+    // Return a dummy element so callers can append without errors
+    var dummy = document.createElement("span");
+    dummy.style.display = "none";
+    return dummy;
+  }
+  var button = document.createElement("button");
+  button.dataset.id = state.history.index;
+  state.history.index++;
+  button.setAttribute("aria-label", "Change");
+  button.innerHTML = '<span class="fas fa-edit" aria-hidden="true"></span>';
+  button.classList.add("icon-button");
+  button.addEventListener("click", function (event) {
+    event.preventDefault();
+    var buttonIndex = parseInt(this.dataset.id, 10);
+    var numberOfButtonsToRemove = -1 * (buttonIndex - state.history.index);
+    var node = null;
+    while (numberOfButtonsToRemove > 0) {
+      node = tree.getPreviousNode();
+      removeHistoryItemByIndex(state.history.index - 1);
+      numberOfButtonsToRemove--;
+    }
+    if (node) displayNode(node);
+  });
+  return button;
+};
 
     var createHistoryItem = function (id, title) {
       tree.updateHistory(id);
