@@ -102,7 +102,7 @@ async function loadDecisionTreeData() {
     const iso2 = (row.iso2 || "").trim().toLowerCase();
     const flagUrl =
       (row.flagUrl || "").trim() ||
-      (iso2 ? `https://flagcdn.com/48/${iso2}.png` : "");
+      (iso2 ? `https://flagcdn.com/w40/${iso2}.png` : "");
     const flourishSrc = (row.flourishSrc || "").trim();
 
     const profile = {
@@ -447,12 +447,12 @@ async function loadDecisionTreeData() {
       <div class="flourish-embed flourish-chart" data-src="${escapeHtml(
         p.flourishSrc
       )}"></div>
-      <script src="https://public.flourish.studio/resources/embed.js"></script>
       <noscript>
         <img src="https://public.flourish.studio/${escapeHtml(
           base
         )}/thumbnail" width="100%" alt="chart visualization" />
       </noscript>
+    
     </div>
   `;
       }
@@ -489,6 +489,25 @@ async function loadDecisionTreeData() {
   `;
     }
 
+    function activateFlourishEmbeds(root = document) {
+      const embeds = root.querySelectorAll(".flourish-embed");
+      if (!embeds.length) return;
+
+      if (window.Flourish && typeof window.Flourish.loadEmbed === "function") {
+        embeds.forEach((el) => window.Flourish.loadEmbed(el));
+      } else {
+        // Fallback: (re)load the script and initialize when ready
+        const s = document.createElement("script");
+        s.src = "https://public.flourish.studio/resources/embed.js";
+        s.onload = () => {
+          if (window.Flourish?.loadEmbed)
+            embeds.forEach((el) => window.Flourish.loadEmbed(el));
+        };
+        document.head.appendChild(s);
+      }
+    }
+
+
     // Hook similar-country buttons (delegated)
     cardContent.addEventListener("click", (e) => {
       const btn = e.target.closest("button[data-go]");
@@ -512,6 +531,7 @@ async function loadDecisionTreeData() {
           profileNameById,
           profileIdToNodeId
         );
+        activateFlourishEmbeds(cardContent);
       } else {
         cardContent.innerHTML = node.data.content;
         createOptionButtons(node.children);
