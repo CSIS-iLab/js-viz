@@ -230,7 +230,7 @@ body {
 .profile-link {
   display: inline-flex;
   align-items: center;
-  gap: .4rem;
+  gap: 0.4rem;
 }
 
 .profile-title {
@@ -257,6 +257,13 @@ body {
   display: grid;
   gap: 0.4rem;
 }
+.profile-bullets ul {
+  margin-top: 0.35rem;
+}
+.profile-bullets li {
+  margin: 0.1rem 0;
+}
+
 .profile-chart {
   margin-top: 0.25rem;
 }

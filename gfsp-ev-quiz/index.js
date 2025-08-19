@@ -93,7 +93,7 @@ async function loadDecisionTreeData() {
     }
   }
 
-  // ----- Build Profiles (normalized) -----
+  // ----- Build Profiles -----
   const profiles = new Map();
 
   profilesRows.forEach((row) => {
@@ -110,7 +110,7 @@ async function loadDecisionTreeData() {
       iso2,
       flagUrl,
       terms: [],
-      bullets: [],
+      bulletsTree: [],
       flourishSrc,
       similarLinks: [],
     };
@@ -124,11 +124,65 @@ async function loadDecisionTreeData() {
     if (p && row.term) p.terms.push(String(row.term).trim());
   });
 
-  bulletsRows.forEach((row) => {
-    const pid = String(row.profileId).trim();
-    const p = profiles.get(pid);
-    if (p && row.bullet) p.bullets.push(String(row.bullet).trim());
-  });
+  (function buildBulletTrees() {
+    // temp index per profile
+    const allByProfile = new Map(); // pid -> array of items
+    const byKey = new Map(); // `${pid}::${bulletId}` -> item
+
+    bulletsRows.forEach((row) => {
+      const pid = String(row.profileId || "").trim();
+      const p = profiles.get(pid);
+      if (!p) return;
+
+      const bid = String(row.bulletId || "").trim();
+      if (!bid) return;
+
+      const item = {
+        id: bid,
+        html: String(row.html ?? row.bullet ?? row.text ?? "").trim(),
+        order: Number(row.order ?? 0),
+        children: [],
+        _parentId:
+          String(row.parentBulletId || row.parentId || "").trim() || null,
+      };
+
+      if (!allByProfile.has(pid)) allByProfile.set(pid, []);
+      allByProfile.get(pid).push(item);
+
+      byKey.set(`${pid}::${bid}`, item);
+    });
+
+    // link children to parents, compute roots, sort
+    for (const [pid, items] of allByProfile.entries()) {
+      const p = profiles.get(pid);
+      if (!p) continue;
+
+      // stable sort by order for deterministic output
+      items.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+
+      const roots = [];
+      for (const it of items) {
+        if (it._parentId) {
+          const parent = byKey.get(`${pid}::${it._parentId}`);
+          if (parent) parent.children.push(it);
+          else roots.push(it); // orphan -> treat as root
+        } else {
+          roots.push(it);
+        }
+      }
+
+      // recursive sort of children by order
+      function sortChildren(node) {
+        if (node.children && node.children.length) {
+          node.children.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+          node.children.forEach(sortChildren);
+        }
+      }
+      roots.forEach(sortChildren);
+
+      p.bulletsTree = roots;
+    }
+  })();
 
   similarRows.forEach((row) => {
     const pid = String(row.profileId || "").trim();
@@ -178,16 +232,6 @@ async function loadDecisionTreeData() {
 // load data, then init tree
 (async function init() {
   const { nodesArray } = await loadDecisionTreeData();
-
-  console.table(
-    nodesArray
-      .filter((n) => (!n.children || n.children.length === 0) && n.profileId)
-      .map((n) => ({
-        nodeId: n.id,
-        profileId: n.profileId,
-        hasProfile: !!n.profile,
-      }))
-  );
 
   const DecisionTree = function (nodes) {
     var _history = [];
@@ -269,11 +313,6 @@ async function loadDecisionTreeData() {
       if (backButton) {
         if (!isRoot && !isLeaf) {
           backButton.hidden = false;
-          // backButton.setAttribute("disabled", "");
-          // setTimeout(
-          //   () => backButton.removeAttribute("disabled"),
-          //   animationDelay
-          // );
         } else {
           backButton.hidden = true; // hide on root and on leaf
         }
@@ -313,11 +352,9 @@ async function loadDecisionTreeData() {
     function createBackButton() {
       var button = document.createElement("button");
       button.setAttribute("aria-label", "Back");
-      button.innerHTML =
-        '<span class="fa fa-chevron-left" aria-hidden="true"></span> Back';
+      button.innerHTML = "← Back";
       button.classList.add("btn__quiz", "btn__quiz--nav", "icon-button");
       button.hidden = true;
-      // button.setAttribute("disabled", "");
       button.addEventListener("click", function (event) {
         event.preventDefault();
         var node = tree.getPreviousNode();
@@ -428,6 +465,44 @@ async function loadDecisionTreeData() {
       );
     }
 
+    // Allow a tiny subset of inline HTML in bullets (links, emphasis, line breaks)
+    function sanitizeInlineHtml(html) {
+      if (!window.DOMPurify) return escapeHtml(String(html || "")); // fallback
+
+      // 1) Strip everything except a/strong/em/b/i/br and link attributes we care about
+      const clean = DOMPurify.sanitize(String(html || ""), {
+        ALLOWED_TAGS: ["a", "strong", "em", "b", "i", "br"],
+        ALLOWED_ATTR: ["href", "target", "rel"],
+        FORBID_ATTR: [/^on/i, "style"], // kill event handlers & inline styles
+        ALLOW_UNKNOWN_PROTOCOLS: false,
+      });
+
+      // 2) Enforce http(s) only + set rel/target safely
+      const tmp = document.createElement("div");
+      tmp.innerHTML = clean;
+      tmp.querySelectorAll("a").forEach((a) => {
+        const href = a.getAttribute("href") || "";
+        if (!/^https?:\/\//i.test(href)) {
+          a.removeAttribute("href"); // or set to '#' if you prefer
+        }
+        a.setAttribute("target", "_blank");
+        a.setAttribute("rel", "noopener noreferrer");
+      });
+      return tmp.innerHTML;
+    }
+
+    function renderBulletList(items) {
+      if (!items || !items.length) return "";
+      return `<ul class="profile-bullets">${items
+        .map(
+          (it) =>
+            `<li>${sanitizeInlineHtml(it.html)}${renderBulletList(
+              it.children
+            )}</li>`
+        )
+        .join("")}</ul>`;
+    }
+
     // Build the profile HTML for leaf nodes
     function renderProfile(node) {
       const p = node.profile;
@@ -439,10 +514,8 @@ async function loadDecisionTreeData() {
             .join("")}</div>`
         : "";
 
-      const bulletsHtml = p.bullets.length
-        ? `<ul class="profile-bullets">${p.bullets
-            .map((b) => `<li>${escapeHtml(b)}</li>`)
-            .join("")}</ul>`
+      const bulletsHtml = p.bulletsTree?.length
+        ? renderBulletList(p.bulletsTree)
         : "";
 
       let chartHtml = "";

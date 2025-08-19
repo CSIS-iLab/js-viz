@@ -2,30 +2,44 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>EV Quiz</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
-  <link rel="stylesheet" href="style.css">
+  <meta name="description" content="Interactive EV country quiz with profiles and charts." />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" content="#2563eb" />
+
+  <!-- Connection warmups -->
+  <link rel="preconnect" href="https://docs.google.com" crossorigin>
+  <link rel="preconnect" href="https://public.flourish.studio" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="preconnect" href="https://flagcdn.com" crossorigin>
+  <link rel="dns-prefetch" href="//docs.google.com">
+  <link rel="dns-prefetch" href="//public.flourish.studio">
+  <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="//flagcdn.com">
+
+  <!-- Your CSS (keep render-blocking for no FOUC) -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Vendor scripts -->
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js" defer></script>
-  <script>window.Flourish = {};</script>
+  <!-- If you want inline links inside bullets, keep DOMPurify: -->
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js" defer></script>
+
+  <!-- Flourish embed bootstrap -->
+  <script>window.Flourish = window.Flourish || {};</script>
   <script src="https://public.flourish.studio/resources/embed.js" defer></script>
 
-
+  <!-- Your app -->
+  <script src="index.js" defer></script>
 </head>
 
 <body>
-
   <div id="question" class="card">
-    <!-- <h2 class="card-header"></h2> -->
     <div class="card-content" aria-live="polite"></div>
     <div class="card-nav"></div>
   </div>
-
-  <!-- <ul id="history"></ul> -->
-
-  <script src="index.js" defer></script>
-
 </body>
 
 </html>
