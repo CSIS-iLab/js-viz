@@ -95,7 +95,6 @@ async function loadDecisionTreeData() {
 
   // ----- Build Profiles (normalized) -----
   const profiles = new Map();
-  const profileNameById = new Map(); // for "Similar" button labels
 
   profilesRows.forEach((row) => {
     const pid = String(row.profileId).trim();
@@ -113,11 +112,10 @@ async function loadDecisionTreeData() {
       terms: [],
       bullets: [],
       flourishSrc,
-      similar: [],
+      similarLinks: [],
     };
 
     profiles.set(pid, profile);
-    profileNameById.set(pid, profile.name);
   });
 
   termsRows.forEach((row) => {
@@ -133,23 +131,36 @@ async function loadDecisionTreeData() {
   });
 
   similarRows.forEach((row) => {
-    const pid = String(row.profileId).trim();
-    const sid = String(row.similarId).trim();
+    const pid = String(row.profileId || "").trim();
     const p = profiles.get(pid);
-    if (p && sid) p.similar.push(sid);
+    if (!p) return;
+
+    const name = (row.name || "").trim();
+    const url = (row.url || "").trim();
+    if (!name || !url) return;
+
+    const iso2 = (row.iso2 || "").trim().toLowerCase();
+    const flagUrl =
+      (row.flagUrl || "").trim() ||
+      (iso2 ? `https://flagcdn.com/w40/${iso2}.png` : "");
+    const order = Number(row.order ?? 0);
+
+    p.similarLinks.push({ name, url, flagUrl, order });
   });
 
+  // sort links by order
+  for (const p of profiles.values()) {
+    if (p.similarLinks.length) {
+      p.similarLinks.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+    }
+  }
+
   // ----- Link profiles to leaf nodes -----
-  // Also build profileId -> nodeId map for similar links.
-  const profileIdToNodeId = new Map();
   for (const node of nodesMap.values()) {
     const isLeaf = !node.children || node.children.length === 0;
     if (isLeaf && node.profileId) {
       const prof = profiles.get(node.profileId);
-      if (prof) {
-        node.profile = prof;
-        profileIdToNodeId.set(node.profileId, node.id);
-      }
+      if (prof) node.profile = prof; // <-- this is what renderProfile uses
     }
   }
 
@@ -161,13 +172,12 @@ async function loadDecisionTreeData() {
     return aIsRoot - bIsRoot;
   });
 
-  return { nodesArray, profileIdToNodeId, profileNameById };
+  return { nodesArray };
 }
 
 // load data, then init tree
 (async function init() {
-  const { nodesArray, profileIdToNodeId, profileNameById } =
-    await loadDecisionTreeData();
+  const { nodesArray } = await loadDecisionTreeData();
 
   console.table(
     nodesArray
@@ -221,11 +231,7 @@ async function loadDecisionTreeData() {
     };
   };
 
-  var DecisionTreeUI = function (
-    decisionTree,
-    profileIdToNodeId,
-    profileNameById
-  ) {
+  var DecisionTreeUI = function (decisionTree) {
     var tree = decisionTree;
     var state = { history: { index: 0 } };
 
@@ -423,7 +429,7 @@ async function loadDecisionTreeData() {
     }
 
     // Build the profile HTML for leaf nodes
-    function renderProfile(node, profileNameById, profileIdToNodeId) {
+    function renderProfile(node) {
       const p = node.profile;
       if (!p) return node.data.content || "";
 
@@ -457,19 +463,31 @@ async function loadDecisionTreeData() {
   `;
       }
 
-      const similarHtml = p.similar.length
-        ? `<div class="profile-similar"><span class="muted">Similar:</span> ${p.similar
-            .map((sid) => {
-              const nodeId = profileIdToNodeId.get(sid);
-              const label = profileNameById.get(sid) || sid;
-              return nodeId
-                ? `<button class="btn__quiz btn__quiz--nav" data-go="${nodeId}">${escapeHtml(
-                    label
-                  )}</button>`
-                : "";
-            })
-            .join("")}</div>`
-        : "";
+      const similarHtml =
+        p.similarLinks && p.similarLinks.length
+          ? `<div class="profile-similar">
+       <span class="muted">Similar:</span>
+       ${p.similarLinks
+         .map(
+           (s) => `
+         <a class="btn__quiz btn__quiz--nav profile-link"
+            href="${escapeHtml(
+              s.url
+            )}" target="_blank" rel="noopener noreferrer">
+           ${
+             s.flagUrl
+               ? `<img class="profile-flag profile-flag--inline" src="${escapeHtml(
+                   s.flagUrl
+                 )}" alt="" />`
+               : ""
+           }
+           ${escapeHtml(s.name)}
+         </a>
+       `
+         )
+         .join("")}
+     </div>`
+          : "";
 
       return `
     <section class="profile">
@@ -507,30 +525,13 @@ async function loadDecisionTreeData() {
       }
     }
 
-
-    // Hook similar-country buttons (delegated)
-    cardContent.addEventListener("click", (e) => {
-      const btn = e.target.closest("button[data-go]");
-      if (!btn) return;
-      const nodeId = btn.getAttribute("data-go");
-      const next = tree.getNode(nodeId);
-      if (!next) return;
-      // Push current node to history so Back works
-      tree.updateHistory(card.dataset.id);
-      displayNode(next);
-    });
-
     var displayNode = function (node) {
       card.dataset.id = node.id;
 
       const isLeaf = !node.children || node.children.length === 0;
 
       if (isLeaf && node.profile) {
-        cardContent.innerHTML = renderProfile(
-          node,
-          profileNameById,
-          profileIdToNodeId
-        );
+        cardContent.innerHTML = renderProfile(node);
         activateFlourishEmbeds(cardContent);
       } else {
         cardContent.innerHTML = node.data.content;
@@ -552,5 +553,5 @@ async function loadDecisionTreeData() {
 
   // Instantiate with sheet-driven data
   const tree = new DecisionTree(nodesArray);
-  const ui = new DecisionTreeUI(tree, profileIdToNodeId, profileNameById);
+  const ui = new DecisionTreeUI(tree);
 })();

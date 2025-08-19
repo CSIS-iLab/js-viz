@@ -218,6 +218,21 @@ body {
   border-radius: 2px;
   box-shadow: 0 0 0 1px var(--border) inset;
 }
+
+.profile-flag--inline {
+  width: 20px;
+  height: 14px;
+  border-radius: 2px;
+  object-fit: cover;
+  box-shadow: 0 0 0 1px var(--border) inset;
+}
+
+.profile-link {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+}
+
 .profile-title {
   margin: 0;
   font-size: 1.25rem;
