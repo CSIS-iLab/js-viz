@@ -65,7 +65,12 @@ async function loadDecisionTreeData() {
     nodesMap.set(id, {
       id, // keep as string for consistency
       parentId, // null or string
-      data: { content },
+      data: { 
+        content: row.content ?? "",
+        imageUrl: (row.imageUrl || "").trim(),
+        imageAlt: row.imageAlt || "",
+        imageCaption: row.imageCaption || ""
+      },
       children: [], // will fill from options
       profileId: row.profileId ? String(row.profileId).trim() : null,
     });
@@ -324,6 +329,36 @@ async function loadDecisionTreeData() {
       if (selectionHistory) selectionHistory.innerHTML = "";
       state.history.index = 0;
     }
+
+    function renderQuestionBlock(node) {
+      // 1) question text
+      cardContent.innerHTML = node.data.content;
+
+      // 2) optional image (between content and options)
+      const { imageUrl, imageAlt, imageCaption } = node.data || {};
+      if (imageUrl && /^https?:\/\//i.test(imageUrl)) {
+        const figure = document.createElement("figure");
+        figure.className = "question-media";
+
+        const img = document.createElement("img");
+        img.src = imageUrl;
+        img.alt = imageAlt || "";
+        img.loading = "lazy";
+        img.decoding = "async";
+        figure.appendChild(img);
+
+        if (imageCaption) {
+          const cap = document.createElement("figcaption");
+          cap.textContent = imageCaption;
+          figure.appendChild(cap);
+        }
+        cardContent.appendChild(figure);
+      }
+
+      // 3) options
+      createOptionButtons(node.children);
+    }
+
 
     var createOptionButtons = function (children) {
       children.forEach(function (child) {
@@ -607,8 +642,7 @@ async function loadDecisionTreeData() {
         cardContent.innerHTML = renderProfile(node);
         activateFlourishEmbeds(cardContent);
       } else {
-        cardContent.innerHTML = node.data.content;
-        createOptionButtons(node.children);
+        renderQuestionBlock(node);
       }
       updateNavUI(node);
     };
