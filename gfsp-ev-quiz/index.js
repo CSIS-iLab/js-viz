@@ -65,11 +65,11 @@ async function loadDecisionTreeData() {
     nodesMap.set(id, {
       id, // keep as string for consistency
       parentId, // null or string
-      data: { 
+      data: {
         content: row.content ?? "",
         imageUrl: (row.imageUrl || "").trim(),
         imageAlt: row.imageAlt || "",
-        imageCaption: row.imageCaption || ""
+        imageCaption: row.imageCaption || "",
       },
       children: [], // will fill from options
       profileId: row.profileId ? String(row.profileId).trim() : null,
@@ -359,12 +359,16 @@ async function loadDecisionTreeData() {
       createOptionButtons(node.children);
     }
 
-
     var createOptionButtons = function (children) {
+      const wrap = document.createElement("div");
+      wrap.className = "options-grid"; // new wrapper
+
       children.forEach(function (child) {
         var button = createOptionButton(child);
-        cardContent.append(button);
+        wrap.append(button);
       });
+
+      cardContent.append(wrap);
     };
 
     var createOptionButton = function (child) {
