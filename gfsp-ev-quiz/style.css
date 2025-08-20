@@ -165,8 +165,18 @@ body {
   margin-bottom: 0;
 }
 
+.question-lead {
+  position: relative;
+  padding-left: 0.75rem;
+  font-weight: 700;
+  font-size: clamp(1.05rem, 1.2vw + 0.9rem, 1.35rem);
+  line-height: 1.35;
+  color: var(--text);
+  margin: 0 0 0.25rem;
+}
+
 .question-media {
-  margin: 6px 0 10px;
+  margin: .5rem 0 .85rem;
 }
 
 .question-media img {
@@ -186,9 +196,10 @@ body {
 }
 
 .options-grid {
+  margin-top: .35rem;
   display: grid;
   grid-template-columns: 1fr;
-  gap: 12px;                 
+  gap: 12px;
   align-items: stretch;
 }
 
@@ -203,7 +214,6 @@ body {
 .options-grid .btn__quiz--opt {
   margin: 0;
 }
-
 
 .card-nav {
   display: none;

@@ -334,6 +334,8 @@ async function loadDecisionTreeData() {
       // 1) question text
       cardContent.innerHTML = node.data.content;
 
+      emphasizeQuestion(cardContent);
+
       // 2) optional image (between content and options)
       const { imageUrl, imageAlt, imageCaption } = node.data || {};
       if (imageUrl && /^https?:\/\//i.test(imageUrl)) {
@@ -528,6 +530,31 @@ async function loadDecisionTreeData() {
         a.setAttribute("rel", "noopener noreferrer");
       });
       return tmp.innerHTML;
+    }
+
+    function emphasizeQuestion(container) {
+      // If the first node is plain text, wrap it in a <p>
+      const first = container.firstChild;
+      if (
+        first &&
+        first.nodeType === Node.TEXT_NODE &&
+        first.textContent.trim() !== ""
+      ) {
+        const p = document.createElement("p");
+        p.textContent = first.textContent;
+        container.replaceChild(p, first);
+      }
+
+      // Style the first meaningful element as the prompt
+      const firstEl = container.firstElementChild;
+      if (!firstEl) return;
+
+      // Don’t style media/profile/option wrappers
+      if (
+        !firstEl.matches("figure, .question-media, .options-grid, .profile")
+      ) {
+        firstEl.classList.add("question-lead");
+      }
     }
 
     function renderBulletList(items) {
