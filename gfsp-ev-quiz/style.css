@@ -150,7 +150,8 @@ body {
   overflow: hidden;
 }
 
-.card-content {
+.card-content,
+.profile-card {
   padding: 20px clamp(16px, 3vw, 28px);
   display: grid;
   gap: 14px;

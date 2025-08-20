@@ -231,12 +231,170 @@ async function loadDecisionTreeData() {
     return aIsRoot - bIsRoot;
   });
 
-  return { nodesArray };
+  const profilesArray = Array.from(profiles.values());
+
+  return { nodesArray, profilesArray };
 }
 
-// load data, then init tree
+// ----- Helper functions -----
+function escapeHtml(s) {
+  return String(s).replace(
+    /[&<>"']/g,
+    (c) =>
+      ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;",
+      }[c])
+  );
+}
+
+// Allow a tiny subset of inline HTML in bullets (links, emphasis, line breaks)
+function sanitizeInlineHtml(html) {
+  if (!window.DOMPurify) return escapeHtml(String(html || "")); // fallback
+
+  // 1) Strip everything except a/strong/em/b/i/br and link attributes we care about
+  const clean = DOMPurify.sanitize(String(html || ""), {
+    ALLOWED_TAGS: ["a", "strong", "em", "b", "i", "br"],
+    ALLOWED_ATTR: ["href", "target", "rel"],
+    FORBID_ATTR: [/^on/i, "style"], // kill event handlers & inline styles
+    ALLOW_UNKNOWN_PROTOCOLS: false,
+  });
+
+  // 2) Enforce http(s) only + set rel/target safely
+  const tmp = document.createElement("div");
+  tmp.innerHTML = clean;
+  tmp.querySelectorAll("a").forEach((a) => {
+    const href = a.getAttribute("href") || "";
+    if (!/^https?:\/\//i.test(href)) {
+      a.removeAttribute("href"); // or set to '#' if you prefer
+    }
+    a.setAttribute("target", "_blank");
+    a.setAttribute("rel", "noopener noreferrer");
+  });
+  return tmp.innerHTML;
+}
+
+function renderBulletList(items) {
+  if (!items || !items.length) return "";
+  return `<ul class="profile-bullets">${items
+    .map(
+      (it) =>
+        `<li>${sanitizeInlineHtml(it.html)}${renderBulletList(
+          it.children
+        )}</li>`
+    )
+    .join("")}</ul>`;
+}
+
+// Build the profile HTML for leaf nodes
+function renderProfileHTML(p) {
+  if (!p) return "";
+
+  const termsHtml = p.terms.length
+    ? `<div class="profile-terms">${p.terms
+        .map((t) => `<span class="chip">${escapeHtml(t)}</span>`)
+        .join("")}</div>`
+    : "";
+
+  const bulletsHtml = p.bulletsTree?.length
+    ? renderBulletList(p.bulletsTree)
+    : "";
+
+  let chartHtml = "";
+  if (p.flourishSrc) {
+    const base = p.flourishSrc.split("?")[0];
+    chartHtml = `
+      <div class="profile-chart">
+        <div class="flourish-embed flourish-chart" data-src="${escapeHtml(
+          p.flourishSrc
+        )}"></div>
+        <noscript>
+          <img src="https://public.flourish.studio/${escapeHtml(
+            base
+          )}/thumbnail" width="100%" alt="chart visualization" />
+        </noscript>
+      </div>`;
+  }
+
+  const similarHtml =
+    p.similarLinks && p.similarLinks.length
+      ? `<div class="profile-similar">
+           <span class="muted">Similar:</span>
+           ${p.similarLinks
+             .map(
+               (s) => `
+               <a class="btn__quiz btn__quiz--nav profile-link"
+                  href="${escapeHtml(
+                    s.url
+                  )}" target="_blank" rel="noopener noreferrer">
+                 ${
+                   s.flagUrl
+                     ? `<img class="profile-flag profile-flag--inline" src="${escapeHtml(
+                         s.flagUrl
+                       )}" alt="" />`
+                     : ""
+                 }
+                 ${escapeHtml(s.name)}
+               </a>`
+             )
+             .join("")}
+         </div>`
+      : "";
+
+  return `
+    <section class="profile">
+      <header class="profile-head">
+        ${
+          p.flagUrl
+            ? `<img class="profile-flag" src="${p.flagUrl}" alt="" />`
+            : ""
+        }
+        <h2 class="profile-title">${escapeHtml(p.name)}</h2>
+      </header>
+      ${termsHtml}
+      ${bulletsHtml}
+      ${chartHtml}
+      ${similarHtml}
+    </section>`;
+}
+
+function activateFlourishEmbeds(root = document) {
+  const embeds = root.querySelectorAll(".flourish-embed");
+  if (!embeds.length) return;
+
+  if (window.Flourish && typeof window.Flourish.loadEmbed === "function") {
+    embeds.forEach((el) => window.Flourish.loadEmbed(el));
+  } else {
+    // Fallback: (re)load the script and initialize when ready
+    const s = document.createElement("script");
+    s.src = "https://public.flourish.studio/resources/embed.js";
+    s.onload = () => {
+      if (window.Flourish?.loadEmbed)
+        embeds.forEach((el) => window.Flourish.loadEmbed(el));
+    };
+    document.head.appendChild(s);
+  }
+}
+
+function renderProfiles(container, profilesArray) {
+  if (!container || !profilesArray?.length) return;
+  const frag = document.createDocumentFragment();
+  profilesArray.forEach((p) => {
+    const card = document.createElement("article");
+    card.className = "card profile-card";
+    card.innerHTML = renderProfileHTML(p);
+    frag.appendChild(card);
+  });
+  container.appendChild(frag);
+  activateFlourishEmbeds(container);
+}
+
+// ----- load data, then init tree -----
 (async function init() {
-  const { nodesArray } = await loadDecisionTreeData();
+  const { nodesArray, profilesArray } = await loadDecisionTreeData();
 
   const DecisionTree = function (nodes) {
     var _history = [];
@@ -492,46 +650,6 @@ async function loadDecisionTreeData() {
       addHistory(title);
     };
 
-    function escapeHtml(s) {
-      return String(s).replace(
-        /[&<>"']/g,
-        (c) =>
-          ({
-            "&": "&amp;",
-            "<": "&lt;",
-            ">": "&gt;",
-            '"': "&quot;",
-            "'": "&#39;",
-          }[c])
-      );
-    }
-
-    // Allow a tiny subset of inline HTML in bullets (links, emphasis, line breaks)
-    function sanitizeInlineHtml(html) {
-      if (!window.DOMPurify) return escapeHtml(String(html || "")); // fallback
-
-      // 1) Strip everything except a/strong/em/b/i/br and link attributes we care about
-      const clean = DOMPurify.sanitize(String(html || ""), {
-        ALLOWED_TAGS: ["a", "strong", "em", "b", "i", "br"],
-        ALLOWED_ATTR: ["href", "target", "rel"],
-        FORBID_ATTR: [/^on/i, "style"], // kill event handlers & inline styles
-        ALLOW_UNKNOWN_PROTOCOLS: false,
-      });
-
-      // 2) Enforce http(s) only + set rel/target safely
-      const tmp = document.createElement("div");
-      tmp.innerHTML = clean;
-      tmp.querySelectorAll("a").forEach((a) => {
-        const href = a.getAttribute("href") || "";
-        if (!/^https?:\/\//i.test(href)) {
-          a.removeAttribute("href"); // or set to '#' if you prefer
-        }
-        a.setAttribute("target", "_blank");
-        a.setAttribute("rel", "noopener noreferrer");
-      });
-      return tmp.innerHTML;
-    }
-
     function emphasizeQuestion(container) {
       // If the first node is plain text, wrap it in a <p>
       const first = container.firstChild;
@@ -557,120 +675,13 @@ async function loadDecisionTreeData() {
       }
     }
 
-    function renderBulletList(items) {
-      if (!items || !items.length) return "";
-      return `<ul class="profile-bullets">${items
-        .map(
-          (it) =>
-            `<li>${sanitizeInlineHtml(it.html)}${renderBulletList(
-              it.children
-            )}</li>`
-        )
-        .join("")}</ul>`;
-    }
-
-    // Build the profile HTML for leaf nodes
-    function renderProfile(node) {
-      const p = node.profile;
-      if (!p) return node.data.content || "";
-
-      const termsHtml = p.terms.length
-        ? `<div class="profile-terms">${p.terms
-            .map((t) => `<span class="chip">${escapeHtml(t)}</span>`)
-            .join("")}</div>`
-        : "";
-
-      const bulletsHtml = p.bulletsTree?.length
-        ? renderBulletList(p.bulletsTree)
-        : "";
-
-      let chartHtml = "";
-      if (p.flourishSrc) {
-        const base = p.flourishSrc.split("?")[0]; // for thumbnail
-        chartHtml = `
-    <div class="profile-chart">
-      <div class="flourish-embed flourish-chart" data-src="${escapeHtml(
-        p.flourishSrc
-      )}"></div>
-      <noscript>
-        <img src="https://public.flourish.studio/${escapeHtml(
-          base
-        )}/thumbnail" width="100%" alt="chart visualization" />
-      </noscript>
-    
-    </div>
-  `;
-      }
-
-      const similarHtml =
-        p.similarLinks && p.similarLinks.length
-          ? `<div class="profile-similar">
-       <span class="muted">Similar:</span>
-       ${p.similarLinks
-         .map(
-           (s) => `
-         <a class="btn__quiz btn__quiz--nav profile-link"
-            href="${escapeHtml(
-              s.url
-            )}" target="_blank" rel="noopener noreferrer">
-           ${
-             s.flagUrl
-               ? `<img class="profile-flag profile-flag--inline" src="${escapeHtml(
-                   s.flagUrl
-                 )}" alt="" />`
-               : ""
-           }
-           ${escapeHtml(s.name)}
-         </a>
-       `
-         )
-         .join("")}
-     </div>`
-          : "";
-
-      return `
-    <section class="profile">
-      <header class="profile-head">
-        ${
-          p.flagUrl
-            ? `<img class="profile-flag" src="${p.flagUrl}" alt="" />`
-            : ""
-        }
-        <h2 class="profile-title">${escapeHtml(p.name)}</h2>
-      </header>
-      ${termsHtml}
-      ${bulletsHtml}
-      ${chartHtml}
-      ${similarHtml}
-    </section>
-  `;
-    }
-
-    function activateFlourishEmbeds(root = document) {
-      const embeds = root.querySelectorAll(".flourish-embed");
-      if (!embeds.length) return;
-
-      if (window.Flourish && typeof window.Flourish.loadEmbed === "function") {
-        embeds.forEach((el) => window.Flourish.loadEmbed(el));
-      } else {
-        // Fallback: (re)load the script and initialize when ready
-        const s = document.createElement("script");
-        s.src = "https://public.flourish.studio/resources/embed.js";
-        s.onload = () => {
-          if (window.Flourish?.loadEmbed)
-            embeds.forEach((el) => window.Flourish.loadEmbed(el));
-        };
-        document.head.appendChild(s);
-      }
-    }
-
     var displayNode = function (node) {
       card.dataset.id = node.id;
 
       const isLeaf = !node.children || node.children.length === 0;
 
       if (isLeaf && node.profile) {
-        cardContent.innerHTML = renderProfile(node);
+        cardContent.innerHTML = renderProfileHTML(node.profile);
         activateFlourishEmbeds(cardContent);
       } else {
         renderQuestionBlock(node);
@@ -688,6 +699,11 @@ async function loadDecisionTreeData() {
     var node = tree.getRootNode();
     displayNode(node);
   };
+
+  const profilesRoot = document.getElementById("profiles");
+if (profilesRoot && profilesArray.length) {
+  renderProfiles(profilesRoot, profilesArray);
+}
 
   // Instantiate with sheet-driven data
   const tree = new DecisionTree(nodesArray);
