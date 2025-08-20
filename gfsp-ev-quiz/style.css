@@ -141,7 +141,7 @@ body {
 }
 
 .card {
-  width: min(720px, 92vw);
+  width: min(920px, 92vw);
   margin: clamp(24px, 6vh, 64px) auto;
   background: var(--surface);
   border: 1px solid var(--border);
@@ -206,11 +206,26 @@ body {
   display: grid;
   gap: 14px;
 }
+
+@media (min-width: 900px) {
+  .profile {
+    grid-template-areas: "header header" "terms terms" "bullets chart" "similar similar";
+    grid-template-columns: 6fr 5fr;
+  }
+}
+
 .profile-head {
   display: flex;
   align-items: center;
   gap: 0.6rem;
 }
+
+@media (min-width: 900px) {
+  .profile-head {
+    grid-area: header;
+  }
+}
+
 .profile-flag {
   width: 28px;
   height: 20px;
@@ -238,11 +253,19 @@ body {
   font-size: 1.25rem;
   line-height: 1.2;
 }
+
 .profile-terms {
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem 0.5rem;
 }
+
+@media (min-width: 900px) {
+  .profile-terms {
+    grid-area: terms;
+  }
+}
+
 .chip {
   padding: 0.25rem 0.5rem;
   border: 1px solid var(--border);
@@ -251,15 +274,25 @@ body {
   color: var(--text-muted);
   background: var(--surface-2);
 }
+
 .profile-bullets {
   padding-left: 1.1rem;
   margin: 0;
   display: grid;
   gap: 0.4rem;
+  font-size: .875rem;
 }
+
+@media (min-width: 900px) {
+  .profile-bullets {
+    grid-area: bullets;
+  }
+}
+
 .profile-bullets ul {
   margin-top: 0.35rem;
 }
+
 .profile-bullets li {
   margin: 0.1rem 0;
 }
@@ -267,12 +300,26 @@ body {
 .profile-chart {
   margin-top: 0.25rem;
 }
+
+@media (min-width: 900px) {
+  .profile-chart {
+    grid-area: chart;
+  }
+}
+
 .profile-similar {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   flex-wrap: wrap;
 }
+
+@media (min-width: 900px) {
+  .profile-similar {
+    grid-area: similar;
+  }
+}
+
 .profile-similar .muted {
   color: var(--text-muted);
   font-size: 0.9rem;
