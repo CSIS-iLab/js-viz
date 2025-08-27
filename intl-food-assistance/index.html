@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8" />
+    <title>Food Assistance • Sankey + Details</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        font: 16px/1.4 system-ui, -apple-system, Segoe UI, Roboto, Arial
+      }
+
+      #sankey {
+        background: #fff;
+        border-radius: 4px;
+        height: calc(100vh - 24px);
+        min-height: 560px;
+        margin: 12px auto;
+        max-width: 1400px;
+        overflow: hidden;
+      }
+    </style>
+
+    <!-- Highcharts -->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/sankey.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+  </head>
+
+  <body>
+    <div id="sankey" aria-label="Food Assistance Sankey"></div>
+
+
+    <script>
+      const DATA_URL = 'food_assistance_sankey.json';
+
+      fetch(DATA_URL)
+        .then(r => r.json())
+        .then(records => {
+          // Build nodes: programs at column 0, country groups at column 1
+          const programs = new Set(), countries = new Set();
+          for (const [src, dst] of records) { programs.add(src); countries.add(dst); }
+          const nodes = [
+            ...[...programs].map(id => ({ id, column: 0 })),
+            ...[...countries].map(id => ({ id, column: 1 }))
+          ];
+          const seriesData = records.map(([from, to, w]) => [from, to, Number(w) || 0]);
+
+          Highcharts.chart('sankey', {
+            chart: { inverted: true, height: '100%' },
+            title: { text: 'Food Assistance Programs → Countries' },
+            credits: { enabled: false },
+            series: [{
+              type: 'sankey',
+              keys: ['from', 'to', 'weight'],
+              nodes,
+              nodeAlignment: 'center',
+              nodePadding: 6,
+              nodeWidth: 14,
+              curveFactor: 0.28,
+              data: seriesData
+            }]
+          });
+        })
+        .catch(err => {
+          document.getElementById('sankey').innerHTML =
+            `<div style="padding:16px;color:#b00020">Could not load <code>${ DATA_URL }</code>: ${ err.message }</div>`;
+          console.error(err);
+        });
+    </script>
+
+  </body>
+
+</html>
