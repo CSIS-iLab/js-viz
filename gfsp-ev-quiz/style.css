@@ -346,6 +346,7 @@ body {
   margin: 0;
   display: grid;
   gap: 0.4rem;
+  align-content: start;
   font-size: 0.875rem;
 }
 
