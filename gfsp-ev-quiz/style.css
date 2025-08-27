@@ -260,8 +260,23 @@ body {
 
 @media (min-width: 900px) {
   .profile {
-    grid-template-areas: "header header" "terms terms" "bullets chart" "similar similar";
+    grid-template-areas: "lead lead" "header header" "terms terms" "bullets chart" "similar similar";
     grid-template-columns: 6fr 5fr;
+  }
+}
+
+.card-content .result-lead {
+  margin: 0 0 .25rem 0;
+  font-weight: 600;
+  font-size: 0.875rem;
+  letter-spacing: .01em;
+  color: var(--text-muted, #666);
+  text-transform: none; /* or uppercase if you prefer */
+}
+
+@media (min-width: 900px) {
+  .result-lead {
+    grid-area: lead;
   }
 }
 

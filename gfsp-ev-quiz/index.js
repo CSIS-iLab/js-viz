@@ -290,8 +290,9 @@ function renderBulletList(items) {
 }
 
 // Build the profile HTML for leaf nodes
-function renderProfileHTML(p) {
+function renderProfileHTML(p, opts = {}) {
   if (!p) return "";
+  const { leadText = "" } = opts;
 
   const termsHtml = p.terms.length
     ? `<div class="profile-terms">${p.terms
@@ -346,6 +347,7 @@ function renderProfileHTML(p) {
 
   return `
     <section class="profile">
+    ${leadText ? `<p class="result-lead">${escapeHtml(leadText)}</p>` : ""}
       <header class="profile-head">
         ${
           p.flagUrl
@@ -681,7 +683,9 @@ function renderProfiles(container, profilesArray) {
       const isLeaf = !node.children || node.children.length === 0;
 
       if (isLeaf && node.profile) {
-        cardContent.innerHTML = renderProfileHTML(node.profile);
+        cardContent.innerHTML = renderProfileHTML(node.profile, {
+          leadText: "You're most like:",
+        });
         activateFlourishEmbeds(cardContent);
       } else {
         renderQuestionBlock(node);
