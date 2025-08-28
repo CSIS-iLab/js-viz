@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Food Assistance • Sankey + Details</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root{
+      --bg:#efe4d6;      /* match your UI vibe */
+      --panel:#ffffff;
+      --ink:#2b2b2b;
+      --muted:#6b6b6b;
+      --accent:#6c2bd9;
+      --border:#e3d6c5;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;background:var(--bg);color:var(--ink);font:16px/1.4 system-ui,-apple-system,Segoe UI,Roboto,Arial}
+    .wrap{
+      display:grid;
+      grid-template-columns: minmax(480px, 2fr) minmax(320px, 1fr);
+      gap: 16px;
+      height: 100%;
+      padding: 12px 12px 12px 12px;
+    }
+    #sankey{
+      background:var(--panel);
+      border:1px solid var(--border);
+      border-radius:4px;
+      height: calc(100vh - 24px);
+      min-height:560px;
+      overflow:hidden;
+    }
+    .side{
+      background:var(--panel);
+      border:1px solid var(--border);
+      border-radius:4px;
+      padding:16px;
+      display:flex;
+      flex-direction:column;
+      min-height:300px;
+      max-height: calc(100vh - 24px);
+    }
+    .side h2{margin:.25rem 0 .5rem;font-size:18px}
+    .side h3{margin:1rem 0 .25rem;font-size:14px;text-transform:uppercase;color:var(--muted);letter-spacing:.04em}
+    .meta{display:flex;gap:8px;flex-wrap:wrap;margin:.25rem 0 1rem}
+    .tag{background:#f6f2ea;border:1px solid var(--border);padding:.15rem .5rem;border-radius:999px;font-size:12px}
+    .list{margin:0;padding:0;list-style:none;overflow:auto}
+    .list li{padding:.25rem 0;border-bottom:1px dashed #eee}
+    .hint{color:var(--muted)}
+    .kbd{font:12px/1.2 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#f5f5f5;border:1px solid #eaeaea;border-radius:4px;padding:0 .35rem}
+    .totals{display:flex;gap:12px;flex-wrap:wrap}
+    .stat{background:#f8f6f2;border:1px solid var(--border);border-radius:10px;padding:.5rem .6rem;min-width:110px}
+    .stat b{display:block;font-size:20px;line-height:1.1}
+    @media (max-width: 1100px){
+      .wrap{grid-template-columns: 1fr; height:auto}
+      #sankey{height:70vh}
+      .side{max-height:none}
+    }
+  </style>
+
+  <!-- Highcharts -->
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+  <script src="https://code.highcharts.com/modules/sankey.js"></script>
+  <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+</head>
+<body>
+  <div class="wrap">
+    <div id="sankey" aria-label="Food Assistance Sankey"></div>
+
+    <aside class="side" id="panel" aria-live="polite">
+      <h2 id="panel-title">Hover or click a program/country/link</h2>
+      <div class="meta" id="panel-meta"></div>
+
+      <div class="totals" id="panel-totals"></div>
+
+      <h3 id="panel-subhead">Top connections</h3>
+      <ul class="list" id="panel-list"></ul>
+    </aside>
+  </div>
+
+  <script>
+    const DATA_URL = 'food_assistance_sankey.json';
+
+    // ---- helpers -----------------------------------------------------------
+    const fmt = new Intl.NumberFormat('en-US');
+    function sum(arr){ return arr.reduce((a,b)=>a+b,0); }
+    function byCountDesc(a,b){ return b[1] - a[1]; }
+
+    function deriveStructures(records){
+      // records: [source, country, value]
+      const programs = new Set();
+      const countries = new Set();
+      const progOut = new Map();   // program -> Map(country -> total)
+      const ctryIn  = new Map();   // country -> Map(program -> total)
+      let totalLinks = 0, totalWeight = 0;
+
+      for(const [src,dst,wRaw] of records){
+        const w = Number(wRaw) || 0;
+        programs.add(src);
+        countries.add(dst);
+        totalLinks += 1;
+        totalWeight += w;
+
+        if(!progOut.has(src)) progOut.set(src, new Map());
+        if(!ctryIn.has(dst))  ctryIn.set(dst,  new Map());
+        progOut.get(src).set(dst, (progOut.get(src).get(dst)||0)+w);
+        ctryIn.get(dst).set(src,  (ctryIn.get(dst).get(src)||0)+w);
+      }
+
+      // nodes with columns
+      const nodes = [
+        ...[...programs].map(id => ({ id, column: 0 })),
+        ...[...countries].map(id => ({ id, column: 1 }))
+      ];
+
+      return {
+        programs: [...programs],
+        countries: [...countries],
+        nodes,
+        progOut,
+        ctryIn,
+        totals: { programs: programs.size, countries: countries.size, links: totalLinks, weight: totalWeight }
+      };
+    }
+
+    function showPanelForProgram(name, progOut, totals){
+      const title = document.getElementById('panel-title');
+      const meta  = document.getElementById('panel-meta');
+      const list  = document.getElementById('panel-list');
+      const subs  = document.getElementById('panel-subhead');
+      const stats = document.getElementById('panel-totals');
+
+      title.textContent = name;
+      meta.innerHTML = `<span class="tag">Type: Program</span>`;
+      subs.textContent = 'Countries reached';
+
+      const m = progOut.get(name) || new Map();
+      const items = [...m.entries()].sort(byCountDesc);
+      list.innerHTML = items.slice(0, 50).map(([ctry,val]) => `<li><b>${ctry}</b>`).join('') || '<li class="hint">No connections.</li>';
+
+      const count = items.length;
+      const weight = sum(items.map(d=>d[1]));
+      stats.innerHTML = `
+        <div class="stat"><b>${fmt.format(count)}</b><div>Countries</div></div>
+        <div class="stat"><b>${fmt.format(totals.countries)}</b><div>Countries overall</div></div>
+      `;
+    }
+
+    function showPanelForCountry(name, ctryIn, totals){
+      const title = document.getElementById('panel-title');
+      const meta  = document.getElementById('panel-meta');
+      const list  = document.getElementById('panel-list');
+      const subs  = document.getElementById('panel-subhead');
+      const stats = document.getElementById('panel-totals');
+
+      title.textContent = name;
+      meta.innerHTML = `<span class="tag">Type: Country</span>`;
+      subs.textContent = 'Programs contributing';
+
+      const m = ctryIn.get(name) || new Map();
+      const items = [...m.entries()].sort(byCountDesc);
+      list.innerHTML = items.slice(0, 50).map(([prog,val]) => `<li><b>${prog}</b>`).join('') || '<li class="hint">No connections.</li>';
+
+      const count = items.length;
+      const weight = sum(items.map(d=>d[1]));
+      stats.innerHTML = `
+        <div class="stat"><b>${fmt.format(count)}</b><div>Programs</div></div>
+        <div class="stat"><b>${fmt.format(weight)}</b><div>Total value</div></div>
+        <div class="stat"><b>${fmt.format(totals.programs)}</b><div>Programs overall</div></div>
+      `;
+    }
+
+    function showPanelForLink(from, to, weight){
+      const title = document.getElementById('panel-title');
+      const meta  = document.getElementById('panel-meta');
+      const list  = document.getElementById('panel-list');
+      const subs  = document.getElementById('panel-subhead');
+      const stats = document.getElementById('panel-totals');
+
+      title.textContent = `${from} → ${to}`;
+      meta.innerHTML = `<span class="tag">Type: Link</span>`;
+      subs.textContent = 'Details';
+      list.innerHTML = `<li><b>${from}</b> to <b>${to}</b></li>`;
+    }
+
+    function clearPanel(totals){
+      const title = document.getElementById('panel-title');
+      const meta  = document.getElementById('panel-meta');
+      const list  = document.getElementById('panel-list');
+      const subs  = document.getElementById('panel-subhead');
+      const stats = document.getElementById('panel-totals');
+
+      title.textContent = 'Hover a program/country/link';
+      meta.innerHTML = '';
+      subs.textContent = 'Overview';
+      list.innerHTML = `
+        <li>Total programs: <b>${fmt.format(totals.programs)}</b></li>
+        <li>Total countries: <b>${fmt.format(totals.countries)}</b></li>
+      `;
+    }
+
+    // ---- main --------------------------------------------------------------
+    let locked = false; // click to lock; Esc to clear
+
+    fetch(DATA_URL)
+      .then(r => {
+        if(!r.ok) throw new Error(`HTTP ${r.status}`);
+        return r.json();
+      })
+      .then(records => {
+        const structures = deriveStructures(records);
+
+        // Build series data directly from records
+        const seriesData = records.map(([from,to,w]) => [from,to,Number(w)||0]);
+
+        const chart = Highcharts.chart('sankey', {
+          chart: {
+            inverted: true,        // top → bottom
+            height: '100%'
+          },
+          title: { text: 'Food Assistance Programs → Countries' },
+          credits: { enabled: false },
+          tooltip: {
+            pointFormatter: function(){
+              if(this.isNode){
+                const type = structures.programs.includes(this.name) ? 'Program' : 'Country';
+                return `<b>${Highcharts.escapeHTML(this.name)}</b><br/>${type}`;
+              } else {
+                return `<b>${Highcharts.escapeHTML(this.from)}</b> → <b>${Highcharts.escapeHTML(this.to)}</b><br/>Value: <b>${fmt.format(this.weight)}</b>`;
+              }
+            }
+          },
+          plotOptions: {
+            series: {
+              states: { inactive: { opacity: 0.2 } }
+            },
+            sankey: {
+              nodeAlignment: 'center', // center the top row when inverted
+              nodePadding: 6,
+              nodeWidth: 14,
+              curveFactor: 0.28,
+              dataLabels: {
+                enabled: true,
+                style: { textOutline: 'none', fontWeight: 600 }
+              },
+              allowPointSelect: true,
+              point: {
+                events: {
+                  mouseOver: function(){
+                    if(locked) return;
+                    if(this.isNode){
+                      const name = this.name;
+                      if(structures.programs.includes(name)){
+                        showPanelForProgram(name, structures.progOut, structures.totals);
+                      } else {
+                        showPanelForCountry(name, structures.ctryIn, structures.totals);
+                      }
+                    } else {
+                      showPanelForLink(this.from, this.to, this.weight);
+                    }
+                  },
+                  click: function(){
+                    // toggle lock on click
+                    locked = !locked;
+                    if(locked){
+                      // ensure panel reflects the clicked thing
+                      if(this.isNode){
+                        const name = this.name;
+                        if(structures.programs.includes(name)){
+                          showPanelForProgram(name, structures.progOut, structures.totals);
+                        } else {
+                          showPanelForCountry(name, structures.ctryIn, structures.totals);
+                        }
+                      } else {
+                        showPanelForLink(this.from, this.to, this.weight);
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          series: [{
+            type: 'sankey',
+            keys: ['from', 'to', 'weight'],
+            nodes: structures.nodes,
+            data: seriesData
+          }]
+        });
+
+        // init panel
+        clearPanel(structures.totals);
+
+        // ESC clears lock + panel
+        window.addEventListener('keydown', (e) => {
+          if(e.key === 'Escape'){
+            locked = false;
+            clearPanel(structures.totals);
+            // also clear any selected points
+            chart.series[0].points.forEach(p => p.select && p.select(false));
+          }
+        });
+      })
+      .catch(err => {
+        document.getElementById('sankey').innerHTML =
+          `<div style="padding:16px;color:#b00020">Could not load <code>${DATA_URL}</code>: ${err.message}. Serve via a local server.</div>`;
+        console.error(err);
+      });
+  </script>
+</body>
+</html>
