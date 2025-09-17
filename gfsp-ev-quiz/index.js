@@ -12,7 +12,7 @@ const TERMS_CSV_URL =
 const SIMILAR_CSV_URL =
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vRgOfHh9YCuNrgBcjl2rx0QzROSTi7qnWBFmmY3UBeWVmqy_AFvCLafTHw3pDvtexoEyGwqa6DFkSOB/pub?gid=23026962&single=true&output=csv";
 const DEFS_CSV_URL =
-  "https://docs.google.com/spreadsheets/d/e/2PACX-1vRgOfHh9YCuNrgBcjl2rx0QzROSTi7qnWBFmmY3UBeWVmqy_AFvCLafTHw3pDvtexoEyGwqa6DFkSOB/pub?gid=1723466829&single=true&output=csv"
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vRgOfHh9YCuNrgBcjl2rx0QzROSTi7qnWBFmmY3UBeWVmqy_AFvCLafTHw3pDvtexoEyGwqa6DFkSOB/pub?gid=1723466829&single=true&output=csv";
 
 // Fetch + parse a CSV to array of objects
 function fetchCsv(url) {
@@ -130,7 +130,7 @@ async function loadDecisionTreeData() {
     if (p && row.term) p.terms.push(String(row.term).trim());
   });
 
-defsRows.forEach((row) => {
+  defsRows.forEach((row) => {
     const pid = String(row.profileId || "").trim();
     const p = profiles.get(pid);
     if (!p) return;
@@ -239,22 +239,86 @@ function sanitizeHtml(html, extraTags = []) {
 // keep a thin wrapper for places where we only want inline tags
 const sanitizeInlineHtml = (html) => sanitizeHtml(html, []);
 
+// Turn "Case Study: India" → "profile-case-study-india"
+function slugifyId(str) {
+  return ("profile-" + String(str || ""))
+    .normalize("NFD") // strip accents
+    .replace(/\p{Diacritic}/gu, "")
+    .toLowerCase()
+    .replace(/['".]/g, "") // drop punctuation
+    .replace(/[^a-z0-9]+/g, "-") // spaces → dashes
+    .replace(/^-+|-+$/g, ""); // trim dashes
+}
+
+const USED_ANCHOR_IDS = new Set();
+function getProfileAnchorId(p) {
+  const base = slugifyId(p.name || p.profileId);
+  let id = base,
+    i = 2;
+  while (USED_ANCHOR_IDS.has(id)) id = `${base}-${i++}`; // ensure uniqueness
+  USED_ANCHOR_IDS.add(id);
+  return id;
+}
+
+function scrollToHash({ smooth = true } = {}) {
+  const hash = decodeURIComponent(location.hash.replace(/^#/, ""));
+  if (!hash) return;
+  const el = document.getElementById(hash);
+  if (!el) return;
+  el.scrollIntoView({
+    behavior: smooth ? "smooth" : "auto",
+    block: "start",
+    inline: "nearest",
+  });
+}
+
+window.addEventListener("hashchange", () => scrollToHash({ smooth: true }));
+window.addEventListener("load", () => scrollToHash({ smooth: true }));
+
+
+// wait for all <img> inside a container
+function waitForImages(container) {
+  const imgs = Array.from(container.querySelectorAll("img"));
+  if (!imgs.length) return Promise.resolve();
+  return Promise.all(
+    imgs.map((img) =>
+      img.complete
+        ? Promise.resolve()
+        : new Promise((res) => {
+            img.addEventListener("load", res, { once: true });
+            img.addEventListener("error", res, { once: true }); // resolve anyway
+          })
+    )
+  );
+}
+
+function debounce(fn, ms = 150) {
+  let t;
+  return (...args) => {
+    clearTimeout(t);
+    t = setTimeout(() => fn(...args), ms);
+  };
+}
+
 // Render a definition list from {label, html} objects
 function renderDefinitionList(defs) {
   if (!defs?.length) return "";
   return `<dl class="profile-defs">
-    ${defs.map(({ label, html }) => `
+    ${defs
+      .map(
+        ({ label, html }) => `
       <dt>${escapeHtml(label)}</dt>
-      <dd>${sanitizeHtml(html, ["p","ul","ol","li"])}</dd>
-    `).join("")}
+      <dd>${sanitizeHtml(html, ["p", "ul", "ol", "li"])}</dd>
+    `
+      )
+      .join("")}
   </dl>`;
 }
-
 
 // Build the profile HTML for leaf nodes
 function renderProfileHTML(p, opts = {}) {
   if (!p) return "";
-  const { leadText = "" } = opts;
+  const { leadText = "", htmlId = "" } = opts;
 
   const termsHtml = p.terms.length
     ? `<div class="profile-terms">${p.terms
@@ -314,7 +378,9 @@ function renderProfileHTML(p, opts = {}) {
             ? `<img class="profile-flag" src="${p.flagUrl}" alt="" />`
             : ""
         }
-        <h2 class="profile-title">${escapeHtml(p.name)}</h2>
+        <h2 class="profile-title"${
+          htmlId ? ` id="${escapeHtml(htmlId)}"` : ""
+        }>${escapeHtml(p.name)}</h2>
       </header>
       ${termsHtml}
       ${defsHtml}
@@ -344,10 +410,12 @@ function activateFlourishEmbeds(root = document) {
 function renderProfiles(container, profilesArray) {
   if (!container || !profilesArray?.length) return;
   const frag = document.createDocumentFragment();
+
   profilesArray.forEach((p) => {
+    const id = getProfileAnchorId(p);
     const card = document.createElement("article");
     card.className = "card profile-card";
-    card.innerHTML = renderProfileHTML(p);
+    card.innerHTML = renderProfileHTML(p, { htmlId: id });
     frag.appendChild(card);
   });
   container.appendChild(frag);
@@ -665,9 +733,28 @@ function renderProfiles(container, profilesArray) {
   };
 
   const profilesRoot = document.getElementById("profiles");
-if (profilesRoot && profilesArray.length) {
-  renderProfiles(profilesRoot, profilesArray);
-}
+  if (profilesRoot && profilesArray.length) {
+    renderProfiles(profilesRoot, profilesArray);
+    // 1) wait for fonts and images (prevents “too high” landings)
+    if (document.fonts?.ready) {
+      try {
+        await document.fonts.ready;
+      } catch {}
+    }
+    await waitForImages(profilesRoot);
+
+    // 2) first snap-to (no smooth) once layout is stable
+    requestAnimationFrame(() => scrollToHash({ smooth: false }));
+
+    // 3) light retries for late layout shifts (e.g., Flourish iframes)
+    setTimeout(() => scrollToHash({ smooth: true }), 250);
+    setTimeout(() => scrollToHash({ smooth: true }), 1000);
+
+    // 4) watch for embed mutations and re-scroll once (debounced)
+    const reScroll = debounce(() => scrollToHash({ smooth: true }), 200);
+    const mo = new MutationObserver(reScroll);
+    mo.observe(profilesRoot, { childList: true, subtree: true });
+  }
 
   // Instantiate with sheet-driven data
   const tree = new DecisionTree(nodesArray);

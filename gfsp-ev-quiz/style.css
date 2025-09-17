@@ -324,6 +324,10 @@ body {
   line-height: 1.2;
 }
 
+.profile-title[id] {
+  scroll-margin-top: 140px;
+}
+
 .profile-terms {
   display: flex;
   flex-wrap: wrap;
