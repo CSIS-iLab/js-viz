@@ -9,10 +9,10 @@ const PROFILES_CSV_URL =
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vRgOfHh9YCuNrgBcjl2rx0QzROSTi7qnWBFmmY3UBeWVmqy_AFvCLafTHw3pDvtexoEyGwqa6DFkSOB/pub?gid=1726675466&single=true&output=csv";
 const TERMS_CSV_URL =
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vRgOfHh9YCuNrgBcjl2rx0QzROSTi7qnWBFmmY3UBeWVmqy_AFvCLafTHw3pDvtexoEyGwqa6DFkSOB/pub?gid=1457210827&single=true&output=csv";
-const BULLETS_CSV_URL =
-  "https://docs.google.com/spreadsheets/d/e/2PACX-1vRgOfHh9YCuNrgBcjl2rx0QzROSTi7qnWBFmmY3UBeWVmqy_AFvCLafTHw3pDvtexoEyGwqa6DFkSOB/pub?gid=1276069821&single=true&output=csv";
 const SIMILAR_CSV_URL =
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vRgOfHh9YCuNrgBcjl2rx0QzROSTi7qnWBFmmY3UBeWVmqy_AFvCLafTHw3pDvtexoEyGwqa6DFkSOB/pub?gid=23026962&single=true&output=csv";
+const DEFS_CSV_URL =
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vRgOfHh9YCuNrgBcjl2rx0QzROSTi7qnWBFmmY3UBeWVmqy_AFvCLafTHw3pDvtexoEyGwqa6DFkSOB/pub?gid=1723466829&single=true&output=csv"
 
 // Fetch + parse a CSV to array of objects
 function fetchCsv(url) {
@@ -37,15 +37,15 @@ async function loadDecisionTreeData() {
     optionsRows,
     profilesRows,
     termsRows,
-    bulletsRows,
     similarRows,
+    defsRows,
   ] = await Promise.all([
     fetchCsv(NODES_CSV_URL),
     fetchCsv(OPTIONS_CSV_URL),
     fetchCsv(PROFILES_CSV_URL),
     fetchCsv(TERMS_CSV_URL),
-    fetchCsv(BULLETS_CSV_URL),
     fetchCsv(SIMILAR_CSV_URL),
+    fetchCsv(DEFS_CSV_URL),
   ]);
 
   // Normalize parentId and coerce empty -> null
@@ -103,6 +103,7 @@ async function loadDecisionTreeData() {
 
   profilesRows.forEach((row) => {
     const pid = String(row.profileId).trim();
+    if (!pid) return;
     const iso2 = (row.iso2 || "").trim().toLowerCase();
     const flagUrl =
       (row.flagUrl || "").trim() ||
@@ -115,7 +116,7 @@ async function loadDecisionTreeData() {
       iso2,
       flagUrl,
       terms: [],
-      bulletsTree: [],
+      defs: [],
       flourishSrc,
       similarLinks: [],
     };
@@ -129,65 +130,23 @@ async function loadDecisionTreeData() {
     if (p && row.term) p.terms.push(String(row.term).trim());
   });
 
-  (function buildBulletTrees() {
-    // temp index per profile
-    const allByProfile = new Map(); // pid -> array of items
-    const byKey = new Map(); // `${pid}::${bulletId}` -> item
+defsRows.forEach((row) => {
+    const pid = String(row.profileId || "").trim();
+    const p = profiles.get(pid);
+    if (!p) return;
+    const label = (row.label || "").trim();
+    const html = String(row.html || "").trim();
+    if (!label || !html) return;
+    const order = Number(row.order ?? 0);
+    p.defs.push({ label, html, order });
+  });
 
-    bulletsRows.forEach((row) => {
-      const pid = String(row.profileId || "").trim();
-      const p = profiles.get(pid);
-      if (!p) return;
-
-      const bid = String(row.bulletId || "").trim();
-      if (!bid) return;
-
-      const item = {
-        id: bid,
-        html: String(row.html ?? row.bullet ?? row.text ?? "").trim(),
-        order: Number(row.order ?? 0),
-        children: [],
-        _parentId:
-          String(row.parentBulletId || row.parentId || "").trim() || null,
-      };
-
-      if (!allByProfile.has(pid)) allByProfile.set(pid, []);
-      allByProfile.get(pid).push(item);
-
-      byKey.set(`${pid}::${bid}`, item);
-    });
-
-    // link children to parents, compute roots, sort
-    for (const [pid, items] of allByProfile.entries()) {
-      const p = profiles.get(pid);
-      if (!p) continue;
-
-      // stable sort by order for deterministic output
-      items.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
-
-      const roots = [];
-      for (const it of items) {
-        if (it._parentId) {
-          const parent = byKey.get(`${pid}::${it._parentId}`);
-          if (parent) parent.children.push(it);
-          else roots.push(it); // orphan -> treat as root
-        } else {
-          roots.push(it);
-        }
-      }
-
-      // recursive sort of children by order
-      function sortChildren(node) {
-        if (node.children && node.children.length) {
-          node.children.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
-          node.children.forEach(sortChildren);
-        }
-      }
-      roots.forEach(sortChildren);
-
-      p.bulletsTree = roots;
+  // sort defs by order
+  for (const p of profiles.values()) {
+    if (p.defs.length) {
+      p.defs.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
     }
-  })();
+  }
 
   similarRows.forEach((row) => {
     const pid = String(row.profileId || "").trim();
@@ -251,13 +210,13 @@ function escapeHtml(s) {
   );
 }
 
-// Allow a tiny subset of inline HTML in bullets (links, emphasis, line breaks)
-function sanitizeInlineHtml(html) {
+// Allow a tiny subset of inline HTML (links, emphasis, line breaks)
+function sanitizeHtml(html, extraTags = []) {
   if (!window.DOMPurify) return escapeHtml(String(html || "")); // fallback
 
   // 1) Strip everything except a/strong/em/b/i/br and link attributes we care about
   const clean = DOMPurify.sanitize(String(html || ""), {
-    ALLOWED_TAGS: ["a", "strong", "em", "b", "i", "br"],
+    ALLOWED_TAGS: ["a", "strong", "em", "b", "i", "br", ...extraTags],
     ALLOWED_ATTR: ["href", "target", "rel"],
     FORBID_ATTR: [/^on/i, "style"], // kill event handlers & inline styles
     ALLOW_UNKNOWN_PROTOCOLS: false,
@@ -277,17 +236,20 @@ function sanitizeInlineHtml(html) {
   return tmp.innerHTML;
 }
 
-function renderBulletList(items) {
-  if (!items || !items.length) return "";
-  return `<ul class="profile-bullets">${items
-    .map(
-      (it) =>
-        `<li>${sanitizeInlineHtml(it.html)}${renderBulletList(
-          it.children
-        )}</li>`
-    )
-    .join("")}</ul>`;
+// keep a thin wrapper for places where we only want inline tags
+const sanitizeInlineHtml = (html) => sanitizeHtml(html, []);
+
+// Render a definition list from {label, html} objects
+function renderDefinitionList(defs) {
+  if (!defs?.length) return "";
+  return `<dl class="profile-defs">
+    ${defs.map(({ label, html }) => `
+      <dt>${escapeHtml(label)}</dt>
+      <dd>${sanitizeHtml(html, ["p","ul","ol","li"])}</dd>
+    `).join("")}
+  </dl>`;
 }
+
 
 // Build the profile HTML for leaf nodes
 function renderProfileHTML(p, opts = {}) {
@@ -300,9 +262,7 @@ function renderProfileHTML(p, opts = {}) {
         .join("")}</div>`
     : "";
 
-  const bulletsHtml = p.bulletsTree?.length
-    ? renderBulletList(p.bulletsTree)
-    : "";
+  const defsHtml = renderDefinitionList(p.defs);
 
   let chartHtml = "";
   if (p.flourishSrc) {
@@ -357,7 +317,7 @@ function renderProfileHTML(p, opts = {}) {
         <h2 class="profile-title">${escapeHtml(p.name)}</h2>
       </header>
       ${termsHtml}
-      ${bulletsHtml}
+      ${defsHtml}
       ${chartHtml}
       ${similarHtml}
     </section>`;
@@ -669,7 +629,7 @@ function renderProfiles(container, profilesArray) {
       const firstEl = container.firstElementChild;
       if (!firstEl) return;
 
-      // Don’t style media/profile/option wrappers
+      // Don't style media/profile/option wrappers
       if (
         !firstEl.matches("figure, .question-media, .options-grid, .profile")
       ) {

@@ -141,6 +141,8 @@ body {
 }
 
 .card {
+  position: relative;
+  z-index: 2;
   width: min(920px, 92vw);
   margin: clamp(24px, 6vh, 64px) auto;
   background: var(--surface);
@@ -169,15 +171,17 @@ body {
 .question-lead {
   position: relative;
   padding-left: 0.75rem;
-  font-weight: 700;
-  font-size: clamp(1.05rem, 1.2vw + 0.9rem, 1.35rem);
+  /* font-weight: 700; */
+  /* font-size: clamp(1.05rem, 1.2vw + 0.9rem, 1.35rem); */
   line-height: 1.35;
   color: var(--text);
-  margin: 0 0 0.25rem;
+  /* margin: 0 0 0.25rem; */
+  font: 600 1.2rem/1.35 system-ui, sans-serif;
+  margin: 0 0 0.5rem 0;
 }
 
 .question-media {
-  margin: .5rem 0 .85rem;
+  margin: 0.5rem 0 0.85rem;
 }
 
 .question-media img {
@@ -197,7 +201,7 @@ body {
 }
 
 .options-grid {
-  margin-top: .35rem;
+  margin-top: 0.35rem;
   display: grid;
   grid-template-columns: 1fr;
   gap: 12px;
@@ -260,16 +264,16 @@ body {
 
 @media (min-width: 900px) {
   .profile {
-    grid-template-areas: "lead lead" "header header" "terms terms" "bullets chart" "similar similar";
+    grid-template-areas: "lead lead" "header header" "terms terms" "defs chart" "similar similar";
     grid-template-columns: 6fr 5fr;
   }
 }
 
 .card-content .result-lead {
-  margin: 0 0 .25rem 0;
+  margin: 0 0 0.25rem 0;
   font-weight: 600;
   font-size: 0.875rem;
-  letter-spacing: .01em;
+  letter-spacing: 0.01em;
   color: var(--text-muted, #666);
   text-transform: none; /* or uppercase if you prefer */
 }
@@ -341,27 +345,54 @@ body {
   background: var(--surface-2);
 }
 
-.profile-bullets {
-  padding-left: 1.1rem;
+.profile-defs {
   margin: 0;
-  display: grid;
-  gap: 0.4rem;
-  align-content: start;
-  font-size: 0.875rem;
+  padding: 0;
 }
 
 @media (min-width: 900px) {
-  .profile-bullets {
-    grid-area: bullets;
+  .profile-defs {
+    grid-area: defs;
   }
 }
 
-.profile-bullets ul {
-  margin-top: 0.35rem;
+.profile-defs dt {
+  font-weight: 700;
+  color: var(--text-strong, #222);
+  display: inline;
 }
 
-.profile-bullets li {
-  margin: 0.1rem 0;
+.profile-defs dt::after {
+  content: ": ";
+}
+
+.profile-defs dd {
+  margin: 0;
+  display: inline;
+  vertical-align: top;
+}
+
+.profile-defs dd::after {
+  content: "";
+  display: block;
+  height: 0.75rem;
+}
+
+/* .profile-defs dd + dt {
+  display: block;
+  margin-top: 0.75rem;
+} */
+
+.profile-defs dd > p {
+  margin: 0;
+}
+
+.profile-defs dd > p:first-child {
+  display: inline;
+}
+
+.profile-defs dd > p + p {
+  margin-top: 0.5rem;
 }
 
 .profile-chart {
@@ -426,4 +457,31 @@ body {
     transition: none;
     animation: none;
   }
+}
+/* * Car and road styles */
+
+.quiz-stage {
+  position: relative;
+  width: 100%;
+  height: clamp(180px, 28vh, 260px);
+  margin-bottom: 1rem;
+  overflow: hidden;
+  border-radius: 12px;
+  background: radial-gradient(200% 100% at 50% 0%, #f8f8f8 0%, #fff 60%);
+}
+
+#roadScene {
+  width: 140%; /* wider than container so we can pan */
+  height: 100%;
+  transform: translateX(0); /* we’ll animate this */
+  will-change: transform;
+}
+
+#roadPath {
+  filter: drop-shadow(0 2px 0 rgba(0, 0, 0, 0.06));
+}
+
+#car image,
+#car svg {
+  filter: drop-shadow(0 6px 6px rgba(0, 0, 0, 0.18));
 }
