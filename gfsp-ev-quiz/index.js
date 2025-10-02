@@ -1,31 +1,32 @@
 // Modified from https://codepen.io/jnsmith/pen/vYBzEOP
 
-// --- resilient GSAP loader ---------------------------------------------------
+// ---- GSAP loader (robust & ordered) ----
 function loadScript(src) {
-  return new Promise((res, rej) => {
+  return new Promise((resolve, reject) => {
     const s = document.createElement("script");
     s.src = src;
     s.async = true;
-    s.onload = () => res();
-    s.onerror = () => rej(new Error("Failed to load " + src));
+    s.crossOrigin = "anonymous";
+    s.onload = resolve;
+    s.onerror = () => reject(new Error("Failed to load " + src));
     document.head.appendChild(s);
   });
 }
 
 async function ensureGSAP() {
-  if (window.gsap) return true;
-  try {
+  if (!window.gsap) {
     await loadScript("https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js");
+  }
+  if (!window.MotionPathPlugin) {
     await loadScript(
       "https://cdn.jsdelivr.net/npm/gsap@3/dist/MotionPathPlugin.min.js"
     );
-    const MPP = window.MotionPathPlugin;
-    if (MPP && window.gsap) window.gsap.registerPlugin(MPP);
-  } catch (e) {
-    console.warn("GSAP could not be loaded, will use rAF fallback.", e);
-    return false;
   }
-  return !!window.gsap;
+  if (window.gsap && window.MotionPathPlugin) {
+    window.gsap.registerPlugin(window.MotionPathPlugin);
+    return true;
+  }
+  return !!window.gsap; // core only
 }
 
 // === CONFIG: your published CSV URLs ===
@@ -87,13 +88,6 @@ function fetchCsv(url) {
     });
   });
 }
-
-console.log(
-  "GSAP?",
-  !!window.gsap,
-  "MotionPath available?",
-  !!(gsap.plugins && gsap.plugins.MotionPathPlugin)
-);
 
 // Build the `data` array in the exact shape your DecisionTree expects
 async function loadDecisionTreeData() {
@@ -489,6 +483,14 @@ function renderProfiles(container, profilesArray) {
 
 // ----- load data, then init tree -----
 (async function init() {
+  const gsapOk = await ensureGSAP();
+  console.log(
+    "GSAP ready?",
+    !!window.gsap,
+    "MotionPath ready?",
+    !!window.gsap?.plugins?.MotionPathPlugin
+  );
+
   const { nodesArray, profilesArray } = await loadDecisionTreeData();
 
   const DecisionTree = function (nodes) {
@@ -609,6 +611,8 @@ function renderProfiles(container, profilesArray) {
       // where along each path the pill center sits (0…1) – adjust if needed
       this.pillT = { yes: 0.4, no: 0.88 };
       this.pillR = { yes: -120, no: -19 }; // distance from road to pill center (tweakable)
+
+      this._computeBleed();
 
       this.animating = false;
     }
@@ -731,6 +735,124 @@ function renderProfiles(container, profilesArray) {
       onDone && onDone();
     }
 
+    // Sample points (for translation bleed)
+    _samplePath(pathEl, steps = 100) {
+      const L = pathEl.getTotalLength();
+      const pts = [];
+      for (let i = 0; i <= steps; i++) {
+        const p = pathEl.getPointAtLength((i / steps) * L);
+        pts.push({ x: p.x, y: p.y });
+      }
+      return pts;
+    }
+
+    // Sample tangent angles along the path (for rotation bleed)
+    _sampleAngles(pathEl, steps = 100) {
+      const L = pathEl.getTotalLength();
+      const eps = Math.max(1, L / (steps * 10)); // small delta length
+      const angs = [];
+      for (let i = 0; i <= steps; i++) {
+        const s = (i / steps) * L;
+        const p1 = pathEl.getPointAtLength(Math.max(0, s - eps));
+        const p2 = pathEl.getPointAtLength(Math.min(L, s + eps));
+        const a = Math.atan2(p2.y - p1.y, p2.x - p1.x);
+        angs.push(a);
+      }
+      return angs;
+    }
+
+    _samplePathSegment(pathEl, tEnd = 1, steps = 100) {
+      const L = pathEl.getTotalLength();
+      const pts = [];
+      const maxS = Math.max(0, Math.min(1, tEnd)) * L;
+      for (let i = 0; i <= steps; i++) {
+        const s = (i / steps) * maxS;
+        const p = pathEl.getPointAtLength(s);
+        pts.push({ x: p.x, y: p.y });
+      }
+      return pts;
+    }
+
+    _sampleAnglesSegment(pathEl, tEnd = 1, steps = 100) {
+      const L = pathEl.getTotalLength();
+      const maxS = Math.max(0, Math.min(1, tEnd)) * L;
+      const eps = Math.max(1, maxS / (steps * 10));
+      const angs = [];
+      for (let i = 0; i <= steps; i++) {
+        const s = (i / steps) * maxS;
+        const p1 = pathEl.getPointAtLength(Math.max(0, s - eps));
+        const p2 = pathEl.getPointAtLength(Math.min(maxS, s + eps));
+        angs.push(Math.atan2(p2.y - p1.y, p2.x - p1.x));
+      }
+      return angs;
+    }
+
+    // normalize angle to [-PI, PI]
+    _normAngle(rad) {
+      return Math.atan2(Math.sin(rad), Math.cos(rad));
+    }
+
+    _computeBleed() {
+      const start = this.geo.start;
+      const vw = BASE.w,
+        vh = BASE.h;
+
+      const calc = (pathEl, tEnd) => {
+        // translation
+        const pts = this._samplePathSegment(pathEl, tEnd);
+        let maxDx = 0,
+          maxDy = 0;
+        for (const p of pts) {
+          maxDx = Math.max(maxDx, Math.abs(p.x - start.x));
+          maxDy = Math.max(maxDy, Math.abs(p.y - start.y));
+        }
+
+        // rotation
+        const angs = this._sampleAnglesSegment(pathEl, tEnd);
+        const a0 = angs[0] ?? 0;
+        let needW = vw,
+          needH = vh;
+        for (const a of angs) {
+          const d = Math.abs(this._normAngle(a - a0)); // Δa
+          const reqW = vw * Math.abs(Math.cos(d)) + vh * Math.abs(Math.sin(d));
+          const reqH = vw * Math.abs(Math.sin(d)) + vh * Math.abs(Math.cos(d));
+          if (reqW > needW) needW = reqW;
+          if (reqH > needH) needH = reqH;
+        }
+        const rotX = Math.ceil((needW - vw) / 2);
+        const rotY = Math.ceil((needH - vh) / 2);
+        return { maxDx, maxDy, rotX, rotY };
+      };
+
+      const cY = calc(this.pathEls.yes, this.pillT.yes);
+      const cN = calc(this.pathEls.no, this.pillT.no);
+
+      const pad = 12; // was 24; smaller by default
+      let bleedX = Math.max(
+        cY.rotX,
+        cN.rotX,
+        Math.ceil(cY.maxDx) + pad,
+        Math.ceil(cN.maxDx) + pad
+      );
+      let bleedY = Math.max(
+        cY.rotY,
+        cN.rotY,
+        Math.ceil(cY.maxDy) + pad,
+        Math.ceil(cN.maxDy) + pad
+      );
+
+      // clamp to something sane so it never gets “huge”
+      const maxBleedX = Math.floor(BASE.w * 0.5); // at most 50% of viewBox width
+      const maxBleedY = Math.floor(BASE.h * 0.5); // at most 50% of viewBox height
+      this.bleed = {
+        x: Math.min(bleedX, maxBleedX),
+        y: Math.min(bleedY, maxBleedY),
+      };
+
+      // debug if things look off
+      // console.log('bleed', this.bleed);
+    }
+
     // ---------- drawing per step ----------
     setStep(node) {
       const { back, road, btns, front } = this.layers;
@@ -739,25 +861,37 @@ function renderProfiles(container, profilesArray) {
       btns.replaceChildren();
       front.replaceChildren();
 
-      back.append(
-        this._img(ROAD_ASSETS.tunnelBack, BASE.w, BASE.h, 0, 0, "none")
-      );
-      road.append(this._img(ROAD_ASSETS.road, BASE.w, BASE.h, 0, 0, "none"));
+      const bx = this.bleed?.x || 0;
+      const by = this.bleed?.y || 0;
+      const W = BASE.w + 2 * bx;
+      const H = BASE.h + 2 * by;
+
+      // shift all art layers by -bleed so the “extra pixels” sit offscreen
+      if (window.gsap) {
+        gsap.set([back, road, btns, front], { x: -bx, y: -by });
+      } else {
+        [back, road, btns, front].forEach((g) =>
+          g.setAttribute("transform", `translate(${-bx},${-by})`)
+        );
+      }
+
+      back.append(this._img(ROAD_ASSETS.tunnelBack, W, H, 0, 0, "none"));
+      road.append(this._img(ROAD_ASSETS.road, W, H, 0, 0, "none"));
       btns.append(
-        this._img(ROAD_ASSETS.pill, BASE.w, BASE.h, 0, 0, "none"), // draw the blue pills
+        this._img(ROAD_ASSETS.pill, W, H, 0, 0, "none"),
         this.yesFO,
         this.noFO
       );
 
       const topImg = this._img(
         resolveTopperSrc(node?.data?.topper),
-        BASE.w,
-        BASE.h,
+        W,
+        H,
         0,
         0,
         "none"
       );
-      topImg.style.pointerEvents = "none"; // topper should not block clicks
+      topImg.style.pointerEvents = "none";
       front.append(topImg);
 
       // reset cameras + car
@@ -788,99 +922,78 @@ function renderProfiles(container, profilesArray) {
     }
 
     // ---------- animation (move the world, not the car) ----------
-    drive(choice, onDone) {
-      if (this.animating) return;
-      this.animating = true;
+drive(choice, onDone) {
+  if (this.animating) return;
+  this.animating = true;
 
-      const pathEl = this.pathEls[choice];
-      if (!pathEl) {
-        this._finishDrive(onDone);
-        return;
-      }
+  const pathEl = this.pathEls[choice];
+  if (!pathEl) { this._finishDrive(onDone); return; }
 
-      // make buttons inert/hidden during travel
-      this.btnYes.style.pointerEvents = this.btnNo.style.pointerEvents = "none";
-      this.yesFO.style.opacity = this.noFO.style.opacity = "0";
+  // disable/hide buttons during travel
+  this.btnYes.style.pointerEvents = this.btnNo.style.pointerEvents = "none";
+  this.yesFO.style.opacity = this.noFO.style.opacity = "0";
 
-      const originX = this.geo.start.x;
-      const originY = this.geo.start.y;
+  const originX = this.geo.start.x;
+  const originY = this.geo.start.y;
 
-      // helper to apply a translate+rotation matrix to both camera groups
-      const applyTransform = (px, py, rotRad) => {
-        const cos = Math.cos(-rotRad),
-          sin = Math.sin(-rotRad);
-        const dx = originX - px;
-        const dy = originY - py;
-        const m = `matrix(${cos},${sin},${-sin},${cos},${dx},${dy})`;
-        this.cameraBehind.setAttribute("transform", m);
-        this.cameraFront.setAttribute("transform", m);
-      };
+  const applyTransform = (px, py, rotRad) => {
+    const c = Math.cos(-rotRad), s = Math.sin(-rotRad);
+    const dx = originX - px, dy = originY - py;
+    const m = `matrix(${c},${s},${-s},${c},${dx},${dy})`;
+    this.cameraBehind.setAttribute("transform", m);
+    this.cameraFront.setAttribute("transform", m);
+  };
 
-      const L = pathEl.getTotalLength();
-      const duration = 1100; // ms
+  const L = pathEl.getTotalLength();
+  const D = 1.05;                 // seconds
+  const endT = this.pillT[choice]; // only animate up to the fork
 
-      // --- Branch A: GSAP present ---
-      if (window.gsap) {
-        const hasMPP = !!(
-          window.gsap.plugins && window.gsap.plugins.MotionPathPlugin
+  // Use GSAP MotionPath if available
+  if (window.gsap?.plugins?.MotionPathPlugin) {
+    const follower = { x: originX, y: originY, rotation: 0 };
+    gsap.set([this.cameraBehind, this.cameraFront], {
+      transformOrigin: `${originX} ${originY}`,
+    });
+    gsap.to(follower, {
+      duration: D,
+      ease: "power2.inOut",
+      motionPath: {
+        path: pathEl,
+        align: pathEl,
+        autoRotate: true,
+        alignOrigin: [0.5, 0.5],
+        start: 0,
+        end: endT, // stop at the fork
+      },
+      onUpdate: () => {
+        applyTransform(
+          follower.x,
+          follower.y,
+          (follower.rotation * Math.PI) / 180
         );
-        if (hasMPP) {
-          const follower = { x: originX, y: originY, rotation: 0 };
-          gsap.set([this.cameraBehind, this.cameraFront], {
-            transformOrigin: `${originX} ${originY}`,
-          });
-          gsap.to(follower, {
-            duration: duration / 1000,
-            ease: "power2.inOut",
-            motionPath: {
-              path: pathEl,
-              align: pathEl,
-              autoRotate: true,
-              alignOrigin: [0.5, 0.5],
-            },
-            onUpdate: () =>
-              applyTransform(
-                follower.x,
-                follower.y,
-                (follower.rotation * Math.PI) / 180
-              ),
-            onComplete: () => this._finishDrive(onDone),
-          });
-          return;
-        }
+      },
+      onComplete: () => this._finishDrive(onDone),
+    });
+    return;
+  }
 
-        // GSAP core only (no MotionPath): tween a scalar and sample the SVG path
-        const o = { t: 0 };
-        gsap.to(o, {
-          duration: duration / 1000,
-          ease: "power2.inOut",
-          t: 1,
-          onUpdate: () => {
-            const len = o.t * L;
-            const p = pathEl.getPointAtLength(len);
-            const p2 = pathEl.getPointAtLength(Math.max(0, len - 1));
-            const rot = Math.atan2(p.y - p2.y, p.x - p2.x);
-            applyTransform(p.x, p.y, rot);
-          },
-          onComplete: () => this._finishDrive(onDone),
-        });
-        return;
-      }
+  // Fallback (no MotionPath): sample the path manually
+  const easeInOut = (t) => (t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t);
+  const t0 = performance.now();
+  const tick = (now) => {
+    const raw = Math.min(1, (now - t0) / (D * 1000));
+    const k = easeInOut(raw);
+    const len = k * (endT * L);
+    const p  = pathEl.getPointAtLength(len);
+    const p2 = pathEl.getPointAtLength(Math.max(0, len - 1));
+    const rot = Math.atan2(p.y - p2.y, p.x - p2.x);
+    applyTransform(p.x, p.y, rot);
+    if (raw < 1) requestAnimationFrame(tick);
+    else this._finishDrive(onDone);
+  };
+  requestAnimationFrame(tick);
+}
 
-      // --- Branch B: No GSAP at all — pure requestAnimationFrame fallback ---
-      const t0 = performance.now();
-      const tick = (now) => {
-        const k = Math.min(1, (now - t0) / duration);
-        const len = k * L;
-        const p = pathEl.getPointAtLength(len);
-        const p2 = pathEl.getPointAtLength(Math.max(0, len - 1));
-        const rot = Math.atan2(p.y - p2.y, p.x - p2.x);
-        applyTransform(p.x, p.y, rot);
-        if (k < 1) requestAnimationFrame(tick);
-        else this._finishDrive(onDone);
-      };
-      requestAnimationFrame(tick);
-    }
 
     // quick live tuning: animator.calibrate('yes', 0.82) or animator.setButtonSize(96, 40)
     calibrate(which, t, r) {
