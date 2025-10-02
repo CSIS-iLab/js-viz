@@ -1,7 +1,31 @@
 // Modified from https://codepen.io/jnsmith/pen/vYBzEOP
 
-if (window.gsap) {
-  gsap.registerPlugin(MotionPathPlugin);
+// --- resilient GSAP loader ---------------------------------------------------
+function loadScript(src) {
+  return new Promise((res, rej) => {
+    const s = document.createElement("script");
+    s.src = src;
+    s.async = true;
+    s.onload = () => res();
+    s.onerror = () => rej(new Error("Failed to load " + src));
+    document.head.appendChild(s);
+  });
+}
+
+async function ensureGSAP() {
+  if (window.gsap) return true;
+  try {
+    await loadScript("https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js");
+    await loadScript(
+      "https://cdn.jsdelivr.net/npm/gsap@3/dist/MotionPathPlugin.min.js"
+    );
+    const MPP = window.MotionPathPlugin;
+    if (MPP && window.gsap) window.gsap.registerPlugin(MPP);
+  } catch (e) {
+    console.warn("GSAP could not be loaded, will use rAF fallback.", e);
+    return false;
+  }
+  return !!window.gsap;
 }
 
 // === CONFIG: your published CSV URLs ===
@@ -63,6 +87,13 @@ function fetchCsv(url) {
     });
   });
 }
+
+console.log(
+  "GSAP?",
+  !!window.gsap,
+  "MotionPath available?",
+  !!(gsap.plugins && gsap.plugins.MotionPathPlugin)
+);
 
 // Build the `data` array in the exact shape your DecisionTree expects
 async function loadDecisionTreeData() {
@@ -502,6 +533,8 @@ function renderProfiles(container, profilesArray) {
     };
   };
 
+  await ensureGSAP();
+
   class RoadAnimator {
     constructor(svg) {
       this.svg = svg;
@@ -680,6 +713,24 @@ function renderProfiles(container, profilesArray) {
       fo.setAttribute("height", h);
     }
 
+    _finishDrive(onDone) {
+      gsap.set([this.cameraBehind, this.cameraFront], {
+        x: 0,
+        y: 0,
+        rotation: 0,
+      });
+      this._placeCar(this.geo.start);
+      // re-place buttons in case layout changed
+      if (this.pillCenters) {
+        this._placeFO(this.yesFO, this.pillCenters.yes);
+        this._placeFO(this.noFO, this.pillCenters.no);
+      }
+      this.btnYes.style.pointerEvents = this.btnNo.style.pointerEvents = "";
+      this.yesFO.style.opacity = this.noFO.style.opacity = "";
+      this.animating = false;
+      onDone && onDone();
+    }
+
     // ---------- drawing per step ----------
     setStep(node) {
       const { back, road, btns, front } = this.layers;
@@ -742,10 +793,8 @@ function renderProfiles(container, profilesArray) {
       this.animating = true;
 
       const pathEl = this.pathEls[choice];
-      if (!pathEl || !window.gsap || !window.MotionPathPlugin) {
-        this._placeCar(this.geo.start);
-        this.animating = false;
-        onDone?.();
+      if (!pathEl) {
+        this._finishDrive(onDone);
         return;
       }
 
@@ -753,52 +802,84 @@ function renderProfiles(container, profilesArray) {
       this.btnYes.style.pointerEvents = this.btnNo.style.pointerEvents = "none";
       this.yesFO.style.opacity = this.noFO.style.opacity = "0";
 
-      const follower = {
-        x: this.geo.start.x,
-        y: this.geo.start.y,
-        rotation: 0,
+      const originX = this.geo.start.x;
+      const originY = this.geo.start.y;
+
+      // helper to apply a translate+rotation matrix to both camera groups
+      const applyTransform = (px, py, rotRad) => {
+        const cos = Math.cos(-rotRad),
+          sin = Math.sin(-rotRad);
+        const dx = originX - px;
+        const dy = originY - py;
+        const m = `matrix(${cos},${sin},${-sin},${cos},${dx},${dy})`;
+        this.cameraBehind.setAttribute("transform", m);
+        this.cameraFront.setAttribute("transform", m);
       };
-      const origin = `${this.geo.start.x} ${this.geo.start.y}`; // SVG transform origin
-      gsap.set([this.cameraBehind, this.cameraFront], {
-        transformOrigin: origin,
-      });
 
-      gsap.to(follower, {
-        duration: 1.1,
-        ease: "power2.inOut",
-        motionPath: {
-          path: pathEl,
-          align: pathEl,
-          autoRotate: true,
-          alignOrigin: [0.5, 0.5],
-        },
-        onUpdate: () => {
+      const L = pathEl.getTotalLength();
+      const duration = 1100; // ms
+
+      // --- Branch A: GSAP present ---
+      if (window.gsap) {
+        const hasMPP = !!(
+          window.gsap.plugins && window.gsap.plugins.MotionPathPlugin
+        );
+        if (hasMPP) {
+          const follower = { x: originX, y: originY, rotation: 0 };
           gsap.set([this.cameraBehind, this.cameraFront], {
-            x: this.geo.start.x - follower.x,
-            y: this.geo.start.y - follower.y,
-            rotation: -follower.rotation,
+            transformOrigin: `${originX} ${originY}`,
           });
-        },
-        onComplete: () => {
-          gsap.set([this.cameraBehind, this.cameraFront], {
-            x: 0,
-            y: 0,
-            rotation: 0,
+          gsap.to(follower, {
+            duration: duration / 1000,
+            ease: "power2.inOut",
+            motionPath: {
+              path: pathEl,
+              align: pathEl,
+              autoRotate: true,
+              alignOrigin: [0.5, 0.5],
+            },
+            onUpdate: () =>
+              applyTransform(
+                follower.x,
+                follower.y,
+                (follower.rotation * Math.PI) / 180
+              ),
+            onComplete: () => this._finishDrive(onDone),
           });
-          this._placeCar(this.geo.start);
+          return;
+        }
 
-          // restore buttons
-          this.btnYes.style.pointerEvents = this.btnNo.style.pointerEvents = "";
-          this.yesFO.style.opacity = this.noFO.style.opacity = "";
+        // GSAP core only (no MotionPath): tween a scalar and sample the SVG path
+        const o = { t: 0 };
+        gsap.to(o, {
+          duration: duration / 1000,
+          ease: "power2.inOut",
+          t: 1,
+          onUpdate: () => {
+            const len = o.t * L;
+            const p = pathEl.getPointAtLength(len);
+            const p2 = pathEl.getPointAtLength(Math.max(0, len - 1));
+            const rot = Math.atan2(p.y - p2.y, p.x - p2.x);
+            applyTransform(p.x, p.y, rot);
+          },
+          onComplete: () => this._finishDrive(onDone),
+        });
+        return;
+      }
 
-          // re-place FOs (not strictly necessary, but harmless)
-          this._placeFO(this.yesFO, this.pillCenters.yes);
-          this._placeFO(this.noFO, this.pillCenters.no);
-
-          this.animating = false;
-          onDone?.();
-        },
-      });
+      // --- Branch B: No GSAP at all — pure requestAnimationFrame fallback ---
+      const t0 = performance.now();
+      const tick = (now) => {
+        const k = Math.min(1, (now - t0) / duration);
+        const len = k * L;
+        const p = pathEl.getPointAtLength(len);
+        const p2 = pathEl.getPointAtLength(Math.max(0, len - 1));
+        const rot = Math.atan2(p.y - p2.y, p.x - p2.x);
+        applyTransform(p.x, p.y, rot);
+        if (k < 1) requestAnimationFrame(tick);
+        else this._finishDrive(onDone);
+      };
+      requestAnimationFrame(tick);
     }
 
     // quick live tuning: animator.calibrate('yes', 0.82) or animator.setButtonSize(96, 40)
@@ -831,8 +912,6 @@ function renderProfiles(container, profilesArray) {
   // use the buttons created inside the SVG
   const btnYes = animator.btnYes;
   const btnNo = animator.btnNo;
-
-  window.addEventListener("resize", () => animator.positionButtons());
 
   var DecisionTreeUI = function (decisionTree) {
     var tree = decisionTree;
