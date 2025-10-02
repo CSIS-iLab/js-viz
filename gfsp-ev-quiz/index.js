@@ -19,7 +19,7 @@ const DEFS_CSV_URL =
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vRgOfHh9YCuNrgBcjl2rx0QzROSTi7qnWBFmmY3UBeWVmqy_AFvCLafTHw3pDvtexoEyGwqa6DFkSOB/pub?gid=1723466829&single=true&output=csv";
 
 const BASE = { w: 1000, h: 600 }; // your art canvas
-const CAR_SIZE = { w: 200, h: 110 }; // make the car nice and big
+const CAR_SIZE = { w: 100, h: 55 }; // make the car nice and big
 // top branch (YES) and bottom/right branch (NO)
 const PATHS = {
   yes: "M260,410 C 410,340 520,280 650,170",
@@ -503,215 +503,179 @@ function renderProfiles(container, profilesArray) {
   };
 
   class RoadAnimator {
-    constructor(svg, btnYes, btnNo) {
-      this.svg = svg;
-      this.btnYes = btnYes;
-      this.btnNo = btnNo;
+  constructor(svg, btnYes, btnNo) {
+    this.svg = svg;
+    this.btnYes = btnYes;
+    this.btnNo  = btnNo;
 
-      // ---- LAYERS (stacking: world below, car in middle, topper above)
-      this.world = this._g("road__world"); // moves/rotates: back + road + pill artwork
-      this.layers = {
-        back: this._g("road__back"),
-        road: this._g("road__road"),
-        btns: this._g("road__btns"),
-      };
-      this.world.append(this.layers.back, this.layers.road, this.layers.btns);
-
-      // Car stays fixed (under the topper)
-      this.carNode = this._g("road__car");
-      this.carImg = this._img(
-        ROAD_ASSETS.car,
-        CAR_SIZE.w,
-        CAR_SIZE.h,
-        -CAR_SIZE.w / 2,
-        -CAR_SIZE.h / 2
-      );
-      this.carNode.append(this.carImg);
-
-      // Topper drawn above car, but we animate it exactly like the world so it stays registered
-      this.front = this._g("road__front");
-
-      // Hidden path layer (non-visible)
-      this.pathLayer = this._g("road__paths");
-
-      // Paint order = bottom→top
-      this.svg.append(this.pathLayer, this.world, this.carNode, this.front);
-
-      // Geometry in viewBox coords
-      this.geo = {
-        start: { x: 260, y: 410 }, // car anchor (fixed)
-        yes: { x: 650, y: 170 },
-        no: { x: 760, y: 370 },
-      };
-
-      // Build motion paths once (from your PATHS constants)
-      this.pathEls = {
-        yes: this._makePath(PATHS.yes),
-        no: this._makePath(PATHS.no),
-      };
-
-      // Place the car once at the anchor
-      this._placeCar(this.geo.start);
-
-      this.animating = false;
+    // Ensure the SVG has the expected coordinate system
+    if (!this.svg.getAttribute("viewBox")) {
+      this.svg.setAttribute("viewBox", `0 0 ${BASE.w} ${BASE.h}`);
     }
+    this.svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
 
-    // ---------- helpers ----------
-    _g(cls) {
-      const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
-      g.setAttribute("class", cls);
-      return g;
-    }
-    _img(href, w, h, x = 0, y = 0) {
-      const el = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "image"
-      );
-      el.setAttributeNS(null, "href", href);
-      el.setAttributeNS("http://www.w3.org/1999/xlink", "href", href);
-      el.setAttribute("width", w);
-      el.setAttribute("height", h);
-      el.setAttribute("x", x);
-      el.setAttribute("y", y);
-      el.setAttribute("preserveAspectRatio", "xMidYMid meet");
-      return el;
-    }
-    _makePath(d) {
-      const p = document.createElementNS("http://www.w3.org/2000/svg", "path");
-      p.setAttribute("d", d);
-      p.setAttribute("fill", "none");
-      p.setAttribute("stroke", "none");
-      p.setAttribute("pointer-events", "none");
-      this.pathLayer.appendChild(p);
-      return p;
-    }
-    _placeCar(pt) {
-      // keep the car centered on the anchor (no path follow)
-      if (window.gsap) {
-        gsap.set(this.carNode, { x: pt.x, y: pt.y, rotation: 0 });
-      } else {
-        this.carNode.setAttribute("transform", `translate(${pt.x},${pt.y})`);
-      }
-    }
+    // --- groups (draw order: later = on top) ---
+    this.paths = this._g("road__paths");       // invisible path defs
+    this.world = this._g("road__world");       // everything that moves
+    this.back  = this._g("road__back");        // tunnel back/ground
+    this.road  = this._g("road__road");        // the road art
+    this.btns  = this._g("road__btns");        // pill artwork
 
-    // ---------- draw the step ----------
-    setStep(node) {
-      const { back, road, btns } = this.layers;
-      back.replaceChildren();
-      road.replaceChildren();
-      btns.replaceChildren();
-      this.front.replaceChildren();
+    // world content (order inside world)
+    this.world.append(this.back, this.road, this.btns);
 
-      // full-canvas images aligned to the viewBox
-      back.append(this._img(ROAD_ASSETS.tunnelBack, BASE.w, BASE.h, 0, 0));
-      road.append(this._img(ROAD_ASSETS.road, BASE.w, BASE.h, 0, 0));
-      btns.append(this._img(ROAD_ASSETS.pill, BASE.w, BASE.h, 0, 0));
+    // car stays outside the world so it looks "fixed"
+    this.carLayer = this._g("road__car");
+    this.carNode  = this._g("carNode");
+    this.carImg   = this._img(ROAD_ASSETS.car, CAR_SIZE.w, CAR_SIZE.h, -CAR_SIZE.w/2, -CAR_SIZE.h/2);
+    this.carNode.append(this.carImg);
+    this.carLayer.append(this.carNode);
 
-      // topper above car
-      this.front.append(
-        this._img(resolveTopperSrc(node?.data?.topper), BASE.w, BASE.h, 0, 0)
-      );
+    // tunnel front/topper must be ABOVE the car
+    this.front = this._g("road__front");
 
-      // reset transforms
-      if (window.gsap) {
-        gsap.set([this.world, this.front], {
-          x: 0,
-          y: 0,
-          rotation: 0,
-          svgOrigin: `${this.geo.start.x} ${this.geo.start.y}`,
-        });
-      }
+    // Put everything into the SVG in correct z-order
+    this.svg.append(this.paths, this.world, this.carLayer, this.front);
 
-      this._placeCar(this.geo.start);
-      this.positionButtons();
-      requestAnimationFrame(() => this.positionButtons());
-    }
+    // Prebuild hidden paths we’ll use for motion math (they don’t render)
+    this.pathEl = {
+      yes: this._makePath(PATHS.yes),
+      no:  this._makePath(PATHS.no),
+    };
 
-    // buttons must follow the transformed "world"
-    positionButtons() {
-      const rect = this.svg.getBoundingClientRect();
-      const ctm = this.world.getScreenCTM(); // use the MOVING group’s CTM
-      if (!ctm) return;
+    // Geometry (viewBox coords)
+    this.geo = {
+      start: { x: 260, y: 410 },
+      yes:   { x: 650, y: 170 },
+      no:    { x: 760, y: 370 },
+    };
 
-      const toPx = ({ x, y }) => {
-        const p = this.svg.createSVGPoint();
-        p.x = x;
-        p.y = y;
-        const s = p.matrixTransform(ctm);
-        return { left: s.x - rect.left, top: s.y - rect.top };
-      };
+    // Put the car at the start once
+    gsap.set(this.carNode, { x: this.geo.start.x, y: this.geo.start.y, rotation: 0 });
 
-      const y = toPx(this.geo.yes),
-        n = toPx(this.geo.no);
-      this.btnYes.style.left = y.left + "px";
-      this.btnYes.style.top = y.top + "px";
-      this.btnNo.style.left = n.left + "px";
-      this.btnNo.style.top = n.top + "px";
-    }
-
-    // ---------- animate: move/rotate WORLD + FRONT along the fork, car stays fixed ----------
-    drive(choice, onDone) {
-      const pathEl = this.pathEls[choice];
-      if (!pathEl || !window.gsap || !window.MotionPathPlugin) {
-        // fallback: snap
-        this._placeCar(this.geo.start);
-        onDone?.();
-        return;
-      }
-
-      if (this.animating) return;
-      this.animating = true;
-
-      const sx = this.geo.start.x;
-      const sy = this.geo.start.y;
-
-      // Proxy object we move along the road path
-      const tracker = { x: sx, y: sy, rotation: 0 };
-
-      const updateScene = () => {
-        // Invert tracker transform so the world moves under the car
-        const dx = sx - tracker.x;
-        const dy = sy - tracker.y;
-        const rot = -tracker.rotation;
-
-        gsap.set([this.world, this.front], {
-          x: dx,
-          y: dy,
-          rotation: rot,
-          svgOrigin: `${sx} ${sy}`, // rotate around the car’s anchor
-          overwrite: true,
-        });
-
-        this.positionButtons();
-      };
-
-      // ensure correct origin then run
-      gsap.set([this.world, this.front], { svgOrigin: `${sx} ${sy}` });
-      updateScene();
-
-      gsap.to(tracker, {
-        duration: 1.1,
-        ease: "power2.inOut",
-        motionPath: {
-          path: pathEl,
-          autoRotate: true, // gives us tracker.rotation (tangent)
-        },
-        onUpdate: updateScene,
-        onComplete: () => {
-          // reset for next question
-          gsap.set([this.world, this.front], {
-            x: 0,
-            y: 0,
-            rotation: 0,
-            svgOrigin: `${sx} ${sy}`,
-          });
-          this._placeCar(this.geo.start);
-          this.animating = false;
-          onDone?.();
-        },
-      });
-    }
+    this.animating = false;
   }
+
+  // ---------- helpers ----------
+  _g(cls) {
+    const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    g.setAttribute("class", cls);
+    return g;
+  }
+  _img(href, w, h, x=0, y=0) {
+    const el = document.createElementNS("http://www.w3.org/2000/svg", "image");
+    el.setAttributeNS(null, "href", href);
+    el.setAttributeNS("http://www.w3.org/1999/xlink", "href", href);
+    el.setAttribute("width",  w);
+    el.setAttribute("height", h);
+    el.setAttribute("x", x);
+    el.setAttribute("y", y);
+    el.setAttribute("preserveAspectRatio", "xMidYMid meet");
+    return el;
+  }
+  _makePath(d) {
+    const p = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    p.setAttribute("d", d);
+    p.setAttribute("fill", "none");
+    p.setAttribute("stroke", "none");
+    p.setAttribute("pointer-events", "none");
+    this.paths.appendChild(p);
+    return p;
+  }
+
+  // ---------- per step ----------
+  setStep(node) {
+    // (Re)draw world layers for this question
+    this.back.replaceChildren();
+    this.road.replaceChildren();
+    this.btns.replaceChildren();
+    this.front.replaceChildren();
+
+    this.back.append(this._img(ROAD_ASSETS.tunnelBack, BASE.w, BASE.h, 0, 0));
+    this.road.append(this._img(ROAD_ASSETS.road,       BASE.w, BASE.h, 0, 0));
+    this.btns.append(this._img(ROAD_ASSETS.pill,       BASE.w, BASE.h, 0, 0));
+    this.front.append(this._img(resolveTopperSrc(node?.data?.topper), BASE.w, BASE.h, 0, 0));
+
+    // Reset the moving world to identity (so the art lines up for the new scene)
+    gsap.set(this.world, { x: 0, y: 0, rotation: 0, svgOrigin: `${this.geo.start.x} ${this.geo.start.y}` });
+
+    // Car stays in place
+    gsap.set(this.carNode, { x: this.geo.start.x, y: this.geo.start.y, rotation: 0 });
+
+    // Place/realign the HTML buttons over the pill artwork
+    this.positionButtons();
+    requestAnimationFrame(() => this.positionButtons());
+  }
+
+  // map world (viewBox) coords -> screen px for the real HTML buttons
+  positionButtons() {
+    const rect = this.svg.getBoundingClientRect();
+    const ctm  = this.world.getScreenCTM();     // IMPORTANT: use the MOVING GROUP
+    if (!ctm) return;
+
+    const toPx = ({x, y}) => {
+      const pt = this.svg.createSVGPoint();
+      pt.x = x; pt.y = y;
+      const s = pt.matrixTransform(ctm);
+      return { left: s.x - rect.left, top: s.y - rect.top };
+    };
+
+    const y = toPx(this.geo.yes);
+    const n = toPx(this.geo.no);
+
+    this.btnYes.style.left = y.left + "px";
+    this.btnYes.style.top  = y.top  + "px";
+    this.btnNo.style.left  = n.left + "px";
+    this.btnNo.style.top   = n.top  + "px";
+  }
+
+  // ---------- move/rotate the WORLD so the road passes under the car ----------
+  drive(which, onDone) {
+    if (this.animating) return;
+    this.animating = true;
+
+    const pathEl = this.pathEl[which];
+    if (!pathEl || !window.gsap || !window.MotionPathPlugin) {
+      this.animating = false;
+      onDone?.();
+      return;
+    }
+
+    // Proxy travels ALONG the road; we mirror that onto the world
+    const proxy = { x: this.geo.start.x, y: this.geo.start.y, rotation: 0 };
+
+    const tl = gsap.timeline({
+      defaults: { ease: "power2.inOut", duration: 1.1 },
+      onComplete: () => {
+        // Snap world back to identity; next setStep() draws the next scene aligned
+        gsap.set(this.world, { x: 0, y: 0, rotation: 0 });
+        this.animating = false;
+        onDone?.();
+      }
+    });
+
+    tl.to(proxy, {
+      motionPath: {
+        path: pathEl,
+        align: pathEl,
+        autoRotate: true,
+        alignOrigin: [0.5, 0.5],
+      },
+      onUpdate: () => {
+        // Move the world opposite to the proxy and rotate opposite too
+        gsap.set(this.world, {
+          x: this.geo.start.x - proxy.x,
+          y: this.geo.start.y - proxy.y,
+          rotation: -proxy.rotation,                // turn the road into the curve
+          svgOrigin: `${this.geo.start.x} ${this.geo.start.y}`,
+          overwrite: true
+        });
+        this.positionButtons(); // keep HTML buttons glued to their pill art
+      }
+    });
+  }
+}
+
 
   // after HTML exists
   const svgEl = document.getElementById("road-scene");
