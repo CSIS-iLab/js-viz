@@ -464,28 +464,45 @@ body {
 }
 /* * Car and road styles */
 
-.quiz-stage {
+#road-wrap {
   position: relative;
   width: 100%;
-  height: clamp(180px, 28vh, 260px);
-  margin-bottom: 1rem;
-  overflow: hidden;
-  border-radius: 12px;
-  background: radial-gradient(200% 100% at 50% 0%, #f8f8f8 0%, #fff 60%);
+  max-width: 1100px;
+  margin: 0 auto;
+}
+#road-scene {
+  width: 100%;
+  height: auto;
+  display: block;
 }
 
-#roadScene {
-  width: 140%; /* wider than container so we can pan */
-  height: 100%;
-  transform: translateX(0); /* we’ll animate this */
-  will-change: transform;
+#road-choices {
+  position: relative;
+  inset: 0;
+  pointer-events: none;
+}
+#road-choices .road-btn {
+  position: absolute;
+  pointer-events: auto;
+  transform: translate(-50%, -50%);
+  padding: 0.75rem 1.25rem;
+  font-weight: 700;
+  border-radius: 999px;
+  background: transparent;
+  color: #fff;
+  border: 0; /* text sits on the SVG pill */
+}
+#road-choices .road-btn:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 2px;
 }
 
-#roadPath {
-  filter: drop-shadow(0 2px 0 rgba(0, 0, 0, 0.06));
+/* layers: back under road, car over road, front on top */
+.road__tunnel-back {
 }
-
-#car image,
-#car svg {
-  filter: drop-shadow(0 6px 6px rgba(0, 0, 0, 0.18));
+.road__road {
+}
+.road__car {
+}
+.road__tunnel-front {
 }

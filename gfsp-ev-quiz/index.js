@@ -1,5 +1,9 @@
 // Modified from https://codepen.io/jnsmith/pen/vYBzEOP
 
+if (window.gsap) {
+  gsap.registerPlugin(MotionPathPlugin);
+}
+
 // === CONFIG: your published CSV URLs ===
 const NODES_CSV_URL =
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vRgOfHh9YCuNrgBcjl2rx0QzROSTi7qnWBFmmY3UBeWVmqy_AFvCLafTHw3pDvtexoEyGwqa6DFkSOB/pub?gid=0&single=true&output=csv";
@@ -13,6 +17,36 @@ const SIMILAR_CSV_URL =
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vRgOfHh9YCuNrgBcjl2rx0QzROSTi7qnWBFmmY3UBeWVmqy_AFvCLafTHw3pDvtexoEyGwqa6DFkSOB/pub?gid=23026962&single=true&output=csv";
 const DEFS_CSV_URL =
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vRgOfHh9YCuNrgBcjl2rx0QzROSTi7qnWBFmmY3UBeWVmqy_AFvCLafTHw3pDvtexoEyGwqa6DFkSOB/pub?gid=1723466829&single=true&output=csv";
+
+const BASE = { w: 1000, h: 600 }; // your art canvas
+const CAR_SIZE = { w: 200, h: 110 }; // make the car nice and big
+// top branch (YES) and bottom/right branch (NO)
+const PATHS = {
+  yes: "M260,410 C 410,340 520,280 650,170",
+  no: "M260,410 C 420,440 640,460 760,370",
+};
+
+const ROAD_ASSETS = {
+  road: "1_road_dashed.svg",
+  car: "2_car.svg",
+  pill: "4_buttons.svg",
+  tunnelBack: "0_tunnel_back.svg",
+  tunnelFront: {
+    industry: "3_0_tunnel_front_industry.svg",
+    export: "3_1_tunnel_front_export.svg",
+    evs: "3_2_tunnel_front_evs.svg",
+    domestic: "3_3_tunnel_front_domestic_market.svg",
+    adoption: "3_4_tunnel_front_adoption.svg",
+  },
+};
+
+function resolveTopperSrc(value) {
+  const v = String(value || "").trim();
+  const map = ROAD_ASSETS.tunnelFront;
+  if (!v) return map.industry;
+  if (/^https?:\/\//i.test(v) || /\.svg$/i.test(v)) return v;
+  return map[v.toLowerCase()] || map.industry;
+}
 
 // Fetch + parse a CSV to array of objects
 function fetchCsv(url) {
@@ -66,10 +100,11 @@ async function loadDecisionTreeData() {
       id, // keep as string for consistency
       parentId, // null or string
       data: {
-        content: row.content ?? "",
+        content,
         imageUrl: (row.imageUrl || "").trim(),
         imageAlt: row.imageAlt || "",
         imageCaption: row.imageCaption || "",
+        topper: (row.topper || "").trim(),
       },
       children: [], // will fill from options
       profileId: row.profileId ? String(row.profileId).trim() : null,
@@ -275,7 +310,6 @@ function scrollToHash({ smooth = true } = {}) {
 window.addEventListener("hashchange", () => scrollToHash({ smooth: true }));
 window.addEventListener("load", () => scrollToHash({ smooth: true }));
 
-
 // wait for all <img> inside a container
 function waitForImages(container) {
   const imgs = Array.from(container.querySelectorAll("img"));
@@ -468,6 +502,226 @@ function renderProfiles(container, profilesArray) {
     };
   };
 
+  class RoadAnimator {
+    constructor(svg, btnYes, btnNo) {
+      this.svg = svg;
+      this.btnYes = btnYes;
+      this.btnNo = btnNo;
+
+      // ---- LAYERS (stacking: world below, car in middle, topper above)
+      this.world = this._g("road__world"); // moves/rotates: back + road + pill artwork
+      this.layers = {
+        back: this._g("road__back"),
+        road: this._g("road__road"),
+        btns: this._g("road__btns"),
+      };
+      this.world.append(this.layers.back, this.layers.road, this.layers.btns);
+
+      // Car stays fixed (under the topper)
+      this.carNode = this._g("road__car");
+      this.carImg = this._img(
+        ROAD_ASSETS.car,
+        CAR_SIZE.w,
+        CAR_SIZE.h,
+        -CAR_SIZE.w / 2,
+        -CAR_SIZE.h / 2
+      );
+      this.carNode.append(this.carImg);
+
+      // Topper drawn above car, but we animate it exactly like the world so it stays registered
+      this.front = this._g("road__front");
+
+      // Hidden path layer (non-visible)
+      this.pathLayer = this._g("road__paths");
+
+      // Paint order = bottom→top
+      this.svg.append(this.pathLayer, this.world, this.carNode, this.front);
+
+      // Geometry in viewBox coords
+      this.geo = {
+        start: { x: 260, y: 410 }, // car anchor (fixed)
+        yes: { x: 650, y: 170 },
+        no: { x: 760, y: 370 },
+      };
+
+      // Build motion paths once (from your PATHS constants)
+      this.pathEls = {
+        yes: this._makePath(PATHS.yes),
+        no: this._makePath(PATHS.no),
+      };
+
+      // Place the car once at the anchor
+      this._placeCar(this.geo.start);
+
+      this.animating = false;
+    }
+
+    // ---------- helpers ----------
+    _g(cls) {
+      const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+      g.setAttribute("class", cls);
+      return g;
+    }
+    _img(href, w, h, x = 0, y = 0) {
+      const el = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "image"
+      );
+      el.setAttributeNS(null, "href", href);
+      el.setAttributeNS("http://www.w3.org/1999/xlink", "href", href);
+      el.setAttribute("width", w);
+      el.setAttribute("height", h);
+      el.setAttribute("x", x);
+      el.setAttribute("y", y);
+      el.setAttribute("preserveAspectRatio", "xMidYMid meet");
+      return el;
+    }
+    _makePath(d) {
+      const p = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      p.setAttribute("d", d);
+      p.setAttribute("fill", "none");
+      p.setAttribute("stroke", "none");
+      p.setAttribute("pointer-events", "none");
+      this.pathLayer.appendChild(p);
+      return p;
+    }
+    _placeCar(pt) {
+      // keep the car centered on the anchor (no path follow)
+      if (window.gsap) {
+        gsap.set(this.carNode, { x: pt.x, y: pt.y, rotation: 0 });
+      } else {
+        this.carNode.setAttribute("transform", `translate(${pt.x},${pt.y})`);
+      }
+    }
+
+    // ---------- draw the step ----------
+    setStep(node) {
+      const { back, road, btns } = this.layers;
+      back.replaceChildren();
+      road.replaceChildren();
+      btns.replaceChildren();
+      this.front.replaceChildren();
+
+      // full-canvas images aligned to the viewBox
+      back.append(this._img(ROAD_ASSETS.tunnelBack, BASE.w, BASE.h, 0, 0));
+      road.append(this._img(ROAD_ASSETS.road, BASE.w, BASE.h, 0, 0));
+      btns.append(this._img(ROAD_ASSETS.pill, BASE.w, BASE.h, 0, 0));
+
+      // topper above car
+      this.front.append(
+        this._img(resolveTopperSrc(node?.data?.topper), BASE.w, BASE.h, 0, 0)
+      );
+
+      // reset transforms
+      if (window.gsap) {
+        gsap.set([this.world, this.front], {
+          x: 0,
+          y: 0,
+          rotation: 0,
+          svgOrigin: `${this.geo.start.x} ${this.geo.start.y}`,
+        });
+      }
+
+      this._placeCar(this.geo.start);
+      this.positionButtons();
+      requestAnimationFrame(() => this.positionButtons());
+    }
+
+    // buttons must follow the transformed "world"
+    positionButtons() {
+      const rect = this.svg.getBoundingClientRect();
+      const ctm = this.world.getScreenCTM(); // use the MOVING group’s CTM
+      if (!ctm) return;
+
+      const toPx = ({ x, y }) => {
+        const p = this.svg.createSVGPoint();
+        p.x = x;
+        p.y = y;
+        const s = p.matrixTransform(ctm);
+        return { left: s.x - rect.left, top: s.y - rect.top };
+      };
+
+      const y = toPx(this.geo.yes),
+        n = toPx(this.geo.no);
+      this.btnYes.style.left = y.left + "px";
+      this.btnYes.style.top = y.top + "px";
+      this.btnNo.style.left = n.left + "px";
+      this.btnNo.style.top = n.top + "px";
+    }
+
+    // ---------- animate: move/rotate WORLD + FRONT along the fork, car stays fixed ----------
+    drive(choice, onDone) {
+      const pathEl = this.pathEls[choice];
+      if (!pathEl || !window.gsap || !window.MotionPathPlugin) {
+        // fallback: snap
+        this._placeCar(this.geo.start);
+        onDone?.();
+        return;
+      }
+
+      if (this.animating) return;
+      this.animating = true;
+
+      const sx = this.geo.start.x;
+      const sy = this.geo.start.y;
+
+      // Proxy object we move along the road path
+      const tracker = { x: sx, y: sy, rotation: 0 };
+
+      const updateScene = () => {
+        // Invert tracker transform so the world moves under the car
+        const dx = sx - tracker.x;
+        const dy = sy - tracker.y;
+        const rot = -tracker.rotation;
+
+        gsap.set([this.world, this.front], {
+          x: dx,
+          y: dy,
+          rotation: rot,
+          svgOrigin: `${sx} ${sy}`, // rotate around the car’s anchor
+          overwrite: true,
+        });
+
+        this.positionButtons();
+      };
+
+      // ensure correct origin then run
+      gsap.set([this.world, this.front], { svgOrigin: `${sx} ${sy}` });
+      updateScene();
+
+      gsap.to(tracker, {
+        duration: 1.1,
+        ease: "power2.inOut",
+        motionPath: {
+          path: pathEl,
+          autoRotate: true, // gives us tracker.rotation (tangent)
+        },
+        onUpdate: updateScene,
+        onComplete: () => {
+          // reset for next question
+          gsap.set([this.world, this.front], {
+            x: 0,
+            y: 0,
+            rotation: 0,
+            svgOrigin: `${sx} ${sy}`,
+          });
+          this._placeCar(this.geo.start);
+          this.animating = false;
+          onDone?.();
+        },
+      });
+    }
+  }
+
+  // after HTML exists
+  const svgEl = document.getElementById("road-scene");
+  const btnWrap = document.getElementById("road-choices");
+  const btnYes = btnWrap.querySelector(".road-btn--yes");
+  const btnNo = btnWrap.querySelector(".road-btn--no");
+  const animator = new RoadAnimator(svgEl, btnYes, btnNo);
+
+  window.addEventListener("resize", () => animator.positionButtons());
+
   var DecisionTreeUI = function (decisionTree) {
     var tree = decisionTree;
     var state = { history: { index: 0 } };
@@ -519,47 +773,48 @@ function renderProfiles(container, profilesArray) {
     }
 
     function renderQuestionBlock(node) {
-      // 1) question text
       cardContent.innerHTML = node.data.content;
-
       emphasizeQuestion(cardContent);
+      animator.setStep(node);
 
-      // 2) optional image (between content and options)
-      const { imageUrl, imageAlt, imageCaption } = node.data || {};
-      if (imageUrl && /^https?:\/\//i.test(imageUrl)) {
-        const figure = document.createElement("figure");
-        figure.className = "question-media";
+      const norm = (s) =>
+        String(s || "")
+          .toLowerCase()
+          .replace(/[^a-z]/g, "");
 
-        const img = document.createElement("img");
-        img.src = imageUrl;
-        img.alt = imageAlt || "";
-        img.loading = "lazy";
-        img.decoding = "async";
-        figure.appendChild(img);
+      const go = (which) => {
+        const child = node.children.find((c) => {
+          const t = norm(c.text); // e.g. "Yes – probably" -> "yesprobably"
+          return (
+            (which === "yes" && t.startsWith("y")) ||
+            (which === "no" && t.startsWith("n"))
+          );
+        });
+        if (!child) return;
+        const next = tree.getNode(child.id);
+        btnYes.disabled = btnNo.disabled = true;
+        animator.drive(which, () => {
+          btnYes.disabled = btnNo.disabled = false;
+          tree.updateHistory(next.parentId);
+          displayNode(next);
+        });
+      };
 
-        if (imageCaption) {
-          const cap = document.createElement("figcaption");
-          cap.textContent = imageCaption;
-          figure.appendChild(cap);
-        }
-        cardContent.appendChild(figure);
-      }
-
-      // 3) options
-      createOptionButtons(node.children);
+      btnYes.onclick = () => go("yes");
+      btnNo.onclick = () => go("no");
     }
 
-    var createOptionButtons = function (children) {
-      const wrap = document.createElement("div");
-      wrap.className = "options-grid"; // new wrapper
+    // var createOptionButtons = function (children) {
+    //   const wrap = document.createElement("div");
+    //   wrap.className = "options-grid"; // new wrapper
 
-      children.forEach(function (child) {
-        var button = createOptionButton(child);
-        wrap.append(button);
-      });
+    //   children.forEach(function (child) {
+    //     var button = createOptionButton(child);
+    //     wrap.append(button);
+    //   });
 
-      cardContent.append(wrap);
-    };
+    //   cardContent.append(wrap);
+    // };
 
     var createOptionButton = function (child) {
       var button = document.createElement("button");
@@ -707,15 +962,18 @@ function renderProfiles(container, profilesArray) {
 
     var displayNode = function (node) {
       card.dataset.id = node.id;
-
       const isLeaf = !node.children || node.children.length === 0;
 
       if (isLeaf && node.profile) {
+        // optional: hide road scene with a small fade
+        if (window.gsap) gsap.to("#road-wrap", { autoAlpha: 0, duration: 0.4 });
+
         cardContent.innerHTML = renderProfileHTML(node.profile, {
           leadText: "You're most like:",
         });
         activateFlourishEmbeds(cardContent);
       } else {
+        if (window.gsap) gsap.to("#road-wrap", { autoAlpha: 1, duration: 0.2 });
         renderQuestionBlock(node);
       }
       updateNavUI(node);
