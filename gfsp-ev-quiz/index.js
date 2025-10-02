@@ -18,12 +18,12 @@ const SIMILAR_CSV_URL =
 const DEFS_CSV_URL =
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vRgOfHh9YCuNrgBcjl2rx0QzROSTi7qnWBFmmY3UBeWVmqy_AFvCLafTHw3pDvtexoEyGwqa6DFkSOB/pub?gid=1723466829&single=true&output=csv";
 
-const BASE = { w: 1000, h: 600 }; // your art canvas
+const BASE = { w: 665.13, h: 387.15 }; // your art canvas
 const CAR_SIZE = { w: 100, h: 55 }; // make the car nice and big
 // top branch (YES) and bottom/right branch (NO)
 const PATHS = {
-  yes: "M260,410 C 410,340 520,280 650,170",
-  no: "M260,410 C 420,440 640,460 760,370",
+  yes: "M 172.93,264.55 C 272.70,219.38 345.87,180.67 432.33,109.69",
+  no: "M 172.93,264.55 C 279.35,283.91 425.68,296.81 505.50,238.74",
 };
 
 const ROAD_ASSETS = {
@@ -503,74 +503,79 @@ function renderProfiles(container, profilesArray) {
   };
 
   class RoadAnimator {
-    constructor(svg, btnYes, btnNo) {
+    constructor(svg) {
       this.svg = svg;
-      this.btnYes = btnYes;
-      this.btnNo = btnNo;
 
-      // ---- MOVING LAYERS (both move together like a camera/world) ----
-      this.worldBack = this._g("worldBack"); // road tiles, tunnel back, etc. (below car)
-      this.worldFront = this._g("worldFront"); // pills + TOPPER (above car)
+      // two cameras so topper moves with road but stays above car
+      this.cameraBehind = this._g("cameraBehind"); // back, road, pills, buttons
+      this.cameraFront = this._g("cameraFront"); // topper
 
-      // ---- FIXED LAYER (does NOT move) ----
-      this.carLayer = this._g("road__car"); // car sits under the topper
-
-      // Paint order: back (moving) -> car (fixed) -> front (moving topper)
-      this.svg.append(this.worldBack, this.carLayer, this.worldFront);
-
-      // ---- GEOMETRY in viewBox coords (match your art) ----
-      this.geo = {
-        start: { x: 260, y: 410 }, // where the car "is"
-        yes: { x: 650, y: 170 }, // pill center in the art
-        no: { x: 760, y: 370 },
+      this.layers = {
+        back: this._g("road__back"),
+        road: this._g("road__road"),
+        btns: this._g("road__btns"),
+        front: this._g("road__front"),
       };
+      this.cameraBehind.append(
+        this.layers.back,
+        this.layers.road,
+        this.layers.btns
+      );
+      this.cameraFront.append(this.layers.front);
 
-      // ---- CAR (fixed): center bitmap at (0,0), translate the GROUP to start
+      // car sits between the two camera groups
+      this.carLayer = this._g("road__car");
       this.carNode = this._g("carNode");
       this.carImg = this._img(
         ROAD_ASSETS.car,
         CAR_SIZE.w,
         CAR_SIZE.h,
         -CAR_SIZE.w / 2,
-        -CAR_SIZE.h / 2
+        -CAR_SIZE.h / 2,
+        "xMidYMid meet"
       );
       this.carNode.append(this.carImg);
       this.carLayer.append(this.carNode);
-      this._placeCar(this.geo.start);
 
-      // ---- ROAD & PILLS: tile the single fork art in a 3×3 grid so we can move/rotate freely
-      this.roadTiles = this._buildTiles(this.worldBack, ROAD_ASSETS.road);
-      this.pillTiles = this._buildTiles(this.worldFront, ROAD_ASSETS.pill);
+      // paint order
+      this.svg.append(this.cameraBehind, this.carLayer, this.cameraFront);
 
-      // ---- TOPPER (moves with the road)
-      this.topperImg = this._img(resolveTopperSrc(), BASE.w, BASE.h, 0, 0);
-      this.worldFront.append(this.topperImg);
-
-      // ---- OPTIONAL tunnel back artwork (behind road)
-      this.tunnelBackImg = this._img(
-        ROAD_ASSETS.tunnelBack,
-        BASE.w,
-        BASE.h,
-        0,
-        0
-      );
-      this.worldBack.append(this.tunnelBackImg);
-
-      // Pivot world motion around the car’s start point
-      gsap.set([this.worldBack, this.worldFront], {
-        x: 0,
-        y: 0,
-        rotation: 0,
-        svgOrigin: `${this.geo.start.x} ${this.geo.start.y}`,
-      });
-
-      // Hidden path elements (if you ever want to sample angles, etc.)
+      // motion paths
       this.pathLayer = this._g("road__paths");
-      this.svg.insertBefore(this.pathLayer, this.worldBack);
+      this.svg.append(this.pathLayer);
       this.pathEls = {
         yes: this._makePath(PATHS.yes),
         no: this._makePath(PATHS.no),
       };
+
+      // derive car start from first “M” so it always matches your art
+      const start = this._firstMove(PATHS.yes) || { x: 172.93, y: 264.55 };
+      this.geo = { start };
+
+      // === UI BUTTONS INSIDE THE SVG (foreignObject) ===
+      this.btnSize = { w: 90, h: 36 }; // tweak if needed (viewBox units)
+      const { fo: yesFO, btn: yesBtn } = this._makeFOButton(
+        "Yes",
+        "road-btn road-btn--yes"
+      );
+      const { fo: noFO, btn: noBtn } = this._makeFOButton(
+        "No",
+        "road-btn road-btn--no"
+      );
+      this.yesFO = yesFO;
+      this.noFO = noFO;
+      this.btnYes = yesBtn;
+      this.btnNo = noBtn;
+
+      // put FO layer with the rest of the road art so it transforms together
+      this.layers.btns.append(this.yesFO, this.noFO);
+
+      // car initial placement
+      this._placeCar(this.geo.start);
+
+      // where along each path the pill center sits (0…1) – adjust if needed
+      this.pillT = { yes: 0.4, no: 0.88 };
+      this.pillR = { yes: -120, no: -19 }; // distance from road to pill center (tweakable)
 
       this.animating = false;
     }
@@ -581,7 +586,7 @@ function renderProfiles(container, profilesArray) {
       if (cls) g.setAttribute("class", cls);
       return g;
     }
-    _img(href, w, h, x = 0, y = 0) {
+    _img(href, w, h, x = 0, y = 0, par = "none") {
       const el = document.createElementNS(
         "http://www.w3.org/2000/svg",
         "image"
@@ -592,12 +597,9 @@ function renderProfiles(container, profilesArray) {
       el.setAttribute("height", h);
       el.setAttribute("x", x);
       el.setAttribute("y", y);
-      el.setAttribute("preserveAspectRatio", "xMidYMid meet");
+      el.setAttribute("preserveAspectRatio", par);
+      el.style.pointerEvents = "none"; // road art should never block clicks
       return el;
-    }
-    _setHref(imgEl, href) {
-      imgEl.setAttributeNS(null, "href", href);
-      imgEl.setAttributeNS("http://www.w3.org/1999/xlink", "href", href);
     }
     _makePath(d) {
       const p = document.createElementNS("http://www.w3.org/2000/svg", "path");
@@ -608,156 +610,227 @@ function renderProfiles(container, profilesArray) {
       this.pathLayer.appendChild(p);
       return p;
     }
-    _buildTiles(group, src) {
-      const tiles = [];
-      for (let ix = -1; ix <= 1; ix++) {
-        for (let iy = -1; iy <= 1; iy++) {
-          const img = this._img(src, BASE.w, BASE.h, ix * BASE.w, iy * BASE.h);
-          group.append(img);
-          tiles.push(img);
-        }
-      }
-      return tiles;
+    _firstMove(d) {
+      const m = /M\s*([0-9.]+)\s*,\s*([0-9.]+)/i.exec(d || "");
+      return m ? { x: parseFloat(m[1]), y: parseFloat(m[2]) } : null;
     }
+    _pointAt(pathEl, t) {
+      const L = pathEl.getTotalLength();
+      const p = pathEl.getPointAtLength(Math.max(0, Math.min(1, t)) * L);
+      return { x: p.x, y: p.y };
+    }
+    _pointNormal(pathEl, t) {
+      const L = pathEl.getTotalLength();
+      const eps = 5 / L; // small step along the path
+      const t1 = Math.max(0, Math.min(1, t - eps));
+      const t2 = Math.max(0, Math.min(1, t + eps));
+      const p1 = pathEl.getPointAtLength(t1 * L);
+      const p2 = pathEl.getPointAtLength(t2 * L);
+      const vx = p2.x - p1.x,
+        vy = p2.y - p1.y;
+      const len = Math.hypot(vx, vy) || 1;
+      // left-hand normal (perpendicular to tangent)
+      return { x: -vy / len, y: vx / len };
+    }
+
     _placeCar(pt) {
-      // Move the GROUP so the centered image lands at pt
-      gsap.set(this.carNode, { x: pt.x, y: pt.y, rotation: 0 });
+      if (window.gsap)
+        gsap.set(this.carNode, { x: pt.x, y: pt.y, rotation: 0 });
+      else this.carNode.setAttribute("transform", `translate(${pt.x},${pt.y})`);
     }
 
-    // ---------- public API ----------
+    _makeFOButton(label, cls) {
+      const fo = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "foreignObject"
+      );
+      // initial size; will be set precisely in setStep()
+      fo.setAttribute("width", this.btnSize.w);
+      fo.setAttribute("height", this.btnSize.h);
+
+      // XHTML subtree
+      const div = document.createElementNS(
+        "http://www.w3.org/1999/xhtml",
+        "div"
+      );
+      div.style.width = "100%";
+      div.style.height = "100%";
+      div.style.display = "flex";
+      div.style.alignItems = "center";
+      div.style.justifyContent = "center";
+
+      const btn = document.createElementNS(
+        "http://www.w3.org/1999/xhtml",
+        "button"
+      );
+      btn.type = "button";
+      btn.className = cls;
+      btn.textContent = label;
+
+      div.appendChild(btn);
+      fo.appendChild(div);
+      return { fo, btn };
+    }
+
+    _placeFO(fo, pt) {
+      const { w, h } = this.btnSize;
+      fo.setAttribute("x", pt.x - w / 2);
+      fo.setAttribute("y", pt.y - h / 2);
+      fo.setAttribute("width", w);
+      fo.setAttribute("height", h);
+    }
+
+    // ---------- drawing per step ----------
     setStep(node) {
-      // 1) swap the topper
-      this._setHref(this.topperImg, resolveTopperSrc(node?.data?.topper));
+      const { back, road, btns, front } = this.layers;
+      back.replaceChildren();
+      road.replaceChildren();
+      btns.replaceChildren();
+      front.replaceChildren();
 
-      // 2) keep the world exactly where it is (continuity)
-      //    just re-place the HTML buttons on top of the *nearest repeated* pills
-      this.positionButtons();
-      requestAnimationFrame(() => this.positionButtons());
+      back.append(
+        this._img(ROAD_ASSETS.tunnelBack, BASE.w, BASE.h, 0, 0, "none")
+      );
+      road.append(this._img(ROAD_ASSETS.road, BASE.w, BASE.h, 0, 0, "none"));
+      btns.append(
+        this._img(ROAD_ASSETS.pill, BASE.w, BASE.h, 0, 0, "none"), // draw the blue pills
+        this.yesFO,
+        this.noFO
+      );
+
+      const topImg = this._img(
+        resolveTopperSrc(node?.data?.topper),
+        BASE.w,
+        BASE.h,
+        0,
+        0,
+        "none"
+      );
+      topImg.style.pointerEvents = "none"; // topper should not block clicks
+      front.append(topImg);
+
+      // reset cameras + car
+      gsap.set([this.cameraBehind, this.cameraFront], {
+        x: 0,
+        y: 0,
+        rotation: 0,
+        transformOrigin: "0 0",
+      });
+      this._placeCar(this.geo.start);
+
+      const yP = this._pointAt(this.pathEls.yes, this.pillT.yes);
+      const yN = this._pointNormal(this.pathEls.yes, this.pillT.yes);
+      const nP = this._pointAt(this.pathEls.no, this.pillT.no);
+      const nN = this._pointNormal(this.pathEls.no, this.pillT.no);
+
+      this.pillCenters = {
+        yes: {
+          x: yP.x + yN.x * this.pillR.yes,
+          y: yP.y + yN.y * this.pillR.yes,
+        },
+        no: { x: nP.x + nN.x * this.pillR.no, y: nP.y + nN.y * this.pillR.no },
+      };
+
+      // place foreignObjects directly in viewBox coords
+      this._placeFO(this.yesFO, this.pillCenters.yes);
+      this._placeFO(this.noFO, this.pillCenters.no);
     }
 
-    // Position the two HTML <button>s on the pill centers that are closest to the car.
-    positionButtons() {
-      const svgRect = this.svg.getBoundingClientRect();
-      const worldCTM = this.worldFront.getScreenCTM();
-      const rootCTM = this.svg.getScreenCTM();
-      if (!worldCTM || !rootCTM) return;
-
-      const toPxWorld = ({ x, y }) => {
-        const p = this.svg.createSVGPoint();
-        p.x = x;
-        p.y = y;
-        const s = p.matrixTransform(worldCTM);
-        return {
-          left: s.x - svgRect.left,
-          top: s.y - svgRect.top,
-          x: s.x,
-          y: s.y,
-        };
-      };
-      const toPxRoot = ({ x, y }) => {
-        const p = this.svg.createSVGPoint();
-        p.x = x;
-        p.y = y;
-        const s = p.matrixTransform(rootCTM);
-        return { x: s.x, y: s.y };
-      };
-
-      const carScreen = toPxRoot(this.geo.start);
-
-      const nearestOnTiles = (pt) => {
-        let best = null,
-          bestD = Infinity;
-        for (let ix = -1; ix <= 1; ix++) {
-          for (let iy = -1; iy <= 1; iy++) {
-            const candidate = toPxWorld({
-              x: pt.x + ix * BASE.w,
-              y: pt.y + iy * BASE.h,
-            });
-            const dx = candidate.x - carScreen.x;
-            const dy = candidate.y - carScreen.y;
-            const d2 = dx * dx + dy * dy;
-            if (d2 < bestD) {
-              bestD = d2;
-              best = candidate;
-            }
-          }
-        }
-        return best;
-      };
-
-      const y = nearestOnTiles(this.geo.yes);
-      const n = nearestOnTiles(this.geo.no);
-
-      if (y) {
-        this.btnYes.style.left = y.left + "px";
-        this.btnYes.style.top = y.top + "px";
-      }
-      if (n) {
-        this.btnNo.style.left = n.left + "px";
-        this.btnNo.style.top = n.top + "px";
-      }
-    }
-
-    // Move the world so the chosen pill slides under the car,
-    // and rotate a bit to "follow the curve". Rotation eases back to 0.
+    // ---------- animation (move the world, not the car) ----------
     drive(choice, onDone) {
       if (this.animating) return;
       this.animating = true;
 
-      // Vector to bring target under the car (relative motion accumulates)
-      const target = choice === "yes" ? this.geo.yes : this.geo.no;
-      const dx = this.geo.start.x - target.x;
-      const dy = this.geo.start.y - target.y;
+      const pathEl = this.pathEls[choice];
+      if (!pathEl || !window.gsap || !window.MotionPathPlugin) {
+        this._placeCar(this.geo.start);
+        this.animating = false;
+        onDone?.();
+        return;
+      }
 
-      // Small, directional twist to sell the curve
-      const ROT = choice === "yes" ? -14 : 12; // up-left vs down-right feeling
-      const originStr = `${this.geo.start.x} ${this.geo.start.y}`;
+      // make buttons inert/hidden during travel
+      this.btnYes.style.pointerEvents = this.btnNo.style.pointerEvents = "none";
+      this.yesFO.style.opacity = this.noFO.style.opacity = "0";
 
-      const onUpdate = () => this.positionButtons();
+      const follower = {
+        x: this.geo.start.x,
+        y: this.geo.start.y,
+        rotation: 0,
+      };
+      const origin = `${this.geo.start.x} ${this.geo.start.y}`; // SVG transform origin
+      gsap.set([this.cameraBehind, this.cameraFront], {
+        transformOrigin: origin,
+      });
 
-      const tl = gsap.timeline({
-        defaults: { ease: "power2.inOut" },
+      gsap.to(follower, {
+        duration: 1.1,
+        ease: "power2.inOut",
+        motionPath: {
+          path: pathEl,
+          align: pathEl,
+          autoRotate: true,
+          alignOrigin: [0.5, 0.5],
+        },
+        onUpdate: () => {
+          gsap.set([this.cameraBehind, this.cameraFront], {
+            x: this.geo.start.x - follower.x,
+            y: this.geo.start.y - follower.y,
+            rotation: -follower.rotation,
+          });
+        },
         onComplete: () => {
+          gsap.set([this.cameraBehind, this.cameraFront], {
+            x: 0,
+            y: 0,
+            rotation: 0,
+          });
+          this._placeCar(this.geo.start);
+
+          // restore buttons
+          this.btnYes.style.pointerEvents = this.btnNo.style.pointerEvents = "";
+          this.yesFO.style.opacity = this.noFO.style.opacity = "";
+
+          // re-place FOs (not strictly necessary, but harmless)
+          this._placeFO(this.yesFO, this.pillCenters.yes);
+          this._placeFO(this.noFO, this.pillCenters.no);
+
           this.animating = false;
           onDone?.();
         },
       });
+    }
 
-      // Translate the world by the delta (ACCUMULATIVE with "+=")
-      tl.to(
-        [this.worldBack, this.worldFront],
-        {
-          duration: 1.0,
-          x: `+=${dx}`,
-          y: `+=${dy}`,
-          onUpdate,
-        },
-        0
-      );
+    // quick live tuning: animator.calibrate('yes', 0.82) or animator.setButtonSize(96, 40)
+    calibrate(which, t, r) {
+      if (typeof t === "number") this.pillT[which] = t;
+      if (typeof r === "number") this.pillR[which] = r;
+      const pt = this._pointAt(this.pathEls[which], this.pillT[which]);
+      const nm = this._pointNormal(this.pathEls[which], this.pillT[which]);
+      const c = {
+        x: pt.x + nm.x * this.pillR[which],
+        y: pt.y + nm.y * this.pillR[which],
+      };
+      this._placeFO(which === "yes" ? this.yesFO : this.noFO, c);
+    }
 
-      // Add a little twist that returns to 0 by the end
-      tl.to(
-        [this.worldBack, this.worldFront],
-        {
-          duration: 1.0,
-          svgOrigin: originStr,
-          keyframes: [
-            { rotation: ROT * 0.9, duration: 0.45, ease: "power1.in" },
-            { rotation: 0, duration: 0.55, ease: "power1.out" },
-          ],
-          onUpdate,
-        },
-        0
-      );
+    setButtonSize(w, h) {
+      this.btnSize = { w, h };
+      if (this.pillCenters) {
+        this._placeFO(this.yesFO, this.pillCenters.yes);
+        this._placeFO(this.noFO, this.pillCenters.no);
+      }
     }
   }
 
   // after HTML exists
   const svgEl = document.getElementById("road-scene");
-  const btnWrap = document.getElementById("road-choices");
-  const btnYes = btnWrap.querySelector(".road-btn--yes");
-  const btnNo = btnWrap.querySelector(".road-btn--no");
-  const animator = new RoadAnimator(svgEl, btnYes, btnNo);
+  const animator = new RoadAnimator(svgEl);
+  window.animator = animator;
+
+  // use the buttons created inside the SVG
+  const btnYes = animator.btnYes;
+  const btnNo = animator.btnNo;
 
   window.addEventListener("resize", () => animator.positionButtons());
 
