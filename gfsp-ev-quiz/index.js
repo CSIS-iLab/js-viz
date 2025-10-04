@@ -1,32 +1,50 @@
 // Modified from https://codepen.io/jnsmith/pen/vYBzEOP
 
-// ---- GSAP loader (robust & ordered) ----
 function loadScript(src) {
   return new Promise((resolve, reject) => {
     const s = document.createElement("script");
     s.src = src;
     s.async = true;
-    s.crossOrigin = "anonymous";
     s.onload = resolve;
     s.onerror = () => reject(new Error("Failed to load " + src));
     document.head.appendChild(s);
   });
 }
 
+async function loadFirstWorking(urls) {
+  let lastErr;
+  for (const u of urls) {
+    try {
+      await loadScript(u);
+      return u;
+    } catch (e) {
+      lastErr = e;
+    }
+  }
+  throw lastErr || new Error("All script URLs failed");
+}
+
 async function ensureGSAP() {
   if (!window.gsap) {
-    await loadScript("https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js");
+    await loadFirstWorking([
+      "https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js",
+    ]);
   }
   if (!window.MotionPathPlugin) {
-    await loadScript(
-      "https://cdn.jsdelivr.net/npm/gsap@3/dist/MotionPathPlugin.min.js"
-    );
+    await loadFirstWorking([
+      "https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/MotionPathPlugin.min.js",
+    ]);
   }
   if (window.gsap && window.MotionPathPlugin) {
-    window.gsap.registerPlugin(window.MotionPathPlugin);
-    return true;
+    gsap.registerPlugin(MotionPathPlugin);
+    console.log(
+      "GSAP?",
+      !!window.gsap,
+      "motionPath?",
+      !!gsap?.plugins?.motionPath
+    );
   }
-  return !!window.gsap; // core only
+  return !!window.gsap;
 }
 
 // === CONFIG: your published CSV URLs ===
@@ -46,10 +64,10 @@ const DEFS_CSV_URL =
 const BASE = { w: 665.13, h: 387.15 }; // your art canvas
 const CAR_SIZE = { w: 100, h: 55 }; // make the car nice and big
 // top branch (YES) and bottom/right branch (NO)
-const PATHS = {
-  yes: "M 172.93,264.55 C 272.70,219.38 345.87,180.67 432.33,109.69",
-  no: "M 172.93,264.55 C 279.35,283.91 425.68,296.81 505.50,238.74",
-};
+// const PATHS = {
+//   yes: "M 172.93,264.55 C 272.70,219.38 345.87,180.67 432.33,109.69",
+//   no: "M 172.93,264.55 C 279.35,283.91 425.68,296.81 505.50,238.74",
+// };
 
 const ROAD_ASSETS = {
   road: "1_road_dashed.svg",
@@ -481,15 +499,79 @@ function renderProfiles(container, profilesArray) {
   activateFlourishEmbeds(container);
 }
 
+let PATHS = { yes: "", no: "" }; // global that will be filled before use
+
+async function loadCenterlines(url) {
+  const res = await fetch(url, { cache: "no-store" });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  const svgText = await res.text();
+
+  // Parse SVG
+  const doc = new DOMParser().parseFromString(svgText, "image/svg+xml");
+  const getD = (id) => doc.getElementById(id)?.getAttribute("d") || "";
+
+  let yes = getD("mp-yes");
+  let no = getD("mp-no");
+
+  // If the file viewBox differs from BASE, scale the paths to your BASE
+  const svgEl = doc.documentElement;
+  const vb = (svgEl.getAttribute("viewBox") || "").split(/\s+/).map(Number);
+  if (vb.length === 4 && vb[2] && vb[3]) {
+    const [, , w, h] = vb;
+    const sx = BASE.w / w;
+    const sy = BASE.h / h;
+    if ((sx !== 1 || sy !== 1) && (yes || no)) {
+      const scalePath = (d) =>
+        d
+          ? d.replace(/([MLCQSTAHVZ])([^MLCQSTAHVZ]*)/gi, (m, cmd, nums) => {
+              // scale numeric pairs conservatively (M/L/C/Q/S/T). H/V/A are trickier; we keep them unscaled unless obvious.
+              const t = nums
+                .trim()
+                .split(/[\s,]+/)
+                .map((v, i) => {
+                  const n = Number(v);
+                  if (!Number.isFinite(n)) return v;
+                  // alternate x/y scaling for pair-ish commands; crude but effective for typical M/L/C/Q…
+                  const isX = i % 2 === 0;
+                  return (isX ? n * sx : n * sy).toFixed(3);
+                })
+                .join(" ");
+              return `${cmd} ${t}`;
+            })
+          : d;
+      yes = scalePath(yes);
+      no = scalePath(no);
+    }
+  }
+  return { yes, no };
+}
+
+async function getPathsFromRoad() {
+  // resolve relative to the current page so it works under /gfsp-ev-quiz/
+  const roadUrl = new URL(ROAD_ASSETS.road, document.baseURI).href;
+  console.log("roadUrl resolved to:", new URL(ROAD_ASSETS.road, document.baseURI).href);
+
+  try {
+    const { yes, no } = await loadCenterlines(roadUrl);
+    if (yes && no) return { yes, no };
+    console.warn(
+      "Centerline IDs not found in road SVG (mp-yes/mp-no). Using fallback."
+    );
+  } catch (err) {
+    console.warn("Failed to fetch/parse road SVG for centerlines:", err);
+  }
+  // fallback to the baked-in paths so the app still runs
+  return {
+    yes: "M 172.93,264.55 C 272.70,219.38 345.87,180.67 432.33,109.69",
+    no: "M 172.93,264.55 C 279.35,283.91 425.68,296.81 505.50,238.74",
+  };
+}
+
 // ----- load data, then init tree -----
 (async function init() {
   const gsapOk = await ensureGSAP();
-  console.log(
-    "GSAP ready?",
-    !!window.gsap,
-    "MotionPath ready?",
-    !!window.gsap?.plugins?.MotionPathPlugin
-  );
+
+  PATHS = await getPathsFromRoad();
 
   const { nodesArray, profilesArray } = await loadDecisionTreeData();
 
@@ -538,7 +620,7 @@ function renderProfiles(container, profilesArray) {
   await ensureGSAP();
 
   class RoadAnimator {
-    constructor(svg) {
+    constructor(svg, paths) {
       this.svg = svg;
 
       // two cameras so topper moves with road but stays above car
@@ -551,6 +633,9 @@ function renderProfiles(container, profilesArray) {
         btns: this._g("road__btns"),
         front: this._g("road__front"),
       };
+
+      this.roadTile = this._createTiledRoad(ROAD_ASSETS.road);
+
       this.cameraBehind.append(
         this.layers.back,
         this.layers.road,
@@ -579,8 +664,8 @@ function renderProfiles(container, profilesArray) {
       this.pathLayer = this._g("road__paths");
       this.svg.append(this.pathLayer);
       this.pathEls = {
-        yes: this._makePath(PATHS.yes),
-        no: this._makePath(PATHS.no),
+        yes: this._makePath(paths.yes),
+        no: this._makePath(paths.no),
       };
 
       // derive car start from first “M” so it always matches your art
@@ -853,6 +938,74 @@ function renderProfiles(container, profilesArray) {
       // console.log('bleed', this.bleed);
     }
 
+    _rect(x, y, w, h, fill = "transparent") {
+      const r = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+      r.setAttribute("x", x);
+      r.setAttribute("y", y);
+      r.setAttribute("width", w);
+      r.setAttribute("height", h);
+      r.setAttribute("fill", fill);
+      r.setAttribute("pointer-events", "none");
+      return r;
+    }
+
+    // ——— inside class RoadAnimator ———
+    _createTiledRoad(href) {
+      // Two <image> nodes side-by-side; we shift the pair and wrap by width
+      const g = this._g("road-tiles");
+      const imgA = this._img(href, BASE.w, BASE.h, 0, 0, "none");
+      const imgB = this._img(href, BASE.w, BASE.h, BASE.w, 0, "none");
+      g.append(imgA, imgB);
+
+      let offsetX = 0; // in viewBox units
+      const setOffset = (x) => {
+        // keep offset in [-BASE.w, 0)
+        offsetX = ((x % BASE.w) + BASE.w) % BASE.w;
+        const tx = -offsetX;
+        g.setAttribute("transform", `translate(${tx},0)`);
+      };
+
+      return {
+        node: g,
+        setSrc(newHref) {
+          imgA.setAttributeNS(null, "href", newHref);
+          imgA.setAttributeNS("http://www.w3.org/1999/xlink", "href", newHref);
+          imgB.setAttributeNS(null, "href", newHref);
+          imgB.setAttributeNS("http://www.w3.org/1999/xlink", "href", newHref);
+        },
+        scrollBy(dx) {
+          setOffset(offsetX + dx);
+        },
+        reset() {
+          setOffset(0);
+        },
+      };
+    }
+
+    _computeProgress(pathEl, x, y) {
+      // cheap nearest-length solver: binary search along length
+      const L = pathEl.getTotalLength();
+      let lo = 0,
+        hi = L,
+        best = 0,
+        bestDist = Infinity;
+      for (let i = 0; i < 20; i++) {
+        const mid = (lo + hi) / 2;
+        const p = pathEl.getPointAtLength(mid);
+        const d = (p.x - x) * (p.x - x) + (p.y - y) * (p.y - y);
+        if (d < bestDist) {
+          bestDist = d;
+          best = mid;
+        }
+        // heuristic move:
+        const ahead = pathEl.getPointAtLength(Math.min(L, mid + 2));
+        const dir = (ahead.x - p.x) * (x - p.x) + (ahead.y - p.y) * (y - p.y);
+        if (dir > 0) lo = mid;
+        else hi = mid;
+      }
+      return best / L;
+    }
+
     // ---------- drawing per step ----------
     setStep(node) {
       const { back, road, btns, front } = this.layers;
@@ -861,32 +1014,30 @@ function renderProfiles(container, profilesArray) {
       btns.replaceChildren();
       front.replaceChildren();
 
-      const bx = this.bleed?.x || 0;
-      const by = this.bleed?.y || 0;
-      const W = BASE.w + 2 * bx;
-      const H = BASE.h + 2 * by;
+      const bx = this.bleed?.x || 0,
+        by = this.bleed?.y || 0;
+      const W = BASE.w + 2 * bx,
+        H = BASE.h + 2 * by;
 
-      // shift all art layers by -bleed so the “extra pixels” sit offscreen
-      if (window.gsap) {
-        gsap.set([back, road, btns, front], { x: -bx, y: -by });
-      } else {
-        [back, road, btns, front].forEach((g) =>
-          g.setAttribute("transform", `translate(${-bx},${-by})`)
-        );
-      }
+      back.append(this._rect(-bx, -by, W, H, "#e9f2ff"));
+      back.append(
+        this._img(ROAD_ASSETS.tunnelBack, BASE.w, BASE.h, 0, 0, "none")
+      );
 
-      back.append(this._img(ROAD_ASSETS.tunnelBack, W, H, 0, 0, "none"));
-      road.append(this._img(ROAD_ASSETS.road, W, H, 0, 0, "none"));
+      this.roadTile.setSrc(ROAD_ASSETS.road);
+      this.roadTile.reset();
+      road.append(this.roadTile.node);
+
       btns.append(
-        this._img(ROAD_ASSETS.pill, W, H, 0, 0, "none"),
+        this._img(ROAD_ASSETS.pill, BASE.w, BASE.h, 0, 0, "none"),
         this.yesFO,
         this.noFO
       );
 
       const topImg = this._img(
         resolveTopperSrc(node?.data?.topper),
-        W,
-        H,
+        BASE.w,
+        BASE.h,
         0,
         0,
         "none"
@@ -903,6 +1054,7 @@ function renderProfiles(container, profilesArray) {
       });
       this._placeCar(this.geo.start);
 
+      // recompute & place pill buttons (these are in viewBox coords)
       const yP = this._pointAt(this.pathEls.yes, this.pillT.yes);
       const yN = this._pointNormal(this.pathEls.yes, this.pillT.yes);
       const nP = this._pointAt(this.pathEls.no, this.pillT.no);
@@ -916,84 +1068,104 @@ function renderProfiles(container, profilesArray) {
         no: { x: nP.x + nN.x * this.pillR.no, y: nP.y + nN.y * this.pillR.no },
       };
 
-      // place foreignObjects directly in viewBox coords
       this._placeFO(this.yesFO, this.pillCenters.yes);
       this._placeFO(this.noFO, this.pillCenters.no);
     }
 
     // ---------- animation (move the world, not the car) ----------
-drive(choice, onDone) {
-  if (this.animating) return;
-  this.animating = true;
+    drive(choice, onDone) {
+      if (this.animating) return;
+      this.animating = true;
 
-  const pathEl = this.pathEls[choice];
-  if (!pathEl) { this._finishDrive(onDone); return; }
+      const pathEl = this.pathEls[choice];
+      if (!pathEl) {
+        this._finishDrive(onDone);
+        return;
+      }
 
-  // disable/hide buttons during travel
-  this.btnYes.style.pointerEvents = this.btnNo.style.pointerEvents = "none";
-  this.yesFO.style.opacity = this.noFO.style.opacity = "0";
+      // disable/hide buttons during travel
+      this.btnYes.style.pointerEvents = this.btnNo.style.pointerEvents = "none";
+      this.yesFO.style.opacity = this.noFO.style.opacity = "0";
 
-  const originX = this.geo.start.x;
-  const originY = this.geo.start.y;
+      const originX = this.geo.start.x;
+      const originY = this.geo.start.y;
 
-  const applyTransform = (px, py, rotRad) => {
-    const c = Math.cos(-rotRad), s = Math.sin(-rotRad);
-    const dx = originX - px, dy = originY - py;
-    const m = `matrix(${c},${s},${-s},${c},${dx},${dy})`;
-    this.cameraBehind.setAttribute("transform", m);
-    this.cameraFront.setAttribute("transform", m);
-  };
+      const applyTransform = (px, py, rotRad) => {
+        const c = Math.cos(-rotRad),
+          s = Math.sin(-rotRad);
+        const dx = originX - px,
+          dy = originY - py;
+        const m = `matrix(${c},${s},${-s},${c},${dx},${dy})`;
+        this.cameraBehind.setAttribute("transform", m);
+        this.cameraFront.setAttribute("transform", m);
+      };
 
-  const L = pathEl.getTotalLength();
-  const D = 1.05;                 // seconds
-  const endT = this.pillT[choice]; // only animate up to the fork
+      const L = pathEl.getTotalLength();
+      const D = 1.05; // seconds
+      const endT = this.pillT[choice]; // only animate up to the fork
 
-  // Use GSAP MotionPath if available
-  if (window.gsap?.plugins?.MotionPathPlugin) {
-    const follower = { x: originX, y: originY, rotation: 0 };
-    gsap.set([this.cameraBehind, this.cameraFront], {
-      transformOrigin: `${originX} ${originY}`,
-    });
-    gsap.to(follower, {
-      duration: D,
-      ease: "power2.inOut",
-      motionPath: {
-        path: pathEl,
-        align: pathEl,
-        autoRotate: true,
-        alignOrigin: [0.5, 0.5],
-        start: 0,
-        end: endT, // stop at the fork
-      },
-      onUpdate: () => {
-        applyTransform(
-          follower.x,
-          follower.y,
-          (follower.rotation * Math.PI) / 180
-        );
-      },
-      onComplete: () => this._finishDrive(onDone),
-    });
-    return;
-  }
+      if (gsap.plugins?.motionPath || window.MotionPathPlugin) {
+        const follower = { x: originX, y: originY, rotation: 0 };
+        const endT = this.pillT[choice];
 
-  // Fallback (no MotionPath): sample the path manually
-  const easeInOut = (t) => (t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t);
-  const t0 = performance.now();
-  const tick = (now) => {
-    const raw = Math.min(1, (now - t0) / (D * 1000));
-    const k = easeInOut(raw);
-    const len = k * (endT * L);
-    const p  = pathEl.getPointAtLength(len);
-    const p2 = pathEl.getPointAtLength(Math.max(0, len - 1));
-    const rot = Math.atan2(p.y - p2.y, p.x - p2.x);
-    applyTransform(p.x, p.y, rot);
-    if (raw < 1) requestAnimationFrame(tick);
-    else this._finishDrive(onDone);
-  };
-  requestAnimationFrame(tick);
-}
+        gsap.set([this.cameraBehind, this.cameraFront], {
+          transformOrigin: `${originX} ${originY}`,
+        });
 
+        let lastLen = 0;
+        const scrollScale = 1; // tune: viewBox pixels per path pixel
+        gsap.to(follower, {
+          duration: D,
+          ease: "power2.inOut",
+          motionPath: {
+            path: pathEl,
+            align: pathEl,
+            autoRotate: true,
+            alignOrigin: [0.5, 0.5],
+            start: 0,
+            end: endT,
+          },
+          onUpdate: () => {
+            const rad = (follower.rotation * Math.PI) / 180;
+
+            // how far along the path (0..endT) are we?
+            const progress = this._computeProgress(
+              pathEl,
+              follower.x,
+              follower.y
+            );
+            // progress is 0..1 of the WHOLE path; clamp to the segment we’re actually using:
+            const clamped = Math.min(progress, endT);
+            const currLen = clamped * L;
+
+            // scroll the tiles by the delta length
+            const dLen = currLen - lastLen;
+            this.roadTile.scrollBy(dLen * scrollScale);
+            lastLen = currLen;
+
+            applyTransform(follower.x, follower.y, rad);
+          },
+          onComplete: () => this._finishDrive(onDone),
+        });
+        return;
+      }
+
+      // Fallback (no MotionPath): sample the path manually
+      const easeInOut = (t) => (t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t);
+      const t0 = performance.now();
+      const tick = (now) => {
+        const raw = Math.min(1, (now - t0) / (D * 1000));
+        const k = easeInOut(raw);
+        const len = k * (endT * L);
+        const p = pathEl.getPointAtLength(len);
+        const p2 = pathEl.getPointAtLength(Math.max(0, len - 1));
+        const rot = Math.atan2(p.y - p2.y, p.x - p2.x);
+        applyTransform(p.x, p.y, rot);
+        if (raw < 1) requestAnimationFrame(tick);
+        else this._finishDrive(onDone);
+      };
+      requestAnimationFrame(tick);
+    }
 
     // quick live tuning: animator.calibrate('yes', 0.82) or animator.setButtonSize(96, 40)
     calibrate(which, t, r) {
@@ -1019,7 +1191,7 @@ drive(choice, onDone) {
 
   // after HTML exists
   const svgEl = document.getElementById("road-scene");
-  const animator = new RoadAnimator(svgEl);
+  const animator = new RoadAnimator(svgEl, PATHS);
   window.animator = animator;
 
   // use the buttons created inside the SVG
