@@ -1,0 +1,777 @@
+gsap.registerPlugin(MotionPathPlugin);
+
+// --- Decision tree model ---
+// Each node references a camera target (<rect id="cam-...">) and presents answers.
+// Each answer points to the next node id and (optionally) a motion path id to animate the "car".
+const quiz = {
+  startNode: "q1",
+  nodes: {
+    q1: {
+      cameraTarget: "cam-q1",
+      question: "Does your country manufacture cars?",
+      answers: [
+        {
+          label: "Yes",
+          svgId: "btn-q1-yes",
+          next: "q2",
+          motionPath: "mp-q1-yes",
+          car: {
+            sequence: [
+              { pose: "horizontal", end: 0.11994, autoRotate: false }, // approach
+              { pose: "up", end: 0.46644, autoRotate: false }, // turn upward
+              { pose: "horizontal", end: 1.0, autoRotate: false }, // straighten out
+            ],
+          },
+        },
+        {
+          label: "No",
+          svgId: "btn-q1-no",
+          next: null,
+          motionPath: "mp-q1-no",
+          caseStudyId: "costa_rica",
+          car: {
+            sequence: [
+              { pose: "horizontal", end: 0.21994, autoRotate: false },
+              { pose: "down", end: 1, autoRotate: false },
+            ],
+          },
+        },
+      ],
+    },
+    q2: {
+      cameraTarget: "cam-q2",
+      question: "Is your manufacturing industry primarily driven by exports?",
+      answers: [
+        {
+          label: "Yes",
+          svgId: "btn-q2-yes",
+          next: "q3_1",
+          motionPath: "mp-q2-yes",
+          car: {
+            sequence: [
+              { pose: "horizontal", end: 0.10883, autoRotate: false }, // approach
+              { pose: "up", end: 0.51586, autoRotate: false }, // turn upward
+              { pose: "horizontal", end: 1.0, autoRotate: false }, // straighten out
+            ],
+          },
+        },
+        {
+          label: "No",
+          svgId: "btn-q2-no",
+          next: "q3_2",
+          motionPath: "mp-q2-no",
+          car: {
+            sequence: [
+              { pose: "horizontal", end: 0.10619, autoRotate: false },
+              { pose: "down", end: 0.52762, autoRotate: false },
+              { pose: "horizontal", end: 1.0, autoRotate: false }, // straighten out
+            ],
+          },
+        },
+      ],
+    },
+    q3_1: {
+      cameraTarget: "cam-q3-1",
+      question: "Are you producing EVs?",
+      answers: [
+        {
+          label: "Yes",
+          svgId: "btn-q3-1-yes",
+          next: null,
+          motionPath: "mp-q3-1-yes",
+          caseStudyId: "mexico",
+          car: {
+            sequence: [
+              { pose: "horizontal", end: 0.20803, autoRotate: false }, // approach
+              { pose: "up", end: 1, autoRotate: false }, // turn upward
+            ],
+          },
+        },
+        {
+          label: "No",
+          svgId: "btn-q3-1-no",
+          next: null,
+          motionPath: "mp-q3-1-no",
+          caseStudyId: "south_africa",
+          car: {
+            sequence: [
+              { pose: "horizontal", end: 0.26546, autoRotate: false },
+              { pose: "down", end: 1, autoRotate: false },
+            ],
+          },
+        },
+      ],
+    },
+    q3_2: {
+      cameraTarget: "cam-q3-2",
+      question: "Does your country have strong domestic manufacturers that serve the local market?",
+      answers: [
+        {
+          label: "Yes",
+          svgId: "btn-q3-2-yes",
+          next: null,
+          motionPath: "mp-q3-2-yes",
+          caseStudyId: "india",
+          car: {
+            sequence: [
+              { pose: "horizontal", end: 0.20796, autoRotate: false }, // approach
+              { pose: "up", end: 1, autoRotate: false }, // turn upward
+            ],
+          },
+        },
+        {
+          label: "No",
+          svgId: "btn-q3-2-no",
+          next: "q4",
+          motionPath: "mp-q3-2-no",
+          car: {
+            sequence: [
+              { pose: "horizontal", end: 0.12075, autoRotate: false },
+              { pose: "down", end: 0.46283, autoRotate: false },
+              { pose: "horizontal", end: 1.0, autoRotate: false }, // straighten out
+            ],
+          },
+        },
+      ],
+    },
+    q4: {
+      cameraTarget: "cam-q4",
+      question: "Are you incentivizing domestic EV adoption?",
+      answers: [
+        {
+          label: "Yes",
+          svgId: "btn-q4-yes",
+          next: null,
+          motionPath: "mp-q4-yes",
+          caseStudyId: "indonesia",
+          car: {
+            sequence: [
+              { pose: "horizontal", end: 0.20799, autoRotate: false }, // approach
+              { pose: "up", end: 1, autoRotate: false }, // turn upward
+            ],
+          },
+        },
+        {
+          label: "No",
+          svgId: "btn-q4-no",
+          next: null,
+          motionPath: "mp-q4-no",
+          caseStudyId: "brazil",
+          car: {
+            sequence: [
+              { pose: "horizontal", end: 0.26089, autoRotate: false },
+              { pose: "down", end: 1, autoRotate: false },
+            ],
+          },
+        },
+      ],
+    },
+  },
+};
+
+// ===== Quiz =====
+// --- Camera/controller + frame header ---
+const svg = document.getElementById("roadSvg");
+const questionText = document.getElementById("questionText");
+const stageEl = document.querySelector(".frame-stage");
+const sr = document.getElementById("sr");
+
+// Match stage to SVG viewBox ratio
+(function syncAspectRatioFromViewBox() {
+  const [, , w, h] = (svg.getAttribute("viewBox") || "100.8 47.4 1975.5 1046.9").split(/\s+/).map(Number);
+  stageEl?.style.setProperty("aspect-ratio", `${w} / ${h}`);
+})();
+
+// Mutable viewBox proxy
+const view = { x: 100.8, y: 47.4, w: 1975.5, h: 1046.9 };
+
+const carState = { path: null, progress: 0 };
+let isDriving = false;
+
+function registerCarSprite() {
+  const el = document.getElementById("car-scale");
+  if (!el) return;
+  const box = el.getBBox(); // reflects the current <use> pose
+  gsap.set(el, {
+    x: -box.x - box.width / 2, // move the art so its center is at (0,0)
+    y: -box.y - box.height / 2,
+    transformBox: "view-box", // use the element’s own coordinate system
+    transformOrigin: "0 0", // scale from the anchor at (0,0)
+  });
+}
+
+// Scale the car size based on camera zoom
+const BASE_VIEW_W = view.w;
+// Tune this so the car looks right when fully zoomed out (view.w === BASE_VIEW_W)
+const CAR_WORLD_SIZE = 0.03; // try 0.04..0.10 depending on your art
+const MIN = 0.015,
+  MAX = 0.12,
+  K = 0.7;
+
+function clamp(min, max, v) {
+  return Math.max(min, Math.min(max, v));
+}
+
+function applyCameraScaleToCar() {
+  const zoom = BASE_VIEW_W / view.w;
+  const s = clamp(MIN, MAX, CAR_WORLD_SIZE * Math.pow(zoom, K));
+  gsap.set("#car-scale", { scale: s, transformBox: "view-box", transformOrigin: "0 0" });
+  if (!isDriving && carState.path) reAlignCar();
+}
+
+const setViewBox = () => {
+  svg.setAttribute("viewBox", `${view.x} ${view.y} ${view.w} ${view.h}`);
+  applyCameraScaleToCar(); // keep the car scaling in sync with the zoom
+};
+
+function rectToViewBox(rect, pad = 0, minW = 460, minH = 290) {
+  const x = rect.x.baseVal.value - pad;
+  const y = rect.y.baseVal.value - pad;
+  const w = Math.max(rect.width.baseVal.value + 2 * pad, minW);
+  const h = Math.max(rect.height.baseVal.value + 2 * pad, minH);
+  return { x, y, w, h };
+}
+
+function positionCarAtStart(pathId, pose = "horizontal") {
+  const path = document.getElementById(pathId);
+  const anchor = document.getElementById("car-anchor");
+  if (!path || !anchor) return;
+
+  setCarPose(pose); // sets <use>, we’ll recenter next frame
+  requestAnimationFrame(() => {
+    registerCarSprite(); // center art at (0,0) after <use> swap
+    carState.path = path;
+    carState.progress = 0;
+    gsap.set(anchor, {
+      transformBox: "fill-box",
+      transformOrigin: "50% 50%",
+      motionPath: {
+        path,
+        align: path,
+        alignOrigin: [0.5, 0.5],
+        autoRotate: false,
+        start: 0,
+        end: 0,
+      },
+    });
+    reAlignCar(); // ensures perfect pin before first camera tween
+  });
+}
+
+function reAlignCar() {
+  const path = carState.path;
+  const anchor = document.getElementById("car-anchor");
+  if (!path || !anchor) return;
+  const p = carState.progress;
+  gsap.set(anchor, {
+    motionPath: {
+      path,
+      align: path,
+      alignOrigin: [0.5, 0.5],
+      autoRotate: false,
+      start: p,
+      end: p,
+    },
+  });
+}
+
+function asPromise(tweenOrTimeline) {
+  // If GSAP exposes a real thenable, use it; otherwise wrap onComplete.
+  if (tweenOrTimeline && typeof tweenOrTimeline.then === "function") return tweenOrTimeline;
+  return new Promise((res) => tweenOrTimeline?.eventCallback?.("onComplete", res) ?? res());
+}
+
+// --- move the car along a branch path in sync with the camera ---
+function driveCar(pathId, opts = {}) {
+  const path = document.getElementById(pathId);
+  const anchor = document.getElementById("car-anchor");
+  if (!path || !anchor) return Promise.resolve();
+
+  const dur = opts.duration ?? 3;
+  let seq = opts.sequence || [{ pose: "horizontal", end: 1 }];
+
+  let prevEnd = 0;
+  seq = seq
+    .map((s, i) => ({
+      pose: s.pose,
+      end: i === seq.length - 1 ? 1 : Math.min(Math.max(s.end, prevEnd), 0.9999),
+      autoRotate: s.autoRotate ?? false,
+    }))
+    .map((s) => ((prevEnd = s.end), s));
+
+  setCarPose(seq[0].pose);
+  requestAnimationFrame(registerCarSprite);
+
+  isDriving = true;
+  carState.path = path;
+  carState.progress = 0;
+
+  const tl = gsap.timeline({
+    defaults: { ease: "power1.inOut" },
+    onComplete() {
+      isDriving = false;
+    },
+  });
+
+  let start = 0;
+  seq.forEach((seg, i) => {
+    const segDur = Math.max(dur * (seg.end - start), 0.0001);
+
+    tl.to(anchor, {
+      duration: segDur,
+      motionPath: {
+        path,
+        align: path,
+        alignOrigin: [0.5, 0.5],
+        autoRotate: seg.autoRotate,
+        start,
+        end: seg.end,
+      },
+      onUpdate: function () {
+        // where are we between `start` and `seg.end`?
+        carState.progress = start + (seg.end - start) * this.progress();
+      },
+    });
+    if (i < seq.length - 1) {
+      tl.to("#car-scale", { opacity: 0, duration: 0.12 }, ">")
+        .call(() => {
+          setCarPose(seq[i + 1].pose);
+          registerCarSprite();
+        })
+        .to("#car-scale", { opacity: 1, duration: 0.12 }, ">");
+    }
+    start = seg.end;
+  });
+
+  return asPromise(tl);
+}
+
+const prefersReducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+
+function tweenToCamera(targetRectId, opts = {}) {
+  const rect = document.getElementById(targetRectId);
+  if (!rect) return Promise.resolve();
+
+  const vb = rectToViewBox(rect, opts.padding ?? 0);
+
+  // bail out if we're already there (prevents needless delays)
+  const eps = 0.01;
+  if (
+    Math.abs(view.x - vb.x) < eps &&
+    Math.abs(view.y - vb.y) < eps &&
+    Math.abs(view.w - vb.w) < eps &&
+    Math.abs(view.h - vb.h) < eps
+  ) {
+    return Promise.resolve();
+  }
+
+  const dur = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ? 0 : opts.duration ?? 3;
+
+  gsap.killTweensOf(view); // avoid overlapping tweens
+
+  const tween = gsap.to(view, {
+    duration: dur,
+    ease: opts.ease ?? "power2.inOut",
+    x: vb.x,
+    y: vb.y,
+    w: vb.w,
+    h: vb.h,
+    onUpdate: setViewBox,
+  });
+
+  return new Promise((res) => tween.eventCallback("onComplete", res));
+}
+
+// --- Debugging: highlight a motion path ---
+function highlightPath(id, color = "#00e676") {
+  document.querySelectorAll(".debugPath").forEach((n) => n.remove());
+  const p = document.getElementById(id);
+  if (!p) return;
+  const clone = p.cloneNode(true);
+  clone.removeAttribute("id");
+  clone.classList.add("debugPath");
+  clone.style.pointerEvents = "none";
+  clone.style.fill = "none";
+  clone.style.stroke = color;
+  clone.style.strokeWidth = 6;
+  clone.style.strokeOpacity = 0.6;
+  p.parentNode.appendChild(clone);
+}
+
+// --- set the car orientation ---
+function setCarPose(pose) {
+  const use = document.getElementById("car-use");
+  const map = { horizontal: "#car-horizontal", up: "#car-vertical-up", down: "#car-vertical-down" };
+  const target = map[pose] || map.horizontal;
+  use.setAttribute("href", target);
+  use.setAttribute("xlink:href", target); // Safari
+}
+
+// --- Accessibility + bindings ---
+// Make the heading programmatically focusable once:
+questionText?.setAttribute("tabindex", "-1");
+
+// Helpers
+const allSvgButtons = () => Array.from(document.querySelectorAll(".svg-button"));
+let cleanupFns = [];
+
+function disableAllSvgButtons() {
+  const active = document.activeElement;
+  if (active && active.closest?.(".svg-button")) {
+    questionText?.focus({ preventScroll: true });
+  }
+
+  allSvgButtons().forEach((el) => {
+    el.toggleAttribute("inert", "");
+    el.setAttribute("aria-disabled", "true");
+    el.setAttribute("tabindex", "-1");
+  });
+}
+
+function bindSvgAnswer(ans, activate) {
+  const el = document.getElementById(ans.svgId);
+  if (!el) return;
+
+  // Make it an active, reachable control
+  el.removeAttribute("inert");
+  el.removeAttribute("aria-disabled");
+  el.setAttribute("tabindex", "0");
+  el.setAttribute("role", el.getAttribute("role") || "button");
+  el.setAttribute("aria-label", ans.label);
+
+  const onClick = (e) => {
+    e.preventDefault();
+    activate(ans);
+  };
+  const onKeyDown = (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      activate(ans);
+    }
+  };
+
+  el.addEventListener("click", onClick);
+  el.addEventListener("keydown", onKeyDown);
+
+  cleanupFns.push(() => {
+    el.removeEventListener("click", onClick);
+    el.removeEventListener("keydown", onKeyDown);
+    el.setAttribute("tabindex", "-1");
+    el.setAttribute("aria-disabled", "true");
+    el.setAttribute("inert", "");
+  });
+}
+
+function announceQuestion(text) {
+  if (!sr) return;
+  sr.textContent = ""; // reset so SRs re-announce
+  sr.textContent = text;
+}
+
+// --- Node renderer ---
+async function renderNode(nodeId, { skipCamera = false } = {}) {
+  const node = quiz.nodes[nodeId];
+  if (!node) return;
+
+  cleanupFns.forEach((fn) => fn());
+  cleanupFns = [];
+  disableAllSvgButtons();
+
+  if (!skipCamera) {
+    await tweenToCamera(node.cameraTarget);
+  }
+
+  questionText.textContent = node.question;
+  announceQuestion(node.question);
+
+  const activateAnswer = async (ans) => {
+    const carP = ans.motionPath
+      ? driveCar(ans.motionPath, { duration: 3, sequence: (ans.car || {}).sequence })
+      : Promise.resolve();
+
+    if (ans.next) {
+      const camP = tweenToCamera(quiz.nodes[ans.next].cameraTarget);
+      await Promise.all([carP, camP]);
+      await renderNode(ans.next, { skipCamera: true });
+    } else {
+      await carP;
+      let csId =
+        ans.caseStudyId ||
+        caseStudyIndexByLeaf.get(`${nodeId}_${(ans.label || "").toLowerCase().replace(/\s+/g, "")}`) ||
+        caseStudyIndexByLeaf.get(nodeId) ||
+        null;
+
+      if (csId) await showCaseStudyById(csId);
+    }
+  };
+
+  node.answers.forEach((ans) => bindSvgAnswer(ans, activateAnswer));
+}
+
+// ===== Case studies =====
+const SHEET_CSV_URL =
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vRQryB41aY-chlYP816eVqR6Y_NTOcSuA3SFx5AJEgvBv4A4gwaAyUbpLipBxCNOxVmaT58x1s7KOWN/pub?output=csv"; // <- your published CSV
+
+async function fetchCSV(url) {
+  const res = await fetch(url, { cache: "no-store" });
+  const text = await res.text();
+  return parseCSV(text);
+}
+
+// Light CSV parser (handles simple commas and quotes)
+function parseCSV(text) {
+  const rows = [];
+  let i = 0,
+    field = "",
+    row = [],
+    inQuotes = false;
+
+  while (i < text.length) {
+    const c = text[i];
+
+    if (inQuotes) {
+      if (c === '"') {
+        if (text[i + 1] === '"') {
+          field += '"';
+          i += 2;
+          continue;
+        } // escaped quote
+        inQuotes = false;
+        i++;
+        continue;
+      }
+      field += c;
+      i++;
+      continue;
+    }
+
+    if (c === '"') {
+      inQuotes = true;
+      i++;
+      continue;
+    }
+    if (c === ",") {
+      row.push(field);
+      field = "";
+      i++;
+      continue;
+    }
+    if (c === "\n" || c === "\r") {
+      if (c === "\r" && text[i + 1] === "\n") i++;
+      row.push(field);
+      field = "";
+      if (row.length > 1 || row[0] !== "") rows.push(row);
+      row = [];
+      i++;
+      continue;
+    }
+
+    field += c;
+    i++;
+  }
+  // push last field
+  if (field.length || row.length) {
+    row.push(field);
+    rows.push(row);
+  }
+
+  const headers = rows.shift().map((h) => h.trim());
+  return rows.map((r) => {
+    const o = {};
+    headers.forEach((h, idx) => (o[h] = (r[idx] ?? "").trim()));
+    return o;
+  });
+}
+
+let caseStudiesById = {};
+let caseStudyIndexByLeaf = new Map();
+
+async function loadCaseStudies() {
+  const rows = await fetchCSV(SHEET_CSV_URL);
+
+  // index by id
+  caseStudiesById = Object.fromEntries(rows.map((r) => [r.id, r]));
+
+  // optional: build leaf → caseStudy mapping from the sheet
+  caseStudyIndexByLeaf.clear();
+  rows.forEach((r) => {
+    const leafs = (r.leaf_ids || "")
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean);
+    leafs.forEach((leafId) => caseStudyIndexByLeaf.set(leafId, r.id));
+  });
+
+  // also render the gallery once data is ready
+  renderCaseStudyGallery(rows);
+}
+
+function ensureFlourishScript() {
+  if (document.querySelector('script[src*="public.flourish.studio/resources/embed.js"]')) return;
+  const s = document.createElement("script");
+  s.src = "https://public.flourish.studio/resources/embed.js";
+  s.async = true;
+  document.head.appendChild(s);
+}
+
+function buildFlourishIframe(url, { height = 460 } = {}) {
+  const m = String(url).match(/visualisation\/(\d+)/);
+  const id = m ? m[1] : null;
+
+  const wrap = document.createElement("figure");
+  wrap.className = "cs-chart";
+
+  if (!id) {
+    wrap.textContent = "Chart unavailable";
+    return wrap;
+  }
+
+  const iframe = document.createElement("iframe");
+  iframe.src = `https://flo.uri.sh/visualisation/${id}/embed`;
+  iframe.title = "Flourish chart";
+  iframe.style.width = "100%";
+  iframe.style.height = `${height}px`;
+  iframe.style.border = "0";
+  iframe.setAttribute("scrolling", "no");
+  wrap.appendChild(iframe);
+
+  return wrap;
+}
+
+function renderCaseStudyCard(study, { mount, showRetake = false, onRetake = null } = {}) {
+  mount.innerHTML = ""; // clear
+
+  const card = document.createElement("article");
+  card.className = "cs-card"; // style as you like
+
+  card.innerHTML = `
+    <header class="cs-header">
+      <div class="cs-strategy-number">${study.strategy_number || ""}</div>
+      <h2 class="cs-strategy-title">${study.strategy_title || ""}</h2>
+      <div class="cs-case-tag">${study.case_tag || ""}</div>
+    </header>
+
+    <section class="cs-body">
+      <h3 class="cs-subhead">Overview</h3>
+      <p class="cs-overview">${study.overview || ""}</p>
+
+      <h3 class="cs-subhead">${study.key_policy_title || "Key Policy"}</h3>
+      <p class="cs-key-policy">${study.key_policy_body || ""}</p>
+
+      <figure class="cs-chart"></figure>
+
+      ${
+        study.source_url
+          ? `
+        <div class="cs-source">Source: <a href="${study.source_url}" target="_blank" rel="noopener">${
+              study.source_label || study.source_url
+            }</a></div>
+      `
+          : ""
+      }
+
+      <h3 class="cs-subhead">${study.takeaway_title || "Takeaway"}</h3>
+      <p class="cs-takeaway">${study.takeaway_body || ""}</p>
+    </section>
+
+    ${
+      showRetake
+        ? `
+      <footer class="cs-footer">
+        <button id="cs-retake" class="cs-retake">Retake Quiz</button>
+      </footer>
+    `
+        : ""
+    }
+  `;
+
+  // Inject Flourish
+  const chartBlock = buildFlourishIframe(study.chart_url, { height: Number(study.chart_height || 460) });
+  if (study.chart_url) {
+    card.querySelector(".cs-body").insertBefore(chartBlock, card.querySelector(".cs-source") || null);
+    if (study.chart_caption) {
+      const cap = document.createElement("figcaption");
+      cap.className = "cs-chart-caption";
+      cap.textContent = study.chart_caption;
+      chartBlock.appendChild(cap);
+    }
+  }
+
+  mount.appendChild(card);
+
+  if (showRetake && onRetake) {
+    card.querySelector("#cs-retake")?.addEventListener("click", onRetake);
+  }
+}
+
+function fadeSwap(fromSel, toSel) {
+  const from = document.querySelector(fromSel);
+  const to = document.querySelector(toSel);
+  return new Promise((res) => {
+    gsap.killTweensOf([from, to]);
+    gsap
+      .timeline({ defaults: { duration: 0.35, ease: "power2.out" }, onComplete: res })
+      .to(from, { autoAlpha: 0 })
+      .set(from, { display: "none" })
+      .set(to, { display: "block", autoAlpha: 0 })
+      .to(to, { autoAlpha: 1 });
+  });
+}
+
+async function showCaseStudyById(id) {
+  const study = caseStudiesById[id];
+  if (!study) {
+    console.warn("Unknown case study id:", id);
+    return;
+  }
+  const mount = document.getElementById("caseStudyMount");
+  renderCaseStudyCard(study, {
+    mount,
+    showRetake: true,
+    onRetake: async () => {
+      await fadeSwap("#caseStudyMount", "#quizWrapper");
+      // reset quiz to the start
+      resetQuiz();
+    },
+  });
+  await fadeSwap("#quizWrapper", "#caseStudyMount");
+}
+
+function resetQuiz() {
+  // camera back to start, car to start, buttons active, first question text, etc.
+  const startAns = quiz.nodes[quiz.startNode].answers[0];
+  questionText.textContent = quiz.nodes[quiz.startNode].question;
+  positionCarAtStart(startAns.motionPath, startAns.car?.sequence?.[0]?.pose || "horizontal");
+  tweenToCamera(quiz.nodes[quiz.startNode].cameraTarget, { duration: 0 });
+  renderNode(quiz.startNode);
+}
+
+function renderCaseStudyGallery(rows) {
+  const grid = document.getElementById("caseStudyGallery");
+  grid.innerHTML = "";
+  rows.forEach((study) => {
+    const mount = document.createElement("div");
+    mount.className = "cs-card-wrap";
+    renderCaseStudyCard(study, { mount, showRetake: false });
+    grid.appendChild(mount);
+  });
+}
+
+(async function init() {
+  await loadCaseStudies();
+
+  const startAns = quiz.nodes[quiz.startNode].answers[0];
+
+  // Clear any inline SVG attributes that might interfere with our gsap.set() calls
+  ["x", "y", "width", "height", "transform"].forEach((a) => document.getElementById("car-use")?.removeAttribute(a));
+
+  // Pick starting sprite, center it, scale for the initial world viewBox
+  setCarPose(startAns.car?.sequence?.[0]?.pose || "horizontal");
+  await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+  registerCarSprite();
+  applyCameraScaleToCar();
+
+  // Put the car on the very start of the starting path, then run the first node
+  positionCarAtStart(startAns.motionPath, startAns.car?.sequence?.[0]?.pose || "horizontal");
+  renderNode(quiz.startNode);
+})();

@@ -1,3 +1,13 @@
 {
-  "liveServer.settings.port": 5503
+  "liveServer.settings.port": 5508,
+  "editor.maxTokenizationLineLength": 20000,
+  "editor.wordWrap": "off",
+  "editor.wordWrapColumn": 120,
+  "[html]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "prettier.printWidth": 120,
+  "prettier.htmlWhitespaceSensitivity": "ignore"  ,
+  "prettier.proseWrap": "preserve"
 }

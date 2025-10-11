@@ -1,0 +1,165 @@
+:root {
+  --frame: #4faa62; /* outer/brand green */
+  --inner: #eef8e6; /* light green canvas */
+  --radius: 22px; /* outer corner radius */
+  --pad: 14px; /* frame thickness (padding) */
+  --header-pad: 0; /* header padding */
+}
+
+.quiz-frame {
+  max-width: 800px; /* set your preferred width */
+  margin: 24px auto;
+  background: var(--frame);
+  padding: var(--pad);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.frame-inner {
+  background: var(--inner);
+  border-radius: calc(var(--radius) - 6px);
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+.frame-header {
+  background: var(--frame);
+  color: #fff;
+  margin: calc(var(--pad) * -1) 0 0;
+  font: 600 20px/1.25 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  height: max-content;
+  min-height: 6.75rem;
+  display: flex;
+  align-items: center;
+}
+
+.frame-stage {
+  width: 100%;
+  aspect-ratio: 16 / 9; /* JS will overwrite to your SVG’s real ratio */
+  background: var(--inner);
+  overflow: hidden;
+}
+
+/* everything ignores clicks by default */
+#roadSvg * {
+  pointer-events: none;
+}
+
+/* …except the interactive buttons */
+#roadSvg .svg-button,
+#roadSvg .svg-button * {
+  pointer-events: visiblePainted;
+}
+
+/* overlays should never eat clicks */
+#roadSvg .tunnel-front,
+#roadSvg .debugPath {
+  pointer-events: none !important;
+}
+
+.svg-button {
+  cursor: pointer;
+}
+
+.svg-button:focus {
+  outline: none;
+}
+
+.svg-button[aria-hidden="true"] {
+  pointer-events: none;
+}
+.svg-button[aria-hidden="false"] {
+  pointer-events: auto;
+}
+
+.svg-button .focus-ring {
+  fill: none;
+  stroke: #2b7fff; /* tune color */
+  stroke-width: 6; /* tune thickness */
+  stroke-linejoin: round;
+  opacity: 0;
+  pointer-events: none; /* never block clicks */
+  transition: opacity 160ms ease, stroke-width 160ms ease;
+}
+
+.svg-button:focus-visible .focus-ring {
+  opacity: 1;
+  filter: drop-shadow(0 0 0 3px rgba(43, 127, 255, 0.35)) drop-shadow(0 0 0 1px rgba(255, 255, 255, 0.9));
+}
+
+/* If a browser supports :focus-visible, suppress ring for mouse-focus */
+.svg-button:focus:not(:focus-visible) .focus-ring {
+  opacity: 0;
+}
+
+/* Fallback for browsers without :focus-visible */
+@supports not selector(:focus-visible) {
+  /* Don’t show on programmatic/mouse focus */
+  .svg-button:focus .focus-ring {
+    opacity: 0;
+  }
+  /* Do show after we detect keyboard input */
+  .kbd-mode .svg-button:focus .focus-ring {
+    opacity: 1;
+  }
+}
+
+.svg-button-text {
+  fill: #f8f8f8;
+  font-family: RubikMonoOne-Regular, "Rubik Mono One";
+  font-size: 30px;
+}
+
+#car,
+#car * {
+  overflow: visible;
+}
+
+.cs-card {
+  border-radius: 16px;
+  border: 1px solid #dde5d9;
+  padding: 24px;
+  background: #f8faf7;
+  color: #162314;
+}
+.cs-header .cs-strategy-number {
+  font-weight: 700;
+  color: #5b7f5d;
+}
+.cs-header .cs-strategy-title {
+  font-size: clamp(22px, 2.4vw, 34px);
+  margin: 4px 0 12px;
+}
+.cs-case-tag {
+  display: inline-block;
+  background: #5fb060;
+  color: #fff;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-weight: 700;
+}
+.cs-subhead {
+  font-weight: 800;
+  margin-top: 20px;
+}
+.cs-chart {
+  margin: 16px 0;
+}
+.cs-footer {
+  margin-top: 20px;
+}
+.cs-retake {
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: #0c5;
+  color: #fff;
+  border: 0;
+  font-weight: 700;
+  cursor: pointer;
+}
+#caseStudyGallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 16px;
+}
