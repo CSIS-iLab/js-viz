@@ -8,6 +8,7 @@ const quiz = {
   nodes: {
     q1: {
       cameraTarget: "cam-q1",
+      number: "1.",
       question: "Does your country manufacture cars?",
       answers: [
         {
@@ -40,6 +41,7 @@ const quiz = {
     },
     q2: {
       cameraTarget: "cam-q2",
+      number: "2.",
       question: "Is your manufacturing industry primarily driven by exports?",
       answers: [
         {
@@ -72,6 +74,7 @@ const quiz = {
     },
     q3_1: {
       cameraTarget: "cam-q3-1",
+      number: "3.",
       question: "Are you producing EVs?",
       answers: [
         {
@@ -104,6 +107,7 @@ const quiz = {
     },
     q3_2: {
       cameraTarget: "cam-q3-2",
+      number: "3.",
       question: "Does your country have strong domestic manufacturers that serve the local market?",
       answers: [
         {
@@ -136,6 +140,7 @@ const quiz = {
     },
     q4: {
       cameraTarget: "cam-q4",
+      number: "4.",
       question: "Are you incentivizing domestic EV adoption?",
       answers: [
         {
@@ -170,11 +175,114 @@ const quiz = {
 };
 
 // ===== Quiz =====
+// Helpers
+const allSvgButtons = () => Array.from(document.querySelectorAll(".svg-button"));
+let cleanupFns = [];
+const nextFrame = () => new Promise((r) => requestAnimationFrame(r));
+
 // --- Camera/controller + frame header ---
 const svg = document.getElementById("roadSvg");
+const questionNumberEl = document.getElementById("questionNumber");
 const questionText = document.getElementById("questionText");
 const stageEl = document.querySelector(".frame-stage");
 const sr = document.getElementById("sr");
+const restartBtn = document.getElementById("restartQuiz");
+let hasShownRestart = false;
+
+function showRestart() {
+  gsap.killTweensOf(restartBtn);
+  if (!restartBtn || !restartBtn.hasAttribute("hidden")) return;
+  restartBtn.removeAttribute("hidden");
+  gsap.to(restartBtn, { autoAlpha: 1, duration: 0.25, ease: "power2.out" });
+}
+
+function hideRestart() {
+  gsap.killTweensOf(restartBtn);
+  if (!restartBtn) return;
+  gsap.set(restartBtn, { autoAlpha: 0 });
+  restartBtn.setAttribute("hidden", "");
+  hasShownRestart = false;
+}
+
+function forceShow(el) {
+  if (!el) return;
+  el.removeAttribute("hidden");
+  el.style.display = "block";
+  el.style.visibility = "visible";
+  el.style.opacity = "1";
+}
+
+function forceHide(el) {
+  if (!el) return;
+  el.setAttribute("hidden", "");
+  el.style.display = "none";
+  el.style.visibility = "hidden";
+  el.style.opacity = "0";
+}
+
+async function smoothRestart() {
+  const quizPane = document.getElementById("quizWrapper");
+  const csPane = document.getElementById("caseStudyMount");
+  if (!quizPane) return;
+
+  // Don’t let repeated clicks stack transitions
+  restartBtn?.setAttribute("disabled", "");
+  gsap.killTweensOf([quizPane, view, "#car-anchor", "#car-scale"]);
+
+  // Build a single, ordered sequence
+  await new Promise((done) => {
+    gsap
+      .timeline({
+        defaults: { ease: "power2.out" },
+        onComplete: () => {
+          restartBtn?.removeAttribute("disabled");
+          done();
+        },
+      })
+      // 1) Fade OUT the quiz
+      .to(quizPane, { autoAlpha: 0, duration: 0.35 })
+
+      // 2) Make sure panes are in the right visibility state
+      .add(() => {
+        forceHide(csPane);
+        forceShow(quizPane);
+        gsap.set(quizPane, { autoAlpha: 0 });
+
+        // Clean UI state
+        cleanupFns.forEach((fn) => fn());
+        cleanupFns = [];
+        hideRestart();
+        hasShownRestart = false;
+
+        // Stop any motion
+        gsap.killTweensOf([view, "#car-anchor", "#car-scale"]);
+
+        // Reset to start
+        const startId = quiz.startNode;
+        const startAns = quiz.nodes[startId].answers[0];
+
+        questionNumberEl.textContent = quiz.nodes[startId].number || "";
+        questionText.textContent = quiz.nodes[startId].question;
+        announceQuestion(`Question ${questionNumberEl.textContent}: ${quiz.nodes[startId].question}`);
+
+        setCarPose(startAns.car?.sequence?.[0]?.pose || "horizontal");
+        registerCarSprite();
+        applyCameraScaleToCar();
+        positionCarAtStart(startAns.motionPath, startAns.car?.sequence?.[0]?.pose || "horizontal");
+
+        // Jump camera instantly
+        tweenToCamera(quiz.nodes[startId].cameraTarget, { duration: 0 });
+
+        // Rebind q1 (no camera tween)
+        renderNode(startId, { skipCamera: true });
+      })
+
+      // 3) Fade IN the quiz
+      .to(quizPane, { autoAlpha: 1, duration: 0.35 });
+  });
+}
+
+restartBtn?.addEventListener("click", smoothRestart);
 
 // Match stage to SVG viewBox ratio
 (function syncAspectRatioFromViewBox() {
@@ -195,7 +303,7 @@ function registerCarSprite() {
   gsap.set(el, {
     x: -box.x - box.width / 2, // move the art so its center is at (0,0)
     y: -box.y - box.height / 2,
-    transformBox: "view-box", // use the element’s own coordinate system
+    transformBox: "view-box", // use the element's own coordinate system
     transformOrigin: "0 0", // scale from the anchor at (0,0)
   });
 }
@@ -237,7 +345,7 @@ function positionCarAtStart(pathId, pose = "horizontal") {
   const anchor = document.getElementById("car-anchor");
   if (!path || !anchor) return;
 
-  setCarPose(pose); // sets <use>, we’ll recenter next frame
+  setCarPose(pose); // sets <use>, we'll recenter next frame
   requestAnimationFrame(() => {
     registerCarSprite(); // center art at (0,0) after <use> swap
     carState.path = path;
@@ -282,7 +390,7 @@ function asPromise(tweenOrTimeline) {
 }
 
 // --- move the car along a branch path in sync with the camera ---
-function driveCar(pathId, opts = {}) {
+async function driveCar(pathId, opts = {}) {
   const path = document.getElementById(pathId);
   const anchor = document.getElementById("car-anchor");
   if (!path || !anchor) return Promise.resolve();
@@ -300,14 +408,16 @@ function driveCar(pathId, opts = {}) {
     .map((s) => ((prevEnd = s.end), s));
 
   setCarPose(seq[0].pose);
-  requestAnimationFrame(registerCarSprite);
+  await nextFrame();
+  registerCarSprite();
+  await nextFrame();
 
   isDriving = true;
   carState.path = path;
   carState.progress = 0;
 
   const tl = gsap.timeline({
-    defaults: { ease: "power1.inOut" },
+    defaults: { ease: "power1.inOut", immediateRender: false },
     onComplete() {
       isDriving = false;
     },
@@ -328,10 +438,10 @@ function driveCar(pathId, opts = {}) {
         end: seg.end,
       },
       onUpdate: function () {
-        // where are we between `start` and `seg.end`?
         carState.progress = start + (seg.end - start) * this.progress();
       },
     });
+
     if (i < seq.length - 1) {
       tl.to("#car-scale", { opacity: 0, duration: 0.12 }, ">")
         .call(() => {
@@ -343,7 +453,18 @@ function driveCar(pathId, opts = {}) {
     start = seg.end;
   });
 
-  return asPromise(tl);
+  if (typeof opts.progressCueAt === "number" && typeof opts.onProgressCue === "function") {
+    let fired = false;
+    tl.eventCallback("onUpdate", () => {
+      const p = tl.progress(); // 0..1 across the whole drive timeline
+      if (!fired && p >= opts.progressCueAt) {
+        fired = true;
+        opts.onProgressCue();
+      }
+    });
+  }
+
+  return tl.then ? tl : new Promise((res) => tl.eventCallback("onComplete", res));
 }
 
 const prefersReducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
@@ -411,10 +532,6 @@ function setCarPose(pose) {
 // Make the heading programmatically focusable once:
 questionText?.setAttribute("tabindex", "-1");
 
-// Helpers
-const allSvgButtons = () => Array.from(document.querySelectorAll(".svg-button"));
-let cleanupFns = [];
-
 function disableAllSvgButtons() {
   const active = document.activeElement;
   if (active && active.closest?.(".svg-button")) {
@@ -481,27 +598,56 @@ async function renderNode(nodeId, { skipCamera = false } = {}) {
     await tweenToCamera(node.cameraTarget);
   }
 
+  questionNumberEl.textContent = node.number || "";
   questionText.textContent = node.question;
-  announceQuestion(node.question);
+  announceQuestion(`Question ${questionNumberEl.textContent}: ${node.question}`);
 
   const activateAnswer = async (ans) => {
+    const isLeaf = !ans.next;
+
+    let csId = null;
+    if (isLeaf) {
+      csId =
+        ans.caseStudyId ||
+        caseStudyIndexByLeaf.get(`${nodeId}_${(ans.label || "").toLowerCase().replace(/\s+/g, "")}`) ||
+        caseStudyIndexByLeaf.get(nodeId) ||
+        null;
+    }
+
+    let earlyShown = false;
+
     const carP = ans.motionPath
-      ? driveCar(ans.motionPath, { duration: 3, sequence: (ans.car || {}).sequence })
+      ? driveCar(ans.motionPath, {
+          duration: 3,
+          sequence: (ans.car || {}).sequence,
+          // fire around when the car reaches the button (tweak 0.80–0.90)
+          progressCueAt: 0.4,
+          onProgressCue: () => {
+            if (!earlyShown && csId) {
+              earlyShown = true;
+              earlyShowCaseStudyById(csId);
+            }
+          },
+        })
       : Promise.resolve();
 
     if (ans.next) {
       const camP = tweenToCamera(quiz.nodes[ans.next].cameraTarget);
       await Promise.all([carP, camP]);
+      if (!hasShownRestart) {
+        showRestart();
+        hasShownRestart = true;
+      }
       await renderNode(ans.next, { skipCamera: true });
     } else {
-      await carP;
-      let csId =
-        ans.caseStudyId ||
-        caseStudyIndexByLeaf.get(`${nodeId}_${(ans.label || "").toLowerCase().replace(/\s+/g, "")}`) ||
-        caseStudyIndexByLeaf.get(nodeId) ||
-        null;
-
-      if (csId) await showCaseStudyById(csId);
+      // leaf
+      await carP; // car finishes
+      if (csId) {
+        await finalizeCaseStudySwap(); // quiz fades out; case study already visible
+      } else {
+        hideRestart();
+        announceQuestion("Quiz complete. Thanks!");
+      }
     }
   };
 
@@ -615,15 +761,14 @@ function ensureFlourishScript() {
 }
 
 function buildFlourishIframe(url, { height = 460 } = {}) {
-  const m = String(url).match(/visualisation\/(\d+)/);
+  const m = String(url || "").match(/visualisation\/(\d+)/);
   const id = m ? m[1] : null;
 
-  const wrap = document.createElement("figure");
-  wrap.className = "cs-chart";
-
   if (!id) {
-    wrap.textContent = "Chart unavailable";
-    return wrap;
+    const fallback = document.createElement("div");
+    fallback.className = "cs-chart--error";
+    fallback.textContent = "Chart unavailable";
+    return fallback;
   }
 
   const iframe = document.createElement("iframe");
@@ -633,9 +778,9 @@ function buildFlourishIframe(url, { height = 460 } = {}) {
   iframe.style.height = `${height}px`;
   iframe.style.border = "0";
   iframe.setAttribute("scrolling", "no");
-  wrap.appendChild(iframe);
-
-  return wrap;
+  iframe.loading = "lazy";
+  iframe.allowFullscreen = true;
+  return iframe;
 }
 
 function renderCaseStudyCard(study, { mount, showRetake = false, onRetake = null } = {}) {
@@ -648,6 +793,7 @@ function renderCaseStudyCard(study, { mount, showRetake = false, onRetake = null
     <header class="cs-header">
       <div class="cs-strategy-number">${study.strategy_number || ""}</div>
       <h2 class="cs-strategy-title">${study.strategy_title || ""}</h2>
+      <p class="cs-intro">${study.strategy_intro || ""}</p>
       <div class="cs-case-tag">${study.case_tag || ""}</div>
     </header>
 
@@ -659,16 +805,6 @@ function renderCaseStudyCard(study, { mount, showRetake = false, onRetake = null
       <p class="cs-key-policy">${study.key_policy_body || ""}</p>
 
       <figure class="cs-chart"></figure>
-
-      ${
-        study.source_url
-          ? `
-        <div class="cs-source">Source: <a href="${study.source_url}" target="_blank" rel="noopener">${
-              study.source_label || study.source_url
-            }</a></div>
-      `
-          : ""
-      }
 
       <h3 class="cs-subhead">${study.takeaway_title || "Takeaway"}</h3>
       <p class="cs-takeaway">${study.takeaway_body || ""}</p>
@@ -686,14 +822,16 @@ function renderCaseStudyCard(study, { mount, showRetake = false, onRetake = null
   `;
 
   // Inject Flourish
-  const chartBlock = buildFlourishIframe(study.chart_url, { height: Number(study.chart_height || 460) });
-  if (study.chart_url) {
-    card.querySelector(".cs-body").insertBefore(chartBlock, card.querySelector(".cs-source") || null);
-    if (study.chart_caption) {
-      const cap = document.createElement("figcaption");
-      cap.className = "cs-chart-caption";
-      cap.textContent = study.chart_caption;
-      chartBlock.appendChild(cap);
+  const chartFig = card.querySelector(".cs-chart");
+  if (chartFig) {
+    chartFig.innerHTML = ""; // clear any placeholder
+    if (study.chart_url) {
+      const iframe = buildFlourishIframe(study.chart_url, {
+        height: Number(study.chart_height) || 460,
+      });
+      chartFig.appendChild(iframe);
+    } else {
+      chartFig.textContent = "Chart unavailable";
     }
   }
 
@@ -719,6 +857,7 @@ function fadeSwap(fromSel, toSel) {
 }
 
 async function showCaseStudyById(id) {
+  hideRestart();
   const study = caseStudiesById[id];
   if (!study) {
     console.warn("Unknown case study id:", id);
@@ -739,7 +878,9 @@ async function showCaseStudyById(id) {
 
 function resetQuiz() {
   // camera back to start, car to start, buttons active, first question text, etc.
+  hideRestart();
   const startAns = quiz.nodes[quiz.startNode].answers[0];
+  questionNumberEl.textContent = quiz.nodes[quiz.startNode].number || "";
   questionText.textContent = quiz.nodes[quiz.startNode].question;
   positionCarAtStart(startAns.motionPath, startAns.car?.sequence?.[0]?.pose || "horizontal");
   tweenToCamera(quiz.nodes[quiz.startNode].cameraTarget, { duration: 0 });
@@ -757,6 +898,42 @@ function renderCaseStudyGallery(rows) {
   });
 }
 
+function earlyShowCaseStudyById(id) {
+  hideRestart();
+  const study = caseStudiesById[id];
+  if (!study) return;
+
+  const mount = document.getElementById("caseStudyMount");
+  renderCaseStudyCard(study, {
+    mount,
+    showRetake: true,
+    onRetake: async () => {
+      await fadeSwap("#caseStudyMount", "#quizWrapper");
+      resetQuiz();
+    },
+  });
+
+  // Make sure it overlays and is visible while the quiz is still shown
+  gsap.set(mount, {
+    display: "block",
+    autoAlpha: 0,
+    pointerEvents: "none", // prevent accidental clicks
+  });
+  gsap.to(mount, { autoAlpha: 1, duration: 0.35, ease: "power2.out" });
+}
+
+async function finalizeCaseStudySwap() {
+  const quizPane = document.getElementById("quizWrapper");
+  const csPane = document.getElementById("caseStudyMount");
+
+  // enable interaction now that the quiz is going away
+  gsap.set(csPane, { pointerEvents: "auto" });
+
+  // just fade OUT the quiz (the case study is already visible)
+  await new Promise((res) => gsap.to(quizPane, { autoAlpha: 0, duration: 0.25, ease: "power2.out", onComplete: res }));
+  gsap.set(quizPane, { display: "none" });
+}
+
 (async function init() {
   await loadCaseStudies();
 
@@ -765,13 +942,22 @@ function renderCaseStudyGallery(rows) {
   // Clear any inline SVG attributes that might interfere with our gsap.set() calls
   ["x", "y", "width", "height", "transform"].forEach((a) => document.getElementById("car-use")?.removeAttribute(a));
 
-  // Pick starting sprite, center it, scale for the initial world viewBox
+  // Pick starting sprite
   setCarPose(startAns.car?.sequence?.[0]?.pose || "horizontal");
   await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+
+  // Wait for <use> to settle, then center the art
+  await nextFrame();
   registerCarSprite();
+
+  // Scale for initial camera
   applyCameraScaleToCar();
 
   // Put the car on the very start of the starting path, then run the first node
   positionCarAtStart(startAns.motionPath, startAns.car?.sequence?.[0]?.pose || "horizontal");
+  await nextFrame();
+
+  gsap.to("#car-scale", { autoAlpha: 1, duration: 0.12 });
+
   renderNode(quiz.startNode);
 })();
