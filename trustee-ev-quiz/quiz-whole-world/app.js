@@ -814,7 +814,10 @@ function renderCaseStudyCard(study, { mount, showRetake = false, onRetake = null
       showRetake
         ? `
       <footer class="cs-footer">
-        <button id="cs-retake" class="cs-retake">Retake Quiz</button>
+        <button id="cs-retake" class="cs-retake">
+          <img src="./restart.svg" alt="" aria-hidden="true" class="restart-icon" />
+          <span class="retake-label">Retake quiz</span>
+        </button>
       </footer>
     `
         : ""

@@ -2,6 +2,8 @@
   --frame: #fdfff8; /* outer/brand green */
   --inner: #f4f1cc; /* light green canvas */
   --border: #acb888; /* border color */
+  --color-text-primary: #434e4f; /* dark text */
+  --color-black: #000000; /* darkest text */
   --radius: 20px; /* outer corner radius */
   --pad: 1.375rem; /* frame thickness (padding) */
 }
@@ -14,8 +16,16 @@ body {
 
 .frame-stack {
   display: grid;
+  position: relative;
+  isolation: isolate;
   width: 100%;
   padding: 0 1.5625rem;
+  font-family: "Mozilla Text", sans-serif;
+  color: var(--color-text-primary);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--frame);
+  overflow: hidden;
 }
 
 @media (min-width: 621px) {
@@ -53,6 +63,13 @@ body {
 .frame-stack > * {
   grid-area: 1 / 1; /* stack both in the same cell */
   width: 100%;
+  min-height: 100%;
+  background: var(--frame);
+}
+
+#quizWrapper,
+#caseStudyMount {
+  will-change: opacity, visibility;
 }
 
 #quizWrapper {
@@ -66,14 +83,7 @@ body {
 .frame {
   display: grid;
   grid-template-rows: auto minmax(0, 1fr) auto;
-  border-radius: var(--radius);
-  border: 1px solid var(--border);
-  overflow: clip;
-  background: var(--frame);
-  color: #434e4f;
-  font-family: "Mozilla Text", sans-serif;
   line-height: 1.1;
-  max-width: 880px;
 }
 
 .frame-header {
@@ -99,17 +109,20 @@ body {
   overflow: hidden;
 }
 
-.frame-footer {
-  min-height: 56px;
-  padding: 8px 16px;
+.frame-footer,
+.cs-footer {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  border-top: 1px solid #e3eadb;
 }
 
-#restartQuiz {
-  appearance: none;
+.frame-footer {
+  min-height: 56px;
+  padding: 8px 16px;
+}
+
+#restartQuiz,
+#cs-retake {
   border: 0;
   background: transparent;
   font-family: inherit;
@@ -119,7 +132,11 @@ body {
   align-items: center;
   gap: 8px;
   cursor: pointer;
+}
+
+#restartQuiz {
   opacity: 0;
+  appearance: none;
 }
 
 #restartQuiz:hover {
@@ -218,57 +235,97 @@ body {
 }
 
 .cs-card {
-  border-radius: 16px;
-  border: 1px solid #dde5d9;
-  padding: 24px;
-  background: #f8faf7;
-  color: #162314;
+  padding: 1.375rem;
 }
 
 .cs-header .cs-strategy-number {
+  font-size: 1.25rem;
   font-weight: 700;
-  color: #5b7f5d;
 }
 
 .cs-header .cs-strategy-title {
-  font-size: clamp(22px, 2.4vw, 34px);
-  margin: 4px 0 12px;
+  font-size: 2.25rem;
+  font-weight: 700;
+  line-height: 1.1;
+  margin: 8px 0 16px;
+}
+
+.cs-card p {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  font-family: "Inter", sans-serif;
+  font-size: 1.25rem;
+  font-weight: 300;
+  line-height: 1.3;
+  color: var(--color-black);
 }
 
 .cs-case-tag {
   display: inline-block;
-  background: #5fb060;
-  color: #fff;
-  border-radius: 8px;
-  padding: 6px 12px;
+  background: #d2f1ff;
+  color: var(--color-text-primary);
+  border-radius: 4px;
+  margin-bottom: 1.5rem;
+  padding: 0.5rem 0.75rem;
   font-weight: 700;
 }
 
 .cs-subhead {
-  font-weight: 800;
-  margin-top: 20px;
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  line-height: 1.1;
 }
 
 .cs-chart {
-  margin: 16px 0;
-}
-
-.cs-footer {
-  margin-top: 20px;
-}
-
-.cs-retake {
-  padding: 10px 14px;
-  border-radius: 10px;
-  background: #0c5;
-  color: #fff;
-  border: 0;
-  font-weight: 700;
-  cursor: pointer;
+  margin-bottom: 1.5rem;
 }
 
 #caseStudyGallery {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  /* display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); */
   gap: 16px;
+  width: 100%;
+}
+
+#caseStudyGallery .cs-card-wrap {
+  margin: 3rem 1.5625rem;
+  padding: 0;
+  font-family: "Mozilla Text", sans-serif;
+  color: var(--color-text-primary);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--frame);
+}
+
+@media (min-width: 621px) {
+  #caseStudyGallery .cs-card-wrap {
+    width: 83.333333%;
+    padding: 0;
+    margin: 3rem auto;
+  }
+}
+
+@media (min-width: 901px) {
+  #caseStudyGallery .cs-card-wrap {
+    width: 50%;
+  }
+}
+
+@media (min-width: 1101px) {
+  #caseStudyGallery .cs-card-wrap {
+    max-width: 620px;
+  }
+}
+
+@media (min-width: 1401px) {
+  #caseStudyGallery .cs-card-wrap {
+    max-width: 680px;
+  }
+}
+
+@media (min-width: 1751px) {
+  #caseStudyGallery .cs-card-wrap {
+    max-width: 780px;
+  }
 }
