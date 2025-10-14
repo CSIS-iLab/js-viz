@@ -62,11 +62,13 @@ body {
   border-radius: var(--radius);
   border: 1px solid var(--border);
   background: var(--frame);
+  will-change: opacity, visibility;
 }
 
-#quizWrapper,
-#caseStudyMount {
-  will-change: opacity, visibility;
+@media (min-width: 901px) {
+  .frame-stack > * {
+    margin: 0;
+  }
 }
 
 #quizWrapper {
