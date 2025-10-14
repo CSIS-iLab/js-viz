@@ -180,6 +180,33 @@ const allSvgButtons = () => Array.from(document.querySelectorAll(".svg-button"))
 let cleanupFns = [];
 const nextFrame = () => new Promise((r) => requestAnimationFrame(r));
 
+// Turn "South Africa" ➜ "south-africa"
+function slugify(str = "") {
+  return (
+    String(str)
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "") // strip accents
+      .toLowerCase()
+      .replace(/&/g, " and ")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "") || "item"
+  );
+}
+
+// Ensure uniqueness in the DOM (if two rows share a country)
+const _usedIds = new Set();
+function reserveId(base) {
+  let id = base.replace(/^-+/, ""); // avoid starting with hyphen
+  if (!/^[a-z]/.test(id)) id = `cs-${id}`; // prefix if it starts with a digit/other
+  let n = 2,
+    out = id;
+  while (_usedIds.has(out) || document.getElementById(out)) {
+    out = `${id}-${n++}`;
+  }
+  _usedIds.add(out);
+  return out;
+}
+
 // --- Camera/controller + frame header ---
 const svg = document.getElementById("roadSvg");
 const questionNumberEl = document.getElementById("questionNumber");
@@ -783,11 +810,13 @@ function buildFlourishIframe(url, { height = 460 } = {}) {
   return iframe;
 }
 
-function renderCaseStudyCard(study, { mount, showRetake = false, onRetake = null } = {}) {
-  mount.innerHTML = ""; // clear
+function renderCaseStudyCard(study, { mount, showRetake = false, onRetake = null, domId } = {}) {
+  mount.innerHTML = "";
 
   const card = document.createElement("article");
-  card.className = "cs-card"; // style as you like
+  card.className = "cs-card";
+  if (domId) card.id = domId; // <<—— set the id when provided
+  if (study.country) card.dataset.country = study.country; // handy for filtering
 
   card.innerHTML = `
     <header class="cs-header">
@@ -815,24 +844,20 @@ function renderCaseStudyCard(study, { mount, showRetake = false, onRetake = null
         ? `
       <footer class="cs-footer">
         <button id="cs-retake" class="cs-retake">
-          <i class="fa-solid fa-rotate-left restart-icon" aria-hidden="true"></i>
-          <span class="retake-label">Retake quiz</span>
+          <i class="fa-solid fa-rotate-left" aria-hidden="true"></i>
+          <span class="label">Retake Quiz</span>
         </button>
-      </footer>
-    `
+      </footer>`
         : ""
     }
   `;
 
-  // Inject Flourish
+  // (chart injection unchanged)
   const chartFig = card.querySelector(".cs-chart");
   if (chartFig) {
-    chartFig.innerHTML = ""; // clear any placeholder
+    chartFig.innerHTML = "";
     if (study.chart_url) {
-      const iframe = buildFlourishIframe(study.chart_url, {
-        height: Number(study.chart_height) || 460,
-      });
-      chartFig.appendChild(iframe);
+      chartFig.appendChild(buildFlourishIframe(study.chart_url, { height: Number(study.chart_height) || 460 }));
     } else {
       chartFig.textContent = null;
     }
@@ -893,10 +918,21 @@ function resetQuiz() {
 function renderCaseStudyGallery(rows) {
   const grid = document.getElementById("caseStudyGallery");
   grid.innerHTML = "";
+
   rows.forEach((study) => {
     const mount = document.createElement("div");
     mount.className = "cs-card-wrap";
-    renderCaseStudyCard(study, { mount, showRetake: false });
+
+    // Prefer the country name; fall back to sheet id or title
+    const base = study.country || study.id || study.strategy_title || "case";
+    const domId = reserveId(slugify(base)); // e.g., "south-africa"
+
+    renderCaseStudyCard(study, {
+      mount,
+      showRetake: false, // gallery cards don’t show the retake button
+      domId, // <<—— set the element id here
+    });
+
     grid.appendChild(mount);
   });
 }
