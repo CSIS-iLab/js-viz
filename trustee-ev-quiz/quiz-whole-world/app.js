@@ -179,6 +179,7 @@ const quiz = {
 const allSvgButtons = () => Array.from(document.querySelectorAll(".svg-button"));
 let cleanupFns = [];
 const nextFrame = () => new Promise((r) => requestAnimationFrame(r));
+const prefersReducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 
 // Turn "South Africa" ➜ "south-africa"
 function slugify(str = "") {
@@ -205,6 +206,21 @@ function reserveId(base) {
   }
   _usedIds.add(out);
   return out;
+}
+
+function scrollFrameTop() {
+  const a = document.getElementById("frameStackAnchor") || document.getElementById("frameStack");
+  if (!a) return;
+  const prefersReduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+  a.scrollIntoView({ block: "start", behavior: prefersReduced ? "auto" : "smooth" });
+}
+
+async function retakeToTop(e) {
+  e?.preventDefault?.();
+  await fadeSwap("#caseStudyMount", "#quizWrapper");
+  resetQuiz();
+  await nextFrame();
+  scrollFrameTop();           // <- now always fires
 }
 
 // --- Camera/controller + frame header ---
@@ -307,9 +323,18 @@ async function smoothRestart() {
       // 3) Fade IN the quiz
       .to(quizPane, { autoAlpha: 1, duration: 0.35 });
   });
+  
+  await nextFrame();
+  scrollFrameTop();
+  questionText?.focus({ preventScroll: true });
 }
 
-restartBtn?.addEventListener("click", smoothRestart);
+// after you define smoothRestart()
+restartBtn?.addEventListener("click", () => {
+  scrollFrameTop();                        // optional: scroll immediately
+  smoothRestart();                         // does the fade + calls scrollFrameTop again at the end
+});
+
 
 // Match stage to SVG viewBox ratio
 (function syncAspectRatioFromViewBox() {
@@ -493,8 +518,6 @@ async function driveCar(pathId, opts = {}) {
 
   return tl.then ? tl : new Promise((res) => tl.eventCallback("onComplete", res));
 }
-
-const prefersReducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 
 function tweenToCamera(targetRectId, opts = {}) {
   const rect = document.getElementById(targetRectId);
@@ -843,7 +866,7 @@ function renderCaseStudyCard(study, { mount, showRetake = false, onRetake = null
       showRetake
         ? `
       <footer class="cs-footer">
-        <button id="cs-retake" class="cs-retake">
+        <button id="cs-retake" class="cs-retake" type="button">
           <i class="fa-solid fa-rotate-left" aria-hidden="true"></i>
           <span class="label">Retake Quiz</span>
         </button>
@@ -895,11 +918,7 @@ async function showCaseStudyById(id) {
   renderCaseStudyCard(study, {
     mount,
     showRetake: true,
-    onRetake: async () => {
-      await fadeSwap("#caseStudyMount", "#quizWrapper");
-      // reset quiz to the start
-      resetQuiz();
-    },
+    onRetake: retakeToTop
   });
   await fadeSwap("#quizWrapper", "#caseStudyMount");
 }
@@ -946,10 +965,7 @@ function earlyShowCaseStudyById(id) {
   renderCaseStudyCard(study, {
     mount,
     showRetake: true,
-    onRetake: async () => {
-      await fadeSwap("#caseStudyMount", "#quizWrapper");
-      resetQuiz();
-    },
+    onRetake: retakeToTop
   });
 
   // Make sure it overlays and is visible while the quiz is still shown

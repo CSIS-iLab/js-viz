@@ -1,17 +1,35 @@
 :root {
-  --frame: #fdfff8; /* outer/brand green */
+  --frame: #fdfff8; /* outer/brand */
   --inner: #f4f1cc; /* light green canvas */
   --border: #acb888; /* border color */
   --color-text-primary: #434e4f; /* dark text */
   --color-black: #000000; /* darkest text */
   --radius: 20px; /* outer corner radius */
   --pad: 1.375rem; /* frame thickness (padding) */
+  --sticky-offset: 60px;
 }
+
 html,
 body {
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+#frameStackAnchor {
+  display: block;
+  height: 0;
+}
+
+#frameStack,
+#frameStackAnchor {
+  scroll-margin-top: var(--sticky-offset);
 }
 
 .frame-stack {
@@ -154,7 +172,7 @@ body {
 }
 
 .restart-icon {
-  font-size: .90rem;
+  font-size: 0.9rem;
   line-height: 1;
   flex: 0 0 14px;
   color: var(--color-text-primary);
