@@ -130,7 +130,7 @@ body {
   border: 0;
   background: transparent;
   font-family: inherit;
-  font-size: 1.25rem;
+  font-size: 1rem;
   font-weight: 400;
   display: inline-flex;
   align-items: center;
@@ -152,9 +152,9 @@ body {
 }
 
 .restart-icon {
-  font-size: 1.125rem;
+  font-size: .90rem;
   line-height: 1;
-  flex: 0 0 18px;
+  flex: 0 0 14px;
   color: var(--color-text-primary);
 }
 
