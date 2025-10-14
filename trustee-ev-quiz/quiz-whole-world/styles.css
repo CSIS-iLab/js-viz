@@ -81,21 +81,28 @@ body {
   display: grid;
   grid-template-rows: auto minmax(0, 1fr) auto;
   line-height: 1.1;
+  container-type: inline-size;
 }
 
 .frame-header {
   margin: 1.625rem 0.75rem 1.75rem;
-  font-size: 1.75rem;
+  font-size: clamp(1.25rem, 1rem + 1.5vw, 1.75rem);
   font-weight: 700;
-  min-height: 11.5625rem;
+  min-height: 6rem;
   display: flex;
   align-items: flex-start;
   gap: 0.5rem;
 }
 
+@supports (width: 1cqw) {
+  .frame-header {
+    font-size: clamp(1.25rem, 1rem + 1.5cqi, 1.75rem);
+  }
+}
+
 @media (min-width: 620px) {
   .frame-header {
-    min-height: 5.8125rem;
+    min-height: 5.3125rem;
   }
 }
 
