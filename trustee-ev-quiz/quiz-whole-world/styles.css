@@ -18,15 +18,9 @@ body {
   display: grid;
   position: relative;
   isolation: isolate;
-  margin: 0 1.5625rem;
-  width: fit-content;
-  max-width: 100%;
+  width: 100%;
   font-family: "Mozilla Text", sans-serif;
   color: var(--color-text-primary);
-  border-radius: var(--radius);
-  border: 1px solid var(--border);
-  background: var(--frame);
-  overflow: hidden;
 }
 
 @media (min-width: 621px) {
@@ -63,8 +57,10 @@ body {
 
 .frame-stack > * {
   grid-area: 1 / 1;
-  width: 100%;
+  margin: 0 1.5625rem;
   min-height: 100%;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
   background: var(--frame);
 }
 
@@ -91,7 +87,7 @@ body {
   margin: 1.625rem 0.75rem 1.75rem;
   font-size: 1.75rem;
   font-weight: 700;
-  min-height: 7.75rem;
+  min-height: 11.5625rem;
   display: flex;
   align-items: flex-start;
   gap: 0.5rem;
