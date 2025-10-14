@@ -220,7 +220,7 @@ async function retakeToTop(e) {
   await fadeSwap("#caseStudyMount", "#quizWrapper");
   resetQuiz();
   await nextFrame();
-  scrollFrameTop();           // <- now always fires
+  scrollFrameTop();
 }
 
 // --- Camera/controller + frame header ---
@@ -323,7 +323,7 @@ async function smoothRestart() {
       // 3) Fade IN the quiz
       .to(quizPane, { autoAlpha: 1, duration: 0.35 });
   });
-  
+
   await nextFrame();
   scrollFrameTop();
   questionText?.focus({ preventScroll: true });
@@ -331,10 +331,9 @@ async function smoothRestart() {
 
 // after you define smoothRestart()
 restartBtn?.addEventListener("click", () => {
-  scrollFrameTop();                        // optional: scroll immediately
-  smoothRestart();                         // does the fade + calls scrollFrameTop again at the end
+  scrollFrameTop(); // optional: scroll immediately
+  smoothRestart(); // does the fade + calls scrollFrameTop again at the end
 });
-
 
 // Match stage to SVG viewBox ratio
 (function syncAspectRatioFromViewBox() {
@@ -495,12 +494,14 @@ async function driveCar(pathId, opts = {}) {
     });
 
     if (i < seq.length - 1) {
-      tl.to("#car-scale", { opacity: 0, duration: 0.12 }, ">")
-        .call(() => {
+      tl.call(
+        () => {
           setCarPose(seq[i + 1].pose);
           registerCarSprite();
-        })
-        .to("#car-scale", { opacity: 1, duration: 0.12 }, ">");
+        },
+        [],
+        ">"
+      );
     }
     start = seg.end;
   });
@@ -918,7 +919,7 @@ async function showCaseStudyById(id) {
   renderCaseStudyCard(study, {
     mount,
     showRetake: true,
-    onRetake: retakeToTop
+    onRetake: retakeToTop,
   });
   await fadeSwap("#quizWrapper", "#caseStudyMount");
 }
@@ -965,7 +966,7 @@ function earlyShowCaseStudyById(id) {
   renderCaseStudyCard(study, {
     mount,
     showRetake: true,
-    onRetake: retakeToTop
+    onRetake: retakeToTop,
   });
 
   // Make sure it overlays and is visible while the quiz is still shown
