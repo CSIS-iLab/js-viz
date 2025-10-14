@@ -767,7 +767,7 @@ function buildFlourishIframe(url, { height = 460 } = {}) {
   if (!id) {
     const fallback = document.createElement("div");
     fallback.className = "cs-chart--error";
-    fallback.textContent = "Chart unavailable";
+    fallback.textContent = null;
     return fallback;
   }
 
@@ -815,7 +815,7 @@ function renderCaseStudyCard(study, { mount, showRetake = false, onRetake = null
         ? `
       <footer class="cs-footer">
         <button id="cs-retake" class="cs-retake">
-          <img src="./restart.svg" alt="" aria-hidden="true" class="restart-icon" />
+          <i class="fa-solid fa-rotate-left restart-icon" aria-hidden="true"></i>
           <span class="retake-label">Retake quiz</span>
         </button>
       </footer>
@@ -834,7 +834,7 @@ function renderCaseStudyCard(study, { mount, showRetake = false, onRetake = null
       });
       chartFig.appendChild(iframe);
     } else {
-      chartFig.textContent = "Chart unavailable";
+      chartFig.textContent = null;
     }
   }
 
