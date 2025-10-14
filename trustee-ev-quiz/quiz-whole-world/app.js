@@ -446,7 +446,7 @@ async function driveCar(pathId, opts = {}) {
   const anchor = document.getElementById("car-anchor");
   if (!path || !anchor) return Promise.resolve();
 
-  const dur = opts.duration ?? 3;
+  const dur = opts.duration ?? 4;
   let seq = opts.sequence || [{ pose: "horizontal", end: 1 }];
 
   let prevEnd = 0;
@@ -669,7 +669,7 @@ async function renderNode(nodeId, { skipCamera = false } = {}) {
 
     const carP = ans.motionPath
       ? driveCar(ans.motionPath, {
-          duration: 3,
+          duration: 4,
           sequence: (ans.car || {}).sequence,
           // fire around when the car reaches the button (tweak 0.80–0.90)
           progressCueAt: 0.4,
