@@ -18,8 +18,9 @@ body {
   display: grid;
   position: relative;
   isolation: isolate;
-  width: 100%;
-  padding: 0 1.5625rem;
+  margin: 0 1.5625rem;
+  width: fit-content;
+  max-width: 100%;
   font-family: "Mozilla Text", sans-serif;
   color: var(--color-text-primary);
   border-radius: var(--radius);
@@ -285,7 +286,6 @@ body {
 }
 
 #caseStudyGallery {
-  gap: 16px;
   width: 100%;
 }
 
