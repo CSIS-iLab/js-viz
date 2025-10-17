@@ -23,11 +23,6 @@ html {
   scroll-behavior: smooth;
 }
 
-.space-taker {
-  height: 100vh;
-  background: transparent;
-}
-
 .sh-quiz {
   background-color: var(--frame);
   padding-bottom: calc(2vh + 30px);
