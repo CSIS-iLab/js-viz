@@ -42,7 +42,7 @@ const quiz = {
     q2: {
       cameraTarget: "cam-q2",
       number: "2.",
-      question: "Is your manufacturing industry primarily driven by exports?",
+      question: "Is your automotive manufacturing industry primarily driven by exports?",
       answers: [
         {
           label: "Yes",
@@ -75,7 +75,7 @@ const quiz = {
     q3_1: {
       cameraTarget: "cam-q3-1",
       number: "3.",
-      question: "Are you producing EVs?",
+      question: "Is your country producing EVs?",
       answers: [
         {
           label: "Yes",
@@ -108,7 +108,7 @@ const quiz = {
     q3_2: {
       cameraTarget: "cam-q3-2",
       number: "3.",
-      question: "Does your country have strong domestic manufacturers that serve the local market?",
+      question: "Does your country have domestic EV manufacturers that serve the local market?",
       answers: [
         {
           label: "Yes",
@@ -141,7 +141,7 @@ const quiz = {
     q4: {
       cameraTarget: "cam-q4",
       number: "4.",
-      question: "Are you incentivizing domestic EV adoption?",
+      question: "Is your country incentivizing EV adoption?",
       answers: [
         {
           label: "Yes",

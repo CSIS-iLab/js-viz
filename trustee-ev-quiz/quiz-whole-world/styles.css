@@ -22,6 +22,10 @@ html {
   scroll-behavior: smooth;
 }
 
+.sh-quiz {
+  background-color: var(--frame);
+}
+
 #frameStackAnchor {
   display: block;
   height: 0;
@@ -349,6 +353,14 @@ html {
   border-radius: var(--radius);
   border: 1px solid var(--border);
   background: var(--frame);
+}
+
+#caseStudyGallery .cs-card-wrap:first-child {
+  margin-top: 0;
+}
+
+#caseStudyGallery .cs-card-wrap:last-child {
+  margin-bottom: 0;
 }
 
 @media (min-width: 621px) {
