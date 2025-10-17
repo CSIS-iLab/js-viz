@@ -217,10 +217,10 @@ function scrollFrameTop() {
 
 async function retakeToTop(e) {
   e?.preventDefault?.();
+  scrollFrameTop();
   await fadeSwap("#caseStudyMount", "#quizWrapper");
   resetQuiz();
   await nextFrame();
-  scrollFrameTop();
 }
 
 // --- Camera/controller + frame header ---
@@ -325,13 +325,13 @@ async function smoothRestart() {
   });
 
   await nextFrame();
-  scrollFrameTop();
+  // scrollFrameTop();
   questionText?.focus({ preventScroll: true });
 }
 
 // after you define smoothRestart()
 restartBtn?.addEventListener("click", () => {
-  scrollFrameTop(); // optional: scroll immediately
+  // scrollFrameTop(); // optional: scroll immediately
   smoothRestart(); // does the fade + calls scrollFrameTop again at the end
 });
 

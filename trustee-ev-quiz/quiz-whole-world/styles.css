@@ -3,10 +3,11 @@
   --inner: #f4f1cc; /* light green canvas */
   --border: #acb888; /* border color */
   --color-text-primary: #434e4f; /* dark text */
+  --color-text-link: #4473c8;
   --color-black: #000000; /* darkest text */
   --radius: 20px; /* outer corner radius */
   --pad: 1.375rem; /* frame thickness (padding) */
-  --sticky-offset: 60px;
+  --sticky-offset: 120px;
 }
 
 html,
@@ -22,8 +23,14 @@ html {
   scroll-behavior: smooth;
 }
 
+.space-taker {
+  height: 100vh;
+  background: transparent;
+}
+
 .sh-quiz {
   background-color: var(--frame);
+  padding-bottom: calc(2vh + 30px);
 }
 
 #frameStackAnchor {
@@ -101,6 +108,60 @@ html {
   z-index: 3;
 }
 
+#restartQuiz,
+#cs-retake,
+.cs-card p a {
+  text-decoration: none;
+  transition: all 0.3s ease-in-out;
+}
+
+.cs-card p a {
+  color: var(--color-text-link);
+  border-bottom: 1px solid;
+  border-bottom-color: inherit;
+  font-weight: 560;
+}
+
+.cs-card p a:hover {
+  opacity: 0.8;
+}
+
+#restartQuiz,
+#cs-retake {
+  padding: 10px 12px;
+  color: var(--color-text-primary);
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 400;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+#restartQuiz {
+  opacity: 0;
+  appearance: none;
+}
+
+#restartQuiz:hover,
+#cs-retake:hover {
+  background: #e8e6e6cc;
+}
+
+#restartQuiz[hidden] {
+  display: none;
+}
+
+.restart-icon {
+  font-size: 0.9rem;
+  line-height: 1;
+  flex: 0 0 14px;
+}
+
 .frame {
   display: grid;
   grid-template-rows: auto minmax(0, 1fr) auto;
@@ -147,39 +208,6 @@ html {
 .frame-footer {
   min-height: 56px;
   padding: 8px 16px;
-}
-
-#restartQuiz,
-#cs-retake {
-  border: 0;
-  background: transparent;
-  font-family: inherit;
-  font-size: 1rem;
-  font-weight: 400;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-}
-
-#restartQuiz {
-  opacity: 0;
-  appearance: none;
-}
-
-#restartQuiz:hover {
-  color: #27323a;
-}
-
-#restartQuiz[hidden] {
-  display: none;
-}
-
-.restart-icon {
-  font-size: 0.9rem;
-  line-height: 1;
-  flex: 0 0 14px;
-  color: var(--color-text-primary);
 }
 
 #roadSvg * {
@@ -298,20 +326,6 @@ html {
   .cs-card p {
     font-size: 1.375rem;
   }
-}
-
-.cs-card p a {
-  color: #4473c8;
-  font-weight: 560;
-  text-decoration: none;
-  border-bottom: 1px solid #4473c8;
-  transition: all 0.3s ease-in-out;
-}
-
-.cs-card p a:hover {
-  color: #1d4e8c;
-  text-decoration: none;
-  border-bottom: 1px solid #4473c8;
 }
 
 .cs-case-tag {
